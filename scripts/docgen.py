@@ -77,11 +77,16 @@ def render_workflow(spec: dict) -> str:
     return (
         header("Development Workflow", "specs/repo/development-workflow.json")
         + "\n## Purpose\n\n"
-        + f"{spec['normative_requirements'][0]['text']}\n\n"
+        + f"{spec['purpose']}\n\n"
+        + "## Normative requirements\n\n"
+        + "\n".join(f"- {req['id']}: {req['text']}" for req in spec["normative_requirements"])
+        + "\n\n"
         + "## Reference context\n\n"
+        + "- `AGENTS.md`\n"
         + "- `repo.manifest`\n"
         + "- `repo.repository-structure`\n"
         + "- `docs/overview/product-overview/03-git-and-change-workflow.md`\n"
+        + "- `docs/overview/product-overview/04-human-ai-continuity.md`\n"
     )
 
 

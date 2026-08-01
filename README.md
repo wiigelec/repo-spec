@@ -8,6 +8,7 @@ Authority chain:
 
 ## Start here
 
+- [Repository chatbot initialization](AGENTS.md)
 - [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
 - [Bootstrap plan](docs/plans/00-bootstrap-plan.md)
 - [Repository manifest](specs/repo/manifest.json)
@@ -24,6 +25,7 @@ Authority chain:
 
 ## Entry points
 
+- `AGENTS.md` for repository-level chatbot initialization
 - `docs/overview/PRODUCT-OVERVIEW.md` for high-level direction
 - `docs/plans/00-bootstrap-plan.md` for bootstrap sequencing
 - `specs/repo/` for repository-spec source JSON
