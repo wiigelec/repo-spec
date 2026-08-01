@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from repo_model import load_specs as load_repo_specs_impl, resolve_repo_path as resolve_repo_path_impl
+from repo_model import RepositoryError
 
 from .errors import expect, fail
 from .generated_outputs import check_generated_document_freshness
@@ -13,14 +14,14 @@ from .schema_subset import load_repo_schemas, validate_instance
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
     try:
         return load_repo_specs_impl(repo_root)
-    except Exception as exc:
+    except RepositoryError as exc:
         fail(str(exc))
 
 
 def resolve_repo_path(repo_root: Path, value: str) -> Path:
     try:
         return resolve_repo_path_impl(repo_root, value)
-    except ValueError as exc:
+    except RepositoryError as exc:
         fail(str(exc))
 
 

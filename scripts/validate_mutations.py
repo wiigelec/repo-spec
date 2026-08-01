@@ -20,9 +20,6 @@ def main(argv: list[str]) -> int:
     except ValidationFailure as exc:
         print(f"validation error: {exc}", file=sys.stderr)
         return 1
-    except Exception as exc:
-        print(f"validation error: {exc}", file=sys.stderr)
-        return 1
 
 
 if __name__ == "__main__":
