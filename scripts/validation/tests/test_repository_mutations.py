@@ -7,13 +7,29 @@ from pathlib import Path
 
 from repo_model import load_specs
 from validation.generated_outputs import check_generated_document_write_behavior
-from validation.repository_checks import resolve_repo_path, validate_repo
+from validation.errors import fail
+from validation.repository_checks import VALIDATION_PHASES, resolve_repo_path, validate_repo
 
 from .mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
 
 
 def run_repository_mutations(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
+    labels = [label for label, _check in VALIDATION_PHASES]
+    expected_labels = [
+        "repository JSON Schema conformance",
+        "manifest completeness",
+        "unique specification IDs",
+        "unique item properties",
+        "unique derived artifact paths",
+        "dependency target lifecycle",
+        "resolvable references",
+        "lineage relations",
+        "acyclic dependencies",
+        "generated-document freshness",
+    ]
+    if labels != expected_labels:
+        fail(f"validation phase order changed: {labels}")
 
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

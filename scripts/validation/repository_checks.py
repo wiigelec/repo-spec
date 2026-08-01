@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,16 @@ from repo_model import RepositoryError
 from .errors import expect, fail
 from .generated_outputs import check_generated_document_freshness
 from .schema_subset import load_repo_schemas, validate_instance
+
+
+@dataclass(frozen=True)
+class ValidationContext:
+    repo_root: Path
+    manifest: dict[str, Any]
+    specs: dict[str, dict[str, Any]]
+    source_paths: dict[str, str]
+    actual_paths: list[str]
+    schemas: dict[str, dict[str, Any]]
 
 
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
@@ -123,38 +134,77 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
         visit(node)
 
 
-def validate_repo(repo_root: Path) -> None:
-    _manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
+def load_validation_context(repo_root: Path) -> ValidationContext:
+    manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
-    validate_repo_json_schema_conformance(specs, source_paths, schemas)
-    print("ok: conformance to the repository's JSON Schemas")
-    check_manifest_completeness(specs, source_paths, actual_paths)
-    print("ok: manifest completeness")
-    check_unique_spec_ids(specs)
-    print("ok: unique specification IDs")
-    check_unique_item_properties(specs, "repo.manifest", "authoritative_specs", ["spec_id"])
-    print("ok: unique manifest authoritative spec IDs")
-    for spec_id in specs:
-        if "issue_fields" in specs[spec_id]:
-            check_unique_item_properties(specs, spec_id, "issue_fields", ["id"])
-            print(f"ok: unique issue fields for {spec_id}")
-        if "review_fields" in specs[spec_id]:
-            check_unique_item_properties(specs, spec_id, "review_fields", ["id"])
-            print(f"ok: unique review fields for {spec_id}")
-        check_unique_item_properties(specs, spec_id, "normative_requirements", ["id"])
-        check_unique_item_properties(specs, spec_id, "dependencies", ["spec_id"])
-        check_unique_item_properties(specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
-        check_unique_item_properties(specs, spec_id, "derived_artifacts", ["path"])
-    print("ok: unique item properties")
-    check_unique_derived_artifact_paths(specs)
-    print("ok: unique derived artifact paths")
-    check_dependency_targets(specs)
-    print("ok: dependency target lifecycle")
-    check_resolvable_references(repo_root, specs)
-    print("ok: resolvable references")
-    check_lineage_relations(specs)
-    print("ok: lineage relations")
-    check_acyclic_dependencies(specs)
-    print("ok: acyclic dependencies")
-    check_generated_document_freshness(repo_root)
-    print("ok: generated-document freshness")
+    return ValidationContext(repo_root, manifest, specs, source_paths, actual_paths, schemas)
+
+
+def check_schema_conformance(context: ValidationContext) -> None:
+    validate_repo_json_schema_conformance(context.specs, context.source_paths, context.schemas)
+
+
+def check_manifest_phase(context: ValidationContext) -> None:
+    check_manifest_completeness(context.specs, context.source_paths, context.actual_paths)
+
+
+def check_unique_spec_ids_phase(context: ValidationContext) -> None:
+    check_unique_spec_ids(context.specs)
+
+
+def check_unique_item_properties_phase(context: ValidationContext) -> None:
+    check_unique_item_properties(context.specs, "repo.manifest", "authoritative_specs", ["spec_id"])
+    for spec_id in context.specs:
+        if "issue_fields" in context.specs[spec_id]:
+            check_unique_item_properties(context.specs, spec_id, "issue_fields", ["id"])
+        if "review_fields" in context.specs[spec_id]:
+            check_unique_item_properties(context.specs, spec_id, "review_fields", ["id"])
+        check_unique_item_properties(context.specs, spec_id, "normative_requirements", ["id"])
+        check_unique_item_properties(context.specs, spec_id, "dependencies", ["spec_id"])
+        check_unique_item_properties(context.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
+        check_unique_item_properties(context.specs, spec_id, "derived_artifacts", ["path"])
+
+
+def check_unique_derived_artifact_paths_phase(context: ValidationContext) -> None:
+    check_unique_derived_artifact_paths(context.specs)
+
+
+def check_dependency_targets_phase(context: ValidationContext) -> None:
+    check_dependency_targets(context.specs)
+
+
+def check_resolvable_references_phase(context: ValidationContext) -> None:
+    check_resolvable_references(context.repo_root, context.specs)
+
+
+def check_lineage_relations_phase(context: ValidationContext) -> None:
+    check_lineage_relations(context.specs)
+
+
+def check_acyclic_dependencies_phase(context: ValidationContext) -> None:
+    check_acyclic_dependencies(context.specs)
+
+
+def check_generated_document_freshness_phase(context: ValidationContext) -> None:
+    check_generated_document_freshness(context.repo_root)
+
+
+VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("repository JSON Schema conformance", check_schema_conformance),
+    ("manifest completeness", check_manifest_phase),
+    ("unique specification IDs", check_unique_spec_ids_phase),
+    ("unique item properties", check_unique_item_properties_phase),
+    ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
+    ("dependency target lifecycle", check_dependency_targets_phase),
+    ("resolvable references", check_resolvable_references_phase),
+    ("lineage relations", check_lineage_relations_phase),
+    ("acyclic dependencies", check_acyclic_dependencies_phase),
+    ("generated-document freshness", check_generated_document_freshness_phase),
+]
+
+
+def validate_repo(repo_root: Path) -> None:
+    context = load_validation_context(repo_root)
+    for label, check in VALIDATION_PHASES:
+        check(context)
+        print(f"ok: {label}")
