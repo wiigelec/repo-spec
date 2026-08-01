@@ -27,6 +27,8 @@ Validation should eventually cover:
 
 Validation establishes only the properties it is designed to check. A passing validation result is not semantic review or acceptance.
 
+Substantive completeness for GitHub issue and pull-request forms may be enforced by a separate hosted policy checker, not by repository-local validation.
+
 Validation evidence should identify the exact repository state or Git revision tested.
 
 ## Authority model
