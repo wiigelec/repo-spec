@@ -607,6 +607,35 @@ def run_mutation_tests(repo_root: Path) -> None:
             "orphaned derived markdown",
         )
 
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/manifest.json",
+            lambda manifest: (
+                manifest["authoritative_specs"].append({"spec_id": "repo.example", "path": "specs/repo/example.json"}) or manifest
+            ),
+        )
+        example_spec = copy.deepcopy(specs["repo.validation"])
+        example_spec["spec_id"] = "repo.example"
+        example_spec["title"] = "Example"
+        example_spec["purpose"] = "Example repository specification"
+        example_spec["derived_artifacts"][0]["path"] = "derived/specs/repo/example.md"
+        (temp_repo / "specs/repo/example.json").write_text(json.dumps(example_spec, indent=2) + "\n")
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
+
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/review-proposal.json",
+            lambda spec: (
+                spec["derived_artifacts"][-1].__setitem__("renderer", "governing-issue-example") or spec
+            ),
+        )
+        expect_failure(
+            "review proposal renderer selection",
+            lambda: validate_repo(temp_repo),
+            "generated-document freshness failed",
+        )
+
         mutated_spec = copy.deepcopy(specs["repo.validation"])
         mutated_spec["references"][0]["path"] = "docs/extra.md"
         expect_failure(

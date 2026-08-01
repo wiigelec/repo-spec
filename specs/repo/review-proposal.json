@@ -282,7 +282,8 @@
     },
     {
       "type": "markdown",
-      "path": ".github/PULL_REQUEST_TEMPLATE.md"
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "renderer": "review-template"
     }
   ]
 }

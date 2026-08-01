@@ -221,6 +221,6 @@ Placeholder:
 ## Derived artifacts
 
 - `markdown`: `derived/specs/repo/governing-issue.md`
-- `yaml`: `.github/ISSUE_TEMPLATE/governing-issue.yml`
-- `markdown`: `docs/issues/governing-issue-example.md`
+- `yaml`: `.github/ISSUE_TEMPLATE/governing-issue.yml` (renderer: `issue-form`)
+- `markdown`: `docs/issues/governing-issue-example.md` (renderer: `governing-issue-example`)
 

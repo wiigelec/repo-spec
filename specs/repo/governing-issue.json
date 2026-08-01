@@ -232,11 +232,13 @@
     },
     {
       "type": "yaml",
-      "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
+      "path": ".github/ISSUE_TEMPLATE/governing-issue.yml",
+      "renderer": "issue-form"
     },
     {
       "type": "markdown",
-      "path": "docs/issues/governing-issue-example.md"
+      "path": "docs/issues/governing-issue-example.md",
+      "renderer": "governing-issue-example"
     }
   ]
 }
