@@ -79,6 +79,32 @@ def render_derived_artifacts(spec: dict) -> list[str]:
     return items
 
 
+def render_artifact_classes(spec: dict) -> list[str]:
+    lines = ["## Artifact classes", ""]
+    for artifact in spec["artifact_classes"]:
+        lines.extend(
+            [
+                f"### {artifact['label']}",
+                "",
+                f"- Identifier: `{artifact['identifier']}`",
+                f"- Role: `{artifact['role']}`",
+                f"- Authority category: `{artifact['authority_category']}`",
+                f"- Authority source: {artifact['authority_source']}",
+                f"- Source of truth rule: {artifact['source_of_truth_rule']}",
+                f"- Mutability: {artifact['mutability']}",
+                f"- Generation mode: `{artifact['generation_mode']}`",
+                f"- Validation ownership: `{artifact['validation_ownership']}`",
+                f"- Portability category: `{artifact['portability_category']}`",
+                f"- Manifest participation: `{artifact['manifest_participation']}`",
+            ]
+        )
+        if artifact.get("source_artifacts"):
+            lines.extend(["", "- Source artifacts:"])
+            lines.extend([f"  - `{source}`" for source in artifact["source_artifacts"]])
+        lines.append("")
+    return lines
+
+
 def render_field_sections(fields: list[dict]) -> list[str]:
     lines = ["## Canonical fields", ""]
     for field in fields:
@@ -176,6 +202,8 @@ def render_lineage(spec: dict) -> list[str]:
 
 def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False) -> str:
     lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
+    if "artifact_classes" in spec:
+        lines.extend(render_artifact_classes(spec))
     if "issue_fields" in spec:
         lines.extend(render_field_sections(spec["issue_fields"]))
     elif "review_fields" in spec:

@@ -41,7 +41,8 @@ def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], sour
     for spec_id, spec in specs.items():
         if spec_id == "repo.manifest":
             continue
-        validate_instance(spec, schemas["repo.spec"], source_paths[spec_id], schemas["repo.spec"])
+        schema = schemas["repo.artifact-taxonomy"] if spec_id == "repo.artifact-taxonomy" else schemas["repo.spec"]
+        validate_instance(spec, schema, source_paths[spec_id], schema)
 
 
 def check_manifest_completeness(specs: dict[str, dict[str, Any]], source_paths: dict[str, str], actual_paths: list[str]) -> None:
@@ -159,6 +160,12 @@ def check_unique_item_properties_phase(context: ValidationContext) -> None:
             check_unique_item_properties(context.specs, spec_id, "issue_fields", ["id"])
         if "review_fields" in context.specs[spec_id]:
             check_unique_item_properties(context.specs, spec_id, "review_fields", ["id"])
+        if "artifact_classes" in context.specs[spec_id]:
+            check_unique_item_properties(context.specs, spec_id, "artifact_classes", ["identifier"])
+            for index, artifact_class in enumerate(context.specs[spec_id]["artifact_classes"]):
+                if artifact_class["generation_mode"] == "deterministic":
+                    source_artifacts = artifact_class.get("source_artifacts", [])
+                    expect(source_artifacts, f"artifact taxonomy failed: {spec_id}[{index}] requires source_artifacts")
         check_unique_item_properties(context.specs, spec_id, "normative_requirements", ["id"])
         check_unique_item_properties(context.specs, spec_id, "dependencies", ["spec_id"])
         check_unique_item_properties(context.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
