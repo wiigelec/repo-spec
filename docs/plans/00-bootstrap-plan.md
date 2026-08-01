@@ -2,19 +2,17 @@
 
 ## Status
 
-Initial planning document for the repo-spec bootstrap process.
+Historical planning document for the repo-spec bootstrap process.
 
-This plan is non-normative. It describes the staged path from human-authored Markdown to normalized normative JSON and then to derived Markdown documentation in a separate directory tree.
+This plan is non-normative. Bootstrap has completed cutover to the accepted JSON specs under `specs/repo/`, and this document remains only as historical context.
 
-Temporary bootstrap authority: files under `specs/repo/` are the authoritative bootstrap source until the documented JSON cutover.
-
-Bootstrap work follows the normal governed workflow: it begins from a governing issue and an isolated working branch.
+Bootstrap work followed the normal governed workflow: it began from a governing issue and an isolated working branch.
 
 ## Purpose
 
 Establish the bootstrap process that will make the separation between `repo specs` and `product specs` unmistakable to a fresh AI session and to human maintainers.
 
-The immediate goal is not to build the final source product. The immediate goal is to make the repository structure, authority boundaries, and expected outcomes easy to discover without relying on prior conversation context.
+The immediate goal was not to build the final source product. The immediate goal was to make the repository structure, authority boundaries, and expected outcomes easy to discover without relying on prior conversation context.
 
 ## Bootstrap principles
 
@@ -95,13 +93,13 @@ The transition condition is user-triggered once a fresh AI session can reliably 
 
 No new bootstrap check may be added without an accepted specification change.
 
-## Open decisions
+## Resolved decisions
 
-- exact derived-docs directory layout;
-- initial JSON schema boundaries;
-- validation commands and entry points;
-- whether the plan itself becomes split into repo-spec and product-spec subplans.
+- The derived-docs directory layout is `derived/specs/repo/`.
+- JSON schema boundaries live under `schemas/`.
+- Validation commands and entry points are `scripts/validate` and `scripts/generate-docs`.
+- The plan remains a single historical bootstrap record.
 
 ## Current expectation
 
-This plan is the first scaffold for the repository’s bootstrap workflow. It should be refined as the Markdown foundation becomes concrete and then translated into normalized JSON once the bootstrap threshold is reached.
+Bootstrap is complete. This plan is retained only as historical context and does not define current authority.
