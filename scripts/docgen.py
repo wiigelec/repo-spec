@@ -15,15 +15,30 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
-def load_specs(repo_root: Path) -> dict[str, dict]:
-    return {
-        "repo.manifest": load_json(repo_root / "specs/repo/manifest.json"),
-        "repo.governing-issue": load_json(repo_root / "specs/repo/governing-issue.json"),
-        "repo.review-proposal": load_json(repo_root / "specs/repo/review-proposal.json"),
-        "repo.repository-structure": load_json(repo_root / "specs/repo/repository-structure.json"),
-        "repo.development-workflow": load_json(repo_root / "specs/repo/development-workflow.json"),
-        "repo.validation": load_json(repo_root / "specs/repo/validation.json"),
-    }
+def load_manifest(repo_root: Path) -> dict:
+    return load_json(repo_root / "specs/repo/manifest.json")
+
+
+def load_specs(repo_root: Path) -> tuple[dict, dict[str, dict], dict[str, str]]:
+    manifest = load_manifest(repo_root)
+    specs = {"repo.manifest": manifest}
+    paths = {"repo.manifest": "specs/repo/manifest.json"}
+    for entry in manifest["authoritative_specs"]:
+        spec_id = entry["spec_id"]
+        if spec_id == "repo.manifest":
+            if entry["path"] != "specs/repo/manifest.json":
+                raise ValueError(f"manifest entry {spec_id} does not match specs/repo/manifest.json")
+            paths[spec_id] = "specs/repo/manifest.json"
+            continue
+        source_path = repo_root / entry["path"]
+        spec = load_json(source_path)
+        if spec["spec_id"] != spec_id:
+            raise ValueError(f"manifest entry {spec_id} does not match {entry['path']}")
+        if spec_id in specs:
+            raise ValueError(f"duplicate authoritative spec_id: {spec_id}")
+        specs[spec_id] = spec
+        paths[spec_id] = entry["path"]
+    return manifest, specs, paths
 
 
 def header(title: str, source_path: str) -> str:
@@ -231,15 +246,20 @@ def render_validation(spec: dict) -> str:
 
 
 def render_all(repo_root: Path) -> dict[str, str]:
-    specs = load_specs(repo_root)
-    return {
-        "repo.manifest": render_manifest(specs["repo.manifest"]),
-        "repo.governing-issue": render_governing_issue(specs["repo.governing-issue"]),
-        "repo.review-proposal": render_review_proposal(specs["repo.review-proposal"]),
-        "repo.repository-structure": render_structure(specs["repo.repository-structure"]),
-        "repo.development-workflow": render_workflow(specs["repo.development-workflow"]),
-        "repo.validation": render_validation(specs["repo.validation"]),
+    manifest, specs, _paths = load_specs(repo_root)
+    renderers = {
+        "repo.manifest": render_manifest,
+        "repo.governing-issue": render_governing_issue,
+        "repo.review-proposal": render_review_proposal,
+        "repo.repository-structure": render_structure,
+        "repo.development-workflow": render_workflow,
+        "repo.validation": render_validation,
     }
+    rendered: dict[str, str] = {}
+    for entry in manifest["authoritative_specs"]:
+        spec_id = entry["spec_id"]
+        rendered[spec_id] = renderers[spec_id](specs[spec_id])
+    return rendered
 
 
 def write_all(repo_root: Path) -> None:

@@ -16,8 +16,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from docgen import render_all
-
 SUPPORTED_SCHEMA_KEYS = {
     "$schema",
     "$id",
@@ -56,6 +54,29 @@ def load_json(path: Path) -> Any:
         fail(f"missing required file: {path}")
     except json.JSONDecodeError as exc:
         fail(f"invalid JSON: {path}: {exc.msg}")
+
+
+def load_manifest(repo_root: Path) -> dict[str, Any]:
+    return load_json(repo_root / "specs/repo/manifest.json")
+
+
+def load_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str]]:
+    manifest = load_manifest(repo_root)
+    specs: dict[str, dict[str, Any]] = {"repo.manifest": manifest}
+    paths: dict[str, str] = {"repo.manifest": "specs/repo/manifest.json"}
+    for entry in manifest["authoritative_specs"]:
+        spec_id = entry["spec_id"]
+        if spec_id == "repo.manifest":
+            expect(entry["path"] == "specs/repo/manifest.json", "manifest completeness failed")
+            paths[spec_id] = "specs/repo/manifest.json"
+            continue
+        path = repo_root / entry["path"]
+        spec = load_json(path)
+        expect(spec["spec_id"] == spec_id, f"manifest completeness failed: {entry['path']} reports {spec['spec_id']} instead of {spec_id}")
+        expect(spec_id not in specs, f"manifest completeness failed: duplicate authoritative spec_id {spec_id}")
+        specs[spec_id] = spec
+        paths[spec_id] = entry["path"]
+    return manifest, specs, paths
 
 
 def expect(condition: bool, message: str) -> None:
@@ -226,43 +247,22 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     return schemas
 
 
-def load_specs(repo_root: Path) -> dict[str, dict[str, Any]]:
-    return {
-        "repo.manifest": load_json(repo_root / "specs/repo/manifest.json"),
-        "repo.governing-issue": load_json(repo_root / "specs/repo/governing-issue.json"),
-        "repo.review-proposal": load_json(repo_root / "specs/repo/review-proposal.json"),
-        "repo.repository-structure": load_json(repo_root / "specs/repo/repository-structure.json"),
-        "repo.development-workflow": load_json(repo_root / "specs/repo/development-workflow.json"),
-        "repo.validation": load_json(repo_root / "specs/repo/validation.json"),
-    }
+def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], source_paths: dict[str, str], schemas: dict[str, dict[str, Any]]) -> None:
+    validate_instance(specs["repo.manifest"], schemas["repo.manifest"], "specs/repo/manifest.json", schemas["repo.manifest"])
+    for spec_id, spec in specs.items():
+        if spec_id == "repo.manifest":
+            continue
+        validate_instance(spec, schemas["repo.spec"], source_paths[spec_id], schemas["repo.spec"])
 
 
-def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], schemas: dict[str, dict[str, Any]]) -> None:
-    source_paths = {
-        "repo.manifest": "specs/repo/manifest.json",
-        "repo.governing-issue": "specs/repo/governing-issue.json",
-        "repo.review-proposal": "specs/repo/review-proposal.json",
-        "repo.repository-structure": "specs/repo/repository-structure.json",
-        "repo.development-workflow": "specs/repo/development-workflow.json",
-        "repo.validation": "specs/repo/validation.json",
-    }
-    validate_instance(specs["repo.manifest"], schemas["repo.manifest"], source_paths["repo.manifest"], schemas["repo.manifest"])
-    for spec_id in ("repo.governing-issue", "repo.review-proposal", "repo.repository-structure", "repo.development-workflow", "repo.validation"):
-        validate_instance(specs[spec_id], schemas["repo.spec"], source_paths[spec_id], schemas["repo.spec"])
-
-
-def check_manifest_completeness(specs: dict[str, dict[str, Any]]) -> None:
+def check_manifest_completeness(specs: dict[str, dict[str, Any]], source_paths: dict[str, str]) -> None:
     manifest = specs["repo.manifest"]
-    expected_paths = {
-        "repo.manifest": "specs/repo/manifest.json",
-        "repo.governing-issue": "specs/repo/governing-issue.json",
-        "repo.review-proposal": "specs/repo/review-proposal.json",
-        "repo.repository-structure": "specs/repo/repository-structure.json",
-        "repo.development-workflow": "specs/repo/development-workflow.json",
-        "repo.validation": "specs/repo/validation.json",
-    }
-    actual = {entry["spec_id"]: entry["path"] for entry in manifest["authoritative_specs"]}
-    expect(actual == expected_paths, "manifest completeness failed")
+    entries = manifest["authoritative_specs"]
+    ids = [entry["spec_id"] for entry in entries]
+    expect(len(ids) == len(set(ids)), "manifest completeness failed")
+    expect(set(ids) == set(specs), "manifest completeness failed")
+    for entry in entries:
+        expect(source_paths[entry["spec_id"]] == entry["path"], "manifest completeness failed")
 
 
 def check_unique_spec_ids(specs: dict[str, dict[str, Any]]) -> None:
@@ -301,19 +301,9 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
         visit(node)
 
 
-def check_generated_document_freshness(repo_root: Path, specs: dict[str, dict[str, Any]]) -> None:
-    expected = render_all(repo_root)
-    targets = {
-        "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
-        "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
-        "repo.review-proposal": repo_root / "derived/specs/repo/review-proposal.md",
-        "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
-        "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
-        "repo.validation": repo_root / "derived/specs/repo/validation.md",
-    }
-    for spec_id, expected_text in expected.items():
-        actual_text = targets[spec_id].read_text()
-        expect(actual_text == expected_text, f"generated-document freshness failed: {targets[spec_id].relative_to(repo_root)}")
+def check_generated_document_freshness(repo_root: Path) -> None:
+    proc = subprocess.run([str(repo_root / "scripts/generate-docs"), "--check"], cwd=repo_root, capture_output=True, text=True)
+    expect(proc.returncode == 0, f"generated-document freshness failed: {proc.stderr.strip() or proc.stdout.strip() or 'check failed'}")
 
 
 def check_clean_failure_behavior(repo_root: Path) -> None:
@@ -324,11 +314,11 @@ def check_clean_failure_behavior(repo_root: Path) -> None:
 
 
 def validate_repo(repo_root: Path) -> None:
-    specs = load_specs(repo_root)
+    _manifest, specs, source_paths = load_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
-    validate_repo_json_schema_conformance(specs, schemas)
+    validate_repo_json_schema_conformance(specs, source_paths, schemas)
     print("ok: conformance to the repository's JSON Schemas")
-    check_manifest_completeness(specs)
+    check_manifest_completeness(specs, source_paths)
     print("ok: manifest completeness")
     check_unique_spec_ids(specs)
     print("ok: unique specification IDs")
@@ -336,7 +326,7 @@ def validate_repo(repo_root: Path) -> None:
     print("ok: resolvable references")
     check_acyclic_dependencies(specs)
     print("ok: acyclic dependencies")
-    check_generated_document_freshness(repo_root, specs)
+    check_generated_document_freshness(repo_root)
     print("ok: generated-document freshness")
     check_clean_failure_behavior(repo_root)
     print("ok: clean failure behavior")
@@ -353,7 +343,7 @@ def expect_failure(description: str, func, fragment: str) -> None:
 
 def run_mutation_tests(repo_root: Path) -> None:
     schemas = load_repo_schemas(repo_root)
-    specs = load_specs(repo_root)
+    _manifest, specs, source_paths = load_specs(repo_root)
 
     expect_failure(
         "manifest root type",
