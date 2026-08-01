@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-VAL-002",
-      "text": "The validation entry point shall be shell-only and shall not rely on external dependencies."
+      "text": "The public validation entry point shall be a shell script wrapper, and the implementation it invokes shall not rely on third-party packages."
     },
     {
       "id": "REPO-VAL-003",
