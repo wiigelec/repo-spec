@@ -18,7 +18,6 @@ from typing import Any
 
 from docgen import (
     load_specs as load_repo_specs,
-    render_governing_issue_example,
     render_governing_issue,
     render_issue_form,
     render_manifest,
@@ -688,19 +687,6 @@ def run_mutation_tests(repo_root: Path) -> None:
         (temp_repo / "specs/repo/example.json").write_text(json.dumps(example_spec, indent=2) + "\n")
         check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
-
-        temp_repo = clone_repo()
-        mutate_json(
-            temp_repo / "specs/repo/review-proposal.json",
-            lambda spec: (
-                spec["derived_artifacts"][-1].__setitem__("renderer", "governing-issue-example") or spec
-            ),
-        )
-        expect_failure(
-            "review proposal renderer selection",
-            lambda: validate_repo(temp_repo),
-            "generated-document freshness failed",
-        )
 
         temp_repo = clone_repo()
         mutate_json(

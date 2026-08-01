@@ -279,11 +279,9 @@ Validation metadata:
 - artifact: `docs/overview/product-overview/04-human-ai-continuity.md`
 - artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
 - artifact: `.github/ISSUE_TEMPLATE/governing-issue.yml`
-- artifact: `docs/issues/governing-issue-example.md`
 
 ## Derived artifacts
 
 - `markdown`: `derived/specs/repo/governing-issue.md`
 - `yaml`: `.github/ISSUE_TEMPLATE/governing-issue.yml` (renderer: `issue-form`)
-- `markdown`: `docs/issues/governing-issue-example.md` (renderer: `governing-issue-example`)
 

@@ -190,12 +190,6 @@ def render_issue_form(spec: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_governing_issue_example(spec: dict) -> str:
-    lines = ["# Governing Issue Example", ""]
-    lines.extend(render_field_sections(spec["issue_fields"]))
-    return "\n".join(lines)
-
-
 def render_review_template(spec: dict) -> str:
     fields = spec["review_fields"]
     if len(fields) != 5:
@@ -278,7 +272,6 @@ def render_validation(spec: dict) -> str:
 
 SPECIAL_RENDERERS = {
     "issue-form": render_issue_form,
-    "governing-issue-example": render_governing_issue_example,
     "review-template": render_review_template,
 }
 
