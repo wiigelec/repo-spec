@@ -19,26 +19,34 @@ def load_manifest(repo_root: Path) -> dict:
     return load_json(repo_root / "specs/repo/manifest.json")
 
 
-def load_specs(repo_root: Path) -> tuple[dict, dict[str, dict], dict[str, str]]:
+def load_specs(repo_root: Path) -> tuple[dict, dict[str, dict], dict[str, str], list[str]]:
     manifest = load_manifest(repo_root)
+    actual_paths = sorted(path.relative_to(repo_root).as_posix() for path in (repo_root / "specs/repo").glob("*.json"))
+    manifest_paths = [entry["path"] for entry in manifest["authoritative_specs"]]
+    if len(manifest_paths) != len(set(manifest_paths)):
+        raise ValueError("manifest completeness failed")
+    if set(actual_paths) != set(manifest_paths):
+        raise ValueError("manifest completeness failed")
+
     specs = {"repo.manifest": manifest}
     paths = {"repo.manifest": "specs/repo/manifest.json"}
-    for entry in manifest["authoritative_specs"]:
-        spec_id = entry["spec_id"]
-        if spec_id == "repo.manifest":
-            if entry["path"] != "specs/repo/manifest.json":
-                raise ValueError(f"manifest entry {spec_id} does not match specs/repo/manifest.json")
-            paths[spec_id] = "specs/repo/manifest.json"
+    path_to_spec_id = {entry["path"]: entry["spec_id"] for entry in manifest["authoritative_specs"]}
+    for path in actual_paths:
+        expected_spec_id = path_to_spec_id[path]
+        if path == "specs/repo/manifest.json":
+            if manifest["spec_id"] != expected_spec_id:
+                raise ValueError(f"manifest entry {expected_spec_id} does not match {path}")
+            paths[expected_spec_id] = path
             continue
-        source_path = repo_root / entry["path"]
-        spec = load_json(source_path)
-        if spec["spec_id"] != spec_id:
-            raise ValueError(f"manifest entry {spec_id} does not match {entry['path']}")
+        spec = load_json(repo_root / path)
+        spec_id = spec["spec_id"]
+        if spec_id != expected_spec_id:
+            raise ValueError(f"manifest entry {expected_spec_id} does not match {path}")
         if spec_id in specs:
             raise ValueError(f"duplicate authoritative spec_id: {spec_id}")
         specs[spec_id] = spec
-        paths[spec_id] = entry["path"]
-    return manifest, specs, paths
+        paths[spec_id] = path
+    return manifest, specs, paths, actual_paths
 
 
 def header(title: str, source_path: str) -> str:
@@ -245,8 +253,18 @@ def render_validation(spec: dict) -> str:
     )
 
 
+def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
+    paths: set[str] = set()
+    for spec in specs.values():
+        for artifact in spec.get("derived_artifacts", []):
+            if artifact.get("type") != "markdown":
+                raise ValueError(f"unsupported derived artifact type: {artifact.get('type')}")
+            paths.add(artifact["path"])
+    return paths
+
+
 def render_all(repo_root: Path) -> dict[str, str]:
-    manifest, specs, _paths = load_specs(repo_root)
+    _manifest, specs, _paths, _actual_paths = load_specs(repo_root)
     renderers = {
         "repo.manifest": render_manifest,
         "repo.governing-issue": render_governing_issue,
@@ -255,25 +273,27 @@ def render_all(repo_root: Path) -> dict[str, str]:
         "repo.development-workflow": render_workflow,
         "repo.validation": render_validation,
     }
+    targets = {
+        "repo.manifest": "derived/specs/repo/manifest.md",
+        "repo.governing-issue": "derived/specs/repo/governing-issue.md",
+        "repo.review-proposal": "derived/specs/repo/review-proposal.md",
+        "repo.repository-structure": "derived/specs/repo/repository-structure.md",
+        "repo.development-workflow": "derived/specs/repo/development-workflow.md",
+        "repo.validation": "derived/specs/repo/validation.md",
+    }
     rendered: dict[str, str] = {}
-    for entry in manifest["authoritative_specs"]:
-        spec_id = entry["spec_id"]
-        rendered[spec_id] = renderers[spec_id](specs[spec_id])
+    for spec_id, target in targets.items():
+        rendered[target] = renderers[spec_id](specs[spec_id])
+    declared_paths = declared_derived_artifact_paths(specs)
+    if set(rendered) != declared_paths:
+        raise ValueError("declared derived-artifacts do not match generated outputs")
     return rendered
 
 
 def write_all(repo_root: Path) -> None:
     rendered = render_all(repo_root)
-    targets = {
-        "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
-        "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
-        "repo.review-proposal": repo_root / "derived/specs/repo/review-proposal.md",
-        "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
-        "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
-        "repo.validation": repo_root / "derived/specs/repo/validation.md",
-    }
-    for spec_id, content in rendered.items():
-        path = targets[spec_id]
+    for relative_path, content in rendered.items():
+        path = repo_root / relative_path
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
 
@@ -282,25 +302,17 @@ def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     mode = argv[2] if len(argv) > 2 else "--write"
     rendered = render_all(repo_root)
-    targets = {
-        "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
-        "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
-        "repo.review-proposal": repo_root / "derived/specs/repo/review-proposal.md",
-        "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
-        "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
-        "repo.validation": repo_root / "derived/specs/repo/validation.md",
-    }
 
     if mode == "--write":
-        for spec_id, content in rendered.items():
-            path = targets[spec_id]
+        for relative_path, content in rendered.items():
+            path = repo_root / relative_path
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
         return 0
 
     if mode == "--check":
-        for spec_id, content in rendered.items():
-            path = targets[spec_id]
+        for relative_path, content in rendered.items():
+            path = repo_root / relative_path
             if not path.exists() or path.read_text() != content:
                 print(f"stale generated document: {path.relative_to(repo_root)}", file=sys.stderr)
                 return 1

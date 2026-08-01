@@ -16,6 +16,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from docgen import load_specs as load_repo_specs
+
 SUPPORTED_SCHEMA_KEYS = {
     "$schema",
     "$id",
@@ -56,27 +58,11 @@ def load_json(path: Path) -> Any:
         fail(f"invalid JSON: {path}: {exc.msg}")
 
 
-def load_manifest(repo_root: Path) -> dict[str, Any]:
-    return load_json(repo_root / "specs/repo/manifest.json")
-
-
-def load_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str]]:
-    manifest = load_manifest(repo_root)
-    specs: dict[str, dict[str, Any]] = {"repo.manifest": manifest}
-    paths: dict[str, str] = {"repo.manifest": "specs/repo/manifest.json"}
-    for entry in manifest["authoritative_specs"]:
-        spec_id = entry["spec_id"]
-        if spec_id == "repo.manifest":
-            expect(entry["path"] == "specs/repo/manifest.json", "manifest completeness failed")
-            paths[spec_id] = "specs/repo/manifest.json"
-            continue
-        path = repo_root / entry["path"]
-        spec = load_json(path)
-        expect(spec["spec_id"] == spec_id, f"manifest completeness failed: {entry['path']} reports {spec['spec_id']} instead of {spec_id}")
-        expect(spec_id not in specs, f"manifest completeness failed: duplicate authoritative spec_id {spec_id}")
-        specs[spec_id] = spec
-        paths[spec_id] = entry["path"]
-    return manifest, specs, paths
+def load_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
+    try:
+        return load_repo_specs(repo_root)
+    except Exception as exc:
+        fail(str(exc))
 
 
 def expect(condition: bool, message: str) -> None:
@@ -255,12 +241,12 @@ def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], sour
         validate_instance(spec, schemas["repo.spec"], source_paths[spec_id], schemas["repo.spec"])
 
 
-def check_manifest_completeness(specs: dict[str, dict[str, Any]], source_paths: dict[str, str]) -> None:
+def check_manifest_completeness(specs: dict[str, dict[str, Any]], source_paths: dict[str, str], actual_paths: list[str]) -> None:
     manifest = specs["repo.manifest"]
     entries = manifest["authoritative_specs"]
-    ids = [entry["spec_id"] for entry in entries]
-    expect(len(ids) == len(set(ids)), "manifest completeness failed")
-    expect(set(ids) == set(specs), "manifest completeness failed")
+    manifest_paths = [entry["path"] for entry in entries]
+    expect(len(manifest_paths) == len(set(manifest_paths)), "manifest completeness failed")
+    expect(set(actual_paths) == set(manifest_paths), "manifest completeness failed")
     for entry in entries:
         expect(source_paths[entry["spec_id"]] == entry["path"], "manifest completeness failed")
 
@@ -314,11 +300,11 @@ def check_clean_failure_behavior(repo_root: Path) -> None:
 
 
 def validate_repo(repo_root: Path) -> None:
-    _manifest, specs, source_paths = load_specs(repo_root)
+    _manifest, specs, source_paths, actual_paths = load_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
     validate_repo_json_schema_conformance(specs, source_paths, schemas)
     print("ok: conformance to the repository's JSON Schemas")
-    check_manifest_completeness(specs, source_paths)
+    check_manifest_completeness(specs, source_paths, actual_paths)
     print("ok: manifest completeness")
     check_unique_spec_ids(specs)
     print("ok: unique specification IDs")
@@ -343,7 +329,7 @@ def expect_failure(description: str, func, fragment: str) -> None:
 
 def run_mutation_tests(repo_root: Path) -> None:
     schemas = load_repo_schemas(repo_root)
-    _manifest, specs, source_paths = load_specs(repo_root)
+    _manifest, specs, source_paths, actual_paths = load_specs(repo_root)
 
     expect_failure(
         "manifest root type",
@@ -451,6 +437,67 @@ def run_mutation_tests(repo_root: Path) -> None:
         "unresolved dependency",
         lambda: check_acyclic_dependencies(mutated_specs),
         "unresolved dependency",
+    )
+
+    import shutil
+    import tempfile
+
+    def clone_repo() -> Path:
+        temp_root = Path(tempfile.mkdtemp(prefix="repo-spec-validation-"))
+        shutil.copytree(
+            repo_root,
+            temp_root,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"),
+        )
+        return temp_root
+
+    def mutate_json(path: Path, transform) -> None:
+        data = json.loads(path.read_text())
+        path.write_text(json.dumps(transform(data), indent=2) + "\n")
+
+    temp_repo = clone_repo()
+    extra_spec = copy.deepcopy(specs["repo.validation"])
+    extra_spec["spec_id"] = "repo.unlisted"
+    (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
+    expect_failure(
+        "unlisted json file",
+        lambda: validate_repo(temp_repo),
+        "manifest completeness failed",
+    )
+
+    temp_repo = clone_repo()
+    (temp_repo / "specs/repo/validation.json").unlink()
+    expect_failure(
+        "missing manifest file",
+        lambda: validate_repo(temp_repo),
+        "manifest completeness failed",
+    )
+
+    temp_repo = clone_repo()
+    mutate_json(
+        temp_repo / "specs/repo/manifest.json",
+        lambda manifest: (
+            manifest["authoritative_specs"][-1].__setitem__("path", "specs/repo/repository-structure.json") or manifest
+        ),
+    )
+    expect_failure(
+        "duplicate manifest paths",
+        lambda: validate_repo(temp_repo),
+        "manifest completeness failed",
+    )
+
+    temp_repo = clone_repo()
+    mutate_json(
+        temp_repo / "specs/repo/validation.json",
+        lambda spec: (
+            spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/validation-missing.md"}) or spec
+        ),
+    )
+    expect_failure(
+        "missing derived artifact",
+        lambda: check_generated_document_freshness(temp_repo),
+        "generated-document freshness failed",
     )
 
     mutated_spec = copy.deepcopy(specs["repo.validation"])
