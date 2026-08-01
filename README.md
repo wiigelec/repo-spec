@@ -23,9 +23,11 @@ Authority chain:
 - [Derived repository structure](derived/specs/repo/repository-structure.md)
 - [Derived development workflow](derived/specs/repo/development-workflow.md)
 - [Derived validation](derived/specs/repo/validation.md)
+- [GitHub field policy checker](scripts/github-field-policy)
 - [Repo spec schema](schemas/repo-spec.schema.json)
 - [Repo manifest schema](schemas/repo-manifest.schema.json)
 - [Generate docs](scripts/generate-docs)
+- [GitHub field policy workflow](.github/workflows/github-field-policy.yml)
 
 ## Entry points
 
@@ -39,3 +41,4 @@ Authority chain:
 - `derived/specs/repo/` for non-normative projections
 - `scripts/generate-docs` for deterministic Markdown generation
 - `scripts/validate` for the validation entry point
+- `scripts/github-field-policy` for hosted GitHub field policy checks
