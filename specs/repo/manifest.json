@@ -1,8 +1,8 @@
 {
   "spec_id": "repo.manifest",
   "title": "Repository Spec Manifest",
-  "purpose": "Placeholder manifest for the repo-spec set during bootstrap.",
-  "status": "candidate",
+  "purpose": "Identifies the complete repository-spec JSON set.",
+  "status": "accepted",
   "schema_version": "1",
   "authoritative_specs": [
     {
@@ -41,12 +41,6 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
-    }
-  ],
-  "source_artifacts": [
-    {
-      "type": "bootstrap_markdown",
-      "path": "specs/repo/repo-specs-bootstrap.md"
     }
   ],
   "derived_artifacts": [

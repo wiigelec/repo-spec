@@ -1,13 +1,25 @@
 {
   "spec_id": "repo.validation",
   "title": "Validation",
-  "purpose": "Placeholder specification for bootstrap validation during repo-spec formation.",
-  "status": "candidate",
+  "purpose": "Defines repository validation during repo-spec formation.",
+  "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
       "id": "REPO-VAL-001",
       "text": "The repository shall provide one validation entry point."
+    },
+    {
+      "id": "REPO-VAL-002",
+      "text": "The validation entry point shall be shell-only and shall not rely on external dependencies."
+    },
+    {
+      "id": "REPO-VAL-003",
+      "text": "The validation entry point shall enforce exactly four bootstrap checks: required files, directory separation, relative links, and correct failure exit status."
+    },
+    {
+      "id": "REPO-VAL-004",
+      "text": "The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, future schema design, product-spec definitions, or source-code behavior."
     }
   ],
   "dependencies": [
@@ -33,12 +45,6 @@
     {
       "type": "artifact",
       "path": "scripts/validate"
-    }
-  ],
-  "source_artifacts": [
-    {
-      "type": "bootstrap_markdown",
-      "path": "specs/repo/validation.md"
     }
   ],
   "derived_artifacts": [

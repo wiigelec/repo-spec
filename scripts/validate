@@ -34,14 +34,15 @@ check_required_files() {
     docs/plans/00-bootstrap-plan.md \
     schemas/repo-spec.schema.json \
     schemas/repo-manifest.schema.json \
-    specs/repo/repo-specs-bootstrap.md \
-    specs/repo/dev-workflow-bootstrap.md \
-    specs/repo/validation.md \
     specs/repo/json-artifact-model.md \
     specs/repo/manifest.json \
     specs/repo/repository-structure.json \
     specs/repo/development-workflow.json \
     specs/repo/validation.json \
+    derived/specs/repo/manifest.md \
+    derived/specs/repo/repository-structure.md \
+    derived/specs/repo/development-workflow.md \
+    derived/specs/repo/validation.md \
     scripts/validate
   do
     check_required_file "$path" || return 1
@@ -68,10 +69,18 @@ check_directory_separation() {
     esac
   done
 
+  for path in "$repo_root"/derived/specs/repo/*; do
+    [[ -e $path ]] || continue
+    case ${path##*/} in
+      manifest.md|repository-structure.md|development-workflow.md|validation.md) ;;
+      *) unexpected+=("${path#$repo_root/}") ;;
+    esac
+  done
+
   for path in "$repo_root"/specs/repo/*; do
     [[ -e $path ]] || continue
     case ${path##*/} in
-      repo-specs-bootstrap.md|dev-workflow-bootstrap.md|validation.md|json-artifact-model.md|manifest.json|repository-structure.json|development-workflow.json|validation.json) ;;
+      json-artifact-model.md|manifest.json|repository-structure.json|development-workflow.json|validation.json) ;;
       *) unexpected+=("${path#$repo_root/}") ;;
     esac
   done
@@ -102,11 +111,15 @@ check_relative_links() {
   for link in \
     '[Product overview](docs/overview/PRODUCT-OVERVIEW.md)' \
     '[Bootstrap plan](docs/plans/00-bootstrap-plan.md)' \
-    '[Repository specs bootstrap](specs/repo/repo-specs-bootstrap.md)' \
-    '[Development workflow bootstrap](specs/repo/dev-workflow-bootstrap.md)' \
-    '[Validation bootstrap](specs/repo/validation.md)' \
     '[JSON artifact model](specs/repo/json-artifact-model.md)' \
     '[Repository manifest](specs/repo/manifest.json)' \
+    '[Repository structure](specs/repo/repository-structure.json)' \
+    '[Development workflow](specs/repo/development-workflow.json)' \
+    '[Validation](specs/repo/validation.json)' \
+    '[Derived repository manifest](derived/specs/repo/manifest.md)' \
+    '[Derived repository structure](derived/specs/repo/repository-structure.md)' \
+    '[Derived development workflow](derived/specs/repo/development-workflow.md)' \
+    '[Derived validation](derived/specs/repo/validation.md)' \
     '[Repo spec schema](schemas/repo-spec.schema.json)' \
     '[Repo manifest schema](schemas/repo-manifest.schema.json)'
   do
@@ -130,6 +143,41 @@ check_relative_links() {
   done
 }
 
+check_json_cutover_state() {
+  local path
+  for path in \
+    specs/repo/manifest.json \
+    specs/repo/repository-structure.json \
+    specs/repo/development-workflow.json \
+    specs/repo/validation.json
+  do
+    file_contains "$path" '"status": "accepted"' || {
+      printf 'cutover status check failed: %s\n' "$path" >&2
+      return 1
+    }
+    if file_contains "$path" '"source_artifacts"'; then
+      printf 'cutover source_artifacts check failed: %s\n' "$path" >&2
+      return 1
+    fi
+  done
+}
+
+check_bootstrap_markdown_removed() {
+  local path
+  for path in \
+    specs/repo/repo-specs-bootstrap.md \
+    specs/repo/dev-workflow-bootstrap.md \
+    specs/repo/validation.md
+  do
+    [[ -e $repo_root/$path ]] && {
+      printf 'bootstrap markdown still present: %s\n' "$path" >&2
+      return 1
+    }
+  done
+
+  return 0
+}
+
 check_failure_exit_status() {
   if check_required_file '__bootstrap__/missing-file' >/dev/null 2>&1; then
     printf 'failure exit status check failed\n' >&2
@@ -145,6 +193,12 @@ printf 'ok: directory separation\n'
 
 check_relative_links || fail 'relative link check failed'
 printf 'ok: relative links\n'
+
+check_json_cutover_state || fail 'cutover status/source_artifacts check failed'
+printf 'ok: cutover state\n'
+
+check_bootstrap_markdown_removed || fail 'bootstrap markdown removal check failed'
+printf 'ok: bootstrap markdown removed\n'
 
 check_failure_exit_status || fail 'failure exit status check failed'
 printf 'ok: failure exit status\n'

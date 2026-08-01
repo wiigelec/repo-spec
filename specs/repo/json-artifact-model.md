@@ -2,13 +2,13 @@
 
 ## Status
 
-Bootstrap discovery document for the normative JSON artifact model.
+Discovery document for the normative JSON artifact model.
 
-During bootstrap, files under `specs/repo/` are the authoritative bootstrap source. They cease being authoritative only through the documented JSON cutover.
+The JSON files under `specs/repo/` are the authoritative repo-spec sources.
 
 ## Purpose
 
-Define the closed JSON artifact model that will later become the normative specification format for repository specs.
+Define the closed JSON artifact model used by repository specs.
 
 The model favors one file per specification so changes remain bounded and dependency edges stay visible.
 
@@ -32,8 +32,8 @@ Repository manifests use the companion manifest schema and add an `authoritative
 ```json
 {
   "spec_id": "repo.validation",
-  "title": "Validation Bootstrap",
-  "purpose": "Defines bootstrap validation for repo specs.",
+  "title": "Validation",
+  "purpose": "Defines validation for repo specs.",
   "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
@@ -55,12 +55,6 @@ Repository manifests use the companion manifest schema and add an `authoritative
     {
       "type": "artifact",
       "path": "docs/overview/PRODUCT-OVERVIEW.md"
-    }
-  ],
-  "source_artifacts": [
-    {
-      "type": "bootstrap_markdown",
-      "path": "specs/repo/validation.md"
     }
   ],
   "derived_artifacts": [

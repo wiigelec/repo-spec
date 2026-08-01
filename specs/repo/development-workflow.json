@@ -1,8 +1,8 @@
 {
   "spec_id": "repo.development-workflow",
   "title": "Development Workflow",
-  "purpose": "Placeholder specification for the governed development process during bootstrap.",
-  "status": "candidate",
+  "purpose": "Defines the governed development process for bounded repository changes.",
+  "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
@@ -30,12 +30,6 @@
     {
       "type": "artifact",
       "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
-    }
-  ],
-  "source_artifacts": [
-    {
-      "type": "bootstrap_markdown",
-      "path": "specs/repo/dev-workflow-bootstrap.md"
     }
   ],
   "derived_artifacts": [
