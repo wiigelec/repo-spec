@@ -38,22 +38,18 @@
     },
     "normative_requirements": {
       "type": "array",
-      "uniqueItemProperties": ["id"],
       "items": { "$ref": "#/$defs/requirement" }
     },
     "dependencies": {
       "type": "array",
-      "uniqueItemProperties": ["spec_id"],
       "items": { "$ref": "#/$defs/dependency" }
     },
     "references": {
       "type": "array",
-      "uniqueItemProperties": ["type", "spec_id", "path"],
       "items": { "$ref": "#/$defs/reference" }
     },
     "derived_artifacts": {
       "type": "array",
-      "uniqueItemProperties": ["path"],
       "items": { "$ref": "#/$defs/derivedArtifact" }
     }
   },

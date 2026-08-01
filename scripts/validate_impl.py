@@ -44,7 +44,6 @@ SUPPORTED_SCHEMA_KEYS = {
     "const",
     "minLength",
     "pattern",
-    "uniqueItemProperties",
 }
 
 SUPPORTED_SCHEMA_TYPES = {"object", "array", "string"}
@@ -146,11 +145,6 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
         expect(isinstance(schema["pattern"], str), f"schema loading failed: {schema_location(source, path)} pattern must be a string")
         re.compile(schema["pattern"])
 
-    if "uniqueItemProperties" in schema:
-        expect(isinstance(schema["uniqueItemProperties"], list), f"schema loading failed: {schema_location(source, path)} uniqueItemProperties must be an array")
-        for index, item in enumerate(schema["uniqueItemProperties"]):
-            expect(isinstance(item, str), f"schema loading failed: {schema_location(source, path)} uniqueItemProperties[{index}] must be a string")
-
     if "$ref" in schema:
         expect(isinstance(schema["$ref"], str), f"schema loading failed: {schema_location(source, path)} $ref must be a string")
         resolve_ref(root_schema, schema["$ref"], source)
@@ -234,16 +228,6 @@ def validate_instance(
                 matches += 1
         expect(matches == 1, f"repository JSON Schema conformance failed: {instance_location(source, path)} oneOf mismatch")
 
-    if "uniqueItemProperties" in schema:
-        expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
-        keys = schema["uniqueItemProperties"]
-        seen: set[tuple[Any, ...]] = set()
-        for index, item in enumerate(instance):
-            expect(isinstance(item, dict), f"repository JSON Schema conformance failed: {instance_location(source, f'{path}[{index}]' if path else f'[{index}]')} must be an object")
-            identity = tuple(item.get(key) for key in keys)
-            expect(identity not in seen, f"repository JSON Schema conformance failed: {instance_location(source, path)} duplicate item properties {', '.join(keys)}")
-            seen.add(identity)
-
     if "if" in schema:
         branch = schema.get("then") if schema_matches(instance, schema["if"], source, root_schema, path, ref_stack) else schema.get("else")
         if branch is not None:
@@ -299,6 +283,15 @@ def check_unique_derived_artifact_paths(specs: dict[str, dict[str, Any]]) -> Non
     expect(len(paths) == len(set(paths)), "duplicate derived artifact paths failed")
 
 
+def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str, field: str, keys: list[str]) -> None:
+    seen: set[tuple[Any, ...]] = set()
+    for index, item in enumerate(specs[spec_id][field]):
+        expect(isinstance(item, dict), f"{field} failed: {spec_id}[{index}] must be an object")
+        identity = tuple(item.get(key) for key in keys)
+        expect(identity not in seen, f"{field} failed: duplicate item properties {', '.join(keys)}")
+        seen.add(identity)
+
+
 def check_resolvable_references(repo_root: Path, specs: dict[str, dict[str, Any]]) -> None:
     accepted = {spec["spec_id"] for spec in specs.values() if spec["status"] == "accepted"}
     for spec_id, spec in specs.items():
@@ -351,6 +344,16 @@ def validate_repo(repo_root: Path) -> None:
     print("ok: manifest completeness")
     check_unique_spec_ids(specs)
     print("ok: unique specification IDs")
+    check_unique_item_properties(specs, "repo.manifest", "authoritative_specs", ["spec_id"])
+    print("ok: unique manifest authoritative spec IDs")
+    for spec_id in specs:
+        if spec_id == "repo.manifest":
+            continue
+        check_unique_item_properties(specs, spec_id, "normative_requirements", ["id"])
+        check_unique_item_properties(specs, spec_id, "dependencies", ["spec_id"])
+        check_unique_item_properties(specs, spec_id, "references", ["type", "spec_id", "path"])
+        check_unique_item_properties(specs, spec_id, "derived_artifacts", ["path"])
+    print("ok: unique item properties")
     check_unique_derived_artifact_paths(specs)
     print("ok: unique derived artifact paths")
     check_resolvable_references(repo_root, specs)
@@ -582,35 +585,55 @@ def run_mutation_tests(repo_root: Path) -> None:
             "oneOf mismatch",
         )
 
-        mutated_spec = copy.deepcopy(specs["repo.validation"])
-        mutated_spec["normative_requirements"][1]["id"] = mutated_spec["normative_requirements"][0]["id"]
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["normative_requirements"].__setitem__(1, copy.deepcopy(spec["normative_requirements"][0])) or spec
+            ),
+        )
         expect_failure(
             "requirement id uniqueness",
-            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            lambda: validate_repo(temp_repo),
             "duplicate item properties id",
         )
 
-        mutated_spec = copy.deepcopy(specs["repo.validation"])
-        mutated_spec["dependencies"].append(copy.deepcopy(mutated_spec["dependencies"][0]))
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["dependencies"].append(copy.deepcopy(spec["dependencies"][0])) or spec
+            ),
+        )
         expect_failure(
             "dependency uniqueness",
-            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            lambda: validate_repo(temp_repo),
             "duplicate item properties spec_id",
         )
 
-        mutated_spec = copy.deepcopy(specs["repo.validation"])
-        mutated_spec["references"].append(copy.deepcopy(mutated_spec["references"][0]))
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["references"].append(copy.deepcopy(spec["references"][0])) or spec
+            ),
+        )
         expect_failure(
             "reference uniqueness",
-            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            lambda: validate_repo(temp_repo),
             "duplicate item properties type, spec_id, path",
         )
 
-        mutated_spec = copy.deepcopy(specs["repo.validation"])
-        mutated_spec["derived_artifacts"].append(copy.deepcopy(mutated_spec["derived_artifacts"][0]))
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["derived_artifacts"].append(copy.deepcopy(spec["derived_artifacts"][0])) or spec
+            ),
+        )
         expect_failure(
             "derived artifact uniqueness",
-            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            lambda: validate_repo(temp_repo),
             "duplicate item properties path",
         )
 
