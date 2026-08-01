@@ -63,14 +63,6 @@
     {
       "type": "markdown",
       "path": "derived/specs/repo/manifest.md"
-    },
-    {
-      "type": "markdown",
-      "path": "derived/specs/repo/governing-issue.md"
-    },
-    {
-      "type": "markdown",
-      "path": "derived/specs/repo/review-proposal.md"
     }
   ]
 }

@@ -141,13 +141,15 @@ def render_validation(spec: dict) -> str:
 
 
 def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
-    paths: set[str] = set()
+    paths: list[str] = []
     for spec in specs.values():
         for artifact in spec.get("derived_artifacts", []):
             if artifact.get("type") != "markdown":
                 raise ValueError(f"unsupported derived artifact type: {artifact.get('type')}")
-            paths.add(artifact["path"])
-    return paths
+            paths.append(artifact["path"])
+    if len(paths) != len(set(paths)):
+        raise ValueError("duplicate derived artifact paths failed")
+    return set(paths)
 
 
 def render_all(repo_root: Path) -> dict[str, str]:

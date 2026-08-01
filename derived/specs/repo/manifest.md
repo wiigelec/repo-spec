@@ -46,6 +46,4 @@ Identifies the complete repository-spec JSON set.
 ## Derived artifacts
 
 - `markdown`: `derived/specs/repo/manifest.md`
-- `markdown`: `derived/specs/repo/governing-issue.md`
-- `markdown`: `derived/specs/repo/review-proposal.md`
 
