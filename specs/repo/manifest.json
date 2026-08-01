@@ -4,6 +4,24 @@
   "purpose": "Placeholder manifest for the repo-spec set during bootstrap.",
   "status": "candidate",
   "schema_version": "1",
+  "authoritative_specs": [
+    {
+      "spec_id": "repo.manifest",
+      "path": "specs/repo/manifest.json"
+    },
+    {
+      "spec_id": "repo.repository-structure",
+      "path": "specs/repo/repository-structure.json"
+    },
+    {
+      "spec_id": "repo.development-workflow",
+      "path": "specs/repo/development-workflow.json"
+    },
+    {
+      "spec_id": "repo.validation",
+      "path": "specs/repo/validation.json"
+    }
+  ],
   "normative_requirements": [
     {
       "id": "REPO-MAN-001",

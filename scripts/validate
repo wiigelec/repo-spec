@@ -32,6 +32,8 @@ check_required_files() {
     README.md \
     docs/overview/PRODUCT-OVERVIEW.md \
     docs/plans/00-bootstrap-plan.md \
+    schemas/repo-spec.schema.json \
+    schemas/repo-manifest.schema.json \
     specs/repo/repo-specs-bootstrap.md \
     specs/repo/dev-workflow-bootstrap.md \
     specs/repo/validation.md \
@@ -54,6 +56,14 @@ check_directory_separation() {
     [[ -e $path ]] || continue
     case ${path##*/} in
       overview|plans) ;;
+      *) unexpected+=("${path#$repo_root/}") ;;
+    esac
+  done
+
+  for path in "$repo_root"/schemas/*; do
+    [[ -e $path ]] || continue
+    case ${path##*/} in
+      repo-spec.schema.json|repo-manifest.schema.json) ;;
       *) unexpected+=("${path#$repo_root/}") ;;
     esac
   done
@@ -96,7 +106,9 @@ check_relative_links() {
     '[Development workflow bootstrap](specs/repo/dev-workflow-bootstrap.md)' \
     '[Validation bootstrap](specs/repo/validation.md)' \
     '[JSON artifact model](specs/repo/json-artifact-model.md)' \
-    '[Repository manifest](specs/repo/manifest.json)'
+    '[Repository manifest](specs/repo/manifest.json)' \
+    '[Repo spec schema](schemas/repo-spec.schema.json)' \
+    '[Repo manifest schema](schemas/repo-manifest.schema.json)'
   do
     file_contains README.md "$link" || {
       printf 'relative link check failed: README.md\n' >&2

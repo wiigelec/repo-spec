@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/repo-spec.schema.json",
+  "title": "Repository Spec Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "normative_requirements",
+    "dependencies",
+    "references",
+    "source_artifacts",
+    "derived_artifacts"
+  ],
+  "properties": {
+    "spec_id": {
+      "type": "string",
+      "pattern": "^(repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "accepted", "superseded", "retired"]
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1"
+    },
+    "normative_requirements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/dependency" }
+    },
+    "references": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reference" }
+    },
+    "source_artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceArtifact" }
+    },
+    "derived_artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/derivedArtifact" }
+    }
+  },
+  "$defs": {
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spec_id"],
+      "properties": {
+        "spec_id": {
+          "type": "string",
+          "pattern": "^(repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["specification", "artifact"]
+        },
+        "spec_id": {
+          "type": "string",
+          "pattern": "^(repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "specification" } } },
+          "then": { "required": ["spec_id"] },
+          "else": { "required": ["path"] }
+        }
+      ]
+    },
+    "sourceArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "path"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["bootstrap_markdown"]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "derivedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "path"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["markdown"]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
