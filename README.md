@@ -1,12 +1,15 @@
 # repo-spec
 
-Repository bootstrap and specification workspace.
+Repository specification workspace.
+
+Authority chain:
+
+`README.md` -> `specs/repo/*.json` -> `derived/specs/repo/*.md`
 
 ## Start here
 
 - [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
 - [Bootstrap plan](docs/plans/00-bootstrap-plan.md)
-- [JSON artifact model](specs/repo/json-artifact-model.md)
 - [Repository manifest](specs/repo/manifest.json)
 - [Repository structure](specs/repo/repository-structure.json)
 - [Development workflow](specs/repo/development-workflow.json)
@@ -24,7 +27,6 @@ Repository bootstrap and specification workspace.
 - `docs/overview/PRODUCT-OVERVIEW.md` for high-level direction
 - `docs/plans/00-bootstrap-plan.md` for bootstrap sequencing
 - `specs/repo/` for repository-spec source JSON
-- `specs/repo/json-artifact-model.md` for the JSON artifact model
 - `schemas/` for JSON Schema definitions
 - `derived/specs/repo/` for non-normative projections
 - `scripts/generate-docs` for deterministic Markdown generation
