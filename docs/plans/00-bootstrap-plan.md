@@ -6,6 +6,10 @@ Initial planning document for the repo-spec bootstrap process.
 
 This plan is non-normative. It describes the staged path from human-authored Markdown to normalized normative JSON and then to derived Markdown documentation in a separate directory tree.
 
+Temporary bootstrap authority: files under `specs/repo/` are the authoritative bootstrap source until the documented JSON cutover.
+
+Bootstrap work follows the normal governed workflow: it begins from a governing issue and an isolated working branch.
+
 ## Purpose
 
 Establish the bootstrap process that will make the separation between `repo specs` and `product specs` unmistakable to a fresh AI session and to human maintainers.
@@ -74,7 +78,7 @@ The derived docs should:
 
 ### Phase 5: Validation gates
 
-Define the checks that confirm the bootstrap has stabilized enough for the authority transition.
+Define exactly four checks: required files, directory separation, relative links, and correct failure exit status.
 
 The transition condition is user-triggered once a fresh AI session can reliably infer:
 
@@ -82,6 +86,8 @@ The transition condition is user-triggered once a fresh AI session can reliably 
 - the intended outcomes;
 - the repo/product separation;
 - the bootstrap-to-normative switch.
+
+No new bootstrap check may be added without an accepted specification change.
 
 ## Open decisions
 

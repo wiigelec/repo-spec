@@ -4,37 +4,41 @@
 
 Bootstrap validation plan for `specs/repo`.
 
-This document defines what validation is meant to prove during the Markdown bootstrap phase.
+During bootstrap, files under `specs/repo/` are the authoritative bootstrap source. They cease being authoritative only through the documented JSON cutover.
+
+One entry point: `scripts/validate`.
+
+This document is a closed bootstrap specification. No new check may be added without an accepted specification change.
+
+Bootstrap-only checks must be deleted or replaced at JSON cutover.
 
 ## Purpose
 
-Validation during bootstrap exists to answer one question:
+Validation during bootstrap exists to confirm that a fresh chatbot session can discover the repository-spec foundation, the workflow shape, and the boundary between framework material and future product material.
 
-Can a fresh chatbot session correctly discover the repository-spec foundation, the workflow shape, and the intended boundary between framework material and future product material?
+## Closed list
 
-## Validation goals
+Exactly four checks exist during bootstrap.
 
-- confirm the three bootstrap docs exist;
-- confirm they describe the repo-spec tree at a high level;
-- confirm they describe the development process at a high level;
-- confirm they define validation as a bootstrap concern;
-- confirm they do not introduce product-specific semantics.
+| Check | Reason | Pass condition | Failure message |
+| --- | --- | --- | --- |
+| Required files | Confirms the bootstrap source set exists. | `README.md`, `docs/overview/PRODUCT-OVERVIEW.md`, `docs/plans/00-bootstrap-plan.md`, `specs/repo/repo-specs-bootstrap.md`, `specs/repo/dev-workflow-bootstrap.md`, `specs/repo/validation.md`, and `scripts/validate` all exist. | `missing required bootstrap file: <path>` |
+| Directory separation | Confirms bootstrap source, planning docs, and overview docs stay in separate trees. | `docs/` contains only `overview/` and `plans/`; `specs/repo/` contains only the three bootstrap docs. | `bootstrap directory separation violated` |
+| Relative links | Confirms entry docs route by repository-relative paths. | `README.md` contains the five bootstrap navigation links to `docs/overview/PRODUCT-OVERVIEW.md`, `docs/plans/00-bootstrap-plan.md`, `specs/repo/repo-specs-bootstrap.md`, `specs/repo/dev-workflow-bootstrap.md`, and `specs/repo/validation.md`; `docs/overview/PRODUCT-OVERVIEW.md` contains the five part links to its local `product-overview` files. | `relative link check failed: <file>` |
+| Correct failure exit status | Confirms the validator fails when a required file is missing. | The internal file-check helper returns a non-zero status for a guaranteed-missing sentinel path. | `failure exit status check failed` |
 
 ## Validation boundaries
 
-This phase does not yet require:
+The validator does not check:
 
-- JSON schemas;
-- generated docs;
-- machine-enforced conformance rules;
+- formatting;
+- prose quality;
+- Git workflow;
+- hosting-platform behavior;
+- future schema design;
 - product-spec definitions;
-- source-code validation.
+- source-code behavior.
 
 ## Bootstrap success signal
 
-Bootstrap validation succeeds when the docs are sufficient for a fresh chatbot to infer:
-
-- what `specs/repo` is for;
-- how bootstrap work should proceed;
-- where the boundaries are;
-- why the tree exists before normalized JSON takes over.
+Bootstrap validation succeeds when all four checks pass and the repository can still be understood as bootstrap-only Markdown source plus instructional docs.

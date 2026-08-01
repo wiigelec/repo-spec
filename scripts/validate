@@ -1,3 +1,133 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# entry point script for repository validation
+set -u
+
+script_path=${BASH_SOURCE[0]}
+case $script_path in
+  */*) script_dir=${script_path%/*} ;;
+  *) script_dir=. ;;
+esac
+repo_root=$(cd -- "$script_dir/.." && pwd)
+
+fail() {
+  printf '%s\n' "$1" >&2
+  exit 1
+}
+
+has_file() {
+  [[ -e $repo_root/$1 ]]
+}
+
+check_required_file() {
+  local path=$1
+  has_file "$path" || {
+    printf 'missing required bootstrap file: %s\n' "$path" >&2
+    return 1
+  }
+}
+
+check_required_files() {
+  local path
+  for path in \
+    README.md \
+    docs/overview/PRODUCT-OVERVIEW.md \
+    docs/plans/00-bootstrap-plan.md \
+    specs/repo/repo-specs-bootstrap.md \
+    specs/repo/dev-workflow-bootstrap.md \
+    specs/repo/validation.md \
+    scripts/validate
+  do
+    check_required_file "$path" || return 1
+  done
+}
+
+check_directory_separation() {
+  local path
+  local -a unexpected=()
+
+  for path in "$repo_root"/docs/*; do
+    [[ -e $path ]] || continue
+    case ${path##*/} in
+      overview|plans) ;;
+      *) unexpected+=("${path#$repo_root/}") ;;
+    esac
+  done
+
+  for path in "$repo_root"/specs/repo/*; do
+    [[ -e $path ]] || continue
+    case ${path##*/} in
+      repo-specs-bootstrap.md|dev-workflow-bootstrap.md|validation.md) ;;
+      *) unexpected+=("${path#$repo_root/}") ;;
+    esac
+  done
+
+  [[ ${#unexpected[@]} -eq 0 ]] || {
+    printf 'bootstrap directory separation violated\n' >&2
+    return 1
+  }
+}
+
+file_contains() {
+  local file=$1
+  local needle=$2
+  local line
+
+  while IFS= read -r line || [[ -n $line ]]; do
+    case $line in
+      *"$needle"*) return 0 ;;
+    esac
+  done < "$repo_root/$file"
+
+  return 1
+}
+
+check_relative_links() {
+  local link
+
+  for link in \
+    '[Product overview](docs/overview/PRODUCT-OVERVIEW.md)' \
+    '[Bootstrap plan](docs/plans/00-bootstrap-plan.md)' \
+    '[Repository specs bootstrap](specs/repo/repo-specs-bootstrap.md)' \
+    '[Development workflow bootstrap](specs/repo/dev-workflow-bootstrap.md)' \
+    '[Validation bootstrap](specs/repo/validation.md)'
+  do
+    file_contains README.md "$link" || {
+      printf 'relative link check failed: README.md\n' >&2
+      return 1
+    }
+  done
+
+  for link in \
+    '[1. Product direction](./product-overview/01-product-direction.md)' \
+    '[2. Development and specifications](./product-overview/02-development-and-specifications.md)' \
+    '[3. Git and change workflow](./product-overview/03-git-and-change-workflow.md)' \
+    '[4. Human and AI continuity](./product-overview/04-human-ai-continuity.md)' \
+    '[5. Governance and evolution](./product-overview/05-governance-and-evolution.md)'
+  do
+    file_contains docs/overview/PRODUCT-OVERVIEW.md "$link" || {
+      printf 'relative link check failed: docs/overview/PRODUCT-OVERVIEW.md\n' >&2
+      return 1
+    }
+  done
+}
+
+check_failure_exit_status() {
+  if check_required_file '__bootstrap__/missing-file' >/dev/null 2>&1; then
+    printf 'failure exit status check failed\n' >&2
+    return 1
+  fi
+}
+
+check_required_files || fail 'required files check failed'
+printf 'ok: required files\n'
+
+check_directory_separation || fail 'bootstrap directory separation violated'
+printf 'ok: directory separation\n'
+
+check_relative_links || fail 'relative link check failed'
+printf 'ok: relative links\n'
+
+check_failure_exit_status || fail 'failure exit status check failed'
+printf 'ok: failure exit status\n'
+
+exit 0
