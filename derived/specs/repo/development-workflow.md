@@ -16,10 +16,17 @@ Do not edit directly.
 `scripts/generate-docs`
 ## Purpose
 
-The repository shall require a governing issue, an isolated branch, validation, push, and PR for bounded changes.
+Defines the governed development process for bounded repository changes.
+
+## Normative requirements
+
+- REPO-WF-001: The repository shall require a governing issue, an isolated branch, validation, push, and PR for bounded changes.
+- REPO-WF-002: Before any repository mutation, the chatbot shall initialize by reading README.md, discovering the authoritative manifest, reading the accepted development-workflow specification, identifying and reading the governing issue, loading only relevant overview, plan, specification, and predecessor records, inspecting the actual Git branch, accepted base, working tree, and remote state, reporting the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and unresolved authority conflicts, stopping when authority is missing or conflicting, and withholding mutation until initialization is complete.
 
 ## Reference context
 
+- `AGENTS.md`
 - `repo.manifest`
 - `repo.repository-structure`
 - `docs/overview/product-overview/03-git-and-change-workflow.md`
+- `docs/overview/product-overview/04-human-ai-continuity.md`
