@@ -2,6 +2,8 @@
 
 Repository specification workspace.
 
+Supported runtime: Python 3.10+
+
 ## Start here
 
 - [Repository chatbot initialization](AGENTS.md)
