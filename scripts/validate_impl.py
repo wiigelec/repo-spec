@@ -25,6 +25,7 @@ from docgen import (
     render_review_proposal,
     render_review_template,
     render_validation,
+    resolve_repo_path as resolve_repo_path_impl,
 )
 
 SUPPORTED_SCHEMA_KEYS = {
@@ -57,6 +58,13 @@ class ValidationFailure(Exception):
 
 def fail(message: str) -> None:
     raise ValidationFailure(message)
+
+
+def resolve_repo_path(repo_root: Path, value: str) -> Path:
+    try:
+        return resolve_repo_path_impl(repo_root, value)
+    except ValueError as exc:
+        fail(str(exc))
 
 
 def load_json(path: Path) -> Any:
@@ -304,7 +312,7 @@ def check_resolvable_references(repo_root: Path, specs: dict[str, dict[str, Any]
             if ref["type"] == "specification":
                 expect(ref["spec_id"] in accepted, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
             else:
-                expect((repo_root / ref["path"]).exists(), f"resolvable references failed: missing artifact {ref['path']}")
+                expect(resolve_repo_path(repo_root, ref["path"]).exists(), f"resolvable references failed: missing artifact {ref['path']}")
 
 
 def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
@@ -607,6 +615,12 @@ def run_mutation_tests(repo_root: Path) -> None:
             "orphaned derived markdown",
         )
 
+        expect_failure(
+            "repository-relative path helper",
+            lambda: resolve_repo_path(temp_repo, "../../etc/passwd"),
+            "invalid repository-relative path",
+        )
+
         temp_repo = clone_repo()
         mutate_json(
             temp_repo / "specs/repo/manifest.json",
@@ -634,6 +648,32 @@ def run_mutation_tests(repo_root: Path) -> None:
             "review proposal renderer selection",
             lambda: validate_repo(temp_repo),
             "generated-document freshness failed",
+        )
+
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["references"][-1].__setitem__("path", "../../etc/passwd") or spec
+            ),
+        )
+        expect_failure(
+            "artifact reference path escape",
+            lambda: validate_repo(temp_repo),
+            "oneOf mismatch",
+        )
+
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["derived_artifacts"][0].__setitem__("path", "../../etc/passwd") or spec
+            ),
+        )
+        expect_failure(
+            "derived artifact path escape",
+            lambda: validate_repo(temp_repo),
+            "pattern mismatch",
         )
 
         mutated_spec = copy.deepcopy(specs["repo.validation"])

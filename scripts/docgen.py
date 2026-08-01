@@ -15,6 +15,22 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
+def resolve_repo_path(repo_root: Path, value: str) -> Path:
+    if not value:
+        raise ValueError(f"invalid repository-relative path: {value}")
+    if value.startswith("/") or value.startswith("./") or "/./" in value or value.endswith("/.") or "\\" in value or "//" in value:
+        raise ValueError(f"invalid repository-relative path: {value}")
+    relative = Path(value)
+    if any(part in {".", ".."} for part in relative.parts):
+        raise ValueError(f"invalid repository-relative path: {value}")
+    resolved = (repo_root / relative).resolve()
+    try:
+        resolved.relative_to(repo_root.resolve())
+    except ValueError as exc:
+        raise ValueError(f"invalid repository-relative path: {value}") from exc
+    return resolved
+
+
 def load_manifest(repo_root: Path) -> dict:
     return load_json(repo_root / "specs/repo/manifest.json")
 
@@ -289,6 +305,7 @@ def render_all(repo_root: Path) -> dict[str, str]:
     for spec_id, spec in specs.items():
         source_path = paths[spec_id]
         for artifact in spec.get("derived_artifacts", []):
+            resolve_repo_path(repo_root, artifact["path"])
             renderer_id = artifact.get("renderer")
             if renderer_id is None:
                 if artifact["type"] != "markdown":
@@ -308,7 +325,7 @@ def render_all(repo_root: Path) -> dict[str, str]:
 def write_all(repo_root: Path) -> None:
     rendered = render_all(repo_root)
     for relative_path, content in rendered.items():
-        path = repo_root / relative_path
+        path = resolve_repo_path(repo_root, relative_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
 
@@ -322,7 +339,7 @@ def main(argv: list[str]) -> int:
     if mode == "--write":
         check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=False)
         for relative_path, content in rendered.items():
-            path = repo_root / relative_path
+            path = resolve_repo_path(repo_root, relative_path)
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
         return 0
@@ -330,7 +347,7 @@ def main(argv: list[str]) -> int:
     if mode == "--check":
         check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
         for relative_path, content in rendered.items():
-            path = repo_root / relative_path
+            path = resolve_repo_path(repo_root, relative_path)
             if not path.exists() or path.read_text() != content:
                 print(f"stale generated document: {path.relative_to(repo_root)}", file=sys.stderr)
                 return 1
