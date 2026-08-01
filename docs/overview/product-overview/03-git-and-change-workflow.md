@@ -61,10 +61,10 @@ Platform-specific behavior must remain distinguishable from Git-generic reposito
 
 A normal bounded change should use a Git-compatible workflow:
 
-1. Establish a governing issue.
-2. Record detailed scope and an ordered patch plan.
-3. Identify the accepted default-branch base.
-4. Create an isolated working branch.
+1. Inspect the request, repository records, open PRs, and hosting-platform state for an existing governing issue.
+2. Reuse the governing issue if exactly one valid candidate exists; otherwise create one or stop for clarification.
+3. Record detailed scope and an ordered patch plan.
+4. Determine the intended branch from the governing issue, verify or create it from the recorded accepted base, and avoid duplicating or overwriting unrelated work.
 5. Apply one coherent patch at a time.
 6. Inspect the changed-file inventory and diff.
 7. Run focused and complete validation.
