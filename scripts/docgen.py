@@ -107,7 +107,11 @@ def render_references(spec: dict) -> list[str]:
     items = []
     for ref in spec.get("references", []):
         if ref["type"] == "specification":
-            items.append(f"- specification: `{ref['spec_id']}`")
+            kind = ref.get("kind", "normative")
+            if kind == "historical":
+                items.append(f"- historical specification: `{ref['spec_id']}`")
+            else:
+                items.append(f"- specification: `{ref['spec_id']}`")
         else:
             items.append(f"- artifact: `{ref['path']}`")
     return items
@@ -213,12 +217,28 @@ def render_authoritative_specs(spec: dict) -> list[str]:
     return [f"- `{entry['spec_id']}` -> `{entry['path']}`" for entry in spec.get("authoritative_specs", [])]
 
 
+def render_lineage(spec: dict) -> list[str]:
+    lines: list[str] = []
+    if spec.get("supersedes"):
+        lines.append("## Supersedes")
+        lines.append("")
+        lines.extend([f"- `{spec_id}`" for spec_id in spec["supersedes"]])
+        lines.append("")
+    if spec.get("superseded_by"):
+        lines.append("## Superseded By")
+        lines.append("")
+        lines.extend([f"- `{spec_id}`" for spec_id in spec["superseded_by"]])
+        lines.append("")
+    return lines
+
+
 def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False) -> str:
     lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
     if "issue_fields" in spec:
         lines.extend(render_field_sections(spec["issue_fields"]))
     elif "review_fields" in spec:
         lines.extend(render_field_sections(spec["review_fields"]))
+    lines.extend(render_lineage(spec))
     if include_authoritative_specs:
         lines.extend(render_list_section("Authoritative specs", render_authoritative_specs(spec)))
     lines.extend(render_list_section("Normative requirements", render_requirements(spec)))

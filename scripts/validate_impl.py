@@ -305,12 +305,39 @@ def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str,
         seen.add(identity)
 
 
+def check_relation_targets(specs: dict[str, dict[str, Any]], field: str, allowed_statuses: set[str], relation_label: str) -> None:
+    for spec_id, spec in specs.items():
+        for index, target_spec_id in enumerate(spec.get(field, [])):
+            expect(target_spec_id in specs, f"{relation_label} failed: unresolved spec {spec_id} -> {target_spec_id}")
+            expect(specs[target_spec_id]["status"] in allowed_statuses, f"{relation_label} failed: {spec_id} -> {target_spec_id}")
+            expect(target_spec_id != spec_id, f"{relation_label} failed: self reference {spec_id}")
+
+
+def check_dependency_targets(specs: dict[str, dict[str, Any]]) -> None:
+    for spec_id, spec in specs.items():
+        for index, dep in enumerate(spec.get("dependencies", [])):
+            target_spec_id = dep["spec_id"]
+            expect(target_spec_id in specs, f"dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
+            expect(specs[target_spec_id]["status"] in {"candidate", "accepted"}, f"dependencies failed: {spec_id} -> {target_spec_id}")
+
+
+def check_lineage_relations(specs: dict[str, dict[str, Any]]) -> None:
+    check_relation_targets(specs, "supersedes", {"candidate", "accepted", "superseded", "retired"}, "supersedes")
+    check_relation_targets(specs, "superseded_by", {"candidate", "accepted", "superseded", "retired"}, "superseded_by")
+
+
 def check_resolvable_references(repo_root: Path, specs: dict[str, dict[str, Any]]) -> None:
-    accepted = {spec["spec_id"] for spec in specs.values() if spec["status"] == "accepted"}
     for spec_id, spec in specs.items():
         for ref in spec["references"]:
             if ref["type"] == "specification":
-                expect(ref["spec_id"] in accepted, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+                target_spec = specs.get(ref["spec_id"])
+                expect(target_spec is not None, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+                kind = ref.get("kind", "normative")
+                if kind == "historical":
+                    expect(target_spec["status"] in {"superseded", "retired"}, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+                else:
+                    expect(kind == "normative", f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+                    expect(target_spec["status"] == "accepted", f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
             else:
                 expect(resolve_repo_path(repo_root, ref["path"]).exists(), f"resolvable references failed: missing artifact {ref['path']}")
 
@@ -373,13 +400,17 @@ def validate_repo(repo_root: Path) -> None:
             print(f"ok: unique review fields for {spec_id}")
         check_unique_item_properties(specs, spec_id, "normative_requirements", ["id"])
         check_unique_item_properties(specs, spec_id, "dependencies", ["spec_id"])
-        check_unique_item_properties(specs, spec_id, "references", ["type", "spec_id", "path"])
+        check_unique_item_properties(specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
         check_unique_item_properties(specs, spec_id, "derived_artifacts", ["path"])
     print("ok: unique item properties")
     check_unique_derived_artifact_paths(specs)
     print("ok: unique derived artifact paths")
+    check_dependency_targets(specs)
+    print("ok: dependency target lifecycle")
     check_resolvable_references(repo_root, specs)
     print("ok: resolvable references")
+    check_lineage_relations(specs)
+    print("ok: lineage relations")
     check_acyclic_dependencies(specs)
     print("ok: acyclic dependencies")
     check_generated_document_freshness(repo_root)
@@ -541,6 +572,25 @@ def run_mutation_tests(repo_root: Path) -> None:
             data = json.loads(path.read_text())
             path.write_text(json.dumps(transform(data), indent=2) + "\n")
 
+        def add_lifecycle_spec(temp_repo: Path, spec_id: str, status: str, supersedes: list[str] | None = None, superseded_by: list[str] | None = None) -> None:
+            mutate_json(
+                temp_repo / "specs/repo/manifest.json",
+                lambda manifest: (
+                    manifest["authoritative_specs"].append({"spec_id": spec_id, "path": f"specs/repo/{spec_id.removeprefix('repo.')}.json"}) or manifest
+                ),
+            )
+            lifecycle_spec = copy.deepcopy(specs["repo.validation"])
+            lifecycle_spec["spec_id"] = spec_id
+            lifecycle_spec["title"] = "Lifecycle Test"
+            lifecycle_spec["purpose"] = "Lifecycle test specification"
+            lifecycle_spec["status"] = status
+            lifecycle_spec["derived_artifacts"][0]["path"] = f"derived/specs/repo/{spec_id.removeprefix('repo.')}.md"
+            if supersedes is not None:
+                lifecycle_spec["supersedes"] = supersedes
+            if superseded_by is not None:
+                lifecycle_spec["superseded_by"] = superseded_by
+            (temp_repo / f"specs/repo/{spec_id.removeprefix('repo.')}.json").write_text(json.dumps(lifecycle_spec, indent=2) + "\n")
+
         temp_repo = clone_repo()
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.unlisted"
@@ -676,6 +726,69 @@ def run_mutation_tests(repo_root: Path) -> None:
             "pattern mismatch",
         )
 
+        temp_repo = clone_repo()
+        add_lifecycle_spec(temp_repo, "repo.lifecycle-candidate", "candidate")
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["dependencies"].append({"spec_id": "repo.lifecycle-candidate"}) or spec
+            ),
+        )
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
+
+        temp_repo = clone_repo()
+        add_lifecycle_spec(temp_repo, "repo.lifecycle-retired", "retired")
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["dependencies"].append({"spec_id": "repo.lifecycle-retired"}) or spec
+            ),
+        )
+        check_generated_document_write_behavior(temp_repo)
+        expect_failure(
+            "dependency to retired spec",
+            lambda: validate_repo(temp_repo),
+            "dependencies failed",
+        )
+
+        temp_repo = clone_repo()
+        add_lifecycle_spec(temp_repo, "repo.lifecycle-retired", "retired")
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["references"].append({"type": "specification", "kind": "historical", "spec_id": "repo.lifecycle-retired"}) or spec
+            ),
+        )
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
+
+        temp_repo = clone_repo()
+        add_lifecycle_spec(temp_repo, "repo.lifecycle-retired", "retired")
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["references"].append({"type": "specification", "spec_id": "repo.lifecycle-retired"}) or spec
+            ),
+        )
+        check_generated_document_write_behavior(temp_repo)
+        expect_failure(
+            "normative reference to retired spec",
+            lambda: validate_repo(temp_repo),
+            "resolvable references failed",
+        )
+
+        temp_repo = clone_repo()
+        add_lifecycle_spec(temp_repo, "repo.lifecycle-candidate", "candidate", supersedes=["repo.validation"])
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec.setdefault("superseded_by", []).append("repo.lifecycle-candidate") or spec
+            ),
+        )
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
+
         mutated_spec = copy.deepcopy(specs["repo.validation"])
         mutated_spec["references"][0]["path"] = "docs/extra.md"
         expect_failure(
@@ -746,7 +859,7 @@ def run_mutation_tests(repo_root: Path) -> None:
         expect_failure(
             "reference uniqueness",
             lambda: validate_repo(temp_repo),
-            "duplicate item properties type, spec_id, path",
+            "duplicate item properties type, spec_id, path, kind",
         )
 
         temp_repo = clone_repo()
