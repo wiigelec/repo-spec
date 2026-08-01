@@ -23,10 +23,6 @@ Provide a repository-generic canonical governing issue contract, a Markdown proj
 
 `main` at `1bdaa98`.
 
-## Intended branch
-
-`issue-governing-issue-standard`.
-
 ## In-scope behavior and paths
 
 - `specs/repo/governing-issue.json`

@@ -48,14 +48,6 @@ body:
       placeholder: main at <commit>
     validations:
       required: true
-  - type: input
-    id: intended_branch
-    attributes:
-      label: Intended branch
-      description: The isolated branch intended for the work.
-      placeholder: issue-<number>-short-slug
-    validations:
-      required: true
   - type: textarea
     id: in_scope_behavior_and_paths
     attributes:
