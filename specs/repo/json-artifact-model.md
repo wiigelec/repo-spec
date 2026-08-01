@@ -23,7 +23,7 @@ This document defines:
 - normative requirements;
 - dependencies and references;
 - schema version;
-- source and derived artifact relationships.
+- derived artifact relationships.
 
 Repository manifests use the companion manifest schema and add an `authoritative_specs` list that identifies the complete repository-spec JSON set.
 
@@ -115,15 +115,6 @@ Closed set:
 - Closed types:
   - `specification`
   - `artifact`
-
-### `source_artifacts`
-
-- Array of structured source artifact objects.
-- Each object has `type` and `path`.
-- Closed type:
-  - `bootstrap_markdown`
-- Before cutover, this array may preserve bootstrap provenance.
-- After cutover, this array should normally be empty or omitted.
 
 ### `derived_artifacts`
 

@@ -2,6 +2,11 @@
 
 set -u
 
+if [[ ${1-} == "--self-test-failure" ]]; then
+  printf '%s\n' "forced failure for behavior test" >&2
+  exit 1
+fi
+
 script_path=${BASH_SOURCE[0]}
 case $script_path in
   */*) script_dir=${script_path%/*} ;;
@@ -9,198 +14,334 @@ case $script_path in
 esac
 repo_root=$(cd -- "$script_dir/.." && pwd)
 
-fail() {
-  printf '%s\n' "$1" >&2
-  exit 1
+python3 - "$repo_root" <<'PY'
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+repo_root = Path(sys.argv[1])
+
+spec_paths = {
+    "repo.manifest": repo_root / "specs/repo/manifest.json",
+    "repo.repository-structure": repo_root / "specs/repo/repository-structure.json",
+    "repo.development-workflow": repo_root / "specs/repo/development-workflow.json",
+    "repo.validation": repo_root / "specs/repo/validation.json",
 }
 
-has_file() {
-  [[ -e $repo_root/$1 ]]
+manifest_schema_path = repo_root / "schemas/repo-manifest.schema.json"
+spec_schema_path = repo_root / "schemas/repo-spec.schema.json"
+
+derived_paths = {
+    "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
+    "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
+    "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
+    "repo.validation": repo_root / "derived/specs/repo/validation.md",
 }
 
-check_required_file() {
-  local path=$1
-  has_file "$path" || {
-    printf 'missing required bootstrap file: %s\n' "$path" >&2
-    return 1
-  }
+spec_id_pattern = re.compile(r"^(repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$")
+repo_json_properties = {
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "normative_requirements",
+    "dependencies",
+    "references",
+    "derived_artifacts",
 }
+manifest_properties = repo_json_properties | {"authoritative_specs"}
 
-check_required_files() {
-  local path
-  for path in \
-    README.md \
-    docs/overview/PRODUCT-OVERVIEW.md \
-    docs/plans/00-bootstrap-plan.md \
-    schemas/repo-spec.schema.json \
-    schemas/repo-manifest.schema.json \
-    specs/repo/json-artifact-model.md \
-    specs/repo/manifest.json \
-    specs/repo/repository-structure.json \
-    specs/repo/development-workflow.json \
-    specs/repo/validation.json \
-    derived/specs/repo/manifest.md \
-    derived/specs/repo/repository-structure.md \
-    derived/specs/repo/development-workflow.md \
-    derived/specs/repo/validation.md \
-    scripts/validate
-  do
-    check_required_file "$path" || return 1
-  done
-}
 
-check_directory_separation() {
-  local path
-  local -a unexpected=()
+def fail(message: str) -> None:
+    print(message, file=sys.stderr)
+    raise SystemExit(1)
 
-  for path in "$repo_root"/docs/*; do
-    [[ -e $path ]] || continue
-    case ${path##*/} in
-      overview|plans) ;;
-      *) unexpected+=("${path#$repo_root/}") ;;
-    esac
-  done
 
-  for path in "$repo_root"/schemas/*; do
-    [[ -e $path ]] || continue
-    case ${path##*/} in
-      repo-spec.schema.json|repo-manifest.schema.json) ;;
-      *) unexpected+=("${path#$repo_root/}") ;;
-    esac
-  done
+def load_json(path: Path):
+    try:
+        return json.loads(path.read_text())
+    except FileNotFoundError:
+        fail(f"missing required file: {path.relative_to(repo_root)}")
+    except json.JSONDecodeError as exc:
+        fail(f"invalid JSON: {path.relative_to(repo_root)}: {exc.msg}")
 
-  for path in "$repo_root"/derived/specs/repo/*; do
-    [[ -e $path ]] || continue
-    case ${path##*/} in
-      manifest.md|repository-structure.md|development-workflow.md|validation.md) ;;
-      *) unexpected+=("${path#$repo_root/}") ;;
-    esac
-  done
 
-  for path in "$repo_root"/specs/repo/*; do
-    [[ -e $path ]] || continue
-    case ${path##*/} in
-      json-artifact-model.md|manifest.json|repository-structure.json|development-workflow.json|validation.json) ;;
-      *) unexpected+=("${path#$repo_root/}") ;;
-    esac
-  done
+def expect(condition: bool, message: str) -> None:
+    if not condition:
+        fail(message)
 
-  [[ ${#unexpected[@]} -eq 0 ]] || {
-    printf 'bootstrap directory separation violated\n' >&2
-    return 1
-  }
-}
 
-file_contains() {
-  local file=$1
-  local needle=$2
-  local line
+def validate_string(value, path, field, *, pattern=None, enum=None, const=None, min_length=1):
+    expect(isinstance(value, str), f"schema conformance failed: {path} {field} must be a string")
+    expect(len(value) >= min_length, f"schema conformance failed: {path} {field} must be non-empty")
+    if pattern is not None:
+        expect(re.fullmatch(pattern, value) is not None, f"schema conformance failed: {path} {field} pattern mismatch")
+    if enum is not None:
+        expect(value in enum, f"schema conformance failed: {path} {field} not recognized")
+    if const is not None:
+        expect(value == const, f"schema conformance failed: {path} {field} must equal {const}")
 
-  while IFS= read -r line || [[ -n $line ]]; do
-    case $line in
-      *"$needle"*) return 0 ;;
-    esac
-  done < "$repo_root/$file"
 
-  return 1
-}
+def validate_requirement(req, path):
+    expect(isinstance(req, dict), f"schema conformance failed: {path} requirement must be an object")
+    expect(set(req) == {"id", "text"}, f"schema conformance failed: {path} requirement fields invalid")
+    validate_string(req["id"], path, "requirement.id")
+    validate_string(req["text"], path, "requirement.text")
 
-check_relative_links() {
-  local link
 
-  for link in \
-    '[Product overview](docs/overview/PRODUCT-OVERVIEW.md)' \
-    '[Bootstrap plan](docs/plans/00-bootstrap-plan.md)' \
-    '[JSON artifact model](specs/repo/json-artifact-model.md)' \
-    '[Repository manifest](specs/repo/manifest.json)' \
-    '[Repository structure](specs/repo/repository-structure.json)' \
-    '[Development workflow](specs/repo/development-workflow.json)' \
-    '[Validation](specs/repo/validation.json)' \
-    '[Derived repository manifest](derived/specs/repo/manifest.md)' \
-    '[Derived repository structure](derived/specs/repo/repository-structure.md)' \
-    '[Derived development workflow](derived/specs/repo/development-workflow.md)' \
-    '[Derived validation](derived/specs/repo/validation.md)' \
-    '[Repo spec schema](schemas/repo-spec.schema.json)' \
-    '[Repo manifest schema](schemas/repo-manifest.schema.json)'
-  do
-    file_contains README.md "$link" || {
-      printf 'relative link check failed: README.md\n' >&2
-      return 1
+def validate_dependency(dep, path):
+    expect(isinstance(dep, dict), f"schema conformance failed: {path} dependency must be an object")
+    expect(set(dep) == {"spec_id"}, f"schema conformance failed: {path} dependency fields invalid")
+    validate_string(dep["spec_id"], path, "dependency.spec_id", pattern=spec_id_pattern.pattern)
+
+
+def validate_reference(ref, path):
+    expect(isinstance(ref, dict), f"schema conformance failed: {path} reference must be an object")
+    expect(set(ref).issubset({"type", "spec_id", "path"}), f"schema conformance failed: {path} reference fields invalid")
+    validate_string(ref.get("type"), path, "reference.type", enum={"specification", "artifact"})
+    if ref["type"] == "specification":
+        expect(set(ref) == {"type", "spec_id"}, f"schema conformance failed: {path} specification reference fields invalid")
+        validate_string(ref["spec_id"], path, "reference.spec_id", pattern=spec_id_pattern.pattern)
+    else:
+        expect(set(ref) == {"type", "path"}, f"schema conformance failed: {path} artifact reference fields invalid")
+        validate_string(ref["path"], path, "reference.path")
+
+
+def validate_derived_artifact(obj, path):
+    expect(isinstance(obj, dict), f"schema conformance failed: {path} derived artifact must be an object")
+    expect(set(obj) == {"type", "path"}, f"schema conformance failed: {path} derived artifact fields invalid")
+    validate_string(obj["type"], path, "derived_artifact.type", enum={"markdown"})
+    validate_string(obj["path"], path, "derived_artifact.path")
+
+
+def validate_repo_spec(spec, path, *, allow_authoritative_specs=False):
+    expect(isinstance(spec, dict), f"schema conformance failed: {path} must be an object")
+    allowed = manifest_properties if allow_authoritative_specs else repo_json_properties
+    expect(set(spec) == allowed, f"schema conformance failed: {path} fields invalid")
+    validate_string(spec["spec_id"], path, "spec_id", pattern=spec_id_pattern.pattern)
+    validate_string(spec["title"], path, "title")
+    validate_string(spec["purpose"], path, "purpose")
+    validate_string(spec["status"], path, "status", enum={"candidate", "accepted", "superseded", "retired"})
+    validate_string(spec["schema_version"], path, "schema_version", const="1")
+    expect(isinstance(spec["normative_requirements"], list), f"schema conformance failed: {path} normative_requirements must be an array")
+    expect(isinstance(spec["dependencies"], list), f"schema conformance failed: {path} dependencies must be an array")
+    expect(isinstance(spec["references"], list), f"schema conformance failed: {path} references must be an array")
+    expect(isinstance(spec["derived_artifacts"], list), f"schema conformance failed: {path} derived_artifacts must be an array")
+    for req in spec["normative_requirements"]:
+        validate_requirement(req, path)
+    for dep in spec["dependencies"]:
+        validate_dependency(dep, path)
+    for ref in spec["references"]:
+        validate_reference(ref, path)
+    for art in spec["derived_artifacts"]:
+        validate_derived_artifact(art, path)
+    if allow_authoritative_specs:
+        expect(isinstance(spec["authoritative_specs"], list), f"schema conformance failed: {path} authoritative_specs must be an array")
+        for entry in spec["authoritative_specs"]:
+            expect(isinstance(entry, dict), f"schema conformance failed: {path} authoritative spec entry must be an object")
+            expect(set(entry) == {"spec_id", "path"}, f"schema conformance failed: {path} authoritative spec fields invalid")
+            validate_string(entry["spec_id"], path, "authoritative_specs.spec_id", pattern=spec_id_pattern.pattern)
+            validate_string(entry["path"], path, "authoritative_specs.path", pattern=r"^specs/repo/[a-z0-9.-]+\.json$")
+
+
+def check_json_schema_conformance():
+    manifest = load_json(spec_paths["repo.manifest"])
+    validate_repo_spec(manifest, "specs/repo/manifest.json", allow_authoritative_specs=True)
+    for spec_id, spec_path in spec_paths.items():
+        if spec_id == "repo.manifest":
+            continue
+        validate_repo_spec(load_json(spec_path), str(spec_path.relative_to(repo_root)))
+
+
+def check_manifest_completeness(specs):
+    manifest = specs["repo.manifest"]
+    entries = manifest["authoritative_specs"]
+    expected_paths = {
+        "repo.manifest": "specs/repo/manifest.json",
+        "repo.repository-structure": "specs/repo/repository-structure.json",
+        "repo.development-workflow": "specs/repo/development-workflow.json",
+        "repo.validation": "specs/repo/validation.json",
     }
-  done
+    actual = {entry["spec_id"]: entry["path"] for entry in entries}
+    expect(actual == expected_paths, "manifest completeness failed")
 
-  for link in \
-    '[1. Product direction](./product-overview/01-product-direction.md)' \
-    '[2. Development and specifications](./product-overview/02-development-and-specifications.md)' \
-    '[3. Git and change workflow](./product-overview/03-git-and-change-workflow.md)' \
-    '[4. Human and AI continuity](./product-overview/04-human-ai-continuity.md)' \
-    '[5. Governance and evolution](./product-overview/05-governance-and-evolution.md)'
-  do
-    file_contains docs/overview/PRODUCT-OVERVIEW.md "$link" || {
-      printf 'relative link check failed: docs/overview/PRODUCT-OVERVIEW.md\n' >&2
-      return 1
+
+def check_unique_spec_ids(specs):
+    ids = [spec["spec_id"] for spec in specs.values()]
+    expect(len(ids) == len(set(ids)), "unique specification IDs failed")
+
+
+def check_resolvable_references(specs):
+    accepted = {spec["spec_id"] for spec in specs.values() if spec["status"] == "accepted"}
+    for spec_id, spec in specs.items():
+        for ref in spec["references"]:
+            if ref["type"] == "specification":
+                expect(ref["spec_id"] in accepted, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+            else:
+                expect((repo_root / ref["path"]).exists(), f"resolvable references failed: missing artifact {ref['path']}")
+
+
+def check_acyclic_dependencies(specs):
+    graph = {spec["spec_id"]: [dep["spec_id"] for dep in spec["dependencies"]] for spec in specs.values()}
+    visiting = set()
+    visited = set()
+
+    def visit(node):
+        if node in visited:
+            return
+        if node in visiting:
+            fail("acyclic dependencies failed")
+        visiting.add(node)
+        for dep in graph.get(node, []):
+            visit(dep)
+        visiting.remove(node)
+        visited.add(node)
+
+    for node in graph:
+        visit(node)
+
+
+def render_manifest(manifest):
+    lines = [
+        "# Repository Spec Manifest",
+        "",
+        "## Status",
+        "",
+        "Derived Markdown projection of `specs/repo/manifest.json`.",
+        "",
+        "This document is non-normative.",
+        "",
+        "## Purpose",
+        "",
+        manifest["purpose"],
+        "",
+        "## Authoritative specs",
+        "",
+    ]
+    for entry in manifest["authoritative_specs"]:
+        lines.append(f"- `{entry['spec_id']}` -> `{entry['path']}`")
+    return "\n".join(lines) + "\n"
+
+
+def render_structure(spec):
+    return (
+        "# Repository Structure\n\n"
+        "## Status\n\n"
+        "Derived Markdown projection of `specs/repo/repository-structure.json`.\n\n"
+        "This document is non-normative.\n\n"
+        "## Purpose\n\n"
+        f"{spec['normative_requirements'][0]['text']}\n\n"
+        "## Reference context\n\n"
+        "- `repo.manifest`\n"
+        "- `docs/plans/00-bootstrap-plan.md`\n"
+    )
+
+
+def render_workflow(spec):
+    return (
+        "# Development Workflow\n\n"
+        "## Status\n\n"
+        "Derived Markdown projection of `specs/repo/development-workflow.json`.\n\n"
+        "This document is non-normative.\n\n"
+        "## Purpose\n\n"
+        f"{spec['normative_requirements'][0]['text']}\n\n"
+        "## Reference context\n\n"
+        "- `repo.manifest`\n"
+        "- `repo.repository-structure`\n"
+        "- `docs/overview/product-overview/03-git-and-change-workflow.md`\n"
+    )
+
+
+def render_validation(spec):
+    lines = [
+        "# Validation",
+        "",
+        "## Status",
+        "",
+        "Derived Markdown projection of `specs/repo/validation.json`.",
+        "",
+        "This document is non-normative.",
+        "",
+        "## Purpose",
+        "",
+        spec["normative_requirements"][0]["text"],
+        "",
+        "## Closed checks",
+        "",
+        "1. JSON Schema conformance",
+        "2. Manifest completeness",
+        "3. Unique specification IDs",
+        "4. Resolvable references",
+        "5. Acyclic dependencies",
+        "6. Generated-document freshness",
+        "7. Clean failure behavior",
+        "",
+        "## Boundaries",
+        "",
+        "- shell-only",
+        "- no external dependencies",
+        "- no formatting checks",
+        "- no prose checks",
+        "- no Git workflow checks",
+        "- no hosting-platform checks",
+        "- no product-spec checks",
+        "- no source-code checks",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def check_generated_document_freshness(specs):
+    expected = {
+        "repo.manifest": render_manifest(specs["repo.manifest"]),
+        "repo.repository-structure": render_structure(specs["repo.repository-structure"]),
+        "repo.development-workflow": render_workflow(specs["repo.development-workflow"]),
+        "repo.validation": render_validation(specs["repo.validation"]),
     }
-  done
-}
+    for spec_id, expected_text in expected.items():
+        actual_text = derived_paths[spec_id].read_text()
+        expect(actual_text == expected_text, f"generated-document freshness failed: {derived_paths[spec_id].relative_to(repo_root)}")
 
-check_json_cutover_state() {
-  local path
-  for path in \
-    specs/repo/manifest.json \
-    specs/repo/repository-structure.json \
-    specs/repo/development-workflow.json \
-    specs/repo/validation.json
-  do
-    file_contains "$path" '"status": "accepted"' || {
-      printf 'cutover status check failed: %s\n' "$path" >&2
-      return 1
-    }
-    if file_contains "$path" '"source_artifacts"'; then
-      printf 'cutover source_artifacts check failed: %s\n' "$path" >&2
-      return 1
-    fi
-  done
-}
 
-check_bootstrap_markdown_removed() {
-  local path
-  for path in \
-    specs/repo/repo-specs-bootstrap.md \
-    specs/repo/dev-workflow-bootstrap.md \
-    specs/repo/validation.md
-  do
-    [[ -e $repo_root/$path ]] && {
-      printf 'bootstrap markdown still present: %s\n' "$path" >&2
-      return 1
-    }
-  done
+def check_clean_failure_behavior():
+    proc = subprocess.run(
+        [str(repo_root / "scripts/validate"), "--self-test-failure"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    expect(proc.returncode != 0, "clean failure behavior failed")
+    stdout = proc.stdout.strip()
+    stderr = proc.stderr.strip()
+    expect(stdout == "", "clean failure behavior failed")
+    expect(stderr == "forced failure for behavior test", "clean failure behavior failed")
 
-  return 0
-}
 
-check_failure_exit_status() {
-  if check_required_file '__bootstrap__/missing-file' >/dev/null 2>&1; then
-    printf 'failure exit status check failed\n' >&2
-    return 1
-  fi
-}
+def main():
+    specs = {spec_id: load_json(path) for spec_id, path in spec_paths.items()}
+    check_json_schema_conformance()
+    print("ok: JSON Schema conformance")
+    check_manifest_completeness(specs)
+    print("ok: manifest completeness")
+    check_unique_spec_ids(specs)
+    print("ok: unique specification IDs")
+    check_resolvable_references(specs)
+    print("ok: resolvable references")
+    check_acyclic_dependencies(specs)
+    print("ok: acyclic dependencies")
+    check_generated_document_freshness(specs)
+    print("ok: generated-document freshness")
+    check_clean_failure_behavior()
+    print("ok: clean failure behavior")
 
-check_required_files || fail 'required files check failed'
-printf 'ok: required files\n'
 
-check_directory_separation || fail 'bootstrap directory separation violated'
-printf 'ok: directory separation\n'
-
-check_relative_links || fail 'relative link check failed'
-printf 'ok: relative links\n'
-
-check_json_cutover_state || fail 'cutover status/source_artifacts check failed'
-printf 'ok: cutover state\n'
-
-check_bootstrap_markdown_removed || fail 'bootstrap markdown removal check failed'
-printf 'ok: bootstrap markdown removed\n'
-
-check_failure_exit_status || fail 'failure exit status check failed'
-printf 'ok: failure exit status\n'
-
-exit 0
+if __name__ == "__main__":
+    try:
+        main()
+    except SystemExit:
+        raise
+    except Exception as exc:
+        fail(f"validation error: {exc}")
+PY
