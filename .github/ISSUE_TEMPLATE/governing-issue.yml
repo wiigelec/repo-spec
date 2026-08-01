@@ -11,120 +11,120 @@ body:
   - type: textarea
     id: change_type
     attributes:
-      label: Change type
-      description: What kind of bounded governed change is this?
-      placeholder: Standardization, feature, maintenance, documentation, migration, or other bounded change.
+      label: "Change type"
+      description: "What kind of bounded governed change is this?"
+      placeholder: "Standardization, feature, maintenance, documentation, migration, or other bounded change."
     validations:
       required: true
   - type: textarea
     id: problem_statement
     attributes:
-      label: Problem statement
-      description: What problem or gap does this issue address?
-      placeholder: Explain the need in repository terms.
+      label: "Problem statement"
+      description: "What problem or gap does this issue address?"
+      placeholder: "Explain the need in repository terms."
     validations:
       required: true
   - type: textarea
     id: intended_outcome
     attributes:
-      label: Intended outcome
-      description: What outcome should be true when the work is complete?
-      placeholder: State the expected end state.
+      label: "Intended outcome"
+      description: "What outcome should be true when the work is complete?"
+      placeholder: "State the expected end state."
     validations:
       required: true
   - type: textarea
     id: governing_specifications
     attributes:
-      label: Governing specifications
-      description: List the authoritative specifications and relevant records.
-      placeholder: repo.manifest, repo.development-workflow, and any other governing specs.
+      label: "Governing specifications"
+      description: "List the authoritative specifications and relevant records."
+      placeholder: "repo.manifest, repo.development-workflow, and any other governing specs."
     validations:
       required: true
   - type: input
     id: accepted_default_branch_base
     attributes:
-      label: Accepted default-branch base
-      description: Exact accepted default-branch revision or reference.
-      placeholder: main at <commit>
+      label: "Accepted default-branch base"
+      description: "Exact accepted default-branch revision or reference."
+      placeholder: "main at <commit>"
     validations:
       required: true
   - type: textarea
     id: in_scope_behavior_and_paths
     attributes:
-      label: In-scope behavior and paths
-      description: What behavior and repository paths are explicitly in scope?
-      placeholder: List files, directories, and behavior to change.
+      label: "In-scope behavior and paths"
+      description: "What behavior and repository paths are explicitly in scope?"
+      placeholder: "List files, directories, and behavior to change."
     validations:
       required: true
   - type: textarea
     id: explicit_exclusions
     attributes:
-      label: Explicit exclusions
-      description: What is explicitly out of scope?
-      placeholder: List excluded behaviors, files, or follow-up work.
+      label: "Explicit exclusions"
+      description: "What is explicitly out of scope?"
+      placeholder: "List excluded behaviors, files, or follow-up work."
     validations:
       required: true
   - type: textarea
     id: dependencies_and_predecessor_evidence
     attributes:
-      label: Dependencies and predecessor evidence
-      description: What must exist first, and what evidence supports this work?
-      placeholder: Prior issues, commits, specs, validation evidence, or other predecessors.
+      label: "Dependencies and predecessor evidence"
+      description: "What must exist first, and what evidence supports this work?"
+      placeholder: "Prior issues, commits, specs, validation evidence, or other predecessors."
     validations:
       required: true
   - type: textarea
     id: ordered_patch_plan
     attributes:
-      label: Ordered patch plan
-      description: State the implementation steps in order.
-      placeholder: 1. ... 2. ... 3. ...
+      label: "Ordered patch plan"
+      description: "State the implementation steps in order."
+      placeholder: "1. ... 2. ... 3. ..."
     validations:
       required: true
   - type: textarea
     id: validation_plan
     attributes:
-      label: Validation plan
-      description: How will the change be validated?
-      placeholder: scripts/validate, focused checks, evidence capture.
+      label: "Validation plan"
+      description: "How will the change be validated?"
+      placeholder: "scripts/validate, focused checks, evidence capture."
     validations:
       required: true
   - type: textarea
     id: acceptance_criteria
     attributes:
-      label: Acceptance criteria
-      description: What must be true for this issue to be accepted?
-      placeholder: List concrete acceptance checks.
+      label: "Acceptance criteria"
+      description: "What must be true for this issue to be accepted?"
+      placeholder: "List concrete acceptance checks."
     validations:
       required: true
   - type: textarea
     id: completion_gate
     attributes:
-      label: Completion gate
-      description: What must be satisfied before this issue can close?
-      placeholder: State the closure condition.
+      label: "Completion gate"
+      description: "What must be satisfied before this issue can close?"
+      placeholder: "State the closure condition."
     validations:
       required: true
   - type: textarea
     id: open_decisions_or_authority_conflicts
     attributes:
-      label: Open decisions or authority conflicts
-      description: Record any unresolved authority questions or conflicts.
-      placeholder: None, or list conflicts explicitly.
+      label: "Open decisions or authority conflicts"
+      description: "Record any unresolved authority questions or conflicts."
+      placeholder: "None, or list conflicts explicitly."
     validations:
       required: true
   - type: textarea
     id: successor_work_not_authorized
     attributes:
-      label: Successor work explicitly not authorized
-      description: What follow-on work does this issue not authorize?
-      placeholder: List unrelated or deferred successor work.
+      label: "Successor work explicitly not authorized"
+      description: "What follow-on work does this issue not authorize?"
+      placeholder: "List unrelated or deferred successor work."
     validations:
       required: true
   - type: textarea
     id: optional_context
     attributes:
-      label: Optional context
-      description: Optional notes that help with session recovery or review.
-      placeholder: Related links, assumptions, risks, or recovery notes.
+      label: "Optional context"
+      description: "Optional notes that help with session recovery or review."
+      placeholder: "Related links, assumptions, risks, or recovery notes."
     validations:
       required: false

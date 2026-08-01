@@ -18,10 +18,215 @@ Do not edit directly.
 
 Defines the canonical repository-generic review-proposal structure and its subordinate presentation adapters.
 
+## Canonical fields
+
+### Governing issue
+
+- Field ID: `governing_issue`
+- Required: yes
+- Input type: `input`
+
+Record the governing issue URL or issue number.
+
+Placeholder:
+> Issue URL or #<number>
+
+### Change purpose
+
+- Field ID: `change_purpose`
+- Required: yes
+- Input type: `textarea`
+
+Describe the bounded purpose of this pull request.
+
+Placeholder:
+> Summarize the bounded purpose of the change.
+
+### Accepted base revision
+
+- Field ID: `accepted_base_revision`
+- Required: yes
+- Input type: `input`
+
+Exact commit SHA for the accepted base.
+
+Placeholder:
+> <exact base SHA>
+
+### Proposed head revision
+
+- Field ID: `proposed_head_revision`
+- Required: yes
+- Input type: `input`
+
+Exact commit SHA for the proposed review head.
+
+Placeholder:
+> <exact head SHA>
+
+### Controlling specifications
+
+- Field ID: `controlling_specifications`
+- Required: yes
+- Input type: `textarea`
+
+List the governing specifications and records.
+
+Placeholder:
+> repo.manifest, repo.development-workflow, and any other governing specs.
+
+### Summary of implemented changes
+
+- Field ID: `summary_of_implemented_changes`
+- Required: yes
+- Input type: `textarea`
+
+Summarize what changed and why.
+
+Placeholder:
+> Summarize the implemented changes.
+
+### Changed-path inventory
+
+- Field ID: `changed_path_inventory`
+- Required: yes
+- Input type: `textarea`
+
+List every changed path.
+
+Placeholder:
+> List the changed repository paths.
+
+### Scope and exclusions
+
+- Field ID: `scope_and_exclusions`
+- Required: yes
+- Input type: `textarea`
+
+Confirm scope, and list explicit exclusions.
+
+Placeholder:
+> Confirm in-scope work and any explicit exclusions.
+
+### Patch or commit summary
+
+- Field ID: `patch_or_commit_summary`
+- Required: yes
+- Input type: `textarea`
+
+Provide the ordered patch or commit sequence.
+
+Placeholder:
+> 1. ... 2. ... 3. ...
+
+### Specification and authority effects
+
+- Field ID: `specification_and_authority_effects`
+- Required: yes
+- Input type: `textarea`
+
+State any specification, projection, or authority impact.
+
+Placeholder:
+> Describe any specification or authority impact.
+
+### Generated-artifact effects
+
+- Field ID: `generated_artifact_effects`
+- Required: yes
+- Input type: `textarea`
+
+State which generated artifacts changed and whether they are current.
+
+Placeholder:
+> List generated artifacts and freshness status.
+
+### Validation commands and results
+
+- Field ID: `validation_commands_and_results`
+- Required: yes
+- Input type: `textarea`
+
+List the exact commands run and the results observed.
+
+Placeholder:
+> scripts/validate, scripts/validate --mutation-tests, and outcomes.
+
+### Exact revision validated
+
+- Field ID: `exact_revision_validated`
+- Required: yes
+- Input type: `input`
+
+Exact commit SHA that the validation evidence covers.
+
+Placeholder:
+> <exact validated SHA>
+
+### Known limitations or questions
+
+- Field ID: `known_limitations_or_questions`
+- Required: yes
+- Input type: `textarea`
+
+List unresolved questions, deviations, or limitations.
+
+Placeholder:
+> List any known limitations or open questions.
+
+### Focused review requests
+
+- Field ID: `focused_review_requests`
+- Required: yes
+- Input type: `textarea`
+
+Ask reviewers for the specific checks you want.
+
+Placeholder:
+> Call out the review focus areas.
+
+### Acceptance checklist
+
+- Field ID: `acceptance_checklist`
+- Required: yes
+- Input type: `textarea`
+
+List the checklist items that must be satisfied.
+
+Placeholder:
+> - [ ] Governing issue is linked
+> - [ ] Accepted base and head are exact SHAs
+> - [ ] Validation evidence names the exact head revision
+> - [ ] Review requests are focused
+> - [ ] No excluded work has been introduced
+> - [ ] PR body ends with the correct closure text when applicable
+
+### Post-merge validation and closure
+
+- Field ID: `post_merge_validation_and_closure`
+- Required: yes
+- Input type: `textarea`
+
+Describe the required post-merge validation and the issue-closure gate.
+
+Placeholder:
+> Describe any post-merge validation and the issue-closure gate.
+
+### Successor work not included
+
+- Field ID: `successor_work_not_included`
+- Required: yes
+- Input type: `textarea`
+
+List deferred follow-up work that this PR does not authorize.
+
+Placeholder:
+> List any deferred successor work.
+
 ## Normative requirements
 
 - `REPO-RP-001`: The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes.
-- `REPO-RP-002`: The canonical review-proposal contract shall include the required fields governing issue, change purpose, accepted base revision, proposed head revision, controlling specifications, summary of implemented changes, changed-path inventory, confirmation of scope and exclusions, ordered patch or commit summary, specification and authority effects, generated-artifact effects, validation commands and results, exact revision validated, known limitations, deviations, or unresolved questions, focused review requests, acceptance checklist, post-merge validation and issue-closure requirements, and successor work explicitly not included.
+- `REPO-RP-002`: The canonical review-proposal contract shall include structured field definitions covering the required fields governing issue, change purpose, accepted base revision, proposed head revision, controlling specifications, summary of implemented changes, changed-path inventory, confirmation of scope and exclusions, ordered patch or commit summary, specification and authority effects, generated-artifact effects, validation commands and results, exact revision validated, known limitations, deviations, or unresolved questions, focused review requests, acceptance checklist, post-merge validation and issue-closure requirements, and successor work explicitly not included.
 - `REPO-RP-003`: The canonical review-proposal contract shall require accepted base and proposed head revisions to be identified by exact commit SHA.
 - `REPO-RP-004`: Validation evidence in a review proposal shall identify the exact head revision tested.
 - `REPO-RP-005`: New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated.
@@ -33,7 +238,7 @@ Defines the canonical repository-generic review-proposal structure and its subor
 - `REPO-RP-011`: Empty placeholders shall not satisfy required review-proposal fields.
 - `REPO-RP-012`: GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification.
 - `REPO-RP-013`: When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract.
-- `REPO-RP-014`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure.
+- `REPO-RP-014`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions.
 - `REPO-RP-015`: The GitHub pull request template shall represent every required canonical review-proposal field.
 
 ## Dependencies
@@ -61,4 +266,5 @@ Defines the canonical repository-generic review-proposal structure and its subor
 ## Derived artifacts
 
 - `markdown`: `derived/specs/repo/review-proposal.md`
+- `markdown`: `.github/PULL_REQUEST_TEMPLATE.md`
 

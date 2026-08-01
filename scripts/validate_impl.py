@@ -18,9 +18,12 @@ from typing import Any
 
 from docgen import (
     load_specs as load_repo_specs,
+    render_governing_issue_example,
     render_governing_issue,
+    render_issue_form,
     render_manifest,
     render_review_proposal,
+    render_review_template,
     render_validation,
 )
 
@@ -46,7 +49,7 @@ SUPPORTED_SCHEMA_KEYS = {
     "pattern",
 }
 
-SUPPORTED_SCHEMA_TYPES = {"object", "array", "string"}
+SUPPORTED_SCHEMA_TYPES = {"object", "array", "string", "boolean"}
 
 class ValidationFailure(Exception):
     pass
@@ -180,6 +183,8 @@ def validate_instance(
         expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
     elif schema_type == "string":
         expect(isinstance(instance, str), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be a string")
+    elif schema_type == "boolean":
+        expect(isinstance(instance, bool), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be a boolean")
 
     if "enum" in schema:
         expect(instance in schema["enum"], f"repository JSON Schema conformance failed: {instance_location(source, path)} enum mismatch")
@@ -347,8 +352,12 @@ def validate_repo(repo_root: Path) -> None:
     check_unique_item_properties(specs, "repo.manifest", "authoritative_specs", ["spec_id"])
     print("ok: unique manifest authoritative spec IDs")
     for spec_id in specs:
-        if spec_id == "repo.manifest":
-            continue
+        if "issue_fields" in specs[spec_id]:
+            check_unique_item_properties(specs, spec_id, "issue_fields", ["id"])
+            print(f"ok: unique issue fields for {spec_id}")
+        if "review_fields" in specs[spec_id]:
+            check_unique_item_properties(specs, spec_id, "review_fields", ["id"])
+            print(f"ok: unique review fields for {spec_id}")
         check_unique_item_properties(specs, spec_id, "normative_requirements", ["id"])
         check_unique_item_properties(specs, spec_id, "dependencies", ["spec_id"])
         check_unique_item_properties(specs, spec_id, "references", ["type", "spec_id", "path"])
@@ -587,6 +596,32 @@ def run_mutation_tests(repo_root: Path) -> None:
 
         temp_repo = clone_repo()
         mutate_json(
+            temp_repo / "specs/repo/governing-issue.json",
+            lambda spec: (
+                spec["issue_fields"].__setitem__(1, copy.deepcopy(spec["issue_fields"][0])) or spec
+            ),
+        )
+        expect_failure(
+            "governing issue field uniqueness",
+            lambda: validate_repo(temp_repo),
+            "duplicate item properties id",
+        )
+
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/review-proposal.json",
+            lambda spec: (
+                spec["review_fields"].__setitem__(1, copy.deepcopy(spec["review_fields"][0])) or spec
+            ),
+        )
+        expect_failure(
+            "review proposal field uniqueness",
+            lambda: validate_repo(temp_repo),
+            "duplicate item properties id",
+        )
+
+        temp_repo = clone_repo()
+        mutate_json(
             temp_repo / "specs/repo/validation.json",
             lambda spec: (
                 spec["normative_requirements"].__setitem__(1, copy.deepcopy(spec["normative_requirements"][0])) or spec
@@ -685,6 +720,24 @@ def run_mutation_tests(repo_root: Path) -> None:
         lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed governing-issue requirement"),
     )
     expect_render_change(
+        "governing issue projected field",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["issue_fields"][0].__setitem__("label", "Changed change type"),
+    )
+    expect_render_change(
+        "governing issue form projected field",
+        render_issue_form,
+        specs["repo.governing-issue"],
+        lambda spec: spec["issue_fields"][0].__setitem__("label", "Changed change type"),
+    )
+    expect_render_change(
+        "governing issue example projected field",
+        render_governing_issue_example,
+        specs["repo.governing-issue"],
+        lambda spec: spec["issue_fields"][0].__setitem__("label", "Changed change type"),
+    )
+    expect_render_change(
         "governing issue projected dependency",
         render_governing_issue,
         specs["repo.governing-issue"],
@@ -702,6 +755,18 @@ def run_mutation_tests(repo_root: Path) -> None:
         render_review_proposal,
         specs["repo.review-proposal"],
         lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed review-proposal requirement"),
+    )
+    expect_render_change(
+        "review proposal projected field",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["review_fields"][0].__setitem__("label", "Changed governing issue"),
+    )
+    expect_render_change(
+        "review proposal template projected field",
+        render_review_template,
+        specs["repo.review-proposal"],
+        lambda spec: spec["review_fields"][0].__setitem__("label", "Changed governing issue"),
     )
     expect_render_change(
         "review proposal projected dependency",
