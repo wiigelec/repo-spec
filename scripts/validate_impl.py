@@ -16,8 +16,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from docgen import (
-    check_generated_outputs,
+from docgen import check_generated_outputs
+from repo_model import (
     load_specs as load_repo_specs,
     resolve_repo_path as resolve_repo_path_impl,
 )
@@ -45,6 +45,7 @@ SUPPORTED_SCHEMA_KEYS = {
 }
 
 SUPPORTED_SCHEMA_TYPES = {"object", "array", "string", "boolean", "integer"}
+
 
 class ValidationFailure(Exception):
     pass
