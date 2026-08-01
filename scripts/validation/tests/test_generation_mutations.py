@@ -126,6 +126,12 @@ def run_generation_mutations(repo_root: Path) -> None:
         lambda spec: spec["review_fields"][0].__setitem__("label", "Changed governing issue"),
     )
     expect_render_change(
+        "review proposal template projected description",
+        render_review_template,
+        specs["repo.review-proposal"],
+        lambda spec: spec["review_fields"][0].__setitem__("description", "Changed governing issue description"),
+    )
+    expect_render_change(
         "review proposal projected dependency",
         lambda spec: render_spec_projection(specs["repo.review-proposal"]["title"], paths["repo.review-proposal"], spec),
         specs["repo.review-proposal"],

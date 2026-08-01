@@ -144,22 +144,14 @@ def render_issue_form(spec: dict) -> str:
 
 def render_review_template(spec: dict) -> str:
     fields = spec["review_fields"]
-    if len(fields) != 5:
-        raise ValueError("unexpected review-proposal template shape")
     lines = [
         "<!-- Link the governing issue in GitHub's Development section. -->",
         "<!-- Do not use automatic close syntax unless the governing issue explicitly permits it. -->",
         "",
     ]
-    section_comments = {
-        "governing_issue": "#<issue-number>",
-        "summary": "<!-- What changed, why, and any specification or generated-artifact effects. -->",
-        "validation": "<!-- Commands run and results. -->",
-        "review_focus": "<!-- Identify the areas where reviewer judgment is most needed. -->",
-        "scope_notes": "<!-- State exclusions, limitations, deferred work, or post-merge requirements. Write None when there are none. -->",
-    }
     for field in fields:
-        lines.extend([f"## {field['label']}", "", section_comments[field["id"]], ""])
+        comment = field.get("adapter_hint", field["description"])
+        lines.extend([f"## {field['label']}", "", f"<!-- {comment} -->", ""])
     return "\n".join(lines)
 
 
