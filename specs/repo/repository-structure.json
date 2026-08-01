@@ -19,10 +19,6 @@
     {
       "type": "specification",
       "spec_id": "repo.manifest"
-    },
-    {
-      "type": "artifact",
-      "path": "docs/plans/00-bootstrap-plan.md"
     }
   ],
   "derived_artifacts": [

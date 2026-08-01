@@ -263,15 +263,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/plans/00-bootstrap-plan.md"
-    },
-    {
-      "type": "artifact",
       "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
-    },
-    {
-      "type": "artifact",
-      "path": "docs/issues/governing-issue-example.md"
     }
   ],
   "derived_artifacts": [
@@ -283,11 +275,6 @@
       "type": "yaml",
       "path": ".github/ISSUE_TEMPLATE/governing-issue.yml",
       "renderer": "issue-form"
-    },
-    {
-      "type": "markdown",
-      "path": "docs/issues/governing-issue-example.md",
-      "renderer": "governing-issue-example"
     }
   ]
 }

@@ -29,7 +29,6 @@ Defines the repository layout and top-level separation of concerns.
 ## References
 
 - specification: `repo.manifest`
-- artifact: `docs/plans/00-bootstrap-plan.md`
 
 ## Derived artifacts
 

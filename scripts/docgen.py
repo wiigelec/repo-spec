@@ -190,12 +190,6 @@ def render_issue_form(spec: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_governing_issue_example(spec: dict) -> str:
-    lines = ["# Governing Issue Example", ""]
-    lines.extend(render_field_sections(spec["issue_fields"]))
-    return "\n".join(lines)
-
-
 def render_review_template(spec: dict) -> str:
     fields = spec["review_fields"]
     if len(fields) != 5:
@@ -278,7 +272,6 @@ def render_validation(spec: dict) -> str:
 
 SPECIAL_RENDERERS = {
     "issue-form": render_issue_form,
-    "governing-issue-example": render_governing_issue_example,
     "review-template": render_review_template,
 }
 
@@ -352,6 +345,16 @@ def write_all(repo_root: Path) -> None:
         path = resolve_repo_path(repo_root, relative_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
+
+
+def check_generated_outputs(repo_root: Path) -> None:
+    rendered = render_all(repo_root)
+    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/repo/") and path.endswith(".md")}
+    check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
+    for relative_path, content in rendered.items():
+        path = resolve_repo_path(repo_root, relative_path)
+        if not path.exists() or path.read_text() != content:
+            raise ValueError(f"stale generated document: {path.relative_to(repo_root)}")
 
 
 def main(argv: list[str]) -> int:
