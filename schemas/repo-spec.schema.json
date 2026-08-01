@@ -38,18 +38,22 @@
     },
     "normative_requirements": {
       "type": "array",
+      "uniqueItemProperties": ["id"],
       "items": { "$ref": "#/$defs/requirement" }
     },
     "dependencies": {
       "type": "array",
+      "uniqueItemProperties": ["spec_id"],
       "items": { "$ref": "#/$defs/dependency" }
     },
     "references": {
       "type": "array",
+      "uniqueItemProperties": ["type", "spec_id", "path"],
       "items": { "$ref": "#/$defs/reference" }
     },
     "derived_artifacts": {
       "type": "array",
+      "uniqueItemProperties": ["path"],
       "items": { "$ref": "#/$defs/derivedArtifact" }
     }
   },
@@ -81,28 +85,36 @@
       }
     },
     "reference": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["type"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["specification", "artifact"]
-        },
-        "spec_id": {
-          "type": "string",
-          "pattern": "^(repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
-        },
-        "path": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "allOf": [
+      "oneOf": [
         {
-          "if": { "properties": { "type": { "const": "specification" } } },
-          "then": { "required": ["spec_id"] },
-          "else": { "required": ["path"] }
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "spec_id"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "specification"
+            },
+            "spec_id": {
+              "type": "string",
+              "pattern": "^(repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "path"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "artifact"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         }
       ]
     },
