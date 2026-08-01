@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 SECTION_RE = re.compile(r"^##\s+(.+?)\s*$")
-SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
+SHA_RE = re.compile(r"(?<![0-9a-f])[0-9a-f]{7,40}(?![0-9a-f])")
 ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
 SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*\b")
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
@@ -105,8 +105,9 @@ def require_meaningful(name: str, value: str) -> None:
 
 
 def require_sha(name: str, value: str) -> None:
-    if not SHA_RE.search(normalize(value)):
-        raise ValueError(f"invalid SHA in {name}")
+    matches = SHA_RE.findall(normalize(value).lower())
+    if len(matches) != 1:
+        raise ValueError(f"expected exactly one SHA in {name}")
 
 
 def require_issue_link(name: str, value: str) -> None:
