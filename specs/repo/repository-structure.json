@@ -1,8 +1,8 @@
 {
   "spec_id": "repo.repository-structure",
   "title": "Repository Structure",
-  "purpose": "Placeholder specification for the repository layout during bootstrap.",
-  "status": "candidate",
+  "purpose": "Defines the repository layout and top-level separation of concerns.",
+  "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
@@ -23,12 +23,6 @@
     {
       "type": "artifact",
       "path": "docs/plans/00-bootstrap-plan.md"
-    }
-  ],
-  "source_artifacts": [
-    {
-      "type": "bootstrap_markdown",
-      "path": "specs/repo/repo-specs-bootstrap.md"
     }
   ],
   "derived_artifacts": [
