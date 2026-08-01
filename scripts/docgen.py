@@ -72,185 +72,72 @@ def header(title: str, source_path: str) -> str:
     )
 
 
-def render_manifest(spec: dict) -> str:
-    lines = [
-        header("Repository Spec Manifest", "specs/repo/manifest.json"),
-        "## Purpose",
-        "",
-        spec["purpose"],
-        "",
-        "## Authoritative specs",
-        "",
-    ]
-    for entry in spec["authoritative_specs"]:
-        lines.append(f"- `{entry['spec_id']}` -> `{entry['path']}`")
+def render_list_section(title: str, items: list[str]) -> list[str]:
+    lines = [f"## {title}", ""]
+    lines.extend(items or ["- None"])
+    lines.append("")
+    return lines
+
+
+def render_requirements(spec: dict) -> list[str]:
+    return [f"- `{req['id']}`: {req['text']}" for req in spec["normative_requirements"]]
+
+
+def render_dependencies(spec: dict) -> list[str]:
+    return [f"- `{dep['spec_id']}`" for dep in spec.get("dependencies", [])]
+
+
+def render_references(spec: dict) -> list[str]:
+    items = []
+    for ref in spec.get("references", []):
+        if ref["type"] == "specification":
+            items.append(f"- specification: `{ref['spec_id']}`")
+        else:
+            items.append(f"- artifact: `{ref['path']}`")
+    return items
+
+
+def render_derived_artifacts(spec: dict) -> list[str]:
+    return [f"- `{artifact['type']}`: `{artifact['path']}`" for artifact in spec.get("derived_artifacts", [])]
+
+
+def render_authoritative_specs(spec: dict) -> list[str]:
+    return [f"- `{entry['spec_id']}` -> `{entry['path']}`" for entry in spec.get("authoritative_specs", [])]
+
+
+def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False) -> str:
+    lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
+    if include_authoritative_specs:
+        lines.extend(render_list_section("Authoritative specs", render_authoritative_specs(spec)))
+    lines.extend(render_list_section("Normative requirements", render_requirements(spec)))
+    lines.extend(render_list_section("Dependencies", render_dependencies(spec)))
+    lines.extend(render_list_section("References", render_references(spec)))
+    lines.extend(render_list_section("Derived artifacts", render_derived_artifacts(spec)))
     return "\n".join(lines) + "\n"
+
+
+def render_manifest(spec: dict) -> str:
+    return render_spec_projection("Repository Spec Manifest", "specs/repo/manifest.json", spec, include_authoritative_specs=True)
 
 
 def render_governing_issue(spec: dict) -> str:
-    lines = [
-        header("Governing Issue Contract", "specs/repo/governing-issue.json"),
-        "## Canonical contract",
-        "",
-        "Use one governing issue for each bounded governed change. The canonical contract is repository-spec authority; Markdown and GitHub forms are adapters only.",
-        "",
-        "## Required fields",
-        "",
-    ]
-    lines.extend(f"- {field}" for field in [
-        "Change type",
-        "Problem statement",
-        "Intended outcome",
-        "Governing specifications",
-        "Accepted default-branch base",
-        "Intended branch",
-        "In-scope behavior and paths",
-        "Explicit exclusions",
-        "Dependencies and predecessor evidence",
-        "Ordered patch plan",
-        "Validation plan",
-        "Acceptance criteria",
-        "Completion gate",
-        "Open decisions or authority conflicts",
-        "Successor work explicitly not authorized",
-    ])
-    lines.extend(
-        [
-            "",
-            "## Required-field rules",
-            "",
-            "- Every required field shall contain substantive content.",
-            "- Empty placeholders do not satisfy required fields.",
-            "- Material scope changes must be recorded in the governing issue.",
-            "- The issue must exist before the implementation branch is created.",
-            "- The issue may close only after its completion gate is satisfied.",
-            "- Completion does not authorize unrelated successor work.",
-            "",
-            "## Optional fields",
-            "",
-            "- Related links",
-            "- Notes",
-            "- Risk callouts",
-            "- Session recovery context",
-            "",
-            "## Adapter guidance",
-            "",
-            "- The Markdown projection is the human-readable generic form.",
-            "- The GitHub Issue Form is the platform-specific form.",
-            "- Neither adapter may override the canonical repository specification.",
-        ]
-    )
-    return "\n".join(lines) + "\n"
+    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec)
 
 
 def render_review_proposal(spec: dict) -> str:
-    lines = [
-        header("Review Proposal Contract", "specs/repo/review-proposal.json"),
-        "## Canonical contract",
-        "",
-        "Use one review proposal for each bounded reviewed change. The canonical contract is repository-spec authority; Markdown and GitHub forms are adapters only.",
-        "",
-        "## Required fields",
-        "",
-    ]
-    lines.extend(f"- {field}" for field in [
-        "Governing issue",
-        "Change purpose",
-        "Accepted base revision",
-        "Proposed head revision",
-        "Controlling specifications",
-        "Summary of implemented changes",
-        "Changed-path inventory",
-        "Confirmation of scope and exclusions",
-        "Ordered patch or commit summary",
-        "Specification and authority effects",
-        "Generated-artifact effects",
-        "Validation commands and results",
-        "Exact revision validated",
-        "Known limitations, deviations, or unresolved questions",
-        "Focused review requests",
-        "Acceptance checklist",
-        "Post-merge validation and issue-closure requirements",
-        "Successor work explicitly not included",
-    ])
-    lines.extend(
-        [
-            "",
-            "## Required-field rules",
-            "",
-            "- Every required field shall contain substantive content.",
-            "- Empty placeholders do not satisfy required fields.",
-            "- The governing issue shall be identified explicitly.",
-            "- The accepted base and proposed head shall be exact commit SHAs.",
-            "- Validation evidence shall identify the exact head revision tested.",
-            "- New commits invalidate prior exact-head validation or acceptance evidence until checks are repeated.",
-            "- Passing validation is not semantic review.",
-            "- Review is not acceptance.",
-            "- Acceptance applies only to the exact proposed revision.",
-            "- Merge is not proof of successful post-merge validation.",
-            "- Automatic issue-closing syntax shall not be used when the governing issue requires post-merge validation before closure.",
-            "",
-            "## Adapter guidance",
-            "",
-            "- The Markdown projection is the human-readable generic form.",
-            "- The GitHub pull request template is the platform-specific form.",
-            "- Neither adapter may override the canonical repository specification.",
-        ]
-    )
-    return "\n".join(lines) + "\n"
+    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec)
 
 
 def render_structure(spec: dict) -> str:
-    return (
-        header("Repository Structure", "specs/repo/repository-structure.json")
-        + "\n## Purpose\n\n"
-        + f"{spec['normative_requirements'][0]['text']}\n\n"
-        + "## Reference context\n\n"
-        + "- `repo.manifest`\n"
-        + "- `docs/plans/00-bootstrap-plan.md`\n"
-    )
+    return render_spec_projection("Repository Structure", "specs/repo/repository-structure.json", spec)
 
 
 def render_workflow(spec: dict) -> str:
-    return (
-        header("Development Workflow", "specs/repo/development-workflow.json")
-        + "\n## Purpose\n\n"
-        + f"{spec['purpose']}\n\n"
-        + "## Normative requirements\n\n"
-        + "\n".join(f"- {req['id']}: {req['text']}" for req in spec["normative_requirements"])
-        + "\n\n"
-        + "## Reference context\n\n"
-        + "- `AGENTS.md`\n"
-        + "- `repo.manifest`\n"
-        + "- `repo.repository-structure`\n"
-        + "- `docs/overview/product-overview/03-git-and-change-workflow.md`\n"
-        + "- `docs/overview/product-overview/04-human-ai-continuity.md`\n"
-    )
+    return render_spec_projection("Development Workflow", "specs/repo/development-workflow.json", spec)
 
 
 def render_validation(spec: dict) -> str:
-    return (
-        header("Validation", "specs/repo/validation.json")
-        + "\n## Purpose\n\n"
-        + f"{spec['normative_requirements'][0]['text']}\n\n"
-        + "## Closed checks\n\n"
-        + "1. Conformance to the repository's JSON Schemas\n"
-        + "2. Manifest completeness\n"
-        + "3. Unique specification IDs\n"
-        + "4. Resolvable references\n"
-        + "5. Acyclic dependencies\n"
-        + "6. Generated-document freshness\n"
-        + "7. Clean failure behavior\n\n"
-        + "## Boundaries\n\n"
-        + "- shell-only\n"
-        + "- no external dependencies\n"
-        + "- no formatting checks\n"
-        + "- no prose checks\n"
-        + "- no Git workflow checks\n"
-        + "- no hosting-platform checks\n"
-        + "- no product-spec checks\n"
-        + "- no source-code checks\n"
-    )
+    return render_spec_projection("Validation", "specs/repo/validation.json", spec)
 
 
 def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:

@@ -16,7 +16,13 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from docgen import load_specs as load_repo_specs
+from docgen import (
+    load_specs as load_repo_specs,
+    render_governing_issue,
+    render_manifest,
+    render_review_proposal,
+    render_validation,
+)
 
 SUPPORTED_SCHEMA_KEYS = {
     "$schema",
@@ -327,6 +333,16 @@ def expect_failure(description: str, func, fragment: str) -> None:
         fail(f"mutation test failed: {description} did not fail")
 
 
+def expect_render_change(description: str, renderer, spec: dict[str, Any], mutate) -> None:
+    original = renderer(spec)
+    mutated = copy.deepcopy(spec)
+    mutate(mutated)
+    expect(
+        renderer(mutated) != original,
+        f"mutation test failed: {description} did not change output",
+    )
+
+
 def run_mutation_tests(repo_root: Path) -> None:
     schemas = load_repo_schemas(repo_root)
     _manifest, specs, source_paths, actual_paths = load_specs(repo_root)
@@ -530,6 +546,94 @@ def run_mutation_tests(repo_root: Path) -> None:
         "derived artifact path minLength",
         lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
         "minLength violation",
+    )
+
+    expect_render_change(
+        "manifest projected purpose",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec.__setitem__("purpose", "Changed manifest purpose"),
+    )
+    expect_render_change(
+        "manifest projected requirement",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed manifest requirement"),
+    )
+    expect_render_change(
+        "manifest projected reference",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-spec"),
+    )
+    expect_render_change(
+        "manifest projected derived artifact",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
+    )
+
+    expect_render_change(
+        "governing issue projected requirement",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed governing-issue requirement"),
+    )
+    expect_render_change(
+        "governing issue projected dependency",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
+    )
+    expect_render_change(
+        "governing issue projected reference",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
+    )
+
+    expect_render_change(
+        "review proposal projected requirement",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed review-proposal requirement"),
+    )
+    expect_render_change(
+        "review proposal projected dependency",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
+    )
+    expect_render_change(
+        "review proposal projected reference",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
+    )
+
+    expect_render_change(
+        "validation projected requirement",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed validation requirement"),
+    )
+    expect_render_change(
+        "validation projected dependency",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
+    )
+    expect_render_change(
+        "validation projected reference",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
+    )
+    expect_render_change(
+        "validation projected derived artifact",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
     )
 
     mutated_schema = copy.deepcopy(schemas["repo.spec"])
