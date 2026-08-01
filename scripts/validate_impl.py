@@ -40,9 +40,9 @@ def main(argv: list[str]) -> int:
             validate_repo(repo_root)
             return 0
         if mode == "--mutation-tests":
-            from validation.tests.mutation_tests import run_mutation_tests
+            from validation.tests.mutation_tests import run_complete_validation_tests
 
-            run_mutation_tests(repo_root)
+            run_complete_validation_tests(repo_root)
             return 0
         fail(f"unknown mode: {mode}")
     except ValidationFailure as exc:
