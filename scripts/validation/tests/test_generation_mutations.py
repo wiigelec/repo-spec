@@ -1,0 +1,165 @@
+from __future__ import annotations
+
+import copy
+import json
+import tempfile
+from pathlib import Path
+
+from docgen import render_governing_issue, render_issue_form, render_manifest, render_review_proposal, render_review_template, render_validation
+from repo_model import load_specs
+from validation.generated_outputs import check_generated_document_freshness, check_generated_document_write_behavior
+from validation.repository_checks import validate_repo
+
+from .mutation_support import clone_repo, expect_failure, expect_render_change, mutate_json
+
+
+def run_generation_mutations(repo_root: Path) -> None:
+    _manifest, specs, _, _ = load_specs(repo_root)
+
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
+
+        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/validation-missing.md"}) or spec,
+        )
+        expect_failure("missing derived artifact", lambda: check_generated_document_freshness(temp_repo), "generated-document freshness failed")
+
+        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        clone_index += 1
+        (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
+        expect_failure("orphaned derived markdown write", lambda: check_generated_document_write_behavior(temp_repo), "orphaned derived markdown")
+
+        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        clone_index += 1
+        (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
+        expect_failure("orphaned derived markdown check", lambda: check_generated_document_freshness(temp_repo), "orphaned derived markdown")
+
+        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/manifest.json",
+            lambda manifest: manifest["authoritative_specs"].append({"spec_id": "repo.example", "path": "specs/repo/example.json"}) or manifest,
+        )
+        example_spec = copy.deepcopy(specs["repo.validation"])
+        example_spec["spec_id"] = "repo.example"
+        example_spec["title"] = "Example"
+        example_spec["purpose"] = "Example repository specification"
+        example_spec["derived_artifacts"][0]["path"] = "derived/specs/repo/example.md"
+        (temp_repo / "specs/repo/example.json").write_text(json.dumps(example_spec, indent=2) + "\n")
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
+
+    expect_render_change(
+        "manifest projected purpose",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec.__setitem__("purpose", "Changed manifest purpose"),
+    )
+    expect_render_change(
+        "manifest projected requirement",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed manifest requirement"),
+    )
+    expect_render_change(
+        "manifest projected reference",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-spec"),
+    )
+    expect_render_change(
+        "manifest projected derived artifact",
+        render_manifest,
+        specs["repo.manifest"],
+        lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
+    )
+    expect_render_change(
+        "governing issue projected requirement",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed governing-issue requirement"),
+    )
+    expect_render_change(
+        "governing issue projected field",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["issue_fields"][0].__setitem__("label", "Changed change type"),
+    )
+    expect_render_change(
+        "governing issue form projected field",
+        render_issue_form,
+        specs["repo.governing-issue"],
+        lambda spec: spec["issue_fields"][0].__setitem__("label", "Changed change type"),
+    )
+    expect_render_change(
+        "governing issue projected dependency",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
+    )
+    expect_render_change(
+        "governing issue projected reference",
+        render_governing_issue,
+        specs["repo.governing-issue"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
+    )
+    expect_render_change(
+        "review proposal projected requirement",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed review-proposal requirement"),
+    )
+    expect_render_change(
+        "review proposal projected field",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["review_fields"][0].__setitem__("label", "Changed governing issue"),
+    )
+    expect_render_change(
+        "review proposal template projected field",
+        render_review_template,
+        specs["repo.review-proposal"],
+        lambda spec: spec["review_fields"][0].__setitem__("label", "Changed governing issue"),
+    )
+    expect_render_change(
+        "review proposal projected dependency",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
+    )
+    expect_render_change(
+        "review proposal projected reference",
+        render_review_proposal,
+        specs["repo.review-proposal"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
+    )
+    expect_render_change(
+        "validation projected requirement",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed validation requirement"),
+    )
+    expect_render_change(
+        "validation projected dependency",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
+    )
+    expect_render_change(
+        "validation projected reference",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
+    )
+    expect_render_change(
+        "validation projected derived artifact",
+        render_validation,
+        specs["repo.validation"],
+        lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
+    )
+
+    print("ok: generation mutation tests")
