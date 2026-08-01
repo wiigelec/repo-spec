@@ -11,7 +11,10 @@
       "required": true,
       "input_type": "input",
       "description": "Record the governing issue URL or issue number.",
-      "placeholder": "Issue URL or #<number>"
+      "placeholder": "Issue URL or #<number>",
+      "validation": {
+        "kind": "issue-link"
+      }
     },
     {
       "id": "change_purpose",
@@ -19,7 +22,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "Describe the bounded purpose of this pull request.",
-      "placeholder": "Summarize the bounded purpose of the change."
+      "placeholder": "Summarize the bounded purpose of the change.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "accepted_base_revision",
@@ -27,7 +33,11 @@
       "required": true,
       "input_type": "input",
       "description": "Exact commit SHA for the accepted base.",
-      "placeholder": "<exact base SHA>"
+      "placeholder": "<exact base SHA>",
+      "validation": {
+        "kind": "commit-sha",
+        "count": 1
+      }
     },
     {
       "id": "proposed_head_revision",
@@ -35,7 +45,11 @@
       "required": true,
       "input_type": "input",
       "description": "Exact commit SHA for the proposed review head.",
-      "placeholder": "<exact head SHA>"
+      "placeholder": "<exact head SHA>",
+      "validation": {
+        "kind": "commit-sha",
+        "count": 1
+      }
     },
     {
       "id": "controlling_specifications",
@@ -43,7 +57,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "List the governing specifications and records.",
-      "placeholder": "repo.manifest, repo.development-workflow, and any other governing specs."
+      "placeholder": "repo.manifest, repo.development-workflow, and any other governing specs.",
+      "validation": {
+        "kind": "spec-reference"
+      }
     },
     {
       "id": "summary_of_implemented_changes",
@@ -51,7 +68,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "Summarize what changed and why.",
-      "placeholder": "Summarize the implemented changes."
+      "placeholder": "Summarize the implemented changes.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "changed_path_inventory",
@@ -59,7 +79,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "List every changed path.",
-      "placeholder": "List the changed repository paths."
+      "placeholder": "List the changed repository paths.",
+      "validation": {
+        "kind": "path-list"
+      }
     },
     {
       "id": "scope_and_exclusions",
@@ -67,7 +90,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "Confirm scope, and list explicit exclusions.",
-      "placeholder": "Confirm in-scope work and any explicit exclusions."
+      "placeholder": "Confirm in-scope work and any explicit exclusions.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "patch_or_commit_summary",
@@ -75,7 +101,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "Provide the ordered patch or commit sequence.",
-      "placeholder": "1. ... 2. ... 3. ..."
+      "placeholder": "1. ... 2. ... 3. ...",
+      "validation": {
+        "kind": "numbered-steps"
+      }
     },
     {
       "id": "specification_and_authority_effects",
@@ -83,7 +112,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "State any specification, projection, or authority impact.",
-      "placeholder": "Describe any specification or authority impact."
+      "placeholder": "Describe any specification or authority impact.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "generated_artifact_effects",
@@ -91,7 +123,11 @@
       "required": true,
       "input_type": "textarea",
       "description": "State which generated artifacts changed and whether they are current.",
-      "placeholder": "List generated artifacts and freshness status."
+      "placeholder": "List generated artifacts and freshness status.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
     },
     {
       "id": "validation_commands_and_results",
@@ -99,7 +135,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "List the exact commands run and the results observed.",
-      "placeholder": "scripts/validate, scripts/validate --mutation-tests, and outcomes."
+      "placeholder": "scripts/validate, scripts/validate --mutation-tests, and outcomes.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "exact_revision_validated",
@@ -107,7 +146,11 @@
       "required": true,
       "input_type": "input",
       "description": "Exact commit SHA that the validation evidence covers.",
-      "placeholder": "<exact validated SHA>"
+      "placeholder": "<exact validated SHA>",
+      "validation": {
+        "kind": "commit-sha",
+        "count": 1
+      }
     },
     {
       "id": "known_limitations_or_questions",
@@ -115,7 +158,11 @@
       "required": true,
       "input_type": "textarea",
       "description": "List unresolved questions, deviations, or limitations.",
-      "placeholder": "List any known limitations or open questions."
+      "placeholder": "List any known limitations or open questions.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
     },
     {
       "id": "focused_review_requests",
@@ -123,7 +170,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "Ask reviewers for the specific checks you want.",
-      "placeholder": "Call out the review focus areas."
+      "placeholder": "Call out the review focus areas.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "acceptance_checklist",
@@ -131,7 +181,18 @@
       "required": true,
       "input_type": "textarea",
       "description": "List the checklist items that must be satisfied.",
-      "placeholder": "- [ ] Governing issue is linked\n- [ ] Accepted base and head are exact SHAs\n- [ ] Validation evidence names the exact head revision\n- [ ] Review requests are focused\n- [ ] No excluded work has been introduced\n- [ ] PR body ends with the correct closure text when applicable"
+      "placeholder": "List the checklist items that must be satisfied.",
+      "validation": {
+        "kind": "checklist",
+        "items": [
+          "Governing issue is linked",
+          "Accepted base and head are exact SHAs",
+          "Validation evidence names the exact head revision",
+          "Review requests are focused",
+          "No excluded work has been introduced",
+          "PR body ends with the correct closure text when applicable"
+        ]
+      }
     },
     {
       "id": "post_merge_validation_and_closure",
@@ -139,7 +200,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "Describe the required post-merge validation and the issue-closure gate.",
-      "placeholder": "Describe any post-merge validation and the issue-closure gate."
+      "placeholder": "Describe any post-merge validation and the issue-closure gate.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "successor_work_not_included",
@@ -147,7 +211,11 @@
       "required": true,
       "input_type": "textarea",
       "description": "List deferred follow-up work that this PR does not authorize.",
-      "placeholder": "List any deferred successor work."
+      "placeholder": "List any deferred successor work.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
     }
   ],
   "normative_requirements": [

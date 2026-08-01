@@ -11,7 +11,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What kind of bounded governed change is this?",
-      "placeholder": "Standardization, feature, maintenance, documentation, migration, or other bounded change."
+      "placeholder": "Standardization, feature, maintenance, documentation, migration, or other bounded change.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "problem_statement",
@@ -19,7 +22,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What problem or gap does this issue address?",
-      "placeholder": "Explain the need in repository terms."
+      "placeholder": "Explain the need in repository terms.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "intended_outcome",
@@ -27,7 +33,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What outcome should be true when the work is complete?",
-      "placeholder": "State the expected end state."
+      "placeholder": "State the expected end state.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "governing_specifications",
@@ -35,7 +44,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "List the authoritative specifications and relevant records.",
-      "placeholder": "repo.manifest, repo.development-workflow, and any other governing specs."
+      "placeholder": "repo.manifest, repo.development-workflow, and any other governing specs.",
+      "validation": {
+        "kind": "spec-reference"
+      }
     },
     {
       "id": "accepted_default_branch_base",
@@ -43,7 +55,11 @@
       "required": true,
       "input_type": "input",
       "description": "Exact accepted default-branch revision or reference.",
-      "placeholder": "main at <commit>"
+      "placeholder": "main at <commit>",
+      "validation": {
+        "kind": "default-branch-base",
+        "branch": "main"
+      }
     },
     {
       "id": "in_scope_behavior_and_paths",
@@ -51,7 +67,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What behavior and repository paths are explicitly in scope?",
-      "placeholder": "List files, directories, and behavior to change."
+      "placeholder": "List files, directories, and behavior to change.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "explicit_exclusions",
@@ -59,7 +78,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What is explicitly out of scope?",
-      "placeholder": "List excluded behaviors, files, or follow-up work."
+      "placeholder": "List excluded behaviors, files, or follow-up work.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "dependencies_and_predecessor_evidence",
@@ -67,7 +89,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What must exist first, and what evidence supports this work?",
-      "placeholder": "Prior issues, commits, specs, validation evidence, or other predecessors."
+      "placeholder": "Prior issues, commits, specs, validation evidence, or other predecessors.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "ordered_patch_plan",
@@ -75,7 +100,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "State the implementation steps in order.",
-      "placeholder": "1. ... 2. ... 3. ..."
+      "placeholder": "1. ... 2. ... 3. ...",
+      "validation": {
+        "kind": "numbered-steps"
+      }
     },
     {
       "id": "validation_plan",
@@ -83,7 +111,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "How will the change be validated?",
-      "placeholder": "scripts/validate, focused checks, evidence capture."
+      "placeholder": "scripts/validate, focused checks, evidence capture.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "acceptance_criteria",
@@ -91,7 +122,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What must be true for this issue to be accepted?",
-      "placeholder": "List concrete acceptance checks."
+      "placeholder": "List concrete acceptance checks.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "completion_gate",
@@ -99,7 +133,10 @@
       "required": true,
       "input_type": "textarea",
       "description": "What must be satisfied before this issue can close?",
-      "placeholder": "State the closure condition."
+      "placeholder": "State the closure condition.",
+      "validation": {
+        "kind": "meaningful"
+      }
     },
     {
       "id": "open_decisions_or_authority_conflicts",
@@ -107,7 +144,11 @@
       "required": true,
       "input_type": "textarea",
       "description": "Record any unresolved authority questions or conflicts.",
-      "placeholder": "None, or list conflicts explicitly."
+      "placeholder": "None, or list conflicts explicitly.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
     },
     {
       "id": "successor_work_not_authorized",
@@ -115,7 +156,11 @@
       "required": true,
       "input_type": "textarea",
       "description": "What follow-on work does this issue not authorize?",
-      "placeholder": "List unrelated or deferred successor work."
+      "placeholder": "List unrelated or deferred successor work.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
     },
     {
       "id": "optional_context",
@@ -123,7 +168,11 @@
       "required": false,
       "input_type": "textarea",
       "description": "Optional notes that help with session recovery or review.",
-      "placeholder": "Related links, assumptions, risks, or recovery notes."
+      "placeholder": "Related links, assumptions, risks, or recovery notes.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
     }
   ],
   "normative_requirements": [

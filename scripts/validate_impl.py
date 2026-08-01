@@ -50,7 +50,7 @@ SUPPORTED_SCHEMA_KEYS = {
     "pattern",
 }
 
-SUPPORTED_SCHEMA_TYPES = {"object", "array", "string", "boolean"}
+SUPPORTED_SCHEMA_TYPES = {"object", "array", "string", "boolean", "integer"}
 
 class ValidationFailure(Exception):
     pass
@@ -193,6 +193,8 @@ def validate_instance(
         expect(isinstance(instance, str), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be a string")
     elif schema_type == "boolean":
         expect(isinstance(instance, bool), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be a boolean")
+    elif schema_type == "integer":
+        expect(isinstance(instance, int) and not isinstance(instance, bool), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an integer")
 
     if "enum" in schema:
         expect(instance in schema["enum"], f"repository JSON Schema conformance failed: {instance_location(source, path)} enum mismatch")

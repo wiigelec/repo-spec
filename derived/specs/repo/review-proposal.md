@@ -31,6 +31,10 @@ Record the governing issue URL or issue number.
 Placeholder:
 > Issue URL or #<number>
 
+Validation metadata:
+
+- Kind: `issue-link`
+
 ### Change purpose
 
 - Field ID: `change_purpose`
@@ -41,6 +45,10 @@ Describe the bounded purpose of this pull request.
 
 Placeholder:
 > Summarize the bounded purpose of the change.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Accepted base revision
 
@@ -53,6 +61,11 @@ Exact commit SHA for the accepted base.
 Placeholder:
 > <exact base SHA>
 
+Validation metadata:
+
+- Kind: `commit-sha`
+- Count: `1`
+
 ### Proposed head revision
 
 - Field ID: `proposed_head_revision`
@@ -63,6 +76,11 @@ Exact commit SHA for the proposed review head.
 
 Placeholder:
 > <exact head SHA>
+
+Validation metadata:
+
+- Kind: `commit-sha`
+- Count: `1`
 
 ### Controlling specifications
 
@@ -75,6 +93,10 @@ List the governing specifications and records.
 Placeholder:
 > repo.manifest, repo.development-workflow, and any other governing specs.
 
+Validation metadata:
+
+- Kind: `spec-reference`
+
 ### Summary of implemented changes
 
 - Field ID: `summary_of_implemented_changes`
@@ -85,6 +107,10 @@ Summarize what changed and why.
 
 Placeholder:
 > Summarize the implemented changes.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Changed-path inventory
 
@@ -97,6 +123,10 @@ List every changed path.
 Placeholder:
 > List the changed repository paths.
 
+Validation metadata:
+
+- Kind: `path-list`
+
 ### Scope and exclusions
 
 - Field ID: `scope_and_exclusions`
@@ -107,6 +137,10 @@ Confirm scope, and list explicit exclusions.
 
 Placeholder:
 > Confirm in-scope work and any explicit exclusions.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Patch or commit summary
 
@@ -119,6 +153,10 @@ Provide the ordered patch or commit sequence.
 Placeholder:
 > 1. ... 2. ... 3. ...
 
+Validation metadata:
+
+- Kind: `numbered-steps`
+
 ### Specification and authority effects
 
 - Field ID: `specification_and_authority_effects`
@@ -129,6 +167,10 @@ State any specification, projection, or authority impact.
 
 Placeholder:
 > Describe any specification or authority impact.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Generated-artifact effects
 
@@ -141,6 +183,11 @@ State which generated artifacts changed and whether they are current.
 Placeholder:
 > List generated artifacts and freshness status.
 
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
+
 ### Validation commands and results
 
 - Field ID: `validation_commands_and_results`
@@ -151,6 +198,10 @@ List the exact commands run and the results observed.
 
 Placeholder:
 > scripts/validate, scripts/validate --mutation-tests, and outcomes.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Exact revision validated
 
@@ -163,6 +214,11 @@ Exact commit SHA that the validation evidence covers.
 Placeholder:
 > <exact validated SHA>
 
+Validation metadata:
+
+- Kind: `commit-sha`
+- Count: `1`
+
 ### Known limitations or questions
 
 - Field ID: `known_limitations_or_questions`
@@ -173,6 +229,11 @@ List unresolved questions, deviations, or limitations.
 
 Placeholder:
 > List any known limitations or open questions.
+
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
 
 ### Focused review requests
 
@@ -185,6 +246,10 @@ Ask reviewers for the specific checks you want.
 Placeholder:
 > Call out the review focus areas.
 
+Validation metadata:
+
+- Kind: `meaningful`
+
 ### Acceptance checklist
 
 - Field ID: `acceptance_checklist`
@@ -194,12 +259,18 @@ Placeholder:
 List the checklist items that must be satisfied.
 
 Placeholder:
-> - [ ] Governing issue is linked
-> - [ ] Accepted base and head are exact SHAs
-> - [ ] Validation evidence names the exact head revision
-> - [ ] Review requests are focused
-> - [ ] No excluded work has been introduced
-> - [ ] PR body ends with the correct closure text when applicable
+> List the checklist items that must be satisfied.
+
+Validation metadata:
+
+- Kind: `checklist`
+- Items:
+  - Governing issue is linked
+  - Accepted base and head are exact SHAs
+  - Validation evidence names the exact head revision
+  - Review requests are focused
+  - No excluded work has been introduced
+  - PR body ends with the correct closure text when applicable
 
 ### Post-merge validation and closure
 
@@ -212,6 +283,10 @@ Describe the required post-merge validation and the issue-closure gate.
 Placeholder:
 > Describe any post-merge validation and the issue-closure gate.
 
+Validation metadata:
+
+- Kind: `meaningful`
+
 ### Successor work not included
 
 - Field ID: `successor_work_not_included`
@@ -222,6 +297,11 @@ List deferred follow-up work that this PR does not authorize.
 
 Placeholder:
 > List any deferred successor work.
+
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
 
 ## Normative requirements
 

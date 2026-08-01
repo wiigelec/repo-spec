@@ -31,6 +31,10 @@ What kind of bounded governed change is this?
 Placeholder:
 > Standardization, feature, maintenance, documentation, migration, or other bounded change.
 
+Validation metadata:
+
+- Kind: `meaningful`
+
 ### Problem statement
 
 - Field ID: `problem_statement`
@@ -41,6 +45,10 @@ What problem or gap does this issue address?
 
 Placeholder:
 > Explain the need in repository terms.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Intended outcome
 
@@ -53,6 +61,10 @@ What outcome should be true when the work is complete?
 Placeholder:
 > State the expected end state.
 
+Validation metadata:
+
+- Kind: `meaningful`
+
 ### Governing specifications
 
 - Field ID: `governing_specifications`
@@ -63,6 +75,10 @@ List the authoritative specifications and relevant records.
 
 Placeholder:
 > repo.manifest, repo.development-workflow, and any other governing specs.
+
+Validation metadata:
+
+- Kind: `spec-reference`
 
 ### Accepted default-branch base
 
@@ -75,6 +91,11 @@ Exact accepted default-branch revision or reference.
 Placeholder:
 > main at <commit>
 
+Validation metadata:
+
+- Kind: `default-branch-base`
+- Branch: `main`
+
 ### In-scope behavior and paths
 
 - Field ID: `in_scope_behavior_and_paths`
@@ -85,6 +106,10 @@ What behavior and repository paths are explicitly in scope?
 
 Placeholder:
 > List files, directories, and behavior to change.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Explicit exclusions
 
@@ -97,6 +122,10 @@ What is explicitly out of scope?
 Placeholder:
 > List excluded behaviors, files, or follow-up work.
 
+Validation metadata:
+
+- Kind: `meaningful`
+
 ### Dependencies and predecessor evidence
 
 - Field ID: `dependencies_and_predecessor_evidence`
@@ -107,6 +136,10 @@ What must exist first, and what evidence supports this work?
 
 Placeholder:
 > Prior issues, commits, specs, validation evidence, or other predecessors.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Ordered patch plan
 
@@ -119,6 +152,10 @@ State the implementation steps in order.
 Placeholder:
 > 1. ... 2. ... 3. ...
 
+Validation metadata:
+
+- Kind: `numbered-steps`
+
 ### Validation plan
 
 - Field ID: `validation_plan`
@@ -129,6 +166,10 @@ How will the change be validated?
 
 Placeholder:
 > scripts/validate, focused checks, evidence capture.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Acceptance criteria
 
@@ -141,6 +182,10 @@ What must be true for this issue to be accepted?
 Placeholder:
 > List concrete acceptance checks.
 
+Validation metadata:
+
+- Kind: `meaningful`
+
 ### Completion gate
 
 - Field ID: `completion_gate`
@@ -151,6 +196,10 @@ What must be satisfied before this issue can close?
 
 Placeholder:
 > State the closure condition.
+
+Validation metadata:
+
+- Kind: `meaningful`
 
 ### Open decisions or authority conflicts
 
@@ -163,6 +212,11 @@ Record any unresolved authority questions or conflicts.
 Placeholder:
 > None, or list conflicts explicitly.
 
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
+
 ### Successor work explicitly not authorized
 
 - Field ID: `successor_work_not_authorized`
@@ -174,6 +228,11 @@ What follow-on work does this issue not authorize?
 Placeholder:
 > List unrelated or deferred successor work.
 
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
+
 ### Optional context
 
 - Field ID: `optional_context`
@@ -184,6 +243,11 @@ Optional notes that help with session recovery or review.
 
 Placeholder:
 > Related links, assumptions, risks, or recovery notes.
+
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
 
 ## Normative requirements
 

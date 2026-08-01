@@ -130,6 +130,7 @@ def render_derived_artifacts(spec: dict) -> list[str]:
 def render_field_sections(fields: list[dict]) -> list[str]:
     lines = ["## Canonical fields", ""]
     for field in fields:
+        validation = field.get("validation")
         lines.extend(
             [
                 f"### {field['label']}",
@@ -145,6 +146,17 @@ def render_field_sections(fields: list[dict]) -> list[str]:
         )
         for line in field["placeholder"].splitlines() or [""]:
             lines.append(f"> {line}" if line else ">")
+        if validation:
+            lines.extend(["", "Validation metadata:", "", f"- Kind: `{validation['kind']}`"])
+            if "branch" in validation:
+                lines.append(f"- Branch: `{validation['branch']}`")
+            if validation.get("allow_none"):
+                lines.append("- Allows `None`: yes")
+            if "count" in validation:
+                lines.append(f"- Count: `{validation['count']}`")
+            if validation.get("items"):
+                lines.append("- Items:")
+                lines.extend([f"  - {item}" for item in validation["items"]])
         lines.append("")
     return lines
 
@@ -194,6 +206,7 @@ def render_review_template(spec: dict) -> str:
         "",
     ]
     for field in spec["review_fields"]:
+        validation = field.get("validation", {})
         lines.extend(
             [
                 f"## {field['label']}",
@@ -202,9 +215,9 @@ def render_review_template(spec: dict) -> str:
                 "",
             ]
         )
-        if field["id"] == "acceptance_checklist":
-            for line in field["placeholder"].splitlines():
-                lines.append(line)
+        if validation.get("kind") == "checklist":
+            for item in validation.get("items", []):
+                lines.append(f"- [ ] {item}")
         else:
             lines.append(f"`{field['id']}` ({'required' if field['required'] else 'optional'}, `{field['input_type']}`)")
             lines.append("")
