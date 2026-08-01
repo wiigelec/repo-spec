@@ -1,0 +1,50 @@
+{
+  "spec_id": "repo.validation",
+  "title": "Validation",
+  "purpose": "Placeholder specification for bootstrap validation during repo-spec formation.",
+  "status": "candidate",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-VAL-001",
+      "text": "The repository shall provide one validation entry point."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/validate"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "type": "bootstrap_markdown",
+      "path": "specs/repo/validation.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/validation.md"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "spec_id": "repo.repository-structure",
+  "title": "Repository Structure",
+  "purpose": "Placeholder specification for the repository layout during bootstrap.",
+  "status": "candidate",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-STR-001",
+      "text": "The repository shall separate repository-spec source, product-spec source, schemas, derived docs, and tooling into distinct top-level areas."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/00-bootstrap-plan.md"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "type": "bootstrap_markdown",
+      "path": "specs/repo/repo-specs-bootstrap.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/repository-structure.md"
+    }
+  ]
+}

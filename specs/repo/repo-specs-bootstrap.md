@@ -40,6 +40,13 @@ Expected starting files:
 - `validation.md`;
 - `json-artifact-model.md`.
 
+Placeholder JSON files:
+
+- `manifest.json`;
+- `repository-structure.json`;
+- `development-workflow.json`;
+- `validation.json`.
+
 ## Bootstrap role
 
 This tree is the first place a chatbot should look when trying to understand the repository framework.

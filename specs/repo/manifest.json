@@ -1,0 +1,40 @@
+{
+  "spec_id": "repo.manifest",
+  "title": "Repository Spec Manifest",
+  "purpose": "Placeholder manifest for the repo-spec set during bootstrap.",
+  "status": "candidate",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-MAN-001",
+      "text": "The manifest shall identify the authoritative repository-spec JSON files."
+    }
+  ],
+  "dependencies": [],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "type": "bootstrap_markdown",
+      "path": "specs/repo/repo-specs-bootstrap.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/manifest.md"
+    }
+  ]
+}
