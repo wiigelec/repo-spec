@@ -91,7 +91,7 @@ def render_validation(spec: dict) -> str:
         + "\n## Purpose\n\n"
         + f"{spec['normative_requirements'][0]['text']}\n\n"
         + "## Closed checks\n\n"
-        + "1. JSON Schema conformance\n"
+        + "1. Conformance to the repository's JSON Schemas\n"
         + "2. Manifest completeness\n"
         + "3. Unique specification IDs\n"
         + "4. Resolvable references\n"

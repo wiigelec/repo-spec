@@ -15,7 +15,7 @@
     },
     {
       "id": "REPO-VAL-003",
-      "text": "The validation entry point shall enforce JSON Schema conformance."
+      "text": "The validation entry point shall enforce conformance to the repository's JSON Schemas."
     },
     {
       "id": "REPO-VAL-004",

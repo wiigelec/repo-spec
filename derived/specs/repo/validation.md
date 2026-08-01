@@ -20,7 +20,7 @@ The repository shall provide one validation entry point.
 
 ## Closed checks
 
-1. JSON Schema conformance
+1. Conformance to the repository's JSON Schemas
 2. Manifest completeness
 3. Unique specification IDs
 4. Resolvable references
