@@ -197,32 +197,23 @@ def render_governing_issue_example(spec: dict) -> str:
 
 
 def render_review_template(spec: dict) -> str:
+    fields = spec["review_fields"]
+    if len(fields) != 5:
+        raise ValueError("unexpected review-proposal template shape")
     lines = [
-        "## Development",
-        "",
-        "Use the PR's GitHub `Development` section to link the governing issue.",
-        "Do not use automatic close syntax unless the governing issue explicitly permits closure on merge.",
-        "When closure on merge is authorized, end the PR body with `Closes #<issue-number>`.",
+        "<!-- Link the governing issue in GitHub's Development section. -->",
+        "<!-- Do not use automatic close syntax unless the governing issue explicitly permits it. -->",
         "",
     ]
-    for field in spec["review_fields"]:
-        validation = field.get("validation", {})
-        lines.extend(
-            [
-                f"## {field['label']}",
-                "",
-                field["description"],
-                "",
-            ]
-        )
-        if validation.get("kind") == "checklist":
-            for item in validation.get("items", []):
-                lines.append(f"- [ ] {item}")
-        else:
-            lines.append(f"`{field['id']}` ({'required' if field['required'] else 'optional'}, `{field['input_type']}`)")
-            lines.append("")
-            lines.append(field["placeholder"])
-        lines.append("")
+    section_comments = {
+        "governing_issue": "#<issue-number>",
+        "summary": "<!-- What changed, why, and any specification or generated-artifact effects. -->",
+        "validation": "<!-- Commands run and results. -->",
+        "review_focus": "<!-- Identify the areas where reviewer judgment is most needed. -->",
+        "scope_notes": "<!-- State exclusions, limitations, deferred work, or post-merge requirements. Write None when there are none. -->",
+    }
+    for field in fields:
+        lines.extend([f"## {field['label']}", "", section_comments[field["id"]], ""])
     return "\n".join(lines)
 
 
