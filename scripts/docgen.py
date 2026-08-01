@@ -98,7 +98,13 @@ def render_references(spec: dict) -> list[str]:
 
 
 def render_derived_artifacts(spec: dict) -> list[str]:
-    return [f"- `{artifact['type']}`: `{artifact['path']}`" for artifact in spec.get("derived_artifacts", [])]
+    items = []
+    for artifact in spec.get("derived_artifacts", []):
+        line = f"- `{artifact['type']}`: `{artifact['path']}`"
+        if "renderer" in artifact:
+            line += f" (renderer: `{artifact['renderer']}`)"
+        items.append(line)
+    return items
 
 
 def render_field_sections(fields: list[dict]) -> list[str]:
@@ -191,10 +197,12 @@ def render_authoritative_specs(spec: dict) -> list[str]:
     return [f"- `{entry['spec_id']}` -> `{entry['path']}`" for entry in spec.get("authoritative_specs", [])]
 
 
-def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False, field_key: str | None = None) -> str:
+def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False) -> str:
     lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
-    if field_key is not None:
-        lines.extend(render_field_sections(spec[field_key]))
+    if "issue_fields" in spec:
+        lines.extend(render_field_sections(spec["issue_fields"]))
+    elif "review_fields" in spec:
+        lines.extend(render_field_sections(spec["review_fields"]))
     if include_authoritative_specs:
         lines.extend(render_list_section("Authoritative specs", render_authoritative_specs(spec)))
     lines.extend(render_list_section("Normative requirements", render_requirements(spec)))
@@ -209,11 +217,11 @@ def render_manifest(spec: dict) -> str:
 
 
 def render_governing_issue(spec: dict) -> str:
-    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec, field_key="issue_fields")
+    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec)
 
 
 def render_review_proposal(spec: dict) -> str:
-    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec, field_key="review_fields")
+    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec)
 
 
 def render_structure(spec: dict) -> str:
@@ -226,6 +234,13 @@ def render_workflow(spec: dict) -> str:
 
 def render_validation(spec: dict) -> str:
     return render_spec_projection("Validation", "specs/repo/validation.json", spec)
+
+
+SPECIAL_RENDERERS = {
+    "issue-form": render_issue_form,
+    "governing-issue-example": render_governing_issue_example,
+    "review-template": render_review_template,
+}
 
 
 def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
@@ -269,21 +284,21 @@ def check_orphaned_derived_markdown(repo_root: Path, expected_paths: set[str], s
 
 
 def render_all(repo_root: Path) -> dict[str, str]:
-    _manifest, specs, _paths, _actual_paths = load_specs(repo_root)
-    outputs = {
-        "derived/specs/repo/manifest.md": ("repo.manifest", render_manifest),
-        "derived/specs/repo/governing-issue.md": ("repo.governing-issue", render_governing_issue),
-        "derived/specs/repo/review-proposal.md": ("repo.review-proposal", render_review_proposal),
-        "derived/specs/repo/repository-structure.md": ("repo.repository-structure", render_structure),
-        "derived/specs/repo/development-workflow.md": ("repo.development-workflow", render_workflow),
-        "derived/specs/repo/validation.md": ("repo.validation", render_validation),
-        ".github/ISSUE_TEMPLATE/governing-issue.yml": ("repo.governing-issue", render_issue_form),
-        "docs/issues/governing-issue-example.md": ("repo.governing-issue", render_governing_issue_example),
-        ".github/PULL_REQUEST_TEMPLATE.md": ("repo.review-proposal", render_review_template),
-    }
+    _manifest, specs, paths, _actual_paths = load_specs(repo_root)
     rendered: dict[str, str] = {}
-    for target, (spec_id, renderer) in outputs.items():
-        rendered[target] = renderer(specs[spec_id])
+    for spec_id, spec in specs.items():
+        source_path = paths[spec_id]
+        for artifact in spec.get("derived_artifacts", []):
+            renderer_id = artifact.get("renderer")
+            if renderer_id is None:
+                if artifact["type"] != "markdown":
+                    raise ValueError(f"unsupported derived artifact type without renderer: {artifact['type']}")
+                rendered[artifact["path"]] = render_spec_projection(spec["title"], source_path, spec, include_authoritative_specs=(spec_id == "repo.manifest"))
+                continue
+            renderer = SPECIAL_RENDERERS.get(renderer_id)
+            if renderer is None:
+                raise ValueError(f"unsupported renderer: {renderer_id}")
+            rendered[artifact["path"]] = renderer(spec)
     declared_paths = declared_derived_artifact_paths(specs)
     if set(rendered) != declared_paths:
         raise ValueError("declared derived-artifacts do not match generated outputs")

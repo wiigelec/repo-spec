@@ -134,6 +134,10 @@
         "path": {
           "type": "string",
           "minLength": 1
+        },
+        "renderer": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },

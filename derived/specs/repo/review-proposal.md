@@ -266,5 +266,5 @@ Placeholder:
 ## Derived artifacts
 
 - `markdown`: `derived/specs/repo/review-proposal.md`
-- `markdown`: `.github/PULL_REQUEST_TEMPLATE.md`
+- `markdown`: `.github/PULL_REQUEST_TEMPLATE.md` (renderer: `review-template`)
 
