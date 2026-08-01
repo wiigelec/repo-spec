@@ -19,7 +19,6 @@ Do not mutate the repository until initialization is complete.
 Discovery entry points:
 - `README.md`
 - `docs/overview/PRODUCT-OVERVIEW.md`
-- `docs/plans/00-bootstrap-plan.md`
 
 Normative sources:
 - `specs/repo/*.json`

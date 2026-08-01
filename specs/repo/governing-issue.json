@@ -263,10 +263,6 @@
     },
     {
       "type": "artifact",
-      "path": "docs/plans/00-bootstrap-plan.md"
-    },
-    {
-      "type": "artifact",
       "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
     },
     {

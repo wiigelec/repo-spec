@@ -278,7 +278,6 @@ Validation metadata:
 - artifact: `docs/overview/product-overview/03-git-and-change-workflow.md`
 - artifact: `docs/overview/product-overview/04-human-ai-continuity.md`
 - artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
-- artifact: `docs/plans/00-bootstrap-plan.md`
 - artifact: `.github/ISSUE_TEMPLATE/governing-issue.yml`
 - artifact: `docs/issues/governing-issue-example.md`
 
