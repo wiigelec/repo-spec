@@ -4,6 +4,10 @@ Use the PR's GitHub `Development` section to link the governing issue.
 Do not use automatic close syntax unless the governing issue explicitly permits closure on merge.
 When closure on merge is authorized, end the PR body with `Closes #<issue-number>`.
 
+## Governing issue
+
+Record the issue URL or `#<number>` here for durable traceability.
+
 ## Change purpose
 
 Describe the bounded purpose of this pull request.

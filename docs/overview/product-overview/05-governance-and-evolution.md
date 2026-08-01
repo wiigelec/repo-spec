@@ -126,4 +126,4 @@ The framework must:
 - keep the repository valid while changes are made;
 - avoid combining product redefinition, renaming, authority replacement, implementation removal, and final cutover into one change.
 
-This overview establishes direction only. Detailed sequencing belongs in the current implementation plan.
+This overview establishes direction only. Detailed sequencing belongs in the current governing issue for active bounded work. Historical plans provide context only and do not authorize new work.
