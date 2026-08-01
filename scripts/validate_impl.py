@@ -229,6 +229,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
 def load_specs(repo_root: Path) -> dict[str, dict[str, Any]]:
     return {
         "repo.manifest": load_json(repo_root / "specs/repo/manifest.json"),
+        "repo.governing-issue": load_json(repo_root / "specs/repo/governing-issue.json"),
         "repo.repository-structure": load_json(repo_root / "specs/repo/repository-structure.json"),
         "repo.development-workflow": load_json(repo_root / "specs/repo/development-workflow.json"),
         "repo.validation": load_json(repo_root / "specs/repo/validation.json"),
@@ -238,12 +239,13 @@ def load_specs(repo_root: Path) -> dict[str, dict[str, Any]]:
 def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], schemas: dict[str, dict[str, Any]]) -> None:
     source_paths = {
         "repo.manifest": "specs/repo/manifest.json",
+        "repo.governing-issue": "specs/repo/governing-issue.json",
         "repo.repository-structure": "specs/repo/repository-structure.json",
         "repo.development-workflow": "specs/repo/development-workflow.json",
         "repo.validation": "specs/repo/validation.json",
     }
     validate_instance(specs["repo.manifest"], schemas["repo.manifest"], source_paths["repo.manifest"], schemas["repo.manifest"])
-    for spec_id in ("repo.repository-structure", "repo.development-workflow", "repo.validation"):
+    for spec_id in ("repo.governing-issue", "repo.repository-structure", "repo.development-workflow", "repo.validation"):
         validate_instance(specs[spec_id], schemas["repo.spec"], source_paths[spec_id], schemas["repo.spec"])
 
 
@@ -251,6 +253,7 @@ def check_manifest_completeness(specs: dict[str, dict[str, Any]]) -> None:
     manifest = specs["repo.manifest"]
     expected_paths = {
         "repo.manifest": "specs/repo/manifest.json",
+        "repo.governing-issue": "specs/repo/governing-issue.json",
         "repo.repository-structure": "specs/repo/repository-structure.json",
         "repo.development-workflow": "specs/repo/development-workflow.json",
         "repo.validation": "specs/repo/validation.json",
@@ -298,6 +301,7 @@ def check_generated_document_freshness(repo_root: Path, specs: dict[str, dict[st
     expected = render_all(repo_root)
     targets = {
         "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
+        "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
         "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
         "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
         "repo.validation": repo_root / "derived/specs/repo/validation.md",

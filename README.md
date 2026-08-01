@@ -12,6 +12,8 @@ Authority chain:
 - [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
 - [Bootstrap plan](docs/plans/00-bootstrap-plan.md)
 - [Repository manifest](specs/repo/manifest.json)
+- [Governing issue contract](specs/repo/governing-issue.json)
+- [Governing issue template](derived/specs/repo/governing-issue.md)
 - [Repository structure](specs/repo/repository-structure.json)
 - [Development workflow](specs/repo/development-workflow.json)
 - [Validation](specs/repo/validation.json)
@@ -29,6 +31,7 @@ Authority chain:
 - `docs/overview/PRODUCT-OVERVIEW.md` for high-level direction
 - `docs/plans/00-bootstrap-plan.md` for bootstrap sequencing
 - `specs/repo/` for repository-spec source JSON
+- `specs/repo/governing-issue.json` for the canonical governing-issue contract
 - `schemas/` for JSON Schema definitions
 - `derived/specs/repo/` for non-normative projections
 - `scripts/generate-docs` for deterministic Markdown generation

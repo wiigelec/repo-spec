@@ -18,6 +18,7 @@ def load_json(path: Path) -> dict:
 def load_specs(repo_root: Path) -> dict[str, dict]:
     return {
         "repo.manifest": load_json(repo_root / "specs/repo/manifest.json"),
+        "repo.governing-issue": load_json(repo_root / "specs/repo/governing-issue.json"),
         "repo.repository-structure": load_json(repo_root / "specs/repo/repository-structure.json"),
         "repo.development-workflow": load_json(repo_root / "specs/repo/development-workflow.json"),
         "repo.validation": load_json(repo_root / "specs/repo/validation.json"),
@@ -59,6 +60,62 @@ def render_manifest(spec: dict) -> str:
     ]
     for entry in spec["authoritative_specs"]:
         lines.append(f"- `{entry['spec_id']}` -> `{entry['path']}`")
+    return "\n".join(lines) + "\n"
+
+
+def render_governing_issue(spec: dict) -> str:
+    lines = [
+        header("Governing Issue Contract", "specs/repo/governing-issue.json"),
+        "## Canonical contract",
+        "",
+        "Use one governing issue for each bounded governed change. The canonical contract is repository-spec authority; Markdown and GitHub forms are adapters only.",
+        "",
+        "## Required fields",
+        "",
+    ]
+    lines.extend(f"- {field}" for field in [
+        "Change type",
+        "Problem statement",
+        "Intended outcome",
+        "Governing specifications",
+        "Accepted default-branch base",
+        "Intended branch",
+        "In-scope behavior and paths",
+        "Explicit exclusions",
+        "Dependencies and predecessor evidence",
+        "Ordered patch plan",
+        "Validation plan",
+        "Acceptance criteria",
+        "Completion gate",
+        "Open decisions or authority conflicts",
+        "Successor work explicitly not authorized",
+    ])
+    lines.extend(
+        [
+            "",
+            "## Required-field rules",
+            "",
+            "- Every required field shall contain substantive content.",
+            "- Empty placeholders do not satisfy required fields.",
+            "- Material scope changes must be recorded in the governing issue.",
+            "- The issue must exist before the implementation branch is created.",
+            "- The issue may close only after its completion gate is satisfied.",
+            "- Completion does not authorize unrelated successor work.",
+            "",
+            "## Optional fields",
+            "",
+            "- Related links",
+            "- Notes",
+            "- Risk callouts",
+            "- Session recovery context",
+            "",
+            "## Adapter guidance",
+            "",
+            "- The Markdown projection is the human-readable generic form.",
+            "- The GitHub Issue Form is the platform-specific form.",
+            "- Neither adapter may override the canonical repository specification.",
+        ]
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -119,6 +176,7 @@ def render_all(repo_root: Path) -> dict[str, str]:
     specs = load_specs(repo_root)
     return {
         "repo.manifest": render_manifest(specs["repo.manifest"]),
+        "repo.governing-issue": render_governing_issue(specs["repo.governing-issue"]),
         "repo.repository-structure": render_structure(specs["repo.repository-structure"]),
         "repo.development-workflow": render_workflow(specs["repo.development-workflow"]),
         "repo.validation": render_validation(specs["repo.validation"]),
@@ -129,6 +187,7 @@ def write_all(repo_root: Path) -> None:
     rendered = render_all(repo_root)
     targets = {
         "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
+        "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
         "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
         "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
         "repo.validation": repo_root / "derived/specs/repo/validation.md",
@@ -145,6 +204,7 @@ def main(argv: list[str]) -> int:
     rendered = render_all(repo_root)
     targets = {
         "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
+        "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
         "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
         "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
         "repo.validation": repo_root / "derived/specs/repo/validation.md",

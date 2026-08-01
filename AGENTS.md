@@ -21,3 +21,5 @@ Authoritative sources:
 - `specs/repo/*.json`
 - `docs/overview/PRODUCT-OVERVIEW.md`
 - `docs/plans/00-bootstrap-plan.md`
+
+When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `specs/repo/governing-issue.json`. Use the derived Markdown projection or the GitHub issue form only as adapters; they do not replace the canonical contract.

@@ -1,0 +1,112 @@
+{
+  "spec_id": "repo.governing-issue",
+  "title": "Governing Issue Contract",
+  "purpose": "Defines the canonical repository-generic governing issue structure and its subordinate presentation adapters.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-GI-001",
+      "text": "The repository shall define exactly one canonical governing-issue contract for bounded governed work."
+    },
+    {
+      "id": "REPO-GI-002",
+      "text": "The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, intended branch, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized."
+    },
+    {
+      "id": "REPO-GI-003",
+      "text": "The canonical governing-issue contract shall distinguish required fields from optional fields."
+    },
+    {
+      "id": "REPO-GI-004",
+      "text": "Empty placeholders shall not satisfy required governing-issue fields."
+    },
+    {
+      "id": "REPO-GI-005",
+      "text": "A governing issue shall exist before its implementation branch is created."
+    },
+    {
+      "id": "REPO-GI-006",
+      "text": "Material scope changes shall be recorded in the governing issue before they are treated as authorized scope."
+    },
+    {
+      "id": "REPO-GI-007",
+      "text": "A governing issue shall not be closed until its completion gate is satisfied."
+    },
+    {
+      "id": "REPO-GI-008",
+      "text": "Completion of a governing issue shall not authorize unrelated successor work."
+    },
+    {
+      "id": "REPO-GI-009",
+      "text": "The Markdown projection and GitHub issue form shall be adapters subordinate to the canonical repository specification."
+    },
+    {
+      "id": "REPO-GI-010",
+      "text": "The GitHub issue form shall represent every required canonical field."
+    },
+    {
+      "id": "REPO-GI-011",
+      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "artifact",
+      "path": "AGENTS.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/04-human-ai-continuity.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/00-bootstrap-plan.md"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/issues/governing-issue-example.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/governing-issue.md"
+    }
+  ]
+}

@@ -10,6 +10,10 @@
       "path": "specs/repo/manifest.json"
     },
     {
+      "spec_id": "repo.governing-issue",
+      "path": "specs/repo/governing-issue.json"
+    },
+    {
       "spec_id": "repo.repository-structure",
       "path": "specs/repo/repository-structure.json"
     },
@@ -36,6 +40,10 @@
     },
     {
       "type": "specification",
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "type": "specification",
       "spec_id": "repo.development-workflow"
     },
     {
@@ -47,6 +55,10 @@
     {
       "type": "markdown",
       "path": "derived/specs/repo/manifest.md"
+    },
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/governing-issue.md"
     }
   ]
 }
