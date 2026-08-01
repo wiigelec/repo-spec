@@ -1,7 +1,7 @@
-## Governing issue
+## Development
 
-- Related governing issue: `#<issue-number>`
-- Do not use automatic close syntax unless the governing issue explicitly permits closure on merge.
+Use the PR's GitHub `Development` section to link the governing issue.
+Do not use automatic close syntax unless the governing issue explicitly permits closure on merge.
 
 ## Change purpose
 
@@ -61,7 +61,7 @@ Ask reviewers for the specific checks you want.
 
 ## Acceptance checklist
 
-- [ ] Governing issue is linked and in scope.
+- [ ] Governing issue is linked in the PR's Development section and is in scope.
 - [ ] Accepted base and proposed head are exact SHAs.
 - [ ] Validation evidence names the exact head revision.
 - [ ] Review requests are focused on the bounded change.
