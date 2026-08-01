@@ -8,6 +8,8 @@ This document describes the early Markdown workflow used to shape the repository
 
 During bootstrap, files under `specs/repo/` are the authoritative bootstrap source. They cease being authoritative only through the documented JSON cutover.
 
+Bootstrap changes use the normal governed workflow: create a governing issue, work on an isolated branch, validate the exact branch head, and merge only after acceptance.
+
 ## Purpose
 
 Define the high-level process for working in the repository during bootstrap.
@@ -16,12 +18,14 @@ The goal is to make a fresh chatbot session able to infer the correct order of d
 
 ## High-level process
 
-1. Read the bootstrap discovery docs first.
-2. Identify whether the work belongs in `specs/repo`.
-3. Keep the work bounded to one coherent change.
-4. Update the Markdown bootstrap docs directly.
-5. Validate the changed files against the intended bootstrap shape.
-6. Preserve a clear boundary between repository framework material and any future product material.
+1. Establish a governing issue.
+2. Identify the accepted default-branch base.
+3. Create an isolated working branch.
+4. Read the bootstrap discovery docs first.
+5. Keep the work bounded to one coherent change.
+6. Update the Markdown bootstrap docs directly.
+7. Validate the changed files against the intended bootstrap shape.
+8. Preserve a clear boundary between repository framework material and any future product material.
 
 ## Bootstrap expectations
 

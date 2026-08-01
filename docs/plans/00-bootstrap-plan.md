@@ -8,6 +8,8 @@ This plan is non-normative. It describes the staged path from human-authored Mar
 
 Temporary bootstrap authority: files under `specs/repo/` are the authoritative bootstrap source until the documented JSON cutover.
 
+Bootstrap work follows the normal governed workflow: it begins from a governing issue and an isolated working branch.
+
 ## Purpose
 
 Establish the bootstrap process that will make the separation between `repo specs` and `product specs` unmistakable to a fresh AI session and to human maintainers.
