@@ -2,6 +2,7 @@
 
 Use the PR's GitHub `Development` section to link the governing issue.
 Do not use automatic close syntax unless the governing issue explicitly permits closure on merge.
+When closure on merge is authorized, end the PR body with `Closes #<issue-number>`.
 
 ## Change purpose
 
@@ -66,6 +67,7 @@ Ask reviewers for the specific checks you want.
 - [ ] Validation evidence names the exact head revision.
 - [ ] Review requests are focused on the bounded change.
 - [ ] No excluded work has been introduced.
+- [ ] PR body ends with the correct `Closes #<issue-number>` text when merge closes the issue.
 
 ## Post-merge validation and closure
 

@@ -80,7 +80,7 @@ Provide a canonical review-proposal contract, a deterministic Markdown projectio
 
 ## Completion gate
 
-This issue may close only after the exact proposed revision has been reviewed and accepted, post-merge validation has passed on the merged revision, and the governing issue closure requirement is satisfied. Do not use automatic issue-closing syntax in the pull request body if that would bypass the closure gate.
+This issue may close once the exact proposed revision has been reviewed and accepted, and the accepted revision has been merged. The pull request may use automatic issue-closing syntax when the merge is intended to authorize closure.
 
 ## Open decisions or authority conflicts
 
