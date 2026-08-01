@@ -28,7 +28,12 @@ def expect_render_change(description: str, renderer, spec: dict, mutate) -> None
 
 def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
     manifest = json.loads((repo_root / "specs/repo/manifest.json").read_text())
-    required_paths = ["specs/repo/manifest.json", "schemas/repo-manifest.schema.json", "schemas/repo-spec.schema.json"]
+    required_paths = [
+        "specs/repo/manifest.json",
+        "schemas/repo-manifest.schema.json",
+        "schemas/repo-artifact-taxonomy.schema.json",
+        "schemas/repo-spec.schema.json",
+    ]
     for entry in manifest["authoritative_specs"]:
         path = entry["path"]
         required_paths.append(path)

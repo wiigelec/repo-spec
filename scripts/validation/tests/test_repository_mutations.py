@@ -187,6 +187,14 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/artifact-taxonomy.json",
+            lambda spec: spec["artifact_classes"].__setitem__(1, copy.deepcopy(spec["artifact_classes"][0])) or spec,
+        )
+        expect_failure("artifact class uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties identifier")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         expect_failure("repository-relative path helper", lambda: resolve_repo_path(temp_repo, "../../etc/passwd"), "invalid repository-relative path")
 
     print("ok: repository mutation tests")

@@ -1,0 +1,307 @@
+{
+  "spec_id": "repo.artifact-taxonomy",
+  "title": "Framework Artifact Taxonomy",
+  "purpose": "Defines the normative artifact classes, authority roles, and ownership boundaries for repositories initialized from the framework.",
+  "status": "accepted",
+  "schema_version": "1",
+  "artifact_classes": [
+    {
+      "identifier": "discovery-record",
+      "label": "Discovery record",
+      "role": "discovery record",
+      "authority_category": "directional",
+      "authority_source": "initial discovery context",
+      "source_of_truth_rule": "Captures the problem framing, constraints, and early evidence that justify later planning.",
+      "mutability": "append-only until superseded",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "product-overview",
+      "label": "Product overview",
+      "role": "overview",
+      "authority_category": "directional",
+      "authority_source": "durable product direction",
+      "source_of_truth_rule": "States intended outcome, boundaries, and success conditions without becoming normative product authority.",
+      "mutability": "mutable through governed updates",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "implementation-plan",
+      "label": "Implementation plan",
+      "role": "plan",
+      "authority_category": "planning",
+      "authority_source": "accepted plan and sequencing decisions",
+      "source_of_truth_rule": "Coordinates work order and construction stages but cannot redefine accepted specifications.",
+      "mutability": "mutable through governed replanning",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "repository-specification",
+      "label": "Repository specification",
+      "role": "repository specification",
+      "authority_category": "normative",
+      "authority_source": "accepted repository specification",
+      "source_of_truth_rule": "Defines repository-generic requirements that all initialized repositories inherit.",
+      "mutability": "immutable once accepted except through governed revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "authoritative"
+    },
+    {
+      "identifier": "product-specification",
+      "label": "Product specification",
+      "role": "product specification",
+      "authority_category": "normative",
+      "authority_source": "accepted product specification",
+      "source_of_truth_rule": "Defines product-specific requirements and semantics for a repository derived from the framework.",
+      "mutability": "immutable once accepted except through governed revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "product-specific",
+      "manifest_participation": "authoritative"
+    },
+    {
+      "identifier": "schema",
+      "label": "Schema",
+      "role": "schema",
+      "authority_category": "normative",
+      "authority_source": "accepted schema definition",
+      "source_of_truth_rule": "Validates repository-local structure but does not supersede the specification it constrains.",
+      "mutability": "immutable once accepted except through governed revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "manifest-index",
+      "label": "Manifest or index",
+      "role": "manifest or index",
+      "authority_category": "normative",
+      "authority_source": "accepted registry or index",
+      "source_of_truth_rule": "Lists authoritative entries and derived locations without granting authority to the listing itself.",
+      "mutability": "mutable only through governed registry updates",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "authoritative"
+    },
+    {
+      "identifier": "derived-projection",
+      "label": "Derived projection",
+      "role": "derived projection",
+      "authority_category": "generated",
+      "authority_source": "declared source specification or manifest",
+      "source_of_truth_rule": "Must be reproducible from declared sources and must never override the source authority.",
+      "mutability": "regenerable only",
+      "generation_mode": "deterministic",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "derived",
+      "source_artifacts": [
+        "repo.manifest",
+        "repo.governing-issue",
+        "repo.review-proposal"
+      ]
+    },
+    {
+      "identifier": "product-artifact",
+      "label": "Product artifact",
+      "role": "product artifact",
+      "authority_category": "implementation",
+      "authority_source": "product repository state",
+      "source_of_truth_rule": "Realizes accepted product specifications but does not define their semantics.",
+      "mutability": "mutable under implementation control",
+      "generation_mode": "manual",
+      "validation_ownership": "product",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "test-artifact",
+      "label": "Test artifact",
+      "role": "test artifact",
+      "authority_category": "implementation",
+      "authority_source": "implementation and validation practice",
+      "source_of_truth_rule": "Evaluates conformance or behavior but does not define product semantics unless an accepted specification assigns that role.",
+      "mutability": "mutable under implementation control",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "conformance-artifact",
+      "label": "Conformance artifact",
+      "role": "conformance artifact",
+      "authority_category": "evidentiary",
+      "authority_source": "validation evidence",
+      "source_of_truth_rule": "Records whether a product artifact conforms to an accepted specification without becoming the specification itself.",
+      "mutability": "append-only evidence record",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "hosting-platform-profile",
+      "label": "Hosting-platform profile",
+      "role": "platform profile",
+      "authority_category": "profile-specific",
+      "authority_source": "hosting-platform constraints",
+      "source_of_truth_rule": "Captures provider-specific behavior and configuration without becoming portable framework authority.",
+      "mutability": "mutable within the governed profile boundary",
+      "generation_mode": "manual",
+      "validation_ownership": "platform",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "validation-evidence",
+      "label": "Validation evidence",
+      "role": "validation evidence",
+      "authority_category": "evidentiary",
+      "authority_source": "validated repository state",
+      "source_of_truth_rule": "Documents the exact revision or state that was tested and the outcome observed.",
+      "mutability": "append-only evidence record",
+      "generation_mode": "deterministic",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "validated repository revision",
+        "validation command output"
+      ]
+    },
+    {
+      "identifier": "review-record",
+      "label": "Review record",
+      "role": "review record",
+      "authority_category": "review",
+      "authority_source": "review decision process",
+      "source_of_truth_rule": "Captures reviewer judgment about a proposed revision without itself becoming the accepted revision.",
+      "mutability": "append-only review record",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "acceptance-record",
+      "label": "Acceptance record",
+      "role": "acceptance record",
+      "authority_category": "acceptance",
+      "authority_source": "explicit acceptance decision",
+      "source_of_truth_rule": "Records acceptance of an exact proposed revision without authorizing unrelated successor work.",
+      "mutability": "append-only acceptance record",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "release-record",
+      "label": "Release record",
+      "role": "release record",
+      "authority_category": "release",
+      "authority_source": "published exact revision",
+      "source_of_truth_rule": "Records publication of an accepted revision and does not redefine the underlying specification.",
+      "mutability": "append-only release record",
+      "generation_mode": "manual",
+      "validation_ownership": "release",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "REPO-AT-001",
+      "text": "The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes."
+    },
+    {
+      "id": "REPO-AT-002",
+      "text": "The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, and profile-specific authority categories."
+    },
+    {
+      "id": "REPO-AT-003",
+      "text": "The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation."
+    },
+    {
+      "id": "REPO-AT-004",
+      "text": "An overview, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative specification authority."
+    },
+    {
+      "id": "REPO-AT-005",
+      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized."
+    },
+    {
+      "id": "REPO-AT-006",
+      "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority."
+    },
+    {
+      "id": "REPO-AT-007",
+      "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-framework-architecture-plan.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/01-product-direction.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/02-development-and-specifications.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/artifact-taxonomy.md"
+    }
+  ]
+}

@@ -210,8 +210,10 @@ def schema_matches(instance: Any, schema: dict[str, Any], source: str, root_sche
 def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     schemas = {
         "repo.manifest": load_json(repo_root / "schemas/repo-manifest.schema.json"),
+        "repo.artifact-taxonomy": load_json(repo_root / "schemas/repo-artifact-taxonomy.schema.json"),
         "repo.spec": load_json(repo_root / "schemas/repo-spec.schema.json"),
     }
     ensure_schema_keywords(schemas["repo.manifest"], "schemas/repo-manifest.schema.json")
+    ensure_schema_keywords(schemas["repo.artifact-taxonomy"], "schemas/repo-artifact-taxonomy.schema.json")
     ensure_schema_keywords(schemas["repo.spec"], "schemas/repo-spec.schema.json")
     return schemas

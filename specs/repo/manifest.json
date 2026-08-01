@@ -22,6 +22,10 @@
       "path": "specs/repo/repository-structure.json"
     },
     {
+      "spec_id": "repo.artifact-taxonomy",
+      "path": "specs/repo/artifact-taxonomy.json"
+    },
+    {
       "spec_id": "repo.development-workflow",
       "path": "specs/repo/development-workflow.json"
     },

@@ -115,12 +115,66 @@ def run_schema_mutations(repo_root: Path) -> None:
         "pattern mismatch",
     )
 
+    taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    expect_failure(
+        "artifact taxonomy root type",
+        lambda: validate_instance([], schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
+        "must be an object",
+    )
+
+    taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    taxonomy_spec["artifact_classes"][0]["identifier"] = "unknown-artifact"
+    expect_failure(
+        "unknown artifact class",
+        lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
+        "oneOf mismatch",
+    )
+
+    taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    taxonomy_spec["artifact_classes"][1]["authority_category"] = "normative"
+    expect_failure(
+        "plan authority category",
+        lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
+        "oneOf mismatch",
+    )
+
+    taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    taxonomy_spec["artifact_classes"][7].pop("source_artifacts")
+    expect_failure(
+        "generated artifact without source",
+        lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
+        "oneOf mismatch",
+    )
+
+    taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    taxonomy_spec["artifact_classes"][8]["authority_category"] = "normative"
+    expect_failure(
+        "product artifact authority",
+        lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
+        "oneOf mismatch",
+    )
+
+    taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    taxonomy_spec["artifact_classes"][11]["portability_category"] = "framework-generic"
+    expect_failure(
+        "profile-specific portability",
+        lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
+        "oneOf mismatch",
+    )
+
     mutated_specs = copy.deepcopy(specs)
     mutated_specs["repo.repository-structure"]["dependencies"][0]["spec_id"] = "repo.missing-spec"
     expect_failure(
         "unresolved dependency",
         lambda: check_acyclic_dependencies(mutated_specs),
         "unresolved dependency",
+    )
+
+    expect_render_change(
+        "artifact taxonomy projected class",
+        lambda spec: render_spec_projection(specs["repo.artifact-taxonomy"]["title"], paths["repo.artifact-taxonomy"], spec),
+        specs["repo.artifact-taxonomy"],
+        lambda spec: spec["artifact_classes"][0].__setitem__("source_of_truth_rule", "Changed source rule"),
     )
 
     expect_render_change(
