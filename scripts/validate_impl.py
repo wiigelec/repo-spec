@@ -333,6 +333,11 @@ def check_generated_document_freshness(repo_root: Path) -> None:
     expect(proc.returncode == 0, f"generated-document freshness failed: {proc.stderr.strip() or proc.stdout.strip() or 'check failed'}")
 
 
+def check_generated_document_write_behavior(repo_root: Path) -> None:
+    proc = subprocess.run([str(repo_root / "scripts/generate-docs")], cwd=repo_root, capture_output=True, text=True)
+    expect(proc.returncode == 0, f"generated-document write failed: {proc.stderr.strip() or proc.stdout.strip() or 'write failed'}")
+
+
 def check_clean_failure_behavior(repo_root: Path) -> None:
     proc = subprocess.run([str(repo_root / "scripts/validate"), "--self-test-failure"], cwd=repo_root, capture_output=True, text=True)
     expect(proc.returncode != 0, "clean failure behavior failed")
@@ -584,6 +589,22 @@ def run_mutation_tests(repo_root: Path) -> None:
             "missing derived artifact",
             lambda: check_generated_document_freshness(temp_repo),
             "generated-document freshness failed",
+        )
+
+        temp_repo = clone_repo()
+        (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
+        expect_failure(
+            "orphaned derived markdown write",
+            lambda: check_generated_document_write_behavior(temp_repo),
+            "orphaned derived markdown",
+        )
+
+        temp_repo = clone_repo()
+        (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
+        expect_failure(
+            "orphaned derived markdown check",
+            lambda: check_generated_document_freshness(temp_repo),
+            "orphaned derived markdown",
         )
 
         mutated_spec = copy.deepcopy(specs["repo.validation"])
