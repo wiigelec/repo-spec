@@ -2,4 +2,6 @@ Validation guidance lives in `specs/repo/validation.json` and `derived/specs/rep
 
 The only enforcement entry point is `scripts/validate`.
 
+Deterministic Markdown generation lives in `scripts/generate-docs`.
+
 Validation is closed to the seven checks defined in the validation spec.

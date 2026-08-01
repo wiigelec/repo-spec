@@ -17,6 +17,7 @@ Repository bootstrap and specification workspace.
 - [Derived validation](derived/specs/repo/validation.md)
 - [Repo spec schema](schemas/repo-spec.schema.json)
 - [Repo manifest schema](schemas/repo-manifest.schema.json)
+- [Generate docs](scripts/generate-docs)
 
 ## Entry points
 
@@ -26,4 +27,5 @@ Repository bootstrap and specification workspace.
 - `specs/repo/json-artifact-model.md` for the JSON artifact model
 - `schemas/` for JSON Schema definitions
 - `derived/specs/repo/` for non-normative projections
+- `scripts/generate-docs` for deterministic Markdown generation
 - `scripts/validate` for the validation entry point

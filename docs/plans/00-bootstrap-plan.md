@@ -74,6 +74,8 @@ The JSON should be:
 
 Define the separate directory tree for non-normative Markdown projections.
 
+`scripts/generate-docs` should write deterministic Markdown projections into `derived/specs/repo/`.
+
 The derived docs should:
 
 - be mechanically traceable to JSON sources;

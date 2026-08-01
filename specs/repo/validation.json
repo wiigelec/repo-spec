@@ -73,6 +73,10 @@
     {
       "type": "artifact",
       "path": "scripts/validate"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/generate-docs"
     }
   ],
   "derived_artifacts": [
