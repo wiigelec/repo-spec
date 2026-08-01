@@ -17,13 +17,8 @@ from pathlib import Path
 from typing import Any
 
 from docgen import (
+    check_generated_outputs,
     load_specs as load_repo_specs,
-    render_governing_issue,
-    render_issue_form,
-    render_manifest,
-    render_review_proposal,
-    render_review_template,
-    render_validation,
     resolve_repo_path as resolve_repo_path_impl,
 )
 
@@ -365,8 +360,10 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
 
 
 def check_generated_document_freshness(repo_root: Path) -> None:
-    proc = subprocess.run([str(repo_root / "scripts/generate-docs"), "--check"], cwd=repo_root, capture_output=True, text=True)
-    expect(proc.returncode == 0, f"generated-document freshness failed: {proc.stderr.strip() or proc.stdout.strip() or 'check failed'}")
+    try:
+        check_generated_outputs(repo_root)
+    except ValueError as exc:
+        fail(f"generated-document freshness failed: {exc}")
 
 
 def check_generated_document_write_behavior(repo_root: Path) -> None:

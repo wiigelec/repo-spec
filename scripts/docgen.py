@@ -347,6 +347,16 @@ def write_all(repo_root: Path) -> None:
         path.write_text(content)
 
 
+def check_generated_outputs(repo_root: Path) -> None:
+    rendered = render_all(repo_root)
+    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/repo/") and path.endswith(".md")}
+    check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
+    for relative_path, content in rendered.items():
+        path = resolve_repo_path(repo_root, relative_path)
+        if not path.exists() or path.read_text() != content:
+            raise ValueError(f"stale generated document: {path.relative_to(repo_root)}")
+
+
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     mode = argv[2] if len(argv) > 2 else "--write"

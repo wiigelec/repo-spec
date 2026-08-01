@@ -10,6 +10,14 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from docgen import (
+    render_governing_issue,
+    render_issue_form,
+    render_manifest,
+    render_review_proposal,
+    render_review_template,
+    render_validation,
+)
 from validate_impl import (
     ValidationFailure,
     check_acyclic_dependencies,
@@ -19,12 +27,6 @@ from validate_impl import (
     fail,
     load_repo_schemas,
     load_specs,
-    render_governing_issue,
-    render_issue_form,
-    render_manifest,
-    render_review_proposal,
-    render_review_template,
-    render_validation,
     resolve_repo_path,
     validate_instance,
     validate_repo,
