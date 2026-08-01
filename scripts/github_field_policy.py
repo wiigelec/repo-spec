@@ -93,6 +93,10 @@ def require_numbered_steps(name: str, value: str) -> None:
         raise ValueError(f"missing ordered steps in {name}")
 
 
+def is_none_response(value: str) -> bool:
+    return re.sub(r"[\s\.,:;!?]+$", "", normalize(value).lower()) == "none"
+
+
 def load_required_labels(repo_root: Path, spec_path: str, collection_key: str) -> list[str]:
     spec = json.loads((repo_root / spec_path).read_text())
     return [field["label"] for field in spec[collection_key] if field.get("required") is True]
@@ -114,7 +118,7 @@ def check_issue(body: str, required_labels: list[str]) -> None:
         elif name == "Dependencies and predecessor evidence":
             require_meaningful(name, value)
         elif name in ALLOW_NONE:
-            if normalize(value).lower() == "none":
+            if is_none_response(value):
                 continue
             require_meaningful(name, value)
         else:
@@ -138,7 +142,7 @@ def check_pr(body: str, required_labels: list[str]) -> None:
         elif name == "Validation commands and results":
             require_meaningful(name, value)
         elif name in ALLOW_NONE:
-            if normalize(value).lower() == "none":
+            if is_none_response(value):
                 continue
             require_meaningful(name, value)
         else:
