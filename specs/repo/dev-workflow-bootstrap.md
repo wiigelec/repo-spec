@@ -6,6 +6,8 @@ Bootstrap discovery document for the high-level development process.
 
 This document describes the early Markdown workflow used to shape the repository-spec foundation before any normalized JSON authority exists.
 
+During bootstrap, files under `specs/repo/` are the authoritative bootstrap source. They cease being authoritative only through the documented JSON cutover.
+
 ## Purpose
 
 Define the high-level process for working in the repository during bootstrap.

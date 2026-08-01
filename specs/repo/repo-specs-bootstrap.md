@@ -6,6 +6,8 @@ Bootstrap discovery document for `specs/repo`.
 
 This document is a temporary Markdown starting point. It explains the purpose and layout of the repository-spec tree before the bootstrap material is promoted to normalized JSON.
 
+During bootstrap, files under `specs/repo/` are the authoritative bootstrap source. They cease being authoritative only through the documented JSON cutover.
+
 ## Purpose
 
 The `specs/repo` tree defines the portable foundation for this repository.

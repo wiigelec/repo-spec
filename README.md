@@ -15,4 +15,5 @@ Repository bootstrap and specification workspace.
 - `docs/overview/PRODUCT-OVERVIEW.md` for high-level direction
 - `docs/plans/00-bootstrap-plan.md` for bootstrap sequencing
 - `specs/repo/` for repository-spec bootstrap material
-- `validate/README.md` and `scripts/validate` for validation-related guidance
+- `specs/repo/validation.md` for the validation specification
+- `scripts/validate` for the validation entry point
