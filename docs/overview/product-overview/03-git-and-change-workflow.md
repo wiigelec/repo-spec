@@ -71,7 +71,7 @@ A normal bounded change should use a Git-compatible workflow:
 8. Commit only the bounded paths.
 9. Repeat the patch-and-validation loop as required.
 10. Validate the exact proposed branch head.
-11. Push and create a review proposal.
+11. Push and create a review proposal using the canonical review-proposal contract.
 12. Require exact-head CI and semantic review.
 13. Explicitly accept the exact revision.
 14. Merge the accepted revision.

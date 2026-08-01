@@ -22,4 +22,4 @@ Authoritative sources:
 - `docs/overview/PRODUCT-OVERVIEW.md`
 - `docs/plans/00-bootstrap-plan.md`
 
-When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `specs/repo/governing-issue.json`. Use the derived Markdown projection or the GitHub issue form only as adapters; they do not replace the canonical contract.
+When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `specs/repo/governing-issue.json`. When drafting or updating pull requests or equivalent review proposals, chatbot sessions shall load and follow the canonical review-proposal contract in `specs/repo/review-proposal.json`. Use the derived Markdown projection, GitHub issue form, or GitHub pull request template only as adapters; they do not replace the canonical contracts.

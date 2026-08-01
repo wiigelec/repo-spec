@@ -14,6 +14,8 @@ Authority chain:
 - [Repository manifest](specs/repo/manifest.json)
 - [Governing issue contract](specs/repo/governing-issue.json)
 - [Governing issue template](derived/specs/repo/governing-issue.md)
+- [Review proposal contract](specs/repo/review-proposal.json)
+- [Review proposal template](derived/specs/repo/review-proposal.md)
 - [Repository structure](specs/repo/repository-structure.json)
 - [Development workflow](specs/repo/development-workflow.json)
 - [Validation](specs/repo/validation.json)
@@ -32,6 +34,7 @@ Authority chain:
 - `docs/plans/00-bootstrap-plan.md` for bootstrap sequencing
 - `specs/repo/` for repository-spec source JSON
 - `specs/repo/governing-issue.json` for the canonical governing-issue contract
+- `specs/repo/review-proposal.json` for the canonical review-proposal contract
 - `schemas/` for JSON Schema definitions
 - `derived/specs/repo/` for non-normative projections
 - `scripts/generate-docs` for deterministic Markdown generation
