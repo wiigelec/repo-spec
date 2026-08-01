@@ -35,213 +35,45 @@ Validation metadata:
 
 - Kind: `issue-link`
 
-### Change purpose
+### Summary
 
-- Field ID: `change_purpose`
+- Field ID: `summary`
 - Required: yes
 - Input type: `textarea`
 
-Describe the bounded purpose of this pull request.
+Summarize what changed, why, and any specification or generated-artifact effects.
 
 Placeholder:
-> Summarize the bounded purpose of the change.
+> Summarize the change and note any authority or artifact impact.
 
 Validation metadata:
 
 - Kind: `meaningful`
 
-### Accepted base revision
+### Validation
 
-- Field ID: `accepted_base_revision`
-- Required: yes
-- Input type: `input`
-
-Exact commit SHA for the accepted base.
-
-Placeholder:
-> <exact base SHA>
-
-Validation metadata:
-
-- Kind: `commit-sha`
-- Count: `1`
-
-### Proposed head revision
-
-- Field ID: `proposed_head_revision`
-- Required: yes
-- Input type: `input`
-
-Exact commit SHA for the proposed review head.
-
-Placeholder:
-> <exact head SHA>
-
-Validation metadata:
-
-- Kind: `commit-sha`
-- Count: `1`
-
-### Controlling specifications
-
-- Field ID: `controlling_specifications`
+- Field ID: `validation`
 - Required: yes
 - Input type: `textarea`
 
-List the governing specifications and records.
+List the validation commands run and the results observed.
 
 Placeholder:
-> repo.manifest, repo.development-workflow, and any other governing specs.
-
-Validation metadata:
-
-- Kind: `spec-reference`
-
-### Summary of implemented changes
-
-- Field ID: `summary_of_implemented_changes`
-- Required: yes
-- Input type: `textarea`
-
-Summarize what changed and why.
-
-Placeholder:
-> Summarize the implemented changes.
+> scripts/validate
+> scripts/validate --mutation-tests
+> Results and any noteworthy revision evidence.
 
 Validation metadata:
 
 - Kind: `meaningful`
 
-### Changed-path inventory
+### Review focus
 
-- Field ID: `changed_path_inventory`
+- Field ID: `review_focus`
 - Required: yes
 - Input type: `textarea`
 
-List every changed path.
-
-Placeholder:
-> List the changed repository paths.
-
-Validation metadata:
-
-- Kind: `path-list`
-
-### Scope and exclusions
-
-- Field ID: `scope_and_exclusions`
-- Required: yes
-- Input type: `textarea`
-
-Confirm scope, and list explicit exclusions.
-
-Placeholder:
-> Confirm in-scope work and any explicit exclusions.
-
-Validation metadata:
-
-- Kind: `meaningful`
-
-### Patch or commit summary
-
-- Field ID: `patch_or_commit_summary`
-- Required: yes
-- Input type: `textarea`
-
-Provide the ordered patch or commit sequence.
-
-Placeholder:
-> 1. ... 2. ... 3. ...
-
-Validation metadata:
-
-- Kind: `numbered-steps`
-
-### Specification and authority effects
-
-- Field ID: `specification_and_authority_effects`
-- Required: yes
-- Input type: `textarea`
-
-State any specification, projection, or authority impact.
-
-Placeholder:
-> Describe any specification or authority impact.
-
-Validation metadata:
-
-- Kind: `meaningful`
-
-### Generated-artifact effects
-
-- Field ID: `generated_artifact_effects`
-- Required: yes
-- Input type: `textarea`
-
-State which generated artifacts changed and whether they are current.
-
-Placeholder:
-> List generated artifacts and freshness status.
-
-Validation metadata:
-
-- Kind: `meaningful`
-- Allows `None`: yes
-
-### Validation commands and results
-
-- Field ID: `validation_commands_and_results`
-- Required: yes
-- Input type: `textarea`
-
-List the exact commands run and the results observed.
-
-Placeholder:
-> scripts/validate, scripts/validate --mutation-tests, and outcomes.
-
-Validation metadata:
-
-- Kind: `meaningful`
-
-### Exact revision validated
-
-- Field ID: `exact_revision_validated`
-- Required: yes
-- Input type: `input`
-
-Exact commit SHA that the validation evidence covers.
-
-Placeholder:
-> <exact validated SHA>
-
-Validation metadata:
-
-- Kind: `commit-sha`
-- Count: `1`
-
-### Known limitations or questions
-
-- Field ID: `known_limitations_or_questions`
-- Required: yes
-- Input type: `textarea`
-
-List unresolved questions, deviations, or limitations.
-
-Placeholder:
-> List any known limitations or open questions.
-
-Validation metadata:
-
-- Kind: `meaningful`
-- Allows `None`: yes
-
-### Focused review requests
-
-- Field ID: `focused_review_requests`
-- Required: yes
-- Input type: `textarea`
-
-Ask reviewers for the specific checks you want.
+Ask reviewers to inspect the areas where judgment is most needed.
 
 Placeholder:
 > Call out the review focus areas.
@@ -250,53 +82,16 @@ Validation metadata:
 
 - Kind: `meaningful`
 
-### Acceptance checklist
+### Scope notes
 
-- Field ID: `acceptance_checklist`
+- Field ID: `scope_notes`
 - Required: yes
 - Input type: `textarea`
 
-List the checklist items that must be satisfied.
+State exclusions, limitations, deferred work, or post-merge requirements. Use None when there are none.
 
 Placeholder:
-> List the checklist items that must be satisfied.
-
-Validation metadata:
-
-- Kind: `checklist`
-- Items:
-  - Governing issue is linked
-  - Accepted base and head are exact SHAs
-  - Validation evidence names the exact head revision
-  - Review requests are focused
-  - No excluded work has been introduced
-  - PR body ends with the correct closure text when applicable
-
-### Post-merge validation and closure
-
-- Field ID: `post_merge_validation_and_closure`
-- Required: yes
-- Input type: `textarea`
-
-Describe the required post-merge validation and the issue-closure gate.
-
-Placeholder:
-> Describe any post-merge validation and the issue-closure gate.
-
-Validation metadata:
-
-- Kind: `meaningful`
-
-### Successor work not included
-
-- Field ID: `successor_work_not_included`
-- Required: yes
-- Input type: `textarea`
-
-List deferred follow-up work that this PR does not authorize.
-
-Placeholder:
-> List any deferred successor work.
+> Write None when there are no exclusions or deferred items.
 
 Validation metadata:
 
@@ -306,9 +101,9 @@ Validation metadata:
 ## Normative requirements
 
 - `REPO-RP-001`: The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes.
-- `REPO-RP-002`: The canonical review-proposal contract shall include structured field definitions covering the required fields governing issue, change purpose, accepted base revision, proposed head revision, controlling specifications, summary of implemented changes, changed-path inventory, confirmation of scope and exclusions, ordered patch or commit summary, specification and authority effects, generated-artifact effects, validation commands and results, exact revision validated, known limitations, deviations, or unresolved questions, focused review requests, acceptance checklist, post-merge validation and issue-closure requirements, and successor work explicitly not included.
-- `REPO-RP-003`: The canonical review-proposal contract shall require accepted base and proposed head revisions to be identified by exact commit SHA.
-- `REPO-RP-004`: Validation evidence in a review proposal shall identify the exact head revision tested.
+- `REPO-RP-002`: The canonical review-proposal contract shall include structured field definitions for the reviewer-facing fields governing issue, summary, validation, review focus, and scope notes, while allowing evidence that is already captured by GitHub metadata, automated checks, the governing issue, or linked validation records to remain outside the visible PR body.
+- `REPO-RP-003`: The canonical review-proposal contract shall distinguish reviewer-facing PR-body content from metadata and linked evidence.
+- `REPO-RP-004`: Validation evidence in a review proposal shall identify the exact revision tested, either directly or through GitHub metadata and linked records.
 - `REPO-RP-005`: New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated.
 - `REPO-RP-006`: Passing validation shall not be treated as semantic review.
 - `REPO-RP-007`: Review shall not be treated as acceptance.
@@ -319,7 +114,8 @@ Validation metadata:
 - `REPO-RP-012`: GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification.
 - `REPO-RP-013`: When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract.
 - `REPO-RP-014`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions.
-- `REPO-RP-015`: The GitHub pull request template shall represent every required canonical review-proposal field.
+- `REPO-RP-015`: The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere.
+- `REPO-RP-016`: The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content.
 
 ## Dependencies
 

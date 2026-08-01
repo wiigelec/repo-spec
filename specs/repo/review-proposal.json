@@ -17,201 +17,45 @@
       }
     },
     {
-      "id": "change_purpose",
-      "label": "Change purpose",
+      "id": "summary",
+      "label": "Summary",
       "required": true,
       "input_type": "textarea",
-      "description": "Describe the bounded purpose of this pull request.",
-      "placeholder": "Summarize the bounded purpose of the change.",
+      "description": "Summarize what changed, why, and any specification or generated-artifact effects.",
+      "placeholder": "Summarize the change and note any authority or artifact impact.",
       "validation": {
         "kind": "meaningful"
       }
     },
     {
-      "id": "accepted_base_revision",
-      "label": "Accepted base revision",
-      "required": true,
-      "input_type": "input",
-      "description": "Exact commit SHA for the accepted base.",
-      "placeholder": "<exact base SHA>",
-      "validation": {
-        "kind": "commit-sha",
-        "count": 1
-      }
-    },
-    {
-      "id": "proposed_head_revision",
-      "label": "Proposed head revision",
-      "required": true,
-      "input_type": "input",
-      "description": "Exact commit SHA for the proposed review head.",
-      "placeholder": "<exact head SHA>",
-      "validation": {
-        "kind": "commit-sha",
-        "count": 1
-      }
-    },
-    {
-      "id": "controlling_specifications",
-      "label": "Controlling specifications",
+      "id": "validation",
+      "label": "Validation",
       "required": true,
       "input_type": "textarea",
-      "description": "List the governing specifications and records.",
-      "placeholder": "repo.manifest, repo.development-workflow, and any other governing specs.",
-      "validation": {
-        "kind": "spec-reference"
-      }
-    },
-    {
-      "id": "summary_of_implemented_changes",
-      "label": "Summary of implemented changes",
-      "required": true,
-      "input_type": "textarea",
-      "description": "Summarize what changed and why.",
-      "placeholder": "Summarize the implemented changes.",
+      "description": "List the validation commands run and the results observed.",
+      "placeholder": "scripts/validate\nscripts/validate --mutation-tests\nResults and any noteworthy revision evidence.",
       "validation": {
         "kind": "meaningful"
       }
     },
     {
-      "id": "changed_path_inventory",
-      "label": "Changed-path inventory",
+      "id": "review_focus",
+      "label": "Review focus",
       "required": true,
       "input_type": "textarea",
-      "description": "List every changed path.",
-      "placeholder": "List the changed repository paths.",
-      "validation": {
-        "kind": "path-list"
-      }
-    },
-    {
-      "id": "scope_and_exclusions",
-      "label": "Scope and exclusions",
-      "required": true,
-      "input_type": "textarea",
-      "description": "Confirm scope, and list explicit exclusions.",
-      "placeholder": "Confirm in-scope work and any explicit exclusions.",
-      "validation": {
-        "kind": "meaningful"
-      }
-    },
-    {
-      "id": "patch_or_commit_summary",
-      "label": "Patch or commit summary",
-      "required": true,
-      "input_type": "textarea",
-      "description": "Provide the ordered patch or commit sequence.",
-      "placeholder": "1. ... 2. ... 3. ...",
-      "validation": {
-        "kind": "numbered-steps"
-      }
-    },
-    {
-      "id": "specification_and_authority_effects",
-      "label": "Specification and authority effects",
-      "required": true,
-      "input_type": "textarea",
-      "description": "State any specification, projection, or authority impact.",
-      "placeholder": "Describe any specification or authority impact.",
-      "validation": {
-        "kind": "meaningful"
-      }
-    },
-    {
-      "id": "generated_artifact_effects",
-      "label": "Generated-artifact effects",
-      "required": true,
-      "input_type": "textarea",
-      "description": "State which generated artifacts changed and whether they are current.",
-      "placeholder": "List generated artifacts and freshness status.",
-      "validation": {
-        "kind": "meaningful",
-        "allow_none": true
-      }
-    },
-    {
-      "id": "validation_commands_and_results",
-      "label": "Validation commands and results",
-      "required": true,
-      "input_type": "textarea",
-      "description": "List the exact commands run and the results observed.",
-      "placeholder": "scripts/validate, scripts/validate --mutation-tests, and outcomes.",
-      "validation": {
-        "kind": "meaningful"
-      }
-    },
-    {
-      "id": "exact_revision_validated",
-      "label": "Exact revision validated",
-      "required": true,
-      "input_type": "input",
-      "description": "Exact commit SHA that the validation evidence covers.",
-      "placeholder": "<exact validated SHA>",
-      "validation": {
-        "kind": "commit-sha",
-        "count": 1
-      }
-    },
-    {
-      "id": "known_limitations_or_questions",
-      "label": "Known limitations or questions",
-      "required": true,
-      "input_type": "textarea",
-      "description": "List unresolved questions, deviations, or limitations.",
-      "placeholder": "List any known limitations or open questions.",
-      "validation": {
-        "kind": "meaningful",
-        "allow_none": true
-      }
-    },
-    {
-      "id": "focused_review_requests",
-      "label": "Focused review requests",
-      "required": true,
-      "input_type": "textarea",
-      "description": "Ask reviewers for the specific checks you want.",
+      "description": "Ask reviewers to inspect the areas where judgment is most needed.",
       "placeholder": "Call out the review focus areas.",
       "validation": {
         "kind": "meaningful"
       }
     },
     {
-      "id": "acceptance_checklist",
-      "label": "Acceptance checklist",
+      "id": "scope_notes",
+      "label": "Scope notes",
       "required": true,
       "input_type": "textarea",
-      "description": "List the checklist items that must be satisfied.",
-      "placeholder": "List the checklist items that must be satisfied.",
-      "validation": {
-        "kind": "checklist",
-        "items": [
-          "Governing issue is linked",
-          "Accepted base and head are exact SHAs",
-          "Validation evidence names the exact head revision",
-          "Review requests are focused",
-          "No excluded work has been introduced",
-          "PR body ends with the correct closure text when applicable"
-        ]
-      }
-    },
-    {
-      "id": "post_merge_validation_and_closure",
-      "label": "Post-merge validation and closure",
-      "required": true,
-      "input_type": "textarea",
-      "description": "Describe the required post-merge validation and the issue-closure gate.",
-      "placeholder": "Describe any post-merge validation and the issue-closure gate.",
-      "validation": {
-        "kind": "meaningful"
-      }
-    },
-    {
-      "id": "successor_work_not_included",
-      "label": "Successor work not included",
-      "required": true,
-      "input_type": "textarea",
-      "description": "List deferred follow-up work that this PR does not authorize.",
-      "placeholder": "List any deferred successor work.",
+      "description": "State exclusions, limitations, deferred work, or post-merge requirements. Use None when there are none.",
+      "placeholder": "Write None when there are no exclusions or deferred items.",
       "validation": {
         "kind": "meaningful",
         "allow_none": true
@@ -225,15 +69,15 @@
     },
     {
       "id": "REPO-RP-002",
-      "text": "The canonical review-proposal contract shall include structured field definitions covering the required fields governing issue, change purpose, accepted base revision, proposed head revision, controlling specifications, summary of implemented changes, changed-path inventory, confirmation of scope and exclusions, ordered patch or commit summary, specification and authority effects, generated-artifact effects, validation commands and results, exact revision validated, known limitations, deviations, or unresolved questions, focused review requests, acceptance checklist, post-merge validation and issue-closure requirements, and successor work explicitly not included."
+      "text": "The canonical review-proposal contract shall include structured field definitions for the reviewer-facing fields governing issue, summary, validation, review focus, and scope notes, while allowing evidence that is already captured by GitHub metadata, automated checks, the governing issue, or linked validation records to remain outside the visible PR body."
     },
     {
       "id": "REPO-RP-003",
-      "text": "The canonical review-proposal contract shall require accepted base and proposed head revisions to be identified by exact commit SHA."
+      "text": "The canonical review-proposal contract shall distinguish reviewer-facing PR-body content from metadata and linked evidence."
     },
     {
       "id": "REPO-RP-004",
-      "text": "Validation evidence in a review proposal shall identify the exact head revision tested."
+      "text": "Validation evidence in a review proposal shall identify the exact revision tested, either directly or through GitHub metadata and linked records."
     },
     {
       "id": "REPO-RP-005",
@@ -277,7 +121,11 @@
     },
     {
       "id": "REPO-RP-015",
-      "text": "The GitHub pull request template shall represent every required canonical review-proposal field."
+      "text": "The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere."
+    },
+    {
+      "id": "REPO-RP-016",
+      "text": "The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content."
     }
   ],
   "dependencies": [
