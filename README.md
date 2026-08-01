@@ -1,6 +1,10 @@
 # repo-spec
 
-Repository bootstrap and specification workspace.
+Repository specification workspace.
+
+Authority chain:
+
+`README.md` -> `specs/repo/*.json` -> `derived/specs/repo/*.md`
 
 ## Start here
 
