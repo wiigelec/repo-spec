@@ -44,6 +44,14 @@
       "type": "array",
       "items": { "$ref": "#/$defs/field" }
     },
+    "supersedes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/specId" }
+    },
+    "superseded_by": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/specId" }
+    },
     "normative_requirements": {
       "type": "array",
       "items": { "$ref": "#/$defs/requirement" }
@@ -98,6 +106,10 @@
             "type": {
               "type": "string",
               "const": "specification"
+            },
+            "kind": {
+              "type": "string",
+              "enum": ["normative", "historical"]
             },
             "spec_id": {
               "type": "string",
@@ -172,6 +184,10 @@
           "minLength": 1
         }
       }
+    },
+    "specId": {
+      "type": "string",
+      "pattern": "^(repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
     }
   }
 }

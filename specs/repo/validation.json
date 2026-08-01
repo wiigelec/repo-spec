@@ -27,11 +27,11 @@
     },
     {
       "id": "REPO-VAL-006",
-      "text": "The validation entry point shall enforce resolvable references."
+      "text": "The validation entry point shall enforce resolvable references according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository."
     },
     {
       "id": "REPO-VAL-007",
-      "text": "The validation entry point shall enforce acyclic dependencies."
+      "text": "The validation entry point shall enforce acyclic dependencies and allow dependency targets only from candidate or accepted specifications."
     },
     {
       "id": "REPO-VAL-008",
@@ -44,6 +44,14 @@
     {
       "id": "REPO-VAL-010",
       "text": "The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior."
+    },
+    {
+      "id": "REPO-VAL-011",
+      "text": "The repository shall represent replacement lineage with explicit supersedes and superseded_by relations."
+    },
+    {
+      "id": "REPO-VAL-012",
+      "text": "The validation entry point shall enforce that replacement-lineage relations resolve to manifest-listed specifications and do not self-reference."
     }
   ],
   "dependencies": [
