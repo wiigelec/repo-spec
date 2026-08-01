@@ -197,8 +197,8 @@ def render_governing_issue_example(spec: dict) -> str:
 
 
 def render_review_template(spec: dict) -> str:
-    labels = [field["label"] for field in spec["review_fields"]]
-    if len(labels) != 5:
+    fields = spec["review_fields"]
+    if len(fields) != 5:
         raise ValueError("unexpected review-proposal template shape")
     lines = [
         "<!-- Link the governing issue in GitHub's Development section. -->",
@@ -206,14 +206,14 @@ def render_review_template(spec: dict) -> str:
         "",
     ]
     section_comments = {
-        "Governing issue": "#<issue-number>",
-        "Summary": "<!-- What changed, why, and any specification or generated-artifact effects. -->",
-        "Validation": "<!-- Commands run and results. -->",
-        "Review focus": "<!-- Identify the areas where reviewer judgment is most needed. -->",
-        "Scope notes": "<!-- State exclusions, limitations, deferred work, or post-merge requirements. Write None when there are none. -->",
+        "governing_issue": "#<issue-number>",
+        "summary": "<!-- What changed, why, and any specification or generated-artifact effects. -->",
+        "validation": "<!-- Commands run and results. -->",
+        "review_focus": "<!-- Identify the areas where reviewer judgment is most needed. -->",
+        "scope_notes": "<!-- State exclusions, limitations, deferred work, or post-merge requirements. Write None when there are none. -->",
     }
-    for label in labels:
-        lines.extend([f"## {label}", "", section_comments[label], ""])
+    for field in fields:
+        lines.extend([f"## {field['label']}", "", section_comments[field["id"]], ""])
     return "\n".join(lines)
 
 
