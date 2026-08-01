@@ -12,10 +12,13 @@ The repository shall provide one validation entry point.
 
 ## Closed checks
 
-1. Required files
-2. Directory separation
-3. Relative links
-4. Correct failure exit status
+1. JSON Schema conformance
+2. Manifest completeness
+3. Unique specification IDs
+4. Resolvable references
+5. Acyclic dependencies
+6. Generated-document freshness
+7. Clean failure behavior
 
 ## Boundaries
 
@@ -25,4 +28,5 @@ The repository shall provide one validation entry point.
 - no prose checks
 - no Git workflow checks
 - no hosting-platform checks
-- no future-schema checks
+- no product-spec checks
+- no source-code checks

@@ -14,7 +14,6 @@
     "normative_requirements",
     "dependencies",
     "references",
-    "source_artifacts",
     "derived_artifacts"
   ],
   "properties": {
@@ -53,10 +52,6 @@
     "references": {
       "type": "array",
       "items": { "$ref": "#/$defs/reference" }
-    },
-    "source_artifacts": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/sourceArtifact" }
     },
     "derived_artifacts": {
       "type": "array",
@@ -130,21 +125,6 @@
           "else": { "required": ["path"] }
         }
       ]
-    },
-    "sourceArtifact": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["type", "path"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["bootstrap_markdown"]
-        },
-        "path": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
     },
     "derivedArtifact": {
       "type": "object",

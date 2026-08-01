@@ -82,7 +82,7 @@ The derived docs should:
 
 ### Phase 5: Validation gates
 
-Define exactly four checks: required files, directory separation, relative links, and correct failure exit status.
+Define the closed validation set: JSON Schema conformance, manifest completeness, unique specification IDs, resolvable references, acyclic dependencies, generated-document freshness, and clean failure behavior.
 
 The transition condition is user-triggered once a fresh AI session can reliably infer:
 
