@@ -16,43 +16,6 @@ ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
 SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*\b")
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
 
-ISSUE_REQUIRED = [
-    "Change type",
-    "Problem statement",
-    "Intended outcome",
-    "Governing specifications",
-    "Accepted default-branch base",
-    "In-scope behavior and paths",
-    "Explicit exclusions",
-    "Dependencies and predecessor evidence",
-    "Ordered patch plan",
-    "Validation plan",
-    "Acceptance criteria",
-    "Completion gate",
-    "Open decisions or authority conflicts",
-    "Successor work explicitly not authorized",
-]
-
-PR_REQUIRED = [
-    "Governing issue",
-    "Change purpose",
-    "Accepted base revision",
-    "Proposed head revision",
-    "Controlling specifications",
-    "Summary of implemented changes",
-    "Changed-path inventory",
-    "Scope and exclusions",
-    "Patch or commit summary",
-    "Specification and authority effects",
-    "Generated-artifact effects",
-    "Validation commands and results",
-    "Exact revision validated",
-    "Known limitations or questions",
-    "Focused review requests",
-    "Post-merge validation and closure",
-    "Successor work not included",
-]
-
 ALLOW_NONE = {
     "Open decisions or authority conflicts",
     "Known limitations or questions",
@@ -130,9 +93,18 @@ def require_numbered_steps(name: str, value: str) -> None:
         raise ValueError(f"missing ordered steps in {name}")
 
 
-def check_issue(body: str) -> None:
+def is_none_response(value: str) -> bool:
+    return re.sub(r"[\s\.,:;!?]+$", "", normalize(value).lower()) == "none"
+
+
+def load_required_labels(repo_root: Path, spec_path: str, collection_key: str) -> list[str]:
+    spec = json.loads((repo_root / spec_path).read_text())
+    return [field["label"] for field in spec[collection_key] if field.get("required") is True]
+
+
+def check_issue(body: str, required_labels: list[str]) -> None:
     sections = parse_sections(body)
-    for name in ISSUE_REQUIRED:
+    for name in required_labels:
         value = require_section(sections, name)
         if name == "Accepted default-branch base":
             if not re.fullmatch(r"main at [0-9a-f]{7,40}", normalize(value)):
@@ -146,16 +118,16 @@ def check_issue(body: str) -> None:
         elif name == "Dependencies and predecessor evidence":
             require_meaningful(name, value)
         elif name in ALLOW_NONE:
-            if normalize(value).lower() == "none":
+            if is_none_response(value):
                 continue
             require_meaningful(name, value)
         else:
             require_meaningful(name, value)
 
 
-def check_pr(body: str) -> None:
+def check_pr(body: str, required_labels: list[str]) -> None:
     sections = parse_sections(body)
-    for name in PR_REQUIRED:
+    for name in required_labels:
         value = require_section(sections, name)
         if name == "Governing issue":
             require_issue_link(name, value)
@@ -170,7 +142,7 @@ def check_pr(body: str) -> None:
         elif name == "Validation commands and results":
             require_meaningful(name, value)
         elif name in ALLOW_NONE:
-            if normalize(value).lower() == "none":
+            if is_none_response(value):
                 continue
             require_meaningful(name, value)
         else:
@@ -195,6 +167,10 @@ def main(argv: list[str]) -> int:
     args = parser.parse_args(argv[1:])
 
     try:
+        repo_root = Path(args.repo_root)
+        issue_required_labels = load_required_labels(repo_root, "specs/repo/governing-issue.json", "issue_fields")
+        pr_required_labels = load_required_labels(repo_root, "specs/repo/review-proposal.json", "review_fields")
+
         if args.body_file:
             body = Path(args.body_file).read_text()
         else:
@@ -202,9 +178,9 @@ def main(argv: list[str]) -> int:
             body = load_body_from_event(event_path, args.mode)
 
         if args.mode == "issue":
-            check_issue(body)
+            check_issue(body, issue_required_labels)
         else:
-            check_pr(body)
+            check_pr(body, pr_required_labels)
         return 0
     except Exception as exc:
         return fail(str(exc))
