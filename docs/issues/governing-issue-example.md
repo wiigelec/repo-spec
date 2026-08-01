@@ -1,76 +1,168 @@
 # Governing Issue Example
 
-## Change type
+## Canonical fields
 
-Standardization of the governing issue format.
+### Change type
 
-## Problem statement
+- Field ID: `change_type`
+- Required: yes
+- Input type: `textarea`
 
-Independent chatbot sessions need one durable governing-issue structure that survives outside conversation history.
+What kind of bounded governed change is this?
 
-## Intended outcome
+Placeholder:
+> Standardization, feature, maintenance, documentation, migration, or other bounded change.
 
-Provide a repository-generic canonical governing issue contract, a Markdown projection, and a GitHub Issue Form adapter.
+### Problem statement
 
-## Governing specifications
+- Field ID: `problem_statement`
+- Required: yes
+- Input type: `textarea`
 
-- `repo.manifest`
-- `repo.repository-structure`
-- `repo.development-workflow`
-- `repo.governing-issue`
+What problem or gap does this issue address?
 
-## Accepted default-branch base
+Placeholder:
+> Explain the need in repository terms.
 
-`main` at `1bdaa98`.
+### Intended outcome
 
-## In-scope behavior and paths
+- Field ID: `intended_outcome`
+- Required: yes
+- Input type: `textarea`
 
-- `specs/repo/governing-issue.json`
-- `derived/specs/repo/governing-issue.md`
-- `.github/ISSUE_TEMPLATE/governing-issue.yml`
-- `AGENTS.md`
-- `README.md`
-- `scripts/docgen.py`
-- `scripts/validate_impl.py`
+What outcome should be true when the work is complete?
 
-## Explicit exclusions
+Placeholder:
+> State the expected end state.
 
-- Previously identified validator fixes.
-- Unrelated repository restructuring.
-- Product-spec changes.
+### Governing specifications
 
-## Dependencies and predecessor evidence
+- Field ID: `governing_specifications`
+- Required: yes
+- Input type: `textarea`
 
-- Merged chatbot initialization work in `issue-19-chatbot-initialization`.
-- Accepted repository-spec manifests and workflow records.
+List the authoritative specifications and relevant records.
 
-## Ordered patch plan
+Placeholder:
+> repo.manifest, repo.development-workflow, and any other governing specs.
 
-1. Add the canonical governing-issue contract.
-2. Add the Markdown projection.
-3. Add the GitHub Issue Form adapter.
-4. Update discoverability and validation tables.
-5. Regenerate derived artifacts.
+### Accepted default-branch base
 
-## Validation plan
+- Field ID: `accepted_default_branch_base`
+- Required: yes
+- Input type: `input`
 
-- Run `scripts/validate`.
-- Inspect the complete diff.
+Exact accepted default-branch revision or reference.
 
-## Acceptance criteria
+Placeholder:
+> main at <commit>
 
-- One canonical issue format is discoverable without conversation history.
-- The GitHub form covers every required canonical field.
-- The Markdown form can express the same structure without GitHub.
+### In-scope behavior and paths
 
-## Completion gate
+- Field ID: `in_scope_behavior_and_paths`
+- Required: yes
+- Input type: `textarea`
 
-This issue may close only after the canonical contract, adapters, example issue, generated artifacts, and validation all pass.
+What behavior and repository paths are explicitly in scope?
 
-## Open decisions or authority conflicts
+Placeholder:
+> List files, directories, and behavior to change.
 
-None.
+### Explicit exclusions
 
-## Successor work explicitly not authorized
+- Field ID: `explicit_exclusions`
+- Required: yes
+- Input type: `textarea`
 
-This issue does not authorize product-spec redesign, validator hardening unrelated to this contract, or broad repository refactors.
+What is explicitly out of scope?
+
+Placeholder:
+> List excluded behaviors, files, or follow-up work.
+
+### Dependencies and predecessor evidence
+
+- Field ID: `dependencies_and_predecessor_evidence`
+- Required: yes
+- Input type: `textarea`
+
+What must exist first, and what evidence supports this work?
+
+Placeholder:
+> Prior issues, commits, specs, validation evidence, or other predecessors.
+
+### Ordered patch plan
+
+- Field ID: `ordered_patch_plan`
+- Required: yes
+- Input type: `textarea`
+
+State the implementation steps in order.
+
+Placeholder:
+> 1. ... 2. ... 3. ...
+
+### Validation plan
+
+- Field ID: `validation_plan`
+- Required: yes
+- Input type: `textarea`
+
+How will the change be validated?
+
+Placeholder:
+> scripts/validate, focused checks, evidence capture.
+
+### Acceptance criteria
+
+- Field ID: `acceptance_criteria`
+- Required: yes
+- Input type: `textarea`
+
+What must be true for this issue to be accepted?
+
+Placeholder:
+> List concrete acceptance checks.
+
+### Completion gate
+
+- Field ID: `completion_gate`
+- Required: yes
+- Input type: `textarea`
+
+What must be satisfied before this issue can close?
+
+Placeholder:
+> State the closure condition.
+
+### Open decisions or authority conflicts
+
+- Field ID: `open_decisions_or_authority_conflicts`
+- Required: yes
+- Input type: `textarea`
+
+Record any unresolved authority questions or conflicts.
+
+Placeholder:
+> None, or list conflicts explicitly.
+
+### Successor work explicitly not authorized
+
+- Field ID: `successor_work_not_authorized`
+- Required: yes
+- Input type: `textarea`
+
+What follow-on work does this issue not authorize?
+
+Placeholder:
+> List unrelated or deferred successor work.
+
+### Optional context
+
+- Field ID: `optional_context`
+- Required: no
+- Input type: `textarea`
+
+Optional notes that help with session recovery or review.
+
+Placeholder:
+> Related links, assumptions, risks, or recovery notes.

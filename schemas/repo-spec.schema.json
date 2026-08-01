@@ -36,6 +36,14 @@
       "type": "string",
       "const": "1"
     },
+    "issue_fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/field" }
+    },
+    "review_fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/field" }
+    },
     "normative_requirements": {
       "type": "array",
       "items": { "$ref": "#/$defs/requirement" }
@@ -121,9 +129,39 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["markdown"]
+          "enum": ["markdown", "yaml"]
         },
         "path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "required", "input_type", "description", "placeholder"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "input_type": {
+          "type": "string",
+          "enum": ["input", "textarea"]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "placeholder": {
           "type": "string",
           "minLength": 1
         }

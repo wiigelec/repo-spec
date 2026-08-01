@@ -101,12 +101,100 @@ def render_derived_artifacts(spec: dict) -> list[str]:
     return [f"- `{artifact['type']}`: `{artifact['path']}`" for artifact in spec.get("derived_artifacts", [])]
 
 
+def render_field_sections(fields: list[dict]) -> list[str]:
+    lines = ["## Canonical fields", ""]
+    for field in fields:
+        lines.extend(
+            [
+                f"### {field['label']}",
+                "",
+                f"- Field ID: `{field['id']}`",
+                f"- Required: {'yes' if field['required'] else 'no'}",
+                f"- Input type: `{field['input_type']}`",
+                "",
+                field["description"],
+                "",
+                "Placeholder:",
+            ]
+        )
+        for line in field["placeholder"].splitlines() or [""]:
+            lines.append(f"> {line}" if line else ">")
+        lines.append("")
+    return lines
+
+
+def render_issue_form(spec: dict) -> str:
+    lines = [
+        "name: Governing issue",
+        "description: Create a standardized governing issue for bounded governed work.",
+        'title: "[governed] "',
+        "labels:",
+        "  - governed-work",
+        "body:",
+        "  - type: markdown",
+        "    attributes:",
+        "      value: |",
+        "        Use this form to create the canonical governing issue. Required fields must be filled with substantive content; placeholders do not count as complete.",
+    ]
+    for field in spec["issue_fields"]:
+        lines.extend(
+            [
+                f"  - type: {field['input_type']}",
+                f"    id: {field['id']}",
+                "    attributes:",
+                f"      label: {json.dumps(field['label'])}",
+                f"      description: {json.dumps(field['description'])}",
+                f"      placeholder: {json.dumps(field['placeholder'])}",
+                "    validations:",
+                f"      required: {'true' if field['required'] else 'false'}",
+            ]
+        )
+    return "\n".join(lines) + "\n"
+
+
+def render_governing_issue_example(spec: dict) -> str:
+    lines = ["# Governing Issue Example", ""]
+    lines.extend(render_field_sections(spec["issue_fields"]))
+    return "\n".join(lines)
+
+
+def render_review_template(spec: dict) -> str:
+    lines = [
+        "## Development",
+        "",
+        "Use the PR's GitHub `Development` section to link the governing issue.",
+        "Do not use automatic close syntax unless the governing issue explicitly permits closure on merge.",
+        "When closure on merge is authorized, end the PR body with `Closes #<issue-number>`.",
+        "",
+    ]
+    for field in spec["review_fields"]:
+        lines.extend(
+            [
+                f"## {field['label']}",
+                "",
+                field["description"],
+                "",
+            ]
+        )
+        if field["id"] == "acceptance_checklist":
+            for line in field["placeholder"].splitlines():
+                lines.append(line)
+        else:
+            lines.append(f"`{field['id']}` ({'required' if field['required'] else 'optional'}, `{field['input_type']}`)")
+            lines.append("")
+            lines.append(field["placeholder"])
+        lines.append("")
+    return "\n".join(lines)
+
+
 def render_authoritative_specs(spec: dict) -> list[str]:
     return [f"- `{entry['spec_id']}` -> `{entry['path']}`" for entry in spec.get("authoritative_specs", [])]
 
 
-def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False) -> str:
+def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False, field_key: str | None = None) -> str:
     lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
+    if field_key is not None:
+        lines.extend(render_field_sections(spec[field_key]))
     if include_authoritative_specs:
         lines.extend(render_list_section("Authoritative specs", render_authoritative_specs(spec)))
     lines.extend(render_list_section("Normative requirements", render_requirements(spec)))
@@ -121,11 +209,11 @@ def render_manifest(spec: dict) -> str:
 
 
 def render_governing_issue(spec: dict) -> str:
-    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec)
+    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec, field_key="issue_fields")
 
 
 def render_review_proposal(spec: dict) -> str:
-    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec)
+    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec, field_key="review_fields")
 
 
 def render_structure(spec: dict) -> str:
@@ -144,7 +232,7 @@ def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
     paths: list[str] = []
     for spec in specs.values():
         for artifact in spec.get("derived_artifacts", []):
-            if artifact.get("type") != "markdown":
+            if artifact.get("type") not in {"markdown", "yaml"}:
                 raise ValueError(f"unsupported derived artifact type: {artifact.get('type')}")
             paths.append(artifact["path"])
     if len(paths) != len(set(paths)):
@@ -154,25 +242,20 @@ def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
 
 def render_all(repo_root: Path) -> dict[str, str]:
     _manifest, specs, _paths, _actual_paths = load_specs(repo_root)
-    renderers = {
-        "repo.manifest": render_manifest,
-        "repo.governing-issue": render_governing_issue,
-        "repo.review-proposal": render_review_proposal,
-        "repo.repository-structure": render_structure,
-        "repo.development-workflow": render_workflow,
-        "repo.validation": render_validation,
-    }
-    targets = {
-        "repo.manifest": "derived/specs/repo/manifest.md",
-        "repo.governing-issue": "derived/specs/repo/governing-issue.md",
-        "repo.review-proposal": "derived/specs/repo/review-proposal.md",
-        "repo.repository-structure": "derived/specs/repo/repository-structure.md",
-        "repo.development-workflow": "derived/specs/repo/development-workflow.md",
-        "repo.validation": "derived/specs/repo/validation.md",
+    outputs = {
+        "derived/specs/repo/manifest.md": ("repo.manifest", render_manifest),
+        "derived/specs/repo/governing-issue.md": ("repo.governing-issue", render_governing_issue),
+        "derived/specs/repo/review-proposal.md": ("repo.review-proposal", render_review_proposal),
+        "derived/specs/repo/repository-structure.md": ("repo.repository-structure", render_structure),
+        "derived/specs/repo/development-workflow.md": ("repo.development-workflow", render_workflow),
+        "derived/specs/repo/validation.md": ("repo.validation", render_validation),
+        ".github/ISSUE_TEMPLATE/governing-issue.yml": ("repo.governing-issue", render_issue_form),
+        "docs/issues/governing-issue-example.md": ("repo.governing-issue", render_governing_issue_example),
+        ".github/PULL_REQUEST_TEMPLATE.md": ("repo.review-proposal", render_review_template),
     }
     rendered: dict[str, str] = {}
-    for spec_id, target in targets.items():
-        rendered[target] = renderers[spec_id](specs[spec_id])
+    for target, (spec_id, renderer) in outputs.items():
+        rendered[target] = renderer(specs[spec_id])
     declared_paths = declared_derived_artifact_paths(specs)
     if set(rendered) != declared_paths:
         raise ValueError("declared derived-artifacts do not match generated outputs")

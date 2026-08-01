@@ -4,6 +4,128 @@
   "purpose": "Defines the canonical repository-generic governing issue structure and its subordinate presentation adapters.",
   "status": "accepted",
   "schema_version": "1",
+  "issue_fields": [
+    {
+      "id": "change_type",
+      "label": "Change type",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What kind of bounded governed change is this?",
+      "placeholder": "Standardization, feature, maintenance, documentation, migration, or other bounded change."
+    },
+    {
+      "id": "problem_statement",
+      "label": "Problem statement",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What problem or gap does this issue address?",
+      "placeholder": "Explain the need in repository terms."
+    },
+    {
+      "id": "intended_outcome",
+      "label": "Intended outcome",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What outcome should be true when the work is complete?",
+      "placeholder": "State the expected end state."
+    },
+    {
+      "id": "governing_specifications",
+      "label": "Governing specifications",
+      "required": true,
+      "input_type": "textarea",
+      "description": "List the authoritative specifications and relevant records.",
+      "placeholder": "repo.manifest, repo.development-workflow, and any other governing specs."
+    },
+    {
+      "id": "accepted_default_branch_base",
+      "label": "Accepted default-branch base",
+      "required": true,
+      "input_type": "input",
+      "description": "Exact accepted default-branch revision or reference.",
+      "placeholder": "main at <commit>"
+    },
+    {
+      "id": "in_scope_behavior_and_paths",
+      "label": "In-scope behavior and paths",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What behavior and repository paths are explicitly in scope?",
+      "placeholder": "List files, directories, and behavior to change."
+    },
+    {
+      "id": "explicit_exclusions",
+      "label": "Explicit exclusions",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What is explicitly out of scope?",
+      "placeholder": "List excluded behaviors, files, or follow-up work."
+    },
+    {
+      "id": "dependencies_and_predecessor_evidence",
+      "label": "Dependencies and predecessor evidence",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What must exist first, and what evidence supports this work?",
+      "placeholder": "Prior issues, commits, specs, validation evidence, or other predecessors."
+    },
+    {
+      "id": "ordered_patch_plan",
+      "label": "Ordered patch plan",
+      "required": true,
+      "input_type": "textarea",
+      "description": "State the implementation steps in order.",
+      "placeholder": "1. ... 2. ... 3. ..."
+    },
+    {
+      "id": "validation_plan",
+      "label": "Validation plan",
+      "required": true,
+      "input_type": "textarea",
+      "description": "How will the change be validated?",
+      "placeholder": "scripts/validate, focused checks, evidence capture."
+    },
+    {
+      "id": "acceptance_criteria",
+      "label": "Acceptance criteria",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What must be true for this issue to be accepted?",
+      "placeholder": "List concrete acceptance checks."
+    },
+    {
+      "id": "completion_gate",
+      "label": "Completion gate",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What must be satisfied before this issue can close?",
+      "placeholder": "State the closure condition."
+    },
+    {
+      "id": "open_decisions_or_authority_conflicts",
+      "label": "Open decisions or authority conflicts",
+      "required": true,
+      "input_type": "textarea",
+      "description": "Record any unresolved authority questions or conflicts.",
+      "placeholder": "None, or list conflicts explicitly."
+    },
+    {
+      "id": "successor_work_not_authorized",
+      "label": "Successor work explicitly not authorized",
+      "required": true,
+      "input_type": "textarea",
+      "description": "What follow-on work does this issue not authorize?",
+      "placeholder": "List unrelated or deferred successor work."
+    },
+    {
+      "id": "optional_context",
+      "label": "Optional context",
+      "required": false,
+      "input_type": "textarea",
+      "description": "Optional notes that help with session recovery or review.",
+      "placeholder": "Related links, assumptions, risks, or recovery notes."
+    }
+  ],
   "normative_requirements": [
     {
       "id": "REPO-GI-001",
@@ -11,7 +133,7 @@
     },
     {
       "id": "REPO-GI-002",
-      "text": "The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized."
+      "text": "The canonical governing-issue contract shall include structured field definitions for the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized, plus any optional fields the canonical contract permits."
     },
     {
       "id": "REPO-GI-003",
@@ -47,7 +169,7 @@
     },
     {
       "id": "REPO-GI-011",
-      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure."
+      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure and its structured field definitions."
     }
   ],
   "dependencies": [
@@ -107,6 +229,14 @@
     {
       "type": "markdown",
       "path": "derived/specs/repo/governing-issue.md"
+    },
+    {
+      "type": "yaml",
+      "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
+    },
+    {
+      "type": "markdown",
+      "path": "docs/issues/governing-issue-example.md"
     }
   ]
 }
