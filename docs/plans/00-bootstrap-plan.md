@@ -58,6 +58,8 @@ Define the rudimentary workflow a fresh AI session must be able to infer, includ
 
 Define the first machine-readable spec shape and the closed artifact model.
 
+The initial placeholder JSON set should land as one file per specification under `specs/repo/`.
+
 The JSON should be:
 
 - normalized for machine readability;

@@ -10,6 +10,7 @@ Repository bootstrap and specification workspace.
 - [Development workflow bootstrap](specs/repo/dev-workflow-bootstrap.md)
 - [Validation bootstrap](specs/repo/validation.md)
 - [JSON artifact model](specs/repo/json-artifact-model.md)
+- [Repository manifest](specs/repo/manifest.json)
 
 ## Entry points
 
