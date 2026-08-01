@@ -16,12 +16,15 @@ ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
 SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*\b")
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
 
-ALLOW_NONE = {
-    "Open decisions or authority conflicts",
-    "Known limitations or questions",
-    "Successor work explicitly not authorized",
-    "Successor work not included",
-    "Generated-artifact effects",
+SUPPORTED_VALIDATION_KINDS = {
+    "meaningful",
+    "issue-link",
+    "commit-sha",
+    "spec-reference",
+    "path-list",
+    "numbered-steps",
+    "checklist",
+    "default-branch-base",
 }
 
 
@@ -67,10 +70,10 @@ def require_meaningful(name: str, value: str) -> None:
         raise ValueError(f"too little content in {name}")
 
 
-def require_sha(name: str, value: str) -> None:
+def require_sha(name: str, value: str, count: int = 1) -> None:
     matches = SHA_RE.findall(normalize(value).lower())
-    if len(matches) != 1:
-        raise ValueError(f"expected exactly one SHA in {name}")
+    if len(matches) != count:
+        raise ValueError(f"expected exactly {count} SHA{'s' if count != 1 else ''} in {name}")
 
 
 def require_issue_link(name: str, value: str) -> None:
@@ -97,56 +100,93 @@ def is_none_response(value: str) -> bool:
     return re.sub(r"[\s\.,:;!?]+$", "", normalize(value).lower()) == "none"
 
 
-def load_required_labels(repo_root: Path, spec_path: str, collection_key: str) -> list[str]:
+def require_checklist(name: str, value: str, items: list[str]) -> None:
+    lines = [normalize(line) for line in value.splitlines()]
+    missing = []
+    for item in items:
+        pattern = rf"-\s*\[[ xX]\]\s+{re.escape(item)}$"
+        if not any(re.fullmatch(pattern, line) for line in lines):
+            missing.append(item)
+    if missing:
+        raise ValueError(f"missing checklist items in {name}: {', '.join(missing)}")
+
+
+def require_default_branch_base(name: str, value: str, branch: str) -> None:
+    if not re.fullmatch(rf"{re.escape(branch)} at [0-9a-f]{{7,40}}", normalize(value).lower()):
+        raise ValueError(f"invalid default-branch base in {name}")
+
+
+def validate_field_definition(field: dict, spec_path: str) -> None:
+    validation = field.get("validation")
+    if validation is None:
+        return
+    kind = validation.get("kind")
+    if kind not in SUPPORTED_VALIDATION_KINDS:
+        raise ValueError(f"unsupported validation kind in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+    if kind == "commit-sha":
+        count = validation.get("count", 1)
+        if not isinstance(count, int) or count < 1:
+            raise ValueError(f"invalid commit-sha count in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+    if kind == "checklist":
+        items = validation.get("items")
+        if not isinstance(items, list) or not items or not all(isinstance(item, str) and item for item in items):
+            raise ValueError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+    if kind == "default-branch-base":
+        branch = validation.get("branch", "main")
+        if not isinstance(branch, str) or not branch:
+            raise ValueError(f"invalid default-branch branch in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+
+
+def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
     spec = json.loads((repo_root / spec_path).read_text())
-    return [field["label"] for field in spec[collection_key] if field.get("required") is True]
+    fields = spec[collection_key]
+    for field in fields:
+        validate_field_definition(field, spec_path)
+    return fields
 
 
-def check_issue(body: str, required_labels: list[str]) -> None:
+def validate_field_value(field: dict, value: str) -> None:
+    validation = field.get("validation", {"kind": "meaningful"})
+    if validation.get("allow_none") and is_none_response(value):
+        return
+
+    kind = validation.get("kind", "meaningful")
+    if kind == "meaningful":
+        require_meaningful(field["label"], value)
+    elif kind == "issue-link":
+        require_issue_link(field["label"], value)
+    elif kind == "commit-sha":
+        require_sha(field["label"], value, validation.get("count", 1))
+    elif kind == "spec-reference":
+        require_spec_reference(field["label"], value)
+    elif kind == "path-list":
+        require_path_list(field["label"], value)
+    elif kind == "numbered-steps":
+        require_numbered_steps(field["label"], value)
+    elif kind == "checklist":
+        require_checklist(field["label"], value, validation["items"])
+    elif kind == "default-branch-base":
+        require_default_branch_base(field["label"], value, validation.get("branch", "main"))
+    else:
+        raise ValueError(f"unsupported validation kind for {field['label']}: {kind}")
+
+
+def check_issue(body: str, fields: list[dict]) -> None:
     sections = parse_sections(body)
-    for name in required_labels:
-        value = require_section(sections, name)
-        if name == "Accepted default-branch base":
-            if not re.fullmatch(r"main at [0-9a-f]{7,40}", normalize(value)):
-                raise ValueError(f"invalid default-branch base in {name}")
-        elif name == "Governing specifications":
-            require_spec_reference(name, value)
-        elif name == "Ordered patch plan":
-            require_numbered_steps(name, value)
-        elif name == "Validation plan":
-            require_meaningful(name, value)
-        elif name == "Dependencies and predecessor evidence":
-            require_meaningful(name, value)
-        elif name in ALLOW_NONE:
-            if is_none_response(value):
-                continue
-            require_meaningful(name, value)
-        else:
-            require_meaningful(name, value)
+    for field in fields:
+        if field.get("required") is not True:
+            continue
+        value = require_section(sections, field["label"])
+        validate_field_value(field, value)
 
 
-def check_pr(body: str, required_labels: list[str]) -> None:
+def check_pr(body: str, fields: list[dict]) -> None:
     sections = parse_sections(body)
-    for name in required_labels:
-        value = require_section(sections, name)
-        if name == "Governing issue":
-            require_issue_link(name, value)
-        elif name in {"Accepted base revision", "Proposed head revision", "Exact revision validated"}:
-            require_sha(name, value)
-        elif name == "Controlling specifications":
-            require_spec_reference(name, value)
-        elif name == "Changed-path inventory":
-            require_path_list(name, value)
-        elif name == "Patch or commit summary":
-            require_numbered_steps(name, value)
-        elif name == "Validation commands and results":
-            require_meaningful(name, value)
-        elif name in ALLOW_NONE:
-            if is_none_response(value):
-                continue
-            require_meaningful(name, value)
-        else:
-            require_meaningful(name, value)
+    for field in fields:
+        if field.get("required") is not True:
+            continue
+        value = require_section(sections, field["label"])
+        validate_field_value(field, value)
 
 
 def load_body_from_event(event_path: Path, mode: str) -> str:
@@ -168,8 +208,8 @@ def main(argv: list[str]) -> int:
 
     try:
         repo_root = Path(args.repo_root)
-        issue_required_labels = load_required_labels(repo_root, "specs/repo/governing-issue.json", "issue_fields")
-        pr_required_labels = load_required_labels(repo_root, "specs/repo/review-proposal.json", "review_fields")
+        issue_fields = load_fields(repo_root, "specs/repo/governing-issue.json", "issue_fields")
+        pr_fields = load_fields(repo_root, "specs/repo/review-proposal.json", "review_fields")
 
         if args.body_file:
             body = Path(args.body_file).read_text()
@@ -178,9 +218,9 @@ def main(argv: list[str]) -> int:
             body = load_body_from_event(event_path, args.mode)
 
         if args.mode == "issue":
-            check_issue(body, issue_required_labels)
+            check_issue(body, issue_fields)
         else:
-            check_pr(body, pr_required_labels)
+            check_pr(body, pr_fields)
         return 0
     except Exception as exc:
         return fail(str(exc))

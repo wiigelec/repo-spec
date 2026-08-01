@@ -182,6 +182,37 @@
         "placeholder": {
           "type": "string",
           "minLength": 1
+        },
+        "validation": {
+          "$ref": "#/$defs/validation"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["meaningful", "issue-link", "commit-sha", "spec-reference", "path-list", "numbered-steps", "checklist", "default-branch-base"]
+        },
+        "allow_none": {
+          "type": "boolean"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
