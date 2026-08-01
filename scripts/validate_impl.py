@@ -262,6 +262,14 @@ def check_unique_spec_ids(specs: dict[str, dict[str, Any]]) -> None:
     expect(len(ids) == len(set(ids)), "unique specification IDs failed")
 
 
+def check_unique_derived_artifact_paths(specs: dict[str, dict[str, Any]]) -> None:
+    paths: list[str] = []
+    for spec in specs.values():
+        for artifact in spec.get("derived_artifacts", []):
+            paths.append(artifact["path"])
+    expect(len(paths) == len(set(paths)), "duplicate derived artifact paths failed")
+
+
 def check_resolvable_references(repo_root: Path, specs: dict[str, dict[str, Any]]) -> None:
     accepted = {spec["spec_id"] for spec in specs.values() if spec["status"] == "accepted"}
     for spec_id, spec in specs.items():
@@ -314,6 +322,8 @@ def validate_repo(repo_root: Path) -> None:
     print("ok: manifest completeness")
     check_unique_spec_ids(specs)
     print("ok: unique specification IDs")
+    check_unique_derived_artifact_paths(specs)
+    print("ok: unique derived artifact paths")
     check_resolvable_references(repo_root, specs)
     print("ok: resolvable references")
     check_acyclic_dependencies(specs)
@@ -501,6 +511,20 @@ def run_mutation_tests(repo_root: Path) -> None:
         "duplicate manifest paths",
         lambda: validate_repo(temp_repo),
         "manifest completeness failed",
+    )
+
+    temp_repo = clone_repo()
+    mutate_json(
+        temp_repo / "specs/repo/validation.json",
+        lambda spec: (
+            spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/review-proposal.md"})
+            or spec
+        ),
+    )
+    expect_failure(
+        "duplicate derived artifact paths",
+        lambda: validate_repo(temp_repo),
+        "duplicate derived artifact paths failed",
     )
 
     temp_repo = clone_repo()
