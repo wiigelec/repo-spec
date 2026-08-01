@@ -3,20 +3,20 @@
 
 ## Governing issue
 
-#<issue-number>
+<!-- Record the governing issue URL or issue number. -->
 
 ## Summary
 
-<!-- What changed, why, and any specification or generated-artifact effects. -->
+<!-- Summarize what changed, why, and any specification or generated-artifact effects. -->
 
 ## Validation
 
-<!-- Commands run and results. -->
+<!-- List the validation commands run and the results observed. -->
 
 ## Review focus
 
-<!-- Identify the areas where reviewer judgment is most needed. -->
+<!-- Ask reviewers to inspect the areas where judgment is most needed. -->
 
 ## Scope notes
 
-<!-- State exclusions, limitations, deferred work, or post-merge requirements. Write None when there are none. -->
+<!-- State exclusions, limitations, deferred work, or post-merge requirements. Use None when there are none. -->

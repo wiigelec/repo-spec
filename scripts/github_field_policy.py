@@ -10,6 +10,10 @@ import sys
 from pathlib import Path
 
 
+class PolicyError(Exception):
+    pass
+
+
 SECTION_RE = re.compile(r"^##\s+(.+?)\s*$")
 SHA_RE = re.compile(r"(?<![0-9a-f])[0-9a-f]{7,40}(?![0-9a-f])")
 ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
@@ -59,41 +63,41 @@ def is_placeholder(text: str) -> bool:
 def require_section(sections: dict[str, str], name: str) -> str:
     value = sections.get(name, "")
     if not value:
-        raise ValueError(f"missing section: {name}")
+        raise PolicyError(f"missing section: {name}")
     return value
 
 
 def require_meaningful(name: str, value: str) -> None:
     if is_placeholder(value):
-        raise ValueError(f"placeholder response in {name}")
+        raise PolicyError(f"placeholder response in {name}")
     if len(normalize(value)) < 8:
-        raise ValueError(f"too little content in {name}")
+        raise PolicyError(f"too little content in {name}")
 
 
 def require_sha(name: str, value: str, count: int = 1) -> None:
     matches = SHA_RE.findall(normalize(value).lower())
     if len(matches) != count:
-        raise ValueError(f"expected exactly {count} SHA{'s' if count != 1 else ''} in {name}")
+        raise PolicyError(f"expected exactly {count} SHA{'s' if count != 1 else ''} in {name}")
 
 
 def require_issue_link(name: str, value: str) -> None:
     if not ISSUE_RE.search(normalize(value)):
-        raise ValueError(f"invalid issue linkage in {name}")
+        raise PolicyError(f"invalid issue linkage in {name}")
 
 
 def require_spec_reference(name: str, value: str) -> None:
     if not SPEC_RE.search(value):
-        raise ValueError(f"missing specification reference in {name}")
+        raise PolicyError(f"missing specification reference in {name}")
 
 
 def require_path_list(name: str, value: str) -> None:
     if not PATH_RE.search(value):
-        raise ValueError(f"missing path inventory in {name}")
+        raise PolicyError(f"missing path inventory in {name}")
 
 
 def require_numbered_steps(name: str, value: str) -> None:
     if not re.search(r"^\s*1\.\s+", value, re.M):
-        raise ValueError(f"missing ordered steps in {name}")
+        raise PolicyError(f"missing ordered steps in {name}")
 
 
 def is_none_response(value: str) -> bool:
@@ -108,12 +112,12 @@ def require_checklist(name: str, value: str, items: list[str]) -> None:
         if not any(re.fullmatch(pattern, line) for line in lines):
             missing.append(item)
     if missing:
-        raise ValueError(f"missing checklist items in {name}: {', '.join(missing)}")
+        raise PolicyError(f"missing checklist items in {name}: {', '.join(missing)}")
 
 
 def require_default_branch_base(name: str, value: str, branch: str) -> None:
     if not re.fullmatch(rf"{re.escape(branch)} at [0-9a-f]{{7,40}}", normalize(value).lower()):
-        raise ValueError(f"invalid default-branch base in {name}")
+        raise PolicyError(f"invalid default-branch base in {name}")
 
 
 def validate_field_definition(field: dict, spec_path: str) -> None:
@@ -122,24 +126,27 @@ def validate_field_definition(field: dict, spec_path: str) -> None:
         return
     kind = validation.get("kind")
     if kind not in SUPPORTED_VALIDATION_KINDS:
-        raise ValueError(f"unsupported validation kind in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+        raise PolicyError(f"unsupported validation kind in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
     if kind == "commit-sha":
         count = validation.get("count", 1)
         if not isinstance(count, int) or count < 1:
-            raise ValueError(f"invalid commit-sha count in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+            raise PolicyError(f"invalid commit-sha count in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
     if kind == "checklist":
         items = validation.get("items")
         if not isinstance(items, list) or not items or not all(isinstance(item, str) and item for item in items):
-            raise ValueError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+            raise PolicyError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
     if kind == "default-branch-base":
         branch = validation.get("branch", "main")
         if not isinstance(branch, str) or not branch:
-            raise ValueError(f"invalid default-branch branch in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+            raise PolicyError(f"invalid default-branch branch in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
 
 
 def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
-    spec = json.loads((repo_root / spec_path).read_text())
-    fields = spec[collection_key]
+    try:
+        spec = json.loads((repo_root / spec_path).read_text())
+        fields = spec[collection_key]
+    except (OSError, json.JSONDecodeError, KeyError) as exc:
+        raise PolicyError(f"invalid policy source: {spec_path}") from exc
     for field in fields:
         validate_field_definition(field, spec_path)
     return fields
@@ -168,7 +175,7 @@ def validate_field_value(field: dict, value: str) -> None:
     elif kind == "default-branch-base":
         require_default_branch_base(field["label"], value, validation.get("branch", "main"))
     else:
-        raise ValueError(f"unsupported validation kind for {field['label']}: {kind}")
+        raise PolicyError(f"unsupported validation kind for {field['label']}: {kind}")
 
 
 def check_issue(body: str, fields: list[dict]) -> None:
@@ -190,12 +197,15 @@ def check_pr(body: str, fields: list[dict]) -> None:
 
 
 def load_body_from_event(event_path: Path, mode: str) -> str:
-    payload = json.loads(event_path.read_text())
+    try:
+        payload = json.loads(event_path.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PolicyError(f"invalid event payload: {event_path}") from exc
     if mode == "issue":
         return payload.get("issue", {}).get("body", "")
     if mode == "pr":
         return payload.get("pull_request", {}).get("body", "")
-    raise ValueError(f"unknown mode: {mode}")
+    raise PolicyError(f"unknown mode: {mode}")
 
 
 def main(argv: list[str]) -> int:
@@ -212,7 +222,10 @@ def main(argv: list[str]) -> int:
         pr_fields = load_fields(repo_root, "specs/repo/review-proposal.json", "review_fields")
 
         if args.body_file:
-            body = Path(args.body_file).read_text()
+            try:
+                body = Path(args.body_file).read_text()
+            except OSError as exc:
+                raise PolicyError(f"invalid body file: {args.body_file}") from exc
         else:
             event_path = Path(args.event_path)
             body = load_body_from_event(event_path, args.mode)
@@ -222,7 +235,7 @@ def main(argv: list[str]) -> int:
         else:
             check_pr(body, pr_fields)
         return 0
-    except Exception as exc:
+    except PolicyError as exc:
         return fail(str(exc))
 
 

@@ -8,61 +8,13 @@ import json
 import sys
 from pathlib import Path
 
+from repo_model import (
+    declared_derived_artifact_paths,
+    load_specs,
+    resolve_repo_path,
+)
+
 GENERATOR_NAME = "scripts/generate-docs"
-
-
-def load_json(path: Path) -> dict:
-    return json.loads(path.read_text())
-
-
-def resolve_repo_path(repo_root: Path, value: str) -> Path:
-    if not value:
-        raise ValueError(f"invalid repository-relative path: {value}")
-    if value.startswith("/") or value.startswith("./") or "/./" in value or value.endswith("/.") or "\\" in value or "//" in value:
-        raise ValueError(f"invalid repository-relative path: {value}")
-    relative = Path(value)
-    if any(part in {".", ".."} for part in relative.parts):
-        raise ValueError(f"invalid repository-relative path: {value}")
-    resolved = (repo_root / relative).resolve()
-    try:
-        resolved.relative_to(repo_root.resolve())
-    except ValueError as exc:
-        raise ValueError(f"invalid repository-relative path: {value}") from exc
-    return resolved
-
-
-def load_manifest(repo_root: Path) -> dict:
-    return load_json(repo_root / "specs/repo/manifest.json")
-
-
-def load_specs(repo_root: Path) -> tuple[dict, dict[str, dict], dict[str, str], list[str]]:
-    manifest = load_manifest(repo_root)
-    actual_paths = sorted(path.relative_to(repo_root).as_posix() for path in (repo_root / "specs/repo").glob("*.json"))
-    manifest_paths = [entry["path"] for entry in manifest["authoritative_specs"]]
-    if len(manifest_paths) != len(set(manifest_paths)):
-        raise ValueError("manifest completeness failed")
-    if set(actual_paths) != set(manifest_paths):
-        raise ValueError("manifest completeness failed")
-
-    specs = {"repo.manifest": manifest}
-    paths = {"repo.manifest": "specs/repo/manifest.json"}
-    path_to_spec_id = {entry["path"]: entry["spec_id"] for entry in manifest["authoritative_specs"]}
-    for path in actual_paths:
-        expected_spec_id = path_to_spec_id[path]
-        if path == "specs/repo/manifest.json":
-            if manifest["spec_id"] != expected_spec_id:
-                raise ValueError(f"manifest entry {expected_spec_id} does not match {path}")
-            paths[expected_spec_id] = path
-            continue
-        spec = load_json(repo_root / path)
-        spec_id = spec["spec_id"]
-        if spec_id != expected_spec_id:
-            raise ValueError(f"manifest entry {expected_spec_id} does not match {path}")
-        if spec_id in specs:
-            raise ValueError(f"duplicate authoritative spec_id: {spec_id}")
-        specs[spec_id] = spec
-        paths[spec_id] = path
-    return manifest, specs, paths, actual_paths
 
 
 def header(title: str, source_path: str) -> str:
@@ -192,22 +144,14 @@ def render_issue_form(spec: dict) -> str:
 
 def render_review_template(spec: dict) -> str:
     fields = spec["review_fields"]
-    if len(fields) != 5:
-        raise ValueError("unexpected review-proposal template shape")
     lines = [
         "<!-- Link the governing issue in GitHub's Development section. -->",
         "<!-- Do not use automatic close syntax unless the governing issue explicitly permits it. -->",
         "",
     ]
-    section_comments = {
-        "governing_issue": "#<issue-number>",
-        "summary": "<!-- What changed, why, and any specification or generated-artifact effects. -->",
-        "validation": "<!-- Commands run and results. -->",
-        "review_focus": "<!-- Identify the areas where reviewer judgment is most needed. -->",
-        "scope_notes": "<!-- State exclusions, limitations, deferred work, or post-merge requirements. Write None when there are none. -->",
-    }
     for field in fields:
-        lines.extend([f"## {field['label']}", "", section_comments[field["id"]], ""])
+        comment = field.get("adapter_hint", field["description"])
+        lines.extend([f"## {field['label']}", "", f"<!-- {comment} -->", ""])
     return "\n".join(lines)
 
 
@@ -246,46 +190,10 @@ def render_spec_projection(title: str, source_path: str, spec: dict, include_aut
     return "\n".join(lines) + "\n"
 
 
-def render_manifest(spec: dict) -> str:
-    return render_spec_projection("Repository Spec Manifest", "specs/repo/manifest.json", spec, include_authoritative_specs=True)
-
-
-def render_governing_issue(spec: dict) -> str:
-    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec)
-
-
-def render_review_proposal(spec: dict) -> str:
-    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec)
-
-
-def render_structure(spec: dict) -> str:
-    return render_spec_projection("Repository Structure", "specs/repo/repository-structure.json", spec)
-
-
-def render_workflow(spec: dict) -> str:
-    return render_spec_projection("Development Workflow", "specs/repo/development-workflow.json", spec)
-
-
-def render_validation(spec: dict) -> str:
-    return render_spec_projection("Validation", "specs/repo/validation.json", spec)
-
-
 SPECIAL_RENDERERS = {
     "issue-form": render_issue_form,
     "review-template": render_review_template,
 }
-
-
-def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
-    paths: list[str] = []
-    for spec in specs.values():
-        for artifact in spec.get("derived_artifacts", []):
-            if artifact.get("type") not in {"markdown", "yaml"}:
-                raise ValueError(f"unsupported derived artifact type: {artifact.get('type')}")
-            paths.append(artifact["path"])
-    if len(paths) != len(set(paths)):
-        raise ValueError("duplicate derived artifact paths failed")
-    return set(paths)
 
 
 def actual_derived_markdown_paths(repo_root: Path) -> set[str]:
