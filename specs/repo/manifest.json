@@ -14,6 +14,10 @@
       "path": "specs/repo/governing-issue.json"
     },
     {
+      "spec_id": "repo.review-proposal",
+      "path": "specs/repo/review-proposal.json"
+    },
+    {
       "spec_id": "repo.repository-structure",
       "path": "specs/repo/repository-structure.json"
     },
@@ -44,6 +48,10 @@
     },
     {
       "type": "specification",
+      "spec_id": "repo.review-proposal"
+    },
+    {
+      "type": "specification",
       "spec_id": "repo.development-workflow"
     },
     {
@@ -59,6 +67,10 @@
     {
       "type": "markdown",
       "path": "derived/specs/repo/governing-issue.md"
+    },
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/review-proposal.md"
     }
   ]
 }

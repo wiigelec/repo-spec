@@ -19,6 +19,7 @@ def load_specs(repo_root: Path) -> dict[str, dict]:
     return {
         "repo.manifest": load_json(repo_root / "specs/repo/manifest.json"),
         "repo.governing-issue": load_json(repo_root / "specs/repo/governing-issue.json"),
+        "repo.review-proposal": load_json(repo_root / "specs/repo/review-proposal.json"),
         "repo.repository-structure": load_json(repo_root / "specs/repo/repository-structure.json"),
         "repo.development-workflow": load_json(repo_root / "specs/repo/development-workflow.json"),
         "repo.validation": load_json(repo_root / "specs/repo/validation.json"),
@@ -119,6 +120,63 @@ def render_governing_issue(spec: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_review_proposal(spec: dict) -> str:
+    lines = [
+        header("Review Proposal Contract", "specs/repo/review-proposal.json"),
+        "## Canonical contract",
+        "",
+        "Use one review proposal for each bounded reviewed change. The canonical contract is repository-spec authority; Markdown and GitHub forms are adapters only.",
+        "",
+        "## Required fields",
+        "",
+    ]
+    lines.extend(f"- {field}" for field in [
+        "Governing issue",
+        "Change purpose",
+        "Accepted base revision",
+        "Proposed head revision",
+        "Controlling specifications",
+        "Summary of implemented changes",
+        "Changed-path inventory",
+        "Confirmation of scope and exclusions",
+        "Ordered patch or commit summary",
+        "Specification and authority effects",
+        "Generated-artifact effects",
+        "Validation commands and results",
+        "Exact revision validated",
+        "Known limitations, deviations, or unresolved questions",
+        "Focused review requests",
+        "Acceptance checklist",
+        "Post-merge validation and issue-closure requirements",
+        "Successor work explicitly not included",
+    ])
+    lines.extend(
+        [
+            "",
+            "## Required-field rules",
+            "",
+            "- Every required field shall contain substantive content.",
+            "- Empty placeholders do not satisfy required fields.",
+            "- The governing issue shall be identified explicitly.",
+            "- The accepted base and proposed head shall be exact commit SHAs.",
+            "- Validation evidence shall identify the exact head revision tested.",
+            "- New commits invalidate prior exact-head validation or acceptance evidence until checks are repeated.",
+            "- Passing validation is not semantic review.",
+            "- Review is not acceptance.",
+            "- Acceptance applies only to the exact proposed revision.",
+            "- Merge is not proof of successful post-merge validation.",
+            "- Automatic issue-closing syntax shall not be used when the governing issue requires post-merge validation before closure.",
+            "",
+            "## Adapter guidance",
+            "",
+            "- The Markdown projection is the human-readable generic form.",
+            "- The GitHub pull request template is the platform-specific form.",
+            "- Neither adapter may override the canonical repository specification.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
 def render_structure(spec: dict) -> str:
     return (
         header("Repository Structure", "specs/repo/repository-structure.json")
@@ -177,6 +235,7 @@ def render_all(repo_root: Path) -> dict[str, str]:
     return {
         "repo.manifest": render_manifest(specs["repo.manifest"]),
         "repo.governing-issue": render_governing_issue(specs["repo.governing-issue"]),
+        "repo.review-proposal": render_review_proposal(specs["repo.review-proposal"]),
         "repo.repository-structure": render_structure(specs["repo.repository-structure"]),
         "repo.development-workflow": render_workflow(specs["repo.development-workflow"]),
         "repo.validation": render_validation(specs["repo.validation"]),
@@ -188,6 +247,7 @@ def write_all(repo_root: Path) -> None:
     targets = {
         "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
         "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
+        "repo.review-proposal": repo_root / "derived/specs/repo/review-proposal.md",
         "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
         "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
         "repo.validation": repo_root / "derived/specs/repo/validation.md",
@@ -205,6 +265,7 @@ def main(argv: list[str]) -> int:
     targets = {
         "repo.manifest": repo_root / "derived/specs/repo/manifest.md",
         "repo.governing-issue": repo_root / "derived/specs/repo/governing-issue.md",
+        "repo.review-proposal": repo_root / "derived/specs/repo/review-proposal.md",
         "repo.repository-structure": repo_root / "derived/specs/repo/repository-structure.md",
         "repo.development-workflow": repo_root / "derived/specs/repo/development-workflow.md",
         "repo.validation": repo_root / "derived/specs/repo/validation.md",

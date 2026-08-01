@@ -1,0 +1,134 @@
+{
+  "spec_id": "repo.review-proposal",
+  "title": "Review Proposal Contract",
+  "purpose": "Defines the canonical repository-generic review-proposal structure and its subordinate presentation adapters.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-RP-001",
+      "text": "The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes."
+    },
+    {
+      "id": "REPO-RP-002",
+      "text": "The canonical review-proposal contract shall include the required fields governing issue, change purpose, accepted base revision, proposed head revision, controlling specifications, summary of implemented changes, changed-path inventory, confirmation of scope and exclusions, ordered patch or commit summary, specification and authority effects, generated-artifact effects, validation commands and results, exact revision validated, known limitations, deviations, or unresolved questions, focused review requests, acceptance checklist, post-merge validation and issue-closure requirements, and successor work explicitly not included."
+    },
+    {
+      "id": "REPO-RP-003",
+      "text": "The canonical review-proposal contract shall require accepted base and proposed head revisions to be identified by exact commit SHA."
+    },
+    {
+      "id": "REPO-RP-004",
+      "text": "Validation evidence in a review proposal shall identify the exact head revision tested."
+    },
+    {
+      "id": "REPO-RP-005",
+      "text": "New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated."
+    },
+    {
+      "id": "REPO-RP-006",
+      "text": "Passing validation shall not be treated as semantic review."
+    },
+    {
+      "id": "REPO-RP-007",
+      "text": "Review shall not be treated as acceptance."
+    },
+    {
+      "id": "REPO-RP-008",
+      "text": "Acceptance shall apply only to the exact proposed revision."
+    },
+    {
+      "id": "REPO-RP-009",
+      "text": "Merge shall not be treated as proof of successful post-merge validation."
+    },
+    {
+      "id": "REPO-RP-010",
+      "text": "The review proposal shall not use automatic issue-closing syntax when the governing issue requires post-merge validation before closure."
+    },
+    {
+      "id": "REPO-RP-011",
+      "text": "Empty placeholders shall not satisfy required review-proposal fields."
+    },
+    {
+      "id": "REPO-RP-012",
+      "text": "GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification."
+    },
+    {
+      "id": "REPO-RP-013",
+      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure."
+    },
+    {
+      "id": "REPO-RP-014",
+      "text": "The GitHub pull request template shall represent every required canonical review-proposal field."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "AGENTS.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/docgen.py"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/validate_impl.py"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/review-proposal.md"
+    }
+  ]
+}
