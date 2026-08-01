@@ -63,7 +63,7 @@
       "role": "product specification",
       "authority_category": "normative",
       "authority_source": "accepted product specification",
-      "source_of_truth_rule": "Defines product-specific requirements and semantics for a repository derived from the framework.",
+      "source_of_truth_rule": "Defines product-specific requirements and semantics for a repository derived from the framework, rooted under `specs/product/` and governed by the product manifest rather than the repository manifest.",
       "mutability": "immutable once accepted except through governed revision",
       "generation_mode": "manual",
       "validation_ownership": "validation",

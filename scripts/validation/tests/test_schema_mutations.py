@@ -60,6 +60,14 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     mutated_spec = copy.deepcopy(specs["repo.repository-structure"])
+    mutated_spec["spec_id"] = "product.repository-structure"
+    expect_failure(
+        "product spec id under repo schema",
+        lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/repository-structure.json", schemas["repo.spec"]),
+        "pattern mismatch",
+    )
+
+    mutated_spec = copy.deepcopy(specs["repo.repository-structure"])
     mutated_spec["title"] = ""
     expect_failure(
         "repo title minLength",

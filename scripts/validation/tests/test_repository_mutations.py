@@ -22,6 +22,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         "unique specification IDs",
         "unique item properties",
         "unique derived artifact paths",
+        "product specification root",
         "dependency target lifecycle",
         "resolvable references",
         "lineage relations",
@@ -41,6 +42,15 @@ def run_repository_mutations(repo_root: Path) -> None:
         extra_spec["spec_id"] = "repo.unlisted"
         (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
         expect_failure("unlisted json file", lambda: validate_repo(temp_repo), "manifest completeness failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        product_root = temp_repo / "specs/product"
+        product_root.mkdir(parents=True, exist_ok=True)
+        extra_spec = copy.deepcopy(specs["repo.validation"])
+        extra_spec["spec_id"] = "repo.product-root-rogue"
+        (product_root / "rogue.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
+        expect_failure("product root contamination", lambda: validate_repo(temp_repo), "undeclared JSON content under specs/product/")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
@@ -78,6 +88,14 @@ def run_repository_mutations(repo_root: Path) -> None:
             lambda spec: spec["references"][-1].__setitem__("path", "../../etc/passwd") or spec,
         )
         expect_failure("artifact reference path escape", lambda: validate_repo(temp_repo), "oneOf mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: spec.__setitem__("spec_id", "product.validation") or spec,
+        )
+        expect_failure("product spec under repo root", lambda: validate_repo(temp_repo), "manifest entry repo.validation does not match specs/repo/validation.json")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

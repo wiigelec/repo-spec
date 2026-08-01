@@ -32,6 +32,8 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-010`: The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior.
 - `REPO-VAL-011`: The repository shall represent replacement lineage with explicit supersedes and superseded_by relations.
 - `REPO-VAL-012`: The validation entry point shall enforce that replacement-lineage relations resolve to manifest-listed specifications and do not self-reference.
+- `REPO-VAL-013`: The validation entry point shall enforce separation between repository-specification and product-specification roots, and shall reject undeclared JSON content under `specs/product/` until the product-manifest system is introduced.
+- `REPO-VAL-014`: The validation entry point shall reject repository specifications that are placed under `specs/product/` and product specifications that are placed under `specs/repo/` where those placements are detectable from repository-local JSON files.
 
 ## Dependencies
 

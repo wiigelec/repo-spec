@@ -68,6 +68,17 @@ def check_unique_derived_artifact_paths(specs: dict[str, dict[str, Any]]) -> Non
     expect(len(paths) == len(set(paths)), "duplicate derived artifact paths failed")
 
 
+def check_product_specification_root(repo_root: Path) -> None:
+    product_root = repo_root / "specs/product"
+    if not product_root.exists():
+        return
+    declared_product_json = sorted(path.relative_to(repo_root).as_posix() for path in product_root.glob("*.json") if path.is_file())
+    expect(
+        not declared_product_json,
+        "product specification root failed: undeclared JSON content under specs/product/",
+    )
+
+
 def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str, field: str, keys: list[str]) -> None:
     seen: set[tuple[Any, ...]] = set()
     for index, item in enumerate(specs[spec_id][field]):
@@ -176,6 +187,10 @@ def check_unique_derived_artifact_paths_phase(context: ValidationContext) -> Non
     check_unique_derived_artifact_paths(context.specs)
 
 
+def check_product_specification_root_phase(context: ValidationContext) -> None:
+    check_product_specification_root(context.repo_root)
+
+
 def check_dependency_targets_phase(context: ValidationContext) -> None:
     check_dependency_targets(context.specs)
 
@@ -202,6 +217,7 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("unique specification IDs", check_unique_spec_ids_phase),
     ("unique item properties", check_unique_item_properties_phase),
     ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
+    ("product specification root", check_product_specification_root_phase),
     ("dependency target lifecycle", check_dependency_targets_phase),
     ("resolvable references", check_resolvable_references_phase),
     ("lineage relations", check_lineage_relations_phase),
