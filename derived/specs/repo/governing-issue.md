@@ -21,7 +21,7 @@ Defines the canonical repository-generic governing issue structure and its subor
 ## Normative requirements
 
 - `REPO-GI-001`: The repository shall define exactly one canonical governing-issue contract for bounded governed work.
-- `REPO-GI-002`: The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, intended branch, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized.
+- `REPO-GI-002`: The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized.
 - `REPO-GI-003`: The canonical governing-issue contract shall distinguish required fields from optional fields.
 - `REPO-GI-004`: Empty placeholders shall not satisfy required governing-issue fields.
 - `REPO-GI-005`: A governing issue shall exist before its implementation branch is created.

@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-GI-002",
-      "text": "The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, intended branch, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized."
+      "text": "The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized."
     },
     {
       "id": "REPO-GI-003",
