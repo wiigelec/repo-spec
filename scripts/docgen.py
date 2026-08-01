@@ -198,30 +198,6 @@ def render_spec_projection(title: str, source_path: str, spec: dict, include_aut
     return "\n".join(lines) + "\n"
 
 
-def render_manifest(spec: dict) -> str:
-    return render_spec_projection("Repository Spec Manifest", "specs/repo/manifest.json", spec, include_authoritative_specs=True)
-
-
-def render_governing_issue(spec: dict) -> str:
-    return render_spec_projection("Governing Issue Contract", "specs/repo/governing-issue.json", spec)
-
-
-def render_review_proposal(spec: dict) -> str:
-    return render_spec_projection("Review Proposal Contract", "specs/repo/review-proposal.json", spec)
-
-
-def render_structure(spec: dict) -> str:
-    return render_spec_projection("Repository Structure", "specs/repo/repository-structure.json", spec)
-
-
-def render_workflow(spec: dict) -> str:
-    return render_spec_projection("Development Workflow", "specs/repo/development-workflow.json", spec)
-
-
-def render_validation(spec: dict) -> str:
-    return render_spec_projection("Validation", "specs/repo/validation.json", spec)
-
-
 SPECIAL_RENDERERS = {
     "issue-form": render_issue_form,
     "review-template": render_review_template,

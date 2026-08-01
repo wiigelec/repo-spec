@@ -5,7 +5,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from docgen import render_governing_issue, render_issue_form, render_manifest, render_review_proposal, render_review_template, render_validation
+from docgen import render_issue_form, render_review_template, render_spec_projection
 from repo_model import load_specs
 from validation.generated_outputs import check_generated_document_freshness, check_generated_document_write_behavior
 from validation.repository_checks import validate_repo
@@ -14,7 +14,7 @@ from .mutation_support import create_repo_fixture, expect_failure, expect_render
 
 
 def run_generation_mutations(repo_root: Path) -> None:
-    _manifest, specs, _, _ = load_specs(repo_root)
+    _manifest, specs, paths, _ = load_specs(repo_root)
 
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -55,37 +55,37 @@ def run_generation_mutations(repo_root: Path) -> None:
 
     expect_render_change(
         "manifest projected purpose",
-        render_manifest,
+        lambda spec: render_spec_projection(specs["repo.manifest"]["title"], paths["repo.manifest"], spec, include_authoritative_specs=True),
         specs["repo.manifest"],
         lambda spec: spec.__setitem__("purpose", "Changed manifest purpose"),
     )
     expect_render_change(
         "manifest projected requirement",
-        render_manifest,
+        lambda spec: render_spec_projection(specs["repo.manifest"]["title"], paths["repo.manifest"], spec, include_authoritative_specs=True),
         specs["repo.manifest"],
         lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed manifest requirement"),
     )
     expect_render_change(
         "manifest projected reference",
-        render_manifest,
+        lambda spec: render_spec_projection(specs["repo.manifest"]["title"], paths["repo.manifest"], spec, include_authoritative_specs=True),
         specs["repo.manifest"],
         lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-spec"),
     )
     expect_render_change(
         "manifest projected derived artifact",
-        render_manifest,
+        lambda spec: render_spec_projection(specs["repo.manifest"]["title"], paths["repo.manifest"], spec, include_authoritative_specs=True),
         specs["repo.manifest"],
         lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
     )
     expect_render_change(
         "governing issue projected requirement",
-        render_governing_issue,
+        lambda spec: render_spec_projection(specs["repo.governing-issue"]["title"], paths["repo.governing-issue"], spec),
         specs["repo.governing-issue"],
         lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed governing-issue requirement"),
     )
     expect_render_change(
         "governing issue projected field",
-        render_governing_issue,
+        lambda spec: render_spec_projection(specs["repo.governing-issue"]["title"], paths["repo.governing-issue"], spec),
         specs["repo.governing-issue"],
         lambda spec: spec["issue_fields"][0].__setitem__("label", "Changed change type"),
     )
@@ -97,25 +97,25 @@ def run_generation_mutations(repo_root: Path) -> None:
     )
     expect_render_change(
         "governing issue projected dependency",
-        render_governing_issue,
+        lambda spec: render_spec_projection(specs["repo.governing-issue"]["title"], paths["repo.governing-issue"], spec),
         specs["repo.governing-issue"],
         lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
     )
     expect_render_change(
         "governing issue projected reference",
-        render_governing_issue,
+        lambda spec: render_spec_projection(specs["repo.governing-issue"]["title"], paths["repo.governing-issue"], spec),
         specs["repo.governing-issue"],
         lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
     )
     expect_render_change(
         "review proposal projected requirement",
-        render_review_proposal,
+        lambda spec: render_spec_projection(specs["repo.review-proposal"]["title"], paths["repo.review-proposal"], spec),
         specs["repo.review-proposal"],
         lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed review-proposal requirement"),
     )
     expect_render_change(
         "review proposal projected field",
-        render_review_proposal,
+        lambda spec: render_spec_projection(specs["repo.review-proposal"]["title"], paths["repo.review-proposal"], spec),
         specs["repo.review-proposal"],
         lambda spec: spec["review_fields"][0].__setitem__("label", "Changed governing issue"),
     )
@@ -127,37 +127,37 @@ def run_generation_mutations(repo_root: Path) -> None:
     )
     expect_render_change(
         "review proposal projected dependency",
-        render_review_proposal,
+        lambda spec: render_spec_projection(specs["repo.review-proposal"]["title"], paths["repo.review-proposal"], spec),
         specs["repo.review-proposal"],
         lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
     )
     expect_render_change(
         "review proposal projected reference",
-        render_review_proposal,
+        lambda spec: render_spec_projection(specs["repo.review-proposal"]["title"], paths["repo.review-proposal"], spec),
         specs["repo.review-proposal"],
         lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
     )
     expect_render_change(
         "validation projected requirement",
-        render_validation,
+        lambda spec: render_spec_projection(specs["repo.validation"]["title"], paths["repo.validation"], spec),
         specs["repo.validation"],
         lambda spec: spec["normative_requirements"][-1].__setitem__("text", "Changed validation requirement"),
     )
     expect_render_change(
         "validation projected dependency",
-        render_validation,
+        lambda spec: render_spec_projection(specs["repo.validation"]["title"], paths["repo.validation"], spec),
         specs["repo.validation"],
         lambda spec: spec["dependencies"][0].__setitem__("spec_id", "repo.changed-dependency"),
     )
     expect_render_change(
         "validation projected reference",
-        render_validation,
+        lambda spec: render_spec_projection(specs["repo.validation"]["title"], paths["repo.validation"], spec),
         specs["repo.validation"],
         lambda spec: spec["references"][0].__setitem__("spec_id", "repo.changed-reference"),
     )
     expect_render_change(
         "validation projected derived artifact",
-        render_validation,
+        lambda spec: render_spec_projection(specs["repo.validation"]["title"], paths["repo.validation"], spec),
         specs["repo.validation"],
         lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
     )
