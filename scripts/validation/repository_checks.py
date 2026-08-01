@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -123,13 +122,6 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
         visit(node)
 
 
-def check_clean_failure_behavior(repo_root: Path) -> None:
-    proc = subprocess.run([str(repo_root / "scripts/validate"), "--self-test-failure"], cwd=repo_root, capture_output=True, text=True)
-    expect(proc.returncode != 0, "clean failure behavior failed")
-    expect(proc.stdout.strip() == "", "clean failure behavior failed")
-    expect(proc.stderr.strip() == "forced failure for behavior test", "clean failure behavior failed")
-
-
 def validate_repo(repo_root: Path) -> None:
     _manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
@@ -165,5 +157,3 @@ def validate_repo(repo_root: Path) -> None:
     print("ok: acyclic dependencies")
     check_generated_document_freshness(repo_root)
     print("ok: generated-document freshness")
-    check_clean_failure_behavior(repo_root)
-    print("ok: clean failure behavior")

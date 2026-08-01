@@ -9,31 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from repo_model import load_specs as load_repo_specs, resolve_repo_path as resolve_repo_path_impl
-from validation.errors import ValidationFailure, expect, fail
-from validation.generated_outputs import check_generated_document_freshness, check_generated_document_write_behavior
-from validation.repository_checks import (
-    check_acyclic_dependencies,
-    check_clean_failure_behavior,
-    check_dependency_targets,
-    check_lineage_relations,
-    check_manifest_completeness,
-    check_resolvable_references,
-    check_unique_derived_artifact_paths,
-    check_unique_item_properties,
-    check_unique_spec_ids,
-    load_repo_schemas,
-    validate_repo,
-    validate_repo_json_schema_conformance,
-)
-from validation.schema_subset import (
-    ensure_schema_keywords,
-    instance_location,
-    load_json,
-    resolve_ref,
-    schema_location,
-    schema_matches,
-    validate_instance,
-)
+from validation.errors import ValidationFailure, fail
+from validation.repository_checks import validate_repo
 
 
 def resolve_repo_path(repo_root: Path, value: str) -> Path:
@@ -63,9 +40,10 @@ def main(argv: list[str]) -> int:
             validate_repo(repo_root)
             return 0
         if mode == "--mutation-tests":
-            from validate_mutations import main as mutation_main
+            from validation.tests.mutation_tests import run_mutation_tests
 
-            return mutation_main([argv[0], str(repo_root)])
+            run_mutation_tests(repo_root)
+            return 0
         fail(f"unknown mode: {mode}")
     except ValidationFailure as exc:
         print(f"validation error: {exc}", file=sys.stderr)
