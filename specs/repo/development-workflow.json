@@ -24,6 +24,10 @@
     {
       "id": "REPO-WF-005",
       "text": "The chatbot shall report whether the issue and branch were reused or created, along with the issue number, accepted base, current branch, scope, exclusions, and next authorized action, and shall not mutate repository source until the governing issue and issue branch have been discovered or created and verified."
+    },
+    {
+      "id": "REPO-WF-006",
+      "text": "When creating or updating a GitHub issue or pull request body, the chatbot shall pass the body as a literal Markdown payload or file contents and shall not allow shell interpolation, command substitution, or concatenated command output to alter the intended Markdown structure."
     }
   ],
   "dependencies": [
