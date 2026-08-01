@@ -52,6 +52,14 @@
     {
       "id": "REPO-VAL-012",
       "text": "The validation entry point shall enforce that replacement-lineage relations resolve to manifest-listed specifications and do not self-reference."
+    },
+    {
+      "id": "REPO-VAL-013",
+      "text": "The validation entry point shall enforce separation between repository-specification and product-specification roots, and shall reject undeclared JSON content under `specs/product/` until the product-manifest system is introduced."
+    },
+    {
+      "id": "REPO-VAL-014",
+      "text": "The validation entry point shall reject repository specifications that are placed under `specs/product/` and product specifications that are placed under `specs/repo/` where those placements are detectable from repository-local JSON files."
     }
   ],
   "dependencies": [

@@ -21,6 +21,10 @@ Defines the repository layout and top-level separation of concerns.
 ## Normative requirements
 
 - `REPO-STR-001`: The repository shall separate repository-spec source, product-spec source, schemas, derived docs, and tooling into distinct top-level areas.
+- `REPO-STR-002`: The repository-specification root shall be `specs/repo/`, the product-specification root shall be `specs/product/`, and the two roots shall remain distinct authoritative domains.
+- `REPO-STR-003`: The repository shall reserve `specs/product/level-0/`, `specs/product/level-1/`, `specs/product/level-2/`, and `specs/product/level-3/` as the conceptual product-specification Level roots, along with `schemas/product/` and `derived/specs/product/`.
+- `REPO-STR-004`: An initialized repository may omit product-specification files until product planning activates the product-specification system, but repository specifications shall not be placed under `specs/product/` and product specifications shall not be placed under `specs/repo/`.
+- `REPO-STR-005`: The repository manifest shall govern discovery of repository specifications only, and the future product manifest shall govern discovery of product specifications and product-derived artifacts without becoming repository-workflow authority.
 
 ## Dependencies
 

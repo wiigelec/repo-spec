@@ -78,7 +78,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `product specification`
 - Authority category: `normative`
 - Authority source: accepted product specification
-- Source of truth rule: Defines product-specific requirements and semantics for a repository derived from the framework.
+- Source of truth rule: Defines product-specific requirements and semantics for a repository derived from the framework, rooted under `specs/product/` and governed by the product manifest rather than the repository manifest.
 - Mutability: immutable once accepted except through governed revision
 - Generation mode: `manual`
 - Validation ownership: `validation`
