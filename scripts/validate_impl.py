@@ -291,7 +291,8 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
         if node in visiting:
             fail("acyclic dependencies failed")
         visiting.add(node)
-        for dep in graph.get(node, []):
+        for dep in graph[node]:
+            expect(dep in graph, f"acyclic dependencies failed: unresolved dependency {node} -> {dep}")
             visit(dep)
         visiting.remove(node)
         visited.add(node)
@@ -452,6 +453,14 @@ def run_mutation_tests(repo_root: Path) -> None:
         "dependency spec id pattern",
         lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/repository-structure.json", schemas["repo.spec"]),
         "pattern mismatch",
+    )
+
+    mutated_specs = copy.deepcopy(specs)
+    mutated_specs["repo.repository-structure"]["dependencies"][0]["spec_id"] = "repo.missing-spec"
+    expect_failure(
+        "unresolved dependency",
+        lambda: check_acyclic_dependencies(mutated_specs),
+        "unresolved dependency",
     )
 
     mutated_spec = copy.deepcopy(specs["repo.validation"])
