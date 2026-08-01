@@ -35,6 +35,7 @@ check_required_files() {
     specs/repo/repo-specs-bootstrap.md \
     specs/repo/dev-workflow-bootstrap.md \
     specs/repo/validation.md \
+    specs/repo/json-artifact-model.md \
     scripts/validate
   do
     check_required_file "$path" || return 1
@@ -56,7 +57,7 @@ check_directory_separation() {
   for path in "$repo_root"/specs/repo/*; do
     [[ -e $path ]] || continue
     case ${path##*/} in
-      repo-specs-bootstrap.md|dev-workflow-bootstrap.md|validation.md) ;;
+      repo-specs-bootstrap.md|dev-workflow-bootstrap.md|validation.md|json-artifact-model.md) ;;
       *) unexpected+=("${path#$repo_root/}") ;;
     esac
   done
@@ -89,7 +90,8 @@ check_relative_links() {
     '[Bootstrap plan](docs/plans/00-bootstrap-plan.md)' \
     '[Repository specs bootstrap](specs/repo/repo-specs-bootstrap.md)' \
     '[Development workflow bootstrap](specs/repo/dev-workflow-bootstrap.md)' \
-    '[Validation bootstrap](specs/repo/validation.md)'
+    '[Validation bootstrap](specs/repo/validation.md)' \
+    '[JSON artifact model](specs/repo/json-artifact-model.md)'
   do
     file_contains README.md "$link" || {
       printf 'relative link check failed: README.md\n' >&2

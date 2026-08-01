@@ -37,7 +37,8 @@ Expected starting files:
 
 - `repo-specs-bootstrap.md`;
 - `dev-workflow-bootstrap.md`;
-- `validation.md`.
+- `validation.md`;
+- `json-artifact-model.md`.
 
 ## Bootstrap role
 

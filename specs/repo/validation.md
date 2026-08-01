@@ -22,9 +22,9 @@ Exactly four checks exist during bootstrap.
 
 | Check | Reason | Pass condition | Failure message |
 | --- | --- | --- | --- |
-| Required files | Confirms the bootstrap source set exists. | `README.md`, `docs/overview/PRODUCT-OVERVIEW.md`, `docs/plans/00-bootstrap-plan.md`, `specs/repo/repo-specs-bootstrap.md`, `specs/repo/dev-workflow-bootstrap.md`, `specs/repo/validation.md`, and `scripts/validate` all exist. | `missing required bootstrap file: <path>` |
+| Required files | Confirms the bootstrap source set exists. | `README.md`, `docs/overview/PRODUCT-OVERVIEW.md`, `docs/plans/00-bootstrap-plan.md`, `specs/repo/repo-specs-bootstrap.md`, `specs/repo/dev-workflow-bootstrap.md`, `specs/repo/validation.md`, `specs/repo/json-artifact-model.md`, and `scripts/validate` all exist. | `missing required bootstrap file: <path>` |
 | Directory separation | Confirms bootstrap source, planning docs, and overview docs stay in separate trees. | `docs/` contains only `overview/` and `plans/`; `specs/repo/` contains only the three bootstrap docs. | `bootstrap directory separation violated` |
-| Relative links | Confirms entry docs route by repository-relative paths. | `README.md` contains the five bootstrap navigation links to `docs/overview/PRODUCT-OVERVIEW.md`, `docs/plans/00-bootstrap-plan.md`, `specs/repo/repo-specs-bootstrap.md`, `specs/repo/dev-workflow-bootstrap.md`, and `specs/repo/validation.md`; `docs/overview/PRODUCT-OVERVIEW.md` contains the five part links to its local `product-overview` files. | `relative link check failed: <file>` |
+| Relative links | Confirms entry docs route by repository-relative paths. | `README.md` contains the six bootstrap navigation links to `docs/overview/PRODUCT-OVERVIEW.md`, `docs/plans/00-bootstrap-plan.md`, `specs/repo/repo-specs-bootstrap.md`, `specs/repo/dev-workflow-bootstrap.md`, `specs/repo/validation.md`, and `specs/repo/json-artifact-model.md`; `docs/overview/PRODUCT-OVERVIEW.md` contains the five part links to its local `product-overview` files. | `relative link check failed: <file>` |
 | Correct failure exit status | Confirms the validator fails when a required file is missing. | The internal file-check helper returns a non-zero status for a guaranteed-missing sentinel path. | `failure exit status check failed` |
 
 ## Validation boundaries
