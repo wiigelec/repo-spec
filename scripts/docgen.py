@@ -240,6 +240,34 @@ def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
     return set(paths)
 
 
+def actual_derived_markdown_paths(repo_root: Path) -> set[str]:
+    derived_root = repo_root / "derived/specs/repo"
+    if not derived_root.exists():
+        return set()
+    return {
+        path.relative_to(repo_root).as_posix()
+        for path in derived_root.glob("*.md")
+        if path.is_file()
+    }
+
+
+def check_orphaned_derived_markdown(repo_root: Path, expected_paths: set[str], strict: bool) -> None:
+    actual_paths = actual_derived_markdown_paths(repo_root)
+    missing = sorted(expected_paths - actual_paths)
+    extra = sorted(actual_paths - expected_paths)
+    if strict:
+        if missing or extra:
+            parts: list[str] = []
+            if missing:
+                parts.append(f"missing derived markdown: {', '.join(missing)}")
+            if extra:
+                parts.append(f"orphaned derived markdown: {', '.join(extra)}")
+            raise ValueError("; ".join(parts))
+        return
+    if extra:
+        raise ValueError(f"orphaned derived markdown: {', '.join(extra)}")
+
+
 def render_all(repo_root: Path) -> dict[str, str]:
     _manifest, specs, _paths, _actual_paths = load_specs(repo_root)
     outputs = {
@@ -274,8 +302,10 @@ def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     mode = argv[2] if len(argv) > 2 else "--write"
     rendered = render_all(repo_root)
+    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/repo/") and path.endswith(".md")}
 
     if mode == "--write":
+        check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=False)
         for relative_path, content in rendered.items():
             path = repo_root / relative_path
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -283,6 +313,7 @@ def main(argv: list[str]) -> int:
         return 0
 
     if mode == "--check":
+        check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
         for relative_path, content in rendered.items():
             path = repo_root / relative_path
             if not path.exists() or path.read_text() != content:
