@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from validation.cli_contracts import check_generate_docs_cli_contract, check_validate_cli_contract
+
 from .test_generation_mutations import run_generation_mutations
 from .test_repository_mutations import run_repository_mutations
 from .test_schema_mutations import run_schema_mutations
@@ -11,3 +13,9 @@ def run_mutation_tests(repo_root: Path) -> None:
     run_schema_mutations(repo_root)
     run_repository_mutations(repo_root)
     run_generation_mutations(repo_root)
+
+
+def run_complete_validation_tests(repo_root: Path) -> None:
+    check_validate_cli_contract(repo_root)
+    check_generate_docs_cli_contract(repo_root)
+    run_mutation_tests(repo_root)
