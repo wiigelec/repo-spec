@@ -36,6 +36,7 @@ SUPPORTED_SCHEMA_KEYS = {
     "$ref",
     "$defs",
     "allOf",
+    "oneOf",
     "if",
     "then",
     "else",
@@ -43,6 +44,7 @@ SUPPORTED_SCHEMA_KEYS = {
     "const",
     "minLength",
     "pattern",
+    "uniqueItemProperties",
 }
 
 SUPPORTED_SCHEMA_TYPES = {"object", "array", "string"}
@@ -122,6 +124,11 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
         for index, subschema in enumerate(schema["allOf"]):
             ensure_schema_keywords(subschema, source, f"{path}/allOf/{index}", root_schema)
 
+    if "oneOf" in schema:
+        expect(isinstance(schema["oneOf"], list), f"schema loading failed: {schema_location(source, path)} oneOf must be an array")
+        for index, subschema in enumerate(schema["oneOf"]):
+            ensure_schema_keywords(subschema, source, f"{path}/oneOf/{index}", root_schema)
+
     for branch in ("if", "then", "else"):
         if branch in schema:
             ensure_schema_keywords(schema[branch], source, f"{path}/{branch}", root_schema)
@@ -138,6 +145,11 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
     if "pattern" in schema:
         expect(isinstance(schema["pattern"], str), f"schema loading failed: {schema_location(source, path)} pattern must be a string")
         re.compile(schema["pattern"])
+
+    if "uniqueItemProperties" in schema:
+        expect(isinstance(schema["uniqueItemProperties"], list), f"schema loading failed: {schema_location(source, path)} uniqueItemProperties must be an array")
+        for index, item in enumerate(schema["uniqueItemProperties"]):
+            expect(isinstance(item, str), f"schema loading failed: {schema_location(source, path)} uniqueItemProperties[{index}] must be a string")
 
     if "$ref" in schema:
         expect(isinstance(schema["$ref"], str), f"schema loading failed: {schema_location(source, path)} $ref must be a string")
@@ -214,6 +226,23 @@ def validate_instance(
     if "allOf" in schema:
         for subschema in schema["allOf"]:
             validate_instance(instance, subschema, source, root_schema, path, ref_stack)
+
+    if "oneOf" in schema:
+        matches = 0
+        for subschema in schema["oneOf"]:
+            if schema_matches(instance, subschema, source, root_schema, path, ref_stack):
+                matches += 1
+        expect(matches == 1, f"repository JSON Schema conformance failed: {instance_location(source, path)} oneOf mismatch")
+
+    if "uniqueItemProperties" in schema:
+        expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
+        keys = schema["uniqueItemProperties"]
+        seen: set[tuple[Any, ...]] = set()
+        for index, item in enumerate(instance):
+            expect(isinstance(item, dict), f"repository JSON Schema conformance failed: {instance_location(source, f'{path}[{index}]' if path else f'[{index}]')} must be an object")
+            identity = tuple(item.get(key) for key in keys)
+            expect(identity not in seen, f"repository JSON Schema conformance failed: {instance_location(source, path)} duplicate item properties {', '.join(keys)}")
+            seen.add(identity)
 
     if "if" in schema:
         branch = schema.get("then") if schema_matches(instance, schema["if"], source, root_schema, path, ref_stack) else schema.get("else")
@@ -468,109 +497,138 @@ def run_mutation_tests(repo_root: Path) -> None:
     import shutil
     import tempfile
 
-    def clone_repo() -> Path:
-        temp_root = Path(tempfile.mkdtemp(prefix="repo-spec-validation-"))
-        shutil.copytree(
-            repo_root,
-            temp_root,
-            dirs_exist_ok=True,
-            ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"),
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
+
+        def clone_repo() -> Path:
+            nonlocal clone_index
+            clone_root = temp_root / f"clone-{clone_index}"
+            clone_index += 1
+            shutil.copytree(
+                repo_root,
+                clone_root,
+                ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"),
+            )
+            return clone_root
+
+        def mutate_json(path: Path, transform) -> None:
+            data = json.loads(path.read_text())
+            path.write_text(json.dumps(transform(data), indent=2) + "\n")
+
+        temp_repo = clone_repo()
+        extra_spec = copy.deepcopy(specs["repo.validation"])
+        extra_spec["spec_id"] = "repo.unlisted"
+        (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
+        expect_failure(
+            "unlisted json file",
+            lambda: validate_repo(temp_repo),
+            "manifest completeness failed",
         )
-        return temp_root
 
-    def mutate_json(path: Path, transform) -> None:
-        data = json.loads(path.read_text())
-        path.write_text(json.dumps(transform(data), indent=2) + "\n")
+        temp_repo = clone_repo()
+        (temp_repo / "specs/repo/validation.json").unlink()
+        expect_failure(
+            "missing manifest file",
+            lambda: validate_repo(temp_repo),
+            "manifest completeness failed",
+        )
 
-    temp_repo = clone_repo()
-    extra_spec = copy.deepcopy(specs["repo.validation"])
-    extra_spec["spec_id"] = "repo.unlisted"
-    (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
-    expect_failure(
-        "unlisted json file",
-        lambda: validate_repo(temp_repo),
-        "manifest completeness failed",
-    )
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/manifest.json",
+            lambda manifest: (
+                manifest["authoritative_specs"][-1].__setitem__("path", "specs/repo/repository-structure.json") or manifest
+            ),
+        )
+        expect_failure(
+            "duplicate manifest paths",
+            lambda: validate_repo(temp_repo),
+            "manifest completeness failed",
+        )
 
-    temp_repo = clone_repo()
-    (temp_repo / "specs/repo/validation.json").unlink()
-    expect_failure(
-        "missing manifest file",
-        lambda: validate_repo(temp_repo),
-        "manifest completeness failed",
-    )
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/review-proposal.md"})
+                or spec
+            ),
+        )
+        expect_failure(
+            "duplicate derived artifact paths",
+            lambda: validate_repo(temp_repo),
+            "duplicate derived artifact paths failed",
+        )
 
-    temp_repo = clone_repo()
-    mutate_json(
-        temp_repo / "specs/repo/manifest.json",
-        lambda manifest: (
-            manifest["authoritative_specs"][-1].__setitem__("path", "specs/repo/repository-structure.json") or manifest
-        ),
-    )
-    expect_failure(
-        "duplicate manifest paths",
-        lambda: validate_repo(temp_repo),
-        "manifest completeness failed",
-    )
+        temp_repo = clone_repo()
+        mutate_json(
+            temp_repo / "specs/repo/validation.json",
+            lambda spec: (
+                spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/validation-missing.md"}) or spec
+            ),
+        )
+        expect_failure(
+            "missing derived artifact",
+            lambda: check_generated_document_freshness(temp_repo),
+            "generated-document freshness failed",
+        )
 
-    temp_repo = clone_repo()
-    mutate_json(
-        temp_repo / "specs/repo/validation.json",
-        lambda spec: (
-            spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/review-proposal.md"})
-            or spec
-        ),
-    )
-    expect_failure(
-        "duplicate derived artifact paths",
-        lambda: validate_repo(temp_repo),
-        "duplicate derived artifact paths failed",
-    )
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["references"][0]["path"] = "docs/extra.md"
+        expect_failure(
+            "reference specification exclusivity",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "oneOf mismatch",
+        )
 
-    temp_repo = clone_repo()
-    mutate_json(
-        temp_repo / "specs/repo/validation.json",
-        lambda spec: (
-            spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/validation-missing.md"}) or spec
-        ),
-    )
-    expect_failure(
-        "missing derived artifact",
-        lambda: check_generated_document_freshness(temp_repo),
-        "generated-document freshness failed",
-    )
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["normative_requirements"][1]["id"] = mutated_spec["normative_requirements"][0]["id"]
+        expect_failure(
+            "requirement id uniqueness",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "duplicate item properties id",
+        )
 
-    mutated_spec = copy.deepcopy(specs["repo.validation"])
-    mutated_spec["references"][0].pop("spec_id")
-    expect_failure(
-        "reference specification branch",
-        lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
-        "missing required property spec_id",
-    )
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["dependencies"].append(copy.deepcopy(mutated_spec["dependencies"][0]))
+        expect_failure(
+            "dependency uniqueness",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "duplicate item properties spec_id",
+        )
 
-    mutated_spec = copy.deepcopy(specs["repo.validation"])
-    mutated_spec["references"][3].pop("path")
-    expect_failure(
-        "reference artifact branch",
-        lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
-        "missing required property path",
-    )
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["references"].append(copy.deepcopy(mutated_spec["references"][0]))
+        expect_failure(
+            "reference uniqueness",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "duplicate item properties type, spec_id, path",
+        )
 
-    mutated_spec = copy.deepcopy(specs["repo.validation"])
-    mutated_spec["derived_artifacts"][0]["type"] = "html"
-    expect_failure(
-        "derived artifact type enum",
-        lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
-        "enum mismatch",
-    )
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["derived_artifacts"].append(copy.deepcopy(mutated_spec["derived_artifacts"][0]))
+        expect_failure(
+            "derived artifact uniqueness",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "duplicate item properties path",
+        )
 
-    mutated_spec = copy.deepcopy(specs["repo.validation"])
-    mutated_spec["derived_artifacts"][0]["path"] = ""
-    expect_failure(
-        "derived artifact path minLength",
-        lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
-        "minLength violation",
-    )
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["derived_artifacts"][0]["type"] = "html"
+        expect_failure(
+            "derived artifact type enum",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "enum mismatch",
+        )
+
+        mutated_spec = copy.deepcopy(specs["repo.validation"])
+        mutated_spec["derived_artifacts"][0]["path"] = ""
+        expect_failure(
+            "derived artifact path minLength",
+            lambda: validate_instance(mutated_spec, schemas["repo.spec"], "specs/repo/validation.json", schemas["repo.spec"]),
+            "minLength violation",
+        )
 
     expect_render_change(
         "manifest projected purpose",

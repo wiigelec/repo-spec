@@ -11,4 +11,4 @@ esac
 repo_root=$(cd -- "$script_dir/.." && pwd)
 mode=${1:---write}
 
-exec python3 "$script_dir/docgen.py" "$repo_root" "$mode"
+PYTHONDONTWRITEBYTECODE=1 exec python3 "$script_dir/docgen.py" "$repo_root" "$mode"

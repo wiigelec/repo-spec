@@ -10,4 +10,4 @@ esac
 
 repo_root=$(cd -- "$script_dir/.." && pwd)
 
-exec python3 "$script_dir/validate_impl.py" "$repo_root" "$@"
+PYTHONDONTWRITEBYTECODE=1 exec python3 "$script_dir/validate_impl.py" "$repo_root" "$@"
