@@ -33,6 +33,8 @@ It exists to describe the framework-level rules, workflow structure, and authori
 
 The initial `specs/repo` tree starts as a small set of Markdown discovery docs that can later be translated into normalized JSON in the same directory structure.
 
+The companion `schemas/` tree holds the JSON Schema definitions for the JSON artifact model.
+
 Expected starting files:
 
 - `repo-specs-bootstrap.md`;

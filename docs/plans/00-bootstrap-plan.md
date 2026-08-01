@@ -60,6 +60,8 @@ Define the first machine-readable spec shape and the closed artifact model.
 
 The initial placeholder JSON set should land as one file per specification under `specs/repo/`.
 
+Add JSON Schema definitions under `schemas/` to validate the structural properties of the artifact model.
+
 The JSON should be:
 
 - normalized for machine readability;

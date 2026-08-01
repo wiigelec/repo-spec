@@ -25,6 +25,8 @@ This document defines:
 - schema version;
 - source and derived artifact relationships.
 
+Repository manifests use the companion manifest schema and add an `authoritative_specs` list that identifies the complete repository-spec JSON set.
+
 ## Closed model
 
 ```json

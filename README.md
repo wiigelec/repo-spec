@@ -11,6 +11,8 @@ Repository bootstrap and specification workspace.
 - [Validation bootstrap](specs/repo/validation.md)
 - [JSON artifact model](specs/repo/json-artifact-model.md)
 - [Repository manifest](specs/repo/manifest.json)
+- [Repo spec schema](schemas/repo-spec.schema.json)
+- [Repo manifest schema](schemas/repo-manifest.schema.json)
 
 ## Entry points
 
@@ -19,4 +21,5 @@ Repository bootstrap and specification workspace.
 - `specs/repo/` for repository-spec bootstrap material
 - `specs/repo/validation.md` for the validation specification
 - `specs/repo/json-artifact-model.md` for the JSON artifact model
+- `schemas/` for JSON Schema definitions
 - `scripts/validate` for the validation entry point
