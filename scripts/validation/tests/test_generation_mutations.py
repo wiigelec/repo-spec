@@ -10,7 +10,7 @@ from repo_model import load_specs
 from validation.generated_outputs import check_generated_document_freshness, check_generated_document_write_behavior
 from validation.repository_checks import validate_repo
 
-from .mutation_support import clone_repo, expect_failure, expect_render_change, mutate_json
+from .mutation_support import create_repo_fixture, expect_failure, expect_render_change, mutate_json
 
 
 def run_generation_mutations(repo_root: Path) -> None:
@@ -20,7 +20,7 @@ def run_generation_mutations(repo_root: Path) -> None:
         temp_root = Path(temp_root_name)
         clone_index = 0
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -28,17 +28,17 @@ def run_generation_mutations(repo_root: Path) -> None:
         )
         expect_failure("missing derived artifact", lambda: check_generated_document_freshness(temp_repo), "generated-document freshness failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
         expect_failure("orphaned derived markdown write", lambda: check_generated_document_write_behavior(temp_repo), "orphaned derived markdown")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
         expect_failure("orphaned derived markdown check", lambda: check_generated_document_freshness(temp_repo), "orphaned derived markdown")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/manifest.json",

@@ -9,7 +9,7 @@ from repo_model import load_specs
 from validation.generated_outputs import check_generated_document_write_behavior
 from validation.repository_checks import resolve_repo_path, validate_repo
 
-from .mutation_support import add_lifecycle_spec, clone_repo, expect_failure, mutate_json
+from .mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
 
 
 def run_repository_mutations(repo_root: Path) -> None:
@@ -19,19 +19,19 @@ def run_repository_mutations(repo_root: Path) -> None:
         temp_root = Path(temp_root_name)
         clone_index = 0
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.unlisted"
         (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
         expect_failure("unlisted json file", lambda: validate_repo(temp_repo), "manifest completeness failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "specs/repo/validation.json").unlink()
         expect_failure("missing manifest file", lambda: validate_repo(temp_repo), "manifest completeness failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/manifest.json",
@@ -39,7 +39,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("duplicate manifest paths", lambda: validate_repo(temp_repo), "manifest completeness failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -47,7 +47,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("duplicate derived artifact paths", lambda: validate_repo(temp_repo), "duplicate derived artifact paths failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -55,7 +55,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("missing derived artifact", lambda: check_generated_document_write_behavior(temp_repo), "generated-document write failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -63,7 +63,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("artifact reference path escape", lambda: validate_repo(temp_repo), "oneOf mismatch")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -71,7 +71,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("derived artifact path escape", lambda: validate_repo(temp_repo), "pattern mismatch")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-candidate", "candidate")
         mutate_json(
@@ -81,7 +81,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-retired", "retired")
         mutate_json(
@@ -91,7 +91,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         check_generated_document_write_behavior(temp_repo)
         expect_failure("dependency to retired spec", lambda: validate_repo(temp_repo), "dependencies failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-retired", "retired")
         mutate_json(
@@ -101,7 +101,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-retired", "retired")
         mutate_json(
@@ -111,7 +111,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         check_generated_document_write_behavior(temp_repo)
         expect_failure("normative reference to retired spec", lambda: validate_repo(temp_repo), "resolvable references failed")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-candidate", "candidate", supersedes=["repo.validation"])
         mutate_json(
@@ -121,7 +121,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/governing-issue.json",
@@ -129,7 +129,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("governing issue field uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties id")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/review-proposal.json",
@@ -137,7 +137,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("review proposal field uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties id")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -145,7 +145,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("requirement id uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties id")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -153,7 +153,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("dependency uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties spec_id")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -161,7 +161,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("reference uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties type, spec_id, path, kind")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/validation.json",
@@ -169,7 +169,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         expect_failure("derived artifact uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties path")
 
-        temp_repo = clone_repo(repo_root, temp_root, clone_index)
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         expect_failure("repository-relative path helper", lambda: resolve_repo_path(temp_repo, "../../etc/passwd"), "invalid repository-relative path")
 

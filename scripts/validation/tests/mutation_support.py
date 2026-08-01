@@ -26,14 +26,34 @@ def expect_render_change(description: str, renderer, spec: dict, mutate) -> None
         fail(f"mutation test failed: {description} did not change output")
 
 
-def clone_repo(repo_root: Path, temp_root: Path, clone_index: int) -> Path:
-    clone_root = temp_root / f"clone-{clone_index}"
-    shutil.copytree(
-        repo_root,
-        clone_root,
-        ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"),
-    )
-    return clone_root
+def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
+    manifest = json.loads((repo_root / "specs/repo/manifest.json").read_text())
+    required_paths = ["specs/repo/manifest.json", "schemas/repo-manifest.schema.json", "schemas/repo-spec.schema.json"]
+    for entry in manifest["authoritative_specs"]:
+        path = entry["path"]
+        required_paths.append(path)
+        if path == "specs/repo/manifest.json":
+            continue
+        spec = json.loads((repo_root / path).read_text())
+        for ref in spec.get("references", []):
+            if ref.get("type") == "artifact":
+                required_paths.append(ref["path"])
+        for artifact in spec.get("derived_artifacts", []):
+            required_paths.append(artifact["path"])
+    return tuple(dict.fromkeys(required_paths))
+
+
+def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:
+    fixture_root = temp_root / f"fixture-{fixture_index}"
+    fixture_root.mkdir(parents=True, exist_ok=True)
+    if required_paths is None:
+        required_paths = declared_repo_fixture_paths(repo_root)
+    for relative_path in required_paths:
+        source = repo_root / relative_path
+        target = fixture_root / relative_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+    return fixture_root
 
 
 def mutate_json(path: Path, transform) -> None:
