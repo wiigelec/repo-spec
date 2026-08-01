@@ -16,25 +16,36 @@ Do not edit directly.
 `scripts/generate-docs`
 ## Purpose
 
-The repository shall provide one validation entry point.
+Defines repository validation during repo-spec formation.
 
-## Closed checks
+## Normative requirements
 
-1. Conformance to the repository's JSON Schemas
-2. Manifest completeness
-3. Unique specification IDs
-4. Resolvable references
-5. Acyclic dependencies
-6. Generated-document freshness
-7. Clean failure behavior
+- `REPO-VAL-001`: The repository shall provide one validation entry point.
+- `REPO-VAL-002`: The public validation entry point shall be a shell script wrapper, and the implementation it invokes shall not rely on third-party packages.
+- `REPO-VAL-003`: The validation entry point shall enforce conformance to the repository's JSON Schemas.
+- `REPO-VAL-004`: The validation entry point shall enforce manifest completeness.
+- `REPO-VAL-005`: The validation entry point shall enforce unique specification IDs.
+- `REPO-VAL-006`: The validation entry point shall enforce resolvable references.
+- `REPO-VAL-007`: The validation entry point shall enforce acyclic dependencies.
+- `REPO-VAL-008`: The validation entry point shall enforce generated-document freshness.
+- `REPO-VAL-009`: The validation entry point shall enforce clean failure behavior.
+- `REPO-VAL-010`: The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior.
 
-## Boundaries
+## Dependencies
 
-- shell-only
-- no external dependencies
-- no formatting checks
-- no prose checks
-- no Git workflow checks
-- no hosting-platform checks
-- no product-spec checks
-- no source-code checks
+- `repo.manifest`
+- `repo.repository-structure`
+- `repo.development-workflow`
+
+## References
+
+- specification: `repo.manifest`
+- specification: `repo.development-workflow`
+- specification: `repo.repository-structure`
+- artifact: `scripts/validate`
+- artifact: `scripts/generate-docs`
+
+## Derived artifacts
+
+- `markdown`: `derived/specs/repo/validation.md`
+

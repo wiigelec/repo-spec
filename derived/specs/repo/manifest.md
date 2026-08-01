@@ -26,3 +26,26 @@ Identifies the complete repository-spec JSON set.
 - `repo.repository-structure` -> `specs/repo/repository-structure.json`
 - `repo.development-workflow` -> `specs/repo/development-workflow.json`
 - `repo.validation` -> `specs/repo/validation.json`
+
+## Normative requirements
+
+- `REPO-MAN-001`: The manifest shall identify the authoritative repository-spec JSON files.
+
+## Dependencies
+
+- None
+
+## References
+
+- specification: `repo.repository-structure`
+- specification: `repo.governing-issue`
+- specification: `repo.review-proposal`
+- specification: `repo.development-workflow`
+- specification: `repo.validation`
+
+## Derived artifacts
+
+- `markdown`: `derived/specs/repo/manifest.md`
+- `markdown`: `derived/specs/repo/governing-issue.md`
+- `markdown`: `derived/specs/repo/review-proposal.md`
+

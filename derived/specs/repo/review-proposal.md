@@ -14,47 +14,50 @@ Do not edit directly.
 ## Generator
 
 `scripts/generate-docs`
-## Canonical contract
+## Purpose
 
-Use one review proposal for each bounded reviewed change. The canonical contract is repository-spec authority; Markdown and GitHub forms are adapters only.
+Defines the canonical repository-generic review-proposal structure and its subordinate presentation adapters.
 
-## Required fields
+## Normative requirements
 
-- Governing issue
-- Change purpose
-- Accepted base revision
-- Proposed head revision
-- Controlling specifications
-- Summary of implemented changes
-- Changed-path inventory
-- Confirmation of scope and exclusions
-- Ordered patch or commit summary
-- Specification and authority effects
-- Generated-artifact effects
-- Validation commands and results
-- Exact revision validated
-- Known limitations, deviations, or unresolved questions
-- Focused review requests
-- Acceptance checklist
-- Post-merge validation and issue-closure requirements
-- Successor work explicitly not included
+- `REPO-RP-001`: The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes.
+- `REPO-RP-002`: The canonical review-proposal contract shall include the required fields governing issue, change purpose, accepted base revision, proposed head revision, controlling specifications, summary of implemented changes, changed-path inventory, confirmation of scope and exclusions, ordered patch or commit summary, specification and authority effects, generated-artifact effects, validation commands and results, exact revision validated, known limitations, deviations, or unresolved questions, focused review requests, acceptance checklist, post-merge validation and issue-closure requirements, and successor work explicitly not included.
+- `REPO-RP-003`: The canonical review-proposal contract shall require accepted base and proposed head revisions to be identified by exact commit SHA.
+- `REPO-RP-004`: Validation evidence in a review proposal shall identify the exact head revision tested.
+- `REPO-RP-005`: New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated.
+- `REPO-RP-006`: Passing validation shall not be treated as semantic review.
+- `REPO-RP-007`: Review shall not be treated as acceptance.
+- `REPO-RP-008`: Acceptance shall apply only to the exact proposed revision.
+- `REPO-RP-009`: Merge shall not be treated as proof of successful post-merge validation.
+- `REPO-RP-010`: The review proposal shall not use automatic issue-closing syntax when the governing issue requires post-merge validation before closure.
+- `REPO-RP-011`: Empty placeholders shall not satisfy required review-proposal fields.
+- `REPO-RP-012`: GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification.
+- `REPO-RP-013`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure.
+- `REPO-RP-014`: The GitHub pull request template shall represent every required canonical review-proposal field.
 
-## Required-field rules
+## Dependencies
 
-- Every required field shall contain substantive content.
-- Empty placeholders do not satisfy required fields.
-- The governing issue shall be identified explicitly.
-- The accepted base and proposed head shall be exact commit SHAs.
-- Validation evidence shall identify the exact head revision tested.
-- New commits invalidate prior exact-head validation or acceptance evidence until checks are repeated.
-- Passing validation is not semantic review.
-- Review is not acceptance.
-- Acceptance applies only to the exact proposed revision.
-- Merge is not proof of successful post-merge validation.
-- Automatic issue-closing syntax shall not be used when the governing issue requires post-merge validation before closure.
+- `repo.manifest`
+- `repo.repository-structure`
+- `repo.development-workflow`
+- `repo.governing-issue`
+- `repo.validation`
 
-## Adapter guidance
+## References
 
-- The Markdown projection is the human-readable generic form.
-- The GitHub pull request template is the platform-specific form.
-- Neither adapter may override the canonical repository specification.
+- specification: `repo.manifest`
+- specification: `repo.repository-structure`
+- specification: `repo.development-workflow`
+- specification: `repo.governing-issue`
+- specification: `repo.validation`
+- artifact: `AGENTS.md`
+- artifact: `docs/overview/product-overview/03-git-and-change-workflow.md`
+- artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
+- artifact: `.github/PULL_REQUEST_TEMPLATE.md`
+- artifact: `scripts/docgen.py`
+- artifact: `scripts/validate_impl.py`
+
+## Derived artifacts
+
+- `markdown`: `derived/specs/repo/review-proposal.md`
+

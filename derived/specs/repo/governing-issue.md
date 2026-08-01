@@ -14,46 +14,44 @@ Do not edit directly.
 ## Generator
 
 `scripts/generate-docs`
-## Canonical contract
+## Purpose
 
-Use one governing issue for each bounded governed change. The canonical contract is repository-spec authority; Markdown and GitHub forms are adapters only.
+Defines the canonical repository-generic governing issue structure and its subordinate presentation adapters.
 
-## Required fields
+## Normative requirements
 
-- Change type
-- Problem statement
-- Intended outcome
-- Governing specifications
-- Accepted default-branch base
-- Intended branch
-- In-scope behavior and paths
-- Explicit exclusions
-- Dependencies and predecessor evidence
-- Ordered patch plan
-- Validation plan
-- Acceptance criteria
-- Completion gate
-- Open decisions or authority conflicts
-- Successor work explicitly not authorized
+- `REPO-GI-001`: The repository shall define exactly one canonical governing-issue contract for bounded governed work.
+- `REPO-GI-002`: The canonical governing-issue contract shall include the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, intended branch, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized.
+- `REPO-GI-003`: The canonical governing-issue contract shall distinguish required fields from optional fields.
+- `REPO-GI-004`: Empty placeholders shall not satisfy required governing-issue fields.
+- `REPO-GI-005`: A governing issue shall exist before its implementation branch is created.
+- `REPO-GI-006`: Material scope changes shall be recorded in the governing issue before they are treated as authorized scope.
+- `REPO-GI-007`: A governing issue shall not be closed until its completion gate is satisfied.
+- `REPO-GI-008`: Completion of a governing issue shall not authorize unrelated successor work.
+- `REPO-GI-009`: The Markdown projection and GitHub issue form shall be adapters subordinate to the canonical repository specification.
+- `REPO-GI-010`: The GitHub issue form shall represent every required canonical field.
+- `REPO-GI-011`: The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure.
 
-## Required-field rules
+## Dependencies
 
-- Every required field shall contain substantive content.
-- Empty placeholders do not satisfy required fields.
-- Material scope changes must be recorded in the governing issue.
-- The issue must exist before the implementation branch is created.
-- The issue may close only after its completion gate is satisfied.
-- Completion does not authorize unrelated successor work.
+- `repo.manifest`
+- `repo.repository-structure`
+- `repo.development-workflow`
 
-## Optional fields
+## References
 
-- Related links
-- Notes
-- Risk callouts
-- Session recovery context
+- specification: `repo.manifest`
+- specification: `repo.repository-structure`
+- specification: `repo.development-workflow`
+- artifact: `AGENTS.md`
+- artifact: `docs/overview/product-overview/03-git-and-change-workflow.md`
+- artifact: `docs/overview/product-overview/04-human-ai-continuity.md`
+- artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
+- artifact: `docs/plans/00-bootstrap-plan.md`
+- artifact: `.github/ISSUE_TEMPLATE/governing-issue.yml`
+- artifact: `docs/issues/governing-issue-example.md`
 
-## Adapter guidance
+## Derived artifacts
 
-- The Markdown projection is the human-readable generic form.
-- The GitHub Issue Form is the platform-specific form.
-- Neither adapter may override the canonical repository specification.
+- `markdown`: `derived/specs/repo/governing-issue.md`
+

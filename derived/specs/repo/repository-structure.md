@@ -16,9 +16,22 @@ Do not edit directly.
 `scripts/generate-docs`
 ## Purpose
 
-The repository shall separate repository-spec source, product-spec source, schemas, derived docs, and tooling into distinct top-level areas.
+Defines the repository layout and top-level separation of concerns.
 
-## Reference context
+## Normative requirements
+
+- `REPO-STR-001`: The repository shall separate repository-spec source, product-spec source, schemas, derived docs, and tooling into distinct top-level areas.
+
+## Dependencies
 
 - `repo.manifest`
-- `docs/plans/00-bootstrap-plan.md`
+
+## References
+
+- specification: `repo.manifest`
+- artifact: `docs/plans/00-bootstrap-plan.md`
+
+## Derived artifacts
+
+- `markdown`: `derived/specs/repo/repository-structure.md`
+
