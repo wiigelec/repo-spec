@@ -56,7 +56,7 @@ Define the rudimentary workflow a fresh AI session must be able to infer, includ
 
 ### Phase 3: Normalized JSON design
 
-Define the first machine-readable spec shape.
+Define the first machine-readable spec shape and the closed artifact model.
 
 The JSON should be:
 
