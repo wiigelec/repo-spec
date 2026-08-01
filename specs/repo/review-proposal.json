@@ -55,10 +55,14 @@
     },
     {
       "id": "REPO-RP-013",
-      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure."
+      "text": "When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract."
     },
     {
       "id": "REPO-RP-014",
+      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure."
+    },
+    {
+      "id": "REPO-RP-015",
       "text": "The GitHub pull request template shall represent every required canonical review-proposal field."
     }
   ],

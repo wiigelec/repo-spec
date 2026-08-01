@@ -32,8 +32,9 @@ Defines the canonical repository-generic review-proposal structure and its subor
 - `REPO-RP-010`: The review proposal shall not use automatic issue-closing syntax when the governing issue requires post-merge validation before closure.
 - `REPO-RP-011`: Empty placeholders shall not satisfy required review-proposal fields.
 - `REPO-RP-012`: GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification.
-- `REPO-RP-013`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure.
-- `REPO-RP-014`: The GitHub pull request template shall represent every required canonical review-proposal field.
+- `REPO-RP-013`: When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract.
+- `REPO-RP-014`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure.
+- `REPO-RP-015`: The GitHub pull request template shall represent every required canonical review-proposal field.
 
 ## Dependencies
 
