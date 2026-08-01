@@ -20,3 +20,6 @@ jobs:
 
       - name: Run validation
         run: scripts/validate
+
+      - name: Run mutation tests
+        run: scripts/validate --mutation-tests
