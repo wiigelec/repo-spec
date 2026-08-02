@@ -55,6 +55,21 @@ The framework must support:
 
 The immediate planning problem is therefore not to build a product runtime. It is to establish the architecture of the reusable framework and the product-specification system that initialized repositories will use.
 
+## Stage 1 integration ownership matrix
+
+This matrix records the current integration reading of the accepted Stage 1 records.
+
+| Concept | Current authority owner | Notes |
+| --- | --- | --- |
+| Repository-specification source | `specs/repo/` via `repo.manifest` | Governs repository-generic contracts only |
+| Product-specification source | `specs/product/` via the future product manifest | Reserved, not yet introduced |
+| Artifact taxonomy | `repo.artifact-taxonomy` | Classifies repository-local and framework-generic artifact roles |
+| Platform profile boundary | `repo.platform-profiles` | Distinguishes Git-generic behavior from GitHub-specific behavior |
+| Current GitHub adapters | Bootstrap-owned `.github/` files and `scripts/github*` helpers | Operationally maintained now, not generated from profile source |
+| Future GitHub profile source | `profiles/github/` | Reserved for later reusable profile-source material |
+| Validation | `repo.validation` plus repository-local validation code | Checks declared repository-local invariants only |
+| Derived projections | Their declared source specifications | Must remain subordinate to source authority |
+
 ## Intended outcome
 
 Completion of this plan should leave the repository with an accepted roadmap that:
@@ -287,7 +302,7 @@ profiles/github/
 .github/
 ```
 
-The `.github/` directory may remain the installed adapter location while `profiles/github/` defines reusable source material or profile contracts.
+The `.github/` directory remains the installed adapter location for current bootstrap-owned GitHub files while `profiles/github/` is reserved for future reusable source material.
 
 ### Optional language-specific paths
 
@@ -570,7 +585,7 @@ GitHub-specific behavior may include:
 - merge queues;
 - release records.
 
-GitHub should be the first fully supported profile, but GitHub behavior must remain distinguishable from framework-generic behavior.
+GitHub should be the first fully supported profile, but current bootstrap-owned GitHub behavior must remain distinguishable from framework-generic behavior until reusable profile source material exists.
 
 ### Hosting-state mutations
 
@@ -834,7 +849,7 @@ Decide where implementation, test, and conformance mappings live before Stage 5.
 
 ### Gate D — Profile source and installation model
 
-Decide whether reusable profile sources live under `profiles/` and generate installed hosting artifacts before Stage 6.
+Decide whether reusable profile sources live under `profiles/` and generate installed hosting artifacts before Stage 6; current bootstrap-owned adapters remain the operational source of truth until that transition is governed.
 
 ### Gate E — Reference repository form
 
