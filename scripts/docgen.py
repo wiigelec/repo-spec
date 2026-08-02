@@ -349,11 +349,16 @@ def check_orphaned_derived_markdown(repo_root: Path, expected_paths: set[str], s
 
 
 def render_all(repo_root: Path) -> dict[str, str]:
+    detailed = render_all_detailed(repo_root)
+    return {path: content for path, (_source_path, content) in detailed.items()}
+
+
+def render_all_detailed(repo_root: Path) -> dict[str, tuple[str, str]]:
     _repo_manifest, repo_specs, repo_paths, _actual_paths = load_specs(repo_root)
     _product_manifest, product_specs, product_paths, _product_actual_paths = load_product_specs(repo_root)
     specs = {**repo_specs, **product_specs}
     paths = {**repo_paths, **product_paths}
-    rendered: dict[str, str] = {}
+    rendered: dict[str, tuple[str, str]] = {}
     for spec_id in sorted(specs, key=lambda item: paths[item]):
         spec = specs[spec_id]
         source_path = paths[spec_id]
@@ -363,17 +368,20 @@ def render_all(repo_root: Path) -> dict[str, str]:
             if renderer_id is None:
                 if artifact["type"] != "markdown":
                     raise ValueError(f"unsupported derived artifact type without renderer: {artifact['type']}")
-                rendered[artifact["path"]] = render_spec_projection(
+                rendered[artifact["path"]] = (
+                    source_path,
+                    render_spec_projection(
                     spec["title"],
                     source_path,
                     spec,
                     include_authoritative_specs=(spec_id == "repo.manifest"),
+                    ),
                 )
                 continue
             renderer = SPECIAL_RENDERERS.get(renderer_id)
             if renderer is None:
                 raise ValueError(f"unsupported renderer: {renderer_id}")
-            rendered[artifact["path"]] = renderer(spec)
+            rendered[artifact["path"]] = (source_path, renderer(spec))
     declared_paths = declared_derived_artifact_paths(repo_specs, product_specs)
     if set(rendered) != declared_paths:
         raise ValueError("declared derived-artifacts do not match generated outputs")
@@ -381,32 +389,32 @@ def render_all(repo_root: Path) -> dict[str, str]:
 
 
 def write_all(repo_root: Path) -> None:
-    rendered = render_all(repo_root)
-    for relative_path, content in rendered.items():
+    rendered = render_all_detailed(repo_root)
+    for relative_path, (_source_path, content) in rendered.items():
         path = resolve_repo_path(repo_root, relative_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
 
 
 def check_generated_outputs(repo_root: Path) -> None:
-    rendered = render_all(repo_root)
+    rendered = render_all_detailed(repo_root)
     expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/") and path.endswith(".md")}
     check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
-    for relative_path, content in rendered.items():
+    for relative_path, (source_path, content) in rendered.items():
         path = resolve_repo_path(repo_root, relative_path)
         if not path.exists() or path.read_text() != content:
-            raise ValueError(f"stale generated document: {path.relative_to(repo_root)}")
+            raise ValueError(f"stale generated document: source {source_path} -> output {path.relative_to(repo_root)}")
 
 
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     mode = argv[2] if len(argv) > 2 else "--write"
-    rendered = render_all(repo_root)
+    rendered = render_all_detailed(repo_root)
     expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/") and path.endswith(".md")}
 
     if mode == "--write":
         check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=False)
-        for relative_path, content in rendered.items():
+        for relative_path, (_source_path, content) in rendered.items():
             path = resolve_repo_path(repo_root, relative_path)
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
@@ -414,10 +422,10 @@ def main(argv: list[str]) -> int:
 
     if mode == "--check":
         check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
-        for relative_path, content in rendered.items():
+        for relative_path, (source_path, content) in rendered.items():
             path = resolve_repo_path(repo_root, relative_path)
             if not path.exists() or path.read_text() != content:
-                print(f"stale generated document: {path.relative_to(repo_root)}", file=sys.stderr)
+                print(f"stale generated document: source {source_path} -> output {path.relative_to(repo_root)}", file=sys.stderr)
                 return 1
         return 0
 
