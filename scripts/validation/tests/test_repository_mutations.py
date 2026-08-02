@@ -254,6 +254,14 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         mutate_json(
             temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: spec["profiles"].append(copy.deepcopy(spec["profiles"][0])) or spec,
+        )
+        expect_failure("duplicate profile identifier", lambda: validate_repo(temp_repo), "duplicate profile identifier github")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
             lambda spec: spec["profiles"][0]["mutation_record_fields"].remove("accepted repository revision") or spec,
         )
         expect_failure("hosting mutation record fields", lambda: validate_repo(temp_repo), "hosting mutation record fields mismatch")
