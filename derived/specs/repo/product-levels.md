@@ -32,6 +32,7 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 - `REPO-PL-010`: Each product specification shall remain confined to its reserved Level root, and Level metadata recorded in the manifest and product file shall agree with the declared Level root.
 - `REPO-PL-011`: Future Level-specific schemas shall extend the common product-specification envelope through explicit governed extension boundaries and shall not redefine common fields or lower-Level semantics.
 - `REPO-PL-012`: Structural completeness shall be machine-checkable from the declared Level, path correspondence, dependency targets, and lifecycle agreement, while semantic completeness remains review-owned.
+- `REPO-PL-013`: Product projection declarations shall be declaration-driven rather than mandatory, and any declared product projection shall remain within the repository-relative `derived/specs/product/` root and subordinate to the owning product specification.
 
 ## Dependencies
 

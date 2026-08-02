@@ -21,7 +21,7 @@ Defines the normative contract for the product-specification manifest.
 ## Normative requirements
 
 - `REPO-PM-001`: The repository shall define `specs/product/manifest.json` as the canonical product-manifest path and shall keep it distinct from `specs/repo/manifest.json`.
-- `REPO-PM-002`: The product manifest shall be authoritative for the governed product-specification registry and its declared product-derived projections under `specs/product/`, and shall not claim repository-workflow authority.
+- `REPO-PM-002`: The product manifest shall be authoritative for the governed product-specification registry and for declaration-driven product-derived projections under `specs/product/`, and shall not claim repository-workflow authority.
 - `REPO-PM-003`: The product manifest shall identify itself with the stable manifest identity `product.manifest` and shall use the same repository-spec lifecycle statuses as repository specifications.
 - `REPO-PM-004`: The presence of `specs/product/manifest.json` shall express activation of the product-specification system.
 - `REPO-PM-005`: A product manifest may be empty.
@@ -32,7 +32,7 @@ Defines the normative contract for the product-specification manifest.
 - `REPO-PM-010`: Each registered product specification shall reside under exactly one reserved Level root: `specs/product/level-0/`, `specs/product/level-1/`, `specs/product/level-2/`, or `specs/product/level-3/`.
 - `REPO-PM-011`: Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value.
 - `REPO-PM-012`: Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries.
-- `REPO-PM-013`: Declared derived product projections shall be registered by the product specification itself, and any registered derived artifact shall remain subordinate to the authoritative product specification.
+- `REPO-PM-013`: Declared derived product projections shall be registered by the product specification itself in its `derived_artifacts` collection, shall use repository-relative Markdown paths under `derived/specs/product/`, and shall remain subordinate to the authoritative product specification.
 - `REPO-PM-014`: The product manifest shall be complete when it enumerates every governed product specification currently present under the reserved product-specification roots, excluding the manifest file itself.
 - `REPO-PM-015`: Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest.
 

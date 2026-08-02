@@ -102,7 +102,7 @@
       "role": "derived projection",
       "authority_category": "generated",
       "authority_source": "declared source specification or manifest",
-      "source_of_truth_rule": "Must be reproducible from declared sources and must never override the source authority.",
+      "source_of_truth_rule": "Must be reproducible from declared sources, including repository and product specifications that own the declaration, and must never override the source authority.",
       "mutability": "regenerable only",
       "generation_mode": "deterministic",
       "validation_ownership": "validation",
@@ -111,7 +111,10 @@
       "source_artifacts": [
         "repo.manifest",
         "repo.governing-issue",
-        "repo.review-proposal"
+        "repo.review-proposal",
+        "repo.product-manifest",
+        "repo.product-spec-base",
+        "repo.product-levels"
       ]
     },
     {
