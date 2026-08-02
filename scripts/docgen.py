@@ -11,6 +11,7 @@ from pathlib import Path
 from repo_model import (
     declared_derived_artifact_paths,
     load_specs,
+    load_product_specs,
     resolve_repo_path,
 )
 
@@ -254,14 +255,16 @@ SPECIAL_RENDERERS = {
 
 
 def actual_derived_markdown_paths(repo_root: Path) -> set[str]:
-    derived_root = repo_root / "derived/specs/repo"
-    if not derived_root.exists():
-        return set()
-    return {
-        path.relative_to(repo_root).as_posix()
-        for path in derived_root.glob("*.md")
-        if path.is_file()
-    }
+    paths: set[str] = set()
+    for derived_root in (repo_root / "derived/specs/repo", repo_root / "derived/specs/product"):
+        if not derived_root.exists():
+            continue
+        paths.update(
+            path.relative_to(repo_root).as_posix()
+            for path in derived_root.rglob("*.md")
+            if path.is_file()
+        )
+    return paths
 
 
 def check_orphaned_derived_markdown(repo_root: Path, expected_paths: set[str], strict: bool) -> None:
@@ -282,9 +285,13 @@ def check_orphaned_derived_markdown(repo_root: Path, expected_paths: set[str], s
 
 
 def render_all(repo_root: Path) -> dict[str, str]:
-    _manifest, specs, paths, _actual_paths = load_specs(repo_root)
+    _repo_manifest, repo_specs, repo_paths, _actual_paths = load_specs(repo_root)
+    _product_manifest, product_specs, product_paths, _product_actual_paths = load_product_specs(repo_root)
+    specs = {**repo_specs, **product_specs}
+    paths = {**repo_paths, **product_paths}
     rendered: dict[str, str] = {}
-    for spec_id, spec in specs.items():
+    for spec_id in sorted(specs, key=lambda item: paths[item]):
+        spec = specs[spec_id]
         source_path = paths[spec_id]
         for artifact in spec.get("derived_artifacts", []):
             resolve_repo_path(repo_root, artifact["path"])
@@ -292,13 +299,18 @@ def render_all(repo_root: Path) -> dict[str, str]:
             if renderer_id is None:
                 if artifact["type"] != "markdown":
                     raise ValueError(f"unsupported derived artifact type without renderer: {artifact['type']}")
-                rendered[artifact["path"]] = render_spec_projection(spec["title"], source_path, spec, include_authoritative_specs=(spec_id == "repo.manifest"))
+                rendered[artifact["path"]] = render_spec_projection(
+                    spec["title"],
+                    source_path,
+                    spec,
+                    include_authoritative_specs=(spec_id == "repo.manifest"),
+                )
                 continue
             renderer = SPECIAL_RENDERERS.get(renderer_id)
             if renderer is None:
                 raise ValueError(f"unsupported renderer: {renderer_id}")
             rendered[artifact["path"]] = renderer(spec)
-    declared_paths = declared_derived_artifact_paths(specs)
+    declared_paths = declared_derived_artifact_paths(repo_specs, product_specs)
     if set(rendered) != declared_paths:
         raise ValueError("declared derived-artifacts do not match generated outputs")
     return rendered
@@ -314,7 +326,7 @@ def write_all(repo_root: Path) -> None:
 
 def check_generated_outputs(repo_root: Path) -> None:
     rendered = render_all(repo_root)
-    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/repo/") and path.endswith(".md")}
+    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/") and path.endswith(".md")}
     check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
     for relative_path, content in rendered.items():
         path = resolve_repo_path(repo_root, relative_path)
@@ -326,7 +338,7 @@ def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     mode = argv[2] if len(argv) > 2 else "--write"
     rendered = render_all(repo_root)
-    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/repo/") and path.endswith(".md")}
+    expected_markdown_paths = {path for path in rendered if path.startswith("derived/specs/") and path.endswith(".md")}
 
     if mode == "--write":
         check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=False)
