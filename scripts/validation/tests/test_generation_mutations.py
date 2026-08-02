@@ -46,6 +46,14 @@ def run_generation_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/product-levels.json",
+            lambda spec: spec["derived_artifacts"].__setitem__(0, {"type": "markdown", "path": "derived/specs/repo/product-levels-missing.md"}) or spec,
+        )
+        expect_failure("product levels missing derived artifact", lambda: check_generated_document_freshness(temp_repo), "generated-document freshness failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
         expect_failure("orphaned derived markdown write", lambda: check_generated_document_write_behavior(temp_repo), "orphaned derived markdown")
 
@@ -195,6 +203,12 @@ def run_generation_mutations(repo_root: Path) -> None:
         lambda spec: render_spec_projection(specs["repo.product-manifest"]["title"], paths["repo.product-manifest"], spec),
         specs["repo.product-manifest"],
         lambda spec: spec.__setitem__("purpose", "Changed product manifest purpose"),
+    )
+    expect_render_change(
+        "product levels projected requirement",
+        lambda spec: render_spec_projection(specs["repo.product-levels"]["title"], paths["repo.product-levels"], spec),
+        specs["repo.product-levels"],
+        lambda spec: spec["normative_requirements"][0].__setitem__("text", "Changed product-levels requirement"),
     )
 
     expect_render_change(

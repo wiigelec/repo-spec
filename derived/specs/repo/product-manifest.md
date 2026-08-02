@@ -31,7 +31,7 @@ Defines the normative contract for the product-specification manifest.
 - `REPO-PM-009`: Each registered product specification shall have a unique identity and a unique path within the manifest.
 - `REPO-PM-010`: Each registered product specification shall reside under exactly one reserved Level root: `specs/product/level-0/`, `specs/product/level-1/`, `specs/product/level-2/`, or `specs/product/level-3/`.
 - `REPO-PM-011`: Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value.
-- `REPO-PM-012`: Level registration is metadata only in this contract and does not yet impose Level dependency rules or dependency-cycle enforcement.
+- `REPO-PM-012`: Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries.
 - `REPO-PM-013`: Declared derived product projections shall be registered by the product specification itself, and any registered derived artifact shall remain subordinate to the authoritative product specification.
 - `REPO-PM-014`: The product manifest shall be complete when it enumerates every governed product specification currently present under the reserved product-specification roots, excluding the manifest file itself.
 - `REPO-PM-015`: Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest.
@@ -53,6 +53,7 @@ Defines the normative contract for the product-specification manifest.
 - artifact: `docs/overview/product-overview/01-product-direction.md`
 - artifact: `docs/overview/product-overview/02-development-and-specifications.md`
 - artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
+- specification: `repo.product-levels`
 
 ## Derived artifacts
 

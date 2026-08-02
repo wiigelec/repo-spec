@@ -51,7 +51,7 @@
     },
     {
       "id": "REPO-PM-012",
-      "text": "Level registration is metadata only in this contract and does not yet impose Level dependency rules or dependency-cycle enforcement."
+      "text": "Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries."
     },
     {
       "id": "REPO-PM-013",
@@ -112,6 +112,10 @@
     {
       "type": "artifact",
       "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
     }
   ],
   "derived_artifacts": [

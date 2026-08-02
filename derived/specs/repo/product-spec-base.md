@@ -32,7 +32,7 @@ Defines the normative common envelope shared by all product specifications.
 - `REPO-PSB-010`: The `supersedes` and `superseded_by` lineage collections shall record product-specification identity relationships and shall not self-reference.
 - `REPO-PSB-011`: The `derived_artifacts` collection shall be declared by the product specification itself, shall remain subordinate to that source specification, and shall use repository-relative paths beneath `derived/specs/product/`.
 - `REPO-PSB-012`: Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, and Level between the manifest entry and the product file, while product workflow authority shall remain outside the product specification contract.
-- `REPO-PSB-013`: Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries rather than silently redefining common fields.
+- `REPO-PSB-013`: Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields.
 
 ## Dependencies
 
@@ -52,6 +52,7 @@ Defines the normative common envelope shared by all product specifications.
 - artifact: `docs/plans/01-framework-architecture-plan.md`
 - artifact: `docs/overview/product-overview/02-development-and-specifications.md`
 - artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
+- specification: `repo.product-levels`
 
 ## Derived artifacts
 
