@@ -6,7 +6,7 @@ from pathlib import Path
 
 from validation.repository_checks import validate_repo
 
-from .mutation_support import create_repo_fixture, expect_failure
+from .mutation_support import create_repo_fixture, expect_failure, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
@@ -39,6 +39,24 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
         validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "rogue.json", "specs/product/level-0/repo-validation.json")
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"].append(
+                {
+                    "spec_id": "repo.validation",
+                    "path": "specs/product/level-0/repo-validation.json",
+                    "status": "accepted",
+                    "level": 0,
+                    "derived_artifacts": [],
+                }
+            ) or manifest,
+        )
+        expect_failure("repository file in product manifest", lambda: validate_repo(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
@@ -104,6 +122,17 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted-missing-ref.json", "specs/product/level-1/primitive.json")
         expect_failure("unresolved reference", lambda: validate_repo(temp_repo), "product references failed: unresolved spec")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["references"].append({"type": "specification", "spec_id": "repo.validation"}) or spec,
+        )
+        expect_failure("repository reference in product specification", lambda: validate_repo(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

@@ -46,6 +46,17 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        extra_spec = copy.deepcopy(specs["repo.validation"])
+        extra_spec["spec_id"] = "product.repo-validation"
+        (temp_repo / "specs/repo/product-validation.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
+        mutate_json(
+            temp_repo / "specs/repo/manifest.json",
+            lambda manifest: manifest["authoritative_specs"].append({"spec_id": "product.repo-validation", "path": "specs/repo/product-validation.json"}) or manifest,
+        )
+        expect_failure("product file in repository manifest", lambda: validate_repo(temp_repo), "pattern mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         product_root = temp_repo / "specs/product"
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.product-root-rogue"
