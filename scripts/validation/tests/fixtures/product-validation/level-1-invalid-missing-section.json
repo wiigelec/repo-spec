@@ -29,8 +29,5 @@
       "type": "markdown",
       "path": "derived/specs/product/primitive.md"
     }
-  ],
-  "primitives": {
-    "concepts": ["entity", "value"]
-  }
+  ]
 }

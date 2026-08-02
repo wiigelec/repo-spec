@@ -1,19 +1,22 @@
 {
-  "spec_id": "product.primitive",
-  "title": "Primitive",
-  "purpose": "Primitive product specification.",
+  "spec_id": "product.component",
+  "title": "Component",
+  "purpose": "Component product specification.",
   "status": "accepted",
   "schema_version": "1",
-  "level": 1,
+  "level": 2,
   "normative_requirements": [
     {
-      "id": "PRIMITIVE-001",
-      "text": "Primitive requirement."
+      "id": "COMPONENT-001",
+      "text": "Component requirement."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.kernel"
+    },
+    {
+      "spec_id": "product.primitive"
     }
   ],
   "references": [
@@ -27,10 +30,10 @@
   "derived_artifacts": [
     {
       "type": "markdown",
-      "path": "derived/specs/product/primitive.md"
+      "path": "derived/specs/product/component.md"
     }
   ],
-  "primitives": {
-    "concepts": ["entity", "value"]
+  "components": {
+    "contracts": ["component contract"]
   }
 }

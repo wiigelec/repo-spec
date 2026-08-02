@@ -15,5 +15,8 @@
   "references": [],
   "supersedes": [],
   "superseded_by": [],
-  "derived_artifacts": []
+  "derived_artifacts": [],
+  "kernel": {
+    "foundations": ["terminology", "identity", "lifecycle"]
+  }
 }
