@@ -2,12 +2,18 @@
 
 ## Status
 
-Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is the next separately governed phase.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is the next separately governed phase.
 
 Accepted Stage 2 base:
 
 ```text
 main at bb05dc4c52617abcc72cf793ed852ed2f3e195f9
+```
+
+Accepted Stage 3 base:
+
+```text
+issue-117-complete-stage3-schema-ownership-and-handoff at edfafa977dce07ef7a8c53a5781e6f0fbdb7aa18
 ```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
