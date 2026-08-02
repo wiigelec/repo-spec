@@ -6,6 +6,7 @@ from validation.cli_contracts import check_generate_docs_cli_contract, check_val
 
 from .test_product_acyclicity import run_product_acyclicity_tests
 from .test_product_generation import run_product_generation_tests
+from .test_product_projection_freshness import run_product_projection_freshness_tests
 from .test_product_dependency_directions import run_product_dependency_direction_tests
 from .test_product_level_schemas import run_product_level_schema_tests
 from .test_product_validation import run_product_validation_tests
@@ -22,6 +23,7 @@ def run_mutation_tests(repo_root: Path) -> None:
     run_product_validation_tests(repo_root)
     run_product_manifest_schema_tests(repo_root)
     run_product_generation_tests(repo_root)
+    run_product_projection_freshness_tests(repo_root)
     run_schema_mutations(repo_root)
     run_repository_mutations(repo_root)
     run_generation_mutations(repo_root)
