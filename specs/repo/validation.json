@@ -1,0 +1,119 @@
+{
+  "spec_id": "repo.validation",
+  "title": "Validation",
+  "purpose": "Defines repository validation during repo-spec formation.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-VAL-001",
+      "text": "The repository shall provide one validation entry point."
+    },
+    {
+      "id": "REPO-VAL-002",
+      "text": "The public validation entry point shall be a shell script wrapper, and the implementation it invokes shall not rely on third-party packages."
+    },
+    {
+      "id": "REPO-VAL-003",
+      "text": "The validation entry point shall enforce conformance to the repository's JSON Schemas."
+    },
+    {
+      "id": "REPO-VAL-004",
+      "text": "The validation entry point shall enforce manifest completeness."
+    },
+    {
+      "id": "REPO-VAL-005",
+      "text": "The validation entry point shall enforce unique specification IDs."
+    },
+    {
+      "id": "REPO-VAL-006",
+      "text": "The validation entry point shall enforce resolvable references according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository."
+    },
+    {
+      "id": "REPO-VAL-007",
+      "text": "The validation entry point shall enforce allowed dependency directions, product completeness rules, acyclic dependencies, and allow dependency targets only from candidate or accepted specifications."
+    },
+    {
+      "id": "REPO-VAL-008",
+      "text": "The validation entry point shall enforce generated-document freshness."
+    },
+    {
+      "id": "REPO-VAL-009",
+      "text": "The validation entry point shall enforce clean failure behavior."
+    },
+    {
+      "id": "REPO-VAL-010",
+      "text": "The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior."
+    },
+    {
+      "id": "REPO-VAL-011",
+      "text": "The repository shall represent replacement lineage with explicit supersedes and superseded_by relations."
+    },
+    {
+      "id": "REPO-VAL-012",
+      "text": "The validation entry point shall enforce that replacement-lineage relations resolve to manifest-listed specifications and do not self-reference."
+    },
+    {
+      "id": "REPO-VAL-013",
+      "text": "The validation entry point shall enforce separation between repository-specification and product-specification roots, and shall reject undeclared JSON content under `specs/product/` until the product-manifest system is introduced."
+    },
+    {
+      "id": "REPO-VAL-014",
+      "text": "The validation entry point shall reject repository specifications that are placed under `specs/product/` and product specifications that are placed under `specs/repo/` where those placements are detectable from repository-local JSON files."
+    },
+    {
+      "id": "REPO-VAL-015",
+      "text": "The validation entry point shall enforce repository-local platform-profile classification consistency, including the accepted GitHub profile boundary, installed adapter ownership, and declared remote-state kinds."
+    },
+    {
+      "id": "REPO-VAL-016",
+      "text": "The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification fields."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.platform-profiles"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/validate"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/generate-docs"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/github_field_policy.py"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/validation.md"
+    }
+  ]
+}

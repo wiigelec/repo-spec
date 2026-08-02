@@ -1,0 +1,188 @@
+{
+  "spec_id": "repo.platform-profiles",
+  "title": "Platform Profiles",
+  "purpose": "Defines the normative boundary between Git-generic framework behavior and hosting-platform-specific profile behavior.",
+  "status": "accepted",
+  "schema_version": "1",
+  "profiles": [
+    {
+      "identifier": "github",
+      "label": "GitHub",
+      "source_root": "profiles/github/",
+      "installed_adapter_root": ".github/",
+      "authority_boundary": "profile-source-authoritative",
+      "adapter_generation_policy": "source-to-adapter",
+      "artifact_inventory": [
+        {
+          "path": ".github/ISSUE_TEMPLATE/governing-issue.yml",
+          "classification": "installed-adapter",
+          "authority_category": "profile-specific",
+          "profile_id": "github"
+        },
+        {
+          "path": ".github/PULL_REQUEST_TEMPLATE.md",
+          "classification": "installed-adapter",
+          "authority_category": "profile-specific",
+          "profile_id": "github"
+        },
+        {
+          "path": ".github/workflows/github-field-policy.yml",
+          "classification": "installed-adapter",
+          "authority_category": "profile-specific",
+          "profile_id": "github"
+        },
+        {
+          "path": ".github/workflows/validation.yml",
+          "classification": "installed-adapter",
+          "authority_category": "profile-specific",
+          "profile_id": "github"
+        },
+        {
+          "path": "scripts/github-field-policy",
+          "classification": "bootstrap-infrastructure",
+          "authority_category": "bootstrap",
+          "profile_id": "github"
+        },
+        {
+          "path": "scripts/github_field_policy.py",
+          "classification": "bootstrap-infrastructure",
+          "authority_category": "bootstrap",
+          "profile_id": "github"
+        },
+        {
+          "path": "scripts/github_field_policy_mutation_test.py",
+          "classification": "bootstrap-infrastructure",
+          "authority_category": "bootstrap",
+          "profile_id": "github"
+        }
+      ],
+      "remote_state_kinds": [
+        "branch protection",
+        "repository rulesets",
+        "required checks",
+        "merge queues",
+        "labels",
+        "repository settings"
+      ],
+      "mutation_record_fields": [
+        "governing issue",
+        "accepted repository revision",
+        "target repository",
+        "target remote configuration identifier",
+        "previous state",
+        "intended state",
+        "execution evidence",
+        "rollback procedure",
+        "post-change verification"
+      ]
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "REPO-PP-001",
+      "text": "The repository shall define a focused platform-profile specification that keeps Git-generic framework behavior separate from hosting-platform-specific behavior."
+    },
+    {
+      "id": "REPO-PP-002",
+      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall keep GitHub adapters and bootstrap scripts as bootstrap-owned installed adapters or bootstrap infrastructure until reusable profile source material is introduced, and the reserved future profile-source model shall remain subordinate to accepted repository specifications."
+    },
+    {
+      "id": "REPO-PP-003",
+      "text": "The repository shall reserve `profiles/github/` for future reusable GitHub profile source material and `.github/` for current installed GitHub adapters."
+    },
+    {
+      "id": "REPO-PP-004",
+      "text": "Current installed adapters and bootstrap infrastructure may be maintained directly until profile source material exists; future profile source material may then generate installed adapters, but installed adapters shall not claim authority over the profile source."
+    },
+    {
+      "id": "REPO-PP-005",
+      "text": "Remote-only hosting-platform state shall be represented as deployment-state evidence, not as ordinary generated repository content."
+    },
+    {
+      "id": "REPO-PP-006",
+      "text": "Hosting mutations shall record the governing issue, accepted repository revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification."
+    },
+    {
+      "id": "REPO-PP-007",
+      "text": "The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity, with current operational ownership retained at the bootstrap layer rather than at a populated profile-source layer."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/workflows/github-field-policy.yml"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/workflows/validation.yml"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/github-field-policy"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/github_field_policy.py"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/github_field_policy_mutation_test.py"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/04-human-ai-continuity.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-framework-architecture-plan.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/platform-profiles.md"
+    }
+  ]
+}

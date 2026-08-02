@@ -1,0 +1,92 @@
+{
+  "spec_id": "repo.manifest",
+  "title": "Repository Spec Manifest",
+  "purpose": "Identifies the complete repository-spec JSON set.",
+  "status": "accepted",
+  "schema_version": "1",
+  "authoritative_specs": [
+    {
+      "spec_id": "repo.manifest",
+      "path": "specs/repo/manifest.json"
+    },
+    {
+      "spec_id": "repo.governing-issue",
+      "path": "specs/repo/governing-issue.json"
+    },
+    {
+      "spec_id": "repo.review-proposal",
+      "path": "specs/repo/review-proposal.json"
+    },
+    {
+      "spec_id": "repo.repository-structure",
+      "path": "specs/repo/repository-structure.json"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy",
+      "path": "specs/repo/artifact-taxonomy.json"
+    },
+    {
+      "spec_id": "repo.platform-profiles",
+      "path": "specs/repo/platform-profiles.json"
+    },
+    {
+      "spec_id": "repo.development-workflow",
+      "path": "specs/repo/development-workflow.json"
+    },
+    {
+      "spec_id": "repo.validation",
+      "path": "specs/repo/validation.json"
+    },
+    {
+      "spec_id": "repo.product-manifest",
+      "path": "specs/repo/product-manifest.json"
+    },
+    {
+      "spec_id": "repo.product-spec-base",
+      "path": "specs/repo/product-spec-base.json"
+    },
+    {
+      "spec_id": "repo.product-levels",
+      "path": "specs/repo/product-levels.json"
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "REPO-MAN-001",
+      "text": "The manifest shall identify the authoritative repository-spec JSON files."
+    }
+  ],
+  "dependencies": [],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.review-proposal"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.platform-profiles"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/manifest.md"
+    }
+  ]
+}

@@ -27,6 +27,8 @@ Validation should eventually cover:
 
 Validation establishes only the properties it is designed to check. A passing validation result is not semantic review or acceptance.
 
+Substantive completeness for GitHub issue and pull-request forms may be enforced by a separate hosted policy checker, not by repository-local validation.
+
 Validation evidence should identify the exact repository state or Git revision tested.
 
 ## Authority model
@@ -126,4 +128,4 @@ The framework must:
 - keep the repository valid while changes are made;
 - avoid combining product redefinition, renaming, authority replacement, implementation removal, and final cutover into one change.
 
-This overview establishes direction only. Detailed sequencing belongs in the current implementation plan.
+This overview establishes direction only. Detailed sequencing belongs in the current governing issue for active bounded work. Historical plans provide context only and do not authorize new work.

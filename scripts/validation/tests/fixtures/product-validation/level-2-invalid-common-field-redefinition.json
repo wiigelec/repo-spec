@@ -1,0 +1,38 @@
+{
+  "spec_id": "product.component",
+  "title": {
+    "value": "Component"
+  },
+  "purpose": "Component product specification.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "normative_requirements": [
+    {
+      "id": "COMPONENT-001",
+      "text": "Component requirement."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.kernel"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/02-development-and-specifications.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/product/component.md"
+    }
+  ],
+  "components": {
+    "contracts": ["component contract"]
+  }
+}

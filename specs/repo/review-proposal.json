@@ -1,0 +1,205 @@
+{
+  "spec_id": "repo.review-proposal",
+  "title": "Review Proposal Contract",
+  "purpose": "Defines the canonical repository-generic review-proposal structure and its subordinate presentation adapters.",
+  "status": "accepted",
+  "schema_version": "1",
+  "review_fields": [
+    {
+      "id": "governing_issue",
+      "label": "Governing issue",
+      "required": true,
+      "input_type": "input",
+      "description": "Record the governing issue URL or issue number.",
+      "placeholder": "Issue URL or #<number>",
+      "validation": {
+        "kind": "issue-link"
+      }
+    },
+    {
+      "id": "summary",
+      "label": "Summary",
+      "required": true,
+      "input_type": "textarea",
+      "description": "Summarize what changed, why, and any specification or generated-artifact effects.",
+      "placeholder": "Summarize the change and note any authority or artifact impact.",
+      "validation": {
+        "kind": "meaningful"
+      }
+    },
+    {
+      "id": "validation",
+      "label": "Validation",
+      "required": true,
+      "input_type": "textarea",
+      "description": "List the validation commands run and the results observed.",
+      "placeholder": "scripts/validate\nscripts/validate --mutation-tests\nResults and any noteworthy revision evidence.",
+      "validation": {
+        "kind": "meaningful"
+      }
+    },
+    {
+      "id": "review_focus",
+      "label": "Review focus",
+      "required": true,
+      "input_type": "textarea",
+      "description": "Ask reviewers to inspect the areas where judgment is most needed.",
+      "placeholder": "Call out the review focus areas.",
+      "validation": {
+        "kind": "meaningful"
+      }
+    },
+    {
+      "id": "scope_notes",
+      "label": "Scope notes",
+      "required": true,
+      "input_type": "textarea",
+      "description": "State exclusions, limitations, deferred work, or post-merge requirements. Use None when there are none.",
+      "placeholder": "Write None when there are no exclusions or deferred items.",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "REPO-RP-001",
+      "text": "The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes."
+    },
+    {
+      "id": "REPO-RP-002",
+      "text": "The canonical review-proposal contract shall include structured field definitions for the reviewer-facing fields governing issue, summary, validation, review focus, and scope notes, while allowing evidence that is already captured by GitHub metadata, automated checks, the governing issue, or linked validation records to remain outside the visible PR body."
+    },
+    {
+      "id": "REPO-RP-003",
+      "text": "The canonical review-proposal contract shall distinguish reviewer-facing PR-body content from metadata and linked evidence."
+    },
+    {
+      "id": "REPO-RP-004",
+      "text": "Validation evidence in a review proposal shall identify the exact revision tested, either directly or through GitHub metadata and linked records."
+    },
+    {
+      "id": "REPO-RP-005",
+      "text": "New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated."
+    },
+    {
+      "id": "REPO-RP-006",
+      "text": "Passing validation shall not be treated as semantic review."
+    },
+    {
+      "id": "REPO-RP-007",
+      "text": "Review shall not be treated as acceptance."
+    },
+    {
+      "id": "REPO-RP-008",
+      "text": "Acceptance shall apply only to the exact proposed revision."
+    },
+    {
+      "id": "REPO-RP-009",
+      "text": "Merge shall not be treated as proof of successful post-merge validation."
+    },
+    {
+      "id": "REPO-RP-010",
+      "text": "The review proposal shall not use automatic issue-closing syntax when the governing issue requires post-merge validation before closure."
+    },
+    {
+      "id": "REPO-RP-011",
+      "text": "Empty placeholders shall not satisfy required review-proposal fields."
+    },
+    {
+      "id": "REPO-RP-012",
+      "text": "GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification."
+    },
+    {
+      "id": "REPO-RP-013",
+      "text": "When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract."
+    },
+    {
+      "id": "REPO-RP-014",
+      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions."
+    },
+    {
+      "id": "REPO-RP-015",
+      "text": "The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere."
+    },
+    {
+      "id": "REPO-RP-016",
+      "text": "The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "AGENTS.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    },
+    {
+      "type": "artifact",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/docgen.py"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/validate_impl.py"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/review-proposal.md"
+    },
+    {
+      "type": "markdown",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "renderer": "review-template"
+    }
+  ]
+}

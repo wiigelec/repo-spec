@@ -1,21 +1,19 @@
 # repo-spec
 
-Repository bootstrap and specification workspace.
+Repository specification workspace.
+
+Supported runtime: Python 3.10+
 
 ## Start here
 
+- [Repository chatbot initialization](AGENTS.md)
 - [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
-- [Bootstrap plan](docs/plans/00-bootstrap-plan.md)
-- [Repository specs bootstrap](specs/repo/repo-specs-bootstrap.md)
-- [Development workflow bootstrap](specs/repo/dev-workflow-bootstrap.md)
-- [Validation bootstrap](specs/repo/validation.md)
-- [JSON artifact model](specs/repo/json-artifact-model.md)
+- [Repository manifest](specs/repo/manifest.json)
+- [Schemas](schemas/)
+- [Derived docs](derived/specs/repo/)
+- [Validation](scripts/validate)
 
-## Entry points
+## Quick commands
 
-- `docs/overview/PRODUCT-OVERVIEW.md` for high-level direction
-- `docs/plans/00-bootstrap-plan.md` for bootstrap sequencing
-- `specs/repo/` for repository-spec bootstrap material
-- `specs/repo/validation.md` for the validation specification
-- `specs/repo/json-artifact-model.md` for the JSON artifact model
-- `scripts/validate` for the validation entry point
+- `scripts/validate`
+- `scripts/generate-docs`

@@ -1,0 +1,36 @@
+{
+  "spec_id": "product.orchestration",
+  "title": "Orchestration",
+  "purpose": "Orchestration product specification.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "normative_requirements": [
+    {
+      "id": "ORCH-001",
+      "text": "Orchestration requirement."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.kernel"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/product/orchestration.md"
+    }
+  ],
+  "orchestrations": {
+    "workflows": ["end-to-end use case"]
+  }
+}

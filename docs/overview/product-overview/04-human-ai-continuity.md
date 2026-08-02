@@ -66,13 +66,15 @@ A new development session should be able to follow a predictable discovery path:
 
 1. Read the repository README.
 2. Read the [product overview index](../PRODUCT-OVERVIEW.md) and the relevant overview parts.
-3. Read the current implementation plan.
+3. Read the current governing issue for active bounded work.
 4. Discover the normative specification roots and authority hierarchy.
-5. Inspect the current governing issue and its durable planning records.
+5. If no governing issue is open, the repository has no active implementation plan.
 6. Inspect relevant prerequisites and accepted predecessor evidence.
 7. Interrogate the actual local Git state.
 8. Identify the next bounded action.
 9. Perform only authorized mutations.
 10. Review returned evidence before continuing.
+
+Historical plans provide context only and do not authorize new work.
 
 The repository should make each step mechanically discoverable where practical.
