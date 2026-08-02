@@ -2,7 +2,7 @@
   "spec_id": "repo.product-manifest",
   "title": "Product Manifest Contract",
   "purpose": "Defines the normative contract for the product-specification manifest.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
