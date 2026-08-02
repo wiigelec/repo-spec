@@ -47,11 +47,21 @@ def run_repository_mutations(repo_root: Path) -> None:
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         product_root = temp_repo / "specs/product"
-        product_root.mkdir(parents=True, exist_ok=True)
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.product-root-rogue"
+        (product_root / "rogue.json").parent.mkdir(parents=True, exist_ok=True)
         (product_root / "rogue.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
         expect_failure("product root contamination", lambda: validate_repo(temp_repo), "undeclared JSON content under specs/product/")
+
+        for level_name in ["level-0", "level-1", "level-2", "level-3"]:
+            temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+            clone_index += 1
+            product_level_root = temp_repo / "specs/product" / level_name
+            extra_spec = copy.deepcopy(specs["repo.validation"])
+            extra_spec["spec_id"] = f"repo.{level_name}.rogue"
+            product_level_root.mkdir(parents=True, exist_ok=True)
+            (product_level_root / "rogue.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
+            expect_failure(f"product root contamination in {level_name}", lambda: validate_repo(temp_repo), "undeclared JSON content under specs/product/")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

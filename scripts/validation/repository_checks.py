@@ -77,7 +77,11 @@ def check_product_specification_root(repo_root: Path) -> None:
     product_root = repo_root / "specs/product"
     if not product_root.exists():
         return
-    declared_product_json = sorted(path.relative_to(repo_root).as_posix() for path in product_root.glob("*.json") if path.is_file())
+    declared_product_json = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in product_root.rglob("*.json")
+        if path.is_file()
+    )
     expect(
         not declared_product_json,
         "product specification root failed: undeclared JSON content under specs/product/",
