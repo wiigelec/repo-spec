@@ -10,7 +10,6 @@
     "purpose",
     "status",
     "schema_version",
-    "active",
     "product_specifications"
   ],
   "properties": {
@@ -34,9 +33,6 @@
       "type": "string",
       "const": "1"
     },
-    "active": {
-      "type": "boolean"
-    },
     "product_specifications": {
       "type": "array",
       "items": {
@@ -50,7 +46,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level", "derived_artifacts"],
+          "required": ["spec_id", "path", "status", "level"],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -67,19 +63,13 @@
             "level": {
               "type": "integer",
               "const": 0
-            },
-            "derived_artifacts": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/derivedArtifact"
-              }
             }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level", "derived_artifacts"],
+          "required": ["spec_id", "path", "status", "level"],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -96,19 +86,13 @@
             "level": {
               "type": "integer",
               "const": 1
-            },
-            "derived_artifacts": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/derivedArtifact"
-              }
             }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level", "derived_artifacts"],
+          "required": ["spec_id", "path", "status", "level"],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -125,19 +109,13 @@
             "level": {
               "type": "integer",
               "const": 2
-            },
-            "derived_artifacts": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/derivedArtifact"
-              }
             }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level", "derived_artifacts"],
+          "required": ["spec_id", "path", "status", "level"],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -154,12 +132,6 @@
             "level": {
               "type": "integer",
               "const": 3
-            },
-            "derived_artifacts": {
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/derivedArtifact"
-              }
             }
           }
         }

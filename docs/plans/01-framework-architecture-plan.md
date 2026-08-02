@@ -2,7 +2,13 @@
 
 ## Status
 
-Current non-normative implementation plan. Stage 1 is complete; Stage 2 is the next separately governed phase.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is the next separately governed phase.
+
+Accepted Stage 2 base:
+
+```text
+main at d8366ed55c1332fe788dc437fe319ff37a45c643
+```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
 
@@ -69,6 +75,23 @@ This matrix records the current integration reading of the accepted Stage 1 reco
 | Future GitHub profile source | `profiles/github/` | Reserved for later reusable profile-source material |
 | Validation | `repo.validation` plus repository-local validation code | Checks declared repository-local invariants only |
 | Derived projections | Their declared source specifications | Must remain subordinate to source authority |
+
+## Stage 2 integration ownership matrix
+
+This matrix records the integrated Stage 2 authority reading after completion of the product manifest and base product-specification foundation.
+
+| Concept | Current authority owner | Notes |
+| --- | --- | --- |
+| Product specification registry | `repo.product-manifest` | Governs the registered product-specification set |
+| Product specification semantics | Individual accepted product specification | The governing product file remains normative for its own contract |
+| Product manifest structure | `repo.product-manifest` | Defines manifest fields, registry behavior, and activation semantics |
+| Common product file envelope | `repo.product-spec-base` | Defines the shared base envelope for product specifications |
+| Product manifest schema | `schemas/product/product-manifest.schema.json` | Subordinate schema for the accepted product-manifest contract |
+| Base product schema | `schemas/product/product-spec-base.schema.json` | Subordinate schema for the accepted base product-specification contract |
+| Lifecycle source | Explicitly resolve manifest/file duplication | Manifest and file must agree on lifecycle status |
+| Level source | Explicitly resolve manifest/file duplication | Manifest and file must agree on Level metadata |
+| Derived artifact source | Individual accepted product specification | Manifest does not repeat derived artifacts; derived artifacts are owned by the product file |
+| Validation | `repo.validation` plus implementation | Enforces repository/product separation and Stage 2 structural invariants |
 
 ## Intended outcome
 

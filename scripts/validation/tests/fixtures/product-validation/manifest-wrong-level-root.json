@@ -4,14 +4,12 @@
   "purpose": "Registry of governed product specifications.",
   "status": "accepted",
   "schema_version": "1",
-  "active": true,
   "product_specifications": [
     {
       "spec_id": "product.kernel",
       "path": "specs/product/level-2/kernel.json",
       "status": "candidate",
-      "level": 0,
-      "derived_artifacts": []
+      "level": 0
     }
   ]
 }

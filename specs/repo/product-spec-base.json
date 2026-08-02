@@ -2,7 +2,7 @@
   "spec_id": "repo.product-spec-base",
   "title": "Product Specification Base Contract",
   "purpose": "Defines the normative common envelope shared by all product specifications.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {

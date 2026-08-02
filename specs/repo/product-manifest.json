@@ -2,7 +2,7 @@
   "spec_id": "repo.product-manifest",
   "title": "Product Manifest Contract",
   "purpose": "Defines the normative contract for the product-specification manifest.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
@@ -19,15 +19,15 @@
     },
     {
       "id": "REPO-PM-004",
-      "text": "The product manifest shall record an `active` state that expresses whether the product-specification system has been activated."
+      "text": "The presence of `specs/product/manifest.json` shall express activation of the product-specification system."
     },
     {
       "id": "REPO-PM-005",
-      "text": "An activated product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the activated manifest shall contain at least one registry entry."
+      "text": "A product manifest may be empty."
     },
     {
       "id": "REPO-PM-006",
-      "text": "The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, Level, and declared derived artifacts."
+      "text": "The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level."
     },
     {
       "id": "REPO-PM-007",
@@ -55,7 +55,7 @@
     },
     {
       "id": "REPO-PM-013",
-      "text": "Declared derived product projections shall be registered either on the manifest entry, in the product specification, or both, and any registered derived artifact shall remain subordinate to the authoritative product specification."
+      "text": "Declared derived product projections shall be registered by the product specification itself, and any registered derived artifact shall remain subordinate to the authoritative product specification."
     },
     {
       "id": "REPO-PM-014",

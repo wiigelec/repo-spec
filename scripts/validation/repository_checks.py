@@ -299,9 +299,6 @@ def check_unique_derived_artifact_paths_phase(context: ValidationContext) -> Non
     check_unique_derived_artifact_paths(context.repository.specs)
     if context.product is not None:
         paths: list[str] = []
-        for entry in context.product.entries:
-            for artifact in entry.get("derived_artifacts", []):
-                paths.append(artifact["path"])
         for spec in context.product.specs.values():
             for artifact in spec.get("derived_artifacts", []):
                 paths.append(artifact["path"])
