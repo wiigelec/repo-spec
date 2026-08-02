@@ -1,0 +1,19 @@
+{
+  "spec_id": "product.kernel",
+  "title": "Kernel",
+  "purpose": "Kernel product specification.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 0,
+  "normative_requirements": [
+    {
+      "id": "KERNEL-001",
+      "text": "Kernel requirement."
+    }
+  ],
+  "dependencies": [],
+  "references": [],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": []
+}

@@ -224,6 +224,8 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
 def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     schemas = {
         "product.manifest": load_json(repo_root / "schemas/product/product-manifest.schema.json"),
+        "product.spec-base": load_json(repo_root / "schemas/product/product-spec-base.schema.json"),
     }
     ensure_schema_keywords(schemas["product.manifest"], "schemas/product/product-manifest.schema.json")
+    ensure_schema_keywords(schemas["product.spec-base"], "schemas/product/product-spec-base.schema.json")
     return schemas

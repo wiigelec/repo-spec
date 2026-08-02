@@ -4,22 +4,39 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from repo_model import load_specs as load_repo_specs_impl, resolve_repo_path as resolve_repo_path_impl
+from repo_model import load_json as load_repo_json, load_specs as load_repo_specs_impl, resolve_repo_path as resolve_repo_path_impl
 from repo_model import RepositoryError
 
 from .errors import expect, fail
 from .generated_outputs import check_generated_document_freshness
-from .schema_subset import load_repo_schemas, validate_instance
+from .schema_subset import load_product_schemas, load_repo_schemas, validate_instance
 
 
 @dataclass(frozen=True)
-class ValidationContext:
-    repo_root: Path
+class RepositoryValidationContext:
     manifest: dict[str, Any]
     specs: dict[str, dict[str, Any]]
     source_paths: dict[str, str]
     actual_paths: list[str]
     schemas: dict[str, dict[str, Any]]
+
+
+@dataclass(frozen=True)
+class ProductValidationContext:
+    manifest: dict[str, Any]
+    manifest_path: Path
+    entries: list[dict[str, Any]]
+    specs: dict[str, dict[str, Any]]
+    source_paths: dict[str, str]
+    actual_paths: list[str]
+    schemas: dict[str, dict[str, Any]]
+
+
+@dataclass(frozen=True)
+class ValidationContext:
+    repo_root: Path
+    repository: RepositoryValidationContext
+    product: ProductValidationContext | None
 
 
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
@@ -71,21 +88,6 @@ def check_unique_derived_artifact_paths(specs: dict[str, dict[str, Any]]) -> Non
         for artifact in spec.get("derived_artifacts", []):
             paths.append(artifact["path"])
     expect(len(paths) == len(set(paths)), "duplicate derived artifact paths failed")
-
-
-def check_product_specification_root(repo_root: Path) -> None:
-    product_root = repo_root / "specs/product"
-    if not product_root.exists():
-        return
-    declared_product_json = sorted(
-        path.relative_to(repo_root).as_posix()
-        for path in product_root.rglob("*.json")
-        if path.is_file()
-    )
-    expect(
-        not declared_product_json,
-        "product specification root failed: undeclared JSON content under specs/product/",
-    )
 
 
 def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str, field: str, keys: list[str]) -> None:
@@ -190,50 +192,154 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
 def load_validation_context(repo_root: Path) -> ValidationContext:
     manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
-    return ValidationContext(repo_root, manifest, specs, source_paths, actual_paths, schemas)
+    repository = RepositoryValidationContext(manifest, specs, source_paths, actual_paths, schemas)
+    product = load_product_validation_context(repo_root)
+    return ValidationContext(repo_root, repository, product)
+
+
+def actual_product_paths(repo_root: Path) -> list[str]:
+    product_root = repo_root / "specs/product"
+    if not product_root.exists():
+        return []
+    return sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in product_root.rglob("*.json")
+        if path.is_file() and path.relative_to(repo_root).as_posix() != "specs/product/manifest.json"
+    )
+
+
+def load_product_validation_context(repo_root: Path) -> ProductValidationContext | None:
+    manifest_path = repo_root / "specs/product/manifest.json"
+    actual_paths = actual_product_paths(repo_root)
+    if not manifest_path.exists():
+        expect(
+            not actual_paths,
+            "product specification root failed: undeclared JSON content under specs/product/",
+        )
+        return None
+
+    schemas = load_product_schemas(repo_root)
+    try:
+        manifest = load_repo_json(manifest_path)
+    except RepositoryError as exc:
+        fail(str(exc))
+    validate_instance(manifest, schemas["product.manifest"], "specs/product/manifest.json", schemas["product.manifest"])
+    entries = manifest["product_specifications"]
+    manifest_paths = [entry["path"] for entry in entries]
+    expect(len(entries) == len({entry["spec_id"] for entry in entries}), "duplicate product specification id")
+    expect(len(manifest_paths) == len(set(manifest_paths)), "duplicate product specification path")
+    expect(set(actual_paths) == set(manifest_paths), "product manifest completeness failed")
+
+    specs: dict[str, dict[str, Any]] = {}
+    source_paths: dict[str, str] = {}
+    for entry in entries:
+        path = entry["path"]
+        try:
+            spec = load_repo_json(repo_root / path)
+        except RepositoryError as exc:
+            fail(str(exc))
+        validate_instance(spec, schemas["product.spec-base"], path, schemas["product.spec-base"])
+        expect(spec["spec_id"] == entry["spec_id"], f"product manifest correspondence failed: spec_id mismatch for {path}")
+        expect(spec["status"] == entry["status"], f"product manifest correspondence failed: lifecycle mismatch for {path}")
+        expect(spec["level"] == entry["level"], f"product manifest correspondence failed: level mismatch for {path}")
+        if spec["spec_id"] in specs:
+            raise RepositoryError(f"duplicate product specification id: {spec['spec_id']}")
+        specs[spec["spec_id"]] = spec
+        source_paths[spec["spec_id"]] = path
+
+    if len(source_paths) != len(set(source_paths.values())):
+        raise RepositoryError("duplicate product specification path")
+
+    return ProductValidationContext(manifest, manifest_path, entries, specs, source_paths, actual_paths, schemas)
 
 
 def check_schema_conformance(context: ValidationContext) -> None:
-    validate_repo_json_schema_conformance(context.specs, context.source_paths, context.schemas)
+    validate_repo_json_schema_conformance(context.repository.specs, context.repository.source_paths, context.repository.schemas)
 
 
 def check_manifest_phase(context: ValidationContext) -> None:
-    check_manifest_completeness(context.specs, context.source_paths, context.actual_paths)
+    check_manifest_completeness(context.repository.specs, context.repository.source_paths, context.repository.actual_paths)
 
 
 def check_unique_spec_ids_phase(context: ValidationContext) -> None:
-    check_unique_spec_ids(context.specs)
+    check_unique_spec_ids(context.repository.specs)
+    if context.product is not None:
+        expect(
+            len(context.product.specs) == len(set(context.product.specs)),
+            "duplicate product specification id",
+        )
 
 
 def check_unique_item_properties_phase(context: ValidationContext) -> None:
-    check_unique_item_properties(context.specs, "repo.manifest", "authoritative_specs", ["spec_id"])
-    for spec_id in context.specs:
-        if "issue_fields" in context.specs[spec_id]:
-            check_unique_item_properties(context.specs, spec_id, "issue_fields", ["id"])
-        if "review_fields" in context.specs[spec_id]:
-            check_unique_item_properties(context.specs, spec_id, "review_fields", ["id"])
-        if "artifact_classes" in context.specs[spec_id]:
-            check_unique_item_properties(context.specs, spec_id, "artifact_classes", ["identifier"])
-            for index, artifact_class in enumerate(context.specs[spec_id]["artifact_classes"]):
+    check_unique_item_properties(context.repository.specs, "repo.manifest", "authoritative_specs", ["spec_id"])
+    for spec_id in context.repository.specs:
+        if "issue_fields" in context.repository.specs[spec_id]:
+            check_unique_item_properties(context.repository.specs, spec_id, "issue_fields", ["id"])
+        if "review_fields" in context.repository.specs[spec_id]:
+            check_unique_item_properties(context.repository.specs, spec_id, "review_fields", ["id"])
+        if "artifact_classes" in context.repository.specs[spec_id]:
+            check_unique_item_properties(context.repository.specs, spec_id, "artifact_classes", ["identifier"])
+            for index, artifact_class in enumerate(context.repository.specs[spec_id]["artifact_classes"]):
                 if artifact_class["generation_mode"] == "deterministic":
                     source_artifacts = artifact_class.get("source_artifacts", [])
                     expect(source_artifacts, f"artifact taxonomy failed: {spec_id}[{index}] requires source_artifacts")
-        check_unique_item_properties(context.specs, spec_id, "normative_requirements", ["id"])
-        check_unique_item_properties(context.specs, spec_id, "dependencies", ["spec_id"])
-        check_unique_item_properties(context.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
-        check_unique_item_properties(context.specs, spec_id, "derived_artifacts", ["path"])
+        check_unique_item_properties(context.repository.specs, spec_id, "normative_requirements", ["id"])
+        check_unique_item_properties(context.repository.specs, spec_id, "dependencies", ["spec_id"])
+        check_unique_item_properties(context.repository.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
+        check_unique_item_properties(context.repository.specs, spec_id, "derived_artifacts", ["path"])
+    if context.product is not None:
+        for spec_id in context.product.specs:
+            check_unique_item_properties(context.product.specs, spec_id, "normative_requirements", ["id"])
+            check_unique_item_properties(context.product.specs, spec_id, "dependencies", ["spec_id"])
+            check_unique_item_properties(context.product.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
+            check_unique_item_properties(context.product.specs, spec_id, "derived_artifacts", ["path"])
 
 
 def check_unique_derived_artifact_paths_phase(context: ValidationContext) -> None:
-    check_unique_derived_artifact_paths(context.specs)
+    check_unique_derived_artifact_paths(context.repository.specs)
+    if context.product is not None:
+        paths: list[str] = []
+        for entry in context.product.entries:
+            for artifact in entry.get("derived_artifacts", []):
+                paths.append(artifact["path"])
+        for spec in context.product.specs.values():
+            for artifact in spec.get("derived_artifacts", []):
+                paths.append(artifact["path"])
+        expect(len(paths) == len(set(paths)), "duplicate product derived artifact paths failed")
 
 
 def check_product_specification_root_phase(context: ValidationContext) -> None:
-    check_product_specification_root(context.repo_root)
+    if context.product is None:
+        return
+    for spec_id, spec in context.product.specs.items():
+        for index, dep in enumerate(spec.get("dependencies", [])):
+            target_spec_id = dep["spec_id"]
+            expect(target_spec_id in context.product.specs, f"product dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
+            expect(context.product.specs[target_spec_id]["status"] in {"candidate", "accepted"}, f"product dependencies failed: {spec_id} -> {target_spec_id}")
+
+        for ref in spec.get("references", []):
+            if ref["type"] == "specification":
+                target_spec = context.repository.specs.get(ref["spec_id"])
+                if target_spec is None:
+                    target_spec = context.product.specs.get(ref["spec_id"])
+                expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
+                kind = ref.get("kind", "normative")
+                if kind == "historical":
+                    expect(target_spec["status"] in {"superseded", "retired"}, f"product references failed: {spec_id} -> {ref['spec_id']}")
+                else:
+                    expect(kind == "normative", f"product references failed: {spec_id} -> {ref['spec_id']}")
+                    expect(target_spec["status"] == "accepted", f"product references failed: {spec_id} -> {ref['spec_id']}")
+            else:
+                expect(resolve_repo_path(context.repo_root, ref["path"]).exists(), f"product references failed: missing artifact {ref['path']}")
+
+        for field in ("supersedes", "superseded_by"):
+            for target_spec_id in spec.get(field, []):
+                expect(target_spec_id in context.product.specs, f"product lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
+                expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
 
 
 def check_dependency_targets_phase(context: ValidationContext) -> None:
-    check_dependency_targets(context.specs)
+    check_dependency_targets(context.repository.specs)
 
 
 def check_platform_profile_inventory(profile: dict[str, Any], index: int) -> None:
@@ -282,7 +388,7 @@ def check_github_bootstrap_conformance(profile: dict[str, Any]) -> None:
 
 
 def check_platform_profile_boundary(context: ValidationContext) -> None:
-    spec = context.specs.get("repo.platform-profiles")
+    spec = context.repository.specs.get("repo.platform-profiles")
     expect(spec is not None, "platform profile boundary failed: missing repo.platform-profiles")
     profiles = spec.get("profiles", [])
     expect(profiles, "platform profile boundary failed: expected at least one profile")
@@ -304,15 +410,37 @@ def check_platform_profile_boundary(context: ValidationContext) -> None:
 
 
 def check_resolvable_references_phase(context: ValidationContext) -> None:
-    check_resolvable_references(context.repo_root, context.specs)
+    check_resolvable_references(context.repo_root, context.repository.specs)
+    if context.product is not None:
+        for spec_id, spec in context.product.specs.items():
+            for ref in spec.get("references", []):
+                if ref["type"] == "specification":
+                    target_spec = context.repository.specs.get(ref["spec_id"])
+                    if target_spec is None:
+                        target_spec = context.product.specs.get(ref["spec_id"])
+                    expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
+                    kind = ref.get("kind", "normative")
+                    if kind == "historical":
+                        expect(target_spec["status"] in {"superseded", "retired"}, f"product references failed: {spec_id} -> {ref['spec_id']}")
+                    else:
+                        expect(kind == "normative", f"product references failed: {spec_id} -> {ref['spec_id']}")
+                        expect(target_spec["status"] == "accepted", f"product references failed: {spec_id} -> {ref['spec_id']}")
+                else:
+                    expect(resolve_repo_path(context.repo_root, ref["path"]).exists(), f"product references failed: missing artifact {ref['path']}")
 
 
 def check_lineage_relations_phase(context: ValidationContext) -> None:
-    check_lineage_relations(context.specs)
+    check_lineage_relations(context.repository.specs)
+    if context.product is not None:
+        for spec_id, spec in context.product.specs.items():
+            for field in ("supersedes", "superseded_by"):
+                for target_spec_id in spec.get(field, []):
+                    expect(target_spec_id in context.product.specs, f"product lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
+                    expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
 
 
 def check_acyclic_dependencies_phase(context: ValidationContext) -> None:
-    check_acyclic_dependencies(context.specs)
+    check_acyclic_dependencies(context.repository.specs)
 
 
 def check_generated_document_freshness_phase(context: ValidationContext) -> None:
