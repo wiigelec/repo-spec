@@ -7,7 +7,7 @@ Current non-normative implementation plan. Stage 1 is complete; Stage 2 is compl
 Accepted Stage 2 base:
 
 ```text
-main at d8366ed55c1332fe788dc437fe319ff37a45c643
+main at bb05dc4c52617abcc72cf793ed852ed2f3e195f9
 ```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
