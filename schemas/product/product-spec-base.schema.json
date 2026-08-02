@@ -3,7 +3,6 @@
   "$id": "schemas/product/product-spec-base.schema.json",
   "title": "Product Specification Base Schema",
   "type": "object",
-  "additionalProperties": true,
   "required": [
     "spec_id",
     "title",

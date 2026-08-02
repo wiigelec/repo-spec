@@ -28,6 +28,14 @@ def assert_invalid(schema: dict, name: str, fragment: str) -> None:
 
 
 def run_product_level_schema_tests(repo_root: Path) -> None:
+    base_source = json.loads((repo_root / "schemas/product/product-spec-base.schema.json").read_text())
+    assert "additionalProperties" not in base_source
+
+    for level_name in ("product-level-0.schema.json", "product-level-1.schema.json", "product-level-2.schema.json", "product-level-3.schema.json"):
+        source = json.loads((repo_root / "schemas/product" / level_name).read_text())
+        assert source["allOf"][0]["$ref"] == "./product-spec-base.schema.json"
+        assert source["unevaluatedProperties"] is False
+
     schemas = load_product_schemas(repo_root)
 
     assert_valid(schemas["product.level-0"], "level-0-candidate.json")
@@ -36,7 +44,7 @@ def run_product_level_schema_tests(repo_root: Path) -> None:
     assert_valid(schemas["product.level-3"], "level-3-accepted.json")
 
     assert_invalid(schemas["product.level-0"], "level-0-invalid-level-constant.json", "const mismatch")
-    assert_invalid(schemas["product.level-0"], "level-0-invalid-reserved-field.json", "additionalProperties disallowed: primitives")
+    assert_invalid(schemas["product.level-0"], "level-0-invalid-reserved-field.json", "unevaluatedProperties disallowed: primitives")
     assert_invalid(schemas["product.level-1"], "level-1-invalid-missing-section.json", "missing required property primitives")
     assert_invalid(schemas["product.level-2"], "level-2-invalid-common-field-redefinition.json", "must be a string")
     assert_invalid(schemas["product.level-3"], "level-3-invalid-wrong-constant.json", "const mismatch")
