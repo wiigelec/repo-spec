@@ -237,6 +237,70 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Portability category: `product-specific`
 - Manifest participation: `reference`
 
+### Hosting profile source
+
+- Identifier: `hosting-profile-source`
+- Role: `profile source`
+- Authority category: `profile-specific`
+- Authority source: accepted hosting-profile source material
+- Source of truth rule: Defines reusable hosting-platform profile source material under `profiles/` and may project installed adapters without granting them independent authority.
+- Mutability: mutable through governed profile revision
+- Generation mode: `manual`
+- Validation ownership: `validation`
+- Portability category: `profile-specific`
+- Manifest participation: `reference`
+
+- Source artifacts:
+  - `repo.platform-profiles`
+
+### Installed hosting adapter
+
+- Identifier: `installed-hosting-adapter`
+- Role: `installed adapter`
+- Authority category: `profile-specific`
+- Authority source: hosting-profile source material
+- Source of truth rule: Mirrors a hosting profile into installed repository-local adapters such as `.github/` files without becoming the source of normative authority.
+- Mutability: regenerable only
+- Generation mode: `deterministic`
+- Validation ownership: `platform`
+- Portability category: `profile-specific`
+- Manifest participation: `reference`
+
+- Source artifacts:
+  - `repo.platform-profiles`
+
+### Hosting deployment state
+
+- Identifier: `hosting-deployment-state`
+- Role: `hosting deployment state`
+- Authority category: `evidentiary`
+- Authority source: remote hosting-platform configuration and state
+- Source of truth rule: Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings without becoming repository content.
+- Mutability: append-only evidence record
+- Generation mode: `external`
+- Validation ownership: `platform`
+- Portability category: `profile-specific`
+- Manifest participation: `reference`
+
+- Source artifacts:
+  - `repo.platform-profiles`
+
+### Bootstrap hosting infrastructure
+
+- Identifier: `bootstrap-hosting-infrastructure`
+- Role: `bootstrap infrastructure`
+- Authority category: `implementation`
+- Authority source: repository bootstrap support
+- Source of truth rule: Supports current hosting-platform checks and policy behavior without becoming universal framework authority.
+- Mutability: mutable under governed maintenance
+- Generation mode: `manual`
+- Validation ownership: `validation`
+- Portability category: `profile-specific`
+- Manifest participation: `reference`
+
+- Source artifacts:
+  - `repo.platform-profiles`
+
 ## Normative requirements
 
 - `REPO-AT-001`: The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes.
@@ -246,6 +310,8 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - `REPO-AT-005`: Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized.
 - `REPO-AT-006`: Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.
 - `REPO-AT-007`: Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.
+- `REPO-AT-008`: The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.
+- `REPO-AT-009`: Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`.
 
 ## Dependencies
 

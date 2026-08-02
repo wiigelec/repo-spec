@@ -26,6 +26,10 @@
       "path": "specs/repo/artifact-taxonomy.json"
     },
     {
+      "spec_id": "repo.platform-profiles",
+      "path": "specs/repo/platform-profiles.json"
+    },
+    {
       "spec_id": "repo.development-workflow",
       "path": "specs/repo/development-workflow.json"
     },
@@ -61,6 +65,10 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.platform-profiles"
     }
   ],
   "derived_artifacts": [

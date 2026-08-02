@@ -60,6 +60,14 @@
     {
       "id": "REPO-VAL-014",
       "text": "The validation entry point shall reject repository specifications that are placed under `specs/product/` and product specifications that are placed under `specs/repo/` where those placements are detectable from repository-local JSON files."
+    },
+    {
+      "id": "REPO-VAL-015",
+      "text": "The validation entry point shall enforce repository-local platform-profile classification consistency, including the accepted GitHub profile boundary, installed adapter ownership, and declared remote-state kinds."
+    },
+    {
+      "id": "REPO-VAL-016",
+      "text": "The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification fields."
     }
   ],
   "dependencies": [
@@ -68,6 +76,9 @@
     },
     {
       "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.platform-profiles"
     },
     {
       "spec_id": "repo.development-workflow"
@@ -93,6 +104,10 @@
     {
       "type": "artifact",
       "path": "scripts/generate-docs"
+    },
+    {
+      "type": "artifact",
+      "path": "scripts/github_field_policy.py"
     }
   ],
   "derived_artifacts": [

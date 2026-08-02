@@ -32,6 +32,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "specs/repo/manifest.json",
         "schemas/repo-manifest.schema.json",
         "schemas/repo-artifact-taxonomy.schema.json",
+        "schemas/repo-platform-profiles.schema.json",
         "schemas/repo-spec.schema.json",
     ]
     for entry in manifest["authoritative_specs"]:

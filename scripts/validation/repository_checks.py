@@ -41,7 +41,12 @@ def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], sour
     for spec_id, spec in specs.items():
         if spec_id == "repo.manifest":
             continue
-        schema = schemas["repo.artifact-taxonomy"] if spec_id == "repo.artifact-taxonomy" else schemas["repo.spec"]
+        if spec_id == "repo.artifact-taxonomy":
+            schema = schemas["repo.artifact-taxonomy"]
+        elif spec_id == "repo.platform-profiles":
+            schema = schemas["repo.platform-profiles"]
+        else:
+            schema = schemas["repo.spec"]
         validate_instance(spec, schema, source_paths[spec_id], schema)
 
 
@@ -86,6 +91,38 @@ def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str,
         identity = tuple(item.get(key) for key in keys)
         expect(identity not in seen, f"{field} failed: duplicate item properties {', '.join(keys)}")
         seen.add(identity)
+
+
+EXPECTED_GITHUB_ARTIFACT_INVENTORY = {
+    ".github/ISSUE_TEMPLATE/governing-issue.yml": ("installed-adapter", "profile-specific"),
+    ".github/PULL_REQUEST_TEMPLATE.md": ("installed-adapter", "profile-specific"),
+    ".github/workflows/github-field-policy.yml": ("installed-adapter", "profile-specific"),
+    ".github/workflows/validation.yml": ("installed-adapter", "profile-specific"),
+    "scripts/github-field-policy": ("bootstrap-infrastructure", "bootstrap"),
+    "scripts/github_field_policy.py": ("bootstrap-infrastructure", "bootstrap"),
+    "scripts/github_field_policy_mutation_test.py": ("bootstrap-infrastructure", "bootstrap"),
+}
+
+EXPECTED_GITHUB_REMOTE_STATE_KINDS = {
+    "branch protection",
+    "repository rulesets",
+    "required checks",
+    "merge queues",
+    "labels",
+    "repository settings",
+}
+
+EXPECTED_GITHUB_MUTATION_RECORD_FIELDS = {
+    "governing issue",
+    "accepted repository revision",
+    "target repository",
+    "target remote configuration identifier",
+    "previous state",
+    "intended state",
+    "execution evidence",
+    "rollback procedure",
+    "post-change verification",
+}
 
 
 def check_relation_targets(specs: dict[str, dict[str, Any]], field: str, allowed_statuses: set[str], relation_label: str) -> None:
@@ -195,6 +232,44 @@ def check_dependency_targets_phase(context: ValidationContext) -> None:
     check_dependency_targets(context.specs)
 
 
+def check_platform_profile_boundary(context: ValidationContext) -> None:
+    spec = context.specs.get("repo.platform-profiles")
+    expect(spec is not None, "platform profile boundary failed: missing repo.platform-profiles")
+    profiles = spec.get("profiles", [])
+    expect(len(profiles) == 1, "platform profile boundary failed: expected exactly one profile")
+
+    profile = profiles[0]
+    expect(profile.get("identifier") == "github", "platform profile boundary failed: missing GitHub profile identity")
+    expect(profile.get("source_root") == "profiles/github/", "platform profile boundary failed: GitHub source root mismatch")
+    expect(profile.get("installed_adapter_root") == ".github/", "platform profile boundary failed: GitHub adapter root mismatch")
+    expect(profile.get("authority_boundary") == "profile-source-authoritative", "platform profile boundary failed: profile source and installed adapter authority mismatch")
+    expect(profile.get("adapter_generation_policy") == "source-to-adapter", "platform profile boundary failed: adapter generation policy mismatch")
+
+    remote_state_kinds = profile.get("remote_state_kinds", [])
+    expect(set(remote_state_kinds) == EXPECTED_GITHUB_REMOTE_STATE_KINDS, "platform profile boundary failed: remote state kinds mismatch")
+
+    mutation_record_fields = profile.get("mutation_record_fields", [])
+    expect(set(mutation_record_fields) == EXPECTED_GITHUB_MUTATION_RECORD_FIELDS, "platform profile boundary failed: hosting mutation record fields mismatch")
+
+    inventory = profile.get("artifact_inventory", [])
+    expect(len(inventory) == len(EXPECTED_GITHUB_ARTIFACT_INVENTORY), "platform profile boundary failed: GitHub artifact inventory mismatch")
+    seen_paths: set[str] = set()
+    for index, item in enumerate(inventory):
+        path = item.get("path")
+        expect(isinstance(path, str), f"platform profile boundary failed: artifact inventory path missing at index {index}")
+        expect(path not in seen_paths, f"platform profile boundary failed: duplicate artifact inventory path {path}")
+        seen_paths.add(path)
+        expected = EXPECTED_GITHUB_ARTIFACT_INVENTORY.get(path)
+        expect(expected is not None, f"platform profile boundary failed: unexpected artifact inventory path {path}")
+        expect(item.get("profile_id") == "github", f"platform profile boundary failed: missing GitHub profile identity for {path}")
+        expect(item.get("classification") == expected[0], f"platform profile boundary failed: artifact classification mismatch for {path}")
+        expect(item.get("authority_category") == expected[1], f"platform profile boundary failed: installed adapter claims independent authority for {path}")
+        if item.get("classification") == "installed-adapter":
+            expect(path.startswith(".github/"), f"platform profile boundary failed: installed adapter path mismatch for {path}")
+        else:
+            expect(path.startswith("scripts/"), f"platform profile boundary failed: bootstrap infrastructure path mismatch for {path}")
+
+
 def check_resolvable_references_phase(context: ValidationContext) -> None:
     check_resolvable_references(context.repo_root, context.specs)
 
@@ -216,6 +291,7 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("manifest completeness", check_manifest_phase),
     ("unique specification IDs", check_unique_spec_ids_phase),
     ("unique item properties", check_unique_item_properties_phase),
+    ("platform profile boundary", check_platform_profile_boundary),
     ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
     ("product specification root", check_product_specification_root_phase),
     ("dependency target lifecycle", check_dependency_targets_phase),

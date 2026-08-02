@@ -221,6 +221,70 @@
       "validation_ownership": "release",
       "portability_category": "product-specific",
       "manifest_participation": "reference"
+    },
+    {
+      "identifier": "hosting-profile-source",
+      "label": "Hosting profile source",
+      "role": "profile source",
+      "authority_category": "profile-specific",
+      "authority_source": "accepted hosting-profile source material",
+      "source_of_truth_rule": "Defines reusable hosting-platform profile source material under `profiles/` and may project installed adapters without granting them independent authority.",
+      "mutability": "mutable through governed profile revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    },
+    {
+      "identifier": "installed-hosting-adapter",
+      "label": "Installed hosting adapter",
+      "role": "installed adapter",
+      "authority_category": "profile-specific",
+      "authority_source": "hosting-profile source material",
+      "source_of_truth_rule": "Mirrors a hosting profile into installed repository-local adapters such as `.github/` files without becoming the source of normative authority.",
+      "mutability": "regenerable only",
+      "generation_mode": "deterministic",
+      "validation_ownership": "platform",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    },
+    {
+      "identifier": "hosting-deployment-state",
+      "label": "Hosting deployment state",
+      "role": "hosting deployment state",
+      "authority_category": "evidentiary",
+      "authority_source": "remote hosting-platform configuration and state",
+      "source_of_truth_rule": "Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings without becoming repository content.",
+      "mutability": "append-only evidence record",
+      "generation_mode": "external",
+      "validation_ownership": "platform",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    },
+    {
+      "identifier": "bootstrap-hosting-infrastructure",
+      "label": "Bootstrap hosting infrastructure",
+      "role": "bootstrap infrastructure",
+      "authority_category": "implementation",
+      "authority_source": "repository bootstrap support",
+      "source_of_truth_rule": "Supports current hosting-platform checks and policy behavior without becoming universal framework authority.",
+      "mutability": "mutable under governed maintenance",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
     }
   ],
   "normative_requirements": [
@@ -251,6 +315,14 @@
     {
       "id": "REPO-AT-007",
       "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release."
+    },
+    {
+      "id": "REPO-AT-008",
+      "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority."
+    },
+    {
+      "id": "REPO-AT-009",
+      "text": "Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
     }
   ],
   "dependencies": [

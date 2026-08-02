@@ -105,6 +105,33 @@ def render_artifact_classes(spec: dict) -> list[str]:
     return lines
 
 
+def render_profiles(spec: dict) -> list[str]:
+    lines = ["## Profiles", ""]
+    for profile in spec["profiles"]:
+        lines.extend(
+            [
+                f"### {profile['label']}",
+                "",
+                f"- Identifier: `{profile['identifier']}`",
+                f"- Source root: `{profile['source_root']}`",
+                f"- Installed adapter root: `{profile['installed_adapter_root']}`",
+                f"- Authority boundary: `{profile['authority_boundary']}`",
+                f"- Adapter generation policy: `{profile['adapter_generation_policy']}`",
+            ]
+        )
+        lines.extend(["", "- Artifact inventory:"])
+        for item in profile["artifact_inventory"]:
+            lines.append(
+                f"  - `{item['path']}` -> `{item['classification']}` / `{item['authority_category']}` / `{item['profile_id']}`"
+            )
+        lines.extend(["", "- Remote state kinds:"])
+        lines.extend([f"  - {kind}" for kind in profile["remote_state_kinds"]])
+        lines.extend(["", "- Hosting mutation record fields:"])
+        lines.extend([f"  - {field}" for field in profile["mutation_record_fields"]])
+        lines.append("")
+    return lines
+
+
 def render_field_sections(fields: list[dict]) -> list[str]:
     lines = ["## Canonical fields", ""]
     for field in fields:
@@ -204,6 +231,8 @@ def render_spec_projection(title: str, source_path: str, spec: dict, include_aut
     lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
     if "artifact_classes" in spec:
         lines.extend(render_artifact_classes(spec))
+    if "profiles" in spec:
+        lines.extend(render_profiles(spec))
     if "issue_fields" in spec:
         lines.extend(render_field_sections(spec["issue_fields"]))
     elif "review_fields" in spec:

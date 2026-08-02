@@ -170,6 +170,53 @@ def run_schema_mutations(repo_root: Path) -> None:
         "oneOf mismatch",
     )
 
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    expect_failure(
+        "platform profile root type",
+        lambda: validate_instance([], schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "must be an object",
+    )
+
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    profile_spec["profiles"][0]["identifier"] = "gitlab"
+    expect_failure(
+        "platform profile identifier",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "const mismatch",
+    )
+
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    profile_spec["profiles"][0]["artifact_inventory"][0].pop("profile_id")
+    expect_failure(
+        "platform profile identity",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "missing required property profile_id",
+    )
+
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    profile_spec["profiles"][0]["artifact_inventory"][0]["authority_category"] = "normative"
+    expect_failure(
+        "installed adapter authority",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "enum mismatch",
+    )
+
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    profile_spec["profiles"][0]["authority_boundary"] = "adapter-authoritative"
+    expect_failure(
+        "profile authority boundary",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "enum mismatch",
+    )
+
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    profile_spec["profiles"][0]["remote_state_kinds"][0] = "derived/specs/repo/rulesets.json"
+    expect_failure(
+        "remote-only state as generated file",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "enum mismatch",
+    )
+
     mutated_specs = copy.deepcopy(specs)
     mutated_specs["repo.repository-structure"]["dependencies"][0]["spec_id"] = "repo.missing-spec"
     expect_failure(

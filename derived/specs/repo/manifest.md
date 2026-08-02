@@ -25,6 +25,7 @@ Identifies the complete repository-spec JSON set.
 - `repo.review-proposal` -> `specs/repo/review-proposal.json`
 - `repo.repository-structure` -> `specs/repo/repository-structure.json`
 - `repo.artifact-taxonomy` -> `specs/repo/artifact-taxonomy.json`
+- `repo.platform-profiles` -> `specs/repo/platform-profiles.json`
 - `repo.development-workflow` -> `specs/repo/development-workflow.json`
 - `repo.validation` -> `specs/repo/validation.json`
 
@@ -43,6 +44,7 @@ Identifies the complete repository-spec JSON set.
 - specification: `repo.review-proposal`
 - specification: `repo.development-workflow`
 - specification: `repo.validation`
+- specification: `repo.platform-profiles`
 
 ## Derived artifacts
 

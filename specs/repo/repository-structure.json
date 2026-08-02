@@ -24,6 +24,14 @@
     {
       "id": "REPO-STR-005",
       "text": "The repository manifest shall govern discovery of repository specifications only, and the future product manifest shall govern discovery of product specifications and product-derived artifacts without becoming repository-workflow authority."
+    },
+    {
+      "id": "REPO-STR-006",
+      "text": "The repository shall reserve `profiles/github/` as reusable GitHub profile source material and `.github/` as the installed GitHub adapter location while keeping both subordinate to accepted repository specifications."
+    },
+    {
+      "id": "REPO-STR-007",
+      "text": "Remote hosting-platform deployment state shall remain outside repository content and shall be represented only through explicit evidence or declared deployment-state records rather than ordinary generated artifacts."
     }
   ],
   "dependencies": [
@@ -35,6 +43,10 @@
     {
       "type": "specification",
       "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.platform-profiles"
     }
   ],
   "derived_artifacts": [

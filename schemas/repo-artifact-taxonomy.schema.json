@@ -53,6 +53,10 @@
           { "$ref": "#/$defs/testArtifact" },
           { "$ref": "#/$defs/conformanceArtifact" },
           { "$ref": "#/$defs/hostingPlatformProfile" },
+          { "$ref": "#/$defs/hostingProfileSource" },
+          { "$ref": "#/$defs/installedHostingAdapter" },
+          { "$ref": "#/$defs/hostingDeploymentState" },
+          { "$ref": "#/$defs/bootstrapHostingInfrastructure" },
           { "$ref": "#/$defs/validationEvidence" },
           { "$ref": "#/$defs/reviewRecord" },
           { "$ref": "#/$defs/acceptanceRecord" },
@@ -110,6 +114,10 @@
             "test-artifact",
             "conformance-artifact",
             "hosting-platform-profile",
+            "hosting-profile-source",
+            "installed-hosting-adapter",
+            "hosting-deployment-state",
+            "bootstrap-hosting-infrastructure",
             "validation-evidence",
             "review-record",
             "acceptance-record",
@@ -135,6 +143,10 @@
             "test artifact",
             "conformance artifact",
             "platform profile",
+            "profile source",
+            "installed adapter",
+            "hosting deployment state",
+            "bootstrap infrastructure",
             "validation evidence",
             "review record",
             "acceptance record",
@@ -461,6 +473,73 @@
             "authority_category": { "const": "profile-specific" },
             "generation_mode": { "const": "manual" },
             "validation_ownership": { "const": "platform" },
+            "portability_category": { "const": "profile-specific" },
+            "manifest_participation": { "const": "reference" }
+          }
+        }
+      ]
+    },
+    "hostingProfileSource": {
+      "allOf": [
+        { "$ref": "#/$defs/artifactClass" },
+        {
+          "required": ["source_artifacts"],
+          "properties": {
+            "identifier": { "const": "hosting-profile-source" },
+            "role": { "const": "profile source" },
+            "authority_category": { "const": "profile-specific" },
+            "generation_mode": { "const": "manual" },
+            "validation_ownership": { "const": "validation" },
+            "portability_category": { "const": "profile-specific" },
+            "manifest_participation": { "const": "reference" }
+          }
+        }
+      ]
+    },
+    "installedHostingAdapter": {
+      "allOf": [
+        { "$ref": "#/$defs/artifactClass" },
+        {
+          "required": ["source_artifacts"],
+          "properties": {
+            "identifier": { "const": "installed-hosting-adapter" },
+            "role": { "const": "installed adapter" },
+            "authority_category": { "const": "profile-specific" },
+            "generation_mode": { "const": "deterministic" },
+            "validation_ownership": { "const": "platform" },
+            "portability_category": { "const": "profile-specific" },
+            "manifest_participation": { "const": "reference" }
+          }
+        }
+      ]
+    },
+    "hostingDeploymentState": {
+      "allOf": [
+        { "$ref": "#/$defs/artifactClass" },
+        {
+          "properties": {
+            "identifier": { "const": "hosting-deployment-state" },
+            "role": { "const": "hosting deployment state" },
+            "authority_category": { "const": "evidentiary" },
+            "generation_mode": { "const": "external" },
+            "validation_ownership": { "const": "platform" },
+            "portability_category": { "const": "profile-specific" },
+            "manifest_participation": { "const": "reference" }
+          }
+        }
+      ]
+    },
+    "bootstrapHostingInfrastructure": {
+      "allOf": [
+        { "$ref": "#/$defs/artifactClass" },
+        {
+          "required": ["source_artifacts"],
+          "properties": {
+            "identifier": { "const": "bootstrap-hosting-infrastructure" },
+            "role": { "const": "bootstrap infrastructure" },
+            "authority_category": { "const": "implementation" },
+            "generation_mode": { "const": "manual" },
+            "validation_ownership": { "const": "validation" },
             "portability_category": { "const": "profile-specific" },
             "manifest_participation": { "const": "reference" }
           }
