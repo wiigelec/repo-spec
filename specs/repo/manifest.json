@@ -44,6 +44,10 @@
     {
       "spec_id": "repo.product-spec-base",
       "path": "specs/repo/product-spec-base.json"
+    },
+    {
+      "spec_id": "repo.product-levels",
+      "path": "specs/repo/product-levels.json"
     }
   ],
   "normative_requirements": [

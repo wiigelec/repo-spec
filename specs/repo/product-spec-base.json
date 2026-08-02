@@ -55,7 +55,7 @@
     },
     {
       "id": "REPO-PSB-013",
-      "text": "Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries rather than silently redefining common fields."
+      "text": "Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields."
     }
   ],
   "dependencies": [
@@ -107,6 +107,10 @@
     {
       "type": "artifact",
       "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
     }
   ],
   "derived_artifacts": [
