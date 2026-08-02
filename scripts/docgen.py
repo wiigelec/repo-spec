@@ -17,6 +17,26 @@ from repo_model import (
 
 GENERATOR_NAME = "scripts/generate-docs"
 
+COMMON_SPEC_KEYS = {
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "level",
+    "normative_requirements",
+    "dependencies",
+    "references",
+    "supersedes",
+    "superseded_by",
+    "derived_artifacts",
+    "artifact_classes",
+    "profiles",
+    "issue_fields",
+    "review_fields",
+    "authoritative_specs",
+}
+
 
 def header(title: str, source_path: str) -> str:
     return "\n".join(
@@ -78,6 +98,49 @@ def render_derived_artifacts(spec: dict) -> list[str]:
             line += f" (renderer: `{artifact['renderer']}`)"
         items.append(line)
     return items
+
+
+def render_scalar(value: object) -> str:
+    text = str(value).replace("`", "\\`")
+    return f"`{text}`"
+
+
+def render_nested_value(value: object, indent: int = 0) -> list[str]:
+    prefix = "  " * indent
+    if isinstance(value, dict):
+        lines: list[str] = []
+        if not value:
+            return [f"{prefix}- None"]
+        for key in sorted(value):
+            child = value[key]
+            label = key.replace("_", " ").title()
+            if isinstance(child, (dict, list)):
+                lines.append(f"{prefix}- {label}:")
+                lines.extend(render_nested_value(child, indent + 1))
+            else:
+                lines.append(f"{prefix}- {label}: {render_scalar(child)}")
+        return lines
+    if isinstance(value, list):
+        if not value:
+            return [f"{prefix}- None"]
+        lines: list[str] = []
+        for item in value:
+            if isinstance(item, (dict, list)):
+                lines.extend(render_nested_value(item, indent))
+            else:
+                lines.append(f"{prefix}- {render_scalar(item)}")
+        return lines
+    return [f"{prefix}- {render_scalar(value)}"]
+
+
+def render_extra_sections(spec: dict) -> list[str]:
+    lines: list[str] = []
+    extra_keys = [key for key in sorted(spec) if key not in COMMON_SPEC_KEYS]
+    for key in extra_keys:
+        lines.extend([f"## {key.replace('_', ' ').title()}", ""])
+        lines.extend(render_nested_value(spec[key]))
+        lines.append("")
+    return lines
 
 
 def render_artifact_classes(spec: dict) -> list[str]:
@@ -238,6 +301,7 @@ def render_spec_projection(title: str, source_path: str, spec: dict, include_aut
         lines.extend(render_field_sections(spec["issue_fields"]))
     elif "review_fields" in spec:
         lines.extend(render_field_sections(spec["review_fields"]))
+    lines.extend(render_extra_sections(spec))
     lines.extend(render_lineage(spec))
     if include_authoritative_specs:
         lines.extend(render_list_section("Authoritative specs", render_authoritative_specs(spec)))
