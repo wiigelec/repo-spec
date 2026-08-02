@@ -59,12 +59,12 @@ Defines the normative boundary between Git-generic framework behavior and hostin
 ## Normative requirements
 
 - `REPO-PP-001`: The repository shall define a focused platform-profile specification that keeps Git-generic framework behavior separate from hosting-platform-specific behavior.
-- `REPO-PP-002`: GitHub shall be the first supported hosting-platform profile, and its installed adapters shall remain subordinate to profile-source authority.
-- `REPO-PP-003`: The repository shall reserve `profiles/github/` for reusable GitHub profile source material and `.github/` for installed GitHub adapters.
-- `REPO-PP-004`: Profile source material may eventually generate installed adapters, but installed adapters shall not claim authority over the profile source.
+- `REPO-PP-002`: GitHub shall be the first supported hosting-platform profile. The current repository state shall keep GitHub adapters and bootstrap scripts as bootstrap-owned installed adapters or bootstrap infrastructure until reusable profile source material is introduced, and the reserved future profile-source model shall remain subordinate to accepted repository specifications.
+- `REPO-PP-003`: The repository shall reserve `profiles/github/` for future reusable GitHub profile source material and `.github/` for current installed GitHub adapters.
+- `REPO-PP-004`: Current installed adapters and bootstrap infrastructure may be maintained directly until profile source material exists; future profile source material may then generate installed adapters, but installed adapters shall not claim authority over the profile source.
 - `REPO-PP-005`: Remote-only hosting-platform state shall be represented as deployment-state evidence, not as ordinary generated repository content.
 - `REPO-PP-006`: Hosting mutations shall record the governing issue, accepted repository revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification.
-- `REPO-PP-007`: The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity.
+- `REPO-PP-007`: The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity, with current operational ownership retained at the bootstrap layer rather than at a populated profile-source layer.
 
 ## Dependencies
 

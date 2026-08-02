@@ -84,15 +84,15 @@
     },
     {
       "id": "REPO-PP-002",
-      "text": "GitHub shall be the first supported hosting-platform profile, and its installed adapters shall remain subordinate to profile-source authority."
+      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall keep GitHub adapters and bootstrap scripts as bootstrap-owned installed adapters or bootstrap infrastructure until reusable profile source material is introduced, and the reserved future profile-source model shall remain subordinate to accepted repository specifications."
     },
     {
       "id": "REPO-PP-003",
-      "text": "The repository shall reserve `profiles/github/` for reusable GitHub profile source material and `.github/` for installed GitHub adapters."
+      "text": "The repository shall reserve `profiles/github/` for future reusable GitHub profile source material and `.github/` for current installed GitHub adapters."
     },
     {
       "id": "REPO-PP-004",
-      "text": "Profile source material may eventually generate installed adapters, but installed adapters shall not claim authority over the profile source."
+      "text": "Current installed adapters and bootstrap infrastructure may be maintained directly until profile source material exists; future profile source material may then generate installed adapters, but installed adapters shall not claim authority over the profile source."
     },
     {
       "id": "REPO-PP-005",
@@ -104,7 +104,7 @@
     },
     {
       "id": "REPO-PP-007",
-      "text": "The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity."
+      "text": "The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity, with current operational ownership retained at the bootstrap layer rather than at a populated profile-source layer."
     }
   ],
   "dependencies": [

@@ -27,7 +27,7 @@
     },
     {
       "id": "REPO-STR-006",
-      "text": "The repository shall reserve `profiles/github/` as reusable GitHub profile source material and `.github/` as the installed GitHub adapter location while keeping both subordinate to accepted repository specifications."
+      "text": "The repository shall reserve `profiles/github/` as future reusable GitHub profile source material and `.github/` as the current installed GitHub adapter location while keeping both subordinate to accepted repository specifications."
     },
     {
       "id": "REPO-STR-007",

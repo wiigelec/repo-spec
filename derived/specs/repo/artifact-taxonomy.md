@@ -243,7 +243,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `profile source`
 - Authority category: `profile-specific`
 - Authority source: accepted hosting-profile source material
-- Source of truth rule: Defines reusable hosting-platform profile source material under `profiles/` and may project installed adapters without granting them independent authority.
+- Source of truth rule: Defines reusable hosting-platform profile source material under `profiles/` for future profile-source generation and may project installed adapters without granting them independent authority.
 - Mutability: mutable through governed profile revision
 - Generation mode: `manual`
 - Validation ownership: `validation`
@@ -259,7 +259,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `installed adapter`
 - Authority category: `profile-specific`
 - Authority source: hosting-profile source material
-- Source of truth rule: Mirrors a hosting profile into installed repository-local adapters such as `.github/` files without becoming the source of normative authority.
+- Source of truth rule: Mirrors a hosting profile into installed repository-local adapters such as `.github/` files; in the current bootstrap phase these adapters are maintained directly and do not become the source of normative authority.
 - Mutability: regenerable only
 - Generation mode: `deterministic`
 - Validation ownership: `platform`
