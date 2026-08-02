@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-PM-005",
-      "text": "A product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the manifest shall contain at least one registry entry."
+      "text": "A product manifest may be empty."
     },
     {
       "id": "REPO-PM-006",
