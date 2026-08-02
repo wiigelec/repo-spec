@@ -69,7 +69,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         expect_failure(
             "accepted higher level without accepted level 0",
             lambda: validate_repo(temp_repo),
-            "product level prerequisite failed",
+            "product completeness failed",
         )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)

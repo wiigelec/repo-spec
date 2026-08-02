@@ -368,16 +368,6 @@ def check_unique_derived_artifact_paths_phase(context: ValidationContext) -> Non
 def check_product_specification_root_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
-    accepted_level0_exists = any(spec["status"] == "accepted" and spec["level"] == 0 for spec in context.product.specs.values())
-    accepted_higher_level_exists = any(
-        spec["status"] == "accepted" and spec["level"] in {1, 2, 3} for spec in context.product.specs.values()
-    )
-    if accepted_higher_level_exists:
-        expect(
-            accepted_level0_exists,
-            "product level prerequisite failed: accepted Level 1-3 specifications require at least one accepted Level 0 specification",
-        )
-
     for spec_id, spec in context.product.specs.items():
         for index, dep in enumerate(spec.get("dependencies", [])):
             target_spec_id = dep["spec_id"]

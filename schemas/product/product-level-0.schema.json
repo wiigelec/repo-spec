@@ -2,183 +2,34 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schemas/product/product-level-0.schema.json",
   "title": "Product Level 0 Schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "spec_id",
-    "title",
-    "purpose",
-    "status",
-    "schema_version",
-    "level",
-    "normative_requirements",
-    "dependencies",
-    "references",
-    "supersedes",
-    "superseded_by",
-    "derived_artifacts",
-    "kernel"
+  "allOf": [
+    {
+      "$ref": "./product-spec-base.schema.json"
+    },
+    {
+      "type": "object",
+      "required": ["level", "kernel"],
+      "properties": {
+        "level": {
+          "type": "integer",
+          "const": 0
+        },
+        "kernel": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["foundations"],
+          "properties": {
+            "foundations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
   ],
-  "properties": {
-    "spec_id": {
-      "type": "string",
-      "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
-    },
-    "title": {
-      "type": "string",
-      "minLength": 1
-    },
-    "purpose": {
-      "type": "string",
-      "minLength": 1
-    },
-    "status": {
-      "type": "string",
-      "enum": ["candidate", "accepted", "superseded", "retired"]
-    },
-    "schema_version": {
-      "type": "string",
-      "const": "1"
-    },
-    "level": {
-      "type": "integer",
-      "const": 0
-    },
-    "normative_requirements": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/requirement"
-      }
-    },
-    "dependencies": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/dependency"
-      }
-    },
-    "references": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/reference"
-      }
-    },
-    "supersedes": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/productSpecId"
-      }
-    },
-    "superseded_by": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/productSpecId"
-      }
-    },
-    "derived_artifacts": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/derivedArtifact"
-      }
-    },
-    "kernel": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["foundations"],
-      "properties": {
-        "foundations": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      }
-    }
-  },
-  "$defs": {
-    "requirement": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["id", "text"],
-      "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "text": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
-    "dependency": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["spec_id"],
-      "properties": {
-        "spec_id": {
-          "type": "string",
-          "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
-        }
-      }
-    },
-    "reference": {
-      "oneOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type", "spec_id"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "const": "specification"
-            },
-            "kind": {
-              "type": "string",
-              "enum": ["normative", "historical"]
-            },
-            "spec_id": {
-              "type": "string",
-              "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["type", "path"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "const": "artifact"
-            },
-            "path": {
-              "type": "string",
-              "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$",
-              "minLength": 1
-            }
-          }
-        }
-      ]
-    },
-    "derivedArtifact": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["type", "path"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["markdown"]
-        },
-        "path": {
-          "type": "string",
-          "pattern": "^derived/specs/product/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-        }
-      }
-    },
-    "productSpecId": {
-      "type": "string",
-      "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
-    }
-  }
+  "unevaluatedProperties": false
 }

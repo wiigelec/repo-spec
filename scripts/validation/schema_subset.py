@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import re
 from pathlib import Path
@@ -13,6 +14,7 @@ SUPPORTED_SCHEMA_KEYS = {
     "title",
     "type",
     "additionalProperties",
+    "unevaluatedProperties",
     "required",
     "properties",
     "items",
@@ -74,6 +76,9 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
     if "additionalProperties" in schema:
         expect(isinstance(schema["additionalProperties"], bool), f"schema loading failed: {schema_location(source, path)} additionalProperties must be a boolean")
 
+    if "unevaluatedProperties" in schema:
+        expect(isinstance(schema["unevaluatedProperties"], bool), f"schema loading failed: {schema_location(source, path)} unevaluatedProperties must be a boolean")
+
     if "required" in schema:
         expect(isinstance(schema["required"], list), f"schema loading failed: {schema_location(source, path)} required must be an array")
         for index, item in enumerate(schema["required"]):
@@ -129,10 +134,23 @@ def validate_instance(
     path: str = "",
     ref_stack: tuple[str, ...] = (),
 ) -> None:
+    validate_instance_with_evaluation(instance, schema, source, root_schema, path, ref_stack)
+
+
+def validate_instance_with_evaluation(
+    instance: Any,
+    schema: dict[str, Any],
+    source: str,
+    root_schema: dict[str, Any],
+    path: str = "",
+    ref_stack: tuple[str, ...] = (),
+) -> set[str]:
     if "$ref" in schema:
         ref = schema["$ref"]
         expect(ref not in ref_stack, f"repository JSON Schema conformance failed: {instance_location(source, path)} circular ref {ref}")
-        validate_instance(instance, resolve_ref(root_schema, ref, source), source, root_schema, path, ref_stack + (ref,))
+        return validate_instance_with_evaluation(instance, resolve_ref(root_schema, ref, source), source, root_schema, path, ref_stack + (ref,))
+
+    evaluated_keys: set[str] = set()
 
     schema_type = schema.get("type")
     if schema_type == "object":
@@ -169,7 +187,8 @@ def validate_instance(
         expect(isinstance(instance, dict), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an object")
         for key, subschema in schema["properties"].items():
             if key in instance:
-                validate_instance(instance[key], subschema, source, root_schema, f"{path}.{key}" if path else key, ref_stack)
+                validate_instance_with_evaluation(instance[key], subschema, source, root_schema, f"{path}.{key}" if path else key, ref_stack)
+                evaluated_keys.add(key)
 
     if "additionalProperties" in schema and schema["additionalProperties"] is False:
         expect(isinstance(instance, dict), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an object")
@@ -180,23 +199,37 @@ def validate_instance(
     if "items" in schema:
         expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
         for index, item in enumerate(instance):
-            validate_instance(item, schema["items"], source, root_schema, f"{path}[{index}]" if path else f"[{index}]", ref_stack)
+            validate_instance_with_evaluation(item, schema["items"], source, root_schema, f"{path}[{index}]" if path else f"[{index}]", ref_stack)
 
     if "allOf" in schema:
         for subschema in schema["allOf"]:
-            validate_instance(instance, subschema, source, root_schema, path, ref_stack)
+            evaluated_keys |= validate_instance_with_evaluation(instance, subschema, source, root_schema, path, ref_stack)
 
     if "oneOf" in schema:
         matches = 0
+        matched_keys: set[str] = set()
         for subschema in schema["oneOf"]:
             if schema_matches(instance, subschema, source, root_schema, path, ref_stack):
                 matches += 1
+                matched_keys |= validate_instance_with_evaluation(instance, subschema, source, root_schema, path, ref_stack)
         expect(matches == 1, f"repository JSON Schema conformance failed: {instance_location(source, path)} oneOf mismatch")
+        evaluated_keys |= matched_keys
 
     if "if" in schema:
         branch = schema.get("then") if schema_matches(instance, schema["if"], source, root_schema, path, ref_stack) else schema.get("else")
         if branch is not None:
-            validate_instance(instance, branch, source, root_schema, path, ref_stack)
+            evaluated_keys |= validate_instance_with_evaluation(instance, branch, source, root_schema, path, ref_stack)
+
+    if "unevaluatedProperties" in schema:
+        expect(isinstance(instance, dict), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an object")
+        unevaluated = [key for key in instance if key not in evaluated_keys]
+        if schema["unevaluatedProperties"] is False:
+            expect(not unevaluated, f"repository JSON Schema conformance failed: {instance_location(source, path)} unevaluatedProperties disallowed: {', '.join(unevaluated)}")
+        else:
+            for key in unevaluated:
+                validate_instance_with_evaluation(instance[key], schema["unevaluatedProperties"], source, root_schema, f"{path}.{key}" if path else key, ref_stack)
+
+    return evaluated_keys
 
 
 def schema_matches(instance: Any, schema: dict[str, Any], source: str, root_schema: dict[str, Any], path: str, ref_stack: tuple[str, ...]) -> bool:
@@ -225,11 +258,28 @@ def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     schemas = {
         "product.manifest": load_json(repo_root / "schemas/product/product-manifest.schema.json"),
         "product.spec-base": load_json(repo_root / "schemas/product/product-spec-base.schema.json"),
-        "product.level-0": load_json(repo_root / "schemas/product/product-level-0.schema.json"),
-        "product.level-1": load_json(repo_root / "schemas/product/product-level-1.schema.json"),
-        "product.level-2": load_json(repo_root / "schemas/product/product-level-2.schema.json"),
-        "product.level-3": load_json(repo_root / "schemas/product/product-level-3.schema.json"),
     }
+    base_schema = schemas["product.spec-base"]
+    base_defs = copy.deepcopy(base_schema.get("$defs", {}))
+
+    def materialize_level_schema(schema: dict[str, Any]) -> dict[str, Any]:
+        schema = copy.deepcopy(schema)
+        defs = schema.setdefault("$defs", {})
+        for name, subschema in base_defs.items():
+            defs.setdefault(name, copy.deepcopy(subschema))
+        all_of = schema.get("allOf")
+        if isinstance(all_of, list):
+            for index, subschema in enumerate(all_of):
+                if isinstance(subschema, dict) and subschema.get("$ref") in {"./product-spec-base.schema.json", "product-spec-base.schema.json"}:
+                    inline_base = copy.deepcopy(base_schema)
+                    inline_base.pop("$defs", None)
+                    all_of[index] = inline_base
+        return schema
+
+    schemas["product.level-0"] = materialize_level_schema(load_json(repo_root / "schemas/product/product-level-0.schema.json"))
+    schemas["product.level-1"] = materialize_level_schema(load_json(repo_root / "schemas/product/product-level-1.schema.json"))
+    schemas["product.level-2"] = materialize_level_schema(load_json(repo_root / "schemas/product/product-level-2.schema.json"))
+    schemas["product.level-3"] = materialize_level_schema(load_json(repo_root / "schemas/product/product-level-3.schema.json"))
     ensure_schema_keywords(schemas["product.manifest"], "schemas/product/product-manifest.schema.json")
     ensure_schema_keywords(schemas["product.spec-base"], "schemas/product/product-spec-base.schema.json")
     ensure_schema_keywords(schemas["product.level-0"], "schemas/product/product-level-0.schema.json")
