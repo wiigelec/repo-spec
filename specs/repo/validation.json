@@ -31,7 +31,7 @@
     },
     {
       "id": "REPO-VAL-007",
-      "text": "The validation entry point shall enforce allowed dependency directions, acyclic dependencies, and allow dependency targets only from candidate or accepted specifications."
+      "text": "The validation entry point shall enforce allowed dependency directions, product completeness rules, acyclic dependencies, and allow dependency targets only from candidate or accepted specifications."
     },
     {
       "id": "REPO-VAL-008",

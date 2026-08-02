@@ -26,8 +26,10 @@ def run_repository_mutations(repo_root: Path) -> None:
         "product specification root",
         "dependency target lifecycle",
         "product dependency directions",
+        "product completeness",
         "resolvable references",
         "lineage relations",
+        "product acyclic dependencies",
         "acyclic dependencies",
         "generated-document freshness",
     ]
