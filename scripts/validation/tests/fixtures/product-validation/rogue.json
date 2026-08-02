@@ -1,0 +1,14 @@
+{
+  "spec_id": "product.rogue",
+  "title": "Rogue",
+  "purpose": "Rogue product specification.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 0,
+  "normative_requirements": [],
+  "dependencies": [],
+  "references": [],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": []
+}

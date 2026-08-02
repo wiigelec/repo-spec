@@ -34,12 +34,12 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "schemas/repo-artifact-taxonomy.schema.json",
         "schemas/repo-platform-profiles.schema.json",
         "schemas/repo-spec.schema.json",
+        "schemas/product/product-manifest.schema.json",
+        "schemas/product/product-spec-base.schema.json",
     ]
     for entry in manifest["authoritative_specs"]:
         path = entry["path"]
         required_paths.append(path)
-        if path == "specs/repo/manifest.json":
-            continue
         spec = json.loads((repo_root / path).read_text())
         for ref in spec.get("references", []):
             if ref.get("type") == "artifact":

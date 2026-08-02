@@ -1,0 +1,33 @@
+{
+  "spec_id": "product.primitive",
+  "title": "Primitive",
+  "purpose": "Primitive product specification.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "normative_requirements": [
+    {
+      "id": "PRIMITIVE-001",
+      "text": "Primitive requirement."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.kernel"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/02-development-and-specifications.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/product/primitive.md"
+    }
+  ]
+}
