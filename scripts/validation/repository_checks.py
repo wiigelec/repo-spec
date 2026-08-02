@@ -147,6 +147,25 @@ def check_dependency_targets(specs: dict[str, dict[str, Any]]) -> None:
             expect(specs[target_spec_id]["status"] in {"candidate", "accepted"}, f"dependencies failed: {spec_id} -> {target_spec_id}")
 
 
+def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:
+    allowed_target_levels = {
+        0: {0},
+        1: {0, 1},
+        2: {0, 1, 2},
+        3: {0, 1, 2, 3},
+    }
+    for spec_id, spec in specs.items():
+        source_level = spec["level"]
+        allowed_levels = allowed_target_levels[source_level]
+        for index, dep in enumerate(spec.get("dependencies", [])):
+            target_spec_id = dep["spec_id"]
+            target_spec = specs[target_spec_id]
+            expect(
+                target_spec["level"] in allowed_levels,
+                f"product dependency direction failed: {spec_id} (level {source_level}) -> {target_spec_id} (level {target_spec['level']})",
+            )
+
+
 def check_lineage_relations(specs: dict[str, dict[str, Any]]) -> None:
     check_relation_targets(specs, "supersedes", {"candidate", "accepted", "superseded", "retired"}, "supersedes")
     check_relation_targets(specs, "superseded_by", {"candidate", "accepted", "superseded", "retired"}, "superseded_by")
@@ -327,7 +346,6 @@ def check_product_specification_root_phase(context: ValidationContext) -> None:
             expect(target_spec_id in context.product.specs, f"product dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
             target_spec = context.product.specs[target_spec_id]
             expect(target_spec["status"] in {"candidate", "accepted"}, f"product dependencies failed: {spec_id} -> {target_spec_id}")
-            expect(target_spec["level"] <= spec["level"], f"product dependency level failed: {spec_id} -> {target_spec_id}")
 
         for ref in spec.get("references", []):
             if ref["type"] == "specification":
@@ -350,6 +368,12 @@ def check_product_specification_root_phase(context: ValidationContext) -> None:
 
 def check_dependency_targets_phase(context: ValidationContext) -> None:
     check_dependency_targets(context.repository.specs)
+
+
+def check_dependency_directions_phase(context: ValidationContext) -> None:
+    if context.product is None:
+        return
+    check_dependency_directions(context.product.specs)
 
 
 def check_platform_profile_inventory(profile: dict[str, Any], index: int) -> None:
@@ -466,6 +490,7 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
     ("product specification root", check_product_specification_root_phase),
     ("dependency target lifecycle", check_dependency_targets_phase),
+    ("product dependency directions", check_dependency_directions_phase),
     ("resolvable references", check_resolvable_references_phase),
     ("lineage relations", check_lineage_relations_phase),
     ("acyclic dependencies", check_acyclic_dependencies_phase),
