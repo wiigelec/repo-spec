@@ -2,7 +2,7 @@
 
 ## Status
 
-Current non-normative implementation plan.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is the next separately governed phase.
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
 
