@@ -77,7 +77,11 @@ def check_product_specification_root(repo_root: Path) -> None:
     product_root = repo_root / "specs/product"
     if not product_root.exists():
         return
-    declared_product_json = sorted(path.relative_to(repo_root).as_posix() for path in product_root.glob("*.json") if path.is_file())
+    declared_product_json = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in product_root.rglob("*.json")
+        if path.is_file()
+    )
     expect(
         not declared_product_json,
         "product specification root failed: undeclared JSON content under specs/product/",
@@ -232,14 +236,21 @@ def check_dependency_targets_phase(context: ValidationContext) -> None:
     check_dependency_targets(context.specs)
 
 
-def check_platform_profile_boundary(context: ValidationContext) -> None:
-    spec = context.specs.get("repo.platform-profiles")
-    expect(spec is not None, "platform profile boundary failed: missing repo.platform-profiles")
-    profiles = spec.get("profiles", [])
-    expect(len(profiles) == 1, "platform profile boundary failed: expected exactly one profile")
+def check_platform_profile_inventory(profile: dict[str, Any], index: int) -> None:
+    identifier = profile.get("identifier")
+    expect(isinstance(identifier, str) and identifier, f"platform profile boundary failed: missing profile identifier at index {index}")
 
-    profile = profiles[0]
-    expect(profile.get("identifier") == "github", "platform profile boundary failed: missing GitHub profile identity")
+    inventory = profile.get("artifact_inventory", [])
+    seen_paths: set[str] = set()
+    for item_index, item in enumerate(inventory):
+        path = item.get("path")
+        expect(isinstance(path, str), f"platform profile boundary failed: artifact inventory path missing at index {index}:{item_index}")
+        expect(path not in seen_paths, f"platform profile boundary failed: duplicate artifact inventory path {path}")
+        seen_paths.add(path)
+        expect(item.get("profile_id") == identifier, f"platform profile boundary failed: missing profile identity for {path}")
+
+
+def check_github_bootstrap_conformance(profile: dict[str, Any]) -> None:
     expect(profile.get("source_root") == "profiles/github/", "platform profile boundary failed: GitHub source root mismatch")
     expect(profile.get("installed_adapter_root") == ".github/", "platform profile boundary failed: GitHub adapter root mismatch")
     expect(profile.get("authority_boundary") == "profile-source-authoritative", "platform profile boundary failed: profile source and installed adapter authority mismatch")
@@ -268,6 +279,28 @@ def check_platform_profile_boundary(context: ValidationContext) -> None:
             expect(path.startswith(".github/"), f"platform profile boundary failed: installed adapter path mismatch for {path}")
         else:
             expect(path.startswith("scripts/"), f"platform profile boundary failed: bootstrap infrastructure path mismatch for {path}")
+
+
+def check_platform_profile_boundary(context: ValidationContext) -> None:
+    spec = context.specs.get("repo.platform-profiles")
+    expect(spec is not None, "platform profile boundary failed: missing repo.platform-profiles")
+    profiles = spec.get("profiles", [])
+    expect(profiles, "platform profile boundary failed: expected at least one profile")
+
+    seen_identifiers: set[str] = set()
+    github_profile: dict[str, Any] | None = None
+    for index, profile in enumerate(profiles):
+        identifier = profile.get("identifier")
+        expect(isinstance(identifier, str) and identifier, f"platform profile boundary failed: missing profile identifier at index {index}")
+        expect(identifier not in seen_identifiers, f"platform profile boundary failed: duplicate profile identifier {identifier}")
+        seen_identifiers.add(identifier)
+
+        check_platform_profile_inventory(profile, index)
+        if identifier == "github":
+            github_profile = profile
+
+    expect(github_profile is not None, "platform profile boundary failed: missing GitHub profile identity")
+    check_github_bootstrap_conformance(github_profile)
 
 
 def check_resolvable_references_phase(context: ValidationContext) -> None:
