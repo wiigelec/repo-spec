@@ -13,7 +13,7 @@ main at bb05dc4c52617abcc72cf793ed852ed2f3e195f9
 Accepted Stage 3 base:
 
 ```text
-issue-117-complete-stage3-schema-ownership-and-handoff at edfafa977dce07ef7a8c53a5781e6f0fbdb7aa18
+main at 1234c646b3d85dd17e6121a955586ead663086bf
 ```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
