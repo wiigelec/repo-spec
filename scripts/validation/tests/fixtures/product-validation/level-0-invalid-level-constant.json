@@ -2,9 +2,9 @@
   "spec_id": "product.kernel",
   "title": "Kernel",
   "purpose": "Kernel product specification.",
-  "status": "accepted",
+  "status": "candidate",
   "schema_version": "1",
-  "level": 0,
+  "level": 1,
   "normative_requirements": [
     {
       "id": "KERNEL-001",
@@ -17,6 +17,6 @@
   "superseded_by": [],
   "derived_artifacts": [],
   "kernel": {
-    "foundations": ["terminology", "identity", "lifecycle"]
+    "foundations": ["terminology"]
   }
 }

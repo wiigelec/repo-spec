@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "schemas/product/product-spec-base.schema.json",
-  "title": "Product Specification Base Schema",
+  "$id": "schemas/product/product-level-1.schema.json",
+  "title": "Product Level 1 Schema",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": [
     "spec_id",
     "title",
@@ -16,7 +16,8 @@
     "references",
     "supersedes",
     "superseded_by",
-    "derived_artifacts"
+    "derived_artifacts",
+    "primitives"
   ],
   "properties": {
     "spec_id": {
@@ -41,7 +42,7 @@
     },
     "level": {
       "type": "integer",
-      "enum": [0, 1, 2, 3]
+      "const": 1
     },
     "normative_requirements": {
       "type": "array",
@@ -77,6 +78,20 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/derivedArtifact"
+      }
+    },
+    "primitives": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["concepts"],
+      "properties": {
+        "concepts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       }
     }
   },

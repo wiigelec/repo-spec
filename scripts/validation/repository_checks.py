@@ -239,6 +239,9 @@ def load_product_validation_context(repo_root: Path) -> ProductValidationContext
         except RepositoryError as exc:
             fail(str(exc))
         validate_instance(spec, schemas["product.spec-base"], path, schemas["product.spec-base"])
+        level_schema_key = f"product.level-{spec['level']}"
+        expect(level_schema_key in schemas, f"product schema loading failed: missing {level_schema_key}")
+        validate_instance(spec, schemas[level_schema_key], path, schemas[level_schema_key])
         expect(spec["spec_id"] == entry["spec_id"], f"product manifest correspondence failed: spec_id mismatch for {path}")
         expect(spec["status"] == entry["status"], f"product manifest correspondence failed: lifecycle mismatch for {path}")
         expect(spec["level"] == entry["level"], f"product manifest correspondence failed: level mismatch for {path}")

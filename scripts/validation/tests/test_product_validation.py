@@ -53,6 +53,16 @@ def run_product_validation_tests(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        install_fixture(temp_repo, "manifest-valid-four.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
+        install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        accept_kernel(temp_repo)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
@@ -287,37 +297,12 @@ def run_product_validation_tests(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "manifest-valid-four.json", "specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-3/orchestration.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
+        install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
-        mutate_json(
-            temp_repo / "specs/product/level-3/orchestration.json",
-            lambda spec: (
-                spec.__setitem__("spec_id", "product.orchestration"),
-                spec.__setitem__("title", "Orchestration"),
-                spec.__setitem__("purpose", "Orchestration product specification."),
-                spec.__setitem__("level", 3),
-                spec["dependencies"].__setitem__(0, {"spec_id": "product.kernel"}),
-                spec["derived_artifacts"][0].__setitem__("path", "derived/specs/product/orchestration.md"),
-                spec,
-            )[-1],
-        )
-        mutate_json(
-            temp_repo / "specs/product/manifest.json",
-            lambda manifest: (
-                manifest["product_specifications"].pop(1),
-                manifest["product_specifications"].append(
-                    {
-                        "spec_id": "product.orchestration",
-                        "path": "specs/product/level-3/orchestration.json",
-                        "status": "accepted",
-                        "level": 3,
-                    }
-                ),
-                manifest,
-            )[-1],
-        )
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
