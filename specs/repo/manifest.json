@@ -40,6 +40,10 @@
     {
       "spec_id": "repo.product-manifest",
       "path": "specs/repo/product-manifest.json"
+    },
+    {
+      "spec_id": "repo.product-spec-base",
+      "path": "specs/repo/product-spec-base.json"
     }
   ],
   "normative_requirements": [
