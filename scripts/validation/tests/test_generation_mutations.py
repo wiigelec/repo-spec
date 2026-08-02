@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -11,6 +12,9 @@ from validation.generated_outputs import check_generated_document_freshness, che
 from validation.repository_checks import validate_repo
 
 from .mutation_support import create_repo_fixture, expect_failure, expect_render_change, mutate_json
+
+
+FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
 
 
 def run_generation_mutations(repo_root: Path) -> None:
@@ -67,6 +71,67 @@ def run_generation_mutations(repo_root: Path) -> None:
         clone_index += 1
         (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
         expect_failure("orphaned derived markdown check", lambda: check_generated_document_freshness(temp_repo), "orphaned derived markdown")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture = lambda source_name, dest_path: (temp_repo / dest_path).parent.mkdir(parents=True, exist_ok=True) or shutil.copy2(FIXTURE_DIR / source_name, temp_repo / dest_path)
+        install_fixture("manifest-valid-four.json", "specs/product/manifest.json")
+        install_fixture("level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture("level-1-accepted.json", "specs/product/level-1/primitive.json")
+        install_fixture("level-2-accepted.json", "specs/product/level-2/component.json")
+        install_fixture("level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"][0].__setitem__("status", "accepted") or manifest,
+        )
+        mutate_json(
+            temp_repo / "specs/product/level-0/kernel.json",
+            lambda spec: spec.__setitem__("status", "accepted") or spec,
+        )
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture = lambda source_name, dest_path: (temp_repo / dest_path).parent.mkdir(parents=True, exist_ok=True) or shutil.copy2(FIXTURE_DIR / source_name, temp_repo / dest_path)
+        install_fixture("manifest-valid-four.json", "specs/product/manifest.json")
+        install_fixture("level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture("level-1-accepted.json", "specs/product/level-1/primitive.json")
+        install_fixture("level-2-accepted.json", "specs/product/level-2/component.json")
+        install_fixture("level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"][0].__setitem__("status", "accepted") or manifest,
+        )
+        mutate_json(
+            temp_repo / "specs/product/level-0/kernel.json",
+            lambda spec: spec.__setitem__("status", "accepted") or spec,
+        )
+        check_generated_document_write_behavior(temp_repo)
+        product_doc = temp_repo / "derived/specs/product/primitive.md"
+        product_doc.write_text(product_doc.read_text().replace("Primitive", "Primitive Projection", 1))
+        expect_failure("product generated artifact freshness", lambda: check_generated_document_freshness(temp_repo), "generated-document freshness failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture = lambda source_name, dest_path: (temp_repo / dest_path).parent.mkdir(parents=True, exist_ok=True) or shutil.copy2(FIXTURE_DIR / source_name, temp_repo / dest_path)
+        install_fixture("manifest-valid-four.json", "specs/product/manifest.json")
+        install_fixture("level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture("level-1-accepted.json", "specs/product/level-1/primitive.json")
+        install_fixture("level-2-accepted.json", "specs/product/level-2/component.json")
+        install_fixture("level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"][0].__setitem__("status", "accepted") or manifest,
+        )
+        mutate_json(
+            temp_repo / "specs/product/level-0/kernel.json",
+            lambda spec: spec.__setitem__("status", "accepted") or spec,
+        )
+        orphaned_product_doc = temp_repo / "derived/specs/product/orphaned.md"
+        orphaned_product_doc.parent.mkdir(parents=True, exist_ok=True)
+        orphaned_product_doc.write_text("stale\n")
+        expect_failure("product orphaned derived markdown", lambda: check_generated_document_write_behavior(temp_repo), "orphaned derived markdown")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
@@ -203,6 +268,12 @@ def run_generation_mutations(repo_root: Path) -> None:
         lambda spec: render_spec_projection(specs["repo.product-manifest"]["title"], paths["repo.product-manifest"], spec),
         specs["repo.product-manifest"],
         lambda spec: spec.__setitem__("purpose", "Changed product manifest purpose"),
+    )
+    expect_render_change(
+        "product primitive projected requirement",
+        lambda spec: render_spec_projection(spec["title"], "specs/product/level-1/primitive.json", spec),
+        json.loads((repo_root / "scripts/validation/tests/fixtures/product-validation/level-1-accepted.json").read_text()),
+        lambda spec: spec["normative_requirements"][0].__setitem__("text", "Changed primitive requirement"),
     )
     expect_render_change(
         "product levels projected requirement",

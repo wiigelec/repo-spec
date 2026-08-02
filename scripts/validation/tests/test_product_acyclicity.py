@@ -4,6 +4,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from validation.generated_outputs import check_generated_document_write_behavior
 from validation.repository_checks import validate_repo
 
 from .mutation_support import create_repo_fixture, expect_failure, mutate_json
@@ -50,6 +51,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
         install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 1)
@@ -58,6 +60,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
         install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        check_generated_document_write_behavior(temp_repo)
         mutate_json(
             temp_repo / "specs/product/level-0/kernel.json",
             lambda spec: spec.__setitem__("dependencies", [{"spec_id": "product.kernel"}]) or spec,
@@ -85,6 +88,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                 {"spec_id": "product.b", "path": "specs/product/level-0/b.json", "status": "accepted", "level": 0},
             ],
         )
+        check_generated_document_write_behavior(temp_repo)
         expect_failure("two-node level 0 cycle", lambda: validate_repo(temp_repo), "product acyclic dependencies failed: product.a -> product.b -> product.a")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 3)
@@ -112,6 +116,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                 {"spec_id": "product.b", "path": "specs/product/level-1/b.json", "status": "accepted", "level": 1},
             ],
         )
+        check_generated_document_write_behavior(temp_repo)
         expect_failure("two-node level 1 cycle", lambda: validate_repo(temp_repo), "product acyclic dependencies failed: product.a -> product.b -> product.a")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 4)
@@ -142,6 +147,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                 {"spec_id": "product.c", "path": "specs/product/level-2/c.json", "status": "accepted", "level": 2},
             ],
         )
+        check_generated_document_write_behavior(temp_repo)
         expect_failure("three-node level 2 cycle", lambda: validate_repo(temp_repo), "product acyclic dependencies failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 5)
@@ -175,6 +181,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                 {"spec_id": "product.d", "path": "specs/product/level-3/d.json", "status": "accepted", "level": 3},
             ],
         )
+        check_generated_document_write_behavior(temp_repo)
         expect_failure("four-node level 3 cycle", lambda: validate_repo(temp_repo), "product acyclic dependencies failed")
 
     print("ok: product acyclicity tests")

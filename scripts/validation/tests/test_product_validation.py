@@ -4,6 +4,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from validation.generated_outputs import check_generated_document_write_behavior
 from validation.repository_checks import validate_repo
 
 from .mutation_support import create_repo_fixture, expect_failure, mutate_json
@@ -49,6 +50,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
+        check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -59,6 +61,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
+        check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -118,6 +121,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 }
             ) or manifest,
         )
+        check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -303,6 +307,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
+        check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
