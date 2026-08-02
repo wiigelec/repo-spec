@@ -39,7 +39,7 @@
     },
     {
       "id": "REPO-PSB-009",
-      "text": "The `references` collection shall distinguish normative specification references, historical specification references, and artifact references; normative specification references shall target accepted product specifications only, and historical specification references shall target superseded or retired product specifications only."
+      "text": "The `references` collection shall distinguish normative specification references, historical specification references, and artifact references; normative specification references shall target accepted product specifications only, historical specification references shall target superseded or retired product specifications only, and specification references shall remain within the governed product set."
     },
     {
       "id": "REPO-PSB-010",

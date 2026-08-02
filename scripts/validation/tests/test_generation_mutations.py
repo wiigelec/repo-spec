@@ -51,6 +51,12 @@ def run_generation_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        derived_doc = temp_repo / "derived/specs/repo/product-manifest.md"
+        derived_doc.write_text(derived_doc.read_text().replace("Product Manifest", "Product Manifest Authority", 1))
+        expect_failure("generated artifact authority claim", lambda: check_generated_document_freshness(temp_repo), "generated-document freshness failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         (temp_repo / "derived/specs/repo/orphaned.md").write_text("stale\n")
         expect_failure("orphaned derived markdown check", lambda: check_generated_document_freshness(temp_repo), "orphaned derived markdown")
 

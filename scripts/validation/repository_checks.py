@@ -319,9 +319,7 @@ def check_product_specification_root_phase(context: ValidationContext) -> None:
 
         for ref in spec.get("references", []):
             if ref["type"] == "specification":
-                target_spec = context.repository.specs.get(ref["spec_id"])
-                if target_spec is None:
-                    target_spec = context.product.specs.get(ref["spec_id"])
+                target_spec = context.product.specs.get(ref["spec_id"])
                 expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
                 kind = ref.get("kind", "normative")
                 if kind == "historical":
@@ -415,9 +413,7 @@ def check_resolvable_references_phase(context: ValidationContext) -> None:
         for spec_id, spec in context.product.specs.items():
             for ref in spec.get("references", []):
                 if ref["type"] == "specification":
-                    target_spec = context.repository.specs.get(ref["spec_id"])
-                    if target_spec is None:
-                        target_spec = context.product.specs.get(ref["spec_id"])
+                    target_spec = context.product.specs.get(ref["spec_id"])
                     expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
                     kind = ref.get("kind", "normative")
                     if kind == "historical":
