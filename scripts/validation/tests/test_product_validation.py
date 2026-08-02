@@ -130,7 +130,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "specs/product/level-0/kernel.json",
             lambda spec: spec["dependencies"].append({"spec_id": "product.primitive"}) or spec,
         )
-        expect_failure("upward dependency", lambda: validate_repo(temp_repo), "product dependency level failed")
+        expect_failure("upward dependency", lambda: validate_repo(temp_repo), "product dependency direction failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
