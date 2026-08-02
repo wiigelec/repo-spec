@@ -36,6 +36,10 @@
     {
       "spec_id": "repo.validation",
       "path": "specs/repo/validation.json"
+    },
+    {
+      "spec_id": "repo.product-manifest",
+      "path": "specs/repo/product-manifest.json"
     }
   ],
   "normative_requirements": [

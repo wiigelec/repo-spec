@@ -28,6 +28,7 @@ Identifies the complete repository-spec JSON set.
 - `repo.platform-profiles` -> `specs/repo/platform-profiles.json`
 - `repo.development-workflow` -> `specs/repo/development-workflow.json`
 - `repo.validation` -> `specs/repo/validation.json`
+- `repo.product-manifest` -> `specs/repo/product-manifest.json`
 
 ## Normative requirements
 
