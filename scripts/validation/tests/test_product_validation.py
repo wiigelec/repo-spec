@@ -52,7 +52,6 @@ def run_product_validation_tests(repo_root: Path) -> None:
                     "path": "specs/product/level-0/repo-validation.json",
                     "status": "accepted",
                     "level": 0,
-                    "derived_artifacts": [],
                 }
             ) or manifest,
         )
@@ -148,9 +147,27 @@ def run_product_validation_tests(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        install_fixture(temp_repo, "manifest-duplicate-derived.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"][0].__setitem__(
+                "derived_artifacts",
+                [{"type": "markdown", "path": "derived/specs/product/kernel.md"}],
+            ) or manifest,
+        )
+        expect_failure("manifest repeats derived artifacts", lambda: validate_repo(temp_repo), "oneOf mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        mutate_json(
+            temp_repo / "specs/product/level-0/kernel.json",
+            lambda spec: spec.__setitem__("derived_artifacts", [{"type": "markdown", "path": "derived/specs/product/primitive.md"}]) or spec,
+        )
         expect_failure("duplicate derived path", lambda: validate_repo(temp_repo), "duplicate product derived artifact paths failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)

@@ -27,7 +27,7 @@
     },
     {
       "id": "REPO-PM-006",
-      "text": "The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, Level, and declared derived artifacts."
+      "text": "The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level."
     },
     {
       "id": "REPO-PM-007",
@@ -55,7 +55,7 @@
     },
     {
       "id": "REPO-PM-013",
-      "text": "Declared derived product projections shall be registered either on the manifest entry, in the product specification, or both, and any registered derived artifact shall remain subordinate to the authoritative product specification."
+      "text": "Declared derived product projections shall be registered by the product specification itself, and any registered derived artifact shall remain subordinate to the authoritative product specification."
     },
     {
       "id": "REPO-PM-014",

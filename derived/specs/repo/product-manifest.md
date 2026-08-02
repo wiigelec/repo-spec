@@ -25,14 +25,14 @@ Defines the normative contract for the product-specification manifest.
 - `REPO-PM-003`: The product manifest shall identify itself with the stable manifest identity `product.manifest` and shall use the same repository-spec lifecycle statuses as repository specifications.
 - `REPO-PM-004`: The product manifest shall record an `active` state that expresses whether the product-specification system has been activated.
 - `REPO-PM-005`: An activated product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the activated manifest shall contain at least one registry entry.
-- `REPO-PM-006`: The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, Level, and declared derived artifacts.
+- `REPO-PM-006`: The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level.
 - `REPO-PM-007`: A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`.
 - `REPO-PM-008`: The product manifest shall register the complete governed product-specification set, not only accepted specifications; candidate specifications shall appear when governed, and historical specifications shall remain registered while retained.
 - `REPO-PM-009`: Each registered product specification shall have a unique identity and a unique path within the manifest.
 - `REPO-PM-010`: Each registered product specification shall reside under exactly one reserved Level root: `specs/product/level-0/`, `specs/product/level-1/`, `specs/product/level-2/`, or `specs/product/level-3/`.
 - `REPO-PM-011`: Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value.
 - `REPO-PM-012`: Level registration is metadata only in this contract and does not yet impose Level dependency rules or dependency-cycle enforcement.
-- `REPO-PM-013`: Declared derived product projections shall be registered either on the manifest entry, in the product specification, or both, and any registered derived artifact shall remain subordinate to the authoritative product specification.
+- `REPO-PM-013`: Declared derived product projections shall be registered by the product specification itself, and any registered derived artifact shall remain subordinate to the authoritative product specification.
 - `REPO-PM-014`: The product manifest shall be complete when it enumerates every governed product specification currently present under the reserved product-specification roots, excluding the manifest file itself.
 - `REPO-PM-015`: Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest.
 

@@ -10,13 +10,7 @@
       "spec_id": "product.orchestration",
       "path": "specs/product/level-3/orchestration.json",
       "status": "accepted",
-      "level": 3,
-      "derived_artifacts": [
-        {
-          "type": "markdown",
-          "path": "derived/specs/product/orchestration.md"
-        }
-      ]
+      "level": 3
     }
   ]
 }

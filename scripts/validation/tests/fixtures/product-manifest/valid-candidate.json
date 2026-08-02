@@ -10,13 +10,7 @@
       "spec_id": "product.kernel",
       "path": "specs/product/level-0/kernel.json",
       "status": "candidate",
-      "level": 0,
-      "derived_artifacts": [
-        {
-          "type": "markdown",
-          "path": "derived/specs/product/kernel.md"
-        }
-      ]
+      "level": 0
     }
   ]
 }
