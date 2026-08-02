@@ -26,7 +26,7 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-004`: The validation entry point shall enforce manifest completeness.
 - `REPO-VAL-005`: The validation entry point shall enforce unique specification IDs.
 - `REPO-VAL-006`: The validation entry point shall enforce resolvable references according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository.
-- `REPO-VAL-007`: The validation entry point shall enforce allowed dependency directions, acyclic dependencies, and allow dependency targets only from candidate or accepted specifications.
+- `REPO-VAL-007`: The validation entry point shall enforce allowed dependency directions, product completeness rules, acyclic dependencies, and allow dependency targets only from candidate or accepted specifications.
 - `REPO-VAL-008`: The validation entry point shall enforce generated-document freshness.
 - `REPO-VAL-009`: The validation entry point shall enforce clean failure behavior.
 - `REPO-VAL-010`: The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior.
