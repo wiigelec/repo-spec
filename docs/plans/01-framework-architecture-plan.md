@@ -93,6 +93,23 @@ This matrix records the integrated Stage 2 authority reading after completion of
 | Derived artifact source | Individual accepted product specification | Manifest does not repeat derived artifacts; derived artifacts are owned by the product file |
 | Validation | `repo.validation` plus implementation | Enforces repository/product separation and Stage 2 structural invariants |
 
+## Stage 3 integration ownership matrix
+
+This matrix records the integrated Stage 3 authority reading after reconciling the Level system, dependency rules, acyclicity, and structural completeness.
+
+| Concept | Current authority owner | Notes |
+| --- | --- | --- |
+| Level purpose | `repo.product-levels` | Defines Level 0 kernel, Level 1 primitives, Level 2 components, and Level 3 orchestrations |
+| Level metadata | `repo.product-manifest` and `repo.product-spec-base` | Manifest and file must agree on Level value; the base contract owns the common `level` field |
+| Level/path correspondence | `repo.product-manifest` plus `repo.product-spec-base` | Each manifest entry must match exactly one product file under its reserved Level root |
+| Level schema ownership | `schemas/product/product-level-0.schema.json` through `schemas/product/product-level-3.schema.json` | Level-specific schemas extend the base envelope rather than redefining common fields |
+| Dependency lifecycle | `repo.product-spec-base` and `repo.validation` | Dependency targets must be candidate or accepted product specifications |
+| Dependency direction | `repo.product-levels` plus `repo.validation` | Lower Levels must not depend on higher Levels |
+| Same-Level dependencies | `repo.product-levels` plus `repo.validation` | Permitted only when explicit and acyclic |
+| Graph acyclicity | `repo.validation` plus implementation | The full product dependency graph must remain acyclic |
+| Structural completeness | `repo.product-levels` plus `repo.validation` | Machine-checkable structure only; semantic completeness remains review-owned |
+| Validation ownership | `repo.validation` plus implementation | Enforces product/repository separation, schema boundaries, dependency rules, acyclicity, and completeness boundaries |
+
 ## Intended outcome
 
 Completion of this plan should leave the repository with an accepted roadmap that:
