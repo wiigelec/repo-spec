@@ -19,11 +19,11 @@
     },
     {
       "id": "REPO-PM-004",
-      "text": "The product manifest shall record an `active` state that expresses whether the product-specification system has been activated."
+      "text": "The presence of `specs/product/manifest.json` shall express activation of the product-specification system."
     },
     {
       "id": "REPO-PM-005",
-      "text": "An activated product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the activated manifest shall contain at least one registry entry."
+      "text": "A product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the manifest shall contain at least one registry entry."
     },
     {
       "id": "REPO-PM-006",

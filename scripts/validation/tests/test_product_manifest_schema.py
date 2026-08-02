@@ -35,7 +35,7 @@ def run_product_manifest_schema_tests(repo_root: Path) -> None:
     assert_valid(schema, "valid-candidate.json")
     assert_valid(schema, "valid-accepted.json")
 
-    assert_invalid(schema, "invalid-missing-required.json", "missing required property active")
+    assert_invalid(schema, "invalid-missing-required.json", "additionalProperties disallowed: active")
     assert_invalid(schema, "invalid-lifecycle.json", "enum mismatch")
     assert_invalid(schema, "invalid-level.json", "oneOf mismatch")
     assert_invalid(schema, "invalid-registry-entry.json", "oneOf mismatch")

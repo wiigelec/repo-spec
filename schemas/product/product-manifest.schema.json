@@ -10,7 +10,6 @@
     "purpose",
     "status",
     "schema_version",
-    "active",
     "product_specifications"
   ],
   "properties": {
@@ -33,9 +32,6 @@
     "schema_version": {
       "type": "string",
       "const": "1"
-    },
-    "active": {
-      "type": "boolean"
     },
     "product_specifications": {
       "type": "array",

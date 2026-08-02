@@ -23,8 +23,8 @@ Defines the normative contract for the product-specification manifest.
 - `REPO-PM-001`: The repository shall define `specs/product/manifest.json` as the canonical product-manifest path and shall keep it distinct from `specs/repo/manifest.json`.
 - `REPO-PM-002`: The product manifest shall be authoritative for the governed product-specification registry and its declared product-derived projections under `specs/product/`, and shall not claim repository-workflow authority.
 - `REPO-PM-003`: The product manifest shall identify itself with the stable manifest identity `product.manifest` and shall use the same repository-spec lifecycle statuses as repository specifications.
-- `REPO-PM-004`: The product manifest shall record an `active` state that expresses whether the product-specification system has been activated.
-- `REPO-PM-005`: An activated product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the activated manifest shall contain at least one registry entry.
+- `REPO-PM-004`: The presence of `specs/product/manifest.json` shall express activation of the product-specification system.
+- `REPO-PM-005`: A product manifest may be empty only before the first governed product specification exists; once any governed product specification exists, the manifest shall contain at least one registry entry.
 - `REPO-PM-006`: The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level.
 - `REPO-PM-007`: A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`.
 - `REPO-PM-008`: The product manifest shall register the complete governed product-specification set, not only accepted specifications; candidate specifications shall appear when governed, and historical specifications shall remain registered while retained.
