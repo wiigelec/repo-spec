@@ -52,6 +52,10 @@
     {
       "id": "REPO-PL-012",
       "text": "Structural completeness shall be machine-checkable from the declared Level, path correspondence, dependency targets, and lifecycle agreement, while semantic completeness remains review-owned."
+    },
+    {
+      "id": "REPO-PL-013",
+      "text": "Product projection declarations shall be declaration-driven rather than mandatory, and any declared product projection shall remain within the repository-relative `derived/specs/product/` root and subordinate to the owning product specification."
     }
   ],
   "dependencies": [

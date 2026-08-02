@@ -117,7 +117,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `derived projection`
 - Authority category: `generated`
 - Authority source: declared source specification or manifest
-- Source of truth rule: Must be reproducible from declared sources and must never override the source authority.
+- Source of truth rule: Must be reproducible from declared sources, including repository and product specifications that own the declaration, and must never override the source authority.
 - Mutability: regenerable only
 - Generation mode: `deterministic`
 - Validation ownership: `validation`
@@ -128,6 +128,9 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
   - `repo.manifest`
   - `repo.governing-issue`
   - `repo.review-proposal`
+  - `repo.product-manifest`
+  - `repo.product-spec-base`
+  - `repo.product-levels`
 
 ### Product artifact
 
