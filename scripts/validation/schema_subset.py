@@ -219,3 +219,11 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.platform-profiles"], "schemas/repo-platform-profiles.schema.json")
     ensure_schema_keywords(schemas["repo.spec"], "schemas/repo-spec.schema.json")
     return schemas
+
+
+def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
+    schemas = {
+        "product.manifest": load_json(repo_root / "schemas/product/product-manifest.schema.json"),
+    }
+    ensure_schema_keywords(schemas["product.manifest"], "schemas/product/product-manifest.schema.json")
+    return schemas

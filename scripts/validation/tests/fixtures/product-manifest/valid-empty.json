@@ -1,0 +1,9 @@
+{
+  "spec_id": "product.manifest",
+  "title": "Product Manifest",
+  "purpose": "Registry of governed product specifications.",
+  "status": "candidate",
+  "schema_version": "1",
+  "active": false,
+  "product_specifications": []
+}
