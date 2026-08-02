@@ -34,11 +34,14 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-012`: The validation entry point shall enforce that replacement-lineage relations resolve to manifest-listed specifications and do not self-reference.
 - `REPO-VAL-013`: The validation entry point shall enforce separation between repository-specification and product-specification roots, and shall reject undeclared JSON content under `specs/product/` until the product-manifest system is introduced.
 - `REPO-VAL-014`: The validation entry point shall reject repository specifications that are placed under `specs/product/` and product specifications that are placed under `specs/repo/` where those placements are detectable from repository-local JSON files.
+- `REPO-VAL-015`: The validation entry point shall enforce repository-local platform-profile classification consistency, including the accepted GitHub profile boundary, installed adapter ownership, and declared remote-state kinds.
+- `REPO-VAL-016`: The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification fields.
 
 ## Dependencies
 
 - `repo.manifest`
 - `repo.repository-structure`
+- `repo.platform-profiles`
 - `repo.development-workflow`
 
 ## References
@@ -48,6 +51,7 @@ Defines repository validation during repo-spec formation.
 - specification: `repo.repository-structure`
 - artifact: `scripts/validate`
 - artifact: `scripts/generate-docs`
+- artifact: `scripts/github_field_policy.py`
 
 ## Derived artifacts
 

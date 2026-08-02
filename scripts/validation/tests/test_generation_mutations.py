@@ -168,4 +168,29 @@ def run_generation_mutations(repo_root: Path) -> None:
         lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
     )
 
+    expect_render_change(
+        "platform profiles projected boundary",
+        lambda spec: render_spec_projection(specs["repo.platform-profiles"]["title"], paths["repo.platform-profiles"], spec),
+        specs["repo.platform-profiles"],
+        lambda spec: spec["profiles"][0].__setitem__("authority_boundary", "adapter-authoritative") or spec,
+    )
+    expect_render_change(
+        "platform profiles projected inventory",
+        lambda spec: render_spec_projection(specs["repo.platform-profiles"]["title"], paths["repo.platform-profiles"], spec),
+        specs["repo.platform-profiles"],
+        lambda spec: spec["profiles"][0]["artifact_inventory"][0].__setitem__("path", ".github/ISSUE_TEMPLATE/changed.yml"),
+    )
+    expect_render_change(
+        "platform profiles projected remote state kinds",
+        lambda spec: render_spec_projection(specs["repo.platform-profiles"]["title"], paths["repo.platform-profiles"], spec),
+        specs["repo.platform-profiles"],
+        lambda spec: spec["profiles"][0]["remote_state_kinds"].__setitem__(0, "repository settings") or spec,
+    )
+    expect_render_change(
+        "platform profiles projected mutation record fields",
+        lambda spec: render_spec_projection(specs["repo.platform-profiles"]["title"], paths["repo.platform-profiles"], spec),
+        specs["repo.platform-profiles"],
+        lambda spec: spec["profiles"][0]["mutation_record_fields"].remove("accepted repository revision") or spec,
+    )
+
     print("ok: generation mutation tests")

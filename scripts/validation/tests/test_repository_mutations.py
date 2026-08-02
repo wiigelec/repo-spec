@@ -21,6 +21,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         "manifest completeness",
         "unique specification IDs",
         "unique item properties",
+        "platform profile boundary",
         "unique derived artifact paths",
         "product specification root",
         "dependency target lifecycle",
@@ -202,6 +203,50 @@ def run_repository_mutations(repo_root: Path) -> None:
             lambda spec: spec["derived_artifacts"].append(copy.deepcopy(spec["derived_artifacts"][0])) or spec,
         )
         expect_failure("derived artifact uniqueness", lambda: validate_repo(temp_repo), "duplicate item properties path")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: (
+                spec["profiles"][0]["artifact_inventory"][0].__setitem__("classification", "bootstrap-infrastructure"),
+                spec["profiles"][0]["artifact_inventory"][0].__setitem__("authority_category", "bootstrap"),
+                spec,
+            )[-1],
+        )
+        expect_failure("installed adapter authority", lambda: validate_repo(temp_repo), "artifact classification mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: spec["profiles"][0]["artifact_inventory"][0].pop("profile_id") and spec,
+        )
+        expect_failure("profile artifact identity", lambda: validate_repo(temp_repo), "missing required property profile_id")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: spec["profiles"][0]["remote_state_kinds"].__setitem__(0, "derived/specs/repo/rulesets.json") or spec,
+        )
+        expect_failure("remote state kinds", lambda: validate_repo(temp_repo), "enum mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: spec["profiles"][0].__setitem__("authority_boundary", "adapter-authoritative") or spec,
+        )
+        expect_failure("profile authority boundary", lambda: validate_repo(temp_repo), "enum mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: spec["profiles"][0]["mutation_record_fields"].remove("accepted repository revision") or spec,
+        )
+        expect_failure("hosting mutation record fields", lambda: validate_repo(temp_repo), "hosting mutation record fields mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
