@@ -341,6 +341,13 @@ def run_schema_mutations(repo_root: Path) -> None:
         lambda spec: spec["derived_artifacts"][0].__setitem__("path", "derived/specs/repo/changed.md"),
     )
 
+    expect_render_change(
+        "product manifest projected requirement",
+        lambda spec: render_spec_projection(specs["repo.product-manifest"]["title"], paths["repo.product-manifest"], spec),
+        specs["repo.product-manifest"],
+        lambda spec: spec["normative_requirements"][0].__setitem__("text", "Changed product-manifest requirement"),
+    )
+
     mutated_schema = copy.deepcopy(schemas["repo.spec"])
     mutated_schema["properties"]["title"]["maxLength"] = 1
     expect_failure(
