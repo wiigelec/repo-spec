@@ -2,7 +2,7 @@
 
 ## Status
 
-Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is the next separately governed phase.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is the next separately governed phase.
 
 Accepted Stage 2 base:
 
@@ -14,6 +14,12 @@ Accepted Stage 3 base:
 
 ```text
 main at 1234c646b3d85dd17e6121a955586ead663086bf
+```
+
+Accepted Stage 4 completion base and first Stage 5 base:
+
+```text
+main at 3f625406902a2170d345d510e111120d9f7c3e30
 ```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
@@ -382,11 +388,13 @@ A product manifest should register:
 - version or revision metadata where applicable;
 - dependencies;
 - references;
-- derived artifacts;
+- derived artifacts as declared and owned by the source product specification;
 - implementation correspondence;
 - test correspondence;
 - conformance participation;
 - supersession or retirement relationships.
+
+The product manifest records the governed registry and projection inventory; the source product specification owns each `derived_artifacts` declaration.
 
 ### Product manifest completeness
 
@@ -804,9 +812,13 @@ Candidate outputs:
 
 Acceptance gate: stale or orphaned projections fail validation.
 
+Ownership model: product specifications declare their own `derived_artifacts`; the product manifest does not independently author those declarations.
+
 ### Stage 5 — Implementation, test, and conformance correspondence
 
 Goal: connect accepted product specifications to maintained artifacts.
+
+Stage 5 begins from `main at 3f625406902a2170d345d510e111120d9f7c3e30`.
 
 Candidate outputs:
 
