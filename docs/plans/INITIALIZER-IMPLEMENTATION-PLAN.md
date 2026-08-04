@@ -13,6 +13,7 @@ This document is the controlling entry point for a candidate placeholder composi
   "artifact_id": "initializer-implementation-plan",
   "artifact_type": "implementation-plan",
   "document_slug": "initializer-implementation-plan",
+  "filename_stem": "initializer-implementation-plan",
   "root_path": "docs/plans/",
   "title": "Repo-Spec Initializer Implementation Plan",
   "product_id": "repo-spec initializer",

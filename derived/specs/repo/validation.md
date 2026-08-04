@@ -44,6 +44,7 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-022`: The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once.
 - `REPO-VAL-023`: The validation entry point shall build a cross-document registry for governed development documents and shall enforce basis-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them.
 - `REPO-VAL-024`: The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations.
+- `REPO-VAL-025`: The validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical.
 
 ## Dependencies
 

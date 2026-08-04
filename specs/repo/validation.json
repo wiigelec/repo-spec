@@ -100,6 +100,10 @@
     {
       "id": "REPO-VAL-024",
       "text": "The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations."
+    },
+    {
+      "id": "REPO-VAL-025",
+      "text": "The validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical."
     }
   ],
   "dependencies": [

@@ -13,6 +13,7 @@ This document is the controlling entry point for the initializer overview compos
   "artifact_id": "initializer-overview",
   "artifact_type": "product-overview",
   "document_slug": "initializer-overview",
+  "filename_stem": "initializer-overview",
   "root_path": "docs/overview/",
   "title": "Repo-Spec Initializer Overview",
   "product_id": "repo-spec initializer",

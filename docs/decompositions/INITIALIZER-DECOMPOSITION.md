@@ -13,6 +13,7 @@ This document is the controlling entry point for the initializer decomposition c
   "artifact_id": "initializer-decomposition",
   "artifact_type": "product-decomposition",
   "document_slug": "initializer-decomposition",
+  "filename_stem": "initializer-decomposition",
   "root_path": "docs/decompositions/",
   "title": "Repo-Spec Initializer Decomposition",
   "product_id": "repo-spec initializer",

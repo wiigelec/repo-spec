@@ -1043,9 +1043,8 @@ def check_development_documents_phase(context: ValidationContext) -> None:
 
             expect(metadata["artifact_type"] == info["artifact_type"], f"development document metadata failed: artifact type mismatch in {rel_path}")
             expect(metadata["root_path"] == root_rel, f"development document metadata failed: root path mismatch in {rel_path}")
-            expect(metadata["artifact_id"] == metadata["document_slug"], f"development document metadata failed: slug mismatch in {rel_path}")
             expect(path.parent == root, f"development document path failed: top-level document must live directly under {root_rel}: {rel_path}")
-            expect(path.name == f"{metadata['artifact_id'].upper()}.md", f"development document path failed: filename mismatch in {rel_path}")
+            expect(path.name == f"{metadata['filename_stem'].upper()}.md", f"development document path failed: filename mismatch in {rel_path}")
 
             headings = markdown_headings(text)
             for heading in info["required_headings"]:
