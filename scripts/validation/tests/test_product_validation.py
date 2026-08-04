@@ -437,4 +437,117 @@ def run_product_validation_tests(repo_root: Path) -> None:
         )
         expect_failure("correspondence field redefined by level schema", lambda: validate_repo(temp_repo), "must be a string")
 
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["implementations"][0]["paths"].__setitem__(0, "src/missing.py") or spec,
+        )
+        expect_failure("missing implementation file", lambda: validate_repo(temp_repo), "missing path")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "/tests/test_primitive.py") or spec,
+        )
+        expect_failure("absolute test path", lambda: validate_repo(temp_repo), "pattern mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "../tests/test_primitive.py") or spec,
+        )
+        expect_failure("path traversal", lambda: validate_repo(temp_repo), "pattern mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        (temp_repo / "src/dir").mkdir(parents=True, exist_ok=True)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "src/dir") or spec,
+        )
+        expect_failure("directory instead of file", lambda: validate_repo(temp_repo), "must be a file")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["implementations"].append({"id": "impl.duplicate", "paths": ["src/primitive.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+        )
+        expect_failure("duplicate implementation path", lambda: validate_repo(temp_repo), "duplicate correspondence path")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["conformance"][0]["implementation_ids"].__setitem__(0, "impl.missing") or spec,
+        )
+        expect_failure("unresolved implementation id", lambda: validate_repo(temp_repo), "unresolved implementation")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["implementations"][0]["requirements"].__setitem__(0, "KERNEL-001") or spec,
+        )
+        expect_failure("unknown requirement id", lambda: validate_repo(temp_repo), "unknown requirement")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        (temp_repo / "src/unused.py").parent.mkdir(parents=True, exist_ok=True)
+        (temp_repo / "src/unused.py").write_text("pass\n")
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["implementations"].append({"id": "impl.unused", "paths": ["src/unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+        )
+        expect_failure("unused implementation mapping", lambda: validate_repo(temp_repo), "unreachable implementation mappings")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        (temp_repo / "tests/test_unused.py").parent.mkdir(parents=True, exist_ok=True)
+        (temp_repo / "tests/test_unused.py").write_text("pass\n")
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["tests/test_unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+        )
+        expect_failure("unused test mapping", lambda: validate_repo(temp_repo), "unreachable test mappings")
+
     print("ok: product validation tests")
