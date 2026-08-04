@@ -1,5 +1,147 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Reference Repository Manifest Schema",
-  "type": "object"
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "authoritative_specs",
+    "normative_requirements"
+  ],
+  "properties": {
+    "spec_id": {
+      "type": "string",
+      "const": "repo.manifest"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "accepted", "superseded", "retired"]
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1"
+    },
+    "authoritative_specs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spec_id", "path"],
+        "properties": {
+          "spec_id": {
+            "type": "string",
+            "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^specs/repo/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.json$"
+          }
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "derived_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/derivedArtifact"
+      }
+    },
+    "normative_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    }
+  },
+  "$defs": {
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "reference": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "spec_id"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "specification"
+            },
+            "kind": {
+              "type": "string",
+              "enum": ["normative", "historical"]
+            },
+            "spec_id": {
+              "type": "string",
+              "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "path"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "artifact"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "derivedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "path"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["markdown", "yaml"]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renderer": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
 }

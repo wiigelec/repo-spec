@@ -8,7 +8,7 @@
   "normative_requirements": [
     {
       "id": "REF-PRIM-001",
-      "text": "The reference product primitives shall expose `primitive_identity()` and return `reference-kernel-primitives`."
+      "text": "The reference product primitives shall expose `normalize_identifier()` and return the kernel canonical text with underscores converted to hyphens."
     }
   ],
   "dependencies": [

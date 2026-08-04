@@ -8,7 +8,7 @@
   "normative_requirements": [
     {
       "id": "REF-KERNEL-001",
-      "text": "The reference product kernel shall expose `kernel_identity()` and return `reference-kernel`."
+      "text": "The reference product kernel shall expose `canonical_text()` and return deterministic single-spaced lowercase text derived from immutable input."
     }
   ],
   "dependencies": [],
@@ -32,10 +32,10 @@
   ],
   "correspondence": {
     "implementations": [
-      {
-        "id": "kernel-impl",
-        "paths": [
-          "src/product/kernel.py"
+        {
+          "id": "kernel-impl",
+          "paths": [
+            "src/product/kernel.py"
         ],
         "requirements": [
           "REF-KERNEL-001"

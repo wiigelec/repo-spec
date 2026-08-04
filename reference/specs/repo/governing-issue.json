@@ -4,6 +4,22 @@
   "purpose": "Defines the governing issue structure used by the reference skeleton.",
   "status": "accepted",
   "schema_version": "1",
+  "dependencies": [
+    {"spec_id": "repo.manifest"},
+    {"spec_id": "repo.repository-structure"},
+    {"spec_id": "repo.development-workflow"}
+  ],
+  "references": [
+    {"type": "specification", "spec_id": "repo.manifest"},
+    {"type": "specification", "spec_id": "repo.repository-structure"},
+    {"type": "specification", "spec_id": "repo.development-workflow"},
+    {"type": "artifact", "path": "AGENTS.md"},
+    {"type": "artifact", "path": "docs/overview/REFERENCE-OVERVIEW.md"},
+    {"type": "artifact", "path": "docs/plans/01-reference-repository-plan.md"}
+  ],
   "issue_fields": [],
-  "normative_requirements": []
+  "normative_requirements": [],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/governing-issue.md"}
+  ]
 }

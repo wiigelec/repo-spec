@@ -14,7 +14,16 @@
     {"spec_id": "repo.development-workflow", "path": "specs/repo/development-workflow.json"},
     {"spec_id": "repo.validation", "path": "specs/repo/validation.json"}
   ],
+  "references": [
+    {"type": "specification", "spec_id": "repo.repository-structure"},
+    {"type": "specification", "spec_id": "repo.platform-profiles"},
+    {"type": "specification", "spec_id": "repo.development-workflow"},
+    {"type": "specification", "spec_id": "repo.validation"}
+  ],
   "normative_requirements": [
     {"id": "REF-MAN-001", "text": "The reference skeleton shall identify the repository authority files used by the proof copy."}
+  ],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/manifest.md"}
   ]
 }

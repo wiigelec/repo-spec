@@ -4,5 +4,18 @@
   "purpose": "Defines the minimal governed workflow used by the reference skeleton.",
   "status": "accepted",
   "schema_version": "1",
-  "normative_requirements": []
+  "dependencies": [
+    {"spec_id": "repo.manifest"},
+    {"spec_id": "repo.repository-structure"}
+  ],
+  "references": [
+    {"type": "specification", "spec_id": "repo.manifest"},
+    {"type": "specification", "spec_id": "repo.repository-structure"},
+    {"type": "artifact", "path": "AGENTS.md"},
+    {"type": "artifact", "path": "docs/overview/REFERENCE-OVERVIEW.md"}
+  ],
+  "normative_requirements": [],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/development-workflow.md"}
+  ]
 }

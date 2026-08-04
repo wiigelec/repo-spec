@@ -1,7 +1,7 @@
 """Reference product primitives behavior."""
 
-from .kernel import kernel_identity
+from .kernel import canonical_text
 
 
-def primitive_identity() -> str:
-    return f"{kernel_identity()}-primitives"
+def normalize_identifier(value: str) -> str:
+    return canonical_text(value).replace("_", "-")

@@ -10,12 +10,12 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from product.primitives import primitive_identity
+from product.primitives import normalize_identifier
 
 
 class PrimitiveTests(unittest.TestCase):
-    def test_primitive_identity(self) -> None:
-        self.assertEqual(primitive_identity(), "reference-kernel-primitives")
+    def test_normalize_identifier(self) -> None:
+        self.assertEqual(normalize_identifier("  Reference_Kernel   Primitives  "), "reference-kernel primitives")
 
 
 if __name__ == "__main__":

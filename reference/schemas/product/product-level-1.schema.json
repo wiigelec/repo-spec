@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Reference Product Level 1 Schema",
   "type": "object",
-  "required": [],
+  "required": ["level"],
   "properties": {
     "level": {
+      "type": "integer",
       "const": 1
     }
   }

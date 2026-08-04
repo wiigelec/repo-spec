@@ -4,7 +4,24 @@
   "purpose": "Defines the local validation boundary for the reference skeleton.",
   "status": "accepted",
   "schema_version": "1",
+  "dependencies": [
+    {"spec_id": "repo.manifest"},
+    {"spec_id": "repo.repository-structure"},
+    {"spec_id": "repo.platform-profiles"},
+    {"spec_id": "repo.development-workflow"}
+  ],
+  "references": [
+    {"type": "specification", "spec_id": "repo.manifest"},
+    {"type": "specification", "spec_id": "repo.repository-structure"},
+    {"type": "specification", "spec_id": "repo.platform-profiles"},
+    {"type": "specification", "spec_id": "repo.development-workflow"},
+    {"type": "artifact", "path": "scripts/validate"},
+    {"type": "artifact", "path": "scripts/generate-docs"}
+  ],
   "normative_requirements": [
     {"id": "REF-VAL-001", "text": "The reference skeleton shall provide a repository-local validation script."}
+  ],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/validation.md"}
   ]
 }

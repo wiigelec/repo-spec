@@ -1,5 +1,5 @@
 """Reference product kernel behavior."""
 
 
-def kernel_identity() -> str:
-    return "reference-kernel"
+def canonical_text(value: str) -> str:
+    return " ".join(value.split()).lower()
