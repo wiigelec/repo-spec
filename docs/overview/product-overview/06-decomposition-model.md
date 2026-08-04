@@ -147,6 +147,7 @@ Human review remains responsible for confirming that the accepted overview direc
 ## Terminology
 
 - **Decomposition**: the process of reducing a large problem into smaller authoritative units.
+- **Conversation**: a discovery and clarification medium that may produce candidate understanding, expose intent, identify uncertainty, test interpretations, and discover constraints; decisions required for later work must be recorded in the repository artifact that owns them.
 - **Bounded task**: a task with explicit authority, scope, dependencies, outputs, and success criteria.
 - **Authority**: the accepted source that controls a decision.
 - **Reasoning envelope**: the set of conditions under which an AI assistant can complete a task without inventing major missing context.
