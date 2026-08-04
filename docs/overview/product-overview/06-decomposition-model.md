@@ -81,6 +81,21 @@ human intent
 
 Each step should reduce uncertainty or strengthen authority.
 
+Decomposition is shown beside planning for readability; in practice it recurs at every later stage until implementation work is sufficiently bounded.
+
+```text
+bounded task encounters missing authority
+        |
+        v
+identify owning layer
+        |
+        v
+revise and accept higher-level artifact
+        |
+        v
+resume decomposition or implementation
+```
+
 ## Bounded tasks
 
 A bounded task has explicit:
@@ -101,6 +116,8 @@ If a task cannot answer those questions, it is not sufficiently bounded.
 ## Stopping criteria
 
 Decomposition should stop when additional subdivision no longer materially improves implementation reliability.
+
+Decomposition should not continue merely to make tasks smaller; excessive subdivision can fragment context and create coordination overhead without improving reliability.
 
 A candidate leaf task should have explicit purpose, authority, inputs, outputs, dependencies, success criteria, machine-verifiable checks, human-review boundaries, and no need to invent missing product semantics.
 
@@ -127,9 +144,9 @@ human intent
   -> accepted revision
 ```
 
-Machine-verifiable links include the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
+Machine verification may establish the presence, structure, and referential validity of the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
 
-Human review remains responsible for confirming that the accepted overview direction and accepted revision preserve the intended meaning.
+Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between accepted overview direction and accepted revision.
 
 ## Architectural invariants
 
@@ -148,7 +165,7 @@ Human review remains responsible for confirming that the accepted overview direc
 
 ## Terminology
 
-- **Decomposition**: the process of reducing a large problem into smaller authoritative units.
+- **Decomposition**: the process of reducing a large problem into smaller, more explicit units with defined roles, boundaries, dependencies, and authority.
 - **Conversation**: a discovery and clarification medium that may produce candidate understanding, expose intent, identify uncertainty, test interpretations, and discover constraints; decisions required for later work must be recorded in the repository artifact that owns them.
 - **Bounded task**: a task with explicit authority, scope, dependencies, outputs, and success criteria.
 - **Authority**: the accepted source that controls a decision.
