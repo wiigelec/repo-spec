@@ -112,6 +112,23 @@ A task is inside that envelope when its required context is finite and identifia
 
 Context-window size alone does not determine boundedness.
 
+## Traceability
+
+```text
+human intent
+  -> accepted overview direction
+  -> accepted specification requirement
+  -> governing issue scope
+  -> implementation mapping
+  -> test mapping
+  -> conformance record
+  -> accepted revision
+```
+
+Machine-verifiable links include the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
+
+Human review remains responsible for confirming that the accepted overview direction and accepted revision preserve the intended meaning.
+
 ## Architectural invariants
 
 - Complex problems are decomposed before implementation.
