@@ -1,6 +1,6 @@
 # Product Overview: Governance and Evolution
 
-> Part 5 of 5 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./04-human-ai-continuity.md)
+> Part 5 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./04-human-ai-continuity.md) · [Next](./06-decomposition-model.md)
 
 This part defines validation and authority boundaries, generated artifacts, portability, derived-product separation, and development continuity.
 
@@ -62,6 +62,8 @@ In particular:
 - acceptance is not merge;
 - merge is not release;
 - completion of one issue does not authorize unrelated successor work.
+
+Correspondence and traceability connect decomposition, implementation, and tests so that accepted work can be followed back to its owning requirement.
 
 ## Generated and derived artifacts
 
@@ -129,3 +131,5 @@ The framework must:
 - avoid combining product redefinition, renaming, authority replacement, implementation removal, and final cutover into one change.
 
 This overview establishes direction only. Detailed sequencing belongs in the current governing issue for active bounded work. Historical plans provide context only and do not authorize new work.
+
+The decomposition invariants live with the canonical decomposition model, while this part preserves the governance boundaries that keep those invariants enforceable.

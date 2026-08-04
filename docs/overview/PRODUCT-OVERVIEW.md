@@ -4,7 +4,7 @@
 
 Product-direction overview, divided into small, task-oriented documents for selective chatbot consumption.
 
-The complete product overview consists of this index and the five linked parts below. Together they record the intended outcome and development model for this repository. They are directional and non-normative.
+The complete product overview consists of this index and the six linked parts below. Together they record the intended outcome, development model, and decomposition model for this repository. They are directional and non-normative.
 
 The overview does not replace accepted normative specifications, authorize repository mutations, or define detailed implementation requirements. Normative behavior remains governed by accepted specifications until those specifications are explicitly revised, superseded, or retired through bounded governed work.
 
@@ -17,12 +17,14 @@ The overview does not replace accepted normative specifications, authorize repos
 | [3. Git and change workflow](./product-overview/03-git-and-change-workflow.md) | Git concepts, hosting-platform boundaries, or the bounded change process |
 | [4. Human and AI continuity](./product-overview/04-human-ai-continuity.md) | Human/AI responsibilities, session recovery, or repository-first continuity |
 | [5. Governance and evolution](./product-overview/05-governance-and-evolution.md) | Validation, authority, generated artifacts, portability, or migration boundaries |
+| [6. Decomposition model](./product-overview/06-decomposition-model.md) | Canonical decomposition, bounded tasks, stopping criteria, reasoning boundaries, or terminology |
 
 ## Minimal reading paths
 
 - To understand what the product is: read Part 1.
 - To design or revise product specifications: read Parts 1, 2, and 5.
 - To implement a bounded repository change: read Parts 3 and 5, plus the governing specification and issue.
+- To understand the canonical decomposition model: read Part 6.
 - To resume work in a new AI session: read Part 4, then load only the parts relevant to the bounded task.
 - To review whether a change has the correct authority: read Parts 2 and 5.
 
