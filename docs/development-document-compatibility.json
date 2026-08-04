@@ -9,12 +9,12 @@
     {
       "path": "docs/plans/01-framework-architecture-plan.md",
       "kind": "compatibility",
-      "reason": "Legacy framework architecture plan predates the machine-readable metadata envelope and remains governed through compatibility handling until migrated."
+      "reason": "Grandfathered legacy planning record predates the machine-readable metadata envelope and is retained as compatibility-managed predecessor evidence rather than as a governed implementation plan."
     },
     {
       "path": "docs/plans/02-reference-repository-plan.md",
       "kind": "compatibility",
-      "reason": "Legacy reference repository plan predates the machine-readable metadata envelope and remains governed through compatibility handling until migrated."
+      "reason": "Grandfathered legacy planning record predates the machine-readable metadata envelope and is retained as compatibility-managed predecessor evidence rather than as a governed implementation plan."
     }
   ]
 }
