@@ -159,7 +159,7 @@ The Stage 7 acceptance gate is met and the exact Stage 8 base is durably recorde
 
 - run the reference commands from the copied repository root;
 - use a minimal environment for the isolated-copy commands;
-- check for symlink escape, parent-checkout text references, and deterministic tree inventory or digest;
+- check for missing product manifest, missing initialization document, invalid JSON, invalid product-root placement, symlink escape, parent-checkout text references, deterministic tree inventory or digest, and product-test failure;
 - keep the portability evidence aligned with the architecture plan wording.
 
 ### Completion gate
