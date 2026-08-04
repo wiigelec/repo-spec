@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/repo/product-overview.schema.json",
+  "title": "Product Overview Document Schema",
+  "allOf": [
+    {"$ref": "./development-document-base.schema.json"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "root_path"],
+      "properties": {
+        "artifact_type": {"type": "string", "const": "product-overview"},
+        "root_path": {"type": "string", "const": "docs/overview/"}
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

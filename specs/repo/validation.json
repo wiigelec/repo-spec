@@ -76,6 +76,14 @@
     {
       "id": "REPO-VAL-018",
       "text": "The validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations."
+    },
+    {
+      "id": "REPO-VAL-019",
+      "text": "The validation entry point shall enforce the canonical development-document roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering for governed overview, decomposition, and planning artifacts."
+    },
+    {
+      "id": "REPO-VAL-020",
+      "text": "The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts."
     }
   ],
   "dependencies": [

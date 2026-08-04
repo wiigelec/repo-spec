@@ -24,9 +24,10 @@ Defines the repository layout and top-level separation of concerns.
 - `REPO-STR-002`: The repository-specification root shall be `specs/repo/`, the product-specification root shall be `specs/product/`, and the two roots shall remain distinct authoritative domains.
 - `REPO-STR-003`: The repository shall reserve `specs/product/level-0/`, `specs/product/level-1/`, `specs/product/level-2/`, and `specs/product/level-3/` as the conceptual product-specification Level roots, along with `schemas/product/` and `derived/specs/product/`.
 - `REPO-STR-004`: An initialized repository may omit product-specification files until product planning activates the product-specification system, but repository specifications shall not be placed under `specs/product/` and product specifications shall not be placed under `specs/repo/`.
-- `REPO-STR-005`: The repository manifest shall govern discovery of repository specifications only, and the future product manifest shall govern discovery of product specifications and product-derived artifacts without becoming repository-workflow authority.
-- `REPO-STR-006`: The repository shall reserve `profiles/github/` as future reusable GitHub profile source material and `.github/` as the current installed GitHub adapter location while keeping both subordinate to accepted repository specifications.
+- `REPO-STR-005`: The repository manifest shall govern discovery of repository specifications only, and the repository shall reserve `docs/overview/`, `docs/decompositions/`, and `docs/plans/` as the canonical roots for governed directional and planning documents without allowing those documents to become repository-workflow authority.
+- `REPO-STR-006`: The repository shall reserve `profiles/github/` as future reusable GitHub profile source material, `.github/` as the current installed GitHub adapter location, and the canonical development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications.
 - `REPO-STR-007`: Remote hosting-platform deployment state shall remain outside repository content and shall be represented only through explicit evidence or declared deployment-state records rather than ordinary generated artifacts.
+- `REPO-STR-008`: The repository shall require deterministic root-index or README links to every governed development-document root so repository-local discovery does not depend on filename guessing or conversation history.
 
 ## Dependencies
 

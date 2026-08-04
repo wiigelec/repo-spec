@@ -38,6 +38,8 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-016`: The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification fields.
 - `REPO-VAL-017`: The validation entry point shall enforce product projection declaration shape, repository-relative `derived/specs/product/` path boundaries, and declaration ownership by the source product specification.
 - `REPO-VAL-018`: The validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations.
+- `REPO-VAL-019`: The validation entry point shall enforce the canonical development-document roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering for governed overview, decomposition, and planning artifacts.
+- `REPO-VAL-020`: The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts.
 
 ## Dependencies
 

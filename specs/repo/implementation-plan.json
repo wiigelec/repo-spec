@@ -1,0 +1,68 @@
+{
+  "spec_id": "repo.implementation-plan",
+  "title": "Implementation Plan Contract",
+  "purpose": "Defines the planning-authority contract for implementation plan documents.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-IPL-001",
+      "text": "An implementation plan shall be stored under `docs/plans/` and shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks."
+    },
+    {
+      "id": "REPO-IPL-002",
+      "text": "An implementation plan shall record the controlling overview and decomposition, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work."
+    },
+    {
+      "id": "REPO-IPL-003",
+      "text": "An implementation plan has planning authority but is non-normative with respect to product semantics, and it shall not redefine accepted overview direction or accepted specifications."
+    },
+    {
+      "id": "REPO-IPL-004",
+      "text": "The top-level controlling document shall act as the index, status declaration, and navigation entry point for the plan composite document."
+    },
+    {
+      "id": "REPO-IPL-005",
+      "text": "An implementation plan shall not claim acceptance, merge, or release merely because the planned work is complete."
+    },
+    {
+      "id": "REPO-IPL-006",
+      "text": "An implementation plan shall preserve unresolved planning decisions until a later governed decision closes them."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.development-document-base"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.development-document-base"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/repo/implementation-plan.md"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/repo/product-decomposition.schema.json",
+  "title": "Product Decomposition Document Schema",
+  "allOf": [
+    {"$ref": "./development-document-base.schema.json"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "root_path"],
+      "properties": {
+        "artifact_type": {"type": "string", "const": "product-decomposition"},
+        "root_path": {"type": "string", "const": "docs/decompositions/"}
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

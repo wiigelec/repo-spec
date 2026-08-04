@@ -46,13 +46,26 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Portability category: `framework-generic`
 - Manifest participation: `none`
 
+### Product decomposition
+
+- Identifier: `product-decomposition`
+- Role: `decomposition`
+- Authority category: `directional`
+- Authority source: durable product decomposition
+- Source of truth rule: Decomposes directional product intent into bounded areas, dependencies, and unresolved decisions without becoming normative product authority.
+- Mutability: mutable through governed updates
+- Generation mode: `manual`
+- Validation ownership: `review`
+- Portability category: `framework-generic`
+- Manifest participation: `none`
+
 ### Implementation plan
 
 - Identifier: `implementation-plan`
 - Role: `plan`
 - Authority category: `planning`
 - Authority source: accepted plan and sequencing decisions
-- Source of truth rule: Coordinates work order and construction stages but cannot redefine accepted specifications.
+- Source of truth rule: Coordinates work order, stages, and validation sequencing but cannot redefine accepted overview direction or accepted specifications.
 - Mutability: mutable through governed replanning
 - Generation mode: `manual`
 - Validation ownership: `review`
