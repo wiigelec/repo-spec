@@ -135,7 +135,7 @@ Context-window size alone does not determine boundedness.
 
 ```text
 human intent
-  -> accepted overview direction
+  -> recorded and accepted directional overview
   -> accepted specification requirement
   -> governing issue scope
   -> implementation mapping
@@ -146,7 +146,7 @@ human intent
 
 Machine verification may establish the presence, structure, and referential validity of the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
 
-Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between accepted overview direction and accepted revision.
+Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between recorded and accepted directional overview and accepted revision.
 
 The exact evidence artifacts may vary by product and requirement, but every maintained implementation should retain a declared traceable relationship to its owning accepted requirement.
 
