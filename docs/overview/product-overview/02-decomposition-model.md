@@ -30,7 +30,7 @@ The goal is to reduce uncertainty, ambiguity, context size, decision freedom, an
 
 Complexity should be reduced before implementation rather than delegated to the implementation task.
 
-The framework should progressively decompose a large human problem into smaller, more explicit representations whose authority increases or becomes more precisely defined as decisions move toward accepted specifications until the remaining work is sufficiently bounded for reliable implementation.
+The framework should progressively decompose a large human problem into smaller, more explicit representations whose roles, boundaries, and authority become more precisely defined as decisions move toward accepted specifications until the remaining work is sufficiently bounded for reliable implementation.
 
 Decomposition does not make every child artifact normative.
 
@@ -96,6 +96,8 @@ revise and accept higher-level artifact
 resume decomposition or implementation
 ```
 
+A maintenance request re-enters the same decomposition process at the highest layer that owns the requested change.
+
 ## Bounded tasks
 
 A bounded task has explicit:
@@ -135,7 +137,7 @@ Context-window size alone does not determine boundedness.
 
 ```text
 human intent
-  -> accepted overview direction
+  -> recorded and accepted directional overview
   -> accepted specification requirement
   -> governing issue scope
   -> implementation mapping
@@ -146,7 +148,7 @@ human intent
 
 Machine verification may establish the presence, structure, and referential validity of the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
 
-Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between accepted overview direction and accepted revision.
+Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between recorded and accepted directional overview and accepted revision.
 
 The exact evidence artifacts may vary by product and requirement, but every maintained implementation should retain a declared traceable relationship to its owning accepted requirement.
 
