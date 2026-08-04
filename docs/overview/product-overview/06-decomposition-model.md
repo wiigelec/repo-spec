@@ -16,6 +16,16 @@ repo-spec uses decomposition as its central engineering principle.
 
 The goal is to reduce uncertainty, ambiguity, context size, decision freedom, and implicit assumptions before implementation begins.
 
+## Failure modes addressed
+
+| Failure mode | Mitigation |
+| --- | --- |
+| Context drift | Keep decisions and boundaries in repository records rather than conversation memory. |
+| Semantic drift | Preserve traceability from intent to overview, specifications, implementation, and tests. |
+| Authority drift | Keep each decision in its owning layer and prevent lower layers from inventing higher-level behavior. |
+| Scope drift | Require explicit scope, exclusions, dependencies, and bounded task boundaries. |
+| Hallucination | Require accepted authority for missing decisions and escalate unresolved gaps instead of guessing. |
+
 ## Core thesis
 
 Complexity should be reduced before implementation rather than delegated to the implementation task.
