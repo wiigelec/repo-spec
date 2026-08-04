@@ -148,6 +148,8 @@ Machine verification may establish the presence, structure, and referential vali
 
 Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between accepted overview direction and accepted revision.
 
+The exact evidence artifacts may vary by product and requirement, but every maintained implementation should retain a declared traceable relationship to its owning accepted requirement.
+
 ## Architectural invariants
 
 - Complex problems are decomposed before implementation.
