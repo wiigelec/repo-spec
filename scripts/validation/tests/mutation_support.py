@@ -60,6 +60,15 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
                 if path.is_file()
             )
 
+    for root_name in ("profiles", ".github"):
+        root = repo_root / root_name
+        if root.exists():
+            required_paths.extend(
+                path.relative_to(repo_root).as_posix()
+                for path in root.rglob("*")
+                if path.is_file()
+            )
+
     product_manifest_path = repo_root / "specs/product/manifest.json"
     if product_manifest_path.exists():
         product_manifest = json.loads(product_manifest_path.read_text())

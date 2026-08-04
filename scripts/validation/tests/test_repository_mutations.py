@@ -22,6 +22,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         "unique specification IDs",
         "unique item properties",
         "platform profile boundary",
+        "GitHub profile freshness",
         "unique derived artifact paths",
         "product specification root",
         "product correspondence inventory",

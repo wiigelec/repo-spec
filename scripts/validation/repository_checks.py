@@ -6,6 +6,7 @@ from typing import Any
 
 from repo_model import load_json as load_repo_json, load_specs as load_repo_specs_impl, resolve_repo_path as resolve_repo_path_impl
 from repo_model import RepositoryError
+from github_profile import GitHubProfileError, check_profile_freshness
 
 from .errors import expect, fail
 from .generated_outputs import check_generated_document_freshness
@@ -616,6 +617,13 @@ def check_platform_profile_boundary(context: ValidationContext) -> None:
     check_github_bootstrap_conformance(github_profile)
 
 
+def check_github_profile_freshness_phase(context: ValidationContext) -> None:
+    try:
+        check_profile_freshness(context.repo_root)
+    except GitHubProfileError as exc:
+        fail(f"github profile freshness failed: {exc}")
+
+
 def check_resolvable_references_phase(context: ValidationContext) -> None:
     check_resolvable_references(context.repo_root, context.repository.specs)
     if context.product is not None:
@@ -660,6 +668,7 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("unique specification IDs", check_unique_spec_ids_phase),
     ("unique item properties", check_unique_item_properties_phase),
     ("platform profile boundary", check_platform_profile_boundary),
+    ("GitHub profile freshness", check_github_profile_freshness_phase),
     ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
     ("product specification root", check_product_specification_root_phase),
     ("product correspondence inventory", check_product_correspondence_phase),

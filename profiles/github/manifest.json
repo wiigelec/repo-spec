@@ -1,0 +1,20 @@
+{
+  "profile_id": "github",
+  "source_root": "profiles/github/",
+  "installed_adapter_root": ".github/",
+  "adapter_generation_policy": "source-to-adapter",
+  "managed_adapters": [
+    {
+      "source": "profiles/github/ISSUE_TEMPLATE/governing-issue.yml",
+      "installed": ".github/ISSUE_TEMPLATE/governing-issue.yml"
+    },
+    {
+      "source": "profiles/github/PULL_REQUEST_TEMPLATE.md",
+      "installed": ".github/PULL_REQUEST_TEMPLATE.md"
+    }
+  ],
+  "unmanaged_files": [
+    ".github/workflows/github-field-policy.yml",
+    ".github/workflows/validation.yml"
+  ]
+}
