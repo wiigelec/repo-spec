@@ -14,7 +14,7 @@ This document records the architectural reference for decomposition in repo-spec
 
 repo-spec uses decomposition as its central engineering principle.
 
-The goal is to reduce uncertainty, ambiguity, context size, decision freedom, and implicit assumptions before implementation begins.
+The goal is to reduce uncertainty, ambiguity, context size, decision freedom, and implicit assumptions before implementation begins, and again whenever implementation exposes unresolved higher-level decisions that exceed the bounded task's authority.
 
 ## Failure modes addressed
 
