@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import io
 import json
+import shutil
 import sys
 import unittest
+import tempfile
 from pathlib import Path
 
 
@@ -30,6 +32,8 @@ REPO_REQUIRED_PATHS = [
     "profiles/github/README.md",
     "profiles/github/manifest.json",
     "scripts/validate",
+    "scripts/generate-docs",
+    "scripts/generate_docs.py",
     "specs/product/manifest.json",
     "specs/product/level-0/kernel.json",
     "specs/product/level-1/primitives.json",
@@ -297,6 +301,54 @@ def validate_repo_support(root: Path) -> None:
         load_json(root / relpath)
 
 
+def write_generated_docs(repo_root: Path) -> None:
+    import importlib.util
+
+    script_dir = Path(__file__).resolve().parent
+    spec = importlib.util.spec_from_file_location("reference_generate_docs", script_dir / "generate_docs.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    module.write_generated_docs(repo_root)
+
+
+def expect_subprocess_failure(description: str, repo_root: Path, fragment: str, extra_args: list[str] | None = None) -> None:
+    import subprocess
+
+    args = [str(repo_root / "scripts/validate")]
+    if extra_args:
+        args.extend(extra_args)
+    result = subprocess.run(args, capture_output=True, text=True)
+    expect(result.returncode != 0, f"mutation test failed: {description} did not fail")
+    expect(fragment in result.stderr, f"mutation test failed: {description} (expected {fragment!r}, got {result.stderr!r})")
+
+
+def run_mutation_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="reference-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        temp_repo = temp_root / "reference"
+        shutil.copytree(repo_root, temp_repo)
+
+        kernel_source = temp_repo / "src/product/kernel.py"
+        kernel_source.write_text(kernel_source.read_text().replace('return "reference-kernel"', 'return "broken-kernel"', 1))
+        expect_subprocess_failure("kernel source behavior", temp_repo, "kernel source behavior")
+
+        temp_repo = temp_root / "reference"
+        shutil.rmtree(temp_repo)
+        shutil.copytree(repo_root, temp_repo)
+        mutate = load_json(temp_repo / "specs/product/manifest.json")
+        mutate["product_specifications"][1]["level"] = 0
+        (temp_repo / "specs/product/manifest.json").write_text(json.dumps(mutate, indent=2) + "\n")
+        expect_subprocess_failure("product manifest level mismatch", temp_repo, "level")
+
+        temp_repo = temp_root / "reference"
+        shutil.rmtree(temp_repo)
+        shutil.copytree(repo_root, temp_repo)
+        projection = temp_repo / "derived/specs/product/level-1/primitives.md"
+        projection.write_text(projection.read_text().replace("reference-kernel-primitives", "tampered-reference", 1))
+        expect_subprocess_failure("projection freshness", temp_repo, "projection freshness mismatch")
+
+
 def run_tests(root: Path) -> None:
     sys.path.insert(0, str(root / "src"))
     suite = unittest.defaultTestLoader.discover(str(root / "tests"), pattern="test_*.py")
@@ -318,6 +370,12 @@ def validate_source(root: Path) -> None:
 
 def main(argv: list[str]) -> int:
     root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
+    mode = argv[2] if len(argv) > 2 else "--write"
+
+    if mode == "--mutation-tests":
+        run_mutation_tests(root)
+        print("ok: reference mutation tests")
+        return 0
 
     check_required_paths(root)
     validate_repo_support(root)
