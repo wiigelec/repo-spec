@@ -1,10 +1,10 @@
 # Planning Root
 
-This root holds governed implementation-planning documents.
+This root holds governed implementation-planning documents and legacy or candidate planning records.
 
 ## Canonical documents
 
-- [Initializer implementation plan](./INITIALIZER-IMPLEMENTATION-PLAN.md)
+- [Initializer implementation plan candidate placeholder](./INITIALIZER-IMPLEMENTATION-PLAN.md)
 
 ## Legacy planning records
 

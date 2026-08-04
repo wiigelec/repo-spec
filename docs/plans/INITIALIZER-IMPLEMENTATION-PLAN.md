@@ -1,10 +1,10 @@
-# Repo-Spec Initializer Implementation Plan
+# Repo-Spec Initializer Implementation Plan (Candidate Placeholder)
 
 ## Status
 
-Planning record for the initializer overview and decomposition.
+Candidate placeholder for the initializer implementation-plan contract.
 
-This document is the controlling entry point for the initializer implementation plan composite document. It has planning authority but is non-normative with respect to product semantics.
+This document is the controlling entry point for a candidate placeholder composite document. It is non-normative and does not authorize substantive initializer planning.
 
 ## Metadata
 
@@ -17,8 +17,8 @@ This document is the controlling entry point for the initializer implementation 
   "title": "Repo-Spec Initializer Implementation Plan",
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
-  "lifecycle_status": "accepted",
-  "governing_issue": "#175",
+  "lifecycle_status": "candidate",
+  "governing_issue": "#177",
   "basis": [
     {"type": "artifact", "path": "docs/overview/INITIALIZER-OVERVIEW.md"},
     {"type": "artifact", "path": "docs/decompositions/INITIALIZER-DECOMPOSITION.md"},
@@ -30,18 +30,18 @@ This document is the controlling entry point for the initializer implementation 
     {"order": 2, "path": "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "title": "Workstreams and dependencies"},
     {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"}
   ],
-  "successor_action": "Proceed to governed initializer specifications only after this plan is accepted.",
+  "successor_action": "No initializer planning authority is granted by this placeholder.",
   "schema_version": "1"
 }
 ```
 
 ## Planning basis
 
-The plan follows the accepted overview and decomposition while remaining subordinate to accepted repository specifications.
+The placeholder follows the accepted overview and decomposition while remaining subordinate to accepted repository specifications.
 
 ## Workstreams
 
-The plan is organized into scope and preconditions, workstreams and dependencies, and validation and completion.
+The placeholder is organized into scope and preconditions, workstreams and dependencies, and validation and completion.
 
 ## Chunk index
 
@@ -51,11 +51,11 @@ The plan is organized into scope and preconditions, workstreams and dependencies
 
 ## Relationships
 
-This plan coordinates work order and validation sequencing, but it does not redefine accepted overview direction or accepted specifications.
+This placeholder records an example plan shape, but it does not redefine accepted overview direction or accepted specifications.
 
 ## Next authorized action
 
-The next authorized action after this plan is accepted initializer specification work.
+The next authorized action is a separately governed initializer-planning issue, if one is created.
 
 ## Discoverability
 
