@@ -28,6 +28,8 @@ SUPPORTED_SCHEMA_KEYS = {
     "enum",
     "const",
     "minLength",
+    "minItems",
+    "minimum",
     "pattern",
 }
 
@@ -117,6 +119,12 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
     if "minLength" in schema:
         expect(isinstance(schema["minLength"], int) and schema["minLength"] >= 0, f"schema loading failed: {schema_location(source, path)} minLength must be a non-negative integer")
 
+    if "minItems" in schema:
+        expect(isinstance(schema["minItems"], int) and schema["minItems"] >= 0, f"schema loading failed: {schema_location(source, path)} minItems must be a non-negative integer")
+
+    if "minimum" in schema:
+        expect(isinstance(schema["minimum"], int), f"schema loading failed: {schema_location(source, path)} minimum must be an integer")
+
     if "pattern" in schema:
         expect(isinstance(schema["pattern"], str), f"schema loading failed: {schema_location(source, path)} pattern must be a string")
         re.compile(schema["pattern"])
@@ -173,6 +181,14 @@ def validate_instance_with_evaluation(
     if "minLength" in schema:
         expect(isinstance(instance, str), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be a string")
         expect(len(instance) >= schema["minLength"], f"repository JSON Schema conformance failed: {instance_location(source, path)} minLength violation")
+
+    if "minItems" in schema:
+        expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
+        expect(len(instance) >= schema["minItems"], f"repository JSON Schema conformance failed: {instance_location(source, path)} minItems violation")
+
+    if "minimum" in schema:
+        expect(isinstance(instance, int) and not isinstance(instance, bool), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an integer")
+        expect(instance >= schema["minimum"], f"repository JSON Schema conformance failed: {instance_location(source, path)} minimum violation")
 
     if "pattern" in schema:
         expect(isinstance(instance, str), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be a string")
@@ -241,16 +257,40 @@ def schema_matches(instance: Any, schema: dict[str, Any], source: str, root_sche
 
 
 def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
+    base_document_schema = load_json(repo_root / "schemas/repo/development-document-base.schema.json")
+
+    def materialize_document_schema(schema: dict[str, Any]) -> dict[str, Any]:
+        schema = copy.deepcopy(schema)
+        defs = schema.setdefault("$defs", {})
+        for name, subschema in base_document_schema.get("$defs", {}).items():
+            defs.setdefault(name, copy.deepcopy(subschema))
+        all_of = schema.get("allOf")
+        if isinstance(all_of, list):
+            for index, subschema in enumerate(all_of):
+                if isinstance(subschema, dict) and subschema.get("$ref") == "./development-document-base.schema.json":
+                    inline_base = copy.deepcopy(base_document_schema)
+                    inline_base.pop("$defs", None)
+                    all_of[index] = inline_base
+        return schema
+
     schemas = {
         "repo.manifest": load_json(repo_root / "schemas/repo-manifest.schema.json"),
         "repo.artifact-taxonomy": load_json(repo_root / "schemas/repo-artifact-taxonomy.schema.json"),
         "repo.platform-profiles": load_json(repo_root / "schemas/repo-platform-profiles.schema.json"),
         "repo.spec": load_json(repo_root / "schemas/repo-spec.schema.json"),
+        "repo.development-document-base": copy.deepcopy(base_document_schema),
+        "repo.product-overview": materialize_document_schema(load_json(repo_root / "schemas/repo/product-overview.schema.json")),
+        "repo.product-decomposition": materialize_document_schema(load_json(repo_root / "schemas/repo/product-decomposition.schema.json")),
+        "repo.implementation-plan": materialize_document_schema(load_json(repo_root / "schemas/repo/implementation-plan.schema.json")),
     }
     ensure_schema_keywords(schemas["repo.manifest"], "schemas/repo-manifest.schema.json")
     ensure_schema_keywords(schemas["repo.artifact-taxonomy"], "schemas/repo-artifact-taxonomy.schema.json")
     ensure_schema_keywords(schemas["repo.platform-profiles"], "schemas/repo-platform-profiles.schema.json")
     ensure_schema_keywords(schemas["repo.spec"], "schemas/repo-spec.schema.json")
+    ensure_schema_keywords(schemas["repo.development-document-base"], "schemas/repo/development-document-base.schema.json")
+    ensure_schema_keywords(schemas["repo.product-overview"], "schemas/repo/product-overview.schema.json")
+    ensure_schema_keywords(schemas["repo.product-decomposition"], "schemas/repo/product-decomposition.schema.json")
+    ensure_schema_keywords(schemas["repo.implementation-plan"], "schemas/repo/implementation-plan.schema.json")
     return schemas
 
 

@@ -43,6 +43,7 @@
         "oneOf": [
           { "$ref": "#/$defs/discoveryRecord" },
           { "$ref": "#/$defs/productOverview" },
+          { "$ref": "#/$defs/productDecomposition" },
           { "$ref": "#/$defs/implementationPlan" },
           { "$ref": "#/$defs/repositorySpecification" },
           { "$ref": "#/$defs/productSpecification" },
@@ -104,6 +105,7 @@
           "enum": [
             "discovery-record",
             "product-overview",
+            "product-decomposition",
             "implementation-plan",
             "repository-specification",
             "product-specification",
@@ -133,6 +135,7 @@
           "enum": [
             "discovery record",
             "overview",
+            "decomposition",
             "plan",
             "repository specification",
             "product specification",
@@ -309,6 +312,22 @@
           "properties": {
             "identifier": { "const": "product-overview" },
             "role": { "const": "overview" },
+            "authority_category": { "const": "directional" },
+            "generation_mode": { "const": "manual" },
+            "validation_ownership": { "const": "review" },
+            "portability_category": { "const": "framework-generic" },
+            "manifest_participation": { "const": "none" }
+          }
+        }
+      ]
+    },
+    "productDecomposition": {
+      "allOf": [
+        { "$ref": "#/$defs/artifactClass" },
+        {
+          "properties": {
+            "identifier": { "const": "product-decomposition" },
+            "role": { "const": "decomposition" },
             "authority_category": { "const": "directional" },
             "generation_mode": { "const": "manual" },
             "validation_ownership": { "const": "review" },

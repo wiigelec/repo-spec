@@ -42,6 +42,22 @@
       "path": "specs/repo/product-manifest.json"
     },
     {
+      "spec_id": "repo.development-document-base",
+      "path": "specs/repo/development-document-base.json"
+    },
+    {
+      "spec_id": "repo.product-overview",
+      "path": "specs/repo/product-overview.json"
+    },
+    {
+      "spec_id": "repo.product-decomposition",
+      "path": "specs/repo/product-decomposition.json"
+    },
+    {
+      "spec_id": "repo.implementation-plan",
+      "path": "specs/repo/implementation-plan.json"
+    },
+    {
       "spec_id": "repo.product-spec-base",
       "path": "specs/repo/product-spec-base.json"
     },

@@ -124,6 +124,12 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    def artifact_class(spec: dict, identifier: str) -> dict:
+        for item in spec["artifact_classes"]:
+            if item["identifier"] == identifier:
+                return item
+        raise AssertionError(f"missing artifact class: {identifier}")
+
     expect_failure(
         "artifact taxonomy root type",
         lambda: validate_instance([], schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
@@ -139,7 +145,7 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
-    taxonomy_spec["artifact_classes"][1]["authority_category"] = "normative"
+    artifact_class(taxonomy_spec, "implementation-plan")["authority_category"] = "normative"
     expect_failure(
         "plan authority category",
         lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
@@ -147,7 +153,7 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
-    taxonomy_spec["artifact_classes"][7].pop("source_artifacts")
+    artifact_class(taxonomy_spec, "derived-projection").pop("source_artifacts")
     expect_failure(
         "generated artifact without source",
         lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
@@ -155,7 +161,7 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
-    taxonomy_spec["artifact_classes"][8]["authority_category"] = "normative"
+    artifact_class(taxonomy_spec, "product-artifact")["authority_category"] = "normative"
     expect_failure(
         "product artifact authority",
         lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),
@@ -163,7 +169,7 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
-    taxonomy_spec["artifact_classes"][11]["portability_category"] = "framework-generic"
+    artifact_class(taxonomy_spec, "hosting-platform-profile")["portability_category"] = "framework-generic"
     expect_failure(
         "profile-specific portability",
         lambda: validate_instance(taxonomy_spec, schemas["repo.artifact-taxonomy"], "specs/repo/artifact-taxonomy.json", schemas["repo.artifact-taxonomy"]),

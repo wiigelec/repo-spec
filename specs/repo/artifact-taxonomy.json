@@ -32,12 +32,25 @@
       "manifest_participation": "none"
     },
     {
+      "identifier": "product-decomposition",
+      "label": "Product decomposition",
+      "role": "decomposition",
+      "authority_category": "directional",
+      "authority_source": "durable product decomposition",
+      "source_of_truth_rule": "Decomposes directional product intent into bounded areas, dependencies, and unresolved decisions without becoming normative product authority.",
+      "mutability": "mutable through governed updates",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
       "identifier": "implementation-plan",
       "label": "Implementation plan",
       "role": "plan",
       "authority_category": "planning",
       "authority_source": "accepted plan and sequencing decisions",
-      "source_of_truth_rule": "Coordinates work order and construction stages but cannot redefine accepted specifications.",
+      "source_of_truth_rule": "Coordinates work order, stages, and validation sequencing but cannot redefine accepted overview direction or accepted specifications.",
       "mutability": "mutable through governed replanning",
       "generation_mode": "manual",
       "validation_ownership": "review",

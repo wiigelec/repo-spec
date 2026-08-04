@@ -7,7 +7,7 @@ Read, in order:
 - `specs/repo/manifest.json`
 - `specs/repo/development-workflow.json`
 - the governing issue for the current bounded change
-- only the relevant overview, plan, specification, and predecessor records
+- only the relevant overview, decomposition, plan, specification, and predecessor records
 - the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state
 
 Report the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and any unresolved authority conflicts, along with the inspected branch, open PR, working-tree, remote, and hosting-platform state.
@@ -16,4 +16,4 @@ If authority is missing or conflicts, stop and ask.
 
 Do not mutate the repository until initialization is complete.
 
-When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `specs/repo/governing-issue.json`. When drafting or updating pull requests or equivalent review proposals, chatbot sessions shall load and follow the canonical review-proposal contract in `specs/repo/review-proposal.json`. Use the derived Markdown projection, GitHub issue form, or GitHub pull request template only as adapters; they do not replace the canonical contracts.
+When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `specs/repo/governing-issue.json`. When drafting or updating pull requests or equivalent review proposals, chatbot sessions shall load and follow the canonical review-proposal contract in `specs/repo/review-proposal.json`. When working with product overviews, product decompositions, or implementation plans, chatbot sessions shall identify the required artifact class first, load the governing document specification, use the canonical root and controlling-document naming model, update the controlling entry point and subordinate chunks together, and avoid inventing headings, paths, metadata, or lifecycle vocabulary. Use the derived Markdown projection, GitHub issue form, or GitHub pull request template only as adapters; they do not replace the canonical contracts.

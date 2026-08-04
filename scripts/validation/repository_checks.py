@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -46,6 +48,64 @@ class ValidationContext:
     repo_root: Path
     repository: RepositoryValidationContext
     product: ProductValidationContext | None
+
+
+DEVELOPMENT_DOCUMENT_ROOTS = {
+    "docs/overview/": {
+        "artifact_type": "product-overview",
+        "schema_key": "repo.product-overview",
+        "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "filename_suffix": "-OVERVIEW.md",
+        "chunk_dir_suffix": "/",
+    },
+    "docs/decompositions/": {
+        "artifact_type": "product-decomposition",
+        "schema_key": "repo.product-decomposition",
+        "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "filename_suffix": "-DECOMPOSITION.md",
+        "chunk_dir_suffix": "/",
+    },
+    "docs/plans/": {
+        "artifact_type": "implementation-plan",
+        "schema_key": "repo.implementation-plan",
+        "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "filename_suffix": "-IMPLEMENTATION-PLAN.md",
+        "chunk_dir_suffix": "/",
+    },
+}
+
+MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
+
+
+def markdown_headings(text: str) -> set[str]:
+    headings: set[str] = set()
+    for line in text.splitlines():
+        if line.startswith("## "):
+            headings.add(line.removeprefix("## ").strip())
+    return headings
+
+
+def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
+    match = re.search(r"## Metadata\s*\n\s*```json\s*\n(.*?)\n```", text, re.S)
+    expect(match is not None, f"development document metadata failed: missing metadata block in {source}")
+    try:
+        metadata = json.loads(match.group(1))
+    except json.JSONDecodeError as exc:
+        fail(f"development document metadata failed: invalid JSON in {source}: {exc.msg}")
+    expect(isinstance(metadata, dict), f"development document metadata failed: {source} metadata must be an object")
+    return metadata
+
+
+def chunk_dir_for_metadata(metadata: dict[str, Any]) -> str:
+    return f"{metadata['root_path']}{metadata['document_slug']}/"
+
+
+def top_level_document_path_for_metadata(metadata: dict[str, Any]) -> str:
+    return f"{metadata['root_path']}{metadata['artifact_id'].upper()}.md"
+
+
+def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
+    return [chunk["path"] for chunk in metadata["subordinate_chunks"]]
 
 
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
@@ -727,6 +787,74 @@ def check_generated_document_freshness_phase(context: ValidationContext) -> None
     check_generated_document_freshness(context.repo_root)
 
 
+def check_development_documents_phase(context: ValidationContext) -> None:
+    for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items():
+        root = context.repo_root / root_rel
+        expect(root.exists(), f"development document root failed: missing root {root_rel}")
+        readme = root / "README.md"
+        expect(readme.exists(), f"development document discovery failed: missing {root_rel}README.md")
+        readme_text = readme.read_text()
+
+        docs = []
+        for path in sorted(root.glob("*.md")):
+            if path.name == "README.md":
+                continue
+            text = path.read_text()
+            if "## Metadata" not in text:
+                continue
+            docs.append(path)
+
+        for path in docs:
+            text = path.read_text()
+            rel_path = path.relative_to(context.repo_root).as_posix()
+            metadata = extract_document_metadata(text, rel_path)
+            schema_key = info["schema_key"]
+            validate_instance(metadata, context.repository.schemas[schema_key], rel_path, context.repository.schemas[schema_key])
+
+            expect(metadata["artifact_type"] == info["artifact_type"], f"development document metadata failed: artifact type mismatch in {rel_path}")
+            expect(metadata["root_path"] == root_rel, f"development document metadata failed: root path mismatch in {rel_path}")
+            expect(metadata["artifact_id"] == metadata["document_slug"], f"development document metadata failed: slug mismatch in {rel_path}")
+            expect(path.parent == root, f"development document path failed: top-level document must live directly under {root_rel}: {rel_path}")
+            expect(path.name == f"{metadata['artifact_id'].upper()}.md", f"development document path failed: filename mismatch in {rel_path}")
+
+            headings = markdown_headings(text)
+            for heading in info["required_headings"]:
+                expect(heading in headings, f"development document structure failed: missing heading {heading} in {rel_path}")
+
+            chunk_dir = root / metadata["document_slug"]
+            expect(chunk_dir.exists(), f"development document path failed: missing chunk directory {chunk_dir.relative_to(context.repo_root)}")
+            expect(chunk_dir.is_dir(), f"development document path failed: chunk directory is not a directory {chunk_dir.relative_to(context.repo_root)}")
+
+            actual_chunks = sorted(path for path in chunk_dir.glob("*.md") if path.is_file())
+            nested_chunks = sorted(path for path in chunk_dir.rglob("*.md") if path.is_file() and path.parent != chunk_dir)
+            expect(not nested_chunks, f"development document path failed: nested chunk directories are not permitted in {chunk_dir.relative_to(context.repo_root)}")
+
+            declared_chunks = metadata["subordinate_chunks"]
+            declared_paths = [chunk["path"] for chunk in declared_chunks]
+            expect(len(declared_paths) == len(set(declared_paths)), f"development document chunk inventory failed: duplicate paths in {rel_path}")
+            expect(len(declared_chunks) == len(actual_chunks), f"development document chunk inventory failed: chunk count mismatch in {rel_path}")
+            expect(set(declared_paths) == {chunk.relative_to(context.repo_root).as_posix() for chunk in actual_chunks}, f"development document chunk inventory failed: inventory mismatch in {rel_path}")
+
+            orders = [chunk["order"] for chunk in declared_chunks]
+            expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")
+
+            for chunk in declared_chunks:
+                chunk_path = context.repo_root / chunk["path"]
+                expect(chunk_path.exists(), f"development document chunk inventory failed: missing chunk {chunk['path']}")
+                expect(chunk_path.is_file(), f"development document chunk inventory failed: chunk path must be a file {chunk['path']}")
+                expect(chunk_path.parent == chunk_dir, f"development document path failed: chunk path outside chunk directory {chunk['path']}")
+                expect(re.fullmatch(r"\d\d-[a-z0-9][a-z0-9-]*\.md", chunk_path.name) is not None, f"development document path failed: malformed chunk filename {chunk['path']}")
+                expect(chunk["path"] in text, f"development document navigation failed: top-level document must link to chunk {chunk['path']}")
+
+                chunk_text = chunk_path.read_text()
+                expect(len(chunk_text.splitlines()) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES, f"development document size failed: chunk exceeds line limit {chunk['path']}")
+                first_non_empty = next((line for line in chunk_text.splitlines() if line.strip()), "")
+                expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
+
+            expect(path.name in readme_text, f"development document discovery failed: README does not reference {path.name}")
+
+
+
 VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository JSON Schema conformance", check_schema_conformance),
     ("manifest completeness", check_manifest_phase),
@@ -745,6 +873,7 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("lineage relations", check_lineage_relations_phase),
     ("product acyclic dependencies", check_product_acyclic_dependencies_phase),
     ("acyclic dependencies", check_acyclic_dependencies_phase),
+    ("development documents", check_development_documents_phase),
     ("generated-document freshness", check_generated_document_freshness_phase),
 ]
 
