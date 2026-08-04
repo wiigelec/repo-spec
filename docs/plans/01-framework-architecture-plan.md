@@ -2,7 +2,7 @@
 
 ## Status
 
-Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is complete; Stage 6 is the next separately governed phase.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is complete; Stage 6 is complete; Stage 7 is the next separately governed phase.
 
 Accepted Stage 2 base:
 
@@ -26,6 +26,12 @@ Accepted Stage 5 completion base and first Stage 6 base:
 
 ```text
 main at e47474daa310cb8134b2cff16dbe0ac84b9a271b
+```
+
+Accepted Stage 6 completion base and first Stage 7 base:
+
+```text
+main at f7fa9c51a88771599f9e908249a61d4353a436e9
 ```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
@@ -870,6 +876,19 @@ Completion gate: the final Stage 5 integration issue may record the first Stage 
 
 Goal: separate GitHub-specific behavior from the Git-generic framework.
 
+Stage 6 integrated ownership matrix:
+
+| Concept | Current authority owner | Notes |
+| --- | --- | --- |
+| GitHub profile source layout | `profiles/github/` via `repo.platform-profiles` | Source-authoritative profile material |
+| Installed adapters | `.github/` via `repo.platform-profiles` | Installed/generated output |
+| Issue and PR templates | `profiles/github/` | Lowest-risk managed adapters |
+| Workflow adapters | `profiles/github/workflows/` | Source-authoritative installed/generated workflow family |
+| Remote-state deployment contract | `profiles/github/manifest.json` and `repo.platform-profiles` | Desired-state, inspection, apply, rollback, verification |
+| Freshness validation | `scripts/github_profile.py` plus `repo.validation` | Confirms source/adapter sync and orphan detection |
+| Bootstrap scripts | `scripts/github-field-policy`, `scripts/github_field_policy.py`, `scripts/github_field_policy_mutation_test.py` | Remain bootstrap-owned support infrastructure |
+| Stage 7 base | `main at f7fa9c51a88771599f9e908249a61d4353a436e9` | First accepted Stage 7 base |
+
 Candidate outputs:
 
 - GitHub profile specification;
@@ -879,6 +898,8 @@ Candidate outputs:
 - profile validation.
 
 Acceptance gate: GitHub-specific behavior is identifiable and does not define universal framework semantics.
+
+Completion gate: the Stage 6 integrated ownership matrix is recorded, the adapter inventory is current, source/adapter freshness validation passes, the remote-state procedure is reviewed, and the exact Stage 7 base is captured.
 
 ### Stage 7 — Reference repository
 
