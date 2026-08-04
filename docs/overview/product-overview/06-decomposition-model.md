@@ -20,7 +20,9 @@ The goal is to reduce uncertainty, ambiguity, context size, decision freedom, an
 
 Complexity should be reduced before implementation rather than delegated to the implementation task.
 
-The framework should progressively decompose a large human problem into smaller authoritative units until the remaining work is sufficiently bounded for reliable implementation.
+The framework should progressively decompose a large human problem into smaller, more explicit representations whose authority increases or becomes more precisely defined as decisions move toward accepted specifications until the remaining work is sufficiently bounded for reliable implementation.
+
+Decomposition does not make every child artifact normative.
 
 ## Decomposition pipeline
 
