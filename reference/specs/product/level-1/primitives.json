@@ -5,7 +5,12 @@
   "status": "accepted",
   "schema_version": "1",
   "level": 1,
-  "normative_requirements": [],
+  "normative_requirements": [
+    {
+      "id": "REF-PRIM-001",
+      "text": "The reference product primitives shall expose `primitive_identity()` and return `reference-kernel-primitives`."
+    }
+  ],
   "dependencies": [
     {
       "spec_id": "product.kernel"
@@ -30,8 +35,39 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "primitives-impl",
+        "paths": [
+          "src/product/primitives.py"
+        ],
+        "requirements": [
+          "REF-PRIM-001"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "primitives-test",
+        "paths": [
+          "tests/test_primitives.py"
+        ],
+        "requirements": [
+          "REF-PRIM-001"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "REF-PRIM-001",
+        "implementation_ids": [
+          "primitives-impl"
+        ],
+        "test_ids": [
+          "primitives-test"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

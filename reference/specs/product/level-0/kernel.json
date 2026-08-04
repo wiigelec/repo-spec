@@ -5,7 +5,12 @@
   "status": "accepted",
   "schema_version": "1",
   "level": 0,
-  "normative_requirements": [],
+  "normative_requirements": [
+    {
+      "id": "REF-KERNEL-001",
+      "text": "The reference product kernel shall expose `kernel_identity()` and return `reference-kernel`."
+    }
+  ],
   "dependencies": [],
   "references": [
     {
@@ -26,8 +31,39 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "kernel-impl",
+        "paths": [
+          "src/product/kernel.py"
+        ],
+        "requirements": [
+          "REF-KERNEL-001"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "kernel-test",
+        "paths": [
+          "tests/test_kernel.py"
+        ],
+        "requirements": [
+          "REF-KERNEL-001"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "REF-KERNEL-001",
+        "implementation_ids": [
+          "kernel-impl"
+        ],
+        "test_ids": [
+          "kernel-test"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

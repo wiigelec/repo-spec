@@ -6,7 +6,7 @@ Current non-normative reference plan.
 
 ## Purpose
 
-Define the minimal reference copy required for the activated product layer.
+Define the minimal reference copy required for the activated product and correspondence layer.
 
 ## Scope
 
@@ -20,9 +20,12 @@ Define the minimal reference copy required for the activated product layer.
 - activated product manifest
 - one accepted Level 0 specification
 - one accepted Level 1 specification
+- minimal source behavior
+- product tests
+- correspondence records
 - declared product projections
 - projection freshness validation
 
 ## Completion gate
 
-The isolated reference repository can discover and invoke its own repository-local validation while validating the product manifest, Levels, dependencies, schemas, and projection freshness.
+The isolated reference repository can discover and invoke its own repository-local validation while validating the product manifest, Levels, dependencies, schemas, projection freshness, and product correspondence.
