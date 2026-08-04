@@ -136,3 +136,19 @@ The reference form and complete artifact inventory are accepted.
 ### Completion gate
 
 A clean isolated copy passes, and all required invalid mutations fail.
+
+## Issue 6 - Integrate Stage 7 and record Stage 8 inputs
+
+### Scope
+
+- review the complete reference repository;
+- record Stage 7 ownership and portability findings;
+- classify Stage 8 fixed and variable inputs;
+- update the architecture plan;
+- validate the exact integration head;
+- after merge, validate the exact main revision;
+- record the first Stage 8 accepted base.
+
+### Completion gate
+
+The Stage 7 acceptance gate is met and the exact Stage 8 base is durably recorded.
