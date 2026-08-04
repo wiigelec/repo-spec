@@ -11,10 +11,15 @@
     {
       "source": "profiles/github/PULL_REQUEST_TEMPLATE.md",
       "installed": ".github/PULL_REQUEST_TEMPLATE.md"
+    },
+    {
+      "source": "profiles/github/workflows/github-field-policy.yml",
+      "installed": ".github/workflows/github-field-policy.yml"
+    },
+    {
+      "source": "profiles/github/workflows/validation.yml",
+      "installed": ".github/workflows/validation.yml"
     }
   ],
-  "unmanaged_files": [
-    ".github/workflows/github-field-policy.yml",
-    ".github/workflows/validation.yml"
-  ]
+  "unmanaged_files": []
 }

@@ -27,7 +27,12 @@ def run_github_profile_generation_tests(repo_root: Path) -> None:
         temp_repo = create_repo_fixture(repo_root, temp_root, 0)
 
         rendered_paths = [path for path, _content in render_profile_adapters(temp_repo)]
-        assert rendered_paths == [".github/ISSUE_TEMPLATE/governing-issue.yml", ".github/PULL_REQUEST_TEMPLATE.md"]
+        assert rendered_paths == [
+            ".github/ISSUE_TEMPLATE/governing-issue.yml",
+            ".github/PULL_REQUEST_TEMPLATE.md",
+            ".github/workflows/github-field-policy.yml",
+            ".github/workflows/validation.yml",
+        ]
 
         before = snapshot_profile_files(temp_repo)
         write_profile_adapters(temp_repo)
@@ -56,14 +61,24 @@ def run_github_profile_mutation_tests(repo_root: Path) -> None:
         )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 1)
-        (temp_repo / ".github/ISSUE_TEMPLATE/governing-issue.yml").unlink()
+        (temp_repo / ".github/workflows/github-field-policy.yml").write_text(
+            (temp_repo / ".github/workflows/github-field-policy.yml").read_text().replace("GitHub field policy", "GitHub field policy (tampered)"),
+        )
         expect_failure(
-            "missing installed GitHub adapter",
+            "stale installed GitHub workflow adapter",
             lambda: validate_repo(temp_repo),
-            "github profile freshness failed: missing managed adapter(s): .github/ISSUE_TEMPLATE/governing-issue.yml",
+            "github profile freshness failed: stale generated adapter: source profiles/github/workflows/github-field-policy.yml -> output .github/workflows/github-field-policy.yml",
         )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 2)
+        (temp_repo / ".github/workflows/validation.yml").unlink()
+        expect_failure(
+            "missing installed GitHub workflow adapter",
+            lambda: validate_repo(temp_repo),
+            "github profile freshness failed: missing managed adapter(s): .github/workflows/validation.yml",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, 3)
         orphan = temp_repo / ".github/orphaned-adapter.yml"
         orphan.parent.mkdir(parents=True, exist_ok=True)
         orphan.write_text("name: orphaned\n")
