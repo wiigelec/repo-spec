@@ -5,5 +5,8 @@
   "status": "accepted",
   "schema_version": "1",
   "artifact_classes": [],
-  "normative_requirements": []
+  "normative_requirements": [],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/artifact-taxonomy.md"}
+  ]
 }

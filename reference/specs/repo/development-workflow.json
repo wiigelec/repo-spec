@@ -4,5 +4,8 @@
   "purpose": "Defines the minimal governed workflow used by the reference skeleton.",
   "status": "accepted",
   "schema_version": "1",
-  "normative_requirements": []
+  "normative_requirements": [],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/development-workflow.md"}
+  ]
 }

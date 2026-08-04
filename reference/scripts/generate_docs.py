@@ -14,6 +14,14 @@ import validate_impl as impl
 
 def write_generated_docs(repo_root: Path) -> None:
     targets = [
+        (repo_root / "specs/repo/manifest.json", repo_root / "derived/specs/repo/manifest.md"),
+        (repo_root / "specs/repo/governing-issue.json", repo_root / "derived/specs/repo/governing-issue.md"),
+        (repo_root / "specs/repo/review-proposal.json", repo_root / "derived/specs/repo/review-proposal.md"),
+        (repo_root / "specs/repo/repository-structure.json", repo_root / "derived/specs/repo/repository-structure.md"),
+        (repo_root / "specs/repo/artifact-taxonomy.json", repo_root / "derived/specs/repo/artifact-taxonomy.md"),
+        (repo_root / "specs/repo/platform-profiles.json", repo_root / "derived/specs/repo/platform-profiles.md"),
+        (repo_root / "specs/repo/development-workflow.json", repo_root / "derived/specs/repo/development-workflow.md"),
+        (repo_root / "specs/repo/validation.json", repo_root / "derived/specs/repo/validation.md"),
         (repo_root / "specs/product/level-0/kernel.json", repo_root / "derived/specs/product/level-0/kernel.md"),
         (repo_root / "specs/product/level-1/primitives.json", repo_root / "derived/specs/product/level-1/primitives.md"),
     ]

@@ -16,5 +16,8 @@
   ],
   "normative_requirements": [
     {"id": "REF-MAN-001", "text": "The reference skeleton shall identify the repository authority files used by the proof copy."}
+  ],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/manifest.md"}
   ]
 }

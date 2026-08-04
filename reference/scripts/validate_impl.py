@@ -56,6 +56,14 @@ REPO_REQUIRED_PATHS = [
     "specs/repo/platform-profiles.json",
     "specs/repo/development-workflow.json",
     "specs/repo/validation.json",
+    "derived/specs/repo/manifest.md",
+    "derived/specs/repo/governing-issue.md",
+    "derived/specs/repo/review-proposal.md",
+    "derived/specs/repo/repository-structure.md",
+    "derived/specs/repo/artifact-taxonomy.md",
+    "derived/specs/repo/platform-profiles.md",
+    "derived/specs/repo/development-workflow.md",
+    "derived/specs/repo/validation.md",
     "schemas/repo-manifest.schema.json",
     "schemas/repo-spec.schema.json",
     "schemas/repo-artifact-taxonomy.schema.json",
@@ -348,7 +356,86 @@ def render_conformance(records: list[dict]) -> list[str]:
     return lines
 
 
-def render_projection(spec: dict) -> str:
+def render_repo_projection(spec: dict) -> str:
+    lines = [
+        f"# {spec['title']}",
+        "",
+        "## Status",
+        "",
+        spec["status"],
+        "",
+        "## Purpose",
+        "",
+        spec["purpose"],
+        "",
+    ]
+
+    if "authoritative_specs" in spec:
+        lines.extend(["## Authoritative specs", ""])
+        entries = spec.get("authoritative_specs", [])
+        if entries:
+            for entry in entries:
+                lines.append(f"- `{entry['spec_id']}` -> `{entry['path']}`")
+        else:
+            lines.append("- None")
+        lines.append("")
+
+    if "issue_fields" in spec:
+        lines.extend(["## Issue fields", ""])
+        entries = spec.get("issue_fields", [])
+        if entries:
+            for field in entries:
+                lines.append(f"- `{field['id']}`: {field['label']}")
+        else:
+            lines.append("- None")
+        lines.append("")
+
+    if "review_fields" in spec:
+        lines.extend(["## Review fields", ""])
+        entries = spec.get("review_fields", [])
+        if entries:
+            for field in entries:
+                lines.append(f"- `{field['id']}`: {field['label']}")
+        else:
+            lines.append("- None")
+        lines.append("")
+
+    if "artifact_classes" in spec:
+        lines.extend(["## Artifact classes", ""])
+        entries = spec.get("artifact_classes", [])
+        if entries:
+            for artifact in entries:
+                lines.append(f"- `{artifact['identifier']}`: {artifact['label']}")
+        else:
+            lines.append("- None")
+        lines.append("")
+
+    if "profiles" in spec:
+        lines.extend(["## Profiles", ""])
+        entries = spec.get("profiles", [])
+        if entries:
+            for profile in entries:
+                lines.append(f"- `{profile['identifier']}`: {profile['label']}")
+                lines.append(f"  - Source root: `{profile['source_root']}`")
+                lines.append(f"  - Installed adapter root: `{profile['installed_adapter_root']}`")
+                lines.append(f"  - Authority boundary: `{profile['authority_boundary']}`")
+                lines.append(f"  - Adapter generation policy: `{profile['adapter_generation_policy']}`")
+        else:
+            lines.append("- None")
+        lines.append("")
+
+    requirements = spec.get("normative_requirements", [])
+    lines.extend(["## Normative requirements", ""])
+    if requirements:
+        for requirement in requirements:
+            lines.append(f"- `{requirement['id']}`: {requirement['text']}")
+    else:
+        lines.append("- None")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def render_product_projection(spec: dict) -> str:
     requirements = spec.get("normative_requirements", [])
     deps = spec.get("dependencies", [])
     correspondence = spec.get("correspondence", {})
@@ -386,6 +473,12 @@ def render_projection(spec: dict) -> str:
     return "\n".join(lines)
 
 
+def render_projection(spec: dict) -> str:
+    if "level" in spec:
+        return render_product_projection(spec)
+    return render_repo_projection(spec)
+
+
 def load_reference_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     schemas = {
         "repo.manifest": load_schema(repo_root / "schemas/repo-manifest.schema.json"),
@@ -404,7 +497,10 @@ def load_reference_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
 
 
 def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    validate_instance(load_json(repo_root / "specs/repo/manifest.json"), schemas["repo.manifest"], "specs/repo/manifest.json", schemas["repo.manifest"])
+    repo_manifest = load_json(repo_root / "specs/repo/manifest.json")
+    validate_instance(repo_manifest, schemas["repo.manifest"], "specs/repo/manifest.json", schemas["repo.manifest"])
+
+    repo_specs: dict[str, dict[str, Any]] = {"repo.manifest": repo_manifest}
 
     for relpath in [
         "specs/repo/governing-issue.json",
@@ -415,7 +511,13 @@ def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, A
         "specs/repo/artifact-taxonomy.json",
         "specs/repo/platform-profiles.json",
     ]:
-        validate_instance(load_json(repo_root / relpath), schemas["repo.spec"], relpath, schemas["repo.spec"])
+        spec = load_json(repo_root / relpath)
+        validate_instance(spec, schemas["repo.spec"], relpath, schemas["repo.spec"])
+        repo_specs[spec["spec_id"]] = spec
+
+    for spec in repo_specs.values():
+        for artifact in spec.get("derived_artifacts", []):
+            validate_projection(repo_root, spec, artifact["path"])
 
     product_manifest_path = repo_root / "specs/product/manifest.json"
     product_manifest = load_json(product_manifest_path)
@@ -654,6 +756,13 @@ def run_mutation_tests(repo_root: Path) -> None:
         projection = temp_repo / "derived/specs/product/level-1/primitives.md"
         projection.write_text(projection.read_text().replace("reference-kernel-primitives", "tampered-reference", 1))
         expect_subprocess_failure("projection freshness", temp_repo, "projection freshness mismatch")
+
+        temp_repo = temp_root / "reference"
+        shutil.rmtree(temp_repo)
+        shutil.copytree(repo_root, temp_repo)
+        repo_projection = temp_repo / "derived/specs/repo/validation.md"
+        repo_projection.write_text(repo_projection.read_text().replace("Defines the local validation boundary for the reference skeleton.", "Tampered reference validation boundary.", 1))
+        expect_subprocess_failure("repository projection freshness", temp_repo, "projection freshness mismatch")
 
 
 def run_tests(root: Path) -> None:

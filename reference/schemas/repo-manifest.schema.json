@@ -51,6 +51,12 @@
         }
       }
     },
+    "derived_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/derivedArtifact"
+      }
+    },
     "normative_requirements": {
       "type": "array",
       "items": {
@@ -69,6 +75,25 @@
           "minLength": 1
         },
         "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "derivedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "path"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["markdown", "yaml"]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renderer": {
           "type": "string",
           "minLength": 1
         }

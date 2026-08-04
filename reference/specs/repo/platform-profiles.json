@@ -18,5 +18,8 @@
       "mutation_record_fields": []
     }
   ],
-  "normative_requirements": []
+  "normative_requirements": [],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/platform-profiles.md"}
+  ]
 }

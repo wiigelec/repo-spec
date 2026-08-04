@@ -6,5 +6,8 @@
   "schema_version": "1",
   "normative_requirements": [
     {"id": "REF-STR-001", "text": "The reference skeleton shall separate repository authority, schemas, scripts, profiles, and product placeholders."}
+  ],
+  "derived_artifacts": [
+    {"type": "markdown", "path": "derived/specs/repo/repository-structure.md"}
   ]
 }
