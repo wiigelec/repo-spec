@@ -42,6 +42,8 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-020`: The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts.
 - `REPO-VAL-021`: The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry.
 - `REPO-VAL-022`: The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once.
+- `REPO-VAL-023`: The validation entry point shall build a cross-document registry for governed development documents and shall enforce basis-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them.
+- `REPO-VAL-024`: The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations.
 
 ## Dependencies
 

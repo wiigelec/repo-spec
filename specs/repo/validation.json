@@ -92,6 +92,14 @@
     {
       "id": "REPO-VAL-022",
       "text": "The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once."
+    },
+    {
+      "id": "REPO-VAL-023",
+      "text": "The validation entry point shall build a cross-document registry for governed development documents and shall enforce basis-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them."
+    },
+    {
+      "id": "REPO-VAL-024",
+      "text": "The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations."
     }
   ],
   "dependencies": [

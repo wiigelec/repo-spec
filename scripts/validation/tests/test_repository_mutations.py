@@ -60,6 +60,18 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_path.write_text(decomposition_path.read_text().replace("docs/overview/PRODUCT-OVERVIEW.md", "docs/overview/MISSING-OVERVIEW.md", 1))
+        expect_failure("missing decomposition predecessor path", lambda: validate_repo(temp_repo), "unresolved predecessor path")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(plan_path.read_text().replace("docs/decompositions/INITIALIZER-DECOMPOSITION.md", "docs/overview/INITIALIZER-OVERVIEW.md", 1))
+        expect_failure("plan without controlling decomposition", lambda: validate_repo(temp_repo), "missing controlling decomposition")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.unlisted"
         (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
@@ -187,6 +199,11 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         check_generated_document_write_behavior(temp_repo)
         expect_failure("normative reference to retired spec", lambda: validate_repo(temp_repo), "resolvable references failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-candidate", "candidate", supersedes=["repo.validation"])
+        expect_failure("non-reciprocal supersession pair", lambda: validate_repo(temp_repo), "non-reciprocal supersedes pair")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
