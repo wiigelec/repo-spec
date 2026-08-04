@@ -167,6 +167,7 @@ Human review remains responsible for determining whether those links correctly p
 
 - **Decomposition**: the process of reducing a large problem into smaller, more explicit units with defined roles, boundaries, dependencies, and authority.
 - **Conversation**: a discovery and clarification medium that may produce candidate understanding, expose intent, identify uncertainty, test interpretations, and discover constraints; decisions required for later work must be recorded in the repository artifact that owns them.
+- **Product understanding**: the provisional shared interpretation of human intent produced through discovery and clarification before it is recorded as durable overview direction; it is explicitly non-authoritative until recorded and accepted in the proper artifact.
 - **Bounded task**: a task with explicit authority, scope, dependencies, outputs, and success criteria.
 - **Authority**: the accepted source that controls a decision.
 - **Reasoning envelope**: the set of conditions under which an AI assistant can complete a task without inventing major missing context.
