@@ -1,0 +1,8 @@
+{
+  "spec_id": "repo.development-workflow",
+  "title": "Reference Development Workflow",
+  "purpose": "Defines the minimal governed workflow used by the reference skeleton.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": []
+}

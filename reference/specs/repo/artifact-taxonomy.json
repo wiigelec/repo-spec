@@ -1,0 +1,9 @@
+{
+  "spec_id": "repo.artifact-taxonomy",
+  "title": "Reference Artifact Taxonomy",
+  "purpose": "Classifies the small set of artifact roles used by the reference skeleton.",
+  "status": "accepted",
+  "schema_version": "1",
+  "artifact_classes": [],
+  "normative_requirements": []
+}

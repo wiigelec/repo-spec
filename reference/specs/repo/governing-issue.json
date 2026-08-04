@@ -1,0 +1,9 @@
+{
+  "spec_id": "repo.governing-issue",
+  "title": "Reference Governing Issue Contract",
+  "purpose": "Defines the governing issue structure used by the reference skeleton.",
+  "status": "accepted",
+  "schema_version": "1",
+  "issue_fields": [],
+  "normative_requirements": []
+}
