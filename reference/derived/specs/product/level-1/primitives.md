@@ -14,7 +14,7 @@ Defines the minimal Level 1 primitives for the reference repository.
 
 ## Normative requirements
 
-- `REF-PRIM-001`: The reference product primitives shall expose `primitive_identity()` and return `reference-kernel-primitives`.
+- `REF-PRIM-001`: The reference product primitives shall expose `normalize_identifier()` and return the kernel canonical text with underscores converted to hyphens.
 
 ## Dependencies
 

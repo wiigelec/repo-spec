@@ -888,7 +888,9 @@ def run_mutation_tests(repo_root: Path) -> None:
         shutil.copytree(repo_root, temp_repo)
 
         kernel_source = temp_repo / "src/product/kernel.py"
-        kernel_source.write_text(kernel_source.read_text().replace('return "reference-kernel"', 'return "broken-kernel"', 1))
+        kernel_source.write_text(
+            kernel_source.read_text().replace('return " ".join(value.split()).lower()', 'return "broken-kernel"', 1)
+        )
         expect_subprocess_failure("kernel source behavior", temp_repo, "kernel source behavior")
 
         temp_repo = temp_root / "reference"
@@ -903,7 +905,13 @@ def run_mutation_tests(repo_root: Path) -> None:
         shutil.rmtree(temp_repo)
         shutil.copytree(repo_root, temp_repo)
         projection = temp_repo / "derived/specs/product/level-1/primitives.md"
-        projection.write_text(projection.read_text().replace("reference-kernel-primitives", "tampered-reference", 1))
+        projection.write_text(
+            projection.read_text().replace(
+                "return the kernel canonical text with underscores converted to hyphens.",
+                "return the tampered kernel canonical text.",
+                1,
+            )
+        )
         expect_subprocess_failure("projection freshness", temp_repo, "projection freshness mismatch")
 
         temp_repo = temp_root / "reference"
@@ -926,11 +934,14 @@ def run_tests(root: Path) -> None:
 
 def validate_source(root: Path) -> None:
     sys.path.insert(0, str(root / "src"))
-    from product.kernel import kernel_identity
-    from product.primitives import primitive_identity
+    from product.kernel import canonical_text
+    from product.primitives import normalize_identifier
 
-    expect(kernel_identity() == "reference-kernel", "kernel source behavior must return the kernel identity")
-    expect(primitive_identity() == "reference-kernel-primitives", "primitive source behavior must return the primitive identity")
+    expect(canonical_text("  Reference   Kernel  ") == "reference kernel", "kernel source behavior must normalize canonical text")
+    expect(
+        normalize_identifier("  Reference_Kernel   Primitives  ") == "reference-kernel primitives",
+        "primitive source behavior must normalize identifiers",
+    )
 
 
 def main(argv: list[str]) -> int:

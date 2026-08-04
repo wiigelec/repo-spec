@@ -1,4 +1,4 @@
-from .kernel import kernel_identity
-from .primitives import primitive_identity
+from .kernel import canonical_text
+from .primitives import normalize_identifier
 
-__all__ = ["kernel_identity", "primitive_identity"]
+__all__ = ["canonical_text", "normalize_identifier"]

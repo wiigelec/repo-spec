@@ -165,8 +165,8 @@ def run_reference_isolated_copy_tests(repo_root: Path) -> None:
         test_primitives = temp_reference / "tests/test_primitives.py"
         test_primitives.write_text(
             test_primitives.read_text(encoding="utf-8").replace(
-                'self.assertEqual(primitive_identity(), "reference-kernel-primitives")',
-                'self.assertEqual(primitive_identity(), "broken-reference-primitives")',
+                'self.assertEqual(normalize_identifier("  Reference_Kernel   Primitives  "), "reference-kernel primitives")',
+                'self.assertEqual(normalize_identifier("  Reference_Kernel   Primitives  "), "broken-kernel primitives")',
                 1,
             ),
             encoding="utf-8",
