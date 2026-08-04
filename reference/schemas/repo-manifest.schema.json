@@ -51,6 +51,12 @@
         }
       }
     },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
     "derived_artifacts": {
       "type": "array",
       "items": {
@@ -79,6 +85,44 @@
           "minLength": 1
         }
       }
+    },
+    "reference": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "spec_id"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "specification"
+            },
+            "kind": {
+              "type": "string",
+              "enum": ["normative", "historical"]
+            },
+            "spec_id": {
+              "type": "string",
+              "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "path"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "artifact"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
     },
     "derivedArtifact": {
       "type": "object",

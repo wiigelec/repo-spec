@@ -19,6 +19,17 @@ Identifies the reference-repository JSON set.
 - `repo.development-workflow` -> `specs/repo/development-workflow.json`
 - `repo.validation` -> `specs/repo/validation.json`
 
+## References
+
+- specification: `repo.repository-structure`
+- specification: `repo.platform-profiles`
+- specification: `repo.development-workflow`
+- specification: `repo.validation`
+
+## Derived artifacts
+
+- `markdown`: `derived/specs/repo/manifest.md`
+
 ## Normative requirements
 
 - `REF-MAN-001`: The reference skeleton shall identify the repository authority files used by the proof copy.

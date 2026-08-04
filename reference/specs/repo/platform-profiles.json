@@ -4,6 +4,16 @@
   "purpose": "Declares the minimal profile source used by the reference skeleton.",
   "status": "accepted",
   "schema_version": "1",
+  "dependencies": [
+    {"spec_id": "repo.manifest"},
+    {"spec_id": "repo.repository-structure"}
+  ],
+  "references": [
+    {"type": "specification", "spec_id": "repo.manifest"},
+    {"type": "specification", "spec_id": "repo.repository-structure"},
+    {"type": "artifact", "path": "profiles/github/README.md"},
+    {"type": "artifact", "path": ".github/README.md"}
+  ],
   "profiles": [
     {
       "identifier": "github",
@@ -12,9 +22,22 @@
       "installed_adapter_root": ".github/",
       "authority_boundary": "profile-source-authoritative",
       "adapter_generation_policy": "source-to-adapter",
-      "artifact_inventory": [],
+      "artifact_inventory": [
+        {
+          "path": "profiles/github/README.md",
+          "classification": "profile-source",
+          "authority_category": "profile-source-authoritative",
+          "profile_id": "github"
+        },
+        {
+          "path": ".github/README.md",
+          "classification": "installed-adapter",
+          "authority_category": "profile-source-derived",
+          "profile_id": "github"
+        }
+      ],
       "deployment_state": {},
-      "remote_state_kinds": [],
+      "remote_state_kinds": ["none"],
       "mutation_record_fields": []
     }
   ],

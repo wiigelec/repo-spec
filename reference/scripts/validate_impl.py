@@ -64,6 +64,7 @@ REPO_REQUIRED_PATHS = [
     "derived/specs/repo/platform-profiles.md",
     "derived/specs/repo/development-workflow.md",
     "derived/specs/repo/validation.md",
+    ".github/README.md",
     "schemas/repo-manifest.schema.json",
     "schemas/repo-spec.schema.json",
     "schemas/repo-artifact-taxonomy.schema.json",
@@ -356,6 +357,36 @@ def render_conformance(records: list[dict]) -> list[str]:
     return lines
 
 
+def render_spec_references(references: list[dict]) -> list[str]:
+    lines: list[str] = []
+    if not references:
+        lines.append("- None")
+        return lines
+    for ref in references:
+        if ref.get("type") == "specification":
+            kind = ref.get("kind", "normative")
+            if kind == "historical":
+                lines.append(f"- historical specification: `{ref['spec_id']}`")
+            else:
+                lines.append(f"- specification: `{ref['spec_id']}`")
+        else:
+            lines.append(f"- artifact: `{ref['path']}`")
+    return lines
+
+
+def render_derived_artifacts(records: list[dict]) -> list[str]:
+    lines: list[str] = []
+    if not records:
+        lines.append("- None")
+        return lines
+    for artifact in records:
+        line = f"- `{artifact['type']}`: `{artifact['path']}`"
+        if "renderer" in artifact:
+            line += f" (renderer: `{artifact['renderer']}`)"
+        lines.append(line)
+    return lines
+
+
 def render_repo_projection(spec: dict) -> str:
     lines = [
         f"# {spec['title']}",
@@ -420,8 +451,48 @@ def render_repo_projection(spec: dict) -> str:
                 lines.append(f"  - Installed adapter root: `{profile['installed_adapter_root']}`")
                 lines.append(f"  - Authority boundary: `{profile['authority_boundary']}`")
                 lines.append(f"  - Adapter generation policy: `{profile['adapter_generation_policy']}`")
+                lines.append("  - Artifact inventory:")
+                if profile.get("artifact_inventory"):
+                    for item in profile["artifact_inventory"]:
+                        lines.append(
+                            f"    - `{item['path']}` -> `{item['classification']}` / `{item['authority_category']}` / `{item['profile_id']}`"
+                        )
+                else:
+                    lines.append("    - None")
+                lines.append("  - Remote state kinds:")
+                if profile.get("remote_state_kinds"):
+                    for kind in profile["remote_state_kinds"]:
+                        lines.append(f"    - {kind}")
+                else:
+                    lines.append("    - None")
+                lines.append("  - Hosting mutation record fields:")
+                if profile.get("mutation_record_fields"):
+                    for field in profile["mutation_record_fields"]:
+                        lines.append(f"    - {field}")
+                else:
+                    lines.append("    - None")
         else:
             lines.append("- None")
+        lines.append("")
+
+    if "dependencies" in spec:
+        lines.extend(["## Dependencies", ""])
+        deps = spec.get("dependencies", [])
+        if deps:
+            for dep in deps:
+                lines.append(f"- `{dep['spec_id']}`")
+        else:
+            lines.append("- None")
+        lines.append("")
+
+    if "references" in spec:
+        lines.extend(["## References", ""])
+        lines.extend(render_spec_references(spec.get("references", [])))
+        lines.append("")
+
+    if "derived_artifacts" in spec:
+        lines.extend(["## Derived artifacts", ""])
+        lines.extend(render_derived_artifacts(spec.get("derived_artifacts", [])))
         lines.append("")
 
     requirements = spec.get("normative_requirements", [])
@@ -500,6 +571,15 @@ def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, A
     repo_manifest = load_json(repo_root / "specs/repo/manifest.json")
     validate_instance(repo_manifest, schemas["repo.manifest"], "specs/repo/manifest.json", schemas["repo.manifest"])
 
+    # Repository manifest completeness is part of the reference proof.
+    actual_repo_paths = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in (repo_root / "specs/repo").glob("*.json")
+        if path.is_file()
+    )
+    declared_repo_paths = [entry["path"] for entry in repo_manifest["authoritative_specs"]]
+    expect(set(actual_repo_paths) == set(declared_repo_paths), "manifest completeness failed")
+
     repo_specs: dict[str, dict[str, Any]] = {"repo.manifest": repo_manifest}
 
     for relpath in [
@@ -515,9 +595,12 @@ def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, A
         validate_instance(spec, schemas["repo.spec"], relpath, schemas["repo.spec"])
         repo_specs[spec["spec_id"]] = spec
 
+    validate_repo_relationships(repo_root, repo_specs)
     for spec in repo_specs.values():
         for artifact in spec.get("derived_artifacts", []):
             validate_projection(repo_root, spec, artifact["path"])
+
+    validate_profile_support(repo_root)
 
     product_manifest_path = repo_root / "specs/product/manifest.json"
     product_manifest = load_json(product_manifest_path)
@@ -549,6 +632,72 @@ def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, A
         for artifact in spec.get("derived_artifacts", []):
             validate_projection(repo_root, spec, artifact["path"])
     return specs_by_id
+
+
+def validate_repo_relationships(repo_root: Path, specs_by_id: dict[str, dict[str, Any]]) -> None:
+    for spec_id, spec in specs_by_id.items():
+        expect(spec.get("status") == "accepted", f"repo spec lifecycle failed: {spec_id}")
+
+        for artifact in spec.get("derived_artifacts", []):
+            expect(
+                artifact.get("path", "").startswith("derived/specs/repo/"),
+                f"repo artifact-root separation failed: {spec_id} -> {artifact.get('path')}",
+            )
+
+        for dep in spec.get("dependencies", []):
+            target_spec_id = dep.get("spec_id")
+            expect(target_spec_id in specs_by_id, f"repo dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
+            expect(target_spec_id != spec_id, f"repo dependencies failed: self reference {spec_id}")
+
+        for ref in spec.get("references", []):
+            if ref.get("type") == "specification":
+                target_spec = specs_by_id.get(ref.get("spec_id"))
+                expect(target_spec is not None, f"repo references failed: unresolved spec {spec_id} -> {ref.get('spec_id')}")
+                kind = ref.get("kind", "normative")
+                if kind == "historical":
+                    expect(target_spec["status"] in {"superseded", "retired"}, f"repo references failed: {spec_id} -> {ref.get('spec_id')}")
+                else:
+                    expect(kind == "normative", f"repo references failed: {spec_id} -> {ref.get('spec_id')}")
+                    expect(target_spec["status"] == "accepted", f"repo references failed: {spec_id} -> {ref.get('spec_id')}")
+            else:
+                resolved = resolve_repo_path(repo_root, ref.get("path", ""))
+                expect(resolved.exists(), f"repo references failed: missing artifact {ref.get('path')}")
+
+        for field in ("supersedes", "superseded_by"):
+            for target_spec_id in spec.get(field, []):
+                expect(target_spec_id in specs_by_id, f"repo lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
+                expect(target_spec_id != spec_id, f"repo lineage failed: self reference {spec_id}")
+
+
+def validate_profile_support(repo_root: Path) -> None:
+    profile_manifest = load_json(repo_root / "profiles/github/manifest.json")
+    expect(profile_manifest.get("profile_id") == "github", "profile source/adapter freshness failed: profile identity")
+    expect(profile_manifest.get("source_root") == "profiles/github/", "profile source/adapter freshness failed: source root")
+    expect(profile_manifest.get("installed_adapter_root") == ".github/", "profile source/adapter freshness failed: adapter root")
+    expect(profile_manifest.get("status") == "placeholder", "profile source/adapter freshness failed: status")
+
+    inventory = profile_manifest.get("artifact_inventory", [])
+    expect(isinstance(inventory, list) and inventory, "profile source/adapter freshness failed: artifact inventory")
+    inventory_paths: set[str] = set()
+    for index, item in enumerate(inventory):
+        expect(isinstance(item, dict), f"profile source/adapter freshness failed: artifact_inventory[{index}] must be an object")
+        path = item.get("path")
+        expect(isinstance(path, str) and path, f"profile source/adapter freshness failed: artifact_inventory[{index}] path")
+        classification = item.get("classification")
+        expect(classification in {"profile-source", "installed-adapter"}, f"profile source/adapter freshness failed: artifact_inventory[{index}] classification")
+        authority_category = item.get("authority_category")
+        expect(isinstance(authority_category, str) and authority_category, f"profile source/adapter freshness failed: artifact_inventory[{index}] authority_category")
+        expect(item.get("profile_id") == "github", f"profile source/adapter freshness failed: artifact_inventory[{index}] profile_id")
+        expect(path.startswith("profiles/github/") or path.startswith(".github/"), f"profile source/adapter freshness failed: artifact_inventory[{index}] path root")
+        expect(resolve_repo_path(repo_root, path).exists(), f"profile source/adapter freshness failed: missing artifact {path}")
+        inventory_paths.add(path)
+
+    expect("profiles/github/README.md" in inventory_paths, "profile source/adapter freshness failed: source README missing")
+    expect(".github/README.md" in inventory_paths, "profile source/adapter freshness failed: adapter README missing")
+
+    source_readme = load_text(repo_root / "profiles/github/README.md")
+    adapter_readme = load_text(repo_root / ".github/README.md")
+    expect(source_readme == adapter_readme, "profile source/adapter freshness failed: README mismatch")
 
 
 def validate_schema(path: Path, required_fields: list[str], const_level: int | None = None) -> None:

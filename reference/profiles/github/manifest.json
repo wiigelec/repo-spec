@@ -2,5 +2,22 @@
   "profile_id": "github",
   "source_root": "profiles/github/",
   "installed_adapter_root": ".github/",
-  "status": "placeholder"
+  "status": "placeholder",
+  "artifact_inventory": [
+    {
+      "path": "profiles/github/README.md",
+      "classification": "profile-source",
+      "authority_category": "profile-source-authoritative",
+      "profile_id": "github"
+    },
+    {
+      "path": ".github/README.md",
+      "classification": "installed-adapter",
+      "authority_category": "profile-source-derived",
+      "profile_id": "github"
+    }
+  ],
+  "deployment_state": {},
+  "remote_state_kinds": ["none"],
+  "mutation_record_fields": []
 }
