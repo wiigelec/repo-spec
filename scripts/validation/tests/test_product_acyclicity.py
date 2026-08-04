@@ -103,7 +103,25 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         configure_spec(temp_repo, "specs/product/level-1/b.json", spec_id="product.b", title="B", purpose="B product specification.", dependency_ids=["product.a"])
         mutate_json(
             temp_repo / "specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("status", "accepted") or spec,
+            lambda spec: (
+                spec.__setitem__("status", "accepted"),
+                spec.__setitem__(
+                    "correspondence",
+                    {
+                        "implementations": [{"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "conformance": [
+                            {
+                                "requirement_id": "KERNEL-001",
+                                "implementation_ids": ["impl.kernel"],
+                                "test_ids": ["test.kernel"],
+                                "status": "covered",
+                            }
+                        ],
+                    },
+                ),
+                spec,
+            )[-1],
         )
         write_manifest(
             temp_repo,
@@ -133,7 +151,25 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         configure_spec(temp_repo, "specs/product/level-2/c.json", spec_id="product.c", title="C", purpose="C product specification.", dependency_ids=["product.a"])
         mutate_json(
             temp_repo / "specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("status", "accepted") or spec,
+            lambda spec: (
+                spec.__setitem__("status", "accepted"),
+                spec.__setitem__(
+                    "correspondence",
+                    {
+                        "implementations": [{"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "conformance": [
+                            {
+                                "requirement_id": "KERNEL-001",
+                                "implementation_ids": ["impl.kernel"],
+                                "test_ids": ["test.kernel"],
+                                "status": "covered",
+                            }
+                        ],
+                    },
+                ),
+                spec,
+            )[-1],
         )
         write_manifest(
             temp_repo,
@@ -166,7 +202,25 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         configure_spec(temp_repo, "specs/product/level-3/d.json", spec_id="product.d", title="D", purpose="D product specification.", dependency_ids=["product.b"])
         mutate_json(
             temp_repo / "specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("status", "accepted") or spec,
+            lambda spec: (
+                spec.__setitem__("status", "accepted"),
+                spec.__setitem__(
+                    "correspondence",
+                    {
+                        "implementations": [{"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "conformance": [
+                            {
+                                "requirement_id": "KERNEL-001",
+                                "implementation_ids": ["impl.kernel"],
+                                "test_ids": ["test.kernel"],
+                                "status": "covered",
+                            }
+                        ],
+                    },
+                ),
+                spec,
+            )[-1],
         )
         write_manifest(
             temp_repo,

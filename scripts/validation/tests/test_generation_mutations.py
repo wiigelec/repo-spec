@@ -20,6 +20,30 @@ FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation
 def run_generation_mutations(repo_root: Path) -> None:
     _manifest, specs, paths, _ = load_specs(repo_root)
 
+    def accept_kernel(temp_repo: Path) -> None:
+        mutate_json(
+            temp_repo / "specs/product/level-0/kernel.json",
+            lambda spec: (
+                spec.__setitem__("status", "accepted"),
+                spec.__setitem__(
+                    "correspondence",
+                    {
+                        "implementations": [{"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "conformance": [
+                            {
+                                "requirement_id": "KERNEL-001",
+                                "implementation_ids": ["impl.kernel"],
+                                "test_ids": ["test.kernel"],
+                                "status": "covered",
+                            }
+                        ],
+                    },
+                ),
+                spec,
+            )[-1],
+        )
+
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
         clone_index = 0
@@ -84,10 +108,7 @@ def run_generation_mutations(repo_root: Path) -> None:
             temp_repo / "specs/product/manifest.json",
             lambda manifest: manifest["product_specifications"][0].__setitem__("status", "accepted") or manifest,
         )
-        mutate_json(
-            temp_repo / "specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("status", "accepted") or spec,
-        )
+        accept_kernel(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
@@ -103,10 +124,7 @@ def run_generation_mutations(repo_root: Path) -> None:
             temp_repo / "specs/product/manifest.json",
             lambda manifest: manifest["product_specifications"][0].__setitem__("status", "accepted") or manifest,
         )
-        mutate_json(
-            temp_repo / "specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("status", "accepted") or spec,
-        )
+        accept_kernel(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         product_doc = temp_repo / "derived/specs/product/primitive.md"
         product_doc.write_text(product_doc.read_text().replace("Primitive", "Primitive Projection", 1))
@@ -124,10 +142,7 @@ def run_generation_mutations(repo_root: Path) -> None:
             temp_repo / "specs/product/manifest.json",
             lambda manifest: manifest["product_specifications"][0].__setitem__("status", "accepted") or manifest,
         )
-        mutate_json(
-            temp_repo / "specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("status", "accepted") or spec,
-        )
+        accept_kernel(temp_repo)
         orphaned_product_doc = temp_repo / "derived/specs/product/orphaned.md"
         orphaned_product_doc.parent.mkdir(parents=True, exist_ok=True)
         orphaned_product_doc.write_text("stale\n")

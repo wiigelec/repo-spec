@@ -367,6 +367,130 @@ def run_product_validation_tests(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        install_fixture(temp_repo, "manifest-empty.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"].append(
+                {
+                    "spec_id": "product.kernel",
+                    "path": "specs/product/level-0/kernel.json",
+                    "status": "candidate",
+                    "level": 0,
+                }
+            ) or manifest,
+        )
+        mutate_json(
+            temp_repo / "specs/product/level-0/kernel.json",
+            lambda spec: (
+                spec["correspondence"]["implementations"].append({"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}),
+                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}),
+                spec,
+            )[-1],
+        )
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec.__setitem__("correspondence", {"implementations": [], "tests": [], "conformance": []}) or spec,
+        )
+        expect_failure("accepted empty correspondence", lambda: validate_repo(temp_repo), "missing conformance")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["conformance"].append(spec["correspondence"]["conformance"][0].copy()) or spec,
+        )
+        expect_failure("duplicate conformance record", lambda: validate_repo(temp_repo), "duplicate conformance")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["conformance"][0]["implementation_ids"].clear() or spec,
+        )
+        expect_failure("covered requirement without implementation mapping", lambda: validate_repo(temp_repo), "requires at least one implementation mapping")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["conformance"][0]["test_ids"].clear() or spec,
+        )
+        expect_failure("covered requirement without test mapping", lambda: validate_repo(temp_repo), "requires at least one test mapping")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: (
+                spec["correspondence"]["conformance"][0].__setitem__("status", "not-applicable"),
+                spec["correspondence"]["conformance"][0].__setitem__("implementation_ids", []),
+                spec["correspondence"]["conformance"][0].__setitem__("test_ids", []),
+                spec["correspondence"]["conformance"][0].__setitem__("rationale", "   "),
+                spec,
+            )[-1],
+        )
+        expect_failure("not-applicable without rationale", lambda: validate_repo(temp_repo), "requires rationale")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: (
+                spec["correspondence"]["conformance"][0].__setitem__("status", "not-applicable"),
+                spec["correspondence"]["conformance"][0].__setitem__("rationale", "Not applicable for this product."),
+                spec,
+            )[-1],
+        )
+        expect_failure("not-applicable with implementation mapping", lambda: validate_repo(temp_repo), "must not reference implementation mappings")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: (
+                spec["correspondence"]["conformance"][0].__setitem__("status", "not-applicable"),
+                spec["correspondence"]["conformance"][0].__setitem__("implementation_ids", []),
+                spec["correspondence"]["conformance"][0].__setitem__("rationale", "Not applicable for this product."),
+                spec,
+            )[-1],
+        )
+        expect_failure("not-applicable with test mapping", lambda: validate_repo(temp_repo), "must not reference test mappings")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
@@ -506,9 +630,9 @@ def run_product_validation_tests(repo_root: Path) -> None:
         accept_kernel(temp_repo)
         mutate_json(
             temp_repo / "specs/product/level-1/primitive.json",
-            lambda spec: spec["correspondence"]["conformance"][0]["implementation_ids"].__setitem__(0, "impl.missing") or spec,
+            lambda spec: spec["correspondence"]["conformance"][0].__setitem__("requirement_id", "KERNEL-001") or spec,
         )
-        expect_failure("unresolved implementation id", lambda: validate_repo(temp_repo), "unresolved implementation")
+        expect_failure("unknown conformance requirement", lambda: validate_repo(temp_repo), "unknown requirement")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

@@ -30,6 +30,21 @@ def accept_kernel(temp_repo: Path) -> None:
         temp_repo / "specs/product/level-0/kernel.json",
         lambda spec: (
             spec.__setitem__("status", "accepted"),
+            spec.__setitem__(
+                "correspondence",
+                {
+                    "implementations": [{"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}],
+                    "tests": [{"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                    "conformance": [
+                        {
+                            "requirement_id": "KERNEL-001",
+                            "implementation_ids": ["impl.kernel"],
+                            "test_ids": ["test.kernel"],
+                            "status": "covered",
+                        }
+                    ],
+                },
+            ),
             spec.__setitem__("derived_artifacts", [{"type": "markdown", "path": "derived/specs/product/kernel.md"}]),
             spec,
         )[-1],
