@@ -96,6 +96,8 @@ revise and accept higher-level artifact
 resume decomposition or implementation
 ```
 
+A maintenance request re-enters the same decomposition process at the highest layer that owns the requested change.
+
 ## Bounded tasks
 
 A bounded task has explicit:
