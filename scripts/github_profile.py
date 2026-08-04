@@ -35,6 +35,20 @@ def load_profile_manifest(repo_root: Path) -> dict:
     if manifest.get("adapter_generation_policy") != "source-to-adapter":
         fail(f"invalid profile manifest: {PROFILE_MANIFEST_PATH}")
 
+    deployment_state = manifest.get("deployment_state")
+    if not isinstance(deployment_state, dict):
+        fail(f"invalid profile manifest: {PROFILE_MANIFEST_PATH}")
+    for key in (
+        "ruleset_desired_state_format",
+        "branch_protection_desired_state_format",
+        "inspection_procedure",
+        "plan_apply_separation",
+        "mutation_evidence_record_fields",
+        "rollback_and_post_change_verification",
+    ):
+        if key not in deployment_state:
+            fail(f"invalid profile manifest: {PROFILE_MANIFEST_PATH}")
+
     managed = manifest.get("managed_adapters")
     if not isinstance(managed, list) or not managed:
         fail(f"invalid profile manifest: {PROFILE_MANIFEST_PATH}")

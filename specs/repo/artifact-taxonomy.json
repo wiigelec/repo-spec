@@ -264,7 +264,7 @@
       "role": "hosting deployment state",
       "authority_category": "evidentiary",
       "authority_source": "remote hosting-platform configuration and state",
-      "source_of_truth_rule": "Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings without becoming repository content.",
+      "source_of_truth_rule": "Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings using explicit desired-state, inspection, apply, rollback, and verification records without becoming repository content.",
       "mutability": "append-only evidence record",
       "generation_mode": "external",
       "validation_ownership": "platform",

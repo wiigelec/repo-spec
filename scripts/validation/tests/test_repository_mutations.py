@@ -286,6 +286,14 @@ def run_repository_mutations(repo_root: Path) -> None:
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         mutate_json(
+            temp_repo / "specs/repo/platform-profiles.json",
+            lambda spec: spec["profiles"][0]["deployment_state"]["plan_apply_separation"].append("Apply requires a change ticket.") or spec,
+        )
+        expect_failure("deployment-state contract", lambda: validate_repo(temp_repo), "plan/apply separation mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        mutate_json(
             temp_repo / "specs/repo/artifact-taxonomy.json",
             lambda spec: spec["artifact_classes"].__setitem__(1, copy.deepcopy(spec["artifact_classes"][0])) or spec,
         )

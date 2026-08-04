@@ -21,5 +21,57 @@
       "installed": ".github/workflows/validation.yml"
     }
   ],
+  "deployment_state": {
+    "ruleset_desired_state_format": {
+      "required_fields": [
+        "name",
+        "target repository",
+        "target remote configuration identifier",
+        "target branches",
+        "conditions",
+        "rules",
+        "bypass actors",
+        "enforcement"
+      ]
+    },
+    "branch_protection_desired_state_format": {
+      "required_fields": [
+        "branch pattern",
+        "target repository",
+        "target remote configuration identifier",
+        "required status checks",
+        "required reviews",
+        "merge restrictions",
+        "allow force pushes",
+        "require linear history",
+        "require signed commits"
+      ]
+    },
+    "inspection_procedure": [
+      "Inspect the live remote state before composing a change.",
+      "Record the observed state and compare it with the desired state.",
+      "Capture the exact repository revision and remote configuration identifier."
+    ],
+    "plan_apply_separation": [
+      "Plan phase prepares desired-state and evidence records only.",
+      "Apply phase performs the remote mutation only after the plan is accepted."
+    ],
+    "mutation_evidence_record_fields": [
+      "governing issue",
+      "accepted repository revision",
+      "target repository",
+      "target remote configuration identifier",
+      "previous state",
+      "inspection evidence",
+      "intended state",
+      "execution evidence",
+      "rollback procedure",
+      "post-change verification"
+    ],
+    "rollback_and_post_change_verification": [
+      "Rollback procedure must be declared before apply.",
+      "Post-change verification must state the exact checks used after apply."
+    ]
+  },
   "unmanaged_files": []
 }

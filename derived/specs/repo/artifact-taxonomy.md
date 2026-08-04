@@ -279,7 +279,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `hosting deployment state`
 - Authority category: `evidentiary`
 - Authority source: remote hosting-platform configuration and state
-- Source of truth rule: Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings without becoming repository content.
+- Source of truth rule: Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings using explicit desired-state, inspection, apply, rollback, and verification records without becoming repository content.
 - Mutability: append-only evidence record
 - Generation mode: `external`
 - Validation ownership: `platform`

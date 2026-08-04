@@ -70,6 +70,7 @@
         "authority_boundary",
         "adapter_generation_policy",
         "artifact_inventory",
+        "deployment_state",
         "remote_state_kinds",
         "mutation_record_fields"
       ],
@@ -101,6 +102,9 @@
         "artifact_inventory": {
           "type": "array",
           "items": { "$ref": "#/$defs/artifactInventoryItem" }
+        },
+        "deployment_state": {
+          "$ref": "#/$defs/deploymentState"
         },
         "remote_state_kinds": {
           "type": "array",
@@ -181,6 +185,55 @@
           }
         }
       ]
+    },
+    "deploymentState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ruleset_desired_state_format",
+        "branch_protection_desired_state_format",
+        "inspection_procedure",
+        "plan_apply_separation",
+        "mutation_evidence_record_fields",
+        "rollback_and_post_change_verification"
+      ],
+      "properties": {
+        "ruleset_desired_state_format": {
+          "$ref": "#/$defs/desiredStateFormat"
+        },
+        "branch_protection_desired_state_format": {
+          "$ref": "#/$defs/desiredStateFormat"
+        },
+        "inspection_procedure": {
+          "$ref": "#/$defs/stringList"
+        },
+        "plan_apply_separation": {
+          "$ref": "#/$defs/stringList"
+        },
+        "mutation_evidence_record_fields": {
+          "$ref": "#/$defs/stringList"
+        },
+        "rollback_and_post_change_verification": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "desiredStateFormat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_fields"],
+      "properties": {
+        "required_fields": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "stringList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "requirement": {
       "type": "object",
