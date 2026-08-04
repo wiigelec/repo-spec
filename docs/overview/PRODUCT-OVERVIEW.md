@@ -21,7 +21,7 @@ The overview does not replace accepted normative specifications, authorize repos
 
 ## Minimal reading paths
 
-- To understand what the product is and how its central method works: read Parts 1 and 6.
+- To understand what the product is and how its central method works: read Parts 1 and 2.
 - To design or revise product specifications: read Parts 1, 3, and 6.
 - To implement a bounded repository change: read Parts 4 and 6, plus the governing specification and issue.
 - To understand the canonical decomposition model: read Part 2.
