@@ -908,6 +908,18 @@ Goal: prove the architecture with a minimal initialized product repository.
 
 The reference implementation uses the in-repository isolated-copy model: a checked-in repository snapshot inside this repository that can be validated as a self-contained initialized repository without depending on private history or out-of-tree state.
 
+Stage 7 ownership findings:
+
+- the reference repository owns the minimal product manifest, Level 0 and Level 1 product specifications, source behavior, tests, correspondence records, derived projections, and isolated-copy validation harness;
+- repository-generic authority remains with the accepted repository specifications and plans;
+- product semantics remain constrained to the accepted product specifications and their correspondence records.
+
+Stage 7 portability findings:
+
+- the reference repository can be copied to a clean temporary location and run generation, validation, mutation tests, and product tests through repository-local scripts;
+- the copied reference tree does not depend on parent-checkout state or private history;
+- clean temporary-copy validation and invalid-mutation failure behavior are both demonstrable.
+
 Candidate outputs:
 
 - reference form decision;
@@ -921,6 +933,29 @@ Acceptance gate: a fresh reference repository passes all required validation wit
 ### Stage 8 — Initialization mechanism
 
 Goal: create a repeatable way to initialize new product repositories.
+
+First Stage 8 accepted base:
+
+```text
+main at 88524d68b6bd25746cc5891163b86deb4dba344d
+```
+
+Fixed inputs:
+
+- the accepted reference repository and its isolated-copy validation evidence;
+- the accepted product-manifest, product-spec-base, product-levels, and product-correspondence contracts;
+- the repository-local generation, validation, and mutation-test entry points;
+- the Stage 7 ownership and portability findings;
+- the exact accepted Stage 8 base above.
+
+Variable inputs:
+
+- initialization specification;
+- template source;
+- initializer implementation;
+- profile selection;
+- generated starter artifacts;
+- initialization conformance tests.
 
 Candidate outputs:
 
