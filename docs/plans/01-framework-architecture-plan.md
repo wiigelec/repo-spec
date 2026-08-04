@@ -2,7 +2,7 @@
 
 ## Status
 
-Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is the next separately governed phase.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is complete; Stage 6 is the next separately governed phase.
 
 Accepted Stage 2 base:
 
@@ -20,6 +20,12 @@ Accepted Stage 4 completion base and first Stage 5 base:
 
 ```text
 main at 3f625406902a2170d345d510e111120d9f7c3e30
+```
+
+Accepted Stage 5 completion base and first Stage 6 base:
+
+```text
+main at e47474daa310cb8134b2cff16dbe0ac84b9a271b
 ```
 
 This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
@@ -827,6 +833,18 @@ Stage 5 authority model:
 - validation owns structural correspondence checks;
 - semantic correctness remains review-owned;
 - product projections must render accepted correspondence fields deterministically.
+
+Stage 5 integrated ownership matrix:
+
+| Concept | Current authority owner | Notes |
+| --- | --- | --- |
+| Correspondence declaration source | accepted product specification | Product file owns implementations, tests, and conformance |
+| Product manifest registry | `repo.product-manifest` | Registry only; no correspondence authoring |
+| Correspondence contract | `repo.product-correspondence` | Canonical lifecycle and completeness rules |
+| Base envelope and level inheritance | `repo.product-spec-base` and `repo.product-levels` | Common envelope plus extension boundaries |
+| Projection rendering | `scripts/docgen.py` | Deterministic rendering from product JSON |
+| Structural validation | `repo.validation` plus implementation | Path, ownership, and completeness checks |
+| Semantic correctness | review | Remains outside repository-local validation |
 
 Ordered Stage 5 issue sequence:
 
