@@ -10,7 +10,8 @@
       "type": "object",
       "required": [
         "artifact_type",
-        "root_path"
+        "root_path",
+        "content_areas"
       ],
       "properties": {
         "artifact_type": {
@@ -20,6 +21,30 @@
         "root_path": {
           "type": "string",
           "const": "docs/decompositions/"
+        },
+        "content_areas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "invocation_and_authority",
+            "framework_and_product_foundations",
+            "platform_and_execution",
+            "generation_validation_and_handoff"
+          ],
+          "properties": {
+            "invocation_and_authority": {
+              "type": "string"
+            },
+            "framework_and_product_foundations": {
+              "type": "string"
+            },
+            "platform_and_execution": {
+              "type": "string"
+            },
+            "generation_validation_and_handoff": {
+              "type": "string"
+            }
+          }
         }
       }
     }

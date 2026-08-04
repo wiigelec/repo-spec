@@ -10,7 +10,8 @@
       "type": "object",
       "required": [
         "artifact_type",
-        "root_path"
+        "root_path",
+        "content_areas"
       ],
       "properties": {
         "artifact_type": {
@@ -20,6 +21,38 @@
         "root_path": {
           "type": "string",
           "const": "docs/overview/"
+        },
+        "content_areas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "product_identity",
+            "problem_and_outcome",
+            "users_principles_and_boundaries",
+            "capabilities_and_success",
+            "unresolved_questions",
+            "lifecycle_and_handoff"
+          ],
+          "properties": {
+            "product_identity": {
+              "type": "string"
+            },
+            "problem_and_outcome": {
+              "type": "string"
+            },
+            "users_principles_and_boundaries": {
+              "type": "string"
+            },
+            "capabilities_and_success": {
+              "type": "string"
+            },
+            "unresolved_questions": {
+              "type": "string"
+            },
+            "lifecycle_and_handoff": {
+              "type": "string"
+            }
+          }
         }
       }
     }

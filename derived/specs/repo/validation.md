@@ -40,6 +40,12 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-018`: The validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations.
 - `REPO-VAL-019`: The validation entry point shall enforce the canonical development-document roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering for governed overview, decomposition, and planning artifacts.
 - `REPO-VAL-020`: The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts.
+- `REPO-VAL-021`: The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry.
+- `REPO-VAL-022`: The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once.
+- `REPO-VAL-023`: The validation entry point shall build a cross-document registry for governed development documents and shall enforce basis-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them.
+- `REPO-VAL-024`: The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations.
+- `REPO-VAL-025`: The validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical.
+- `REPO-VAL-026`: The validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks so chunk manageability remains deterministic without relying on token counts.
 
 ## Dependencies
 
@@ -56,6 +62,7 @@ Defines repository validation during repo-spec formation.
 - artifact: `scripts/validate`
 - artifact: `scripts/generate-docs`
 - artifact: `scripts/github_field_policy.py`
+- artifact: `docs/development-document-compatibility.json`
 
 ## Derived artifacts
 

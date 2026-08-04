@@ -13,6 +13,7 @@ This document is the controlling entry point for the initializer decomposition c
   "artifact_id": "initializer-decomposition",
   "artifact_type": "product-decomposition",
   "document_slug": "initializer-decomposition",
+  "filename_stem": "initializer-decomposition",
   "root_path": "docs/decompositions/",
   "title": "Repo-Spec Initializer Decomposition",
   "product_id": "repo-spec initializer",
@@ -28,6 +29,12 @@ This document is the controlling entry point for the initializer decomposition c
     {"type": "artifact", "path": "docs/overview/product-overview/05-human-ai-continuity.md"},
     {"type": "artifact", "path": "docs/overview/product-overview/06-governance-and-evolution.md"}
   ],
+  "content_areas": {
+    "invocation_and_authority": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md",
+    "framework_and_product_foundations": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md",
+    "platform_and_execution": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md",
+    "generation_validation_and_handoff": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"
+  },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority"},
     {"order": 2, "path": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "title": "Framework and product foundations"},

@@ -10,7 +10,8 @@
       "type": "object",
       "required": [
         "artifact_type",
-        "root_path"
+        "root_path",
+        "content_areas"
       ],
       "properties": {
         "artifact_type": {
@@ -20,6 +21,26 @@
         "root_path": {
           "type": "string",
           "const": "docs/plans/"
+        },
+        "content_areas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scope_and_preconditions",
+            "workstreams_and_dependencies",
+            "validation_and_completion"
+          ],
+          "properties": {
+            "scope_and_preconditions": {
+              "type": "string"
+            },
+            "workstreams_and_dependencies": {
+              "type": "string"
+            },
+            "validation_and_completion": {
+              "type": "string"
+            }
+          }
         }
       }
     }

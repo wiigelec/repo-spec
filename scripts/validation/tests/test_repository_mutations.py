@@ -46,6 +46,50 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        mutate_json(
+            temp_repo / "docs/development-document-compatibility.json",
+            lambda registry: registry["entries"].__delitem__(0) or registry,
+        )
+        expect_failure("legacy development document without registry entry", lambda: validate_repo(temp_repo), "compatibility registry mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_path.write_text(overview_path.read_text().replace('    "capabilities_and_success": "docs/overview/initializer-overview/04-capabilities-and-success.md",\n', '    "capabilities_and_success": "docs/overview/initializer-overview/05-unresolved-questions.md",\n'))
+        expect_failure("missing overview content area", lambda: validate_repo(temp_repo), "content inventory failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        chunk_path = temp_repo / "docs/overview/initializer-overview/04-capabilities-and-success.md"
+        chunk_path.write_text(chunk_path.read_text() + "\n<!--" + ("x" * 30000) + "-->")
+        expect_failure("oversized overview chunk bytes", lambda: validate_repo(temp_repo), "chunk exceeds byte limit")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_path.write_text(overview_path.read_text().replace('  "artifact_id": "initializer-overview",\n', '  "artifact_id": "initializer.plan.bootstrap",\n'))
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        chunk_index_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        chunk_index_path.write_text(chunk_index_path.read_text().replace("./initializer-overview/04-capabilities-and-success.md", "./initializer-overview/05-unresolved-questions.md", 1))
+        expect_failure("wrong overview chunk link", lambda: validate_repo(temp_repo), "chunk index link mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_path.write_text(decomposition_path.read_text().replace("docs/overview/PRODUCT-OVERVIEW.md", "docs/overview/MISSING-OVERVIEW.md", 1))
+        expect_failure("missing decomposition predecessor path", lambda: validate_repo(temp_repo), "unresolved predecessor path")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(plan_path.read_text().replace("docs/decompositions/INITIALIZER-DECOMPOSITION.md", "docs/overview/INITIALIZER-OVERVIEW.md", 1))
+        expect_failure("plan without controlling decomposition", lambda: validate_repo(temp_repo), "missing controlling decomposition")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.unlisted"
         (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
@@ -173,6 +217,11 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         check_generated_document_write_behavior(temp_repo)
         expect_failure("normative reference to retired spec", lambda: validate_repo(temp_repo), "resolvable references failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        add_lifecycle_spec(specs, temp_repo, "repo.lifecycle-candidate", "candidate", supersedes=["repo.validation"])
+        expect_failure("non-reciprocal supersession pair", lambda: validate_repo(temp_repo), "non-reciprocal supersedes pair")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

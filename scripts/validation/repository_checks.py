@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -50,11 +51,21 @@ class ValidationContext:
     product: ProductValidationContext | None
 
 
+@dataclass(frozen=True)
+class DevelopmentDocumentRecord:
+    path: str
+    root_rel: str
+    info: dict[str, Any]
+    metadata: dict[str, Any]
+    chunk_paths: list[str]
+
+
 DEVELOPMENT_DOCUMENT_ROOTS = {
     "docs/overview/": {
         "artifact_type": "product-overview",
         "schema_key": "repo.product-overview",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "content_area_keys": ["product_identity", "problem_and_outcome", "users_principles_and_boundaries", "capabilities_and_success", "unresolved_questions", "lifecycle_and_handoff"],
         "filename_suffix": "-OVERVIEW.md",
         "chunk_dir_suffix": "/",
     },
@@ -62,6 +73,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
     },
@@ -69,12 +81,21 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "implementation-plan",
         "schema_key": "repo.implementation-plan",
         "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "content_area_keys": ["scope_and_preconditions", "workstreams_and_dependencies", "validation_and_completion"],
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
 }
 
+DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "docs/development-document-compatibility.json"
+DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
+    "docs/overview/product-overview/": "docs/overview/PRODUCT-OVERVIEW.md",
+    "docs/decompositions/initializer-decomposition/": "docs/decompositions/INITIALIZER-DECOMPOSITION.md",
+    "docs/plans/initializer-implementation-plan/": "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
+}
+
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
+MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
 
 def markdown_headings(text: str) -> set[str]:
@@ -83,6 +104,34 @@ def markdown_headings(text: str) -> set[str]:
         if line.startswith("## "):
             headings.add(line.removeprefix("## ").strip())
     return headings
+
+
+def markdown_links(text: str) -> list[tuple[str, str]]:
+    return re.findall(r"\[([^\]]+)\]\(([^)]+)\)", text)
+
+
+def resolve_markdown_link_target(source_path: str, target: str) -> str:
+    target = target.split("#", 1)[0]
+    if not target:
+        return target
+    return os.path.normpath((Path(source_path).parent / target).as_posix())
+
+
+def markdown_section(text: str, heading: str) -> str:
+    lines = text.splitlines()
+    start = None
+    for index, line in enumerate(lines):
+        if line == f"## {heading}":
+            start = index + 1
+            break
+    expect(start is not None, f"development document navigation failed: missing section {heading}")
+
+    end = len(lines)
+    for index in range(start, len(lines)):
+        if lines[index].startswith("## "):
+            end = index
+            break
+    return "\n".join(lines[start:end])
 
 
 def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
@@ -106,6 +155,178 @@ def top_level_document_path_for_metadata(metadata: dict[str, Any]) -> str:
 
 def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
     return [chunk["path"] for chunk in metadata["subordinate_chunks"]]
+
+
+def load_development_document_compatibility_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
+    registry_path = repo_root / DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH
+    expect(registry_path.exists(), f"development document classification failed: missing compatibility registry {DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH}")
+    try:
+        data = json.loads(registry_path.read_text())
+    except json.JSONDecodeError as exc:
+        fail(f"development document classification failed: invalid compatibility registry JSON: {exc.msg}")
+
+    expect(isinstance(data, dict), "development document classification failed: compatibility registry must be an object")
+    expect(data.get("registry_version") == "1", "development document classification failed: unsupported compatibility registry version")
+    entries = data.get("entries")
+    expect(isinstance(entries, list), "development document classification failed: compatibility registry entries must be an array")
+
+    registry: dict[str, dict[str, Any]] = {}
+    for index, entry in enumerate(entries):
+        expect(isinstance(entry, dict), f"development document classification failed: compatibility registry entry at index {index} must be an object")
+        path = entry.get("path")
+        kind = entry.get("kind")
+        reason = entry.get("reason")
+        expect(isinstance(path, str) and path, f"development document classification failed: compatibility registry entry at index {index} must include a path")
+        expect(isinstance(kind, str) and kind in {"compatibility", "exemption"}, f"development document classification failed: compatibility registry entry at index {index} must declare compatibility or exemption")
+        expect(isinstance(reason, str) and reason.strip(), f"development document classification failed: compatibility registry entry at index {index} must include a reason")
+        expect(path not in registry, f"development document classification failed: duplicate compatibility registry path {path}")
+        path_obj = Path(path)
+        expect(path_obj.name != "README.md", f"development document classification failed: compatibility registry may not include README.md {path}")
+        expect(path_obj.suffix == ".md", f"development document classification failed: compatibility registry path must be Markdown {path}")
+        expect(f"{path_obj.parent.as_posix()}/" in DEVELOPMENT_DOCUMENT_ROOTS, f"development document classification failed: compatibility registry path must be under a canonical root {path}")
+        registry[path] = entry
+
+    return registry
+
+
+def resolve_development_document_artifact(
+    path: str,
+    records: dict[str, DevelopmentDocumentRecord],
+    compatibility_registry: dict[str, dict[str, Any]],
+    chunk_owner_paths: dict[str, str],
+) -> tuple[str, DevelopmentDocumentRecord | None]:
+    if path in records:
+        return path, records[path]
+    if path in compatibility_registry:
+        return path, None
+    owner_path = chunk_owner_paths.get(path)
+    if owner_path is not None:
+        return owner_path, records[owner_path]
+    for prefix, owner_path in DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS.items():
+        if path.startswith(prefix):
+            expect(owner_path in compatibility_registry, f"development document relationship failed: unresolved legacy composite owner for {path}")
+            return owner_path, None
+    raise KeyError(path)
+
+
+def check_supersession_pairs(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
+    for spec_id, spec in specs.items():
+        for target_spec_id in spec.get("supersedes", []):
+            expect(target_spec_id in specs, f"{relation_label} failed: unresolved supersedes pair {spec_id} -> {target_spec_id}")
+            expect(spec_id in specs[target_spec_id].get("superseded_by", []), f"{relation_label} failed: non-reciprocal supersedes pair {spec_id} -> {target_spec_id}")
+        for target_spec_id in spec.get("superseded_by", []):
+            expect(target_spec_id in specs, f"{relation_label} failed: unresolved superseded_by pair {spec_id} -> {target_spec_id}")
+            expect(spec_id in specs[target_spec_id].get("supersedes", []), f"{relation_label} failed: non-reciprocal superseded_by pair {spec_id} -> {target_spec_id}")
+
+
+def check_supersession_acyclicity(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
+    graph = {spec_id: list(spec.get("supersedes", [])) for spec_id, spec in specs.items()}
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(node: str) -> None:
+        if node in visited:
+            return
+        if node in visiting:
+            fail(f"{relation_label} failed: cycle detected")
+        visiting.add(node)
+        for dep in graph[node]:
+            expect(dep in graph, f"{relation_label} failed: unresolved supersedes relation {node} -> {dep}")
+            visit(dep)
+        visiting.remove(node)
+        visited.add(node)
+
+    for node in graph:
+        visit(node)
+
+
+def check_development_document_relationships(
+    records: dict[str, DevelopmentDocumentRecord],
+    compatibility_registry: dict[str, dict[str, Any]],
+    chunk_owner_paths: dict[str, str],
+) -> None:
+    artifact_ids: dict[str, str] = {}
+    basis_graph: dict[str, list[str]] = {path: [] for path in records}
+
+    for path, record in records.items():
+        metadata = record.metadata
+        artifact_id = metadata["artifact_id"]
+        expect(artifact_id not in artifact_ids, f"development document identity failed: duplicate artifact_id {artifact_id}")
+        artifact_ids[artifact_id] = path
+
+    for path, record in records.items():
+        metadata = record.metadata
+        source_type = metadata["artifact_type"]
+        source_product = metadata["product_id"]
+        source_status = metadata["lifecycle_status"]
+        allowed_types = {
+            "product-overview": {"product-overview"},
+            "product-decomposition": {"product-overview"},
+            "implementation-plan": {"product-overview", "product-decomposition", "implementation-plan"},
+        }[source_type]
+
+        saw_overview = False
+        saw_decomposition = False
+        for basis in metadata["basis"]:
+            if basis["type"] != "artifact":
+                continue
+            target_path = basis["path"]
+            try:
+                resolved_path, resolved_record = resolve_development_document_artifact(target_path, records, compatibility_registry, chunk_owner_paths)
+            except KeyError:
+                fail(f"development document relationship failed: unresolved predecessor path {path} -> {target_path}")
+
+            if resolved_record is None:
+                if resolved_path == "docs/overview/PRODUCT-OVERVIEW.md":
+                    saw_overview = True
+                continue
+
+            target_metadata = resolved_record.metadata
+            expect(resolved_path != path, f"development document relationship failed: self reference {path}")
+            expect(target_metadata["product_id"] == source_product, f"development document relationship failed: product mismatch {path} -> {target_path}")
+            expect(
+                source_status in {"superseded", "retired"} or target_metadata["lifecycle_status"] in {"candidate", "accepted"},
+                f"development document relationship failed: predecessor lifecycle mismatch {path} -> {target_path}",
+            )
+            expect(target_metadata["artifact_type"] in allowed_types, f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}")
+
+            basis_graph[path].append(resolved_path)
+            if source_type == "product-overview" and target_metadata["artifact_type"] == "product-overview":
+                saw_overview = True
+            if source_type == "product-decomposition" and target_metadata["artifact_type"] == "product-overview":
+                saw_overview = True
+            if source_type == "implementation-plan":
+                if target_metadata["artifact_type"] == "product-overview":
+                    saw_overview = True
+                if target_metadata["artifact_type"] == "product-decomposition":
+                    saw_decomposition = True
+
+        if source_type == "product-overview":
+            expect(saw_overview, f"development document relationship failed: missing predecessor overview for {path}")
+        elif source_type == "product-decomposition":
+            expect(saw_overview, f"development document relationship failed: missing controlling overview for {path}")
+        elif source_type == "implementation-plan":
+            expect(saw_overview, f"development document relationship failed: missing controlling overview for {path}")
+            expect(saw_decomposition, f"development document relationship failed: missing controlling decomposition for {path}")
+
+    visiting: list[str] = []
+    visited: set[str] = set()
+
+    def visit(node: str) -> None:
+        if node in visited:
+            return
+        if node in visiting:
+            start = visiting.index(node)
+            cycle = visiting[start:] + [node]
+            fail(f"development document relationship failed: cycle detected {' -> '.join(cycle)}")
+        visiting.append(node)
+        for dep in basis_graph[node]:
+            visit(dep)
+        visiting.pop()
+        visited.add(node)
+
+    for node in basis_graph:
+        visit(node)
 
 
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
@@ -326,6 +547,8 @@ def check_product_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None
 def check_lineage_relations(specs: dict[str, dict[str, Any]]) -> None:
     check_relation_targets(specs, "supersedes", {"candidate", "accepted", "superseded", "retired"}, "supersedes")
     check_relation_targets(specs, "superseded_by", {"candidate", "accepted", "superseded", "retired"}, "superseded_by")
+    check_supersession_pairs(specs, "supersession relations")
+    check_supersession_acyclicity(specs, "supersession relations")
 
 
 def check_resolvable_references(repo_root: Path, specs: dict[str, dict[str, Any]]) -> None:
@@ -775,6 +998,8 @@ def check_lineage_relations_phase(context: ValidationContext) -> None:
                 for target_spec_id in spec.get(field, []):
                     expect(target_spec_id in context.product.specs, f"product lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
                     expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
+        check_supersession_pairs(context.product.specs, "product supersession relations")
+        check_supersession_acyclicity(context.product.specs, "product supersession relations")
 
 
 def check_acyclic_dependencies_phase(context: ValidationContext) -> None:
@@ -788,6 +1013,11 @@ def check_generated_document_freshness_phase(context: ValidationContext) -> None
 
 
 def check_development_documents_phase(context: ValidationContext) -> None:
+    compatibility_registry = load_development_document_compatibility_registry(context.repo_root)
+    unmarked_docs: set[str] = set()
+    records: dict[str, DevelopmentDocumentRecord] = {}
+    chunk_owner_paths: dict[str, str] = {}
+
     for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items():
         root = context.repo_root / root_rel
         expect(root.exists(), f"development document root failed: missing root {root_rel}")
@@ -799,23 +1029,23 @@ def check_development_documents_phase(context: ValidationContext) -> None:
         for path in sorted(root.glob("*.md")):
             if path.name == "README.md":
                 continue
-            text = path.read_text()
-            if "## Metadata" not in text:
-                continue
             docs.append(path)
 
         for path in docs:
             text = path.read_text()
             rel_path = path.relative_to(context.repo_root).as_posix()
+            if "## Metadata" not in text:
+                unmarked_docs.add(rel_path)
+                continue
+
             metadata = extract_document_metadata(text, rel_path)
             schema_key = info["schema_key"]
             validate_instance(metadata, context.repository.schemas[schema_key], rel_path, context.repository.schemas[schema_key])
 
             expect(metadata["artifact_type"] == info["artifact_type"], f"development document metadata failed: artifact type mismatch in {rel_path}")
             expect(metadata["root_path"] == root_rel, f"development document metadata failed: root path mismatch in {rel_path}")
-            expect(metadata["artifact_id"] == metadata["document_slug"], f"development document metadata failed: slug mismatch in {rel_path}")
             expect(path.parent == root, f"development document path failed: top-level document must live directly under {root_rel}: {rel_path}")
-            expect(path.name == f"{metadata['artifact_id'].upper()}.md", f"development document path failed: filename mismatch in {rel_path}")
+            expect(path.name == f"{metadata['filename_stem'].upper()}.md", f"development document path failed: filename mismatch in {rel_path}")
 
             headings = markdown_headings(text)
             for heading in info["required_headings"]:
@@ -835,8 +1065,25 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             expect(len(declared_chunks) == len(actual_chunks), f"development document chunk inventory failed: chunk count mismatch in {rel_path}")
             expect(set(declared_paths) == {chunk.relative_to(context.repo_root).as_posix() for chunk in actual_chunks}, f"development document chunk inventory failed: inventory mismatch in {rel_path}")
 
+            content_areas = metadata["content_areas"]
+            expect(isinstance(content_areas, dict), f"development document content inventory failed: content areas must be an object in {rel_path}")
+            expected_area_keys = info["content_area_keys"]
+            expect(set(content_areas) == set(expected_area_keys), f"development document content inventory failed: area key mismatch in {rel_path}")
+            area_paths = list(content_areas.values())
+            expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate area paths in {rel_path}")
+            expect(set(area_paths) == set(declared_paths), f"development document content inventory failed: area inventory mismatch in {rel_path}")
+
+            records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
+            for chunk_path in declared_paths:
+                expect(chunk_path not in chunk_owner_paths, f"development document chunk inventory failed: duplicate chunk path {chunk_path}")
+                chunk_owner_paths[chunk_path] = rel_path
+
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")
+
+            chunk_index_section = markdown_section(text, "Chunk index")
+            chunk_index_links = {resolve_markdown_link_target(rel_path, target) for _label, target in markdown_links(chunk_index_section)}
+            expect(chunk_index_links == set(declared_paths), f"development document navigation failed: chunk index link mismatch in {rel_path}")
 
             for chunk in declared_chunks:
                 chunk_path = context.repo_root / chunk["path"]
@@ -844,14 +1091,18 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                 expect(chunk_path.is_file(), f"development document chunk inventory failed: chunk path must be a file {chunk['path']}")
                 expect(chunk_path.parent == chunk_dir, f"development document path failed: chunk path outside chunk directory {chunk['path']}")
                 expect(re.fullmatch(r"\d\d-[a-z0-9][a-z0-9-]*\.md", chunk_path.name) is not None, f"development document path failed: malformed chunk filename {chunk['path']}")
-                expect(chunk["path"] in text, f"development document navigation failed: top-level document must link to chunk {chunk['path']}")
 
                 chunk_text = chunk_path.read_text()
                 expect(len(chunk_text.splitlines()) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES, f"development document size failed: chunk exceeds line limit {chunk['path']}")
+                expect(len(chunk_text.encode("utf-8")) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES, f"development document size failed: chunk exceeds byte limit {chunk['path']}")
                 first_non_empty = next((line for line in chunk_text.splitlines() if line.strip()), "")
                 expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
 
-            expect(path.name in readme_text, f"development document discovery failed: README does not reference {path.name}")
+            canonical_links = {resolve_markdown_link_target(f"{root_rel}README.md", target) for _label, target in markdown_links(markdown_section(readme_text, "Canonical documents"))}
+            expect(rel_path in canonical_links, f"development document discovery failed: README does not link to {rel_path}")
+
+    expect(unmarked_docs == set(compatibility_registry), f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(compatibility_registry)}")
+    check_development_document_relationships(records, compatibility_registry, chunk_owner_paths)
 
 
 

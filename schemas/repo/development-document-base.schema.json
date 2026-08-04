@@ -8,6 +8,7 @@
     "artifact_id",
     "artifact_type",
     "document_slug",
+    "filename_stem",
     "root_path",
     "title",
     "product_id",
@@ -15,6 +16,7 @@
     "lifecycle_status",
     "governing_issue",
     "basis",
+    "content_areas",
     "subordinate_chunks",
     "successor_action",
     "schema_version"
@@ -22,13 +24,17 @@
   "properties": {
     "artifact_id": {
       "type": "string",
-      "pattern": "^[a-z][a-z0-9-]*$"
+      "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
     },
     "artifact_type": {
       "type": "string",
       "enum": ["product-overview", "product-decomposition", "implementation-plan"]
     },
     "document_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "filename_stem": {
       "type": "string",
       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
     },
@@ -62,6 +68,9 @@
       "items": {
         "$ref": "#/$defs/reference"
       }
+    },
+    "content_areas": {
+      "type": "object"
     },
     "subordinate_chunks": {
       "type": "array",

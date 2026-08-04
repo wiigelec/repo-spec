@@ -13,6 +13,7 @@ This document is the controlling entry point for the initializer overview compos
   "artifact_id": "initializer-overview",
   "artifact_type": "product-overview",
   "document_slug": "initializer-overview",
+  "filename_stem": "initializer-overview",
   "root_path": "docs/overview/",
   "title": "Repo-Spec Initializer Overview",
   "product_id": "repo-spec initializer",
@@ -28,6 +29,14 @@ This document is the controlling entry point for the initializer overview compos
     {"type": "artifact", "path": "docs/overview/product-overview/05-human-ai-continuity.md"},
     {"type": "artifact", "path": "docs/overview/product-overview/06-governance-and-evolution.md"}
   ],
+  "content_areas": {
+    "product_identity": "docs/overview/initializer-overview/01-product-identity-and-purpose.md",
+    "problem_and_outcome": "docs/overview/initializer-overview/02-problem-and-outcome.md",
+    "users_principles_and_boundaries": "docs/overview/initializer-overview/03-users-principles-and-boundaries.md",
+    "capabilities_and_success": "docs/overview/initializer-overview/04-capabilities-and-success.md",
+    "unresolved_questions": "docs/overview/initializer-overview/05-unresolved-questions.md",
+    "lifecycle_and_handoff": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md"
+  },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"},
     {"order": 2, "path": "docs/overview/initializer-overview/02-problem-and-outcome.md", "title": "Problem and outcome"},

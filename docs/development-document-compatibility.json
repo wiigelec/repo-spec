@@ -1,0 +1,20 @@
+{
+  "registry_version": "1",
+  "entries": [
+    {
+      "path": "docs/overview/PRODUCT-OVERVIEW.md",
+      "kind": "compatibility",
+      "reason": "Legacy top-level product overview index predates the machine-readable metadata envelope and remains governed through compatibility handling until migrated."
+    },
+    {
+      "path": "docs/plans/01-framework-architecture-plan.md",
+      "kind": "compatibility",
+      "reason": "Grandfathered legacy planning record predates the machine-readable metadata envelope and is retained as compatibility-managed predecessor evidence rather than as a governed implementation plan."
+    },
+    {
+      "path": "docs/plans/02-reference-repository-plan.md",
+      "kind": "compatibility",
+      "reason": "Grandfathered legacy planning record predates the machine-readable metadata envelope and is retained as compatibility-managed predecessor evidence rather than as a governed implementation plan."
+    }
+  ]
+}
