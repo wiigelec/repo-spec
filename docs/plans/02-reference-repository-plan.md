@@ -1,10 +1,10 @@
-# Stage 7 Reference Repository Plan
+# Reference Repository Plan
 
 ## Status
 
-Current non-normative implementation plan. Stage 7 uses the in-repository isolated-copy model.
+Current non-normative implementation plan. The reference repository uses the in-repository isolated-copy model.
 
-Accepted Stage 7 base:
+Accepted reference-repository base:
 
 ```text
 main at f7fa9c51a88771599f9e908249a61d4353a436e9
@@ -27,11 +27,11 @@ This plan is based on:
 
 ## Purpose
 
-Stage 7 proves the framework with a minimal initialized repository snapshot that can live inside this repository as a checked-in isolated copy.
+The reference repository proves the framework with a minimal initialized repository snapshot that can live inside this repository as a checked-in isolated copy.
 
 The reference copy is a proof artifact, not a replacement for the framework plan, the repository specifications, or the validation contract.
 
-## Issue 1 - Decide the Stage 7 reference form and artifact inventory
+## Issue 1 - Decide the reference form and artifact inventory
 
 ### Scope
 
@@ -42,7 +42,7 @@ The reference copy is a proof artifact, not a replacement for the framework plan
 
 ### Accepted reference form
 
-The Stage 7 reference repository is an in-repository isolated copy of a minimal initialized repository.
+The reference repository is an in-repository isolated copy of a minimal initialized repository.
 
 The copy must be self-contained, reviewable as checked-in content, and valid without any dependence on private history, ambient working-tree state, or remote-only hosting state.
 
@@ -114,7 +114,7 @@ It shall not cover:
 
 ### Expected outcome
 
-The Stage 7 reference repository becomes a checked-in proof that the framework can describe a minimal initialized repository, classify its artifact inventory, and validate the boundary between reusable, bootstrap-only, and product-specific content.
+The reference repository becomes a checked-in proof that the framework can describe a minimal initialized repository, classify its artifact inventory, and validate the boundary between reusable, bootstrap-only, and product-specific content.
 
 ### Acceptance gate
 
@@ -122,4 +122,4 @@ A fresh reference repository passes all required validation without relying on p
 
 ### Completion gate
 
-The Stage 7 form and complete artifact inventory are accepted.
+The reference form and complete artifact inventory are accepted.

@@ -1,0 +1,22 @@
+{
+  "spec_id": "repo.platform-profiles",
+  "title": "Reference Platform Profiles",
+  "purpose": "Declares the minimal profile source used by the reference skeleton.",
+  "status": "accepted",
+  "schema_version": "1",
+  "profiles": [
+    {
+      "identifier": "github",
+      "label": "GitHub",
+      "source_root": "profiles/github/",
+      "installed_adapter_root": ".github/",
+      "authority_boundary": "profile-source-authoritative",
+      "adapter_generation_policy": "source-to-adapter",
+      "artifact_inventory": [],
+      "deployment_state": {},
+      "remote_state_kinds": [],
+      "mutation_record_fields": []
+    }
+  ],
+  "normative_requirements": []
+}

@@ -1,0 +1,10 @@
+{
+  "spec_id": "repo.repository-structure",
+  "title": "Reference Repository Structure",
+  "purpose": "Defines the minimal reference layout.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {"id": "REF-STR-001", "text": "The reference skeleton shall separate repository authority, schemas, scripts, profiles, and product placeholders."}
+  ]
+}

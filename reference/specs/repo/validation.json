@@ -1,0 +1,10 @@
+{
+  "spec_id": "repo.validation",
+  "title": "Reference Validation",
+  "purpose": "Defines the local validation boundary for the reference skeleton.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {"id": "REF-VAL-001", "text": "The reference skeleton shall provide a repository-local validation script."}
+  ]
+}

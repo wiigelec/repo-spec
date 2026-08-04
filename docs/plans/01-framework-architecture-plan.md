@@ -2,7 +2,7 @@
 
 ## Status
 
-Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is complete; Stage 6 is complete; Stage 7 is the next separately governed phase.
+Current non-normative implementation plan. Stage 1 is complete; Stage 2 is complete; Stage 3 is complete; Stage 4 is complete; Stage 5 is complete; Stage 6 is complete; the reference repository is the next separately governed phase.
 
 Accepted Stage 2 base:
 
@@ -28,7 +28,7 @@ Accepted Stage 5 completion base and first Stage 6 base:
 main at e47474daa310cb8134b2cff16dbe0ac84b9a271b
 ```
 
-Accepted Stage 6 completion base and first Stage 7 base:
+Accepted Stage 6 completion base and first reference-repository base:
 
 ```text
 main at f7fa9c51a88771599f9e908249a61d4353a436e9
@@ -888,7 +888,7 @@ Stage 6 integrated ownership matrix:
 | Remote-state deployment contract | `profiles/github/manifest.json` and `repo.platform-profiles` | Desired-state, inspection, apply, rollback, verification |
 | Freshness validation | `scripts/github_profile.py` plus `repo.validation` | Confirms source/adapter sync and orphan detection |
 | Bootstrap scripts | `scripts/github-field-policy`, `scripts/github_field_policy.py`, `scripts/github_field_policy_mutation_test.py` | Remain bootstrap-owned support infrastructure |
-| Stage 7 base | `main at f7fa9c51a88771599f9e908249a61d4353a436e9` | First accepted Stage 7 base |
+| Reference repository base | `main at f7fa9c51a88771599f9e908249a61d4353a436e9` | First accepted reference-repository base |
 
 Candidate outputs:
 
@@ -900,9 +900,9 @@ Candidate outputs:
 
 Acceptance gate: GitHub-specific behavior is identifiable and does not define universal framework semantics.
 
-Completion gate: the Stage 6 integrated ownership matrix is recorded, the adapter inventory is current, source/adapter freshness validation passes, the remote-state procedure is reviewed, and the exact Stage 7 base is captured.
+Completion gate: the Stage 6 integrated ownership matrix is recorded, the adapter inventory is current, source/adapter freshness validation passes, the remote-state procedure is reviewed, and the exact reference-repository base is captured.
 
-### Stage 7 — Reference repository
+### Reference repository
 
 Goal: prove the architecture with a minimal initialized product repository.
 
@@ -970,7 +970,7 @@ Decide whether reusable profile sources live under `profiles/` and generate inst
 
 ### Gate E — Reference repository form
 
-Use the in-repository isolated-copy model for the Stage 7 reference implementation, with the exact initialized-repository artifact inventory recorded before any implementation work begins.
+Use the in-repository isolated-copy model for the reference implementation, with the exact initialized-repository artifact inventory recorded before any implementation work begins.
 
 ### Gate F — Initialization mechanism
 
