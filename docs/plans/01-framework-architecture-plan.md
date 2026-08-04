@@ -906,13 +906,14 @@ Completion gate: the Stage 6 integrated ownership matrix is recorded, the adapte
 
 Goal: prove the architecture with a minimal initialized product repository.
 
+The reference implementation uses the in-repository isolated-copy model: a checked-in repository snapshot inside this repository that can be validated as a self-contained initialized repository without depending on private history or out-of-tree state.
+
 Candidate outputs:
 
-- reference overview;
-- reference plan;
-- product manifest;
-- Level 0 and Level 1 example specifications;
-- minimal implementation and tests;
+- reference form decision;
+- initialized-repository artifact inventory;
+- reusable, bootstrap-only, and product-specific classification;
+- validation boundaries;
 - validation evidence.
 
 Acceptance gate: a fresh reference repository passes all required validation without relying on private history or prior chatbot context.
@@ -969,7 +970,7 @@ Decide whether reusable profile sources live under `profiles/` and generate inst
 
 ### Gate E — Reference repository form
 
-Decide whether the reference implementation is an in-repository fixture, example subtree, generated temporary repository, or separate repository before Stage 7.
+Use the in-repository isolated-copy model for the Stage 7 reference implementation, with the exact initialized-repository artifact inventory recorded before any implementation work begins.
 
 ### Gate F — Initialization mechanism
 
