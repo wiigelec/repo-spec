@@ -24,6 +24,18 @@ The framework should progressively decompose a large human problem into smaller,
 
 Decomposition does not make every child artifact normative.
 
+## Decomposition dimensions
+
+repo-spec uses multiple compatible decomposition views rather than one canonical tree.
+
+| Dimension | Question |
+| --- | --- |
+| Authority | Which artifact owns the decision? |
+| Product structure | Which capability or component owns the behavior? |
+| Dependency | What must exist first? |
+| Work | What can be implemented as one bounded change? |
+| Evidence | How is each requirement demonstrated? |
+
 ## Recursive decomposition
 
 Decomposition may occur within plans, specifications, governing issues, and implementation tasks.
