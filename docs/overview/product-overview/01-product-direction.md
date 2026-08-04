@@ -16,9 +16,7 @@ The project name is intentionally unresolved. A separate future product derived 
 
 ## Product vision
 
-repo-spec is a top-down engineering framework for AI-assisted software development. It progressively reduces complex conversational human intent into smaller units whose role and authority become increasingly explicit and more precisely governed until each remaining task is sufficiently bounded for reliable AI implementation.
-
-Its delivery mechanism is a reusable, Git-native repository framework and template for developing a high-level product idea into a specified, validated, released, and maintainable product.
+This repository will provide a reusable, Git-native repository framework and template for developing a high-level product idea into a specified, validated, released, and maintainable product.
 
 The framework is designed for collaboration between human maintainers and AI chatbots. It preserves enough durable context in the repository and its Git-compatible development records for an independent AI session to understand the product, recover current work, propose bounded changes, validate results, and continue development without depending on prior conversation history.
 
