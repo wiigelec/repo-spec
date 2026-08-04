@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import io
 import json
 import sys
+import unittest
 from pathlib import Path
 
 
@@ -37,6 +39,13 @@ REPO_REQUIRED_PATHS = [
     "schemas/product/product-spec-base.schema.json",
     "schemas/product/product-level-0.schema.json",
     "schemas/product/product-level-1.schema.json",
+    "src/__init__.py",
+    "src/product/__init__.py",
+    "src/product/kernel.py",
+    "src/product/primitives.py",
+    "tests/__init__.py",
+    "tests/test_kernel.py",
+    "tests/test_primitives.py",
 ]
 
 
@@ -73,37 +82,77 @@ def check_required_paths(root: Path) -> None:
         fail("missing required reference paths: " + ", ".join(missing))
 
 
+def render_collection(title: str, records: list[dict], key: str, path_key: str = "paths") -> list[str]:
+    lines = [f"### {title}", ""]
+    if not records:
+        lines.extend(["- None", ""])
+        return lines
+    for record in records:
+        lines.append(f"- `{record[key]}`")
+        lines.append("  - Paths:")
+        for path in record.get(path_key, []):
+            lines.append(f"    - `{path}`")
+        lines.append("  - Requirements:")
+        for requirement in record.get("requirements", []):
+            lines.append(f"    - `{requirement}`")
+        lines.append("")
+    return lines
+
+
+def render_conformance(records: list[dict]) -> list[str]:
+    lines = ["### Conformance", ""]
+    if not records:
+        lines.extend(["- None", ""])
+        return lines
+    for record in records:
+        lines.append(f"- `{record['requirement_id']}`")
+        lines.append(f"  - Status: `{record['status']}`")
+        lines.append("  - Implementation ids:")
+        for item in record.get("implementation_ids", []):
+            lines.append(f"    - `{item}`")
+        lines.append("  - Test ids:")
+        for item in record.get("test_ids", []):
+            lines.append(f"    - `{item}`")
+        lines.append("")
+    return lines
+
+
 def render_projection(spec: dict) -> str:
     requirements = spec.get("normative_requirements", [])
     deps = spec.get("dependencies", [])
+    correspondence = spec.get("correspondence", {})
     dependency_lines = ["- None"] if not deps else [f"- `{dep['spec_id']}`" for dep in deps]
     requirement_lines = ["- None"] if not requirements else [f"- `{req['id']}`: {req['text']}" for req in requirements]
-    return "\n".join(
-        [
-            f"# {spec['title']}",
-            "",
-            "## Status",
-            "",
-            spec["status"],
-            "",
-            "## Level",
-            "",
-            str(spec["level"]),
-            "",
-            "## Purpose",
-            "",
-            spec["purpose"],
-            "",
-            "## Normative requirements",
-            "",
-            *requirement_lines,
-            "",
-            "## Dependencies",
-            "",
-            *dependency_lines,
-            "",
-        ]
-    )
+    lines = [
+        f"# {spec['title']}",
+        "",
+        "## Status",
+        "",
+        spec["status"],
+        "",
+        "## Level",
+        "",
+        str(spec["level"]),
+        "",
+        "## Purpose",
+        "",
+        spec["purpose"],
+        "",
+        "## Normative requirements",
+        "",
+        *requirement_lines,
+        "",
+        "## Dependencies",
+        "",
+        *dependency_lines,
+        "",
+        "## Correspondence",
+        "",
+        *render_collection("Implementations", correspondence.get("implementations", []), "id"),
+        *render_collection("Tests", correspondence.get("tests", []), "id"),
+        *render_conformance(correspondence.get("conformance", [])),
+    ]
+    return "\n".join(lines)
 
 
 def validate_schema(path: Path, required_fields: list[str], const_level: int | None = None) -> None:
@@ -114,22 +163,44 @@ def validate_schema(path: Path, required_fields: list[str], const_level: int | N
         expect(schema.get("properties", {}).get("level", {}).get("const") == const_level, f"schema {path} must constrain level to {const_level}")
 
 
+def validate_conformance(spec: dict) -> None:
+    requirements = spec.get("normative_requirements", [])
+    correspondence = spec.get("correspondence", {})
+    requirement_ids = [req["id"] for req in requirements]
+    implementation_ids = {item["id"]: item for item in correspondence.get("implementations", [])}
+    test_ids = {item["id"]: item for item in correspondence.get("tests", [])}
+    conformance_records = correspondence.get("conformance", [])
+    expect(len(requirements) == 1, f"{spec['spec_id']} must have exactly one accepted requirement for this issue")
+    expect(len(conformance_records) == 1, f"{spec['spec_id']} must have exactly one conformance record")
+    requirement_id = requirement_ids[0]
+    impl = next(iter(implementation_ids.values()))
+    test = next(iter(test_ids.values()))
+    expect(impl["requirements"] == [requirement_id], f"{spec['spec_id']} implementation mapping must point at the requirement")
+    expect(test["requirements"] == [requirement_id], f"{spec['spec_id']} test mapping must point at the requirement")
+    record = conformance_records[0]
+    expect(record["requirement_id"] == requirement_id, f"{spec['spec_id']} conformance record must target the requirement")
+    expect(record["implementation_ids"] == [impl["id"]], f"{spec['spec_id']} conformance record must reference the implementation mapping")
+    expect(record["test_ids"] == [test["id"]], f"{spec['spec_id']} conformance record must reference the test mapping")
+    expect(record["status"] == "covered", f"{spec['spec_id']} conformance record must be covered")
+
+
 def validate_product_spec(spec_path: Path, expected_level: int) -> dict:
     spec = load_json(spec_path)
     expect(spec.get("schema_version") == "1", f"{spec_path} must use schema_version 1")
     expect(spec.get("status") == "accepted", f"{spec_path} must be accepted")
     expect(spec.get("level") == expected_level, f"{spec_path} must declare level {expected_level}")
-    expect(spec.get("normative_requirements") == [], f"{spec_path} must keep normative requirements empty for this issue")
+    expect(len(spec.get("normative_requirements", [])) == 1, f"{spec_path} must declare exactly one requirement")
     expect(spec.get("supersedes") == [], f"{spec_path} must have empty supersedes")
     expect(spec.get("superseded_by") == [], f"{spec_path} must have empty superseded_by")
     correspondence = spec.get("correspondence")
     expect(isinstance(correspondence, dict), f"{spec_path} must declare correspondence as an object")
-    expect(correspondence.get("implementations") == [], f"{spec_path} must keep implementation correspondence empty")
-    expect(correspondence.get("tests") == [], f"{spec_path} must keep test correspondence empty")
-    expect(correspondence.get("conformance") == [], f"{spec_path} must keep conformance correspondence empty")
+    expect(len(correspondence.get("implementations", [])) == 1, f"{spec_path} must declare exactly one implementation mapping")
+    expect(len(correspondence.get("tests", [])) == 1, f"{spec_path} must declare exactly one test mapping")
+    expect(len(correspondence.get("conformance", [])) == 1, f"{spec_path} must declare exactly one conformance record")
     derived = spec.get("derived_artifacts", [])
     expect(len(derived) == 1, f"{spec_path} must declare exactly one derived artifact")
     expect(derived[0].get("type") == "markdown", f"{spec_path} must declare a markdown derived artifact")
+    validate_conformance(spec)
     return spec
 
 
@@ -226,11 +297,32 @@ def validate_repo_support(root: Path) -> None:
         load_json(root / relpath)
 
 
+def run_tests(root: Path) -> None:
+    sys.path.insert(0, str(root / "src"))
+    suite = unittest.defaultTestLoader.discover(str(root / "tests"), pattern="test_*.py")
+    buffer = io.StringIO()
+    result = unittest.TextTestRunner(stream=buffer, verbosity=0).run(suite)
+    if not result.wasSuccessful():
+        print(buffer.getvalue(), file=sys.stderr)
+        fail("reference product tests failed")
+
+
+def validate_source(root: Path) -> None:
+    sys.path.insert(0, str(root / "src"))
+    from product.kernel import kernel_identity
+    from product.primitives import primitive_identity
+
+    expect(kernel_identity() == "reference-kernel", "kernel source behavior must return the kernel identity")
+    expect(primitive_identity() == "reference-kernel-primitives", "primitive source behavior must return the primitive identity")
+
+
 def main(argv: list[str]) -> int:
     root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
 
     check_required_paths(root)
     validate_repo_support(root)
+    validate_source(root)
+    run_tests(root)
 
     specs_by_id = validate_manifest(root)
     validate_level_0(specs_by_id["product.kernel"])
