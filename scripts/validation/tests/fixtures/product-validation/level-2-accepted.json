@@ -33,6 +33,30 @@
       "path": "derived/specs/product/component.md"
     }
   ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.component",
+        "paths": ["src/component.py"],
+        "requirements": ["COMPONENT-001"]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.component",
+        "paths": ["tests/test_component.py"],
+        "requirements": ["COMPONENT-001"]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "COMPONENT-001",
+        "implementation_ids": ["impl.component"],
+        "test_ids": ["test.component"],
+        "status": "covered"
+      }
+    ]
+  },
   "components": {
     "contracts": ["component contract"]
   }

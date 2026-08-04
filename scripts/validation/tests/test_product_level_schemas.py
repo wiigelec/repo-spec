@@ -30,6 +30,10 @@ def assert_invalid(schema: dict, name: str, fragment: str) -> None:
 def run_product_level_schema_tests(repo_root: Path) -> None:
     base_source = json.loads((repo_root / "schemas/product/product-spec-base.schema.json").read_text())
     assert "additionalProperties" not in base_source
+    assert "correspondence" in base_source["required"]
+    assert "correspondence" in base_source["properties"]
+    assert base_source["properties"]["correspondence"]["$ref"] == "#/$defs/correspondence"
+    assert base_source["$defs"]["correspondence"]["required"] == ["implementations", "tests", "conformance"]
 
     for level_name in ("product-level-0.schema.json", "product-level-1.schema.json", "product-level-2.schema.json", "product-level-3.schema.json"):
         source = json.loads((repo_root / "schemas/product" / level_name).read_text())

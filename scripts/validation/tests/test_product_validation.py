@@ -32,7 +32,29 @@ def run_product_validation_tests(repo_root: Path) -> None:
             )
             mutate_json(
                 temp_repo / "specs/product/level-0/kernel.json",
-                lambda spec: spec.__setitem__("status", "accepted") or spec,
+                lambda spec: (
+                    spec.__setitem__("status", "accepted"),
+                    spec.__setitem__(
+                        "correspondence",
+                        {
+                            "implementations": [
+                                {"id": "impl.kernel", "paths": ["src/kernel.py"], "requirements": ["KERNEL-001"]}
+                            ],
+                            "tests": [
+                                {"id": "test.kernel", "paths": ["tests/test_kernel.py"], "requirements": ["KERNEL-001"]}
+                            ],
+                            "conformance": [
+                                {
+                                    "requirement_id": "KERNEL-001",
+                                    "implementation_ids": ["impl.kernel"],
+                                    "test_ids": ["test.kernel"],
+                                    "status": "covered",
+                                }
+                            ],
+                        },
+                    ),
+                    spec,
+                )[-1],
             )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -342,5 +364,77 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "manifest-wrong-level-root.json", "specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-2/kernel.json")
         expect_failure("wrong level root", lambda: validate_repo(temp_repo), "oneOf mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["conformance"][0].__setitem__("status", "verified") or spec,
+        )
+        expect_failure("invalid correspondence status", lambda: validate_repo(temp_repo), "oneOf mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: (spec["correspondence"]["implementations"][0].pop("id"), spec)[1],
+        )
+        expect_failure("missing implementation mapping id", lambda: validate_repo(temp_repo), "missing required property id")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "/tests/test_primitive.py") or spec,
+        )
+        expect_failure("absolute correspondence path", lambda: validate_repo(temp_repo), "pattern mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: (spec["correspondence"]["tests"][0].pop("requirements"), spec)[1],
+        )
+        expect_failure("missing test mapping requirements", lambda: validate_repo(temp_repo), "missing required property requirements")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-1/primitive.json",
+            lambda spec: spec["correspondence"]["conformance"][0].__setitem__("status", "not-applicable") or spec,
+        )
+        expect_failure("malformed not-applicable correspondence", lambda: validate_repo(temp_repo), "oneOf mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "schemas/product/product-level-1.schema.json",
+            lambda schema: schema["allOf"][1]["properties"].__setitem__("correspondence", {"type": "string"}) or schema,
+        )
+        expect_failure("correspondence field redefined by level schema", lambda: validate_repo(temp_repo), "must be a string")
 
     print("ok: product validation tests")
