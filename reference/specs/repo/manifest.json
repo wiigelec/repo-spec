@@ -15,6 +15,6 @@
     {"spec_id": "repo.validation", "path": "specs/repo/validation.json"}
   ],
   "normative_requirements": [
-    {"id": "REF-MAN-001", "text": "The reference skeleton shall identify the repository authority files used by the Stage 7 proof copy."}
+    {"id": "REF-MAN-001", "text": "The reference skeleton shall identify the repository authority files used by the proof copy."}
   ]
 }

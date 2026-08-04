@@ -6,7 +6,7 @@ Current non-normative reference plan.
 
 ## Purpose
 
-Define the minimal skeleton required for the Stage 7 reference copy.
+Define the minimal skeleton required for the reference copy.
 
 ## Scope
 
