@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-POV-002",
-      "text": "A product overview shall record product identity, problem or opportunity, intended users or stakeholders, desired outcomes, scope, non-goals, product boundaries, durable principles, major capabilities, success conditions, unresolved product direction, predecessor evidence, and readiness for decomposition, with semantic coverage separated from subordinate chunk layout."
+      "text": "A product overview shall record product identity, problem or opportunity, intended users or stakeholders, desired outcomes, scope, non-goals, product boundaries, durable principles, major capabilities, success conditions, unresolved product direction, predecessor evidence, and readiness for decomposition, with semantic coverage separated from subordinate chunk layout. Predecessor evidence may come from discovery records, interviews, proposals, issues, statements, or other non-overview sources."
     },
     {
       "id": "REPO-POV-003",
@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-POV-005",
-      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas."
+      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas. An initial overview may declare `overview_role: initial` instead of pointing to a prior overview, while revisions and derived overviews shall declare predecessor evidence or a prior overview lineage."
     },
     {
       "id": "REPO-POV-006",

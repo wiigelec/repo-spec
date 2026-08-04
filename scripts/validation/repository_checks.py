@@ -266,6 +266,8 @@ def check_development_document_relationships(
 
         saw_overview = False
         saw_decomposition = False
+        overview_role = metadata.get("overview_role")
+        predecessor_evidence = metadata.get("predecessor_evidence")
         for basis in metadata["basis"]:
             if basis["type"] != "artifact":
                 continue
@@ -301,7 +303,11 @@ def check_development_document_relationships(
                     saw_decomposition = True
 
         if source_type == "product-overview":
-            expect(saw_overview, f"development document relationship failed: missing predecessor overview for {path}")
+            has_predecessor_evidence = isinstance(predecessor_evidence, list) and len(predecessor_evidence) > 0
+            if overview_role == "initial":
+                pass
+            else:
+                expect(saw_overview or has_predecessor_evidence, f"development document relationship failed: missing predecessor overview or evidence for {path}")
         elif source_type == "product-decomposition":
             expect(saw_overview, f"development document relationship failed: missing controlling overview for {path}")
         elif source_type == "implementation-plan":

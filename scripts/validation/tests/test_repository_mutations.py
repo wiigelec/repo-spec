@@ -72,6 +72,55 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        basis_start = overview_text.index('  "basis": [\n')
+        basis_end = overview_text.index('  ],\n  "required_content_areas": {')
+        overview_text = (
+            overview_text[:basis_start]
+            + '  "basis": [\n    {"type": "specification", "spec_id": "repo.validation"}\n  ],\n'
+            + overview_text[basis_end + len('  ],\n'):]
+        )
+        overview_path.write_text(overview_text)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
+        basis_start = overview_text.index('  "basis": [\n')
+        basis_end = overview_text.index('  ],\n  "required_content_areas": {')
+        overview_text = (
+            overview_text[:basis_start]
+            + '  "basis": [\n    {"type": "specification", "spec_id": "repo.validation"}\n  ],\n'
+            + overview_text[basis_end + len('  ],\n'):]
+        )
+        overview_path.write_text(overview_text)
+        expect_failure("overview without predecessor evidence or initial role", lambda: validate_repo(temp_repo), "missing predecessor overview or evidence")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
+        overview_text = overview_text.replace(
+            '  "governing_issue": "#175",\n',
+            '  "predecessor_evidence": ["Discovery interview note", "Issue #123"],\n  "governing_issue": "#175",\n',
+            1,
+        )
+        basis_start = overview_text.index('  "basis": [\n')
+        basis_end = overview_text.index('  ],\n  "required_content_areas": {')
+        overview_text = (
+            overview_text[:basis_start]
+            + '  "basis": [\n    {"type": "specification", "spec_id": "repo.validation"}\n  ],\n'
+            + overview_text[basis_end + len('  ],\n'):]
+        )
+        overview_path.write_text(overview_text)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         overview_chunk_path = temp_repo / "docs/overview/initializer-overview/07-capabilities-addendum.md"
         overview_chunk_path.write_text("# Additional capabilities\n")
         overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"

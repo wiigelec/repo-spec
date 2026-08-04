@@ -19,6 +19,7 @@ This document is the controlling entry point for the initializer overview compos
   "product_id": "repo-spec initializer",
   "authority_category": "directional",
   "lifecycle_status": "accepted",
+  "overview_role": "initial",
   "governing_issue": "#175",
   "basis": [
     {"type": "artifact", "path": "docs/overview/PRODUCT-OVERVIEW.md"},
