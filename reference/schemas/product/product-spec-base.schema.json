@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reference Product Spec Base Schema",
+  "type": "object",
+  "required": [
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "level",
+    "normative_requirements",
+    "dependencies",
+    "references",
+    "supersedes",
+    "superseded_by",
+    "derived_artifacts",
+    "correspondence"
+  ]
+}

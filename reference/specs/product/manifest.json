@@ -1,0 +1,21 @@
+{
+  "spec_id": "product.manifest",
+  "title": "Reference Product Manifest",
+  "purpose": "Registers the minimal product specification set for the reference repository.",
+  "status": "accepted",
+  "schema_version": "1",
+  "product_specifications": [
+    {
+      "spec_id": "product.kernel",
+      "path": "specs/product/level-0/kernel.json",
+      "status": "accepted",
+      "level": 0
+    },
+    {
+      "spec_id": "product.primitives",
+      "path": "specs/product/level-1/primitives.json",
+      "status": "accepted",
+      "level": 1
+    }
+  ]
+}

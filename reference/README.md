@@ -1,5 +1,5 @@
 # Reference Repository Skeleton
 
-This directory is the isolated-copy skeleton.
+This directory is the isolated-copy reference repository.
 
-It is intentionally minimal: it can discover and run its own repository-local validation, but product-specification activation is deferred until the next issue.
+It now includes the minimal activated product layer needed to validate the product manifest, Levels, dependencies, schemas, and projection freshness.

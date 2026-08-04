@@ -1,0 +1,33 @@
+{
+  "spec_id": "product.kernel",
+  "title": "Reference Product Kernel",
+  "purpose": "Defines the minimal Level 0 kernel foundations for the reference repository.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 0,
+  "normative_requirements": [],
+  "dependencies": [],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "docs/overview/REFERENCE-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-reference-repository-plan.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "derived/specs/product/level-0/kernel.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
