@@ -81,6 +81,8 @@ human intent
 
 Each step should reduce uncertainty or strengthen authority.
 
+Decomposition is shown beside planning for readability; in practice it recurs at every later stage until implementation work is sufficiently bounded.
+
 ## Bounded tasks
 
 A bounded task has explicit:
