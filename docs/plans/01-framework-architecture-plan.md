@@ -44,10 +44,11 @@ This plan is based on:
 
 - `docs/overview/PRODUCT-OVERVIEW.md`
 - `docs/overview/product-overview/01-product-direction.md`
-- `docs/overview/product-overview/02-development-and-specifications.md`
-- `docs/overview/product-overview/03-git-and-change-workflow.md`
-- `docs/overview/product-overview/04-human-ai-continuity.md`
-- `docs/overview/product-overview/05-governance-and-evolution.md`
+- `docs/overview/product-overview/02-decomposition-model.md`
+- `docs/overview/product-overview/03-development-and-specifications.md`
+- `docs/overview/product-overview/04-git-and-change-workflow.md`
+- `docs/overview/product-overview/05-human-ai-continuity.md`
+- `docs/overview/product-overview/06-governance-and-evolution.md`
 
 Accepted repository baseline at plan creation:
 

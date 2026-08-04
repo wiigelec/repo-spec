@@ -37,7 +37,7 @@ Defines the governed development process for bounded repository changes.
 - specification: `repo.manifest`
 - specification: `repo.repository-structure`
 - artifact: `AGENTS.md`
-- artifact: `docs/overview/product-overview/03-git-and-change-workflow.md`
+- artifact: `docs/overview/product-overview/04-git-and-change-workflow.md`
 
 ## Derived artifacts
 

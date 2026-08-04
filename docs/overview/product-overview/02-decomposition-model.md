@@ -1,6 +1,6 @@
 # Product Overview: Decomposition Model
 
-> Part 6 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./05-governance-and-evolution.md)
+> Part 2 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./01-product-direction.md) · [Next](./03-development-and-specifications.md)
 
 This part defines the canonical decomposition model used by the framework to turn broad human intent into bounded AI-executable work.
 
@@ -14,7 +14,7 @@ This document records the architectural reference for decomposition in repo-spec
 
 repo-spec uses decomposition as its central engineering principle.
 
-The goal is to reduce uncertainty, ambiguity, context size, decision freedom, and implicit assumptions before implementation begins.
+The goal is to reduce uncertainty, ambiguity, context size, decision freedom, and implicit assumptions before implementation begins, and again whenever implementation exposes unresolved higher-level decisions that exceed the bounded task's authority.
 
 ## Failure modes addressed
 
@@ -148,6 +148,8 @@ Machine verification may establish the presence, structure, and referential vali
 
 Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between accepted overview direction and accepted revision.
 
+The exact evidence artifacts may vary by product and requirement, but every maintained implementation should retain a declared traceable relationship to its owning accepted requirement.
+
 ## Architectural invariants
 
 - Complex problems are decomposed before implementation.
@@ -167,6 +169,7 @@ Human review remains responsible for determining whether those links correctly p
 
 - **Decomposition**: the process of reducing a large problem into smaller, more explicit units with defined roles, boundaries, dependencies, and authority.
 - **Conversation**: a discovery and clarification medium that may produce candidate understanding, expose intent, identify uncertainty, test interpretations, and discover constraints; decisions required for later work must be recorded in the repository artifact that owns them.
+- **Product understanding**: the provisional shared interpretation of human intent produced through discovery and clarification before it is recorded as durable overview direction; it is explicitly non-authoritative until recorded and accepted in the proper artifact.
 - **Bounded task**: a task with explicit authority, scope, dependencies, outputs, and success criteria.
 - **Authority**: the accepted source that controls a decision.
 - **Reasoning envelope**: the set of conditions under which an AI assistant can complete a task without inventing major missing context.

@@ -1,6 +1,6 @@
 # Product Overview: Human and AI Continuity
 
-> Part 4 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./03-git-and-change-workflow.md) · [Next](./05-governance-and-evolution.md)
+> Part 5 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./04-git-and-change-workflow.md) · [Next](./06-governance-and-evolution.md)
 
 This part defines human and AI responsibilities and the durable context needed for an independent session to resume work.
 

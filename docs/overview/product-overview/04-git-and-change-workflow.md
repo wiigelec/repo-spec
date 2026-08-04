@@ -1,6 +1,6 @@
 # Product Overview: Git and Change Workflow
 
-> Part 3 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./02-development-and-specifications.md) · [Next](./04-human-ai-continuity.md)
+> Part 4 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./03-development-and-specifications.md) · [Next](./05-human-ai-continuity.md)
 
 This part defines the Git-native operating model, hosting-platform boundary, and bounded development workflow.
 
