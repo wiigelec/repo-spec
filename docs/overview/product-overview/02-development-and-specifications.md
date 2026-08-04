@@ -105,6 +105,10 @@ The framework repository defines the meaning, structure, dependency rules, valid
 
 The framework repository is not required to contain its own product Level 0–3 specification documents. Instead, repositories created from the framework use the Level template to organize their product specifications.
 
+The Level model is not the complete decomposition process. It is a reusable structure for organizing one part of product decomposition, the normative specification graph. Governing issues, implementation plans, requirements, and source changes may require additional decomposition within or across Levels.
+
+Within that decomposition dimension, Level 0 constrains universal foundations, Level 1 isolates atomic concepts, Level 2 isolates reusable responsibilities, and Level 3 limits end-to-end orchestration. The dependency direction prevents an allegedly small lower-level task from requiring hidden higher-level context.
+
 ### Level 0 — Kernel
 
 Level 0 defines the product-wide foundations that all higher Levels depend upon.
