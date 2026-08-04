@@ -22,7 +22,7 @@ Defines the normative common envelope shared by all product specifications.
 
 - `REPO-PSB-001`: The repository shall define `repo.product-spec-base` as the normative common envelope for all Level 0-3 product specifications and shall keep it subordinate to `repo.manifest`, `repo.repository-structure`, `repo.artifact-taxonomy`, `repo.product-manifest`, and `repo.validation`.
 - `REPO-PSB-002`: Product specifications shall use stable `spec_id` values in the `product.*` namespace, and each registered product specification shall correspond to exactly one manifest entry with the same identity.
-- `REPO-PSB-003`: A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, and `derived_artifacts` as its common base envelope.
+- `REPO-PSB-003`: A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, `derived_artifacts`, and `correspondence` as its common base envelope.
 - `REPO-PSB-004`: The lifecycle vocabulary for product specifications shall be `candidate`, `accepted`, `superseded`, and `retired`; only accepted product specifications are normative, and candidate product specifications are not normative.
 - `REPO-PSB-005`: The `schema_version` field shall identify the base contract version and shall use the constant string `1`.
 - `REPO-PSB-006`: The `level` field shall record the product specification Level as one of `0`, `1`, `2`, or `3`; the manifest entry and product file shall agree on that Level value.
@@ -53,6 +53,7 @@ Defines the normative common envelope shared by all product specifications.
 - artifact: `docs/overview/product-overview/02-development-and-specifications.md`
 - artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
 - specification: `repo.product-levels`
+- specification: `repo.product-correspondence`
 
 ## Derived artifacts
 

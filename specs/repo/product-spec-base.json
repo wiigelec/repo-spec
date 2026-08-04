@@ -15,7 +15,7 @@
     },
     {
       "id": "REPO-PSB-003",
-      "text": "A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, and `derived_artifacts` as its common base envelope."
+      "text": "A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, `derived_artifacts`, and `correspondence` as its common base envelope."
     },
     {
       "id": "REPO-PSB-004",
@@ -111,6 +111,10 @@
     {
       "type": "specification",
       "spec_id": "repo.product-levels"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-correspondence"
     }
   ],
   "derived_artifacts": [

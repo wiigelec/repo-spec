@@ -46,6 +46,10 @@
       "path": "specs/repo/product-spec-base.json"
     },
     {
+      "spec_id": "repo.product-correspondence",
+      "path": "specs/repo/product-correspondence.json"
+    },
+    {
       "spec_id": "repo.product-levels",
       "path": "specs/repo/product-levels.json"
     }

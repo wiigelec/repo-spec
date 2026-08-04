@@ -270,6 +270,12 @@ def run_generation_mutations(repo_root: Path) -> None:
         lambda spec: spec.__setitem__("purpose", "Changed product manifest purpose"),
     )
     expect_render_change(
+        "product correspondence projected requirement",
+        lambda spec: render_spec_projection(specs["repo.product-correspondence"]["title"], paths["repo.product-correspondence"], spec),
+        specs["repo.product-correspondence"],
+        lambda spec: spec["normative_requirements"][0].__setitem__("text", "Changed product correspondence requirement"),
+    )
+    expect_render_change(
         "product primitive projected requirement",
         lambda spec: render_spec_projection(spec["title"], "specs/product/level-1/primitive.json", spec),
         json.loads((repo_root / "scripts/validation/tests/fixtures/product-validation/level-1-accepted.json").read_text()),
