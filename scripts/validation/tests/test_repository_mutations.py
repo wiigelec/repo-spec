@@ -72,6 +72,30 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        overview_chunk_path = temp_repo / "docs/overview/initializer-overview/07-capabilities-addendum.md"
+        overview_chunk_path.write_text("# Additional capabilities\n")
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace(
+            '    "capabilities_and_success": ["docs/overview/initializer-overview/04-capabilities-and-success.md"],\n',
+            '    "capabilities_and_success": ["docs/overview/initializer-overview/04-capabilities-and-success.md", "docs/overview/initializer-overview/07-capabilities-addendum.md"],\n',
+            1,
+        )
+        overview_text = overview_text.replace(
+            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"}\n  ],\n',
+            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"},\n    {"order": 7, "path": "docs/overview/initializer-overview/07-capabilities-addendum.md", "title": "Capabilities addendum"}\n  ],\n',
+            1,
+        )
+        overview_text = overview_text.replace(
+            '- [06 - Lifecycle and handoff](./initializer-overview/06-lifecycle-and-handoff.md)\n',
+            '- [06 - Lifecycle and handoff](./initializer-overview/06-lifecycle-and-handoff.md)\n- [07 - Capabilities addendum](./initializer-overview/07-capabilities-addendum.md)\n',
+            1,
+        )
+        overview_path.write_text(overview_text)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         chunk_index_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
         chunk_index_path.write_text(chunk_index_path.read_text().replace("./initializer-overview/04-capabilities-and-success.md", "./initializer-overview/05-unresolved-questions.md", 1))
         expect_failure("wrong overview chunk link", lambda: validate_repo(temp_repo), "chunk index link mismatch")
@@ -87,6 +111,30 @@ def run_repository_mutations(repo_root: Path) -> None:
         plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_path.write_text(plan_path.read_text().replace("docs/decompositions/INITIALIZER-DECOMPOSITION.md", "docs/overview/INITIALIZER-OVERVIEW.md", 1))
         expect_failure("plan without controlling decomposition", lambda: validate_repo(temp_repo), "missing controlling decomposition")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_chunk_path = temp_repo / "docs/plans/initializer-implementation-plan/04-validation-addendum.md"
+        plan_chunk_path.write_text("# Validation addendum\n")
+        plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_text = plan_path.read_text()
+        plan_text = plan_text.replace(
+            '    "workstreams_and_dependencies": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md"],\n',
+            '    "workstreams_and_dependencies": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "docs/plans/initializer-implementation-plan/04-validation-addendum.md"],\n',
+            1,
+        )
+        plan_text = plan_text.replace(
+            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"}\n  ],\n',
+            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"},\n    {"order": 4, "path": "docs/plans/initializer-implementation-plan/04-validation-addendum.md", "title": "Validation addendum"}\n  ],\n',
+            1,
+        )
+        plan_text = plan_text.replace(
+            '- [03 - Validation and completion](./initializer-implementation-plan/03-validation-and-completion.md)\n',
+            '- [03 - Validation and completion](./initializer-implementation-plan/03-validation-and-completion.md)\n- [04 - Validation addendum](./initializer-implementation-plan/04-validation-addendum.md)\n',
+            1,
+        )
+        plan_path.write_text(plan_text)
+        validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

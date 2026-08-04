@@ -65,7 +65,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-overview",
         "schema_key": "repo.product-overview",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "content_area_keys": ["product_identity", "problem_and_outcome", "users_principles_and_boundaries", "capabilities_and_success", "unresolved_questions", "lifecycle_and_handoff"],
+        "required_content_area_keys": ["product_identity", "problem_and_outcome", "users_principles_and_boundaries", "capabilities_and_success", "unresolved_questions", "lifecycle_and_handoff"],
         "filename_suffix": "-OVERVIEW.md",
         "chunk_dir_suffix": "/",
     },
@@ -80,7 +80,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "implementation-plan",
         "schema_key": "repo.implementation-plan",
         "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "content_area_keys": ["scope_and_preconditions", "workstreams_and_dependencies", "validation_and_completion"],
+        "required_content_area_keys": ["scope_and_preconditions", "workstreams_and_dependencies", "validation_and_completion"],
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
@@ -1064,14 +1064,24 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             expect(len(declared_chunks) == len(actual_chunks), f"development document chunk inventory failed: chunk count mismatch in {rel_path}")
             expect(set(declared_paths) == {chunk.relative_to(context.repo_root).as_posix() for chunk in actual_chunks}, f"development document chunk inventory failed: inventory mismatch in {rel_path}")
 
-            content_areas = metadata["content_areas"]
-            expect(isinstance(content_areas, dict), f"development document content inventory failed: content areas must be an object in {rel_path}")
-            area_paths = list(content_areas.values())
             if root_rel != "docs/decompositions/":
-                expected_area_keys = info["content_area_keys"]
-                expect(set(content_areas) == set(expected_area_keys), f"development document content inventory failed: area key mismatch in {rel_path}")
-                expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate area paths in {rel_path}")
-                expect(set(area_paths) == set(declared_paths), f"development document content inventory failed: area inventory mismatch in {rel_path}")
+                required_content_areas = metadata.get("required_content_areas")
+                expect(isinstance(required_content_areas, dict), f"development document content inventory failed: required content areas must be an object in {rel_path}")
+                expected_area_keys = info["required_content_area_keys"]
+                expect(set(required_content_areas) == set(expected_area_keys), f"development document content inventory failed: required content area key mismatch in {rel_path}")
+                covered_paths: set[str] = set()
+                for area_id in expected_area_keys:
+                    area_paths = required_content_areas[area_id]
+                    expect(isinstance(area_paths, list), f"development document content inventory failed: required content area {area_id} must be an array in {rel_path}")
+                    expect(area_paths, f"development document content inventory failed: required content area {area_id} must not be empty in {rel_path}")
+                    expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate paths in required content area {area_id} in {rel_path}")
+                    for area_path in area_paths:
+                        expect(area_path in declared_paths, f"development document content inventory failed: required content area {area_id} references unknown chunk {area_path} in {rel_path}")
+                        covered_paths.add(area_path)
+                expect(covered_paths == set(declared_paths), f"development document content inventory failed: required content area coverage mismatch in {rel_path}")
+            else:
+                content_areas = metadata.get("content_areas")
+                expect(isinstance(content_areas, dict), f"development document content inventory failed: content areas must be an object in {rel_path}")
 
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:

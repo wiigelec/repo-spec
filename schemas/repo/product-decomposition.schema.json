@@ -10,7 +10,8 @@
       "type": "object",
       "required": [
         "artifact_type",
-        "root_path"
+        "root_path",
+        "content_areas"
       ],
       "properties": {
         "artifact_type": {
