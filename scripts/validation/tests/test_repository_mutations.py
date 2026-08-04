@@ -60,6 +60,12 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        chunk_index_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        chunk_index_path.write_text(chunk_index_path.read_text().replace("./initializer-overview/04-capabilities-and-success.md", "./initializer-overview/05-unresolved-questions.md", 1))
+        expect_failure("wrong overview chunk link", lambda: validate_repo(temp_repo), "chunk index link mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_path.write_text(decomposition_path.read_text().replace("docs/overview/PRODUCT-OVERVIEW.md", "docs/overview/MISSING-OVERVIEW.md", 1))
         expect_failure("missing decomposition predecessor path", lambda: validate_repo(temp_repo), "unresolved predecessor path")

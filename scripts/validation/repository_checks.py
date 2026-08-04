@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -102,6 +103,34 @@ def markdown_headings(text: str) -> set[str]:
         if line.startswith("## "):
             headings.add(line.removeprefix("## ").strip())
     return headings
+
+
+def markdown_links(text: str) -> list[tuple[str, str]]:
+    return re.findall(r"\[([^\]]+)\]\(([^)]+)\)", text)
+
+
+def resolve_markdown_link_target(source_path: str, target: str) -> str:
+    target = target.split("#", 1)[0]
+    if not target:
+        return target
+    return os.path.normpath((Path(source_path).parent / target).as_posix())
+
+
+def markdown_section(text: str, heading: str) -> str:
+    lines = text.splitlines()
+    start = None
+    for index, line in enumerate(lines):
+        if line == f"## {heading}":
+            start = index + 1
+            break
+    expect(start is not None, f"development document navigation failed: missing section {heading}")
+
+    end = len(lines)
+    for index in range(start, len(lines)):
+        if lines[index].startswith("## "):
+            end = index
+            break
+    return "\n".join(lines[start:end])
 
 
 def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
@@ -1052,20 +1081,24 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")
 
+            chunk_index_section = markdown_section(text, "Chunk index")
+            chunk_index_links = {resolve_markdown_link_target(rel_path, target) for _label, target in markdown_links(chunk_index_section)}
+            expect(chunk_index_links == set(declared_paths), f"development document navigation failed: chunk index link mismatch in {rel_path}")
+
             for chunk in declared_chunks:
                 chunk_path = context.repo_root / chunk["path"]
                 expect(chunk_path.exists(), f"development document chunk inventory failed: missing chunk {chunk['path']}")
                 expect(chunk_path.is_file(), f"development document chunk inventory failed: chunk path must be a file {chunk['path']}")
                 expect(chunk_path.parent == chunk_dir, f"development document path failed: chunk path outside chunk directory {chunk['path']}")
                 expect(re.fullmatch(r"\d\d-[a-z0-9][a-z0-9-]*\.md", chunk_path.name) is not None, f"development document path failed: malformed chunk filename {chunk['path']}")
-                expect(chunk["path"] in text, f"development document navigation failed: top-level document must link to chunk {chunk['path']}")
 
                 chunk_text = chunk_path.read_text()
                 expect(len(chunk_text.splitlines()) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES, f"development document size failed: chunk exceeds line limit {chunk['path']}")
                 first_non_empty = next((line for line in chunk_text.splitlines() if line.strip()), "")
                 expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
 
-            expect(path.name in readme_text, f"development document discovery failed: README does not reference {path.name}")
+            canonical_links = {resolve_markdown_link_target(f"{root_rel}README.md", target) for _label, target in markdown_links(markdown_section(readme_text, "Canonical documents"))}
+            expect(rel_path in canonical_links, f"development document discovery failed: README does not link to {rel_path}")
 
     expect(unmarked_docs == set(compatibility_registry), f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(compatibility_registry)}")
     check_development_document_relationships(records, compatibility_registry, chunk_owner_paths)
