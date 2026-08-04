@@ -105,6 +105,26 @@
     {
       "id": "REPO-PP-007",
       "text": "The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity, with current operational ownership retained at the bootstrap layer rather than at a populated profile-source layer."
+    },
+    {
+      "id": "REPO-PP-008",
+      "text": "For GitHub, the `artifact_inventory` listed under the profile entry shall function as the managed adapter inventory for the current migration-free stage: it enumerates the repository-local GitHub-managed artifacts that are in scope for this contract, including installed adapters and bootstrap infrastructure, and no unlisted GitHub artifact shall be treated as managed by this profile contract by default."
+    },
+    {
+      "id": "REPO-PP-009",
+      "text": "The GitHub profile source root and installed adapter root shall define a deterministic one-way source-to-adapter mapping: accepted source material under `profiles/github/` may project to repository-local installed adapters under `.github/` with the same relative subpath unless the profile contract explicitly declares a different mapping, and the adapter root shall never become the source of normative authority over the profile source."
+    },
+    {
+      "id": "REPO-PP-010",
+      "text": "During migration, current installed adapters and bootstrap infrastructure may continue to be maintained directly, but that direct maintenance shall be treated as transitional authority over installed repository-local files only and shall not supersede the accepted profile-source contract once profile source material exists."
+    },
+    {
+      "id": "REPO-PP-011",
+      "text": "Deterministic output shall mean that a given accepted GitHub profile source revision produces the same installed-adapter content, file set, and ordering each time the source-to-adapter projection is run, and freshness shall mean that the installed adapter tree matches the current accepted source-derived result for the same revision."
+    },
+    {
+      "id": "REPO-PP-012",
+      "text": "Files not listed in the managed adapter inventory shall be treated as unmanaged by this contract, shall retain their existing ownership or bootstrap handling, and shall not be migrated, regenerated, or reclassified by this issue."
     }
   ],
   "dependencies": [
