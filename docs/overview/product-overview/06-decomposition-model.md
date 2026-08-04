@@ -24,6 +24,24 @@ The framework should progressively decompose a large human problem into smaller,
 
 Decomposition does not make every child artifact normative.
 
+## Recursive decomposition
+
+Decomposition may occur within plans, specifications, governing issues, and implementation tasks.
+
+Any resulting unit may itself be decomposed again if it remains too large or too ambiguous to support reliable implementation.
+
+```text
+problem
+├── capability
+│   ├── component
+│   │   ├── requirement
+│   │   └── requirement
+│   └── component
+└── capability
+```
+
+The number of layers is determined by complexity, not by a fixed template.
+
 ## Decomposition pipeline
 
 ```text
