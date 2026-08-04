@@ -117,6 +117,8 @@ If a task cannot answer those questions, it is not sufficiently bounded.
 
 Decomposition should stop when additional subdivision no longer materially improves implementation reliability.
 
+Decomposition should not continue merely to make tasks smaller; excessive subdivision can fragment context and create coordination overhead without improving reliability.
+
 A candidate leaf task should have explicit purpose, authority, inputs, outputs, dependencies, success criteria, machine-verifiable checks, human-review boundaries, and no need to invent missing product semantics.
 
 A leaf task should change one coherent responsibility, have a reviewable diff, be independently validatable, avoid coupling unrelated decisions, and avoid requiring simultaneous acceptance of multiple architectural changes.
