@@ -54,6 +54,12 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_path.write_text(overview_path.read_text().replace('    "capabilities_and_success": "docs/overview/initializer-overview/04-capabilities-and-success.md",\n', '    "capabilities_and_success": "docs/overview/initializer-overview/05-unresolved-questions.md",\n'))
+        expect_failure("missing overview content area", lambda: validate_repo(temp_repo), "content inventory failed")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.unlisted"
         (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")

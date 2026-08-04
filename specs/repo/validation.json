@@ -88,6 +88,10 @@
     {
       "id": "REPO-VAL-021",
       "text": "The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry."
+    },
+    {
+      "id": "REPO-VAL-022",
+      "text": "The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once."
     }
   ],
   "dependencies": [

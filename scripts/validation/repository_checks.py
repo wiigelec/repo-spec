@@ -55,6 +55,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-overview",
         "schema_key": "repo.product-overview",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "content_area_keys": ["product_identity", "problem_and_outcome", "users_principles_and_boundaries", "capabilities_and_success", "unresolved_questions", "lifecycle_and_handoff"],
         "filename_suffix": "-OVERVIEW.md",
         "chunk_dir_suffix": "/",
     },
@@ -62,6 +63,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
     },
@@ -69,6 +71,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "implementation-plan",
         "schema_key": "repo.implementation-plan",
         "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "content_area_keys": ["scope_and_preconditions", "workstreams_and_dependencies", "validation_and_completion"],
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
@@ -872,6 +875,14 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             expect(len(declared_paths) == len(set(declared_paths)), f"development document chunk inventory failed: duplicate paths in {rel_path}")
             expect(len(declared_chunks) == len(actual_chunks), f"development document chunk inventory failed: chunk count mismatch in {rel_path}")
             expect(set(declared_paths) == {chunk.relative_to(context.repo_root).as_posix() for chunk in actual_chunks}, f"development document chunk inventory failed: inventory mismatch in {rel_path}")
+
+            content_areas = metadata["content_areas"]
+            expect(isinstance(content_areas, dict), f"development document content inventory failed: content areas must be an object in {rel_path}")
+            expected_area_keys = info["content_area_keys"]
+            expect(set(content_areas) == set(expected_area_keys), f"development document content inventory failed: area key mismatch in {rel_path}")
+            area_paths = list(content_areas.values())
+            expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate area paths in {rel_path}")
+            expect(set(area_paths) == set(declared_paths), f"development document content inventory failed: area inventory mismatch in {rel_path}")
 
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")

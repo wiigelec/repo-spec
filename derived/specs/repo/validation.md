@@ -41,6 +41,7 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-019`: The validation entry point shall enforce the canonical development-document roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering for governed overview, decomposition, and planning artifacts.
 - `REPO-VAL-020`: The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts.
 - `REPO-VAL-021`: The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry.
+- `REPO-VAL-022`: The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once.
 
 ## Dependencies
 

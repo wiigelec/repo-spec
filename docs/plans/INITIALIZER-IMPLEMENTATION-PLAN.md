@@ -25,6 +25,11 @@ This document is the controlling entry point for a candidate placeholder composi
     {"type": "artifact", "path": "docs/plans/01-framework-architecture-plan.md"},
     {"type": "artifact", "path": "docs/plans/02-reference-repository-plan.md"}
   ],
+  "content_areas": {
+    "scope_and_preconditions": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",
+    "workstreams_and_dependencies": "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md",
+    "validation_and_completion": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md"
+  },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"},
     {"order": 2, "path": "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "title": "Workstreams and dependencies"},

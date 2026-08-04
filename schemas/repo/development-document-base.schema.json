@@ -15,6 +15,7 @@
     "lifecycle_status",
     "governing_issue",
     "basis",
+    "content_areas",
     "subordinate_chunks",
     "successor_action",
     "schema_version"
@@ -62,6 +63,9 @@
       "items": {
         "$ref": "#/$defs/reference"
       }
+    },
+    "content_areas": {
+      "type": "object"
     },
     "subordinate_chunks": {
       "type": "array",
