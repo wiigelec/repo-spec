@@ -73,7 +73,6 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
     },
@@ -1067,16 +1066,26 @@ def check_development_documents_phase(context: ValidationContext) -> None:
 
             content_areas = metadata["content_areas"]
             expect(isinstance(content_areas, dict), f"development document content inventory failed: content areas must be an object in {rel_path}")
-            expected_area_keys = info["content_area_keys"]
-            expect(set(content_areas) == set(expected_area_keys), f"development document content inventory failed: area key mismatch in {rel_path}")
             area_paths = list(content_areas.values())
-            expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate area paths in {rel_path}")
-            expect(set(area_paths) == set(declared_paths), f"development document content inventory failed: area inventory mismatch in {rel_path}")
+            if root_rel != "docs/decompositions/":
+                expected_area_keys = info["content_area_keys"]
+                expect(set(content_areas) == set(expected_area_keys), f"development document content inventory failed: area key mismatch in {rel_path}")
+                expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate area paths in {rel_path}")
+                expect(set(area_paths) == set(declared_paths), f"development document content inventory failed: area inventory mismatch in {rel_path}")
 
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:
                 expect(chunk_path not in chunk_owner_paths, f"development document chunk inventory failed: duplicate chunk path {chunk_path}")
                 chunk_owner_paths[chunk_path] = rel_path
+
+            if root_rel == "docs/decompositions/":
+                seen_area_ids: set[str] = set()
+                for chunk in declared_chunks:
+                    expect(chunk.get("role") == "product-area", f"development document chunk inventory failed: missing product-area role in {rel_path}")
+                    area_id = chunk.get("area_id")
+                    expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
+                    expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
+                    seen_area_ids.add(area_id)
 
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")

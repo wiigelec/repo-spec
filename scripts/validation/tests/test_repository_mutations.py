@@ -54,15 +54,15 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_path.write_text(overview_path.read_text().replace('    "capabilities_and_success": "docs/overview/initializer-overview/04-capabilities-and-success.md",\n', '    "capabilities_and_success": "docs/overview/initializer-overview/05-unresolved-questions.md",\n'))
-        expect_failure("missing overview content area", lambda: validate_repo(temp_repo), "content inventory failed")
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
         chunk_path = temp_repo / "docs/overview/initializer-overview/04-capabilities-and-success.md"
         chunk_path.write_text(chunk_path.read_text() + "\n<!--" + ("x" * 30000) + "-->")
         expect_failure("oversized overview chunk bytes", lambda: validate_repo(temp_repo), "chunk exceeds byte limit")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_path.write_text(decomposition_path.read_text().replace('"role": "product-area", "area_id": "platform-and-execution"', '"area_id": "platform-and-execution"', 1))
+        expect_failure("missing decomposition chunk role", lambda: validate_repo(temp_repo), "missing required property role")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

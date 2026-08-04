@@ -36,10 +36,10 @@ This document is the controlling entry point for the initializer decomposition c
     "generation_validation_and_handoff": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"
   },
   "subordinate_chunks": [
-    {"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority"},
-    {"order": 2, "path": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "title": "Framework and product foundations"},
-    {"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution"},
-    {"order": 4, "path": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md", "title": "Generation, validation, and handoff"}
+    {"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority"},
+    {"order": 2, "path": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "title": "Framework and product foundations", "role": "product-area", "area_id": "framework-and-product-foundations"},
+    {"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "role": "product-area", "area_id": "platform-and-execution"},
+    {"order": 4, "path": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md", "title": "Generation, validation, and handoff", "role": "product-area", "area_id": "generation-validation-and-handoff"}
   ],
   "successor_action": "Proceed to the initializer implementation plan once the decomposition is accepted.",
   "schema_version": "1"
