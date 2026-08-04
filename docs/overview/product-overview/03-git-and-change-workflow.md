@@ -81,3 +81,5 @@ A normal bounded change should use a Git-compatible workflow:
 The exact tooling may evolve, but the separation among planning, mutation, validation, review, acceptance, merge, and closure must remain visible.
 
 Governing issues are the primary bounded decomposition unit for repository changes, and each issue should authorize one coherent body of work.
+
+A governing issue is an authorization boundary, not necessarily the smallest implementation action. Its internal patch plan may contain several coherent steps, provided all remain within one accepted scope and authority boundary.
