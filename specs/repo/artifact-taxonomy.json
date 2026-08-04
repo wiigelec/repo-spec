@@ -114,6 +114,7 @@
         "repo.review-proposal",
         "repo.product-manifest",
         "repo.product-spec-base",
+        "repo.product-correspondence",
         "repo.product-levels"
       ]
     },

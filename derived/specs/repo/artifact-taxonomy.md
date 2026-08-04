@@ -130,6 +130,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
   - `repo.review-proposal`
   - `repo.product-manifest`
   - `repo.product-spec-base`
+  - `repo.product-correspondence`
   - `repo.product-levels`
 
 ### Product artifact
