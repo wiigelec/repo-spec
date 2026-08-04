@@ -51,10 +51,55 @@ Defines the normative boundary between Git-generic framework behavior and hostin
   - target repository
   - target remote configuration identifier
   - previous state
+  - inspection evidence
   - intended state
   - execution evidence
   - rollback procedure
   - post-change verification
+
+- Deployment state:
+  - Branch Protection Desired State Format:
+    - Required Fields:
+      - `branch pattern`
+      - `target repository`
+      - `target remote configuration identifier`
+      - `required status checks`
+      - `required reviews`
+      - `merge restrictions`
+      - `allow force pushes`
+      - `require linear history`
+      - `require signed commits`
+  - Inspection Procedure:
+    - `Inspect the live remote state before composing a change.`
+    - `Record the observed state and compare it with the desired state.`
+    - `Capture the exact repository revision and remote configuration identifier.`
+  - Mutation Evidence Record Fields:
+    - `governing issue`
+    - `accepted repository revision`
+    - `target repository`
+    - `target remote configuration identifier`
+    - `previous state`
+    - `inspection evidence`
+    - `intended state`
+    - `execution evidence`
+    - `rollback procedure`
+    - `post-change verification`
+  - Plan Apply Separation:
+    - `Plan phase prepares desired-state and evidence records only.`
+    - `Apply phase performs the remote mutation only after the plan is accepted.`
+  - Rollback And Post Change Verification:
+    - `Rollback procedure must be declared before apply.`
+    - `Post-change verification must state the exact checks used after apply.`
+  - Ruleset Desired State Format:
+    - Required Fields:
+      - `name`
+      - `target repository`
+      - `target remote configuration identifier`
+      - `target branches`
+      - `conditions`
+      - `rules`
+      - `bypass actors`
+      - `enforcement`
 
 ## Normative requirements
 
@@ -63,13 +108,17 @@ Defines the normative boundary between Git-generic framework behavior and hostin
 - `REPO-PP-003`: The repository shall reserve `profiles/github/` for future reusable GitHub profile source material and `.github/` for current installed GitHub adapters.
 - `REPO-PP-004`: Current installed adapters and bootstrap infrastructure may be maintained directly until profile source material exists; future profile source material may then generate installed adapters, but installed adapters shall not claim authority over the profile source.
 - `REPO-PP-005`: Remote-only hosting-platform state shall be represented as deployment-state evidence, not as ordinary generated repository content.
-- `REPO-PP-006`: Hosting mutations shall record the governing issue, accepted repository revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification.
+- `REPO-PP-006`: Hosting mutations shall record the governing issue, accepted repository revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification.
 - `REPO-PP-007`: The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity, with current operational ownership retained at the bootstrap layer rather than at a populated profile-source layer.
 - `REPO-PP-008`: For GitHub, the `artifact_inventory` listed under the profile entry shall function as the managed adapter inventory for the current migration-free stage: it enumerates the repository-local GitHub-managed artifacts that are in scope for this contract, including installed adapters and bootstrap infrastructure, and no unlisted GitHub artifact shall be treated as managed by this profile contract by default.
 - `REPO-PP-009`: The GitHub profile source root and installed adapter root shall define a deterministic one-way source-to-adapter mapping: accepted source material under `profiles/github/` may project to repository-local installed adapters under `.github/` with the same relative subpath unless the profile contract explicitly declares a different mapping, and the adapter root shall never become the source of normative authority over the profile source.
 - `REPO-PP-010`: During migration, current installed adapters and bootstrap infrastructure may continue to be maintained directly, but that direct maintenance shall be treated as transitional authority over installed repository-local files only and shall not supersede the accepted profile-source contract once profile source material exists.
 - `REPO-PP-011`: Deterministic output shall mean that a given accepted GitHub profile source revision produces the same installed-adapter content, file set, and ordering each time the source-to-adapter projection is run, and freshness shall mean that the installed adapter tree matches the current accepted source-derived result for the same revision.
 - `REPO-PP-012`: Files not listed in the managed adapter inventory shall be treated as unmanaged by this contract, shall retain their existing ownership or bootstrap handling, and shall not be migrated, regenerated, or reclassified by this issue.
+- `REPO-PP-013`: The GitHub remote-state contract shall define a ruleset desired-state format and a branch-protection desired-state format, each with explicit required fields suitable for repository-local inspection and review.
+- `REPO-PP-014`: The GitHub remote-state contract shall separate inspection from apply: inspection shall capture live remote state and compare it to desired state, while apply shall only execute a previously approved desired-state change.
+- `REPO-PP-015`: The GitHub remote-state mutation evidence record shall include inspection evidence, accepted repository revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification.
+- `REPO-PP-016`: Rollback and post-change verification shall be declared before any remote mutation is applied, and the verification step shall state the exact checks used to confirm the applied state.
 
 ## Dependencies
 

@@ -217,6 +217,14 @@ def run_schema_mutations(repo_root: Path) -> None:
         "enum mismatch",
     )
 
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    profile_spec["profiles"][0]["deployment_state"].pop("ruleset_desired_state_format")
+    expect_failure(
+        "deployment-state contract",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "missing required property ruleset_desired_state_format",
+    )
+
     mutated_specs = copy.deepcopy(specs)
     mutated_specs["repo.repository-structure"]["dependencies"][0]["spec_id"] = "repo.missing-spec"
     expect_failure(

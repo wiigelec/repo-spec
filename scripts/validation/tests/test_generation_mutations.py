@@ -335,5 +335,11 @@ def run_generation_mutations(repo_root: Path) -> None:
         specs["repo.platform-profiles"],
         lambda spec: spec["profiles"][0]["mutation_record_fields"].remove("accepted repository revision") or spec,
     )
+    expect_render_change(
+        "platform profiles projected deployment state",
+        lambda spec: render_spec_projection(specs["repo.platform-profiles"]["title"], paths["repo.platform-profiles"], spec),
+        specs["repo.platform-profiles"],
+        lambda spec: spec["profiles"][0]["deployment_state"]["inspection_procedure"].append("Capture an extra snapshot.") or spec,
+    )
 
     print("ok: generation mutation tests")

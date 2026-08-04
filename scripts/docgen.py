@@ -234,6 +234,8 @@ def render_profiles(spec: dict) -> list[str]:
         lines.extend([f"  - {kind}" for kind in profile["remote_state_kinds"]])
         lines.extend(["", "- Hosting mutation record fields:"])
         lines.extend([f"  - {field}" for field in profile["mutation_record_fields"]])
+        lines.extend(["", "- Deployment state:"])
+        lines.extend(render_nested_value(profile["deployment_state"], 1))
         lines.append("")
     return lines
 

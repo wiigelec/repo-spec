@@ -67,11 +67,15 @@
     },
     {
       "id": "REPO-VAL-016",
-      "text": "The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification fields."
+      "text": "The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification fields."
     },
     {
       "id": "REPO-VAL-017",
       "text": "The validation entry point shall enforce product projection declaration shape, repository-relative `derived/specs/product/` path boundaries, and declaration ownership by the source product specification."
+    },
+    {
+      "id": "REPO-VAL-018",
+      "text": "The validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations."
     }
   ],
   "dependencies": [
