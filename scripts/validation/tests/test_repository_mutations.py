@@ -74,50 +74,21 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
         overview_text = overview_path.read_text()
-        basis_start = overview_text.index('  "basis": [\n')
-        basis_end = overview_text.index('  ],\n  "required_content_areas": {')
-        overview_text = (
-            overview_text[:basis_start]
-            + '  "basis": [\n    {"type": "specification", "spec_id": "repo.validation"}\n  ],\n'
-            + overview_text[basis_end + len('  ],\n'):]
-        )
-        overview_path.write_text(overview_text)
-        validate_repo(temp_repo)
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_text = overview_path.read_text()
-        overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
-        basis_start = overview_text.index('  "basis": [\n')
-        basis_end = overview_text.index('  ],\n  "required_content_areas": {')
-        overview_text = (
-            overview_text[:basis_start]
-            + '  "basis": [\n    {"type": "specification", "spec_id": "repo.validation"}\n  ],\n'
-            + overview_text[basis_end + len('  ],\n'):]
-        )
-        overview_path.write_text(overview_text)
-        expect_failure("overview without predecessor evidence or initial role", lambda: validate_repo(temp_repo), "missing predecessor overview or evidence")
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_text = overview_path.read_text()
-        overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
         overview_text = overview_text.replace(
-            '  "governing_issue": "#175",\n',
-            '  "predecessor_evidence": ["Discovery interview note", "Issue #123"],\n  "governing_issue": "#175",\n',
+            '    "docs/overview/product-overview/06-governance-and-evolution.md"\n  ],\n',
+            '    "docs/overview/product-overview/06-governance-and-evolution.md",\n    "docs/overview/README.md"\n  ],\n',
             1,
         )
-        basis_start = overview_text.index('  "basis": [\n')
-        basis_end = overview_text.index('  ],\n  "required_content_areas": {')
-        overview_text = (
-            overview_text[:basis_start]
-            + '  "basis": [\n    {"type": "specification", "spec_id": "repo.validation"}\n  ],\n'
-            + overview_text[basis_end + len('  ],\n'):]
-        )
         overview_path.write_text(overview_text)
         validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
+        overview_path.write_text(overview_text)
+        expect_failure("overview without initial role", lambda: validate_repo(temp_repo), "missing initial overview role")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
@@ -153,13 +124,15 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_path.write_text(decomposition_path.read_text().replace("docs/overview/PRODUCT-OVERVIEW.md", "docs/overview/MISSING-OVERVIEW.md", 1))
-        expect_failure("missing decomposition predecessor path", lambda: validate_repo(temp_repo), "unresolved predecessor path")
+        expect_failure("missing decomposition predecessor path", lambda: validate_repo(temp_repo), "missing evidence path")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
-        plan_path.write_text(plan_path.read_text().replace("docs/decompositions/INITIALIZER-DECOMPOSITION.md", "docs/overview/INITIALIZER-OVERVIEW.md", 1))
-        expect_failure("plan without controlling decomposition", lambda: validate_repo(temp_repo), "missing controlling decomposition")
+        plan_text = plan_path.read_text()
+        plan_text = plan_text.replace("docs/decompositions/INITIALIZER-DECOMPOSITION.md", "docs/decompositions/MISSING-DECOMPOSITION.md")
+        plan_path.write_text(plan_text)
+        expect_failure("plan without controlling decomposition", lambda: validate_repo(temp_repo), "unresolved controlling document path")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

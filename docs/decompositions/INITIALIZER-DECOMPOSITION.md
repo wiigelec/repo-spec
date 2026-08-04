@@ -20,14 +20,19 @@ This document is the controlling entry point for the initializer decomposition c
   "authority_category": "directional",
   "lifecycle_status": "accepted",
   "governing_issue": "#175",
-  "basis": [
-    {"type": "artifact", "path": "docs/overview/INITIALIZER-OVERVIEW.md"},
-    {"type": "artifact", "path": "docs/overview/PRODUCT-OVERVIEW.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/02-decomposition-model.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/03-development-and-specifications.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/04-git-and-change-workflow.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/05-human-ai-continuity.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/06-governance-and-evolution.md"}
+  "controlling_documents": [
+    "docs/overview/INITIALIZER-OVERVIEW.md"
+  ],
+  "predecessor_documents": [
+    "docs/overview/INITIALIZER-OVERVIEW.md"
+  ],
+  "evidence": [
+    "docs/overview/PRODUCT-OVERVIEW.md",
+    "docs/overview/product-overview/02-decomposition-model.md",
+    "docs/overview/product-overview/03-development-and-specifications.md",
+    "docs/overview/product-overview/04-git-and-change-workflow.md",
+    "docs/overview/product-overview/05-human-ai-continuity.md",
+    "docs/overview/product-overview/06-governance-and-evolution.md"
   ],
   "content_areas": {
     "invocation_and_authority": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md",

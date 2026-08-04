@@ -95,7 +95,7 @@
     },
     {
       "id": "REPO-VAL-023",
-      "text": "The validation entry point shall build a cross-document registry for governed development documents and shall enforce basis-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them."
+      "text": "The validation entry point shall build a cross-document registry for governed development documents and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them."
     },
     {
       "id": "REPO-VAL-024",
