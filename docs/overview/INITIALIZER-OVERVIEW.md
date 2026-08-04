@@ -627,4 +627,6 @@ initialization request
 → project release and maintenance
 ```
 
+The decomposition record is [INITIALIZER-DECOMPOSITION.md](./INITIALIZER-DECOMPOSITION.md).
+
 The initializer supports the second sequence because it was itself developed through the first.
