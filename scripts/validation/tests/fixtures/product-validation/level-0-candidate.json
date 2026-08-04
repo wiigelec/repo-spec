@@ -16,6 +16,11 @@
   "supersedes": [],
   "superseded_by": [],
   "derived_artifacts": [],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
   "kernel": {
     "foundations": ["terminology", "identity", "lifecycle"]
   }

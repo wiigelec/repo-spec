@@ -29,5 +29,29 @@
       "type": "markdown",
       "path": "derived/specs/product/primitive.md"
     }
-  ]
+  ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.primitive",
+        "paths": ["src/primitive.py"],
+        "requirements": ["PRIMITIVE-001"]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.primitive",
+        "paths": ["tests/test_primitive.py"],
+        "requirements": ["PRIMITIVE-001"]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "PRIMITIVE-001",
+        "implementation_ids": ["impl.primitive"],
+        "test_ids": ["test.primitive"],
+        "status": "covered"
+      }
+    ]
+  }
 }

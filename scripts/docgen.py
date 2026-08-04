@@ -30,6 +30,7 @@ COMMON_SPEC_KEYS = {
     "supersedes",
     "superseded_by",
     "derived_artifacts",
+    "correspondence",
     "artifact_classes",
     "profiles",
     "issue_fields",
@@ -98,6 +99,47 @@ def render_derived_artifacts(spec: dict) -> list[str]:
             line += f" (renderer: `{artifact['renderer']}`)"
         items.append(line)
     return items
+
+
+def render_correspondence_collection(title: str, records: list[dict], identifier_field: str, fields: list[str]) -> list[str]:
+    lines = [f"### {title}", ""]
+    if not records:
+        lines.extend(["- None", ""])
+        return lines
+
+    for record in sorted(records, key=lambda item: item[identifier_field]):
+        lines.append(f"- {render_scalar(record[identifier_field])}")
+        for field in fields:
+            if field == identifier_field or field not in record:
+                continue
+            value = record[field]
+            label = field.replace("_", " ").title()
+            if isinstance(value, list):
+                lines.append(f"  - {label}:")
+                if value:
+                    lines.extend([f"    - {render_scalar(item)}" for item in value])
+                else:
+                    lines.append("    - None")
+            else:
+                lines.append(f"  - {label}: {render_scalar(value)}")
+        lines.append("")
+    return lines
+
+
+def render_correspondence(spec: dict) -> list[str]:
+    correspondence = spec["correspondence"]
+    lines = ["## Correspondence", ""]
+    lines.extend(render_correspondence_collection("Implementations", correspondence["implementations"], "id", ["id", "paths", "requirements"]))
+    lines.extend(render_correspondence_collection("Tests", correspondence["tests"], "id", ["id", "paths", "requirements"]))
+    lines.extend(
+        render_correspondence_collection(
+            "Conformance",
+            correspondence["conformance"],
+            "requirement_id",
+            ["requirement_id", "implementation_ids", "test_ids", "status", "rationale"],
+        )
+    )
+    return lines
 
 
 def render_scalar(value: object) -> str:
@@ -293,6 +335,8 @@ def render_lineage(spec: dict) -> list[str]:
 
 def render_spec_projection(title: str, source_path: str, spec: dict, include_authoritative_specs: bool = False) -> str:
     lines = [header(title, source_path), "## Purpose", "", spec["purpose"], ""]
+    if "correspondence" in spec:
+        lines.extend(render_correspondence(spec))
     if "artifact_classes" in spec:
         lines.extend(render_artifact_classes(spec))
     if "profiles" in spec:

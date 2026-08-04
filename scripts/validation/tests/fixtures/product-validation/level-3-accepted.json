@@ -36,6 +36,30 @@
       "path": "derived/specs/product/orchestration.md"
     }
   ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.orchestration",
+        "paths": ["src/orchestration.py"],
+        "requirements": ["ORCH-001"]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.orchestration",
+        "paths": ["tests/test_orchestration.py"],
+        "requirements": ["ORCH-001"]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "ORCH-001",
+        "implementation_ids": ["impl.orchestration"],
+        "test_ids": ["test.orchestration"],
+        "status": "covered"
+      }
+    ]
+  },
   "orchestrations": {
     "workflows": ["end-to-end use case", "release flow"]
   }

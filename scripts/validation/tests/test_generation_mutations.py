@@ -271,14 +271,22 @@ def run_generation_mutations(repo_root: Path) -> None:
     )
     expect_render_change(
         "product correspondence projected requirement",
-        lambda spec: render_spec_projection(specs["repo.product-correspondence"]["title"], paths["repo.product-correspondence"], spec),
-        specs["repo.product-correspondence"],
-        lambda spec: spec["normative_requirements"][0].__setitem__("text", "Changed product correspondence requirement"),
+        lambda spec: render_spec_projection(spec["title"], "specs/product/level-1/primitive.json", spec),
+        json.loads((repo_root / "scripts/validation/tests/fixtures/product-validation/level-1-accepted.json").read_text()),
+        lambda spec: spec["correspondence"]["conformance"][0].__setitem__("status", "not-applicable"),
     )
+    correspondence_spec = json.loads((repo_root / "scripts/validation/tests/fixtures/product-validation/level-1-accepted.json").read_text())
+    correspondence_renderer = lambda spec: render_spec_projection(spec["title"], "specs/product/level-1/primitive.json", spec)
+    correspondence_render = correspondence_renderer(correspondence_spec)
+    shuffled_correspondence = copy.deepcopy(correspondence_spec)
+    shuffled_correspondence["correspondence"]["implementations"].reverse()
+    shuffled_correspondence["correspondence"]["tests"].reverse()
+    shuffled_correspondence["correspondence"]["conformance"].reverse()
+    assert correspondence_renderer(shuffled_correspondence) == correspondence_render
     expect_render_change(
         "product primitive projected requirement",
         lambda spec: render_spec_projection(spec["title"], "specs/product/level-1/primitive.json", spec),
-        json.loads((repo_root / "scripts/validation/tests/fixtures/product-validation/level-1-accepted.json").read_text()),
+        correspondence_spec,
         lambda spec: spec["normative_requirements"][0].__setitem__("text", "Changed primitive requirement"),
     )
     expect_render_change(
