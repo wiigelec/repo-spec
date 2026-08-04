@@ -19,7 +19,7 @@
   "references": [
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/02-development-and-specifications.md"
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
     }
   ],
   "supersedes": [],

@@ -53,7 +53,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
+      "path": "docs/overview/product-overview/04-git-and-change-workflow.md"
     }
   ],
   "derived_artifacts": [

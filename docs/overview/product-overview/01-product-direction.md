@@ -1,6 +1,6 @@
 # Product Overview: Product Direction
 
-> Part 1 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Next](./02-development-and-specifications.md)
+> Part 1 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Next](./02-decomposition-model.md)
 
 This part defines the framework’s intended outcome, audience, success conditions, and explicit boundaries.
 

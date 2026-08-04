@@ -251,15 +251,15 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/03-git-and-change-workflow.md"
+      "path": "docs/overview/product-overview/04-git-and-change-workflow.md"
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/04-human-ai-continuity.md"
+      "path": "docs/overview/product-overview/05-human-ai-continuity.md"
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
     },
     {
       "type": "artifact",

@@ -1,6 +1,6 @@
 # Product Overview: Development and Specifications
 
-> Part 2 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./01-product-direction.md) · [Next](./03-git-and-change-workflow.md)
+> Part 3 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./02-decomposition-model.md) · [Next](./04-git-and-change-workflow.md)
 
 This part defines the development layers and the four-Level template used to organize normative product specifications.
 

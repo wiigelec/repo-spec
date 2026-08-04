@@ -100,11 +100,11 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/02-development-and-specifications.md"
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/05-governance-and-evolution.md"
+      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
     }
   ],
   "derived_artifacts": [

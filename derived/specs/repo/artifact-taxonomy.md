@@ -331,8 +331,8 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - specification: `repo.validation`
 - artifact: `docs/plans/01-framework-architecture-plan.md`
 - artifact: `docs/overview/product-overview/01-product-direction.md`
-- artifact: `docs/overview/product-overview/02-development-and-specifications.md`
-- artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
+- artifact: `docs/overview/product-overview/03-development-and-specifications.md`
+- artifact: `docs/overview/product-overview/06-governance-and-evolution.md`
 
 ## Derived artifacts
 

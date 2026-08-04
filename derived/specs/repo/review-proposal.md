@@ -133,8 +133,8 @@ Validation metadata:
 - specification: `repo.governing-issue`
 - specification: `repo.validation`
 - artifact: `AGENTS.md`
-- artifact: `docs/overview/product-overview/03-git-and-change-workflow.md`
-- artifact: `docs/overview/product-overview/05-governance-and-evolution.md`
+- artifact: `docs/overview/product-overview/04-git-and-change-workflow.md`
+- artifact: `docs/overview/product-overview/06-governance-and-evolution.md`
 - artifact: `.github/PULL_REQUEST_TEMPLATE.md`
 - artifact: `scripts/docgen.py`
 - artifact: `scripts/validate_impl.py`

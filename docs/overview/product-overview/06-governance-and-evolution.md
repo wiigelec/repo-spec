@@ -1,6 +1,6 @@
 # Product Overview: Governance and Evolution
 
-> Part 5 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./04-human-ai-continuity.md) · [Next](./06-decomposition-model.md)
+> Part 6 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./05-human-ai-continuity.md)
 
 This part defines validation and authority boundaries, generated artifacts, portability, derived-product separation, and development continuity.
 
