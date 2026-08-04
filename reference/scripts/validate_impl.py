@@ -111,6 +111,22 @@ def expect(condition: bool, message: str) -> None:
         fail(message)
 
 
+def resolve_repo_path(repo_root: Path, value: str) -> Path:
+    if not value:
+        fail(f"invalid repository-relative path: {value}")
+    if value.startswith("/") or value.startswith("./") or "/./" in value or value.endswith("/.") or "\\" in value or "//" in value:
+        fail(f"invalid repository-relative path: {value}")
+    relative = Path(value)
+    if any(part in {".", ".."} for part in relative.parts):
+        fail(f"invalid repository-relative path: {value}")
+    resolved = (repo_root / relative).resolve()
+    try:
+        resolved.relative_to(repo_root.resolve())
+    except ValueError:
+        fail(f"invalid repository-relative path: {value}")
+    return resolved
+
+
 def schema_location(source: str, path: str) -> str:
     return source if not path else f"{source}{path}"
 
@@ -387,7 +403,7 @@ def load_reference_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     return schemas
 
 
-def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, Any]]) -> None:
+def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     validate_instance(load_json(repo_root / "specs/repo/manifest.json"), schemas["repo.manifest"], "specs/repo/manifest.json", schemas["repo.manifest"])
 
     for relpath in [
@@ -401,9 +417,36 @@ def validate_declared_json_files(repo_root: Path, schemas: dict[str, dict[str, A
     ]:
         validate_instance(load_json(repo_root / relpath), schemas["repo.spec"], relpath, schemas["repo.spec"])
 
-    validate_instance(load_json(repo_root / "specs/product/manifest.json"), schemas["product.manifest"], "specs/product/manifest.json", schemas["product.manifest"])
-    validate_instance(load_json(repo_root / "specs/product/level-0/kernel.json"), schemas["product.level-0"], "specs/product/level-0/kernel.json", schemas["product.level-0"])
-    validate_instance(load_json(repo_root / "specs/product/level-1/primitives.json"), schemas["product.level-1"], "specs/product/level-1/primitives.json", schemas["product.level-1"])
+    product_manifest_path = repo_root / "specs/product/manifest.json"
+    product_manifest = load_json(product_manifest_path)
+    validate_instance(product_manifest, schemas["product.manifest"], "specs/product/manifest.json", schemas["product.manifest"])
+
+    entries = product_manifest.get("product_specifications", [])
+    declared_paths = {entry["path"] for entry in entries}
+    actual_paths = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in (repo_root / "specs/product").rglob("*.json")
+        if path.is_file() and path.relative_to(repo_root).as_posix() != "specs/product/manifest.json"
+    )
+    expect(set(actual_paths) == declared_paths, "product manifest completeness failed")
+
+    specs_by_id: dict[str, dict[str, Any]] = {}
+    for entry in entries:
+        level = entry["level"]
+        level_schema_key = f"product.level-{level}"
+        expect(level_schema_key in schemas, f"schema loading failed: missing {level_schema_key}")
+        spec_path = repo_root / entry["path"]
+        spec = load_json(spec_path)
+        validate_instance(spec, schemas["product.spec-base"], entry["path"], schemas["product.spec-base"])
+        validate_instance(spec, schemas[level_schema_key], entry["path"], schemas[level_schema_key])
+        validate_product_spec(spec, spec_path, level)
+        specs_by_id[spec["spec_id"]] = spec
+
+    validate_product_relationships(repo_root, specs_by_id)
+    for spec in specs_by_id.values():
+        for artifact in spec.get("derived_artifacts", []):
+            validate_projection(repo_root, spec, artifact["path"])
+    return specs_by_id
 
 
 def validate_schema(path: Path, required_fields: list[str], const_level: int | None = None) -> None:
@@ -414,116 +457,133 @@ def validate_schema(path: Path, required_fields: list[str], const_level: int | N
         expect(schema.get("properties", {}).get("level", {}).get("const") == const_level, f"schema {path} must constrain level to {const_level}")
 
 
-def validate_conformance(spec: dict) -> None:
+def validate_general_conformance(spec: dict, spec_path: Path) -> None:
     requirements = spec.get("normative_requirements", [])
     correspondence = spec.get("correspondence", {})
-    requirement_ids = [req["id"] for req in requirements]
-    implementation_ids = {item["id"]: item for item in correspondence.get("implementations", [])}
-    test_ids = {item["id"]: item for item in correspondence.get("tests", [])}
+    expect(isinstance(requirements, list) and requirements, f"{spec_path} must declare at least one requirement")
+    expect(isinstance(correspondence, dict), f"{spec_path} must declare correspondence as an object")
+
+    requirement_ids: set[str] = set()
+    for index, requirement in enumerate(requirements):
+        expect(isinstance(requirement, dict), f"{spec_path} normative_requirements[{index}] must be an object")
+        requirement_id = requirement.get("id")
+        expect(isinstance(requirement_id, str) and requirement_id, f"{spec_path} normative_requirements[{index}] missing id")
+        requirement_text = requirement.get("text")
+        expect(isinstance(requirement_text, str) and requirement_text.strip(), f"{spec_path} normative_requirements[{index}] missing text")
+        requirement_ids.add(requirement_id)
+
+    implementation_index: dict[str, dict[str, Any]] = {}
+    test_index: dict[str, dict[str, Any]] = {}
+    declared_paths: set[str] = set()
+
+    def validate_mapping_collection(collection_name: str, indexed: dict[str, dict[str, Any]]) -> None:
+        mappings = correspondence.get(collection_name, [])
+        expect(isinstance(mappings, list), f"{spec_path} {collection_name} must be an array")
+        for index, mapping in enumerate(mappings):
+            expect(isinstance(mapping, dict), f"{spec_path} {collection_name}[{index}] must be an object")
+            mapping_id = mapping.get("id")
+            expect(isinstance(mapping_id, str) and mapping_id, f"{spec_path} {collection_name}[{index}] missing id")
+            expect(mapping_id not in indexed, f"{spec_path} duplicate {collection_name} id {mapping_id}")
+            paths = mapping.get("paths", [])
+            requirements = mapping.get("requirements", [])
+            expect(isinstance(paths, list) and paths, f"{spec_path} {collection_name} {mapping_id} requires at least one path")
+            expect(isinstance(requirements, list) and requirements, f"{spec_path} {collection_name} {mapping_id} requires at least one requirement")
+            for path in paths:
+                expect(isinstance(path, str) and path.strip(), f"{spec_path} {collection_name} {mapping_id} path must be a string")
+                expect(path not in declared_paths, f"{spec_path} duplicate correspondence path {path}")
+                declared_paths.add(path)
+            for requirement_id in requirements:
+                expect(requirement_id in requirement_ids, f"{spec_path} {collection_name} {mapping_id} unknown requirement {requirement_id}")
+            indexed[mapping_id] = mapping
+
+    validate_mapping_collection("implementations", implementation_index)
+    validate_mapping_collection("tests", test_index)
+
     conformance_records = correspondence.get("conformance", [])
-    expect(len(requirements) == 1, f"{spec['spec_id']} must have exactly one accepted requirement for this issue")
-    expect(len(conformance_records) == 1, f"{spec['spec_id']} must have exactly one conformance record")
-    requirement_id = requirement_ids[0]
-    impl = next(iter(implementation_ids.values()))
-    test = next(iter(test_ids.values()))
-    expect(impl["requirements"] == [requirement_id], f"{spec['spec_id']} implementation mapping must point at the requirement")
-    expect(test["requirements"] == [requirement_id], f"{spec['spec_id']} test mapping must point at the requirement")
-    record = conformance_records[0]
-    expect(record["requirement_id"] == requirement_id, f"{spec['spec_id']} conformance record must target the requirement")
-    expect(record["implementation_ids"] == [impl["id"]], f"{spec['spec_id']} conformance record must reference the implementation mapping")
-    expect(record["test_ids"] == [test["id"]], f"{spec['spec_id']} conformance record must reference the test mapping")
-    expect(record["status"] == "covered", f"{spec['spec_id']} conformance record must be covered")
+    expect(isinstance(conformance_records, list) and conformance_records, f"{spec_path} must declare at least one conformance record")
+
+    seen_requirement_ids: set[str] = set()
+    covered_implementation_ids: set[str] = set()
+    covered_test_ids: set[str] = set()
+
+    for index, record in enumerate(conformance_records):
+        expect(isinstance(record, dict), f"{spec_path} conformance[{index}] must be an object")
+        requirement_id = record.get("requirement_id")
+        expect(isinstance(requirement_id, str) and requirement_id, f"{spec_path} conformance[{index}] missing requirement_id")
+        expect(requirement_id in requirement_ids, f"{spec_path} conformance[{index}] unknown requirement {requirement_id}")
+        seen_requirement_ids.add(requirement_id)
+
+        implementation_ids = record.get("implementation_ids", [])
+        test_ids = record.get("test_ids", [])
+        expect(isinstance(implementation_ids, list), f"{spec_path} conformance[{index}] implementation_ids must be an array")
+        expect(isinstance(test_ids, list), f"{spec_path} conformance[{index}] test_ids must be an array")
+
+        status = record.get("status")
+        if status == "covered":
+            expect(implementation_ids, f"{spec_path} conformance[{index}] covered requirement {requirement_id} requires at least one implementation mapping")
+            expect(test_ids, f"{spec_path} conformance[{index}] covered requirement {requirement_id} requires at least one test mapping")
+        else:
+            rationale = record.get("rationale")
+            expect(isinstance(rationale, str) and rationale.strip(), f"{spec_path} conformance[{index}] not-applicable requirement {requirement_id} requires rationale")
+
+        for mapping_id in implementation_ids:
+            expect(mapping_id in implementation_index, f"{spec_path} conformance[{index}] unresolved implementation {mapping_id}")
+            expect(requirement_id in implementation_index[mapping_id]["requirements"], f"{spec_path} conformance[{index}] implementation {mapping_id} does not own {requirement_id}")
+            covered_implementation_ids.add(mapping_id)
+
+        for mapping_id in test_ids:
+            expect(mapping_id in test_index, f"{spec_path} conformance[{index}] unresolved test {mapping_id}")
+            expect(requirement_id in test_index[mapping_id]["requirements"], f"{spec_path} conformance[{index}] test {mapping_id} does not own {requirement_id}")
+            covered_test_ids.add(mapping_id)
+
+    expect(seen_requirement_ids == requirement_ids, f"{spec_path} must cover every declared requirement")
+    expect(not (set(implementation_index) - covered_implementation_ids), f"{spec_path} has unreachable implementation mappings")
+    expect(not (set(test_index) - covered_test_ids), f"{spec_path} has unreachable test mappings")
 
 
-def validate_product_spec(spec_path: Path, expected_level: int) -> dict:
-    spec = load_json(spec_path)
+def validate_product_spec(spec: dict, spec_path: Path, expected_level: int) -> None:
     expect(spec.get("schema_version") == "1", f"{spec_path} must use schema_version 1")
     expect(spec.get("status") == "accepted", f"{spec_path} must be accepted")
     expect(spec.get("level") == expected_level, f"{spec_path} must declare level {expected_level}")
-    expect(len(spec.get("normative_requirements", [])) == 1, f"{spec_path} must declare exactly one requirement")
-    expect(spec.get("supersedes") == [], f"{spec_path} must have empty supersedes")
-    expect(spec.get("superseded_by") == [], f"{spec_path} must have empty superseded_by")
-    correspondence = spec.get("correspondence")
-    expect(isinstance(correspondence, dict), f"{spec_path} must declare correspondence as an object")
-    expect(len(correspondence.get("implementations", [])) == 1, f"{spec_path} must declare exactly one implementation mapping")
-    expect(len(correspondence.get("tests", [])) == 1, f"{spec_path} must declare exactly one test mapping")
-    expect(len(correspondence.get("conformance", [])) == 1, f"{spec_path} must declare exactly one conformance record")
+    expect(isinstance(spec.get("supersedes", []), list), f"{spec_path} must declare supersedes as an array")
+    expect(isinstance(spec.get("superseded_by", []), list), f"{spec_path} must declare superseded_by as an array")
     derived = spec.get("derived_artifacts", [])
-    expect(len(derived) == 1, f"{spec_path} must declare exactly one derived artifact")
-    expect(derived[0].get("type") == "markdown", f"{spec_path} must declare a markdown derived artifact")
-    validate_conformance(spec)
-    return spec
+    expect(isinstance(derived, list) and derived, f"{spec_path} must declare at least one derived artifact")
+    for index, artifact in enumerate(derived):
+        expect(isinstance(artifact, dict), f"{spec_path} derived_artifacts[{index}] must be an object")
+        expect(artifact.get("type") == "markdown", f"{spec_path} derived_artifacts[{index}] must declare a markdown derived artifact")
+        path = artifact.get("path")
+        expect(isinstance(path, str) and path.strip(), f"{spec_path} derived_artifacts[{index}] must declare a path")
+    validate_general_conformance(spec, spec_path)
 
 
-def validate_level_0(spec: dict) -> None:
-    expect(spec.get("dependencies") == [], "Level 0 spec must not depend on higher-level product specs")
-    references = spec.get("references", [])
-    expect(any(ref.get("type") == "artifact" and ref.get("path") == "docs/overview/REFERENCE-OVERVIEW.md" for ref in references), "Level 0 spec must reference the reference overview")
+def validate_product_relationships(repo_root: Path, specs_by_id: dict[str, dict[str, Any]]) -> None:
+    for spec_id, spec in specs_by_id.items():
+        source_level = spec.get("level")
+        for dep in spec.get("dependencies", []):
+            target_spec_id = dep.get("spec_id")
+            expect(target_spec_id in specs_by_id, f"product dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
+            target_spec = specs_by_id[target_spec_id]
+            expect(target_spec["level"] <= source_level, f"product dependency direction failed: {spec_id} (level {source_level}) -> {target_spec_id} (level {target_spec['level']})")
 
+        for ref in spec.get("references", []):
+            if ref.get("type") == "specification":
+                target_spec = specs_by_id.get(ref.get("spec_id"))
+                expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref.get('spec_id')}")
+                kind = ref.get("kind", "normative")
+                if kind == "historical":
+                    expect(target_spec["status"] in {"superseded", "retired"}, f"product references failed: {spec_id} -> {ref.get('spec_id')}")
+                else:
+                    expect(kind == "normative", f"product references failed: {spec_id} -> {ref.get('spec_id')}")
+                    expect(target_spec["status"] == "accepted", f"product references failed: {spec_id} -> {ref.get('spec_id')}")
+            else:
+                resolved = resolve_repo_path(repo_root, ref.get("path", ""))
+                expect(resolved.exists(), f"product references failed: missing artifact {ref.get('path')}")
 
-def validate_level_1(spec: dict) -> None:
-    deps = spec.get("dependencies", [])
-    expect([dep.get("spec_id") for dep in deps] == ["product.kernel"], "Level 1 spec must depend on the Level 0 kernel")
-    references = spec.get("references", [])
-    expect(any(ref.get("type") == "specification" and ref.get("spec_id") == "product.kernel" for ref in references), "Level 1 spec must reference the Level 0 kernel")
-
-
-def validate_manifest(root: Path) -> dict[str, dict]:
-    manifest = load_json(root / "specs/product/manifest.json")
-    expect(manifest.get("spec_id") == "product.manifest", "product manifest must use the `product.manifest` identity")
-    expect(manifest.get("status") == "accepted", "product manifest must be accepted")
-    expect(manifest.get("schema_version") == "1", "product manifest must use schema_version 1")
-    entries = manifest.get("product_specifications")
-    expect(isinstance(entries, list), "product manifest must declare product_specifications as a list")
-    expect(len(entries) == 2, "product manifest must register exactly two product specifications")
-
-    specs_by_id: dict[str, dict] = {}
-    for entry in entries:
-        spec_id = entry.get("spec_id")
-        path_text = entry.get("path")
-        status = entry.get("status")
-        level = entry.get("level")
-        expect(spec_id in {"product.kernel", "product.primitives"}, f"unexpected product spec identity: {spec_id}")
-        expect(status == "accepted", f"manifest entry {spec_id} must be accepted")
-        expect(level in {0, 1}, f"manifest entry {spec_id} must declare level 0 or 1")
-        expect(path_text in {"specs/product/level-0/kernel.json", "specs/product/level-1/primitives.json"}, f"unexpected product path: {path_text}")
-        spec_path = root / path_text
-        expect(spec_path.exists(), f"manifest entry path must exist: {path_text}")
-        spec = validate_product_spec(spec_path, level)
-        expect(spec.get("spec_id") == spec_id, f"manifest entry {spec_id} must match the product spec identity")
-        expect(spec.get("status") == status, f"manifest entry {spec_id} status must match the product spec")
-        specs_by_id[spec_id] = spec
-
-    discovered = sorted(str(path.relative_to(root)) for path in root.glob("specs/product/level-*/*.json"))
-    expect(discovered == ["specs/product/level-0/kernel.json", "specs/product/level-1/primitives.json"], "product manifest must enumerate every product specification present under the reserved roots")
-    return specs_by_id
-
-
-def validate_product_schemas(root: Path) -> None:
-    validate_schema(
-        root / "schemas/product/product-manifest.schema.json",
-        ["spec_id", "title", "purpose", "status", "schema_version", "product_specifications"],
-    )
-    validate_schema(
-        root / "schemas/product/product-spec-base.schema.json",
-        [
-            "spec_id",
-            "title",
-            "purpose",
-            "status",
-            "schema_version",
-            "level",
-            "normative_requirements",
-            "dependencies",
-            "references",
-            "supersedes",
-            "superseded_by",
-            "derived_artifacts",
-            "correspondence",
-        ],
-    )
-    validate_schema(root / "schemas/product/product-level-0.schema.json", [], 0)
-    validate_schema(root / "schemas/product/product-level-1.schema.json", [], 1)
+        for field in ("supersedes", "superseded_by"):
+            for target_spec_id in spec.get(field, []):
+                expect(target_spec_id in specs_by_id, f"product lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
+                expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
 
 
 def validate_projection(root: Path, spec: dict, relpath: str) -> None:
@@ -631,14 +691,6 @@ def main(argv: list[str]) -> int:
         validate_repo_support(root)
         validate_source(root)
         run_tests(root)
-
-        specs_by_id = validate_manifest(root)
-        validate_level_0(specs_by_id["product.kernel"])
-        validate_level_1(specs_by_id["product.primitives"])
-        expect(specs_by_id["product.kernel"]["derived_artifacts"][0]["path"] == "derived/specs/product/level-0/kernel.md", "Level 0 derived artifact path must match the projection path")
-        expect(specs_by_id["product.primitives"]["derived_artifacts"][0]["path"] == "derived/specs/product/level-1/primitives.md", "Level 1 derived artifact path must match the projection path")
-        validate_projection(root, specs_by_id["product.kernel"], "derived/specs/product/level-0/kernel.md")
-        validate_projection(root, specs_by_id["product.primitives"], "derived/specs/product/level-1/primitives.md")
 
         print("ok: reference product layer validation")
         return 0

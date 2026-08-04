@@ -35,55 +35,106 @@
     "product_specifications": {
       "type": "array",
       "items": {
-        "oneOf": [
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["spec_id", "path", "status", "level"],
-            "properties": {
-              "spec_id": {
-                "type": "string",
-                "const": "product.kernel"
-              },
-              "path": {
-                "type": "string",
-                "const": "specs/product/level-0/kernel.json"
-              },
-              "status": {
-                "type": "string",
-                "enum": ["accepted"]
-              },
-              "level": {
-                "type": "integer",
-                "const": 0
-              }
-            }
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["spec_id", "path", "status", "level"],
-            "properties": {
-              "spec_id": {
-                "type": "string",
-                "const": "product.primitives"
-              },
-              "path": {
-                "type": "string",
-                "const": "specs/product/level-1/primitives.json"
-              },
-              "status": {
-                "type": "string",
-                "enum": ["accepted"]
-              },
-              "level": {
-                "type": "integer",
-                "const": 1
-              }
+        "$ref": "#/$defs/productSpecification"
+      }
+    }
+  },
+  "$defs": {
+    "productSpecification": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["spec_id", "path", "status", "level"],
+          "properties": {
+            "spec_id": {
+              "type": "string",
+              "pattern": "^product\\.[A-Za-z0-9._-]+$"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^specs/product/level-0/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.json$"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["candidate", "accepted", "superseded", "retired"]
+            },
+            "level": {
+              "type": "integer",
+              "const": 0
             }
           }
-        ]
-      }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["spec_id", "path", "status", "level"],
+          "properties": {
+            "spec_id": {
+              "type": "string",
+              "pattern": "^product\\.[A-Za-z0-9._-]+$"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^specs/product/level-1/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.json$"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["candidate", "accepted", "superseded", "retired"]
+            },
+            "level": {
+              "type": "integer",
+              "const": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["spec_id", "path", "status", "level"],
+          "properties": {
+            "spec_id": {
+              "type": "string",
+              "pattern": "^product\\.[A-Za-z0-9._-]+$"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^specs/product/level-2/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.json$"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["candidate", "accepted", "superseded", "retired"]
+            },
+            "level": {
+              "type": "integer",
+              "const": 2
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["spec_id", "path", "status", "level"],
+          "properties": {
+            "spec_id": {
+              "type": "string",
+              "pattern": "^product\\.[A-Za-z0-9._-]+$"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^specs/product/level-3/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.json$"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["candidate", "accepted", "superseded", "retired"]
+            },
+            "level": {
+              "type": "integer",
+              "const": 3
+            }
+          }
+        }
+      ]
     }
   }
 }

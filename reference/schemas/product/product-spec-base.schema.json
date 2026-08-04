@@ -21,7 +21,7 @@
   "properties": {
     "spec_id": {
       "type": "string",
-      "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+      "pattern": "^product\\.[A-Za-z0-9._-]+$"
     },
     "title": {
       "type": "string",
@@ -41,54 +41,34 @@
     },
     "level": {
       "type": "integer",
-      "enum": [0, 1]
+      "enum": [0, 1, 2, 3]
     },
     "normative_requirements": {
       "type": "array",
-      "items": {
-        "$ref": "#/$defs/requirement"
-      }
+      "items": { "$ref": "#/$defs/requirement" }
     },
     "dependencies": {
       "type": "array",
-      "items": {
-        "$ref": "#/$defs/dependency"
-      }
+      "items": { "$ref": "#/$defs/dependency" }
     },
     "references": {
       "type": "array",
-      "items": {
-        "$ref": "#/$defs/reference"
-      }
+      "items": { "$ref": "#/$defs/reference" }
     },
     "supersedes": {
       "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
+      "items": { "type": "string", "minLength": 1 }
     },
     "superseded_by": {
       "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
+      "items": { "type": "string", "minLength": 1 }
     },
     "derived_artifacts": {
       "type": "array",
-      "items": {
-        "$ref": "#/$defs/derivedArtifact"
-      }
+      "items": { "$ref": "#/$defs/derivedArtifact" }
     },
     "correspondence": {
       "$ref": "#/$defs/correspondence"
-    },
-    "kernel": {
-      "$ref": "#/$defs/kernel"
-    },
-    "primitives": {
-      "$ref": "#/$defs/primitives"
     }
   },
   "$defs": {
@@ -97,14 +77,8 @@
       "additionalProperties": false,
       "required": ["id", "text"],
       "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "text": {
-          "type": "string",
-          "minLength": 1
-        }
+        "id": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 }
       }
     },
     "dependency": {
@@ -114,7 +88,7 @@
       "properties": {
         "spec_id": {
           "type": "string",
-          "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+          "pattern": "^product\\.[A-Za-z0-9._-]+$"
         }
       }
     },
@@ -125,17 +99,11 @@
           "additionalProperties": false,
           "required": ["type", "spec_id"],
           "properties": {
-            "type": {
-              "type": "string",
-              "const": "specification"
-            },
-            "kind": {
-              "type": "string",
-              "enum": ["normative", "historical"]
-            },
+            "type": { "type": "string", "const": "specification" },
+            "kind": { "type": "string", "enum": ["normative", "historical"] },
             "spec_id": {
               "type": "string",
-              "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+              "pattern": "^product\\.[A-Za-z0-9._-]+$"
             }
           }
         },
@@ -144,12 +112,10 @@
           "additionalProperties": false,
           "required": ["type", "path"],
           "properties": {
-            "type": {
-              "type": "string",
-              "const": "artifact"
-            },
+            "type": { "type": "string", "const": "artifact" },
             "path": {
               "type": "string",
+              "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$",
               "minLength": 1
             }
           }
@@ -161,13 +127,10 @@
       "additionalProperties": false,
       "required": ["type", "path"],
       "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["markdown"]
-        },
+        "type": { "type": "string", "enum": ["markdown"] },
         "path": {
           "type": "string",
-          "minLength": 1
+          "pattern": "^derived/specs/product/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
         }
       }
     },
@@ -176,15 +139,12 @@
       "additionalProperties": false,
       "required": ["id", "paths", "requirements"],
       "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
+        "id": { "type": "string", "minLength": 1 },
         "paths": {
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1
+            "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$"
           }
         },
         "requirements": {
@@ -203,28 +163,16 @@
           "additionalProperties": false,
           "required": ["requirement_id", "implementation_ids", "test_ids", "status"],
           "properties": {
-            "requirement_id": {
-              "type": "string",
-              "minLength": 1
-            },
+            "requirement_id": { "type": "string", "minLength": 1 },
             "implementation_ids": {
               "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
+              "items": { "type": "string", "minLength": 1 }
             },
             "test_ids": {
               "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
+              "items": { "type": "string", "minLength": 1 }
             },
-            "status": {
-              "type": "string",
-              "const": "covered"
-            }
+            "status": { "type": "string", "const": "covered" }
           }
         },
         {
@@ -232,32 +180,17 @@
           "additionalProperties": false,
           "required": ["requirement_id", "implementation_ids", "test_ids", "status", "rationale"],
           "properties": {
-            "requirement_id": {
-              "type": "string",
-              "minLength": 1
-            },
+            "requirement_id": { "type": "string", "minLength": 1 },
             "implementation_ids": {
               "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
+              "items": { "type": "string", "minLength": 1 }
             },
             "test_ids": {
               "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
+              "items": { "type": "string", "minLength": 1 }
             },
-            "status": {
-              "type": "string",
-              "const": "not-applicable"
-            },
-            "rationale": {
-              "type": "string",
-              "minLength": 1
-            }
+            "status": { "type": "string", "const": "not-applicable" },
+            "rationale": { "type": "string", "minLength": 1 }
           }
         }
       ]
@@ -267,52 +200,9 @@
       "additionalProperties": false,
       "required": ["implementations", "tests", "conformance"],
       "properties": {
-        "implementations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/mapping"
-          }
-        },
-        "tests": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/mapping"
-          }
-        },
-        "conformance": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/conformanceRecord"
-          }
-        }
-      }
-    },
-    "kernel": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["foundations"],
-      "properties": {
-        "foundations": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      }
-    },
-    "primitives": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["concepts"],
-      "properties": {
-        "concepts": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
+        "implementations": { "type": "array", "items": { "$ref": "#/$defs/mapping" } },
+        "tests": { "type": "array", "items": { "$ref": "#/$defs/mapping" } },
+        "conformance": { "type": "array", "items": { "$ref": "#/$defs/conformanceRecord" } }
       }
     }
   }
