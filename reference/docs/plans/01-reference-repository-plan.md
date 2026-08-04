@@ -6,7 +6,7 @@ Current non-normative reference plan.
 
 ## Purpose
 
-Define the minimal skeleton required for the reference copy.
+Define the minimal reference copy required for the activated product layer.
 
 ## Scope
 
@@ -17,8 +17,12 @@ Define the minimal skeleton required for the reference copy.
 - repository schemas
 - local validation script
 - minimal profile source
-- empty product-specification activation
+- activated product manifest
+- one accepted Level 0 specification
+- one accepted Level 1 specification
+- declared product projections
+- projection freshness validation
 
 ## Completion gate
 
-The isolated reference skeleton can discover and invoke its own repository-local validation.
+The isolated reference repository can discover and invoke its own repository-local validation while validating the product manifest, Levels, dependencies, schemas, and projection freshness.

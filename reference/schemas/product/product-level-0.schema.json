@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reference Product Level 0 Schema",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "level": {
+      "const": 0
+    }
+  }
+}
