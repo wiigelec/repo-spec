@@ -263,7 +263,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `installed adapter`
 - Authority category: `profile-specific`
 - Authority source: hosting-profile source material
-- Source of truth rule: Mirrors a hosting profile into installed repository-local adapters such as `.github/` files; in the current bootstrap phase these adapters are maintained directly and do not become the source of normative authority.
+- Source of truth rule: Mirrors a hosting profile into installed repository-local adapters such as `.github/` files; installed adapters are generated from profile source material and remain subordinate to that source rather than becoming normative authority themselves.
 - Mutability: regenerable only
 - Generation mode: `deterministic`
 - Validation ownership: `platform`

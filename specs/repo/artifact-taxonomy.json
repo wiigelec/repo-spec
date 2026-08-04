@@ -248,7 +248,7 @@
       "role": "installed adapter",
       "authority_category": "profile-specific",
       "authority_source": "hosting-profile source material",
-      "source_of_truth_rule": "Mirrors a hosting profile into installed repository-local adapters such as `.github/` files; in the current bootstrap phase these adapters are maintained directly and do not become the source of normative authority.",
+      "source_of_truth_rule": "Mirrors a hosting profile into installed repository-local adapters such as `.github/` files; installed adapters are generated from profile source material and remain subordinate to that source rather than becoming normative authority themselves.",
       "mutability": "regenerable only",
       "generation_mode": "deterministic",
       "validation_ownership": "platform",
