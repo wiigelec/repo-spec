@@ -1,5 +1,78 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Reference Repository Manifest Schema",
-  "type": "object"
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "authoritative_specs",
+    "normative_requirements"
+  ],
+  "properties": {
+    "spec_id": {
+      "type": "string",
+      "const": "repo.manifest"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "accepted", "superseded", "retired"]
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1"
+    },
+    "authoritative_specs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spec_id", "path"],
+        "properties": {
+          "spec_id": {
+            "type": "string",
+            "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^specs/repo/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.json$"
+          }
+        }
+      }
+    },
+    "normative_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    }
+  },
+  "$defs": {
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
 }

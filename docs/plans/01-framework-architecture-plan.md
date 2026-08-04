@@ -917,6 +917,7 @@ Stage 7 ownership findings:
 Stage 7 portability findings:
 
 - the reference repository can be copied to a clean temporary location and run generation, validation, mutation tests, and product tests through repository-local scripts from its own repository root under a minimal environment;
+- the reference validator applies schema-driven conformance checks to the declared repository and product files before the semantic assertions;
 - the portability harness checks for missing product manifest, missing initialization document, invalid JSON, invalid product-root placement, symlink escape, parent-checkout text references, deterministic tree inventory or digest, and broken product tests;
 - the copied reference tree does not require parent-checkout state or private history for the validated command paths.
 
