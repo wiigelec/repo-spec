@@ -318,6 +318,10 @@
       "text": "The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation."
     },
     {
+      "id": "REPO-AT-003A",
+      "text": "An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance."
+    },
+    {
       "id": "REPO-AT-004",
       "text": "An overview, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative specification authority."
     },

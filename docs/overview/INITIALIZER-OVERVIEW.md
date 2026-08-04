@@ -19,23 +19,27 @@ This document is the controlling entry point for the initializer overview compos
   "product_id": "repo-spec initializer",
   "authority_category": "directional",
   "lifecycle_status": "accepted",
+  "overview_role": "initial",
   "governing_issue": "#175",
-  "basis": [
-    {"type": "artifact", "path": "docs/overview/PRODUCT-OVERVIEW.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/01-product-direction.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/02-decomposition-model.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/03-development-and-specifications.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/04-git-and-change-workflow.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/05-human-ai-continuity.md"},
-    {"type": "artifact", "path": "docs/overview/product-overview/06-governance-and-evolution.md"}
+  "controlling_documents": [
+    "docs/overview/PRODUCT-OVERVIEW.md"
   ],
-  "content_areas": {
-    "product_identity": "docs/overview/initializer-overview/01-product-identity-and-purpose.md",
-    "problem_and_outcome": "docs/overview/initializer-overview/02-problem-and-outcome.md",
-    "users_principles_and_boundaries": "docs/overview/initializer-overview/03-users-principles-and-boundaries.md",
-    "capabilities_and_success": "docs/overview/initializer-overview/04-capabilities-and-success.md",
-    "unresolved_questions": "docs/overview/initializer-overview/05-unresolved-questions.md",
-    "lifecycle_and_handoff": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md"
+  "predecessor_documents": [],
+  "evidence": [
+    "docs/overview/product-overview/01-product-direction.md",
+    "docs/overview/product-overview/02-decomposition-model.md",
+    "docs/overview/product-overview/03-development-and-specifications.md",
+    "docs/overview/product-overview/04-git-and-change-workflow.md",
+    "docs/overview/product-overview/05-human-ai-continuity.md",
+    "docs/overview/product-overview/06-governance-and-evolution.md"
+  ],
+  "required_content_areas": {
+    "product_identity": ["docs/overview/initializer-overview/01-product-identity-and-purpose.md"],
+    "problem_and_outcome": ["docs/overview/initializer-overview/02-problem-and-outcome.md"],
+    "users_principles_and_boundaries": ["docs/overview/initializer-overview/03-users-principles-and-boundaries.md"],
+    "capabilities_and_success": ["docs/overview/initializer-overview/04-capabilities-and-success.md"],
+    "unresolved_questions": ["docs/overview/initializer-overview/05-unresolved-questions.md"],
+    "lifecycle_and_handoff": ["docs/overview/initializer-overview/06-lifecycle-and-handoff.md"]
   },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"},

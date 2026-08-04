@@ -20,16 +20,21 @@ This document is the controlling entry point for a candidate placeholder composi
   "authority_category": "planning",
   "lifecycle_status": "candidate",
   "governing_issue": "#177",
-  "basis": [
-    {"type": "artifact", "path": "docs/overview/INITIALIZER-OVERVIEW.md"},
-    {"type": "artifact", "path": "docs/decompositions/INITIALIZER-DECOMPOSITION.md"},
-    {"type": "artifact", "path": "docs/plans/01-framework-architecture-plan.md"},
-    {"type": "artifact", "path": "docs/plans/02-reference-repository-plan.md"}
+  "controlling_documents": [
+    "docs/overview/INITIALIZER-OVERVIEW.md",
+    "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
   ],
-  "content_areas": {
-    "scope_and_preconditions": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",
-    "workstreams_and_dependencies": "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md",
-    "validation_and_completion": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md"
+  "predecessor_documents": [
+    "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+  ],
+  "evidence": [
+    "docs/plans/01-framework-architecture-plan.md",
+    "docs/plans/02-reference-repository-plan.md"
+  ],
+  "required_content_areas": {
+    "scope_and_preconditions": ["docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md"],
+    "workstreams_and_dependencies": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md"],
+    "validation_and_completion": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"]
   },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"},

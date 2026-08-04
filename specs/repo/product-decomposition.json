@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-PDC-002",
-      "text": "A product decomposition shall record the controlling product overview, decomposition basis, bounded product areas, stable product-area identifiers, each area's purpose, responsibilities, boundaries, dependencies, exclusions, cross-cutting concerns, unresolved decisions, likely successor planning or specification work, decomposition stopping criteria, and the authorized next planning action."
+      "text": "A product decomposition shall record the controlling product overview, controlling documents, predecessor documents, evidence, bounded product areas, stable product-area identifiers, each area's purpose, responsibilities, boundaries, dependencies, exclusions, cross-cutting concerns, unresolved decisions, likely successor planning or specification work, decomposition stopping criteria, and the authorized next planning action."
     },
     {
       "id": "REPO-PDC-003",
