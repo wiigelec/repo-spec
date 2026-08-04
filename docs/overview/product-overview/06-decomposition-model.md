@@ -144,9 +144,9 @@ human intent
   -> accepted revision
 ```
 
-Machine-verifiable links include the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
+Machine verification may establish the presence, structure, and referential validity of the specification requirement, governing issue scope, implementation mapping, test mapping, and conformance record.
 
-Human review remains responsible for confirming that the accepted overview direction and accepted revision preserve the intended meaning.
+Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between accepted overview direction and accepted revision.
 
 ## Architectural invariants
 
