@@ -104,6 +104,10 @@
     {
       "id": "REPO-VAL-025",
       "text": "The validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical."
+    },
+    {
+      "id": "REPO-VAL-026",
+      "text": "The validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks so chunk manageability remains deterministic without relying on token counts."
     }
   ],
   "dependencies": [

@@ -95,6 +95,7 @@ DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
 }
 
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
+MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
 
 def markdown_headings(text: str) -> set[str]:
@@ -1093,6 +1094,7 @@ def check_development_documents_phase(context: ValidationContext) -> None:
 
                 chunk_text = chunk_path.read_text()
                 expect(len(chunk_text.splitlines()) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES, f"development document size failed: chunk exceeds line limit {chunk['path']}")
+                expect(len(chunk_text.encode("utf-8")) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES, f"development document size failed: chunk exceeds byte limit {chunk['path']}")
                 first_non_empty = next((line for line in chunk_text.splitlines() if line.strip()), "")
                 expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
 

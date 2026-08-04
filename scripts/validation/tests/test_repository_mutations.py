@@ -60,6 +60,12 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        chunk_path = temp_repo / "docs/overview/initializer-overview/04-capabilities-and-success.md"
+        chunk_path.write_text(chunk_path.read_text() + "\n<!--" + ("x" * 30000) + "-->")
+        expect_failure("oversized overview chunk bytes", lambda: validate_repo(temp_repo), "chunk exceeds byte limit")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
         overview_path.write_text(overview_path.read_text().replace('  "artifact_id": "initializer-overview",\n', '  "artifact_id": "initializer.plan.bootstrap",\n'))
         validate_repo(temp_repo)
