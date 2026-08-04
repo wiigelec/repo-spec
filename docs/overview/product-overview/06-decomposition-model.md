@@ -98,7 +98,9 @@ A candidate leaf task should have explicit purpose, authority, inputs, outputs, 
 
 The framework should keep implementation work inside an AI assistant's bounded reasoning envelope.
 
-A task is inside that envelope when its purpose is unambiguous, its authoritative sources are identifiable, its dependencies are available, its required context is small enough to hold, and its remaining decisions are already resolved or explicitly escalated.
+A task is inside that envelope when its required context is finite and identifiable, its product and architectural decisions are resolved or explicitly escalated, it has a limited number of interacting responsibilities, its file and behavior boundaries are explicit, and its completion and review criteria are objective.
+
+Context-window size alone does not determine boundedness.
 
 ## Architectural invariants
 
