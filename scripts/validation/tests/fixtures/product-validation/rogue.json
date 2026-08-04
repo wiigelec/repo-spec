@@ -10,5 +10,10 @@
   "references": [],
   "supersedes": [],
   "superseded_by": [],
-  "derived_artifacts": []
+  "derived_artifacts": [],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
 }

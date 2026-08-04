@@ -50,6 +50,25 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
                 required_paths.append(ref["path"])
         for artifact in spec.get("derived_artifacts", []):
             required_paths.append(artifact["path"])
+
+    for root_name in ("src", "tests"):
+        root = repo_root / root_name
+        if root.exists():
+            required_paths.extend(
+                path.relative_to(repo_root).as_posix()
+                for path in root.rglob("*")
+                if path.is_file()
+            )
+
+    product_manifest_path = repo_root / "specs/product/manifest.json"
+    if product_manifest_path.exists():
+        product_manifest = json.loads(product_manifest_path.read_text())
+        for entry in product_manifest.get("product_specifications", []):
+            spec = json.loads((repo_root / entry["path"]).read_text())
+            correspondence = spec.get("correspondence", {})
+            for collection_name in ("implementations", "tests"):
+                for mapping in correspondence.get(collection_name, []):
+                    required_paths.extend(mapping.get("paths", []))
     return tuple(dict.fromkeys(required_paths))
 
 
