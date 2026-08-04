@@ -104,6 +104,8 @@ Decomposition should stop when additional subdivision no longer materially impro
 
 A candidate leaf task should have explicit purpose, authority, inputs, outputs, dependencies, success criteria, machine-verifiable checks, human-review boundaries, and no need to invent missing product semantics.
 
+A leaf task should change one coherent responsibility, have a reviewable diff, be independently validatable, avoid coupling unrelated decisions, and avoid requiring simultaneous acceptance of multiple architectural changes.
+
 ## AI reasoning boundaries
 
 The framework should keep implementation work inside an AI assistant's bounded reasoning envelope.
