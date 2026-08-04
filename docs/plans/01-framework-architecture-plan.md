@@ -820,6 +820,22 @@ Goal: connect accepted product specifications to maintained artifacts.
 
 Stage 5 begins from `main at 3f625406902a2170d345d510e111120d9f7c3e30`.
 
+Stage 5 authority model:
+
+- accepted product specifications own their correspondence declarations;
+- the product manifest remains a governed registry and does not author correspondence;
+- validation owns structural correspondence checks;
+- semantic correctness remains review-owned;
+- product projections must render accepted correspondence fields deterministically.
+
+Ordered Stage 5 issue sequence:
+
+1. Define correspondence authority and declaration contracts.
+2. Implement correspondence schemas and projection support.
+3. Validate implementation and test artifact correspondence.
+4. Enforce requirement-level conformance completeness.
+5. Integrate Stage 5 and record the first Stage 6 base.
+
 Candidate outputs:
 
 - correspondence schema;
@@ -829,6 +845,8 @@ Candidate outputs:
 - conformance mapping.
 
 Acceptance gate: validation proves declared correspondence paths exist and satisfy accepted completeness rules.
+
+Completion gate: the final Stage 5 integration issue may record the first Stage 6 base only after post-merge validation passes on the exact final Stage 5 revision.
 
 ### Stage 6 — GitHub profile formalization
 
