@@ -916,9 +916,9 @@ Stage 7 ownership findings:
 
 Stage 7 portability findings:
 
-- the reference repository can be copied to a clean temporary location and run generation, validation, mutation tests, and product tests through repository-local scripts;
-- the copied reference tree does not depend on parent-checkout state or private history;
-- clean temporary-copy validation and invalid-mutation failure behavior are both demonstrable.
+- the reference repository can be copied to a clean temporary location and run generation, validation, mutation tests, and product tests through repository-local scripts from its own repository root under a minimal environment;
+- the portability harness checks for symlink escape, parent-checkout text references, deterministic tree inventory or digest, and invalid-mutation failure behavior;
+- the copied reference tree does not require parent-checkout state or private history for the validated command paths.
 
 Candidate outputs:
 

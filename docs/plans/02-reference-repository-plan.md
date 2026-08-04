@@ -152,3 +152,16 @@ A clean isolated copy passes, and all required invalid mutations fail.
 ### Completion gate
 
 The Stage 7 acceptance gate is met and the exact Stage 8 base is durably recorded.
+
+## Issue 7 - Strengthen parent-dependency checks
+
+### Scope
+
+- run the reference commands from the copied repository root;
+- use a minimal environment for the isolated-copy commands;
+- check for symlink escape, parent-checkout text references, and deterministic tree inventory or digest;
+- keep the portability evidence aligned with the architecture plan wording.
+
+### Completion gate
+
+The parent-dependency checks are explicit enough to support the portability claim made by the architecture plan.
