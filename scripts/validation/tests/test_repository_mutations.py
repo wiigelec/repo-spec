@@ -25,6 +25,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         "unique derived artifact paths",
         "product specification root",
         "product correspondence inventory",
+        "product conformance completeness",
         "dependency target lifecycle",
         "product dependency directions",
         "product completeness",
