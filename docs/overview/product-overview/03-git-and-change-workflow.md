@@ -1,6 +1,6 @@
 # Product Overview: Git and Change Workflow
 
-> Part 3 of 5 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./02-development-and-specifications.md) · [Next](./04-human-ai-continuity.md)
+> Part 3 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./02-development-and-specifications.md) · [Next](./04-human-ai-continuity.md)
 
 This part defines the Git-native operating model, hosting-platform boundary, and bounded development workflow.
 
@@ -79,3 +79,5 @@ A normal bounded change should use a Git-compatible workflow:
 16. Close the governing issue only after its completion gate is satisfied.
 
 The exact tooling may evolve, but the separation among planning, mutation, validation, review, acceptance, merge, and closure must remain visible.
+
+Governing issues are the primary bounded decomposition unit for repository changes, and each issue should authorize one coherent body of work.

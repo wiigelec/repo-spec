@@ -1,6 +1,6 @@
 # Product Overview: Human and AI Continuity
 
-> Part 4 of 5 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./03-git-and-change-workflow.md) · [Next](./05-governance-and-evolution.md)
+> Part 4 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./03-git-and-change-workflow.md) · [Next](./05-governance-and-evolution.md)
 
 This part defines human and AI responsibilities and the durable context needed for an independent session to resume work.
 
@@ -35,6 +35,8 @@ AI chatbots may:
 - continue work across independent sessions.
 
 An AI chatbot must report missing or conflicting authority rather than silently selecting a convenient interpretation.
+
+When a lower-level task encounters missing authority, it should stop and escalate that decision to the owning layer rather than inventing the answer.
 
 ## Repository-first continuity
 
@@ -78,3 +80,5 @@ A new development session should be able to follow a predictable discovery path:
 Historical plans provide context only and do not authorize new work.
 
 The repository should make each step mechanically discoverable where practical.
+
+This continuity model supports recursive decomposition across sessions by keeping unresolved decisions, accepted bases, and bounded task boundaries in the repository.

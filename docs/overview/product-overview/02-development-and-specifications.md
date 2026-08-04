@@ -1,6 +1,6 @@
 # Product Overview: Development and Specifications
 
-> Part 2 of 5 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./01-product-direction.md) · [Next](./03-git-and-change-workflow.md)
+> Part 2 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./01-product-direction.md) · [Next](./03-git-and-change-workflow.md)
 
 This part defines the development layers and the four-Level template used to organize normative product specifications.
 
@@ -22,6 +22,8 @@ It describes:
 - unresolved product-direction questions.
 
 The overview is directional and non-normative. It provides the basis for planning but does not define exact product behavior.
+
+Decomposition turns that intent into smaller bounded questions before implementation begins.
 
 ### Plan
 
@@ -62,6 +64,8 @@ They may define:
 Candidate specifications remain proposals until accepted through the applicable governed process.
 
 Accepted normative specifications control maintained product artifacts.
+
+Repository decomposition and product decomposition are related but distinct: repository decomposition governs how work is represented and authorized, while product decomposition governs what the product must do.
 
 ### Product artifacts
 

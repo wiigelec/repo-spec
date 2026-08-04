@@ -1,6 +1,6 @@
 # Product Overview: Product Direction
 
-> Part 1 of 5 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Next](./02-development-and-specifications.md)
+> Part 1 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Next](./02-development-and-specifications.md)
 
 This part defines the framework’s intended outcome, audience, success conditions, and explicit boundaries.
 
@@ -19,6 +19,8 @@ The project name is intentionally unresolved. A separate future product derived 
 This repository will provide a reusable, Git-native repository framework and template for developing a high-level product idea into a specified, validated, released, and maintainable product.
 
 The framework is designed for collaboration between human maintainers and AI chatbots. It preserves enough durable context in the repository and its Git-compatible development records for an independent AI session to understand the product, recover current work, propose bounded changes, validate results, and continue development without depending on prior conversation history.
+
+The framework uses decomposition to reduce ambiguity before implementation.
 
 The central product-development loop is:
 
