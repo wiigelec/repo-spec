@@ -11,6 +11,7 @@ from .test_product_dependency_directions import run_product_dependency_direction
 from .test_product_level_schemas import run_product_level_schema_tests
 from .test_product_validation import run_product_validation_tests
 from .test_product_manifest_schema import run_product_manifest_schema_tests
+from .test_reference_isolated_copy import run_reference_isolated_copy_tests
 from .test_generation_mutations import run_generation_mutations
 from .test_github_profile_generation import run_github_profile_generation_tests, run_github_profile_mutation_tests
 from .test_repository_mutations import run_repository_mutations
@@ -30,6 +31,7 @@ def run_mutation_tests(repo_root: Path) -> None:
     run_github_profile_generation_tests(repo_root)
     run_github_profile_mutation_tests(repo_root)
     run_generation_mutations(repo_root)
+    run_reference_isolated_copy_tests(repo_root)
 
 
 def run_complete_validation_tests(repo_root: Path) -> None:

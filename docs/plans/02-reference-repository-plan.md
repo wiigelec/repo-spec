@@ -123,3 +123,16 @@ A fresh reference repository passes all required validation without relying on p
 ### Completion gate
 
 The reference form and complete artifact inventory are accepted.
+
+## Issue 5 - Add isolated validation and mutation tests
+
+### Scope
+
+- implement clean temporary-copy validation;
+- run reference generation, validation, mutation tests, and product tests;
+- add portability and parent-dependency checks;
+- integrate the reference test into complete repository validation or CI.
+
+### Completion gate
+
+A clean isolated copy passes, and all required invalid mutations fail.

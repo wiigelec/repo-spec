@@ -16,6 +16,8 @@ Define the minimal reference copy required for the activated product and corresp
 - repository authority files
 - repository schemas
 - local validation script
+- local generation script
+- isolated-copy mutation tests
 - minimal profile source
 - activated product manifest
 - one accepted Level 0 specification
@@ -28,4 +30,4 @@ Define the minimal reference copy required for the activated product and corresp
 
 ## Completion gate
 
-The isolated reference repository can discover and invoke its own repository-local validation while validating the product manifest, Levels, dependencies, schemas, projection freshness, and product correspondence.
+The isolated reference repository can discover and invoke its own repository-local generation, validation, and mutation tests while validating the product manifest, Levels, dependencies, schemas, projection freshness, and product correspondence.
