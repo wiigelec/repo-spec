@@ -46,6 +46,14 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        mutate_json(
+            temp_repo / "docs/development-document-compatibility.json",
+            lambda registry: registry["entries"].__delitem__(0) or registry,
+        )
+        expect_failure("legacy development document without registry entry", lambda: validate_repo(temp_repo), "compatibility registry mismatch")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         extra_spec = copy.deepcopy(specs["repo.validation"])
         extra_spec["spec_id"] = "repo.unlisted"
         (temp_repo / "specs/repo/unlisted.json").write_text(json.dumps(extra_spec, indent=2) + "\n")

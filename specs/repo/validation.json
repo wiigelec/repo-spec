@@ -84,6 +84,10 @@
     {
       "id": "REPO-VAL-020",
       "text": "The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts."
+    },
+    {
+      "id": "REPO-VAL-021",
+      "text": "The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry."
     }
   ],
   "dependencies": [
@@ -124,6 +128,10 @@
     {
       "type": "artifact",
       "path": "scripts/github_field_policy.py"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/development-document-compatibility.json"
     }
   ],
   "derived_artifacts": [

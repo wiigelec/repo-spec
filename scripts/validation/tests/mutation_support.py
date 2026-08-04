@@ -60,6 +60,8 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md",
         "docs/plans/README.md",
         "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
+        "docs/plans/01-framework-architecture-plan.md",
+        "docs/plans/02-reference-repository-plan.md",
         "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",
         "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md",
         "docs/plans/initializer-implementation-plan/03-validation-and-completion.md",

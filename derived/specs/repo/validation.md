@@ -40,6 +40,7 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-018`: The validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations.
 - `REPO-VAL-019`: The validation entry point shall enforce the canonical development-document roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering for governed overview, decomposition, and planning artifacts.
 - `REPO-VAL-020`: The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts.
+- `REPO-VAL-021`: The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry.
 
 ## Dependencies
 
@@ -56,6 +57,7 @@ Defines repository validation during repo-spec formation.
 - artifact: `scripts/validate`
 - artifact: `scripts/generate-docs`
 - artifact: `scripts/github_field_policy.py`
+- artifact: `docs/development-document-compatibility.json`
 
 ## Derived artifacts
 

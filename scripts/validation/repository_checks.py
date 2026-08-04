@@ -74,6 +74,8 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
     },
 }
 
+DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "docs/development-document-compatibility.json"
+
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
 
 
@@ -106,6 +108,38 @@ def top_level_document_path_for_metadata(metadata: dict[str, Any]) -> str:
 
 def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
     return [chunk["path"] for chunk in metadata["subordinate_chunks"]]
+
+
+def load_development_document_compatibility_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
+    registry_path = repo_root / DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH
+    expect(registry_path.exists(), f"development document classification failed: missing compatibility registry {DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH}")
+    try:
+        data = json.loads(registry_path.read_text())
+    except json.JSONDecodeError as exc:
+        fail(f"development document classification failed: invalid compatibility registry JSON: {exc.msg}")
+
+    expect(isinstance(data, dict), "development document classification failed: compatibility registry must be an object")
+    expect(data.get("registry_version") == "1", "development document classification failed: unsupported compatibility registry version")
+    entries = data.get("entries")
+    expect(isinstance(entries, list), "development document classification failed: compatibility registry entries must be an array")
+
+    registry: dict[str, dict[str, Any]] = {}
+    for index, entry in enumerate(entries):
+        expect(isinstance(entry, dict), f"development document classification failed: compatibility registry entry at index {index} must be an object")
+        path = entry.get("path")
+        kind = entry.get("kind")
+        reason = entry.get("reason")
+        expect(isinstance(path, str) and path, f"development document classification failed: compatibility registry entry at index {index} must include a path")
+        expect(isinstance(kind, str) and kind in {"compatibility", "exemption"}, f"development document classification failed: compatibility registry entry at index {index} must declare compatibility or exemption")
+        expect(isinstance(reason, str) and reason.strip(), f"development document classification failed: compatibility registry entry at index {index} must include a reason")
+        expect(path not in registry, f"development document classification failed: duplicate compatibility registry path {path}")
+        path_obj = Path(path)
+        expect(path_obj.name != "README.md", f"development document classification failed: compatibility registry may not include README.md {path}")
+        expect(path_obj.suffix == ".md", f"development document classification failed: compatibility registry path must be Markdown {path}")
+        expect(f"{path_obj.parent.as_posix()}/" in DEVELOPMENT_DOCUMENT_ROOTS, f"development document classification failed: compatibility registry path must be under a canonical root {path}")
+        registry[path] = entry
+
+    return registry
 
 
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
@@ -788,6 +822,9 @@ def check_generated_document_freshness_phase(context: ValidationContext) -> None
 
 
 def check_development_documents_phase(context: ValidationContext) -> None:
+    compatibility_registry = load_development_document_compatibility_registry(context.repo_root)
+    unmarked_docs: set[str] = set()
+
     for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items():
         root = context.repo_root / root_rel
         expect(root.exists(), f"development document root failed: missing root {root_rel}")
@@ -799,14 +836,15 @@ def check_development_documents_phase(context: ValidationContext) -> None:
         for path in sorted(root.glob("*.md")):
             if path.name == "README.md":
                 continue
-            text = path.read_text()
-            if "## Metadata" not in text:
-                continue
             docs.append(path)
 
         for path in docs:
             text = path.read_text()
             rel_path = path.relative_to(context.repo_root).as_posix()
+            if "## Metadata" not in text:
+                unmarked_docs.add(rel_path)
+                continue
+
             metadata = extract_document_metadata(text, rel_path)
             schema_key = info["schema_key"]
             validate_instance(metadata, context.repository.schemas[schema_key], rel_path, context.repository.schemas[schema_key])
@@ -852,6 +890,8 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                 expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
 
             expect(path.name in readme_text, f"development document discovery failed: README does not reference {path.name}")
+
+    expect(unmarked_docs == set(compatibility_registry), f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(compatibility_registry)}")
 
 
 
