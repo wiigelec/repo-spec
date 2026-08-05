@@ -157,6 +157,7 @@ def run_repository_mutations(repo_root: Path) -> None:
                 "product_id": "test-product",
                 "authority_category": "directional",
                 "lifecycle_status": "accepted",
+                "overview_role": "initial",
                 "governing_issue": "#1",
                 "controlling_documents": [],
                 "predecessor_documents": [],
