@@ -21,26 +21,48 @@ It describes:
 - success conditions;
 - unresolved product-direction questions.
 
-The overview is directional and non-normative. It provides the basis for planning but does not define exact product behavior.
+The overview is directional and non-normative. It provides the basis for decomposition and specification work but does not define exact product behavior.
 
-Decomposition turns that intent into smaller bounded questions before implementation begins.
+An accepted overview must exist before product decomposition may proceed to acceptance.
+
+### Decomposition
+
+Decomposition turns product direction into bounded questions, expected specification families, and dependency boundaries before implementation planning begins.
+
+The decomposition identifies:
+
+- expected Level 0–3 specification families;
+- responsibility boundaries;
+- intended dependency direction;
+- known cross-specification relationships;
+- unresolved semantic decisions;
+- specification work required before implementation planning;
+- areas that do not require separate specification artifacts.
+
+Decomposition is directional and non-normative. It identifies what must be specified without prematurely defining normative product semantics.
+
+An accepted decomposition must exist before the controlling product-specification set is finalized.
 
 ### Plan
 
-The implementation plan organizes how the intended product will be constructed.
+The implementation plan organizes how the intended product will be constructed against accepted product specifications.
 
 It describes:
 
 - major work areas;
+- controlling accepted product specifications for each workstream;
 - dependency order;
 - construction stages;
 - expected artifact families;
 - validation strategy;
 - transition conditions;
 - risks;
-- unresolved design decisions.
+- unresolved design decisions;
+- specification-complete and specification-work-still-required scope boundaries.
 
 Plans are non-normative. They coordinate development but cannot override accepted specifications or silently define product behavior.
+
+An implementation plan may not become accepted without its required controlling product specifications being accepted and structurally valid.
 
 ### Specifications
 
@@ -63,7 +85,7 @@ They may define:
 
 Candidate specifications remain proposals until accepted through the applicable governed process.
 
-Accepted normative specifications control maintained product artifacts.
+Accepted normative specifications control maintained product artifacts. No specification at a given Level may be accepted until its required lower-Level dependencies satisfy the product-level contract. Higher-Level specification drafting may begin while lower-Level specifications remain candidate, provided the dependency targets and unresolved authority are explicit, but a higher-Level specification may not be accepted until its required lower-Level dependencies are accepted.
 
 Repository decomposition and product decomposition are related but distinct: repository decomposition governs how work is represented and authorized, while product decomposition governs what the product must do.
 
@@ -89,6 +111,8 @@ They may include:
 - repository-maintenance tooling.
 
 Existing implementation does not become product authority merely because it exists. Product artifacts must be evaluated against accepted specifications.
+
+Product-artifact synthesis must not begin until the applicable accepted product specifications and the corresponding implementation plan are accepted. Product artifacts realize accepted specifications; they do not define their own semantics.
 
 ## Product specification Level template
 
@@ -230,21 +254,23 @@ A product repository may contain multiple specification artifacts within each Le
 The Level template governs normative product specifications within the broader development lifecycle:
 
 ```text
-overview
+accepted overview
     ↓
-plan
+accepted decomposition
     ↓
-Level 0 kernel
+accepted Level specifications
+    (Level 0 → Level 1 → Level 2 → Level 3,
+     or direct valid dependencies across Levels)
     ↓
-Level 1 primitives
+accepted implementation plan
     ↓
-Level 2 components
-    ↓
-Level 3 orchestrations
+governed implementation issues
     ↓
 product artifacts
 ```
 
-The overview establishes product direction. The plan sequences specification and implementation work. The Level specifications define the accepted product contracts. Product artifacts implement those contracts.
+The overview establishes durable product direction. The decomposition identifies the expected specification families, responsibility boundaries, and dependency direction. The Level specifications define the accepted product contracts in valid dependency order. The implementation plan sequences artifact construction against those accepted contracts. Governed implementation issues carry out the planned work within the accepted specification authority. Product artifacts realize the accepted specifications.
+
+Decomposition precedes specification drafting. Implementation planning follows accepted normative contracts. A plan cannot substitute for missing specifications or redefine accepted product semantics.
 
 The framework should make the Level model available to every initialized product repository without requiring the framework itself to instantiate product-specific Level documents.

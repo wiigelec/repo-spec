@@ -26,18 +26,27 @@ Defines the planning-authority contract for implementation plan documents.
 - `REPO-IPL-004`: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the plan composite document.
 - `REPO-IPL-005`: An implementation plan shall not claim acceptance, merge, or release merely because the planned work is complete.
 - `REPO-IPL-006`: An implementation plan shall preserve unresolved planning decisions until a later governed decision closes them.
+- `REPO-IPL-007`: An implementation plan shall identify the exact controlling accepted product specifications for every planned workstream or stage. The plan shall distinguish specification-complete scope, specification work still required, implementation-authorized scope, deferred implementation, unresolved semantic decisions, and non-product exploratory work.
+- `REPO-IPL-008`: An implementation plan shall not be accepted when its required controlling product specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the product manifest, or missing required correspondence or dependency declarations.
+- `REPO-IPL-009`: An implementation plan may include separately identified future specification work as a planned activity, but that portion shall not authorize product-artifact synthesis before the specifications are accepted and the plan is correspondingly updated or revalidated.
+- `REPO-IPL-010`: An implementation plan shall not supply missing normative product semantics. Plans may sequence and coordinate work but shall not define product behavior that belongs in an accepted Level specification.
+- `REPO-IPL-011`: A material specification change affecting specifications that an implementation plan relies upon shall invalidate the corresponding plan sections. The plan must be revised or the affected sections explicitly reaffirmed before implementation under the changed authority may proceed.
 
 ## Dependencies
 
 - `repo.development-document-base`
 - `repo.repository-structure`
 - `repo.validation`
+- `repo.development-workflow`
+- `repo.product-levels`
 
 ## References
 
 - specification: `repo.development-document-base`
 - specification: `repo.repository-structure`
 - specification: `repo.validation`
+- specification: `repo.development-workflow`
+- specification: `repo.product-levels`
 - artifact: `docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md`
 
 ## Derived artifacts

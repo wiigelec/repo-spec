@@ -38,6 +38,7 @@ The framework must keep these roles distinct:
 ```text
 idea
 overview
+decomposition
 plan
 candidate specification
 accepted normative specification
@@ -54,6 +55,7 @@ No role silently substitutes for another.
 In particular:
 
 - an overview is not a specification;
+- decomposition is not a specification;
 - a plan is not product authority;
 - code is not authority merely because it works;
 - tests do not define semantics unless accepted specifications assign them that role;
@@ -64,6 +66,18 @@ In particular:
 - completion of one issue does not authorize unrelated successor work.
 
 Correspondence and traceability connect decomposition, implementation, and tests so that accepted work can be followed back to its owning requirement.
+
+## Specification-change impact on plans
+
+A material change to an accepted product specification (revision, supersession, or retirement) that an implementation plan relies upon must trigger an implementation-plan impact review. The affected plan sections must be revised or explicitly reaffirmed before implementation under the changed authority may proceed. Implementation must pause where the accepted specification and plan no longer agree.
+
+## Plan-change impact on governing issues
+
+A material implementation-plan change (sequencing or scope change) must be reflected in the controlling plan before affected open governing issues are updated. Completed implementation must be audited when controlling authority changes materially, and the audit results must be recorded before successor implementation proceeds.
+
+## Exploratory experiments
+
+The repository may classify explicitly non-product exploratory experiments. An exploratory experiment shall be isolated from maintained product paths where practical, shall not claim conformance, acceptance, release, or product status, shall not silently become maintained implementation, shall require a later governed specification and implementation process before adoption, and shall have explicit disposal, archival, or adoption criteria. Adoption of experimental work shall require accepted product specifications and an accepted implementation plan before maintained implementation may begin.
 
 ## Generated and derived artifacts
 
@@ -114,6 +128,16 @@ A future derived repository may define:
 Those concepts will be governed by the future product’s own overview, plan, specifications, implementation, and acceptance records.
 
 Bootstrap development infrastructure may remain in this repository while the framework evolves. Its existence does not define the desired reusable product outcome.
+
+## Migration guidance for existing implementation
+
+Repositories or projects whose product artifacts were implemented before the corresponding Level 0–3 product specifications were accepted may continue to operate, but the following remediation expectations apply:
+
+- Existing implementation artifacts (code, tests, schemas, generated output) do not become normative product authority merely because they exist.
+- Before new feature work may proceed on maintained product artifacts, the governing lifecycle must be satisfied: the applicable product specifications must be drafted, accepted through governed review, and referenced by an implementation plan.
+- Existing implementation should be audited against accepted specifications once those specifications exist. Nonconformance found during audit should be governed as separate remediation work.
+- Implementation plans created before the corrected lifecycle was established remain non-normative planning records. They should be revised or superseded under the corrected lifecycle before authorizing new implementation work.
+- The corrected lifecycle does not automatically invalidate or require reversion of existing implementation. It governs only forward work and specification acceptance.
 
 ## Development continuity
 

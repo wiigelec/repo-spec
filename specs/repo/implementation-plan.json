@@ -28,6 +28,26 @@
     {
       "id": "REPO-IPL-006",
       "text": "An implementation plan shall preserve unresolved planning decisions until a later governed decision closes them."
+    },
+    {
+      "id": "REPO-IPL-007",
+      "text": "An implementation plan shall identify the exact controlling accepted product specifications for every planned workstream or stage. The plan shall distinguish specification-complete scope, specification work still required, implementation-authorized scope, deferred implementation, unresolved semantic decisions, and non-product exploratory work."
+    },
+    {
+      "id": "REPO-IPL-008",
+      "text": "An implementation plan shall not be accepted when its required controlling product specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the product manifest, or missing required correspondence or dependency declarations."
+    },
+    {
+      "id": "REPO-IPL-009",
+      "text": "An implementation plan may include separately identified future specification work as a planned activity, but that portion shall not authorize product-artifact synthesis before the specifications are accepted and the plan is correspondingly updated or revalidated."
+    },
+    {
+      "id": "REPO-IPL-010",
+      "text": "An implementation plan shall not supply missing normative product semantics. Plans may sequence and coordinate work but shall not define product behavior that belongs in an accepted Level specification."
+    },
+    {
+      "id": "REPO-IPL-011",
+      "text": "A material specification change affecting specifications that an implementation plan relies upon shall invalidate the corresponding plan sections. The plan must be revised or the affected sections explicitly reaffirmed before implementation under the changed authority may proceed."
     }
   ],
   "dependencies": [
@@ -39,6 +59,12 @@
     },
     {
       "spec_id": "repo.validation"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "spec_id": "repo.product-levels"
     }
   ],
   "references": [
@@ -53,6 +79,14 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
     },
     {
       "type": "artifact",

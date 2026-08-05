@@ -26,18 +26,21 @@ Defines the directional, non-normative contract for product decomposition docume
 - `REPO-PDC-004`: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the decomposition composite document.
 - `REPO-PDC-005`: A product decomposition shall keep each bounded area coherent and shall not mix unrelated lifecycle stages or authority domains within one area.
 - `REPO-PDC-006`: A product decomposition shall make the next authorized planning action explicit so later work does not have to infer it from conversation history.
+- `REPO-PDC-007`: A product decomposition shall identify the expected Level 0–3 product-specification families, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. This identification shall remain directional and shall not prematurely define normative product semantics.
 
 ## Dependencies
 
 - `repo.development-document-base`
 - `repo.repository-structure`
 - `repo.validation`
+- `repo.development-workflow`
 
 ## References
 
 - specification: `repo.development-document-base`
 - specification: `repo.repository-structure`
 - specification: `repo.validation`
+- specification: `repo.development-workflow`
 - artifact: `docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts

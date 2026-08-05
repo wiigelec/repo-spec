@@ -1208,6 +1208,83 @@ def check_development_documents_phase(context: ValidationContext) -> None:
     check_development_document_relationships(context.repo_root, records, compatibility_registry, chunk_owner_paths)
 
 
+def check_lifecycle_lifecycle_phase(context: ValidationContext) -> None:
+    for spec_id, spec in context.repository.specs.items():
+        if spec_id == "repo.manifest":
+            continue
+
+    for plan_path, record in get_development_document_records(context).items():
+        metadata = record.metadata
+        if metadata["artifact_type"] != "implementation-plan":
+            continue
+        if metadata.get("lifecycle_status") not in {"accepted", "planning-complete"}:
+            continue
+
+        required_specs = metadata.get("applicable_accepted_specifications", [])
+        if not required_specs:
+            continue
+
+        for spec_ref in required_specs:
+            target_spec_id = spec_ref.get("spec_id") if isinstance(spec_ref, dict) else spec_ref
+            if context.product is not None and target_spec_id in context.product.specs:
+                target_spec = context.product.specs[target_spec_id]
+                expect(target_spec["status"] == "accepted", f"lifecycle plan failed: plan {plan_path} references non-accepted specification {target_spec_id} (status: {target_spec['status']})")
+                manifest_entry = next((entry for entry in context.product.entries if entry["spec_id"] == target_spec_id), None)
+                expect(manifest_entry is not None, f"lifecycle plan failed: plan {plan_path} references specification {target_spec_id} absent from product manifest")
+            elif target_spec_id in context.repository.specs:
+                target_spec = context.repository.specs[target_spec_id]
+                expect(target_spec["status"] == "accepted", f"lifecycle plan failed: plan {plan_path} references non-accepted repository specification {target_spec_id} (status: {target_spec['status']})")
+            else:
+                fail(f"lifecycle plan failed: plan {plan_path} references unknown specification {target_spec_id}")
+
+    for decomp_path, record in get_development_document_records(context).items():
+        metadata = record.metadata
+        if metadata["artifact_type"] != "product-decomposition":
+            continue
+        if metadata.get("lifecycle_status") not in {"accepted", "candidate"}:
+            continue
+        expected_spec_families = metadata.get("expected_specification_families", [])
+        if not expected_spec_families:
+            continue
+        for family in expected_spec_families:
+            expect(isinstance(family, dict), f"lifecycle decomposition failed: expected_specification_families entry must be an object in {decomp_path}")
+            expect("level" in family, f"lifecycle decomposition failed: expected_specification_families entry missing level in {decomp_path}")
+            expect("responsibility" in family, f"lifecycle decomposition failed: expected_specification_families entry missing responsibility in {decomp_path}")
+            expect("dependency_direction" in family, f"lifecycle decomposition failed: expected_specification_families entry missing dependency_direction in {decomp_path}")
+
+
+def get_development_document_records(context: ValidationContext) -> dict[str, DevelopmentDocumentRecord]:
+    compatibility_registry = load_development_document_compatibility_registry(context.repo_root)
+    records: dict[str, DevelopmentDocumentRecord] = {}
+    chunk_owner_paths: dict[str, str] = {}
+
+    for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items():
+        root = context.repo_root / root_rel
+        if not root.exists():
+            continue
+        readme = root / "README.md"
+        if not readme.exists():
+            continue
+
+        docs = sorted(path for path in root.glob("*.md") if path.name != "README.md")
+        for path in docs:
+            text = path.read_text()
+            rel_path = path.relative_to(context.repo_root).as_posix()
+            if "## Metadata" not in text:
+                continue
+
+            metadata = extract_document_metadata(text, rel_path)
+            metadata["artifact_type"] = info["artifact_type"]
+            metadata["root_path"] = root_rel
+            declared_chunks = metadata["subordinate_chunks"]
+            declared_paths = [chunk["path"] for chunk in declared_chunks]
+
+            records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
+            for chunk_path in declared_paths:
+                chunk_owner_paths[chunk_path] = rel_path
+
+    return records
+
 
 VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository JSON Schema conformance", check_schema_conformance),
@@ -1228,6 +1305,7 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("product acyclic dependencies", check_product_acyclic_dependencies_phase),
     ("acyclic dependencies", check_acyclic_dependencies_phase),
     ("development documents", check_development_documents_phase),
+    ("lifecycle authority sequence", check_lifecycle_lifecycle_phase),
     ("generated-document freshness", check_generated_document_freshness_phase),
 ]
 
