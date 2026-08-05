@@ -354,23 +354,23 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        plan_chunk_path = temp_repo / "docs/plans/initializer-implementation-plan/04-validation-addendum.md"
+        plan_chunk_path = temp_repo / "docs/plans/initializer-implementation-plan/05-validation-addendum.md"
         plan_chunk_path.write_text("# Validation addendum\n")
         plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_text = plan_path.read_text()
         plan_text = plan_text.replace(
-            '    "workstreams_and_dependencies": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md"],\n',
-            '    "workstreams_and_dependencies": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "docs/plans/initializer-implementation-plan/04-validation-addendum.md"],\n',
+            '    "workstreams_and_dependencies": [\n      "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md"\n    ],',
+            '    "workstreams_and_dependencies": [\n      "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md",\n      "docs/plans/initializer-implementation-plan/05-validation-addendum.md"\n    ],',
             1,
         )
         plan_text = plan_text.replace(
-            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]}\n  ],\n',
-            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]},\n    {"order": 4, "path": "docs/plans/initializer-implementation-plan/04-validation-addendum.md", "title": "Validation addendum", "coverage": ["workstreams_and_dependencies"]}\n  ],\n',
+            '      ]\n    }\n  ],\n',
+            '      ]\n    },\n    {\n      "order": 5,\n      "path": "docs/plans/initializer-implementation-plan/05-validation-addendum.md",\n      "title": "Validation addendum",\n      "coverage": [\n        "workstreams_and_dependencies"\n      ]\n    }\n  ],\n',
             1,
         )
         plan_text = plan_text.replace(
-            '- [03 - Validation and completion](./initializer-implementation-plan/03-validation-and-completion.md)\n',
-            '- [03 - Validation and completion](./initializer-implementation-plan/03-validation-and-completion.md)\n- [04 - Validation addendum](./initializer-implementation-plan/04-validation-addendum.md)\n',
+            '* [04 - Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)',
+            '* [04 - Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)\n* [05 - Validation addendum](./initializer-implementation-plan/05-validation-addendum.md)',
             1,
         )
         plan_path.write_text(plan_text)
@@ -380,7 +380,11 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_text = plan_path.read_text()
-        plan_text = plan_text.replace('{"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions", "coverage": ["authority_and_basis", "scope_and_exclusions"]}', '{"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"}', 1)
+        plan_text = plan_text.replace(
+            '      "order": 1,\n      "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",\n      "title": "Scope and preconditions",\n      "coverage": [\n        "authority_and_basis",\n        "scope_and_exclusions"\n      ]',
+            '      "order": 1,\n      "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",\n      "title": "Scope and preconditions"',
+            1,
+        )
         plan_path.write_text(plan_text)
         expect_failure("plan chunk without coverage", lambda: validate_repo(temp_repo), "required coverage must be an array")
 
