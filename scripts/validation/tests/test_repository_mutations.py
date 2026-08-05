@@ -91,7 +91,7 @@ def run_repository_mutations(repo_root: Path) -> None:
             1,
         )
         decomposition_path.write_text(decomposition_text)
-        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "required content area key mismatch")
+        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "missing required property invocation_and_authority")
 
         plan_a = DevelopmentDocumentRecord(
             "docs/plans/plan-a.md",
