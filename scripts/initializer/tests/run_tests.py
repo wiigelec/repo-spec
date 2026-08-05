@@ -18,6 +18,20 @@ def run_initializer_tests(repo_root: Path) -> None:
         SafetyTests as InventoryFinalSafetyTests,
     )
     from initializer.tests.test_cli import CliTests
+    from initializer.tests.test_staging import (
+        InstallationPlanTests,
+        InstallationResultTests,
+        BuildInstallationPlanTests,
+        ValidateSourcePathTests,
+        ResolveEntryTypeTests,
+        SymlinkSafetyTests,
+        DestinationConflictTests,
+        StagingWorkspaceTests,
+        CopyEntryTests,
+        StageFrameworkTests,
+        StagingDeterminismTests,
+        PreexistingWorkspaceTests,
+    )
 
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -34,6 +48,18 @@ def run_initializer_tests(repo_root: Path) -> None:
         InventoryEntryTests,
         InventoryFinalSafetyTests,
         CliTests,
+        InstallationPlanTests,
+        InstallationResultTests,
+        BuildInstallationPlanTests,
+        ValidateSourcePathTests,
+        ResolveEntryTypeTests,
+        SymlinkSafetyTests,
+        DestinationConflictTests,
+        StagingWorkspaceTests,
+        CopyEntryTests,
+        StageFrameworkTests,
+        StagingDeterminismTests,
+        PreexistingWorkspaceTests,
     ]:
         suite.addTests(loader.loadTestsFromTestCase(cls))
 
