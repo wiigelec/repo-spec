@@ -266,6 +266,14 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
         overview_text = overview_path.read_text()
+        overview_text = overview_text.replace('{"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose", "coverage": ["product_identity"]}', '{"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"}', 1)
+        overview_path.write_text(overview_text)
+        expect_failure("overview chunk without coverage", lambda: validate_repo(temp_repo), "required coverage must be an array")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
         overview_text = overview_text.replace('  "overview_role": "initial",\n', '  "overview_role": "revision",\n', 1)
         overview_path.write_text(overview_text)
         expect_failure("revision overview without predecessor", lambda: validate_repo(temp_repo), "minItems violation")
@@ -282,8 +290,8 @@ def run_repository_mutations(repo_root: Path) -> None:
             1,
         )
         overview_text = overview_text.replace(
-            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"}\n  ],\n',
-            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"},\n    {"order": 7, "path": "docs/overview/initializer-overview/07-capabilities-addendum.md", "title": "Capabilities addendum"}\n  ],\n',
+            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]}\n  ],\n',
+            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]},\n    {"order": 7, "path": "docs/overview/initializer-overview/07-capabilities-addendum.md", "title": "Capabilities addendum", "coverage": ["capabilities_and_success"]}\n  ],\n',
             1,
         )
         overview_text = overview_text.replace(
@@ -326,8 +334,8 @@ def run_repository_mutations(repo_root: Path) -> None:
             1,
         )
         plan_text = plan_text.replace(
-            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"}\n  ],\n',
-            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"},\n    {"order": 4, "path": "docs/plans/initializer-implementation-plan/04-validation-addendum.md", "title": "Validation addendum"}\n  ],\n',
+            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]}\n  ],\n',
+            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]},\n    {"order": 4, "path": "docs/plans/initializer-implementation-plan/04-validation-addendum.md", "title": "Validation addendum", "coverage": ["workstreams_and_dependencies"]}\n  ],\n',
             1,
         )
         plan_text = plan_text.replace(
@@ -337,6 +345,14 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         plan_path.write_text(plan_text)
         validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_text = plan_path.read_text()
+        plan_text = plan_text.replace('{"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions", "coverage": ["authority_and_basis", "scope_and_exclusions"]}', '{"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"}', 1)
+        plan_path.write_text(plan_text)
+        expect_failure("plan chunk without coverage", lambda: validate_repo(temp_repo), "required coverage must be an array")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

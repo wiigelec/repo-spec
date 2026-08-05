@@ -42,9 +42,9 @@ This document is the controlling entry point for a candidate placeholder composi
     "completion_and_successor_work": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"]
   },
   "subordinate_chunks": [
-    {"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"},
-    {"order": 2, "path": "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "title": "Workstreams and dependencies"},
-    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"}
+    {"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions", "coverage": ["authority_and_basis", "scope_and_exclusions"]},
+    {"order": 2, "path": "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "title": "Workstreams and dependencies", "coverage": ["workstreams_and_dependencies", "risks_and_unresolved_decisions"]},
+    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]}
   ],
   "successor_action": "No initializer planning authority is granted by this placeholder.",
   "schema_version": "1"

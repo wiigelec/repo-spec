@@ -45,12 +45,12 @@ This document is the controlling entry point for the initializer overview compos
     "readiness_for_decomposition": ["docs/overview/initializer-overview/06-lifecycle-and-handoff.md"]
   },
   "subordinate_chunks": [
-    {"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"},
-    {"order": 2, "path": "docs/overview/initializer-overview/02-problem-and-outcome.md", "title": "Problem and outcome"},
-    {"order": 3, "path": "docs/overview/initializer-overview/03-users-principles-and-boundaries.md", "title": "Users, principles, and boundaries"},
-    {"order": 4, "path": "docs/overview/initializer-overview/04-capabilities-and-success.md", "title": "Capabilities and success"},
-    {"order": 5, "path": "docs/overview/initializer-overview/05-unresolved-questions.md", "title": "Unresolved questions"},
-    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"}
+    {"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose", "coverage": ["product_identity"]},
+    {"order": 2, "path": "docs/overview/initializer-overview/02-problem-and-outcome.md", "title": "Problem and outcome", "coverage": ["problem_and_outcome"]},
+    {"order": 3, "path": "docs/overview/initializer-overview/03-users-principles-and-boundaries.md", "title": "Users, principles, and boundaries", "coverage": ["intended_users_and_stakeholders", "scope_and_non_goals", "product_boundaries", "durable_principles"]},
+    {"order": 4, "path": "docs/overview/initializer-overview/04-capabilities-and-success.md", "title": "Capabilities and success", "coverage": ["capabilities_and_success"]},
+    {"order": 5, "path": "docs/overview/initializer-overview/05-unresolved-questions.md", "title": "Unresolved questions", "coverage": ["unresolved_questions"]},
+    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]}
   ],
   "successor_action": "Proceed to the initializer decomposition document once the overview direction is accepted.",
   "schema_version": "1"

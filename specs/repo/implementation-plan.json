@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-IPL-002",
-      "text": "An implementation plan shall record the controlling overview and decomposition, controlling documents, predecessor documents, evidence, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work, with semantic coverage separated from subordinate chunk layout."
+      "text": "An implementation plan shall record the controlling overview and decomposition, controlling documents, predecessor documents, evidence, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work, with semantic coverage separated from subordinate chunk layout. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree."
     },
     {
       "id": "REPO-IPL-003",

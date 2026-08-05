@@ -1128,6 +1128,15 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                     covered_paths.add(area_path)
             expect(covered_paths == set(declared_paths), f"development document content inventory failed: required content area coverage mismatch in {rel_path}")
 
+            if root_rel in {"docs/overview/", "docs/plans/"}:
+                for chunk in declared_chunks:
+                    coverage = chunk.get("coverage")
+                    expect(isinstance(coverage, list), f"development document content inventory failed: required coverage must be an array in {rel_path}")
+                    expect(coverage, f"development document content inventory failed: required coverage must not be empty in {rel_path}")
+                    expect(len(coverage) == len(set(coverage)), f"development document content inventory failed: duplicate coverage entries in {rel_path}")
+                    expected_coverage = sorted(area_id for area_id, area_paths in required_content_areas.items() if chunk["path"] in area_paths)
+                    expect(set(coverage) == set(expected_coverage), f"development document content inventory failed: chunk coverage mismatch in {rel_path}")
+
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:
                 expect(chunk_path not in chunk_owner_paths, f"development document chunk inventory failed: duplicate chunk path {chunk_path}")

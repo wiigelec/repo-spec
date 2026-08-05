@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-POV-005",
-      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas. A product overview shall declare `overview_role`. An initial overview shall use `overview_role: initial`; its `governing_issue` and `evidence` fields constitute bootstrap authority, it may omit predecessor documents, and it may keep controlling documents empty. A revision, replacement, or branch overview shall declare predecessor documents and shall have nonempty controlling documents."
+      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas. A product overview shall declare `overview_role`. An initial overview shall use `overview_role: initial`; its `governing_issue` and `evidence` fields constitute bootstrap authority, it may omit predecessor documents, and it may keep controlling documents empty. A revision, replacement, or branch overview shall declare predecessor documents and shall have nonempty controlling documents. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree."
     },
     {
       "id": "REPO-POV-006",
