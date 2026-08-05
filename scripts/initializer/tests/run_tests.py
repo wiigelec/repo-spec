@@ -57,6 +57,23 @@ def run_initializer_tests(repo_root: Path) -> None:
         PromoteWithValidationTests,
         NoGitNoPlatformTests,
     )
+    from initializer.tests.test_git import (
+        GitPreflightModelTests,
+        GitCommandResultTests,
+        GitEstablishmentPlanTests,
+        GitEstablishmentResultTests,
+        GitPreflightFunctionTests,
+        GitEstablishmentFunctionTests,
+        GitCleanupTests,
+        GitDeterminismTests,
+        GitInitializePromotedDestinationTests,
+        GitEnvironmentIsolationTests,
+        GitVersionParsingTests,
+        GitCheckAvailableTests,
+        GitTreeInventoryTests,
+        GitCLIIntegrationTests,
+        GitNoGitNoPlatformTests,
+    )
 
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -106,6 +123,21 @@ def run_initializer_tests(repo_root: Path) -> None:
         PromoteFunctionTests,
         PromoteWithValidationTests,
         NoGitNoPlatformTests,
+        GitPreflightModelTests,
+        GitCommandResultTests,
+        GitEstablishmentPlanTests,
+        GitEstablishmentResultTests,
+        GitPreflightFunctionTests,
+        GitEstablishmentFunctionTests,
+        GitCleanupTests,
+        GitDeterminismTests,
+        GitInitializePromotedDestinationTests,
+        GitEnvironmentIsolationTests,
+        GitVersionParsingTests,
+        GitCheckAvailableTests,
+        GitTreeInventoryTests,
+        GitCLIIntegrationTests,
+        GitNoGitNoPlatformTests,
     ]:
         suite.addTests(loader.loadTestsFromTestCase(cls))
 
