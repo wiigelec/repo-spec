@@ -150,10 +150,6 @@ def chunk_dir_for_metadata(metadata: dict[str, Any]) -> str:
     return f"{metadata['root_path']}{metadata['document_slug']}/"
 
 
-def top_level_document_path_for_metadata(metadata: dict[str, Any]) -> str:
-    return f"{metadata['root_path']}{metadata['artifact_id'].upper()}.md"
-
-
 def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
     return [chunk["path"] for chunk in metadata["subordinate_chunks"]]
 
