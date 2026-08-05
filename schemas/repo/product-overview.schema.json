@@ -28,10 +28,13 @@
           "required": [
             "product_identity",
             "problem_and_outcome",
-            "users_principles_and_boundaries",
+            "intended_users_and_stakeholders",
+            "scope_and_non_goals",
+            "product_boundaries",
+            "durable_principles",
             "capabilities_and_success",
             "unresolved_questions",
-            "lifecycle_and_handoff"
+            "readiness_for_decomposition"
           ],
           "properties": {
             "product_identity": {
@@ -50,7 +53,31 @@
                 "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
               }
             },
-            "users_principles_and_boundaries": {
+            "intended_users_and_stakeholders": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "scope_and_non_goals": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "product_boundaries": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "durable_principles": {
               "type": "array",
               "minItems": 1,
               "items": {
@@ -74,7 +101,7 @@
                 "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
               }
             },
-            "lifecycle_and_handoff": {
+            "readiness_for_decomposition": {
               "type": "array",
               "minItems": 1,
               "items": {

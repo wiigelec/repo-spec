@@ -65,7 +65,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-overview",
         "schema_key": "repo.product-overview",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["product_identity", "problem_and_outcome", "users_principles_and_boundaries", "capabilities_and_success", "unresolved_questions", "lifecycle_and_handoff"],
+        "required_content_area_keys": ["product_identity", "problem_and_outcome", "intended_users_and_stakeholders", "scope_and_non_goals", "product_boundaries", "durable_principles", "capabilities_and_success", "unresolved_questions", "readiness_for_decomposition"],
         "filename_suffix": "-OVERVIEW.md",
         "chunk_dir_suffix": "/",
     },
@@ -73,6 +73,8 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "required_content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
+        "allowed_chunk_roles": ["product-area", "decomposition-basis", "cross-cutting-concerns", "dependency-model", "unresolved-decisions", "stopping-and-handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
     },
@@ -80,7 +82,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "implementation-plan",
         "schema_key": "repo.implementation-plan",
         "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["scope_and_preconditions", "workstreams_and_dependencies", "validation_and_completion"],
+        "required_content_area_keys": ["authority_and_basis", "scope_and_exclusions", "workstreams_and_dependencies", "entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"],
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
@@ -146,10 +148,6 @@ def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
 
 def chunk_dir_for_metadata(metadata: dict[str, Any]) -> str:
     return f"{metadata['root_path']}{metadata['document_slug']}/"
-
-
-def top_level_document_path_for_metadata(metadata: dict[str, Any]) -> str:
-    return f"{metadata['root_path']}{metadata['artifact_id'].upper()}.md"
 
 
 def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
@@ -298,6 +296,7 @@ def check_development_document_relationships(
                 f"development document relationship failed: controlling lifecycle mismatch {path} -> {target_path}",
             )
             expect(target_metadata["artifact_type"] in allowed_types, f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}")
+            basis_graph[path].append(resolved_path)
             if source_type in {"product-decomposition", "implementation-plan"} and target_metadata["artifact_type"] == "product-overview":
                 saw_overview = True
             if source_type == "implementation-plan" and target_metadata["artifact_type"] == "product-decomposition":
@@ -1113,24 +1112,20 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             expect(len(declared_chunks) == len(actual_chunks), f"development document chunk inventory failed: chunk count mismatch in {rel_path}")
             expect(set(declared_paths) == {chunk.relative_to(context.repo_root).as_posix() for chunk in actual_chunks}, f"development document chunk inventory failed: inventory mismatch in {rel_path}")
 
-            if root_rel != "docs/decompositions/":
-                required_content_areas = metadata.get("required_content_areas")
-                expect(isinstance(required_content_areas, dict), f"development document content inventory failed: required content areas must be an object in {rel_path}")
-                expected_area_keys = info["required_content_area_keys"]
-                expect(set(required_content_areas) == set(expected_area_keys), f"development document content inventory failed: required content area key mismatch in {rel_path}")
-                covered_paths: set[str] = set()
-                for area_id in expected_area_keys:
-                    area_paths = required_content_areas[area_id]
-                    expect(isinstance(area_paths, list), f"development document content inventory failed: required content area {area_id} must be an array in {rel_path}")
-                    expect(area_paths, f"development document content inventory failed: required content area {area_id} must not be empty in {rel_path}")
-                    expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate paths in required content area {area_id} in {rel_path}")
-                    for area_path in area_paths:
-                        expect(area_path in declared_paths, f"development document content inventory failed: required content area {area_id} references unknown chunk {area_path} in {rel_path}")
-                        covered_paths.add(area_path)
-                expect(covered_paths == set(declared_paths), f"development document content inventory failed: required content area coverage mismatch in {rel_path}")
-            else:
-                content_areas = metadata.get("content_areas")
-                expect(isinstance(content_areas, dict), f"development document content inventory failed: content areas must be an object in {rel_path}")
+            required_content_areas = metadata.get("required_content_areas")
+            expect(isinstance(required_content_areas, dict), f"development document content inventory failed: required content areas must be an object in {rel_path}")
+            expected_area_keys = info.get("required_content_area_keys", [])
+            expect(set(required_content_areas) == set(expected_area_keys), f"development document content inventory failed: required content area key mismatch in {rel_path}")
+            covered_paths: set[str] = set()
+            for area_id in expected_area_keys:
+                area_paths = required_content_areas[area_id]
+                expect(isinstance(area_paths, list), f"development document content inventory failed: required content area {area_id} must be an array in {rel_path}")
+                expect(area_paths, f"development document content inventory failed: required content area {area_id} must not be empty in {rel_path}")
+                expect(len(area_paths) == len(set(area_paths)), f"development document content inventory failed: duplicate paths in required content area {area_id} in {rel_path}")
+                for area_path in area_paths:
+                    expect(area_path in declared_paths, f"development document content inventory failed: required content area {area_id} references unknown chunk {area_path} in {rel_path}")
+                    covered_paths.add(area_path)
+            expect(covered_paths == set(declared_paths), f"development document content inventory failed: required content area coverage mismatch in {rel_path}")
 
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:
@@ -1140,11 +1135,15 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             if root_rel == "docs/decompositions/":
                 seen_area_ids: set[str] = set()
                 for chunk in declared_chunks:
-                    expect(chunk.get("role") == "product-area", f"development document chunk inventory failed: missing product-area role in {rel_path}")
+                    role = chunk.get("role")
+                    expect(role in info["allowed_chunk_roles"], f"development document chunk inventory failed: unsupported decomposition chunk role in {rel_path}")
                     area_id = chunk.get("area_id")
-                    expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
-                    expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
-                    seen_area_ids.add(area_id)
+                    if role == "product-area":
+                        expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
+                        expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
+                        seen_area_ids.add(area_id)
+                    else:
+                        expect(area_id is None, f"development document chunk inventory failed: non-area chunk must not declare area_id in {rel_path}")
 
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")

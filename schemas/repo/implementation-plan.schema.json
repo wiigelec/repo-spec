@@ -26,12 +26,25 @@
           "type": "object",
           "additionalProperties": false,
           "required": [
-            "scope_and_preconditions",
+            "authority_and_basis",
+            "scope_and_exclusions",
             "workstreams_and_dependencies",
-            "validation_and_completion"
+            "entry_and_exit_conditions",
+            "transition_gates",
+            "validation_strategy",
+            "risks_and_unresolved_decisions",
+            "completion_and_successor_work"
           ],
           "properties": {
-            "scope_and_preconditions": {
+            "authority_and_basis": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "scope_and_exclusions": {
               "type": "array",
               "minItems": 1,
               "items": {
@@ -47,7 +60,39 @@
                 "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
               }
             },
-            "validation_and_completion": {
+            "entry_and_exit_conditions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "transition_gates": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "validation_strategy": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "risks_and_unresolved_decisions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "completion_and_successor_work": {
               "type": "array",
               "minItems": 1,
               "items": {

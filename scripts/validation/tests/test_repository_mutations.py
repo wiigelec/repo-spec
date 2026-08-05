@@ -6,9 +6,10 @@ import tempfile
 from pathlib import Path
 
 from repo_model import load_specs
+from validation.repository_checks import DevelopmentDocumentRecord
 from validation.generated_outputs import check_generated_document_write_behavior
 from validation.errors import fail
-from validation.repository_checks import VALIDATION_PHASES, resolve_repo_path, validate_repo
+from validation.repository_checks import VALIDATION_PHASES, check_development_document_relationships, resolve_repo_path, validate_repo
 
 from .mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
 
@@ -66,8 +67,165 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis"', 1)
+        decomposition_path.write_text(decomposition_text)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis", "area_id": "invocation-and-authority"', 1)
+        decomposition_path.write_text(decomposition_text)
+        expect_failure("non-area decomposition chunk with area_id", lambda: validate_repo(temp_repo), "non-area chunk must not declare area_id")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace(
+            '  "required_content_areas": {\n    "invocation_and_authority": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "framework_and_product_foundations": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "platform_and_execution": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "generation_validation_and_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n',
+            '  "required_content_areas": {},\n',
+            1,
+        )
+        decomposition_path.write_text(decomposition_text)
+        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "missing required property invocation_and_authority")
+
+        plan_a = DevelopmentDocumentRecord(
+            "docs/plans/plan-a.md",
+            "docs/plans/",
+            {},
+            {
+                "artifact_id": "plan-a",
+                "artifact_type": "implementation-plan",
+                "document_slug": "plan-a",
+                "filename_stem": "plan-a",
+                "root_path": "docs/plans/",
+                "title": "Plan A",
+                "product_id": "test-product",
+                "authority_category": "planning",
+                "lifecycle_status": "candidate",
+                "governing_issue": "#1",
+                "controlling_documents": ["docs/overview/overview.md", "docs/decompositions/decomposition.md", "docs/plans/plan-b.md"],
+                "predecessor_documents": [],
+                "evidence": ["docs/overview/overview.md"],
+                "required_content_areas": {"authority_and_basis": ["docs/plans/plan-a/01.md"], "scope_and_exclusions": ["docs/plans/plan-a/01.md"], "workstreams_and_dependencies": ["docs/plans/plan-a/02.md"], "entry_and_exit_conditions": ["docs/plans/plan-a/03.md"], "transition_gates": ["docs/plans/plan-a/03.md"], "validation_strategy": ["docs/plans/plan-a/03.md"], "risks_and_unresolved_decisions": ["docs/plans/plan-a/02.md", "docs/plans/plan-a/03.md"], "completion_and_successor_work": ["docs/plans/plan-a/03.md"]},
+                "subordinate_chunks": [],
+                "successor_action": "next",
+                "schema_version": "1",
+            },
+            [],
+        )
+        plan_b = DevelopmentDocumentRecord(
+            "docs/plans/plan-b.md",
+            "docs/plans/",
+            {},
+            {
+                "artifact_id": "plan-b",
+                "artifact_type": "implementation-plan",
+                "document_slug": "plan-b",
+                "filename_stem": "plan-b",
+                "root_path": "docs/plans/",
+                "title": "Plan B",
+                "product_id": "test-product",
+                "authority_category": "planning",
+                "lifecycle_status": "candidate",
+                "governing_issue": "#1",
+                "controlling_documents": ["docs/overview/overview.md", "docs/decompositions/decomposition.md", "docs/plans/plan-a.md"],
+                "predecessor_documents": [],
+                "evidence": ["docs/overview/overview.md"],
+                "required_content_areas": {"authority_and_basis": ["docs/plans/plan-b/01.md"], "scope_and_exclusions": ["docs/plans/plan-b/01.md"], "workstreams_and_dependencies": ["docs/plans/plan-b/02.md"], "entry_and_exit_conditions": ["docs/plans/plan-b/03.md"], "transition_gates": ["docs/plans/plan-b/03.md"], "validation_strategy": ["docs/plans/plan-b/03.md"], "risks_and_unresolved_decisions": ["docs/plans/plan-b/02.md", "docs/plans/plan-b/03.md"], "completion_and_successor_work": ["docs/plans/plan-b/03.md"]},
+                "subordinate_chunks": [],
+                "successor_action": "next",
+                "schema_version": "1",
+            },
+            [],
+        )
+        overview = DevelopmentDocumentRecord(
+            "docs/overview/overview.md",
+            "docs/overview/",
+            {},
+            {
+                "artifact_id": "overview",
+                "artifact_type": "product-overview",
+                "document_slug": "overview",
+                "filename_stem": "overview",
+                "root_path": "docs/overview/",
+                "title": "Overview",
+                "product_id": "test-product",
+                "authority_category": "directional",
+                "lifecycle_status": "accepted",
+                "overview_role": "initial",
+                "governing_issue": "#1",
+                "controlling_documents": [],
+                "predecessor_documents": [],
+                "evidence": ["docs/overview/overview.md"],
+                "required_content_areas": {"product_identity": ["docs/overview/overview/01.md"], "problem_and_outcome": ["docs/overview/overview/01.md"], "intended_users_and_stakeholders": ["docs/overview/overview/01.md"], "scope_and_non_goals": ["docs/overview/overview/01.md"], "product_boundaries": ["docs/overview/overview/01.md"], "durable_principles": ["docs/overview/overview/01.md"], "capabilities_and_success": ["docs/overview/overview/01.md"], "unresolved_questions": ["docs/overview/overview/01.md"], "readiness_for_decomposition": ["docs/overview/overview/01.md"]},
+                "subordinate_chunks": [],
+                "successor_action": "next",
+                "schema_version": "1",
+            },
+            [],
+        )
+        decomposition = DevelopmentDocumentRecord(
+            "docs/decompositions/decomposition.md",
+            "docs/decompositions/",
+            {},
+            {
+                "artifact_id": "decomposition",
+                "artifact_type": "product-decomposition",
+                "document_slug": "decomposition",
+                "filename_stem": "decomposition",
+                "root_path": "docs/decompositions/",
+                "title": "Decomposition",
+                "product_id": "test-product",
+                "authority_category": "directional",
+                "lifecycle_status": "accepted",
+                "governing_issue": "#1",
+                "controlling_documents": ["docs/overview/overview.md"],
+                "predecessor_documents": ["docs/overview/overview.md"],
+                "evidence": ["docs/overview/overview.md"],
+                "required_content_areas": {"invocation_and_authority": ["docs/decompositions/decomposition/01.md"], "framework_and_product_foundations": ["docs/decompositions/decomposition/01.md"], "platform_and_execution": ["docs/decompositions/decomposition/01.md"], "generation_validation_and_handoff": ["docs/decompositions/decomposition/01.md"]},
+                "subordinate_chunks": [],
+                "successor_action": "next",
+                "schema_version": "1",
+            },
+            [],
+        )
+        expect_failure(
+            "controlling document cycle",
+            lambda: check_development_document_relationships(
+                Path("/tmp"),
+                {
+                    overview.path: overview,
+                    decomposition.path: decomposition,
+                    plan_a.path: plan_a,
+                    plan_b.path: plan_b,
+                },
+                {},
+                {},
+            ),
+            "cycle detected",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
         overview_path.write_text(overview_path.read_text().replace('  "artifact_id": "initializer-overview",\n', '  "artifact_id": "initializer.plan.bootstrap",\n'))
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace(
+            '  "controlling_documents": [\n    "docs/overview/PRODUCT-OVERVIEW.md"\n  ],\n',
+            '  "controlling_documents": [],\n',
+            1,
+        )
+        overview_path.write_text(overview_text)
         validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)

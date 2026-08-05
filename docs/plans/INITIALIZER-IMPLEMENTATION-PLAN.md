@@ -32,9 +32,14 @@ This document is the controlling entry point for a candidate placeholder composi
     "docs/plans/02-reference-repository-plan.md"
   ],
   "required_content_areas": {
-    "scope_and_preconditions": ["docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md"],
+    "authority_and_basis": ["docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md"],
+    "scope_and_exclusions": ["docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md"],
     "workstreams_and_dependencies": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md"],
-    "validation_and_completion": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"]
+    "entry_and_exit_conditions": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"],
+    "transition_gates": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"],
+    "validation_strategy": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"],
+    "risks_and_unresolved_decisions": ["docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md", "docs/plans/initializer-implementation-plan/03-validation-and-completion.md"],
+    "completion_and_successor_work": ["docs/plans/initializer-implementation-plan/03-validation-and-completion.md"]
   },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"},
