@@ -75,6 +75,18 @@ def run_repository_mutations(repo_root: Path) -> None:
         overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace(
+            '  "controlling_documents": [\n    "docs/overview/PRODUCT-OVERVIEW.md"\n  ],\n',
+            '  "controlling_documents": [],\n',
+            1,
+        )
+        overview_path.write_text(overview_text)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace(
             '    "docs/overview/product-overview/06-governance-and-evolution.md"\n  ],\n',
             '    "docs/overview/product-overview/06-governance-and-evolution.md",\n    "docs/overview/README.md"\n  ],\n',
             1,
