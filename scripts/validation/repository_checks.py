@@ -73,7 +73,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
+        "required_content_area_keys": ["decomposition_basis", "product_area_inventory", "dependency_model", "cross_cutting_concerns", "unresolved_decisions", "stopping_criteria", "planning_handoff"],
         "allowed_chunk_roles": ["product-area", "decomposition-basis", "cross-cutting-concerns", "dependency-model", "unresolved-decisions", "stopping-and-handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",

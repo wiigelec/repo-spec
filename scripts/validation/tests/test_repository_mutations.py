@@ -86,12 +86,12 @@ def run_repository_mutations(repo_root: Path) -> None:
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace(
-            '  "required_content_areas": {\n    "invocation_and_authority": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "framework_and_product_foundations": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "platform_and_execution": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "generation_validation_and_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n',
+            '  "required_content_areas": {\n    "decomposition_basis": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n',
             '  "required_content_areas": {},\n',
             1,
         )
         decomposition_path.write_text(decomposition_text)
-        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "missing required property invocation_and_authority")
+        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "missing required property decomposition_basis")
 
         plan_a = DevelopmentDocumentRecord(
             "docs/plans/plan-a.md",
@@ -187,7 +187,7 @@ def run_repository_mutations(repo_root: Path) -> None:
                 "controlling_documents": ["docs/overview/overview.md"],
                 "predecessor_documents": ["docs/overview/overview.md"],
                 "evidence": ["docs/overview/overview.md"],
-                "required_content_areas": {"invocation_and_authority": ["docs/decompositions/decomposition/01.md"], "framework_and_product_foundations": ["docs/decompositions/decomposition/01.md"], "platform_and_execution": ["docs/decompositions/decomposition/01.md"], "generation_validation_and_handoff": ["docs/decompositions/decomposition/01.md"]},
+                "required_content_areas": {"decomposition_basis": ["docs/decompositions/decomposition/01.md"], "product_area_inventory": ["docs/decompositions/decomposition/01.md"], "dependency_model": ["docs/decompositions/decomposition/01.md"], "cross_cutting_concerns": ["docs/decompositions/decomposition/01.md"], "unresolved_decisions": ["docs/decompositions/decomposition/01.md"], "stopping_criteria": ["docs/decompositions/decomposition/01.md"], "planning_handoff": ["docs/decompositions/decomposition/01.md"]},
                 "subordinate_chunks": [],
                 "successor_action": "next",
                 "schema_version": "1",
