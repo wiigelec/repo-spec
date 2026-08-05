@@ -43,6 +43,10 @@ def main(argv: list[str]) -> int:
             from validation.tests.mutation_tests import run_complete_validation_tests
 
             run_complete_validation_tests(repo_root)
+
+            from initializer.tests.run_tests import run_initializer_tests
+            run_initializer_tests(repo_root)
+
             return 0
         fail(f"unknown mode: {mode}")
     except ValidationFailure as exc:

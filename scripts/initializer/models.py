@@ -354,3 +354,106 @@ class ExecutionContext:
 
     def __hash__(self) -> int:
         return hash(self._request)
+
+
+class InstallationEntryStatus:
+    pending = "pending"
+    installed = "installed"
+    skipped = "skipped"
+    rejected = "rejected"
+
+
+class InstallationPlan:
+    __slots__ = ("_entries", "_frozen")
+
+    def __init__(self, classified_inventory: ClassifiedInventory) -> None:
+        sorted_entries = sorted(
+            [e for e in classified_inventory.entries if e.installable],
+            key=lambda e: e.path,
+        )
+        self._entries = tuple(sorted_entries)
+        self._frozen = True
+
+    @property
+    def entries(self) -> tuple[InventoryEntry, ...]:
+        return self._entries
+
+    @property
+    def entry_count(self) -> int:
+        return len(self._entries)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, InstallationPlan):
+            return NotImplemented
+        return self._entries == other._entries
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash(self._entries)
+
+
+class InstallationResult:
+    __slots__ = (
+        "_source_selection",
+        "_staging_workspace",
+        "_installed",
+        "_skipped",
+        "_rejected",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        source_selection: SourceSelection | None,
+        staging_workspace: str,
+        installed: list[dict[str, Any]],
+        skipped: list[dict[str, Any]],
+        rejected: list[dict[str, Any]],
+    ) -> None:
+        self._source_selection = source_selection
+        self._staging_workspace = staging_workspace
+        self._installed = list(installed)
+        self._skipped = list(skipped)
+        self._rejected = list(rejected)
+        self._frozen = True
+
+    @property
+    def source_selection(self) -> SourceSelection | None:
+        return self._source_selection
+
+    @property
+    def staging_workspace(self) -> str:
+        return self._staging_workspace
+
+    @property
+    def installed(self) -> list[dict[str, Any]]:
+        return list(self._installed)
+
+    @property
+    def skipped(self) -> list[dict[str, Any]]:
+        return list(self._skipped)
+
+    @property
+    def rejected(self) -> list[dict[str, Any]]:
+        return list(self._rejected)
+
+    def to_dict(self) -> dict[str, Any]:
+        output: dict[str, Any] = {
+            "status": "staging_complete",
+            "source_selection": None,
+            "staging_workspace": self._staging_workspace,
+            "installed": self._installed,
+            "skipped": self._skipped,
+            "rejected": self._rejected,
+        }
+        if self._source_selection is not None:
+            output["source_selection"] = {
+                "repository": self._source_selection.repository,
+                "revision": self._source_selection.revision,
+            }
+        return output

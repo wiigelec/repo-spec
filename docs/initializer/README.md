@@ -172,6 +172,65 @@ Each entry contains:
 * Empty repository or revision values are rejected.
 * No branch, default revision, checkout, or network state is silently inferred.
 
+## Framework staging
+
+The initializer can materialize inventory-selected reusable framework material into an isolated staging workspace without modifying the requested destination.
+
+### Command
+
+```text
+scripts/repo-spec-init stage-framework <request.json> [--staging-parent <dir>]
+```
+
+`stage-framework` performs request parsing and validation, validates source identity and revision, loads and validates the framework inventory, selects only installable reusable framework entries, creates a new isolated staging workspace, copies authorized material into it, and emits deterministic installation output. It performs no destination mutation, Git mutation, network access, or hosting-platform operation.
+
+### Exit status
+
+| Status | Meaning |
+|--------|---------|
+| 0      | Staging completed successfully with machine-readable output to stdout. |
+| 1      | Invalid request, missing source, invalid inventory, staging error, or I/O error. |
+
+### Staging behavior
+
+* A new staging workspace is created under a temporary directory (or under `--staging-parent` if supplied).
+* The workspace name begins with `repo-spec-stage-`.
+* Only entries classified as `framework-authoritative`, `framework-support`, or `derived` and marked `installable: true` in the maintained framework inventory are selected.
+* Repository-relative paths are preserved in the staging workspace.
+* Regular files and directories are copied using deterministic traversal.
+* Symbolic links are preserved only when their targets remain within the source root.
+* The requested destination is not created or modified.
+
+### Source path safety
+
+The following conditions cause the specific entry to be rejected (not staged) while other entries continue:
+
+* Source path does not exist in the source tree.
+* Source path is absolute (`/absolute/path`).
+* Source path performs parent-directory traversal (`../outside`).
+* Source path resolves outside the source root.
+* Source path is an unsupported filesystem entry type.
+* Symbolic link target is absolute (`/etc/passwd`).
+* Symbolic link target resolves outside the source root.
+* Preexisting nonempty staging workspace is rejected with an error.
+
+### Staging output
+
+Output is a JSON object with:
+
+* `status` — `"staging_complete"` on success.
+* `source_selection` — object with `repository` and `revision`.
+* `staging_workspace` — absolute path to the created staging workspace.
+* `installed` — array of staged entries, each with `path`, `classification`, and `type`.
+* `skipped` — array of entries skipped during staging (with `path` and `reason`).
+* `rejected` — array of entries rejected during staging (with `path`, `classification`, and `reason`).
+
+### Failure semantics
+
+* If staging fails before any entries are copied, the incomplete workspace is cleaned up.
+* If an entry copy fails, the entry is reported in `rejected` and other entries continue.
+* A preexisting nonempty staging workspace causes an immediate error without modification.
+
 ### Maintainer notes
 
 The initializer code lives in `scripts/initializer/`. The shell wrapper is `scripts/repo-spec-init`.

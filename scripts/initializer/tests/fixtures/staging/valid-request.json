@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "destination": "/tmp/repo-spec-test-dest",
+  "authority": {
+    "granted_by": "issue-193"
+  },
+  "source": {
+    "repository": "https://github.com/wiigelec/repo-spec",
+    "revision": "test-revision"
+  },
+  "profile": "standard"
+}
