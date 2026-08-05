@@ -1,0 +1,18 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "test",
+  "entries": [
+    {
+      "path": "specs/repo/",
+      "classification": "framework-authoritative",
+      "authoritative": true,
+      "installable": true
+    },
+    {
+      "path": "docs/overview/",
+      "classification": "framework-authoritative",
+      "authoritative": true,
+      "installable": true
+    }
+  ]
+}

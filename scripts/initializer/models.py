@@ -8,6 +8,205 @@ class InitializerError(Exception):
     pass
 
 
+VALID_CLASSIFICATIONS = frozenset({
+    "framework-authoritative",
+    "framework-support",
+    "derived",
+    "profile-source",
+    "installed-adapter",
+    "product-instance",
+    "development-state",
+    "excluded",
+})
+
+VALID_INVENTORY_FIELDS = frozenset({
+    "path",
+    "classification",
+    "authoritative",
+    "installable",
+    "profile",
+    "exclusion_rationale",
+    "derived_from",
+})
+
+INSTALLABLE_CLASSIFICATIONS = frozenset({
+    "framework-authoritative",
+    "framework-support",
+    "derived",
+})
+
+UNINSTALLABLE_CLASSIFICATIONS = frozenset({
+    "profile-source",
+    "installed-adapter",
+    "product-instance",
+    "development-state",
+    "excluded",
+})
+
+
+class SourceSelection:
+    __slots__ = ("_repository", "_revision", "_frozen")
+
+    def __init__(self, repository: str, revision: str) -> None:
+        if not repository or not repository.strip():
+            raise InitializerError("source repository must be non-empty")
+        if not revision or not revision.strip():
+            raise InitializerError("source revision must be non-empty")
+        self._repository = repository
+        self._revision = revision
+        self._frozen = True
+
+    @property
+    def repository(self) -> str:
+        return self._repository
+
+    @property
+    def revision(self) -> str:
+        return self._revision
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, SourceSelection):
+            return NotImplemented
+        return self._repository == other._repository and self._revision == other._revision
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((self._repository, self._revision))
+
+
+class InventoryEntry:
+    __slots__ = (
+        "_path",
+        "_classification",
+        "_authoritative",
+        "_installable",
+        "_profile",
+        "_exclusion_rationale",
+        "_derived_from",
+        "_frozen",
+    )
+
+    def __init__(self, raw: dict[str, Any]) -> None:
+        self._path = raw.get("path", "")
+        self._classification = raw.get("classification", "")
+        self._authoritative = bool(raw.get("authoritative", False))
+        self._installable = bool(raw.get("installable", False))
+        self._profile = raw.get("profile")
+        self._exclusion_rationale = raw.get("exclusion_rationale")
+        df = raw.get("derived_from")
+        self._derived_from = list(df) if isinstance(df, list) else None
+        self._frozen = True
+
+    @property
+    def path(self) -> str:
+        return self._path
+
+    @property
+    def classification(self) -> str:
+        return self._classification
+
+    @property
+    def authoritative(self) -> bool:
+        return self._authoritative
+
+    @property
+    def installable(self) -> bool:
+        return self._installable
+
+    @property
+    def profile(self) -> str | None:
+        return self._profile
+
+    @property
+    def exclusion_rationale(self) -> str | None:
+        return self._exclusion_rationale
+
+    @property
+    def derived_from(self) -> list[str] | None:
+        if self._derived_from is not None:
+            return list(self._derived_from)
+        return None
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, InventoryEntry):
+            return NotImplemented
+        return (
+            self._path == other._path
+            and self._classification == other._classification
+            and self._authoritative == other._authoritative
+            and self._installable == other._installable
+            and self._profile == other._profile
+            and self._exclusion_rationale == other._exclusion_rationale
+            and self._derived_from == other._derived_from
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._path,
+            self._classification,
+            self._authoritative,
+            self._installable,
+            self._profile,
+            self._exclusion_rationale,
+            tuple(self._derived_from) if self._derived_from is not None else None,
+        ))
+
+
+class ClassifiedInventory:
+    __slots__ = ("_entries", "_by_classification", "_by_path", "_frozen")
+
+    def __init__(self, entries: list[InventoryEntry]) -> None:
+        sorted_entries = sorted(entries, key=lambda e: (e.classification, e.path))
+        self._entries = tuple(sorted_entries)
+        by_class: dict[str, list[InventoryEntry]] = {}
+        by_path: dict[str, InventoryEntry] = {}
+        for e in sorted_entries:
+            by_class.setdefault(e.classification, []).append(e)
+            by_path[e.path] = e
+        self._by_classification = {k: tuple(v) for k, v in by_class.items()}
+        self._by_path = by_path
+        self._frozen = True
+
+    @property
+    def entries(self) -> tuple[InventoryEntry, ...]:
+        return self._entries
+
+    @property
+    def classifications(self) -> frozenset[str]:
+        return frozenset(self._by_classification.keys())
+
+    def entries_by_classification(self, classification: str) -> tuple[InventoryEntry, ...]:
+        return self._by_classification.get(classification, ())
+
+    def entry_by_path(self, path: str) -> InventoryEntry | None:
+        return self._by_path.get(path)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, ClassifiedInventory):
+            return NotImplemented
+        return self._entries == other._entries
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash(self._entries)
+
+
 class ImmutableRequest:
     __slots__ = (
         "_schema_version",

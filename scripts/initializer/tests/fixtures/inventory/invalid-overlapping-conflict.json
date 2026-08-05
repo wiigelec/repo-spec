@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "test",
+  "entries": [
+    {
+      "path": "specs/repo/",
+      "classification": "framework-authoritative",
+      "authoritative": true,
+      "installable": true
+    },
+    {
+      "path": "specs/repo/manifest.json",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "contradictory overlap"
+    }
+  ]
+}
