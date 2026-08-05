@@ -34,7 +34,14 @@ def run_mutation_tests(repo_root: Path) -> None:
     run_reference_isolated_copy_tests(repo_root)
 
 
+def run_initializer_tests(repo_root: Path) -> None:
+    from initializer.tests.run_tests import run_initializer_tests as _run_init
+
+    _run_init(repo_root)
+
+
 def run_complete_validation_tests(repo_root: Path) -> None:
     check_validate_cli_contract(repo_root)
     check_generate_docs_cli_contract(repo_root)
     run_mutation_tests(repo_root)
+    run_initializer_tests(repo_root)

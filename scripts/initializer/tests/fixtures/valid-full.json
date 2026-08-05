@@ -1,0 +1,19 @@
+{
+  "schema_version": "1",
+  "destination": "/tmp/test-dest",
+  "authority": {
+    "granted_by": "issue-189"
+  },
+  "profile": "standard",
+  "source": {
+    "repository": "https://github.com/wiigelec/repo-spec",
+    "revision": "abc123"
+  },
+  "product": {
+    "id": "my-product",
+    "direction_material": ["/docs/overview.md", "/docs/plan.md"]
+  },
+  "metadata": {
+    "requestor": "automation"
+  }
+}
