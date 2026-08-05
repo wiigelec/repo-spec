@@ -1158,6 +1158,12 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                 for chunk in declared_chunks:
                     role = chunk.get("role")
                     expect(role in info["allowed_chunk_roles"], f"development document chunk inventory failed: unsupported decomposition chunk role in {rel_path}")
+                    document_coverage = chunk.get("document_coverage")
+                    expect(isinstance(document_coverage, list), f"development document content inventory failed: missing document coverage in {rel_path}")
+                    expect(document_coverage, f"development document content inventory failed: document coverage must not be empty in {rel_path}")
+                    expect(len(document_coverage) == len(set(document_coverage)), f"development document content inventory failed: duplicate document coverage entries in {rel_path}")
+                    expected_document_coverage = sorted(area_id for area_id, area_paths in required_content_areas.items() if chunk["path"] in area_paths)
+                    expect(set(document_coverage) == set(expected_document_coverage), f"development document content inventory failed: document coverage mismatch in {rel_path}")
                     area_id = chunk.get("area_id")
                     if role == "product-area":
                         expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
