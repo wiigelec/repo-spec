@@ -668,6 +668,533 @@ class InstallationResult:
         return output
 
 
+class GitEstablishmentPhase:
+    preflight = "preflight"
+    initialized = "initialized"
+    indexed = "indexed"
+    committed = "committed"
+    verified = "verified"
+    failed = "failed"
+    cleaned = "cleaned"
+
+
+class GitPreflight:
+    __slots__ = (
+        "_destination_path",
+        "_git_available",
+        "_git_version",
+        "_destination_exists",
+        "_destination_is_dir",
+        "_destination_is_symlink",
+        "_is_git_repository",
+        "_inside_worktree",
+        "_outer_worktree",
+        "_content_consistent",
+        "_content_inconsistency_reason",
+        "_decision",
+        "_rejection_reason",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        destination_path: str,
+        git_available: bool,
+        git_version: str | None,
+        destination_exists: bool,
+        destination_is_dir: bool,
+        destination_is_symlink: bool,
+        is_git_repository: bool,
+        inside_worktree: bool,
+        outer_worktree: str | None,
+        content_consistent: bool,
+        content_inconsistency_reason: str | None = None,
+        decision: str = "",
+        rejection_reason: str | None = None,
+    ) -> None:
+        self._destination_path = destination_path
+        self._git_available = git_available
+        self._git_version = git_version
+        self._destination_exists = destination_exists
+        self._destination_is_dir = destination_is_dir
+        self._destination_is_symlink = destination_is_symlink
+        self._is_git_repository = is_git_repository
+        self._inside_worktree = inside_worktree
+        self._outer_worktree = outer_worktree
+        self._content_consistent = content_consistent
+        self._content_inconsistency_reason = content_inconsistency_reason
+        self._decision = decision
+        self._rejection_reason = rejection_reason
+        self._frozen = True
+
+    @property
+    def destination_path(self) -> str:
+        return self._destination_path
+    @property
+    def git_available(self) -> bool:
+        return self._git_available
+    @property
+    def git_version(self) -> str | None:
+        return self._git_version
+    @property
+    def destination_exists(self) -> bool:
+        return self._destination_exists
+    @property
+    def destination_is_dir(self) -> bool:
+        return self._destination_is_dir
+    @property
+    def destination_is_symlink(self) -> bool:
+        return self._destination_is_symlink
+    @property
+    def is_git_repository(self) -> bool:
+        return self._is_git_repository
+    @property
+    def inside_worktree(self) -> bool:
+        return self._inside_worktree
+    @property
+    def outer_worktree(self) -> str | None:
+        return self._outer_worktree
+    @property
+    def content_consistent(self) -> bool:
+        return self._content_consistent
+    @property
+    def content_inconsistency_reason(self) -> str | None:
+        return self._content_inconsistency_reason
+    @property
+    def decision(self) -> str:
+        return self._decision
+    @property
+    def rejection_reason(self) -> str | None:
+        return self._rejection_reason
+
+    def to_dict(self) -> dict[str, object]:
+        d: dict[str, object] = {
+            "destination_path": self._destination_path,
+            "git_available": self._git_available,
+            "git_version": self._git_version if self._git_version else "",
+            "destination_exists": self._destination_exists,
+            "destination_is_dir": self._destination_is_dir,
+            "destination_is_symlink": self._destination_is_symlink,
+            "is_git_repository": self._is_git_repository,
+            "inside_worktree": self._inside_worktree,
+            "content_consistent": self._content_consistent,
+            "decision": self._decision,
+        }
+        if self._git_version is not None:
+            d["git_version"] = self._git_version
+        if self._outer_worktree is not None:
+            d["outer_worktree"] = self._outer_worktree
+        if self._content_inconsistency_reason is not None:
+            d["content_inconsistency_reason"] = self._content_inconsistency_reason
+        if self._rejection_reason is not None:
+            d["rejection_reason"] = self._rejection_reason
+        return d
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, GitPreflight):
+            return NotImplemented
+        return (
+            self._destination_path == other._destination_path
+            and self._git_available == other._git_available
+            and self._git_version == other._git_version
+            and self._destination_exists == other._destination_exists
+            and self._destination_is_dir == other._destination_is_dir
+            and self._destination_is_symlink == other._destination_is_symlink
+            and self._is_git_repository == other._is_git_repository
+            and self._inside_worktree == other._inside_worktree
+            and self._outer_worktree == other._outer_worktree
+            and self._content_consistent == other._content_consistent
+            and self._content_inconsistency_reason == other._content_inconsistency_reason
+            and self._decision == other._decision
+            and self._rejection_reason == other._rejection_reason
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._destination_path,
+            self._git_available,
+            self._git_version,
+            self._destination_exists,
+            self._destination_is_dir,
+            self._destination_is_symlink,
+            self._is_git_repository,
+            self._inside_worktree,
+            self._outer_worktree,
+            self._content_consistent,
+            self._content_inconsistency_reason,
+            self._decision,
+            self._rejection_reason,
+        ))
+
+
+class GitCommandResult:
+    __slots__ = (
+        "_command",
+        "_returncode",
+        "_stdout",
+        "_stderr",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        command: list[str],
+        returncode: int,
+        stdout: str,
+        stderr: str,
+    ) -> None:
+        self._command = list(command)
+        self._returncode = returncode
+        self._stdout = stdout
+        self._stderr = stderr
+        self._frozen = True
+
+    @property
+    def command(self) -> list[str]:
+        return list(self._command)
+    @property
+    def returncode(self) -> int:
+        return self._returncode
+    @property
+    def stdout(self) -> str:
+        return self._stdout
+    @property
+    def stderr(self) -> str:
+        return self._stderr
+    @property
+    def succeeded(self) -> bool:
+        return self._returncode == 0
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "command": " ".join(self._command),
+            "returncode": self._returncode,
+            "stdout": self._stdout,
+            "stderr": self._stderr,
+        }
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, GitCommandResult):
+            return NotImplemented
+        return (
+            self._command == other._command
+            and self._returncode == other._returncode
+            and self._stdout == other._stdout
+            and self._stderr == other._stderr
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            tuple(self._command),
+            self._returncode,
+            self._stdout,
+            self._stderr,
+        ))
+
+
+class GitEstablishmentPlan:
+    __slots__ = (
+        "_destination_path",
+        "_initial_branch",
+        "_commit_message",
+        "_author_name",
+        "_author_email",
+        "_committer_name",
+        "_committer_email",
+        "_timestamp",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        destination_path: str,
+        initial_branch: str = "main",
+        commit_message: str = "Initial repository foundation",
+        author_name: str = "Repo-Spec Initializer",
+        author_email: str = "initializer@repo-spec.local",
+        committer_name: str | None = None,
+        committer_email: str | None = None,
+        timestamp: str = "1234567890 +0000",
+    ) -> None:
+        self._destination_path = destination_path
+        self._initial_branch = initial_branch
+        self._commit_message = commit_message
+        self._author_name = author_name
+        self._author_email = author_email
+        self._committer_name = committer_name if committer_name is not None else author_name
+        self._committer_email = committer_email if committer_email is not None else author_email
+        self._timestamp = timestamp
+        self._frozen = True
+
+    @property
+    def destination_path(self) -> str:
+        return self._destination_path
+    @property
+    def initial_branch(self) -> str:
+        return self._initial_branch
+    @property
+    def commit_message(self) -> str:
+        return self._commit_message
+    @property
+    def author_name(self) -> str:
+        return self._author_name
+    @property
+    def author_email(self) -> str:
+        return self._author_email
+    @property
+    def committer_name(self) -> str:
+        return self._committer_name
+    @property
+    def committer_email(self) -> str:
+        return self._committer_email
+    @property
+    def timestamp(self) -> str:
+        return self._timestamp
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "destination_path": self._destination_path,
+            "initial_branch": self._initial_branch,
+            "commit_message": self._commit_message,
+            "author_name": self._author_name,
+            "author_email": self._author_email,
+            "committer_name": self._committer_name,
+            "committer_email": self._committer_email,
+            "timestamp": self._timestamp,
+        }
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, GitEstablishmentPlan):
+            return NotImplemented
+        return (
+            self._destination_path == other._destination_path
+            and self._initial_branch == other._initial_branch
+            and self._commit_message == other._commit_message
+            and self._author_name == other._author_name
+            and self._author_email == other._author_email
+            and self._committer_name == other._committer_name
+            and self._committer_email == other._committer_email
+            and self._timestamp == other._timestamp
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._destination_path,
+            self._initial_branch,
+            self._commit_message,
+            self._author_name,
+            self._author_email,
+            self._committer_name,
+            self._committer_email,
+            self._timestamp,
+        ))
+
+
+class GitEstablishmentResult:
+    __slots__ = (
+        "_status",
+        "_phase",
+        "_destination_path",
+        "_git_version",
+        "_initial_branch",
+        "_root_commit",
+        "_commit_tree",
+        "_author_identity",
+        "_committer_identity",
+        "_timestamps",
+        "_commit_message",
+        "_staged_path_count",
+        "_ignored_path_count",
+        "_worktree_clean",
+        "_remote_count",
+        "_completed_phases",
+        "_failure_reason",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        status: str,
+        phase: str,
+        destination_path: str,
+        git_version: str = "",
+        initial_branch: str = "",
+        root_commit: str = "",
+        commit_tree: str = "",
+        author_identity: str = "",
+        committer_identity: str = "",
+        timestamps: str = "",
+        commit_message: str = "",
+        staged_path_count: int = 0,
+        ignored_path_count: int = 0,
+        worktree_clean: bool = False,
+        remote_count: int = 0,
+        completed_phases: list[str] | None = None,
+        failure_reason: str | None = None,
+    ) -> None:
+        self._status = status
+        self._phase = phase
+        self._destination_path = destination_path
+        self._git_version = git_version
+        self._initial_branch = initial_branch
+        self._root_commit = root_commit
+        self._commit_tree = commit_tree
+        self._author_identity = author_identity
+        self._committer_identity = committer_identity
+        self._timestamps = timestamps
+        self._commit_message = commit_message
+        self._staged_path_count = staged_path_count
+        self._ignored_path_count = ignored_path_count
+        self._worktree_clean = worktree_clean
+        self._remote_count = remote_count
+        self._completed_phases = list(completed_phases) if completed_phases is not None else []
+        self._failure_reason = failure_reason
+        self._frozen = True
+
+    @property
+    def status(self) -> str:
+        return self._status
+    @property
+    def phase(self) -> str:
+        return self._phase
+    @property
+    def destination_path(self) -> str:
+        return self._destination_path
+    @property
+    def git_version(self) -> str:
+        return self._git_version
+    @property
+    def initial_branch(self) -> str:
+        return self._initial_branch
+    @property
+    def root_commit(self) -> str:
+        return self._root_commit
+    @property
+    def commit_tree(self) -> str:
+        return self._commit_tree
+    @property
+    def author_identity(self) -> str:
+        return self._author_identity
+    @property
+    def committer_identity(self) -> str:
+        return self._committer_identity
+    @property
+    def timestamps(self) -> str:
+        return self._timestamps
+    @property
+    def commit_message(self) -> str:
+        return self._commit_message
+    @property
+    def staged_path_count(self) -> int:
+        return self._staged_path_count
+    @property
+    def ignored_path_count(self) -> int:
+        return self._ignored_path_count
+    @property
+    def worktree_clean(self) -> bool:
+        return self._worktree_clean
+    @property
+    def remote_count(self) -> int:
+        return self._remote_count
+    @property
+    def completed_phases(self) -> list[str]:
+        return list(self._completed_phases)
+    @property
+    def failure_reason(self) -> str | None:
+        return self._failure_reason
+
+    def to_dict(self) -> dict[str, object]:
+        d: dict[str, object] = {
+            "status": self._status,
+            "phase": self._phase,
+            "destination_path": self._destination_path,
+            "git_version": self._git_version,
+            "initial_branch": self._initial_branch,
+            "root_commit": self._root_commit,
+            "commit_tree": self._commit_tree,
+            "author_identity": self._author_identity,
+            "committer_identity": self._committer_identity,
+            "timestamps": self._timestamps,
+            "commit_message": self._commit_message,
+            "staged_path_count": self._staged_path_count,
+            "ignored_path_count": self._ignored_path_count,
+            "worktree_clean": self._worktree_clean,
+            "remote_count": self._remote_count,
+            "completed_phases": self._completed_phases,
+        }
+        if self._failure_reason is not None:
+            d["failure_reason"] = self._failure_reason
+        return d
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, GitEstablishmentResult):
+            return NotImplemented
+        return (
+            self._status == other._status
+            and self._phase == other._phase
+            and self._destination_path == other._destination_path
+            and self._git_version == other._git_version
+            and self._initial_branch == other._initial_branch
+            and self._root_commit == other._root_commit
+            and self._commit_tree == other._commit_tree
+            and self._author_identity == other._author_identity
+            and self._committer_identity == other._committer_identity
+            and self._timestamps == other._timestamps
+            and self._commit_message == other._commit_message
+            and self._staged_path_count == other._staged_path_count
+            and self._ignored_path_count == other._ignored_path_count
+            and self._worktree_clean == other._worktree_clean
+            and self._remote_count == other._remote_count
+            and self._completed_phases == other._completed_phases
+            and self._failure_reason == other._failure_reason
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._status,
+            self._phase,
+            self._destination_path,
+            self._git_version,
+            self._initial_branch,
+            self._root_commit,
+            self._commit_tree,
+            self._author_identity,
+            self._committer_identity,
+            self._timestamps,
+            self._commit_message,
+            self._staged_path_count,
+            self._ignored_path_count,
+            self._worktree_clean,
+            self._remote_count,
+            tuple(self._completed_phases),
+            self._failure_reason,
+        ))
+
+
 class DestinationState:
     absent = "absent"
     empty_directory = "empty_directory"

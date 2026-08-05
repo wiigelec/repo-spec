@@ -397,6 +397,129 @@ Same-filesystem promotion uses `os.rename()` for an atomic final commit at the d
 
 After a failed promotion (preflight rejection), the caller may correct the destination state and retry. After a prepare or commit failure, the staging workspace remains intact for diagnosis. There is no automatic retry.
 
+## Git establishment
+
+The initializer can establish a local Git repository in a successfully promoted destination, creating exactly one deterministic root commit with the promoted repository content.
+
+### Prerequisites
+
+* A successfully promoted destination (promotion status `"success"`).
+* The promoted destination must exist as a regular directory.
+* The Git executable must be available (minimum version 2.5.0).
+* The destination must not already be a Git repository or inside an outer Git worktree.
+
+### Commands
+
+```text
+scripts/repo-spec-init git-preflight <dest-path>
+```
+
+Runs Git-specific preflight checks against the destination without performing any mutation. Returns 0 when the destination is safe for Git establishment, 1 with a JSON report when rejected. Checks include:
+
+* Destination exists and is a directory.
+* Destination is not a symbolic link.
+* Destination does not already contain a `.git` file or directory.
+* Destination is not inside an outer Git worktree.
+* Git executable is available and meets the minimum version requirement.
+
+```text
+scripts/repo-spec-init git-establish <dest-path>
+```
+
+Establishes a local Git repository in the destination with a single deterministic root commit. Returns 0 on success, 1 on failure. JSON output provides the establishment result.
+
+```text
+scripts/repo-spec-init stage-promote-and-git <request.json> [--staging-parent <dir>]
+```
+
+Combines framework staging, product-foundation establishment, destination promotion, and Git establishment in one bounded end-to-end operation.
+
+### Exit status
+
+| Status | Meaning |
+|--------|---------|
+| 0 | Git establishment succeeded. Repository has one root commit on the initial branch with a clean worktree. |
+| 1 | Preflight rejected, initialization failed, staging failed, commit failed, or verification failed. |
+
+### Deterministic commit behavior
+
+The initializer creates a deterministic first commit using:
+
+| Property | Default value |
+|----------|---------------|
+| Initial branch | `main` |
+| Author name | `Repo-Spec Initializer` |
+| Author email | `initializer@repo-spec.local` |
+| Committer name | Same as author (unless explicitly overridden) |
+| Committer email | Same as author (unless explicitly overridden) |
+| Author timestamp | `1234567890 +0000` (bootstrap epoch) |
+| Committer timestamp | `1234567890 +0000` (bootstrap epoch) |
+| Commit message | `Initial repository foundation` |
+
+All identity and timestamp values are fixed and repository-local. Global Git configuration is not read or modified. Equivalent fixed inputs produce the same commit tree and, because timestamps are also fixed, the same root commit identity.
+
+### Git establishment phases
+
+| Phase | Meaning |
+|-------|---------|
+| `preflight` | Checks performed before any Git mutation |
+| `initialized` | `git init` completed with explicit initial branch |
+| `indexed` | `git add -A` staged the promoted content |
+| `committed` | `git commit` created the root commit |
+| `verified` | Post-commit checks passed (branch, commit count, parent count, clean worktree, no remotes) |
+| `failed` | An unrecoverable error occurred |
+| `cleaned` | Incomplete `.git` metadata removed after failure |
+
+### Failure semantics
+
+* Failures before `git init` leave the destination unchanged.
+* Failures during `git add` or before a valid commit cause removal of the incomplete `.git` directory only. Promoted repository content is never altered.
+* Failures during post-commit verification preserve the valid root commit.
+* Failed or partial Git establishment never reports success.
+* No remote, hook, signing configuration, submodule, LFS state, or platform configuration is introduced.
+
+### Establishment output
+
+Successful output is a JSON object with:
+
+* `status` — `"success"`
+* `phase` — `"verified"`
+* `destination_path` — absolute path to the initialized repository
+* `git_version` — the detected Git version string
+* `initial_branch` — the created initial branch name
+* `root_commit` — the full SHA of the root commit
+* `commit_tree` — the tree object SHA of the root commit
+* `author_identity` — the commit author identity
+* `committer_identity` — the commit committer identity
+* `timestamps` — the author and committer timestamps
+* `commit_message` — the commit message
+* `staged_path_count` — number of paths staged
+* `worktree_clean` — `true`
+* `remote_count` — `0`
+* `completed_phases` — list of completed phases
+
+Failed output includes `status: "failed"`, the `phase` where failure occurred, and a `failure_reason` string.
+
+### Exclusions
+
+Git establishment in this bounded increment does not:
+
+* Create or configure a Git remote.
+* Access a network.
+* Create a hosting-platform repository.
+* Apply platform profiles or install platform adapters.
+* Create additional branches or tags.
+* Create signed commits or discover signing keys.
+* Modify global or system Git configuration.
+* Read the operator's implicit global author identity.
+* Install Git hooks, submodules, or LFS.
+* Perform sparse checkout or create worktrees.
+* Alter generated repository content to make Git commands succeed.
+* Repair an existing partially initialized `.git` directory.
+* Validate the generated repository semantically.
+* Record final provenance or create a handoff document.
+* Claim that the root commit constitutes semantic acceptance.
+
 ### Maintainer notes
 
 The initializer code lives in `scripts/initializer/`. The shell wrapper is `scripts/repo-spec-init`.
@@ -407,6 +530,11 @@ Destination and promotion modules:
 * `scripts/initializer/destination.py` — destination classification, path safety, and preflight
 * `scripts/initializer/promotion.py` — transactional promotion with prepare, commit, cleanup, and restore
 * `scripts/initializer/validation.py` — `validate_product_foundation_prerequisites`
+
+Git establishment modules:
+
+* `scripts/initializer/git.py` — Git preflight, environment sanitization, repository initialization, deterministic commit, post-commit verification, failure cleanup, and establishment reporting
+* `scripts/initializer/models.py` — `GitPreflight`, `GitCommandResult`, `GitEstablishmentPlan`, `GitEstablishmentResult`, and `GitEstablishmentPhase` immutable models
 
 To run the initializer test suite directly:
 
@@ -426,7 +554,6 @@ The following product content is intentionally deferred (requires governed succe
 * Product specifications at any Level.
 * Product-specification correspondence declarations.
 * Derived product projections.
-* Git repository initialization.
 * Platform-profile selection or application.
 * Hosting-platform adapter installation.
 * Final generated-repository validation.
