@@ -122,6 +122,7 @@
               "coverage": {
                 "type": "array",
                 "minItems": 7,
+                "uniqueItems": true,
                 "items": {
                   "type": "string",
                   "enum": [

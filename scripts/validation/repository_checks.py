@@ -1137,6 +1137,17 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                     expected_coverage = sorted(area_id for area_id, area_paths in required_content_areas.items() if chunk["path"] in area_paths)
                     expect(set(coverage) == set(expected_coverage), f"development document content inventory failed: chunk coverage mismatch in {rel_path}")
 
+            if root_rel == "docs/decompositions/":
+                product_area_paths = {
+                    chunk["path"]
+                    for chunk in declared_chunks
+                    if chunk["role"] == "product-area"
+                }
+                expect(
+                    set(required_content_areas["product_area_inventory"]) == product_area_paths,
+                    f"development document content inventory failed: product-area inventory mismatch in {rel_path}",
+                )
+
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:
                 expect(chunk_path not in chunk_owner_paths, f"development document chunk inventory failed: duplicate chunk path {chunk_path}")
@@ -1147,6 +1158,12 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                 for chunk in declared_chunks:
                     role = chunk.get("role")
                     expect(role in info["allowed_chunk_roles"], f"development document chunk inventory failed: unsupported decomposition chunk role in {rel_path}")
+                    document_coverage = chunk.get("document_coverage")
+                    expect(isinstance(document_coverage, list), f"development document content inventory failed: missing document coverage in {rel_path}")
+                    expect(document_coverage, f"development document content inventory failed: document coverage must not be empty in {rel_path}")
+                    expect(len(document_coverage) == len(set(document_coverage)), f"development document content inventory failed: duplicate document coverage entries in {rel_path}")
+                    expected_document_coverage = sorted(area_id for area_id, area_paths in required_content_areas.items() if chunk["path"] in area_paths)
+                    expect(set(document_coverage) == set(expected_document_coverage), f"development document content inventory failed: document coverage mismatch in {rel_path}")
                     area_id = chunk.get("area_id")
                     if role == "product-area":
                         expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
@@ -1179,6 +1196,10 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                 expect(len(chunk_text.encode("utf-8")) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES, f"development document size failed: chunk exceeds byte limit {chunk['path']}")
                 first_non_empty = next((line for line in chunk_text.splitlines() if line.strip()), "")
                 expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
+                if root_rel == "docs/decompositions/" and chunk.get("role") == "product-area":
+                    chunk_headings = markdown_headings(chunk_text)
+                    for heading in ["Status", "Purpose", "Responsibilities", "Boundaries", "Dependencies", "Exclusions", "Unresolved decisions", "Successor work"]:
+                        expect(heading in chunk_headings, f"development document structure failed: missing product-area heading {heading} in {chunk['path']}")
 
             canonical_links = {resolve_markdown_link_target(f"{root_rel}README.md", target) for _label, target in markdown_links(markdown_section(readme_text, "Canonical documents"))}
             expect(rel_path in canonical_links, f"development document discovery failed: README does not link to {rel_path}")
