@@ -65,7 +65,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-overview",
         "schema_key": "repo.product-overview",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["product_identity", "problem_and_outcome", "users_principles_and_boundaries", "capabilities_and_success", "unresolved_questions", "lifecycle_and_handoff"],
+        "required_content_area_keys": ["product_identity", "problem_and_outcome", "intended_users_and_stakeholders", "scope_and_non_goals", "product_boundaries", "durable_principles", "capabilities_and_success", "unresolved_questions", "readiness_for_decomposition"],
         "filename_suffix": "-OVERVIEW.md",
         "chunk_dir_suffix": "/",
     },
@@ -74,6 +74,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
         "required_content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
+        "allowed_chunk_roles": ["product-area", "decomposition-basis", "cross-cutting-concerns", "dependency-model", "unresolved-decisions", "stopping-and-handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
     },
@@ -81,7 +82,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "implementation-plan",
         "schema_key": "repo.implementation-plan",
         "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["scope_and_preconditions", "workstreams_and_dependencies", "validation_and_completion"],
+        "required_content_area_keys": ["authority_and_basis", "scope_and_exclusions", "workstreams_and_dependencies", "entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"],
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
@@ -1137,11 +1138,15 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             if root_rel == "docs/decompositions/":
                 seen_area_ids: set[str] = set()
                 for chunk in declared_chunks:
-                    expect(chunk.get("role") == "product-area", f"development document chunk inventory failed: missing product-area role in {rel_path}")
+                    role = chunk.get("role")
+                    expect(role in info["allowed_chunk_roles"], f"development document chunk inventory failed: unsupported decomposition chunk role in {rel_path}")
                     area_id = chunk.get("area_id")
-                    expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
-                    expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
-                    seen_area_ids.add(area_id)
+                    if role == "product-area":
+                        expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
+                        expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
+                        seen_area_ids.add(area_id)
+                    else:
+                        expect(area_id is None, f"development document chunk inventory failed: non-area chunk must not declare area_id in {rel_path}")
 
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")

@@ -68,6 +68,22 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis"', 1)
+        decomposition_path.write_text(decomposition_text)
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis", "area_id": "invocation-and-authority"', 1)
+        decomposition_path.write_text(decomposition_text)
+        expect_failure("non-area decomposition chunk with area_id", lambda: validate_repo(temp_repo), "non-area chunk must not declare area_id")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace(
             '  "required_content_areas": {\n    "invocation_and_authority": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "framework_and_product_foundations": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "platform_and_execution": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "generation_validation_and_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n',
             '  "required_content_areas": {},\n',

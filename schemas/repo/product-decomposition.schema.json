@@ -75,17 +75,40 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["order", "path", "title", "role", "area_id"],
+            "required": ["order", "path", "title", "role"],
             "properties": {
-            "role": {
-              "type": "string",
-              "const": "product-area"
-            },
-            "area_id": {
-              "type": "string",
-              "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
+              "role": {
+                "type": "string",
+                "enum": [
+                  "product-area",
+                  "decomposition-basis",
+                  "cross-cutting-concerns",
+                  "dependency-model",
+                  "unresolved-decisions",
+                  "stopping-and-handoff"
+                ]
+              },
+              "area_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
+              }
             }
-            }
+            ,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "role": {
+                      "const": "product-area"
+                    }
+                  },
+                  "required": ["role"]
+                },
+                "then": {
+                  "required": ["area_id"]
+                }
+              }
+            ]
           }
         }
       }
