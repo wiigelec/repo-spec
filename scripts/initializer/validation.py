@@ -246,6 +246,35 @@ def _check_deferred(raw: dict[str, Any], result: ValidationResult) -> None:
             result.add(f"unknown field in deferred: {item!r}")
 
 
+def validate_product_foundation_prerequisites(
+    raw: dict[str, Any],
+    result: ValidationResult,
+) -> None:
+    product = raw.get("product")
+    if product is None:
+        result.add("product block is required for foundation establishment")
+        return
+    if not isinstance(product, dict):
+        result.add("product must be an object")
+        return
+    pid = product.get("id")
+    if not pid:
+        result.add("product.id is required and must be non-empty")
+    elif not isinstance(pid, str):
+        result.add("product.id must be a string")
+    dm = product.get("direction_material")
+    if not dm:
+        result.add("product.direction_material is required and must be non-empty")
+    elif not isinstance(dm, list):
+        result.add("product.direction_material must be a list")
+    else:
+        for i, item in enumerate(dm):
+            if not isinstance(item, str):
+                result.add(f"product.direction_material[{i}] must be a string")
+            elif not item.strip():
+                result.add(f"product.direction_material[{i}] must not be empty")
+
+
 def validate_json_request(path: Path) -> int:
     try:
         raw = load_request(path)

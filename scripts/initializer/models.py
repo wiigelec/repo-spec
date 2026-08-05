@@ -363,6 +363,215 @@ class InstallationEntryStatus:
     rejected = "rejected"
 
 
+VALID_LIFECYCLE_STATUSES = frozenset({"candidate", "accepted", "superseded", "retired"})
+
+VALID_OVERVIEW_ROLES = frozenset({"initial", "revision", "replacement", "branch"})
+
+PRODUCT_SPEC_LIFECYCLE_STATUSES = frozenset({"candidate", "accepted", "superseded", "retired"})
+
+VALID_LEVEL_ROOTS = frozenset({"specs/product/level-0/", "specs/product/level-1/", "specs/product/level-2/", "specs/product/level-3/"})
+
+
+class FoundationArtifactStatus:
+    created = "created"
+    preserved = "preserved"
+    omitted = "omitted"
+    deferred = "deferred"
+    rejected = "rejected"
+
+
+class FoundationPlan:
+    __slots__ = ("_product_id", "_product_slug", "_direction_material", "_governing_issue", "_frozen")
+
+    def __init__(
+        self,
+        product_id: str,
+        direction_material: list[str],
+        governing_issue: str,
+    ) -> None:
+        if not product_id or not product_id.strip():
+            raise InitializerError("product_id must be non-empty")
+        if not direction_material:
+            raise InitializerError("direction_material must be non-empty")
+        self._product_id = product_id
+        self._product_slug = self._to_slug(product_id)
+        self._direction_material = list(direction_material)
+        self._governing_issue = governing_issue
+        self._frozen = True
+
+    @staticmethod
+    def _to_slug(product_id: str) -> str:
+        slug = product_id.lower().strip()
+        result = []
+        for ch in slug:
+            if ch.isalnum():
+                result.append(ch)
+            elif ch in (" ", "-", "_"):
+                if result and result[-1] != "-":
+                    result.append("-")
+            else:
+                if result and result[-1] != "-":
+                    result.append("-")
+        slug_str = "".join(result).strip("-")
+        return slug_str if slug_str else "product"
+
+    @property
+    def product_id(self) -> str:
+        return self._product_id
+
+    @property
+    def product_slug(self) -> str:
+        return self._product_slug
+
+    @property
+    def direction_material(self) -> list[str]:
+        return list(self._direction_material)
+
+    @property
+    def governing_issue(self) -> str:
+        return self._governing_issue
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, FoundationPlan):
+            return NotImplemented
+        return (
+            self._product_id == other._product_id
+            and self._product_slug == other._product_slug
+            and self._direction_material == other._direction_material
+            and self._governing_issue == other._governing_issue
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._product_id,
+            self._product_slug,
+            tuple(self._direction_material),
+            self._governing_issue,
+        ))
+
+
+def _to_slug(ident: str) -> str:
+    result = []
+    for ch in ident.lower().strip():
+        if ch.isalnum():
+            result.append(ch)
+        elif ch in (" ", "-", "_"):
+            if result and result[-1] != "-":
+                result.append("-")
+        else:
+            if result and result[-1] != "-":
+                result.append("-")
+    return "".join(result).strip("-") or "product"
+
+
+class FoundationResult:
+    __slots__ = (
+        "_product_id",
+        "_product_slug",
+        "_created",
+        "_preserved",
+        "_omitted",
+        "_deferred",
+        "_rejected",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        product_id: str,
+        product_slug: str,
+        created: list[dict[str, str]],
+        preserved: list[dict[str, str]],
+        omitted: list[dict[str, str]],
+        deferred: list[dict[str, str]],
+        rejected: list[dict[str, str]],
+    ) -> None:
+        self._product_id = product_id
+        self._product_slug = product_slug
+        self._created = list(created)
+        self._preserved = list(preserved)
+        self._omitted = list(omitted)
+        self._deferred = list(deferred)
+        self._rejected = list(rejected)
+        self._frozen = True
+
+    @property
+    def product_id(self) -> str:
+        return self._product_id
+
+    @property
+    def product_slug(self) -> str:
+        return self._product_slug
+
+    @property
+    def created(self) -> list[dict[str, str]]:
+        return list(self._created)
+
+    @property
+    def preserved(self) -> list[dict[str, str]]:
+        return list(self._preserved)
+
+    @property
+    def omitted(self) -> list[dict[str, str]]:
+        return list(self._omitted)
+
+    @property
+    def deferred(self) -> list[dict[str, str]]:
+        return list(self._deferred)
+
+    @property
+    def rejected(self) -> list[dict[str, str]]:
+        return list(self._rejected)
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "foundations_complete",
+            "product_id": self._product_id,
+            "product_slug": self._product_slug,
+            "created": self._created,
+            "preserved": self._preserved,
+            "omitted": self._omitted,
+            "deferred": self._deferred,
+            "rejected": self._rejected,
+        }
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, FoundationResult):
+            return NotImplemented
+        return (
+            self._product_id == other._product_id
+            and self._product_slug == other._product_slug
+            and self._created == other._created
+            and self._preserved == other._preserved
+            and self._omitted == other._omitted
+            and self._deferred == other._deferred
+            and self._rejected == other._rejected
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._product_id,
+            self._product_slug,
+            tuple(tuple(d.items()) for d in self._created),
+            tuple(tuple(d.items()) for d in self._preserved),
+            tuple(tuple(d.items()) for d in self._omitted),
+            tuple(tuple(d.items()) for d in self._deferred),
+            tuple(tuple(d.items()) for d in self._rejected),
+        ))
+
+
 class InstallationPlan:
     __slots__ = ("_entries", "_frozen")
 

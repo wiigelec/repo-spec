@@ -12,17 +12,25 @@ from initializer.inventory import (
     inventory_to_ordered_dict,
     InventoryError,
 )
+from initializer.foundations import FoundationPlan, FoundationError
 from initializer.models import SourceSelection
-from initializer.validation import validate_json_request, load_request, validate_request
+from initializer.validation import (
+    validate_json_request,
+    load_request,
+    validate_request,
+    validate_product_foundation_prerequisites,
+    ValidationResult,
+)
 
 
 def main(argv: list[str]) -> int:
     if len(argv) < 3:
         print("usage: repo-spec-init <command> [<args>]", file=sys.stderr)
         print("commands:", file=sys.stderr)
-        print("  validate-request  <request.json>                        validate a request", file=sys.stderr)
-        print("  inspect-source    <request.json>                        validate request, source, and inventory", file=sys.stderr)
-        print("  stage-framework   <request.json> [--staging-parent <d>] stage reusable framework material", file=sys.stderr)
+        print("  validate-request                  <request.json>                        validate a request", file=sys.stderr)
+        print("  inspect-source                    <request.json>                        validate request, source, and inventory", file=sys.stderr)
+        print("  stage-framework                   <request.json> [--staging-parent <d>] stage reusable framework material", file=sys.stderr)
+        print("  stage-framework-and-foundations   <request.json> [--staging-parent <d>] stage framework and establish product foundations", file=sys.stderr)
         return 1
 
     command = argv[2]
@@ -33,9 +41,11 @@ def main(argv: list[str]) -> int:
         return _cmd_inspect_source(argv)
     elif command == "stage-framework":
         return _cmd_stage_framework(argv)
+    elif command == "stage-framework-and-foundations":
+        return _cmd_stage_framework_and_foundations(argv)
     else:
         print(f"unknown command: {command}", file=sys.stderr)
-        print("commands: validate-request, inspect-source, stage-framework", file=sys.stderr)
+        print("commands: validate-request, inspect-source, stage-framework, stage-framework-and-foundations", file=sys.stderr)
         return 1
 
 
@@ -175,6 +185,111 @@ def _cmd_stage_framework(argv: list[str]) -> int:
 
     output = inst_result.to_dict()
     output["status"] = "staging_complete"
+    print(json.dumps(output, indent=2))
+    return 0
+
+
+def _cmd_stage_framework_and_foundations(argv: list[str]) -> int:
+    if len(argv) < 4:
+        print("error: missing request file path", file=sys.stderr)
+        print("usage: repo-spec-init stage-framework-and-foundations <request.json> [--staging-parent <dir>]", file=sys.stderr)
+        return 1
+
+    request_path = Path(argv[3])
+
+    staging_parent: Path | None = None
+    if len(argv) >= 6 and argv[4] == "--staging-parent":
+        staging_parent = Path(argv[5])
+
+    try:
+        raw = load_request(request_path)
+    except (InventoryError, OSError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    result = validate_request(raw)
+    if not result.is_valid:
+        for err in result.errors:
+            print(f"validation error: {err}", file=sys.stderr)
+        return 1
+
+    from initializer.validation import validate_and_normalize
+    ctx = validate_and_normalize(raw)
+    request = ctx.request
+
+    # Validate product-foundation prerequisites
+    foundation_result_outer = ValidationResult()
+    validate_product_foundation_prerequisites(raw, foundation_result_outer)
+    if not foundation_result_outer.is_valid:
+        for err in foundation_result_outer.errors:
+            print(f"foundation validation error: {err}", file=sys.stderr)
+        return 1
+
+    repo_root = Path(argv[1]).resolve()
+    inventory_path = resolve_inventory_path(repo_root)
+    try:
+        inv_raw = load_inventory(inventory_path)
+    except InventoryError as exc:
+        print(f"inventory error: {exc}", file=sys.stderr)
+        return 1
+
+    source_sel: SourceSelection | None = None
+    if request.source_repository is not None or request.source_revision is not None:
+        try:
+            source_sel = resolve_source_selection_from_request(
+                request.source_repository, request.source_revision,
+            )
+        except InventoryError as exc:
+            print(f"source selection error: {exc}", file=sys.stderr)
+            return 1
+
+    try:
+        classified = validate_and_load_inventory(inv_raw, source_sel)
+    except InventoryError as exc:
+        print(f"inventory validation error: {exc}", file=sys.stderr)
+        return 1
+
+    from initializer.staging import stage_framework_and_foundations, StagingError, resolve_source_root
+
+    if source_sel is None:
+        print("error: source selection is required for framework staging", file=sys.stderr)
+        return 1
+
+    source_root = resolve_source_root(source_sel.revision, repo_root)
+
+    product_id = request.product_id or ""
+    direction_material = request.product_direction_material or []
+    governing_issue = request.authority.get("granted_by", "issue-195")
+
+    try:
+        fplan = FoundationPlan(
+            product_id=product_id,
+            direction_material=direction_material,
+            governing_issue=governing_issue,
+        )
+    except FoundationError as exc:
+        print(f"foundation plan error: {exc}", file=sys.stderr)
+        return 1
+
+    try:
+        inst_result, fnd_result = stage_framework_and_foundations(
+            classified=classified,
+            source_selection=source_sel,
+            source_root=source_root,
+            foundation_plan=fplan,
+            staging_parent=staging_parent,
+        )
+    except (StagingError, FoundationError) as exc:
+        print(f"stage error: {exc}", file=sys.stderr)
+        return 1
+
+    output: dict[str, object] = {
+        "status": "stage_and_foundations_complete",
+        "installation": inst_result.to_dict(),
+    }
+    if fnd_result is not None:
+        output["foundations"] = fnd_result.to_dict()
+
     print(json.dumps(output, indent=2))
     return 0
 
