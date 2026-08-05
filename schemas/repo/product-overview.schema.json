@@ -11,7 +11,8 @@
       "required": [
         "artifact_type",
         "root_path",
-        "required_content_areas"
+        "required_content_areas",
+        "overview_role"
       ],
       "properties": {
         "artifact_type": {

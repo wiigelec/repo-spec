@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-POV-005",
-      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas. An initial overview may declare `overview_role: initial`, omit predecessor documents, and rely on its governing issue and evidence instead of a controlling-document predecessor, while revisions and derived overviews shall declare predecessor documents that participate in lineage."
+      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas. A product overview shall declare `overview_role`. An initial overview shall use `overview_role: initial`, may omit predecessor documents, and may keep controlling documents empty. A revision, replacement, or branch overview shall declare predecessor documents and shall have nonempty controlling documents."
     },
     {
       "id": "REPO-POV-006",
