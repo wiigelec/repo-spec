@@ -69,6 +69,14 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace(', "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]', '', 1)
+        decomposition_path.write_text(decomposition_text)
+        expect_failure("missing decomposition area coverage", lambda: validate_repo(temp_repo), "missing required property coverage")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis"', 1)
         decomposition_path.write_text(decomposition_text)
         validate_repo(temp_repo)

@@ -118,6 +118,22 @@
               "area_id": {
                 "type": "string",
                 "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
+              },
+              "coverage": {
+                "type": "array",
+                "minItems": 7,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "purpose",
+                    "responsibilities",
+                    "boundaries",
+                    "dependencies",
+                    "exclusions",
+                    "unresolved-decisions",
+                    "successor-work"
+                  ]
+                }
               }
             },
             "allOf": [
@@ -131,7 +147,7 @@
                   "required": ["role"]
                 },
                 "then": {
-                  "required": ["area_id"]
+                  "required": ["area_id", "coverage"]
                 }
               }
             ]

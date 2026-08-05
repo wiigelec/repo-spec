@@ -74,6 +74,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
         "required_content_area_keys": ["decomposition_basis", "product_area_inventory", "dependency_model", "cross_cutting_concerns", "unresolved_decisions", "stopping_criteria", "planning_handoff"],
+        "required_chunk_coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"],
         "allowed_chunk_roles": ["product-area", "decomposition-basis", "cross-cutting-concerns", "dependency-model", "unresolved-decisions", "stopping-and-handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
@@ -1142,8 +1143,13 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                         expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
                         expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
                         seen_area_ids.add(area_id)
+                        coverage = chunk.get("coverage")
+                        expect(isinstance(coverage, list), f"development document chunk inventory failed: missing coverage in {rel_path}")
+                        expect(len(coverage) == len(set(coverage)), f"development document chunk inventory failed: duplicate coverage entries in {rel_path}")
+                        expect(set(coverage) == set(info["required_chunk_coverage"]), f"development document chunk inventory failed: coverage mismatch in {rel_path}")
                     else:
                         expect(area_id is None, f"development document chunk inventory failed: non-area chunk must not declare area_id in {rel_path}")
+                        expect(chunk.get("coverage") is None, f"development document chunk inventory failed: non-area chunk must not declare coverage in {rel_path}")
 
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")

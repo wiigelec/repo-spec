@@ -160,6 +160,13 @@
           "type": "string",
           "minLength": 1
         },
+        "coverage": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
         "area_id": {
           "type": "string",
           "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
