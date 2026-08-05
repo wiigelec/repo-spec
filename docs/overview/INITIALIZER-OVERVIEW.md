@@ -72,7 +72,7 @@ The initializer is the maintained `repo-spec` product that applies the framework
 
 ## Relationships
 
-Basis records are listed in metadata. The predecessor product overview remains repository evidence and does not become normative product authority.
+Bootstrap authority is recorded in metadata through `governing_issue` and `evidence` because this overview is initial. The predecessor product overview remains repository evidence and does not become normative product authority.
 
 ## Next authorized action
 
