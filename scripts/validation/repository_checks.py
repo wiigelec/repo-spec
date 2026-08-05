@@ -300,6 +300,7 @@ def check_development_document_relationships(
                 f"development document relationship failed: controlling lifecycle mismatch {path} -> {target_path}",
             )
             expect(target_metadata["artifact_type"] in allowed_types, f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}")
+            basis_graph[path].append(resolved_path)
             if source_type in {"product-decomposition", "implementation-plan"} and target_metadata["artifact_type"] == "product-overview":
                 saw_overview = True
             if source_type == "implementation-plan" and target_metadata["artifact_type"] == "product-decomposition":
