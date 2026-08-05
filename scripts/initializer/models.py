@@ -666,3 +666,362 @@ class InstallationResult:
                 "revision": self._source_selection.revision,
             }
         return output
+
+
+class DestinationState:
+    absent = "absent"
+    empty_directory = "empty_directory"
+    nonempty_directory = "nonempty_directory"
+    regular_file = "regular_file"
+    symlink = "symlink"
+    unsupported = "unsupported"
+    inaccessible = "inaccessible"
+
+
+class PreflightDecision:
+    allowed = "allowed"
+    rejected = "rejected"
+
+
+class TransactionPhase:
+    preflight = "preflight"
+    prepared = "prepared"
+    committed = "committed"
+    failed = "failed"
+    rolled_back = "rolled_back"
+
+
+class DestinationPreflight:
+    __slots__ = (
+        "_staging_path",
+        "_destination_path",
+        "_destination_state",
+        "_destination_classification",
+        "_same_filesystem",
+        "_aliased",
+        "_staging_inside_destination",
+        "_destination_inside_staging",
+        "_decision",
+        "_rejection_reason",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        staging_path: str,
+        destination_path: str,
+        destination_state: str,
+        same_filesystem: bool,
+        aliased: bool,
+        staging_inside_destination: bool,
+        destination_inside_staging: bool,
+        decision: str,
+        rejection_reason: str | None = None,
+    ) -> None:
+        self._staging_path = staging_path
+        self._destination_path = destination_path
+        self._destination_state = destination_state
+        self._destination_classification = destination_state
+        self._same_filesystem = same_filesystem
+        self._aliased = aliased
+        self._staging_inside_destination = staging_inside_destination
+        self._destination_inside_staging = destination_inside_staging
+        self._decision = decision
+        self._rejection_reason = rejection_reason
+        self._frozen = True
+
+    @property
+    def staging_path(self) -> str:
+        return self._staging_path
+
+    @property
+    def destination_path(self) -> str:
+        return self._destination_path
+
+    @property
+    def destination_state(self) -> str:
+        return self._destination_state
+
+    @property
+    def destination_classification(self) -> str:
+        return self._destination_classification
+
+    @property
+    def same_filesystem(self) -> bool:
+        return self._same_filesystem
+
+    @property
+    def aliased(self) -> bool:
+        return self._aliased
+
+    @property
+    def staging_inside_destination(self) -> bool:
+        return self._staging_inside_destination
+
+    @property
+    def destination_inside_staging(self) -> bool:
+        return self._destination_inside_staging
+
+    @property
+    def decision(self) -> str:
+        return self._decision
+
+    @property
+    def rejection_reason(self) -> str | None:
+        return self._rejection_reason
+
+    def to_dict(self) -> dict[str, object]:
+        d: dict[str, object] = {
+            "staging_path": self._staging_path,
+            "destination_path": self._destination_path,
+            "destination_classification": self._destination_classification,
+            "same_filesystem": self._same_filesystem,
+            "aliased": self._aliased,
+            "staging_inside_destination": self._staging_inside_destination,
+            "destination_inside_staging": self._destination_inside_staging,
+            "decision": self._decision,
+        }
+        if self._rejection_reason is not None:
+            d["rejection_reason"] = self._rejection_reason
+        return d
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, DestinationPreflight):
+            return NotImplemented
+        return (
+            self._staging_path == other._staging_path
+            and self._destination_path == other._destination_path
+            and self._destination_state == other._destination_state
+            and self._same_filesystem == other._same_filesystem
+            and self._aliased == other._aliased
+            and self._staging_inside_destination == other._staging_inside_destination
+            and self._destination_inside_staging == other._destination_inside_staging
+            and self._decision == other._decision
+            and self._rejection_reason == other._rejection_reason
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._staging_path,
+            self._destination_path,
+            self._destination_state,
+            self._same_filesystem,
+            self._aliased,
+            self._staging_inside_destination,
+            self._destination_inside_staging,
+            self._decision,
+            self._rejection_reason,
+        ))
+
+
+class PromotionPlan:
+    __slots__ = (
+        "_staging_path",
+        "_destination_path",
+        "_destination_state",
+        "_requires_preparation",
+        "_same_filesystem",
+        "_backup_path",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        staging_path: str,
+        destination_path: str,
+        destination_state: str,
+        requires_preparation: bool,
+        same_filesystem: bool,
+        backup_path: str | None = None,
+    ) -> None:
+        self._staging_path = staging_path
+        self._destination_path = destination_path
+        self._destination_state = destination_state
+        self._requires_preparation = requires_preparation
+        self._same_filesystem = same_filesystem
+        self._backup_path = backup_path
+        self._frozen = True
+
+    @property
+    def staging_path(self) -> str:
+        return self._staging_path
+
+    @property
+    def destination_path(self) -> str:
+        return self._destination_path
+
+    @property
+    def destination_state(self) -> str:
+        return self._destination_state
+
+    @property
+    def requires_preparation(self) -> bool:
+        return self._requires_preparation
+
+    @property
+    def same_filesystem(self) -> bool:
+        return self._same_filesystem
+
+    @property
+    def backup_path(self) -> str | None:
+        return self._backup_path
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, PromotionPlan):
+            return NotImplemented
+        return (
+            self._staging_path == other._staging_path
+            and self._destination_path == other._destination_path
+            and self._destination_state == other._destination_state
+            and self._requires_preparation == other._requires_preparation
+            and self._same_filesystem == other._same_filesystem
+            and self._backup_path == other._backup_path
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._staging_path,
+            self._destination_path,
+            self._destination_state,
+            self._requires_preparation,
+            self._same_filesystem,
+            self._backup_path,
+        ))
+
+
+class PromotionResult:
+    __slots__ = (
+        "_status",
+        "_transaction_state",
+        "_destination_classification",
+        "_staging_path",
+        "_requested_destination",
+        "_committed_destination",
+        "_preserved_state",
+        "_cleanup_state",
+        "_failure_reason",
+        "_frozen",
+    )
+
+    def __init__(
+        self,
+        status: str,
+        transaction_state: str,
+        destination_classification: str,
+        staging_path: str,
+        requested_destination: str,
+        committed_destination: str | None = None,
+        preserved_state: str | None = None,
+        cleanup_state: str | None = None,
+        failure_reason: str | None = None,
+    ) -> None:
+        self._status = status
+        self._transaction_state = transaction_state
+        self._destination_classification = destination_classification
+        self._staging_path = staging_path
+        self._requested_destination = requested_destination
+        self._committed_destination = committed_destination
+        self._preserved_state = preserved_state
+        self._cleanup_state = cleanup_state
+        self._failure_reason = failure_reason
+        self._frozen = True
+
+    @property
+    def status(self) -> str:
+        return self._status
+
+    @property
+    def transaction_state(self) -> str:
+        return self._transaction_state
+
+    @property
+    def destination_classification(self) -> str:
+        return self._destination_classification
+
+    @property
+    def staging_path(self) -> str:
+        return self._staging_path
+
+    @property
+    def requested_destination(self) -> str:
+        return self._requested_destination
+
+    @property
+    def committed_destination(self) -> str | None:
+        return self._committed_destination
+
+    @property
+    def preserved_state(self) -> str | None:
+        return self._preserved_state
+
+    @property
+    def cleanup_state(self) -> str | None:
+        return self._cleanup_state
+
+    @property
+    def failure_reason(self) -> str | None:
+        return self._failure_reason
+
+    def to_dict(self) -> dict[str, object]:
+        d: dict[str, object] = {
+            "status": self._status,
+            "transaction_state": self._transaction_state,
+            "destination_classification": self._destination_classification,
+            "staging_path": self._staging_path,
+            "requested_destination": self._requested_destination,
+        }
+        if self._committed_destination is not None:
+            d["committed_destination"] = self._committed_destination
+        if self._preserved_state is not None:
+            d["preserved_state"] = self._preserved_state
+        if self._cleanup_state is not None:
+            d["cleanup_state"] = self._cleanup_state
+        if self._failure_reason is not None:
+            d["failure_reason"] = self._failure_reason
+        return d
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, PromotionResult):
+            return NotImplemented
+        return (
+            self._status == other._status
+            and self._transaction_state == other._transaction_state
+            and self._destination_classification == other._destination_classification
+            and self._staging_path == other._staging_path
+            and self._requested_destination == other._requested_destination
+            and self._committed_destination == other._committed_destination
+            and self._preserved_state == other._preserved_state
+            and self._cleanup_state == other._cleanup_state
+            and self._failure_reason == other._failure_reason
+        )
+
+    def __ne__(self, other: object) -> bool:
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return NotImplemented
+        return not result
+
+    def __hash__(self) -> int:
+        return hash((
+            self._status,
+            self._transaction_state,
+            self._destination_classification,
+            self._staging_path,
+            self._requested_destination,
+            self._committed_destination,
+            self._preserved_state,
+            self._cleanup_state,
+            self._failure_reason,
+        ))

@@ -41,6 +41,22 @@ def run_initializer_tests(repo_root: Path) -> None:
         StagingDeterminismTests,
         PreexistingWorkspaceTests,
     )
+    from initializer.tests.test_destination_promotion import (
+        DestinationPreflightModelTests,
+        PromotionPlanModelTests,
+        PromotionResultModelTests,
+        PathSafetyTests,
+        ClassifyDestinationTests,
+        SameFilesystemTests,
+        DestinationPreflightFunctionTests,
+        BuildPromotionPlanTests,
+        ValidateStagingResultTests,
+        PrepareDestinationTests,
+        RestoreDestinationTests,
+        PromoteFunctionTests,
+        PromoteWithValidationTests,
+        NoGitNoPlatformTests,
+    )
 
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -76,6 +92,20 @@ def run_initializer_tests(repo_root: Path) -> None:
         StageFrameworkTests,
         StagingDeterminismTests,
         PreexistingWorkspaceTests,
+        DestinationPreflightModelTests,
+        PromotionPlanModelTests,
+        PromotionResultModelTests,
+        PathSafetyTests,
+        ClassifyDestinationTests,
+        SameFilesystemTests,
+        DestinationPreflightFunctionTests,
+        BuildPromotionPlanTests,
+        ValidateStagingResultTests,
+        PrepareDestinationTests,
+        RestoreDestinationTests,
+        PromoteFunctionTests,
+        PromoteWithValidationTests,
+        NoGitNoPlatformTests,
     ]:
         suite.addTests(loader.loadTestsFromTestCase(cls))
 

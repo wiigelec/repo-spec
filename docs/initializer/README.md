@@ -309,6 +309,113 @@ The combined command output is a JSON object with:
 * If a foundation artifact already exists in staging, it is reported in `rejected` and not overwritten.
 * Pre-existing staging workspace failures follow the same rules as framework staging.
 
+## Destination preflight and promotion
+
+The initializer inspects and classifies the requested destination before mutation and promotes staged content using a bounded transaction.
+
+### Destination preflight
+
+Destination state is classified before any mutation. The preflight check verifies that staging and destination paths do not alias one another, that neither path contains the other, that the staging workspace exists and is a directory, and that the destination state is supported.
+
+**Supported destination states:**
+
+| State | Allowed | Description |
+|-------|---------|-------------|
+| `absent` | Yes | Destination does not exist; parent directory must exist |
+| `empty_directory` | Yes | Destination is an existing empty directory |
+| `nonempty_directory` | No | Destination exists and contains files or subdirectories |
+| `regular_file` | No | Destination is a regular file |
+| `symlink` | No | Destination is a symbolic link |
+| `unsupported` | No | Device, socket, FIFO, or other unsupported entry type |
+| `inaccessible` | No | Destination cannot be read or parent does not exist |
+
+**Path safety checks:**
+
+* Staging and destination must not be the same resolved path.
+* Staging must not be inside the requested destination.
+* Destination must not be inside the staging workspace.
+* Equivalent resolved paths reached through symbolic links are rejected.
+* Cross-device promotion (staging and destination on different filesystems) is rejected.
+
+### Commands
+
+```text
+scripts/repo-spec-init preflight-destination <staging-path> <dest-path>
+```
+
+Runs destination preflight only. Returns 0 when the destination is safe for promotion, 1 when rejected. Machine-readable JSON output includes classification, decision, and rejection reason.
+
+```text
+scripts/repo-spec-init promote <staging-path> <dest-path>
+```
+
+Promotes a completed staging workspace to the requested destination using a bounded transaction with explicit prepare, commit, and failure states. Returns 0 on successful commit, 1 on failure.
+
+```text
+scripts/repo-spec-init stage-and-promote <request.json> [--staging-parent <dir>]
+```
+
+Combines framework staging, product-foundation establishment, and destination promotion in one bounded operation.
+
+```text
+scripts/repo-spec-init promote-staging <request.json> --staging-path <dir>
+```
+
+Promotes an explicitly identified completed staging result to the destination specified in the request.
+
+### Exit status (promotion)
+
+| Status | Meaning |
+|--------|---------|
+| 0      | Promotion committed successfully. Staging workspace is consumed. |
+| 1      | Preflight rejected, prepare failed, or commit failed. Staging workspace is preserved. |
+
+### Transaction phases
+
+| Phase | Meaning |
+|-------|---------|
+| `preflight` | Destination classified and checked before mutation |
+| `prepared` | Destination prepared (parent created or empty directory moved aside) |
+| `committed` | Staging renamed to destination; promotion complete |
+| `failed` | Transaction failed; destination restored or left in explicit failed state |
+| `rolled_back` | Destination explicitly restored to prior state |
+
+### Atomicity
+
+Same-filesystem promotion uses `os.rename()` for an atomic final commit at the destination boundary. Cross-device promotion is rejected before destructive mutation — no recursive non-atomic fallback is used.
+
+### Failure semantics
+
+* Failure before prepare leaves the destination unchanged.
+* Failure during prepare leaves staging preserved.
+* Failure during commit restores the prior destination state (empty directory case) or leaves an explicit failed state.
+* Failed or partial output never reports a successful status.
+* Staging workspace is preserved for retry or diagnosis when commit has not succeeded.
+* Staging workspace is consumed only after successful commit.
+
+### Retry behavior
+
+After a failed promotion (preflight rejection), the caller may correct the destination state and retry. After a prepare or commit failure, the staging workspace remains intact for diagnosis. There is no automatic retry.
+
+### Maintainer notes
+
+The initializer code lives in `scripts/initializer/`. The shell wrapper is `scripts/repo-spec-init`.
+
+Destination and promotion modules:
+
+* `scripts/initializer/models.py` — `DestinationPreflight`, `PromotionPlan`, `PromotionResult`, and related immutable models
+* `scripts/initializer/destination.py` — destination classification, path safety, and preflight
+* `scripts/initializer/promotion.py` — transactional promotion with prepare, commit, cleanup, and restore
+* `scripts/initializer/validation.py` — `validate_product_foundation_prerequisites`
+
+To run the initializer test suite directly:
+
+```text
+python3 -c "import sys; sys.path.insert(0, 'scripts'); from initializer.tests.run_tests import run_initializer_tests; from pathlib import Path; run_initializer_tests(Path.cwd())"
+```
+
+Initializer tests are also integrated into `scripts/validate --mutation-tests`.
+
 ### Deferred content
 
 The following product content is intentionally deferred (requires governed successor work):
@@ -319,21 +426,9 @@ The following product content is intentionally deferred (requires governed succe
 * Product specifications at any Level.
 * Product-specification correspondence declarations.
 * Derived product projections.
-
-### Maintainer notes
-
-The initializer code lives in `scripts/initializer/`. The shell wrapper is `scripts/repo-spec-init`.
-
-Product-foundation modules:
-
-* `scripts/initializer/models.py` — `FoundationPlan` and `FoundationResult` immutable models
-* `scripts/initializer/foundations.py` — foundation generation and content templates
-* `scripts/initializer/validation.py` — `validate_product_foundation_prerequisites`
-
-To run the initializer test suite directly:
-
-```text
-python3 -c "import sys; sys.path.insert(0, 'scripts'); from initializer.tests.run_tests import run_initializer_tests; from pathlib import Path; run_initializer_tests(Path.cwd())"
-```
-
-Initializer tests are also integrated into `scripts/validate --mutation-tests`.
+* Git repository initialization.
+* Platform-profile selection or application.
+* Hosting-platform adapter installation.
+* Final generated-repository validation.
+* Provenance recording.
+* Initializer completion or handoff.
