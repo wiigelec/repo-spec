@@ -1137,6 +1137,17 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                     expected_coverage = sorted(area_id for area_id, area_paths in required_content_areas.items() if chunk["path"] in area_paths)
                     expect(set(coverage) == set(expected_coverage), f"development document content inventory failed: chunk coverage mismatch in {rel_path}")
 
+            if root_rel == "docs/decompositions/":
+                product_area_paths = {
+                    chunk["path"]
+                    for chunk in declared_chunks
+                    if chunk["role"] == "product-area"
+                }
+                expect(
+                    set(required_content_areas["product_area_inventory"]) == product_area_paths,
+                    f"development document content inventory failed: product-area inventory mismatch in {rel_path}",
+                )
+
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:
                 expect(chunk_path not in chunk_owner_paths, f"development document chunk inventory failed: duplicate chunk path {chunk_path}")
