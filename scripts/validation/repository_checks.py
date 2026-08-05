@@ -1196,6 +1196,10 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                 expect(len(chunk_text.encode("utf-8")) <= MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES, f"development document size failed: chunk exceeds byte limit {chunk['path']}")
                 first_non_empty = next((line for line in chunk_text.splitlines() if line.strip()), "")
                 expect(first_non_empty.startswith("# "), f"development document structure failed: chunk must start with a heading {chunk['path']}")
+                if root_rel == "docs/decompositions/" and chunk.get("role") == "product-area":
+                    chunk_headings = markdown_headings(chunk_text)
+                    for heading in ["Status", "Purpose", "Responsibilities", "Boundaries", "Dependencies", "Exclusions", "Unresolved decisions", "Successor work"]:
+                        expect(heading in chunk_headings, f"development document structure failed: missing product-area heading {heading} in {chunk['path']}")
 
             canonical_links = {resolve_markdown_link_target(f"{root_rel}README.md", target) for _label, target in markdown_links(markdown_section(readme_text, "Canonical documents"))}
             expect(rel_path in canonical_links, f"development document discovery failed: README does not link to {rel_path}")

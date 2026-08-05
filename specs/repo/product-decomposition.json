@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-PDC-002",
-      "text": "A product decomposition shall record the controlling product overview, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action."
+      "text": "A product decomposition shall record the controlling product overview, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action."
     },
     {
       "id": "REPO-PDC-003",

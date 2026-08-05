@@ -65,10 +65,12 @@ def run_repository_mutations(repo_root: Path) -> None:
         decomposition_path.write_text(
             decomposition_path.read_text().replace(
                 '{"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "role": "product-area", "area_id": "platform-and-execution", "document_coverage": ["product_area_inventory", "cross_cutting_concerns", "unresolved_decisions"], "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}',
-                '{"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "document_coverage": ["product_area_inventory", "cross_cutting_concerns", "unresolved_decisions"], "area_id": "platform-and-execution"}',
+                '{"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "document_coverage": ["cross_cutting_concerns", "unresolved_decisions"], "area_id": "platform-and-execution"}',
                 1,
             )
         )
+        decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace('  "required_content_areas": {\n    "decomposition_basis": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', '  "required_content_areas": {\n    "decomposition_basis": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', 1)
         expect_failure("missing decomposition chunk role", lambda: validate_repo(temp_repo), "missing required property role")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -78,6 +80,20 @@ def run_repository_mutations(repo_root: Path) -> None:
         decomposition_text = decomposition_text.replace('{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"], "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"]}', 1)
         decomposition_path.write_text(decomposition_text)
         expect_failure("missing decomposition area coverage", lambda: validate_repo(temp_repo), "missing required property coverage")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        chunk_path = temp_repo / "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"
+        chunk_text = chunk_path.read_text().replace("## Responsibilities\n\nSeparate reusable repository scaffolding from product-specific foundations and identify the governed materials that can be carried forward.\n\n", "")
+        chunk_path.write_text(chunk_text)
+        expect_failure("missing decomposition section heading", lambda: validate_repo(temp_repo), "missing product-area heading Responsibilities")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        chunk_path = temp_repo / "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"
+        chunk_text = chunk_path.read_text().replace("## Responsibilities\n\nSeparate reusable repository scaffolding from product-specific foundations and identify the governed materials that can be carried forward.\n\n", "")
+        chunk_path.write_text(chunk_text)
+        expect_failure("missing decomposition section heading", lambda: validate_repo(temp_repo), "missing product-area heading Responsibilities")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
