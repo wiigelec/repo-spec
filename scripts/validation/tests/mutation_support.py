@@ -44,28 +44,22 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "schemas/product/product-level-1.schema.json",
         "schemas/product/product-level-2.schema.json",
         "schemas/product/product-level-3.schema.json",
-        "docs/overview/README.md",
-        "docs/overview/INITIALIZER-OVERVIEW.md",
-        "docs/overview/initializer-overview/01-product-identity-and-purpose.md",
-        "docs/overview/initializer-overview/02-problem-and-outcome.md",
-        "docs/overview/initializer-overview/03-users-principles-and-boundaries.md",
-        "docs/overview/initializer-overview/04-capabilities-and-success.md",
-        "docs/overview/initializer-overview/05-unresolved-questions.md",
-        "docs/overview/initializer-overview/06-lifecycle-and-handoff.md",
-        "docs/decompositions/README.md",
-        "docs/decompositions/INITIALIZER-DECOMPOSITION.md",
-        "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md",
-        "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md",
-        "docs/decompositions/initializer-decomposition/03-platform-and-execution.md",
-        "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md",
-        "docs/plans/README.md",
-        "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
-        "docs/plans/01-framework-architecture-plan.md",
-        "docs/plans/02-reference-repository-plan.md",
-        "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",
-        "docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md",
-        "docs/plans/initializer-implementation-plan/03-validation-and-completion.md",
     ]
+    for root_rel in ("docs/overview/", "docs/decompositions/", "docs/plans/"):
+        root = repo_root / root_rel
+        for path in sorted(root.glob("*.md")):
+            required_paths.append(path.relative_to(repo_root).as_posix())
+            if path.name == "README.md":
+                continue
+            text = path.read_text()
+            if "## Metadata" not in text:
+                continue
+            metadata = json.loads(text.split("```json")[1].split("```")[0].strip())
+            for ref_paths in metadata.get("required_content_areas", {}).values():
+                for ref_path in ref_paths:
+                    required_paths.append(ref_path)
+            for chunk in metadata.get("subordinate_chunks", []):
+                required_paths.append(chunk["path"])
     for entry in manifest["authoritative_specs"]:
         path = entry["path"]
         required_paths.append(path)
