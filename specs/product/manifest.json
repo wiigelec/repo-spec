@@ -1,0 +1,15 @@
+{
+  "spec_id": "product.manifest",
+  "title": "Product Specification Manifest",
+  "purpose": "Authoritative registry for the governed repo-spec initializer product-specification set.",
+  "status": "candidate",
+  "schema_version": "1",
+  "product_specifications": [
+    {
+      "spec_id": "product.initializer-level-0",
+      "path": "specs/product/level-0/initializer-level-0.json",
+      "status": "candidate",
+      "level": 0
+    }
+  ]
+}
