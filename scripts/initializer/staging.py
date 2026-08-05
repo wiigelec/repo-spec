@@ -8,6 +8,13 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from .foundations import (
+    FoundationPlan,
+    FoundationResult,
+    FoundationError,
+    build_foundation_plan,
+    establish_product_foundations,
+)
 from .models import (
     InitializerError,
     SourceSelection,
@@ -291,6 +298,36 @@ def stage_framework(
         skipped=skipped,
         rejected=rejected,
     )
+
+
+def stage_framework_and_foundations(
+    classified: ClassifiedInventory,
+    source_selection: SourceSelection | None,
+    source_root: Path,
+    foundation_plan: FoundationPlan | None = None,
+    staging_parent: Path | None = None,
+) -> tuple[InstallationResult, FoundationResult | None]:
+    staging_result = stage_framework(
+        classified=classified,
+        source_selection=source_selection,
+        source_root=source_root,
+        staging_parent=staging_parent,
+    )
+
+    if foundation_plan is None:
+        return staging_result, None
+
+    staging_root = Path(staging_result.staging_workspace).resolve()
+    try:
+        foundation_result = establish_product_foundations(
+            plan=foundation_plan,
+            staging_root=staging_root,
+        )
+    except FoundationError:
+        _cleanup_staging(staging_root)
+        raise
+
+    return staging_result, foundation_result
 
 
 def _cleanup_staging(staging_root: Path) -> None:

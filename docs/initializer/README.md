@@ -231,9 +231,104 @@ Output is a JSON object with:
 * If an entry copy fails, the entry is reported in `rejected` and other entries continue.
 * A preexisting nonempty staging workspace causes an immediate error without modification.
 
+## Product foundations
+
+The initializer can establish project-specific product-direction, planning, and specification foundations in the staging workspace alongside reusable framework material.
+
+### Prerequisites
+
+Product-foundation establishment requires:
+
+* A nonempty explicit `product.id` in the request.
+* A nonempty `product.direction_material` array of source references.
+* An explicit source selection (the same source used for framework staging).
+* A completed framework staging workspace.
+
+The supplied direction material is preserved without semantic expansion. Product semantics are not invented.
+
+### Command
+
+```text
+scripts/repo-spec-init stage-framework-and-foundations <request.json> [--staging-parent <dir>]
+```
+
+This command combines framework staging and product-foundation establishment in one bounded operation. It performs request validation, product-foundation prerequisite validation, source and inventory validation, framework staging, and foundation generation, then emits deterministic combined output.
+
+### Exit status
+
+| Status | Meaning |
+|--------|---------|
+| 0      | Staging and foundations completed successfully with machine-readable output to stdout. |
+| 1      | Invalid request, missing prerequisites, source or inventory error, staging error, or foundation generation error. |
+
+### Generated foundations
+
+The command creates the following structure in the staging workspace:
+
+* `docs/overview/<slug>-OVERVIEW.md` — product overview controlling document (candidate lifecycle)
+* `docs/overview/<slug>-overview/` — overview subordinate chunk directory with 6 placeholder chunks
+* `docs/decompositions/<slug>-DECOMPOSITION.md` — product decomposition controlling document (candidate)
+* `docs/decompositions/<slug>-decomposition/` — decomposition subordinate chunk directory with 4 placeholder chunks
+* `docs/plans/<slug>-IMPLEMENTATION-PLAN.md` — implementation plan controlling document (candidate)
+* `docs/plans/<slug>-implementation-plan/` — plan subordinate chunk directory with 4 placeholder chunks
+* `specs/product/manifest.json` — product manifest (candidate, empty specification registry)
+* `specs/product/level-0/` through `specs/product/level-3/` — product-specification level roots
+* Root `README.md` discoverability links under `docs/overview/`, `docs/decompositions/`, `docs/plans/`
+
+where `<slug>` is derived from the product ID (lowercased with non-alphanumeric characters replaced by hyphens).
+
+### Product identity and lifecycle
+
+* Generated controlling documents use `lifecycle_status: "candidate"` because substantive successor content is not yet reviewed or accepted.
+* The product overview uses `overview_role: "initial"` with bootstrap authority recorded in its metadata.
+* Supplied `direction_material` paths appear in the overview metadata `evidence` field.
+* The governing issue reference from the request authority is recorded in generated metadata.
+* Chunks contain placeholder content indicating that governed successor work is required.
+
+### Foundation output
+
+The combined command output is a JSON object with:
+
+* `status` — `"stage_and_foundations_complete"` on success.
+* `installation` — the framework staging result (see staging output above).
+* `foundations` — the foundation result object with:
+  * `status` — `"foundations_complete"`
+  * `product_id` — the explicit product identifier
+  * `product_slug` — the derived slug
+  * `created` — array of created foundation paths with artifact type
+  * `preserved` — array of preexisting paths left unchanged
+  * `omitted` — array of intentionally omitted foundation paths
+  * `deferred` — array of deferred foundation paths
+  * `rejected` — array of foundation paths that could not be created
+
+### Failure semantics
+
+* Missing or empty `product.id` fails explicitly before any staging or generation.
+* Missing or empty `product.direction_material` fails explicitly.
+* If framework staging fails, no foundation generation is attempted.
+* If a foundation artifact already exists in staging, it is reported in `rejected` and not overwritten.
+* Pre-existing staging workspace failures follow the same rules as framework staging.
+
+### Deferred content
+
+The following product content is intentionally deferred (requires governed successor work):
+
+* Substantive product overview content beyond supplied direction material.
+* Product-area decomposition decisions.
+* Implementation workstream planning and execution ordering.
+* Product specifications at any Level.
+* Product-specification correspondence declarations.
+* Derived product projections.
+
 ### Maintainer notes
 
 The initializer code lives in `scripts/initializer/`. The shell wrapper is `scripts/repo-spec-init`.
+
+Product-foundation modules:
+
+* `scripts/initializer/models.py` — `FoundationPlan` and `FoundationResult` immutable models
+* `scripts/initializer/foundations.py` — foundation generation and content templates
+* `scripts/initializer/validation.py` — `validate_product_foundation_prerequisites`
 
 To run the initializer test suite directly:
 

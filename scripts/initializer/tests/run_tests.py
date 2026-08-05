@@ -18,6 +18,15 @@ def run_initializer_tests(repo_root: Path) -> None:
         SafetyTests as InventoryFinalSafetyTests,
     )
     from initializer.tests.test_cli import CliTests
+    from initializer.tests.test_foundations import (
+        FoundationPlanTests,
+        FoundationResultTests,
+        BuildFoundationPlanTests,
+        EstablishFoundationsTests,
+        FoundationDeterminismTests,
+        FoundationOverwriteTests,
+        FoundationSlugTests,
+    )
     from initializer.tests.test_staging import (
         InstallationPlanTests,
         InstallationResultTests,
@@ -48,6 +57,13 @@ def run_initializer_tests(repo_root: Path) -> None:
         InventoryEntryTests,
         InventoryFinalSafetyTests,
         CliTests,
+        FoundationPlanTests,
+        FoundationResultTests,
+        BuildFoundationPlanTests,
+        EstablishFoundationsTests,
+        FoundationDeterminismTests,
+        FoundationOverwriteTests,
+        FoundationSlugTests,
         InstallationPlanTests,
         InstallationResultTests,
         BuildInstallationPlanTests,

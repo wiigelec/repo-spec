@@ -11,6 +11,7 @@ Supported runtime: Python 3.10+
 - [Initializer overview](docs/overview/INITIALIZER-OVERVIEW.md)
 - [Initializer decomposition](docs/decompositions/INITIALIZER-DECOMPOSITION.md)
 - [Initializer implementation plan](docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
+- [Initializer reference](docs/initializer/README.md)
 - [Repository manifest](specs/repo/manifest.json)
 - [Schemas](schemas/)
 - [Derived docs](derived/specs/repo/)
