@@ -16,6 +16,12 @@
       "path": "specs/product/level-1/initializer-level-1.json",
       "status": "candidate",
       "level": 1
+    },
+    {
+      "spec_id": "product.initializer-level-2",
+      "path": "specs/product/level-2/initializer-level-2.json",
+      "status": "candidate",
+      "level": 2
     }
   ]
 }
