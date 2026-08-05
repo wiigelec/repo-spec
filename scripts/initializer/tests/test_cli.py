@@ -232,6 +232,73 @@ class CliTests(unittest.TestCase):
         proc = self._run("stage-framework")
         self.assertNotEqual(proc.returncode, 0)
 
+    def test_preflight_destination_missing_args(self) -> None:
+        proc = self._run("preflight-destination")
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("usage:", proc.stderr.lower())
+
+    def test_preflight_destination_absent(self) -> None:
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            staging = Path(td) / "stage"
+            staging.mkdir()
+            dest = Path(td) / "new_dest"
+            proc = self._run("preflight-destination", str(staging), str(dest))
+            self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+            import json
+            output = json.loads(proc.stdout)
+            self.assertEqual(output["decision"], "allowed")
+            self.assertEqual(output["destination_classification"], "absent")
+
+    def test_preflight_destination_rejects_nonempty(self) -> None:
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            staging = Path(td) / "stage"
+            staging.mkdir()
+            dest = Path(td) / "nonempty"
+            dest.mkdir()
+            (dest / "file.txt").write_text("x")
+            proc = self._run("preflight-destination", str(staging), str(dest))
+            self.assertNotEqual(proc.returncode, 0)
+            import json
+            output = json.loads(proc.stdout)
+            self.assertEqual(output["decision"], "rejected")
+
+    def test_promote_missing_args(self) -> None:
+        proc = self._run("promote")
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("usage:", proc.stderr.lower())
+
+    def test_promote_to_absent(self) -> None:
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            staging = Path(td) / "stage"
+            staging.mkdir()
+            (staging / "file.txt").write_text("content")
+            dest = Path(td) / "new_repo"
+            proc = self._run("promote", str(staging), str(dest))
+            self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+            import json
+            output = json.loads(proc.stdout)
+            self.assertEqual(output["status"], "success")
+            self.assertTrue(dest.exists())
+            self.assertTrue((dest / "file.txt").exists())
+
+    def test_promote_to_nonempty_rejected(self) -> None:
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            staging = Path(td) / "stage"
+            staging.mkdir()
+            (staging / "file.txt").write_text("content")
+            dest = Path(td) / "existing"
+            dest.mkdir()
+            (dest / "existing.txt").write_text("existing")
+            proc = self._run("promote", str(staging), str(dest))
+            self.assertNotEqual(proc.returncode, 0)
+            import json
+            output = json.loads(proc.stdout)
+            self.assertEqual(output["status"], "failed")
+
 
 if __name__ == "__main__":
     unittest.main()
