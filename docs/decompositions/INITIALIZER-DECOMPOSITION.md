@@ -34,11 +34,11 @@ This document is the controlling entry point for the initializer decomposition c
     "docs/overview/product-overview/05-human-ai-continuity.md",
     "docs/overview/product-overview/06-governance-and-evolution.md"
   ],
-  "content_areas": {
-    "invocation_and_authority": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md",
-    "framework_and_product_foundations": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md",
-    "platform_and_execution": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md",
-    "generation_validation_and_handoff": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"
+  "required_content_areas": {
+    "invocation_and_authority": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],
+    "framework_and_product_foundations": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],
+    "platform_and_execution": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],
+    "generation_validation_and_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]
   },
   "subordinate_chunks": [
     {"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority"},

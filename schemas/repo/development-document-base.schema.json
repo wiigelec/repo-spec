@@ -63,9 +63,6 @@
       "type": "string",
       "minLength": 1
     },
-    "content_areas": {
-      "type": "object"
-    },
     "required_content_areas": {
       "type": "object"
     },

@@ -11,7 +11,7 @@
       "required": [
         "artifact_type",
         "root_path",
-        "content_areas"
+        "required_content_areas"
       ],
       "properties": {
         "artifact_type": {
@@ -21,10 +21,53 @@
         "root_path": {
           "type": "string",
           "const": "docs/decompositions/"
+        },
+        "required_content_areas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "invocation_and_authority",
+            "framework_and_product_foundations",
+            "platform_and_execution",
+            "generation_validation_and_handoff"
+          ],
+          "properties": {
+            "invocation_and_authority": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "framework_and_product_foundations": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "platform_and_execution": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "generation_validation_and_handoff": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            }
+          }
         }
       }
-    }
-    ,
+    },
     {
       "type": "object",
       "properties": {
@@ -34,14 +77,14 @@
             "type": "object",
             "required": ["order", "path", "title", "role", "area_id"],
             "properties": {
-              "role": {
-                "type": "string",
-                "const": "product-area"
-              },
-              "area_id": {
-                "type": "string",
-                "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
-              }
+            "role": {
+              "type": "string",
+              "const": "product-area"
+            },
+            "area_id": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)*$"
+            }
             }
           }
         }
