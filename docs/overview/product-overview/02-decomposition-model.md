@@ -69,9 +69,10 @@ The number of layers is determined by complexity, not by a fixed template.
 ```text
 human intent
   -> product understanding
-  -> overview
-  -> planning and decomposition
+  -> accepted overview
+  -> accepted decomposition
   -> accepted specifications
+  -> accepted implementation plan
   -> bounded implementation tasks
   -> implementation
   -> tests and conformance evidence
@@ -79,9 +80,9 @@ human intent
   -> maintained product
 ```
 
-Each step should reduce uncertainty or strengthen authority.
+Each step should reduce uncertainty or strengthen authority. The normative lifecycle requires accepted overview, decomposition, product specifications, and implementation plan in that dependency order before maintained product artifacts may be synthesized.
 
-Decomposition is shown beside planning for readability; in practice it recurs at every later stage until implementation work is sufficiently bounded.
+Decomposition recurs at every later stage until implementation work is sufficiently bounded.
 
 ```text
 bounded task encounters missing authority

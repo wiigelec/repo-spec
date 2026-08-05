@@ -36,6 +36,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         "product acyclic dependencies",
         "acyclic dependencies",
         "development documents",
+        "lifecycle authority sequence",
         "generated-document freshness",
     ]
     if labels != expected_labels:

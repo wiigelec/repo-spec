@@ -28,6 +28,10 @@
     {
       "id": "REPO-PDC-006",
       "text": "A product decomposition shall make the next authorized planning action explicit so later work does not have to infer it from conversation history."
+    },
+    {
+      "id": "REPO-PDC-007",
+      "text": "A product decomposition shall identify the expected Level 0–3 product-specification families, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. This identification shall remain directional and shall not prematurely define normative product semantics."
     }
   ],
   "dependencies": [
@@ -39,6 +43,9 @@
     },
     {
       "spec_id": "repo.validation"
+    },
+    {
+      "spec_id": "repo.development-workflow"
     }
   ],
   "references": [
@@ -53,6 +60,10 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
     },
     {
       "type": "artifact",

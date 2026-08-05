@@ -46,6 +46,18 @@ Defines repository validation during repo-spec formation.
 - `REPO-VAL-024`: The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations.
 - `REPO-VAL-025`: The validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical.
 - `REPO-VAL-026`: The validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks so chunk manageability remains deterministic without relying on token counts.
+- `REPO-VAL-027`: The validation entry point shall enforce that an implementation plan may only be marked as planning-complete or ready for acceptance when every required controlling product specification referenced by the plan is accepted, structurally valid, registered in the product manifest, and not mutually contradictory with other referenced specifications.
+- `REPO-VAL-028`: The validation entry point shall reject an implementation plan that references a product specification that is absent from the product manifest or whose lifecycle status has not reached the minimum required state.
+- `REPO-VAL-029`: The validation entry point shall reject an implementation plan that references only placeholder specification roots or scaffolding instead of substantive accepted product specifications for any planned workstream that would produce maintained product artifacts.
+- `REPO-VAL-030`: The validation entry point shall reject an implementation plan that references candidate product specifications where accepted specifications are required by the governing scope.
+- `REPO-VAL-031`: The validation entry point shall reject an implementation plan that references product specifications with invalid upward or circular dependency chains as defined by repo.product-levels.
+- `REPO-VAL-032`: The validation entry point shall reject an implementation plan that references mutually contradictory product specifications where the contradiction is machine-detectable (e.g., overlapping normative requirement identifiers, incompatible Level-participation requirements).
+- `REPO-VAL-033`: The validation entry point shall reject an implementation plan that claims specification-complete scope for any workstream whose referenced product specifications are missing required correspondence or dependency declarations.
+- `REPO-VAL-034`: The validation entry point shall enforce that a product decomposition identifies expected Level 0-3 specification families, responsibility boundaries, and intended dependency directions, and shall reject a decomposition that lacks this identification when the decomposition declares readiness for specification work.
+- `REPO-VAL-035`: The validation entry point shall enforce that exploratory experiment classifications are explicitly non-product, isolated from maintained product paths where practical, and include disposal, archival, or adoption criteria.
+- `REPO-VAL-036`: The validation entry point shall reject an implementation governing issue that creates or modifies maintained product artifacts when the issue does not cite the accepted implementation plan, applicable accepted product specifications, the exact accepted default-branch base, and predecessor implementation evidence, where those fields are machine-checkable.
+- `REPO-VAL-037`: The validation entry point shall enforce that no validation rule treats generated Markdown as authoritative over source specifications. Generated artifacts remain subordinate to their declared source artifacts.
+- `REPO-VAL-038`: The validation entry point shall enforce that a higher-Level product specification may depend directly on an accepted lower-Level specification without requiring intermediate-Level specifications, consistent with repo.product-levels.
 
 ## Dependencies
 
@@ -59,6 +71,11 @@ Defines repository validation during repo-spec formation.
 - specification: `repo.manifest`
 - specification: `repo.development-workflow`
 - specification: `repo.repository-structure`
+- specification: `repo.implementation-plan`
+- specification: `repo.product-decomposition`
+- specification: `repo.product-levels`
+- specification: `repo.product-manifest`
+- specification: `repo.product-correspondence`
 - artifact: `scripts/validate`
 - artifact: `scripts/generate-docs`
 - artifact: `scripts/github_field_policy.py`
