@@ -62,14 +62,28 @@ def run_repository_mutations(repo_root: Path) -> None:
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
-        decomposition_path.write_text(decomposition_path.read_text().replace('"role": "product-area", "area_id": "platform-and-execution"', '"area_id": "platform-and-execution"', 1))
+        decomposition_path.write_text(
+            decomposition_path.read_text().replace(
+                '{"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "role": "product-area", "area_id": "platform-and-execution", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}',
+                '{"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "area_id": "platform-and-execution"}',
+                1,
+            )
+        )
         expect_failure("missing decomposition chunk role", lambda: validate_repo(temp_repo), "missing required property role")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
-        decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis"', 1)
+        decomposition_text = decomposition_text.replace('{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority"}', 1)
+        decomposition_path.write_text(decomposition_text)
+        expect_failure("missing decomposition area coverage", lambda: validate_repo(temp_repo), "missing required property coverage")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+        decomposition_text = decomposition_path.read_text()
+        decomposition_text = decomposition_text.replace('{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "decomposition-basis"}', 1)
         decomposition_path.write_text(decomposition_text)
         validate_repo(temp_repo)
 
@@ -77,7 +91,7 @@ def run_repository_mutations(repo_root: Path) -> None:
         clone_index += 1
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
-        decomposition_text = decomposition_text.replace('"role": "product-area", "area_id": "invocation-and-authority"', '"role": "decomposition-basis", "area_id": "invocation-and-authority"', 1)
+        decomposition_text = decomposition_text.replace('{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "decomposition-basis", "area_id": "invocation-and-authority"}', 1)
         decomposition_path.write_text(decomposition_text)
         expect_failure("non-area decomposition chunk with area_id", lambda: validate_repo(temp_repo), "non-area chunk must not declare area_id")
 
@@ -86,12 +100,12 @@ def run_repository_mutations(repo_root: Path) -> None:
         decomposition_path = temp_repo / "docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace(
-            '  "required_content_areas": {\n    "invocation_and_authority": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "framework_and_product_foundations": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "platform_and_execution": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "generation_validation_and_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n',
+            '  "required_content_areas": {\n    "decomposition_basis": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n',
             '  "required_content_areas": {},\n',
             1,
         )
         decomposition_path.write_text(decomposition_text)
-        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "missing required property invocation_and_authority")
+        expect_failure("decomposition without required content areas", lambda: validate_repo(temp_repo), "missing required property decomposition_basis")
 
         plan_a = DevelopmentDocumentRecord(
             "docs/plans/plan-a.md",
@@ -187,7 +201,7 @@ def run_repository_mutations(repo_root: Path) -> None:
                 "controlling_documents": ["docs/overview/overview.md"],
                 "predecessor_documents": ["docs/overview/overview.md"],
                 "evidence": ["docs/overview/overview.md"],
-                "required_content_areas": {"invocation_and_authority": ["docs/decompositions/decomposition/01.md"], "framework_and_product_foundations": ["docs/decompositions/decomposition/01.md"], "platform_and_execution": ["docs/decompositions/decomposition/01.md"], "generation_validation_and_handoff": ["docs/decompositions/decomposition/01.md"]},
+                "required_content_areas": {"decomposition_basis": ["docs/decompositions/decomposition/01.md"], "product_area_inventory": ["docs/decompositions/decomposition/01.md"], "dependency_model": ["docs/decompositions/decomposition/01.md"], "cross_cutting_concerns": ["docs/decompositions/decomposition/01.md"], "unresolved_decisions": ["docs/decompositions/decomposition/01.md"], "stopping_criteria": ["docs/decompositions/decomposition/01.md"], "planning_handoff": ["docs/decompositions/decomposition/01.md"]},
                 "subordinate_chunks": [],
                 "successor_action": "next",
                 "schema_version": "1",
@@ -246,7 +260,23 @@ def run_repository_mutations(repo_root: Path) -> None:
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
         overview_path.write_text(overview_text)
-        expect_failure("overview without initial role", lambda: validate_repo(temp_repo), "missing initial overview role")
+        expect_failure("overview without overview role", lambda: validate_repo(temp_repo), "overview_role")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace('{"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose", "coverage": ["product_identity"]}', '{"order": 1, "path": "docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"}', 1)
+        overview_path.write_text(overview_text)
+        expect_failure("overview chunk without coverage", lambda: validate_repo(temp_repo), "required coverage must be an array")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        overview_path = temp_repo / "docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_text = overview_path.read_text()
+        overview_text = overview_text.replace('  "overview_role": "initial",\n', '  "overview_role": "revision",\n', 1)
+        overview_path.write_text(overview_text)
+        expect_failure("revision overview without predecessor", lambda: validate_repo(temp_repo), "minItems violation")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
@@ -260,8 +290,8 @@ def run_repository_mutations(repo_root: Path) -> None:
             1,
         )
         overview_text = overview_text.replace(
-            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"}\n  ],\n',
-            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff"},\n    {"order": 7, "path": "docs/overview/initializer-overview/07-capabilities-addendum.md", "title": "Capabilities addendum"}\n  ],\n',
+            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]}\n  ],\n',
+            '    {"order": 6, "path": "docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]},\n    {"order": 7, "path": "docs/overview/initializer-overview/07-capabilities-addendum.md", "title": "Capabilities addendum", "coverage": ["capabilities_and_success"]}\n  ],\n',
             1,
         )
         overview_text = overview_text.replace(
@@ -304,8 +334,8 @@ def run_repository_mutations(repo_root: Path) -> None:
             1,
         )
         plan_text = plan_text.replace(
-            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"}\n  ],\n',
-            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion"},\n    {"order": 4, "path": "docs/plans/initializer-implementation-plan/04-validation-addendum.md", "title": "Validation addendum"}\n  ],\n',
+            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]}\n  ],\n',
+            '    {"order": 3, "path": "docs/plans/initializer-implementation-plan/03-validation-and-completion.md", "title": "Validation and completion", "coverage": ["entry_and_exit_conditions", "transition_gates", "validation_strategy", "risks_and_unresolved_decisions", "completion_and_successor_work"]},\n    {"order": 4, "path": "docs/plans/initializer-implementation-plan/04-validation-addendum.md", "title": "Validation addendum", "coverage": ["workstreams_and_dependencies"]}\n  ],\n',
             1,
         )
         plan_text = plan_text.replace(
@@ -315,6 +345,14 @@ def run_repository_mutations(repo_root: Path) -> None:
         )
         plan_path.write_text(plan_text)
         validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_path = temp_repo / "docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_text = plan_path.read_text()
+        plan_text = plan_text.replace('{"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions", "coverage": ["authority_and_basis", "scope_and_exclusions"]}', '{"order": 1, "path": "docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md", "title": "Scope and preconditions"}', 1)
+        plan_path.write_text(plan_text)
+        expect_failure("plan chunk without coverage", lambda: validate_repo(temp_repo), "required coverage must be an array")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

@@ -114,6 +114,19 @@
         "properties": {
           "artifact_type": {
             "const": "product-overview"
+          }
+        },
+        "required": ["artifact_type"]
+      },
+      "then": {
+        "required": ["overview_role"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "artifact_type": {
+            "const": "product-overview"
           },
           "overview_role": {
             "const": "initial"
@@ -131,6 +144,9 @@
       "else": {
         "properties": {
           "controlling_documents": {
+            "minItems": 1
+          },
+          "predecessor_documents": {
             "minItems": 1
           }
         }
@@ -159,6 +175,13 @@
         "role": {
           "type": "string",
           "minLength": 1
+        },
+        "coverage": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "area_id": {
           "type": "string",

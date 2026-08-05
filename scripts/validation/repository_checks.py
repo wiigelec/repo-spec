@@ -73,7 +73,8 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["invocation_and_authority", "framework_and_product_foundations", "platform_and_execution", "generation_validation_and_handoff"],
+        "required_content_area_keys": ["decomposition_basis", "product_area_inventory", "dependency_model", "cross_cutting_concerns", "unresolved_decisions", "stopping_criteria", "planning_handoff"],
+        "required_chunk_coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"],
         "allowed_chunk_roles": ["product-area", "decomposition-basis", "cross-cutting-concerns", "dependency-model", "unresolved-decisions", "stopping-and-handoff"],
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
@@ -1127,6 +1128,15 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                     covered_paths.add(area_path)
             expect(covered_paths == set(declared_paths), f"development document content inventory failed: required content area coverage mismatch in {rel_path}")
 
+            if root_rel in {"docs/overview/", "docs/plans/"}:
+                for chunk in declared_chunks:
+                    coverage = chunk.get("coverage")
+                    expect(isinstance(coverage, list), f"development document content inventory failed: required coverage must be an array in {rel_path}")
+                    expect(coverage, f"development document content inventory failed: required coverage must not be empty in {rel_path}")
+                    expect(len(coverage) == len(set(coverage)), f"development document content inventory failed: duplicate coverage entries in {rel_path}")
+                    expected_coverage = sorted(area_id for area_id, area_paths in required_content_areas.items() if chunk["path"] in area_paths)
+                    expect(set(coverage) == set(expected_coverage), f"development document content inventory failed: chunk coverage mismatch in {rel_path}")
+
             records[rel_path] = DevelopmentDocumentRecord(rel_path, root_rel, info, metadata, declared_paths)
             for chunk_path in declared_paths:
                 expect(chunk_path not in chunk_owner_paths, f"development document chunk inventory failed: duplicate chunk path {chunk_path}")
@@ -1142,8 +1152,13 @@ def check_development_documents_phase(context: ValidationContext) -> None:
                         expect(isinstance(area_id, str) and area_id, f"development document chunk inventory failed: missing area_id in {rel_path}")
                         expect(area_id not in seen_area_ids, f"development document chunk inventory failed: duplicate area_id in {rel_path}")
                         seen_area_ids.add(area_id)
+                        coverage = chunk.get("coverage")
+                        expect(isinstance(coverage, list), f"development document chunk inventory failed: missing coverage in {rel_path}")
+                        expect(len(coverage) == len(set(coverage)), f"development document chunk inventory failed: duplicate coverage entries in {rel_path}")
+                        expect(set(coverage) == set(info["required_chunk_coverage"]), f"development document chunk inventory failed: coverage mismatch in {rel_path}")
                     else:
                         expect(area_id is None, f"development document chunk inventory failed: non-area chunk must not declare area_id in {rel_path}")
+                        expect(chunk.get("coverage") is None, f"development document chunk inventory failed: non-area chunk must not declare coverage in {rel_path}")
 
             orders = [chunk["order"] for chunk in declared_chunks]
             expect(orders == list(range(1, len(orders) + 1)), f"development document chunk inventory failed: non-contiguous order in {rel_path}")

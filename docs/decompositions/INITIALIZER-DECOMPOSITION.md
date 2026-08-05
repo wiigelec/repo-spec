@@ -35,16 +35,19 @@ This document is the controlling entry point for the initializer decomposition c
     "docs/overview/product-overview/06-governance-and-evolution.md"
   ],
   "required_content_areas": {
-    "invocation_and_authority": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],
-    "framework_and_product_foundations": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],
-    "platform_and_execution": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],
-    "generation_validation_and_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]
+    "decomposition_basis": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],
+    "product_area_inventory": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],
+    "dependency_model": ["docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],
+    "cross_cutting_concerns": ["docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],
+    "unresolved_decisions": ["docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],
+    "stopping_criteria": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],
+    "planning_handoff": ["docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]
   },
   "subordinate_chunks": [
-    {"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority"},
-    {"order": 2, "path": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "title": "Framework and product foundations", "role": "product-area", "area_id": "framework-and-product-foundations"},
-    {"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "role": "product-area", "area_id": "platform-and-execution"},
-    {"order": 4, "path": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md", "title": "Generation, validation, and handoff", "role": "product-area", "area_id": "generation-validation-and-handoff"}
+    {"order": 1, "path": "docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]},
+    {"order": 2, "path": "docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "title": "Framework and product foundations", "role": "product-area", "area_id": "framework-and-product-foundations", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]},
+    {"order": 3, "path": "docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "title": "Platform and execution", "role": "product-area", "area_id": "platform-and-execution", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]},
+    {"order": 4, "path": "docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md", "title": "Generation, validation, and handoff", "role": "product-area", "area_id": "generation-validation-and-handoff", "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}
   ],
   "successor_action": "Proceed to the initializer implementation plan once the decomposition is accepted.",
   "schema_version": "1"
