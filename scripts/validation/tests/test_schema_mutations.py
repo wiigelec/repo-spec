@@ -392,4 +392,12 @@ def run_schema_mutations(repo_root: Path) -> None:
         "unresolved ref",
     )
 
+    unique_items_schema = {"type": "array", "uniqueItems": True, "items": {"type": "string"}}
+    ensure_schema_keywords(unique_items_schema, "schemas/test-unique-items.json")
+    expect_failure(
+        "uniqueItems duplicate detection",
+        lambda: validate_instance(["a", "a"], unique_items_schema, "schemas/test-unique-items.json", unique_items_schema),
+        "uniqueItems violation",
+    )
+
     print("ok: schema mutation tests")

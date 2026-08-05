@@ -29,6 +29,7 @@ SUPPORTED_SCHEMA_KEYS = {
     "const",
     "minLength",
     "minItems",
+    "uniqueItems",
     "minimum",
     "pattern",
 }
@@ -122,6 +123,9 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
     if "minItems" in schema:
         expect(isinstance(schema["minItems"], int) and schema["minItems"] >= 0, f"schema loading failed: {schema_location(source, path)} minItems must be a non-negative integer")
 
+    if "uniqueItems" in schema:
+        expect(isinstance(schema["uniqueItems"], bool), f"schema loading failed: {schema_location(source, path)} uniqueItems must be a boolean")
+
     if "minimum" in schema:
         expect(isinstance(schema["minimum"], int), f"schema loading failed: {schema_location(source, path)} minimum must be an integer")
 
@@ -185,6 +189,11 @@ def validate_instance_with_evaluation(
     if "minItems" in schema:
         expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
         expect(len(instance) >= schema["minItems"], f"repository JSON Schema conformance failed: {instance_location(source, path)} minItems violation")
+
+    if schema.get("uniqueItems") is True:
+        expect(isinstance(instance, list), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an array")
+        normalized_items = [json.dumps(item, sort_keys=True, separators=(",", ":")) for item in instance]
+        expect(len(normalized_items) == len(set(normalized_items)), f"repository JSON Schema conformance failed: {instance_location(source, path)} uniqueItems violation")
 
     if "minimum" in schema:
         expect(isinstance(instance, int) and not isinstance(instance, bool), f"repository JSON Schema conformance failed: {instance_location(source, path)} must be an integer")
