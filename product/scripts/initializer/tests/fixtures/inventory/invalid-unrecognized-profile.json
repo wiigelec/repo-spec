@@ -1,0 +1,14 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "test",
+  "entries": [
+    {
+      "path": "repo/profiles/github/",
+      "classification": "profile-source",
+      "authoritative": false,
+      "installable": false,
+      "profile": "unknown-platform",
+      "exclusion_rationale": "unrecognized profile"
+    }
+  ]
+}

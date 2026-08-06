@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product/schemas/product/product-level-3.schema.json",
+  "title": "Product Level 3 Schema",
+  "allOf": [
+    {
+      "$ref": "./product-spec-base.schema.json"
+    },
+    {
+      "type": "object",
+      "required": ["level", "orchestrations"],
+      "properties": {
+        "level": {
+          "type": "integer",
+          "const": 3
+        },
+        "orchestrations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["workflows"],
+          "properties": {
+            "workflows": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

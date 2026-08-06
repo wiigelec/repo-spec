@@ -17,13 +17,13 @@ This plan is based on:
 - `docs/overview/product-overview/04-git-and-change-workflow.md`
 - `docs/overview/product-overview/06-governance-and-evolution.md`
 - `docs/plans/01-framework-architecture-plan.md`
-- `specs/repo/artifact-taxonomy.json`
-- `specs/repo/repository-structure.json`
-- `specs/repo/platform-profiles.json`
-- `specs/repo/validation.json`
-- `specs/repo/product-manifest.json`
-- `specs/repo/product-spec-base.json`
-- `specs/repo/product-levels.json`
+- `repo/specs/repo/artifact-taxonomy.json`
+- `repo/specs/repo/repository-structure.json`
+- `repo/specs/repo/platform-profiles.json`
+- `repo/specs/repo/validation.json`
+- `repo/specs/repo/product-manifest.json`
+- `repo/specs/repo/product-spec-base.json`
+- `repo/specs/repo/product-levels.json`
 
 ## Purpose
 
@@ -84,9 +84,9 @@ The reference repository inventory is organized by authority and purpose.
 
 #### Product-specific files
 
-- product manifest entries and product-specification files under `specs/product/`;
-- product schemas under `schemas/product/`;
-- product-derived documentation under `derived/specs/product/`;
+- product manifest entries and product-specification files under `product/specs/product/`;
+- product schemas under `product/schemas/product/`;
+- product-derived documentation under `product/derived/specs/product/`;
 - product implementation and tests that exist only to prove the initialized product repository.
 
 ### Validation boundaries

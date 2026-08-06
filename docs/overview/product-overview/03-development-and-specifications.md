@@ -247,7 +247,7 @@ The following examples are illustrative guidance for applying the accepted `repo
 
 ### Level schema extension mechanics
 
-Each Level-specific product schema extends `schemas/product/product-spec-base.schema.json` with a two-member `allOf` composition:
+Each Level-specific product schema extends `product/schemas/product/product-spec-base.schema.json` with a two-member `allOf` composition:
 
 1. The first member references the common base schema.
 2. The second member is an object schema that narrows `level` to the Level constant and declares that Level's extension fields at the product-specification root.

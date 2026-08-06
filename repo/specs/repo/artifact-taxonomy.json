@@ -1,0 +1,400 @@
+{
+  "spec_id": "repo.artifact-taxonomy",
+  "title": "Framework Artifact Taxonomy",
+  "purpose": "Defines the normative artifact classes, authority roles, and ownership boundaries for repositories initialized from the framework.",
+  "status": "accepted",
+  "schema_version": "1",
+  "artifact_classes": [
+    {
+      "identifier": "discovery-record",
+      "label": "Discovery record",
+      "role": "discovery record",
+      "authority_category": "directional",
+      "authority_source": "initial discovery context",
+      "source_of_truth_rule": "Captures the problem framing, constraints, and early evidence that justify later planning.",
+      "mutability": "append-only until superseded",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "product-overview",
+      "label": "Product overview",
+      "role": "overview",
+      "authority_category": "directional",
+      "authority_source": "durable product direction",
+      "source_of_truth_rule": "States intended outcome, boundaries, and success conditions without becoming normative product authority.",
+      "mutability": "mutable through governed updates",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "product-decomposition",
+      "label": "Product decomposition",
+      "role": "decomposition",
+      "authority_category": "directional",
+      "authority_source": "durable product decomposition",
+      "source_of_truth_rule": "Decomposes directional product intent into bounded areas, dependencies, and unresolved decisions without becoming normative product authority.",
+      "mutability": "mutable through governed updates",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "implementation-plan",
+      "label": "Implementation plan",
+      "role": "plan",
+      "authority_category": "planning",
+      "authority_source": "accepted plan and sequencing decisions",
+      "source_of_truth_rule": "Coordinates work order, stages, and validation sequencing but cannot redefine accepted overview direction or accepted specifications.",
+      "mutability": "mutable through governed replanning",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
+    },
+    {
+      "identifier": "repository-specification",
+      "label": "Repository specification",
+      "role": "repository specification",
+      "authority_category": "normative",
+      "authority_source": "accepted repository specification",
+      "source_of_truth_rule": "Defines repository-generic requirements that all initialized repositories inherit.",
+      "mutability": "immutable once accepted except through governed revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "authoritative"
+    },
+    {
+      "identifier": "product-specification",
+      "label": "Product specification",
+      "role": "product specification",
+      "authority_category": "normative",
+      "authority_source": "accepted product specification",
+      "source_of_truth_rule": "Defines product-specific requirements and semantics for a repository derived from the framework, rooted under `product/specs/product/` and governed by the product manifest rather than the repository manifest.",
+      "mutability": "immutable once accepted except through governed revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "product-specific",
+      "manifest_participation": "authoritative"
+    },
+    {
+      "identifier": "schema",
+      "label": "Schema",
+      "role": "schema",
+      "authority_category": "normative",
+      "authority_source": "accepted schema definition",
+      "source_of_truth_rule": "Validates repository-local structure but does not supersede the specification it constrains.",
+      "mutability": "immutable once accepted except through governed revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "manifest-index",
+      "label": "Manifest or index",
+      "role": "manifest or index",
+      "authority_category": "normative",
+      "authority_source": "accepted registry or index",
+      "source_of_truth_rule": "Lists authoritative entries and derived locations without granting authority to the listing itself.",
+      "mutability": "mutable only through governed registry updates",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "authoritative"
+    },
+    {
+      "identifier": "derived-projection",
+      "label": "Derived projection",
+      "role": "derived projection",
+      "authority_category": "generated",
+      "authority_source": "declared source specification or manifest",
+      "source_of_truth_rule": "Must be reproducible from declared sources, including repository and product specifications that own the declaration, and must never override the source authority.",
+      "mutability": "regenerable only",
+      "generation_mode": "deterministic",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "derived",
+      "source_artifacts": [
+        "repo.manifest",
+        "repo.governing-issue",
+        "repo.review-proposal",
+        "repo.product-manifest",
+        "repo.product-spec-base",
+        "repo.product-correspondence",
+        "repo.product-levels"
+      ]
+    },
+    {
+      "identifier": "product-artifact",
+      "label": "Product artifact",
+      "role": "product artifact",
+      "authority_category": "implementation",
+      "authority_source": "product repository state",
+      "source_of_truth_rule": "Realizes accepted product specifications but does not define their semantics.",
+      "mutability": "mutable under implementation control",
+      "generation_mode": "manual",
+      "validation_ownership": "product",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "test-artifact",
+      "label": "Test artifact",
+      "role": "test artifact",
+      "authority_category": "implementation",
+      "authority_source": "implementation and validation practice",
+      "source_of_truth_rule": "Evaluates conformance or behavior but does not define product semantics unless an accepted specification assigns that role.",
+      "mutability": "mutable under implementation control",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "conformance-artifact",
+      "label": "Conformance artifact",
+      "role": "conformance artifact",
+      "authority_category": "evidentiary",
+      "authority_source": "validation evidence",
+      "source_of_truth_rule": "Records whether a product artifact conforms to an accepted specification without becoming the specification itself.",
+      "mutability": "append-only evidence record",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "hosting-platform-profile",
+      "label": "Hosting-platform profile",
+      "role": "platform profile",
+      "authority_category": "profile-specific",
+      "authority_source": "hosting-platform constraints",
+      "source_of_truth_rule": "Captures provider-specific behavior and configuration without becoming portable framework authority.",
+      "mutability": "mutable within the governed profile boundary",
+      "generation_mode": "manual",
+      "validation_ownership": "platform",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "validation-evidence",
+      "label": "Validation evidence",
+      "role": "validation evidence",
+      "authority_category": "evidentiary",
+      "authority_source": "validated repository state",
+      "source_of_truth_rule": "Documents the exact revision or state that was tested and the outcome observed.",
+      "mutability": "append-only evidence record",
+      "generation_mode": "deterministic",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "validated repository revision",
+        "validation command output"
+      ]
+    },
+    {
+      "identifier": "review-record",
+      "label": "Review record",
+      "role": "review record",
+      "authority_category": "review",
+      "authority_source": "review decision process",
+      "source_of_truth_rule": "Captures reviewer judgment about a proposed revision without itself becoming the accepted revision.",
+      "mutability": "append-only review record",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "acceptance-record",
+      "label": "Acceptance record",
+      "role": "acceptance record",
+      "authority_category": "acceptance",
+      "authority_source": "explicit acceptance decision",
+      "source_of_truth_rule": "Records acceptance of an exact proposed revision without authorizing unrelated successor work.",
+      "mutability": "append-only acceptance record",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "release-record",
+      "label": "Release record",
+      "role": "release record",
+      "authority_category": "release",
+      "authority_source": "published exact revision",
+      "source_of_truth_rule": "Records publication of an accepted revision and does not redefine the underlying specification.",
+      "mutability": "append-only release record",
+      "generation_mode": "manual",
+      "validation_ownership": "release",
+      "portability_category": "product-specific",
+      "manifest_participation": "reference"
+    },
+    {
+      "identifier": "hosting-profile-source",
+      "label": "Hosting profile source",
+      "role": "profile source",
+      "authority_category": "profile-specific",
+      "authority_source": "accepted hosting-profile source material",
+      "source_of_truth_rule": "Defines reusable hosting-platform profile source material under `repo/profiles/` for future profile-source generation and may project installed adapters without granting them independent authority.",
+      "mutability": "mutable through governed profile revision",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    },
+    {
+      "identifier": "installed-hosting-adapter",
+      "label": "Installed hosting adapter",
+      "role": "installed adapter",
+      "authority_category": "profile-specific",
+      "authority_source": "hosting-profile source material",
+      "source_of_truth_rule": "Mirrors a hosting profile into installed repository-local adapters such as `.github/` files; installed adapters are generated from profile source material and remain subordinate to that source rather than becoming normative authority themselves.",
+      "mutability": "regenerable only",
+      "generation_mode": "deterministic",
+      "validation_ownership": "platform",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    },
+    {
+      "identifier": "hosting-deployment-state",
+      "label": "Hosting deployment state",
+      "role": "hosting deployment state",
+      "authority_category": "evidentiary",
+      "authority_source": "remote hosting-platform configuration and state",
+      "source_of_truth_rule": "Records remote branch protection, rulesets, required checks, merge queues, labels, and repository settings using explicit desired-state, inspection, apply, rollback, and verification records without becoming repository content.",
+      "mutability": "append-only evidence record",
+      "generation_mode": "external",
+      "validation_ownership": "platform",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    },
+    {
+      "identifier": "bootstrap-hosting-infrastructure",
+      "label": "Bootstrap hosting infrastructure",
+      "role": "bootstrap infrastructure",
+      "authority_category": "implementation",
+      "authority_source": "repository bootstrap support",
+      "source_of_truth_rule": "Supports current hosting-platform checks and policy behavior without becoming universal framework authority.",
+      "mutability": "mutable under governed maintenance",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "profile-specific",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.platform-profiles"
+      ]
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "REPO-AT-001",
+      "text": "The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes."
+    },
+    {
+      "id": "REPO-AT-002",
+      "text": "The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, and profile-specific authority categories."
+    },
+    {
+      "id": "REPO-AT-003",
+      "text": "The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation."
+    },
+    {
+      "id": "REPO-AT-003A",
+      "text": "An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance."
+    },
+    {
+      "id": "REPO-AT-004",
+      "text": "An overview, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative specification authority."
+    },
+    {
+      "id": "REPO-AT-005",
+      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized."
+    },
+    {
+      "id": "REPO-AT-006",
+      "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority."
+    },
+    {
+      "id": "REPO-AT-007",
+      "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release."
+    },
+    {
+      "id": "REPO-AT-008",
+      "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority."
+    },
+    {
+      "id": "REPO-AT-009",
+      "text": "Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-framework-architecture-plan.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/01-product-direction.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/artifact-taxonomy.md"
+    }
+  ]
+}

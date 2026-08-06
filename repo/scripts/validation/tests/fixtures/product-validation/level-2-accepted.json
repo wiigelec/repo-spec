@@ -1,0 +1,63 @@
+{
+  "spec_id": "product.component",
+  "title": "Component",
+  "purpose": "Component product specification.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "normative_requirements": [
+    {
+      "id": "COMPONENT-001",
+      "text": "Component requirement."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.kernel"
+    },
+    {
+      "spec_id": "product.primitive"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/component.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.component",
+        "paths": ["product/src/component.py"],
+        "requirements": ["COMPONENT-001"]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.component",
+        "paths": ["product/tests/test_component.py"],
+        "requirements": ["COMPONENT-001"]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "COMPONENT-001",
+        "implementation_ids": ["impl.component"],
+        "test_ids": ["test.component"],
+        "status": "covered"
+      }
+    ]
+  },
+  "components": {
+    "contracts": ["component contract"]
+  }
+}

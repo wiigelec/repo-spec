@@ -92,12 +92,12 @@ This matrix records the current integration reading of the accepted Stage 1 reco
 
 | Concept | Current authority owner | Notes |
 | --- | --- | --- |
-| Repository-specification source | `specs/repo/` via `repo.manifest` | Governs repository-generic contracts only |
-| Product-specification source | `specs/product/` via the future product manifest | Reserved, not yet introduced |
+| Repository-specification source | `repo/specs/repo/` via `repo.manifest` | Governs repository-generic contracts only |
+| Product-specification source | `product/specs/product/` via the future product manifest | Reserved, not yet introduced |
 | Artifact taxonomy | `repo.artifact-taxonomy` | Classifies repository-local and framework-generic artifact roles |
 | Platform profile boundary | `repo.platform-profiles` | Distinguishes Git-generic behavior from GitHub-specific behavior |
-| Current GitHub adapters | Bootstrap-owned `.github/` files and `scripts/github*` helpers | Operationally maintained now, not generated from profile source |
-| Future GitHub profile source | `profiles/github/` | Reserved for later reusable profile-source material |
+| Current GitHub adapters | Bootstrap-owned `.github/` files and `repo/scripts/github*` helpers | Operationally maintained now, not generated from profile source |
+| Future GitHub profile source | `repo/profiles/github/` | Reserved for later reusable profile-source material |
 | Validation | `repo.validation` plus repository-local validation code | Checks declared repository-local invariants only |
 | Derived projections | Their declared source specifications | Must remain subordinate to source authority |
 
@@ -111,8 +111,8 @@ This matrix records the integrated Stage 2 authority reading after completion of
 | Product specification semantics | Individual accepted product specification | The governing product file remains normative for its own contract |
 | Product manifest structure | `repo.product-manifest` | Defines manifest fields, registry behavior, and activation semantics |
 | Common product file envelope | `repo.product-spec-base` | Defines the shared base envelope for product specifications |
-| Product manifest schema | `schemas/product/product-manifest.schema.json` | Subordinate schema for the accepted product-manifest contract |
-| Base product schema | `schemas/product/product-spec-base.schema.json` | Subordinate schema for the accepted base product-specification contract |
+| Product manifest schema | `product/schemas/product/product-manifest.schema.json` | Subordinate schema for the accepted product-manifest contract |
+| Base product schema | `product/schemas/product/product-spec-base.schema.json` | Subordinate schema for the accepted base product-specification contract |
 | Lifecycle source | Explicitly resolve manifest/file duplication | Manifest and file must agree on lifecycle status |
 | Level source | Explicitly resolve manifest/file duplication | Manifest and file must agree on Level metadata |
 | Derived artifact source | Individual accepted product specification | Manifest does not repeat derived artifacts; derived artifacts are owned by the product file |
@@ -127,13 +127,25 @@ This matrix records the integrated Stage 3 authority reading after reconciling t
 | Level purpose | `repo.product-levels` | Defines Level 0 kernel, Level 1 primitives, Level 2 components, and Level 3 orchestrations |
 | Level metadata | `repo.product-manifest` and `repo.product-spec-base` | Manifest and file must agree on Level value; the base contract owns the common `level` field |
 | Level/path correspondence | `repo.product-manifest` plus `repo.product-spec-base` | Each manifest entry must match exactly one product file under its reserved Level root |
-| Level schema ownership | `schemas/product/product-level-0.schema.json` through `schemas/product/product-level-3.schema.json` | Level-specific schemas extend the base envelope rather than redefining common fields |
+| Level schema ownership | `product/schemas/product/product-level-0.schema.json` through `product/schemas/product/product-level-3.schema.json` | Level-specific schemas extend the base envelope rather than redefining common fields |
 | Dependency lifecycle | `repo.product-spec-base` and `repo.validation` | Candidate specifications may target candidate or accepted specifications; accepted specifications may target only accepted specifications |
 | Dependency direction | `repo.product-levels` plus `repo.validation` | Lower Levels must not depend on higher Levels |
 | Same-Level dependencies | `repo.product-levels` plus `repo.validation` | Permitted only when explicit and acyclic |
 | Graph acyclicity | `repo.validation` plus implementation | The full product dependency graph must remain acyclic |
 | Structural completeness | `repo.product-levels` plus `repo.validation` | Machine-checkable structure only; semantic completeness remains review-owned |
 | Validation ownership | `repo.validation` plus implementation | Enforces product/repository separation, schema boundaries, dependency rules, acyclicity, and completeness boundaries |
+
+## Repository and product tree boundary
+
+The staged repository-layout migration targets one Git repository with three classified content boundaries:
+
+| Boundary | Ownership |
+| --- | --- |
+| `repo/` | Reusable framework and repository specifications, schemas, projections, tooling, validation, documentation, and profiles |
+| `product/` | The `repo-spec` initializer product, including product specifications, product schemas and projections, source, tests, and initializer documentation |
+| `reference/` | Separately classified reference-repository material, not part of either reusable or product-owned tree |
+
+The approved root boundary retains `README.md`, `AGENTS.md`, `LICENSE`, and `.github/`. Additional root exceptions require explicit governed recording. Migration shall update authority, discovery, generation, validation, and initialization behavior before moving each affected path group.
 
 ## Intended outcome
 
@@ -317,14 +329,14 @@ derived/
         repo/
         product/
 
-src/
-tests/
+product/src/
+product/tests/
 conformance/
 
-profiles/
+repo/profiles/
     github/
 
-scripts/
+repo/scripts/
 .github/
 ```
 
@@ -337,10 +349,10 @@ README.md
 AGENTS.md
 docs/overview/
 docs/plans/
-specs/repo/
-schemas/repo/
-derived/specs/repo/
-scripts/
+repo/specs/repo/
+repo/schemas/repo/
+repo/derived/specs/repo/
+repo/scripts/
 ```
 
 ### Product paths created when needed
@@ -348,11 +360,11 @@ scripts/
 A product repository should introduce or activate:
 
 ```text
-specs/product/
-schemas/product/
-derived/specs/product/
-src/
-tests/
+product/specs/product/
+product/schemas/product/
+product/derived/specs/product/
+product/src/
+product/tests/
 conformance/
 ```
 
@@ -363,11 +375,11 @@ only when the applicable plan and specifications require them.
 Hosting-provider-specific assets should be clearly identified, for example:
 
 ```text
-profiles/github/
+repo/profiles/github/
 .github/
 ```
 
-The `.github/` directory remains the installed adapter location for current bootstrap-owned GitHub files while `profiles/github/` is reserved for future reusable source material.
+The `.github/` directory remains the installed adapter location for current bootstrap-owned GitHub files while `repo/profiles/github/` is reserved for future reusable source material.
 
 ### Optional language-specific paths
 
@@ -382,8 +394,8 @@ Product-specific specifications may define language or build-system paths when n
 Repository and product specifications should use separate manifests with shared validation infrastructure.
 
 ```text
-specs/repo/manifest.json
-specs/product/manifest.json
+repo/specs/repo/manifest.json
+product/specs/product/manifest.json
 ```
 
 ### Rationale
@@ -509,12 +521,12 @@ The exact schema remains subject to future governed specification work.
 Use a base product-specification schema plus Level-specific schemas:
 
 ```text
-schemas/product/product-manifest.schema.json
-schemas/product/product-spec-base.schema.json
-schemas/product/product-level-0.schema.json
-schemas/product/product-level-1.schema.json
-schemas/product/product-level-2.schema.json
-schemas/product/product-level-3.schema.json
+product/schemas/product/product-manifest.schema.json
+product/schemas/product/product-spec-base.schema.json
+product/schemas/product/product-level-0.schema.json
+product/schemas/product/product-level-1.schema.json
+product/schemas/product/product-level-2.schema.json
+product/schemas/product/product-level-3.schema.json
 ```
 
 ### Base schema responsibilities
@@ -562,8 +574,8 @@ Candidate fields:
 ```json
 {
   "implementation": {
-    "paths": ["src/example.py"],
-    "tests": ["tests/test_example.py"],
+    "paths": ["product/src/example.py"],
+    "tests": ["product/tests/test_example.py"],
     "conformance": ["conformance/example/"]
   }
 }
@@ -622,7 +634,7 @@ Validation phases should remain named and composable. The architecture should pe
 The product-specification system should support deterministic human-readable projections under:
 
 ```text
-derived/specs/product/
+product/derived/specs/product/
 ```
 
 Each projection should:
@@ -793,7 +805,7 @@ Goal: define how product specifications are identified, registered, and governed
 
 Candidate outputs:
 
-- `specs/product/manifest.json`;
+- `product/specs/product/manifest.json`;
 - product manifest schema;
 - base product-specification schema;
 - lifecycle rules;
@@ -853,7 +865,7 @@ Stage 5 integrated ownership matrix:
 | Product manifest registry | `repo.product-manifest` | Registry only; no correspondence authoring |
 | Correspondence contract | `repo.product-correspondence` | Canonical lifecycle and completeness rules |
 | Base envelope and level inheritance | `repo.product-spec-base` and `repo.product-levels` | Common envelope plus extension boundaries |
-| Projection rendering | `scripts/docgen.py` | Deterministic rendering from product JSON |
+| Projection rendering | `repo/scripts/docgen.py` | Deterministic rendering from product JSON |
 | Structural validation | `repo.validation` plus implementation | Path, ownership, and completeness checks |
 | Semantic correctness | review | Remains outside repository-local validation |
 
@@ -885,13 +897,13 @@ Stage 6 integrated ownership matrix:
 
 | Concept | Current authority owner | Notes |
 | --- | --- | --- |
-| GitHub profile source layout | `profiles/github/` via `repo.platform-profiles` | Source-authoritative profile material |
+| GitHub profile source layout | `repo/profiles/github/` via `repo.platform-profiles` | Source-authoritative profile material |
 | Installed adapters | `.github/` via `repo.platform-profiles` | Installed/generated output |
-| Issue and PR templates | `profiles/github/` | Lowest-risk managed adapters |
-| Workflow adapters | `profiles/github/workflows/` | Source-authoritative installed/generated workflow family |
-| Remote-state deployment contract | `profiles/github/manifest.json` and `repo.platform-profiles` | Desired-state, inspection, apply, rollback, verification |
-| Freshness validation | `scripts/github_profile.py` plus `repo.validation` | Confirms source/adapter sync and orphan detection |
-| Bootstrap scripts | `scripts/github-field-policy`, `scripts/github_field_policy.py`, `scripts/github_field_policy_mutation_test.py` | Remain bootstrap-owned support infrastructure |
+| Issue and PR templates | `repo/profiles/github/` | Lowest-risk managed adapters |
+| Workflow adapters | `repo/profiles/github/workflows/` | Source-authoritative installed/generated workflow family |
+| Remote-state deployment contract | `repo/profiles/github/manifest.json` and `repo.platform-profiles` | Desired-state, inspection, apply, rollback, verification |
+| Freshness validation | `repo/scripts/github_profile.py` plus `repo.validation` | Confirms source/adapter sync and orphan detection |
+| Bootstrap scripts | `repo/scripts/github-field-policy`, `repo/scripts/github_field_policy.py`, `repo/scripts/github_field_policy_mutation_test.py` | Remain bootstrap-owned support infrastructure |
 | Reference repository base | `main at f7fa9c51a88771599f9e908249a61d4353a436e9` | First accepted reference-repository base |
 
 Candidate outputs:
@@ -1006,7 +1018,7 @@ Decide where implementation, test, and conformance mappings live before Stage 5.
 
 ### Gate D — Profile source and installation model
 
-Decide whether reusable profile sources live under `profiles/` and generate installed hosting artifacts before Stage 6; current bootstrap-owned adapters remain the operational source of truth until that transition is governed.
+Decide whether reusable profile sources live under `repo/profiles/` and generate installed hosting artifacts before Stage 6; current bootstrap-owned adapters remain the operational source of truth until that transition is governed.
 
 ### Gate E — Reference repository form
 
@@ -1056,8 +1068,8 @@ Each implementation stage should include:
 
 - schema validation where applicable;
 - focused repository-local checks;
-- complete `scripts/validate`;
-- complete `scripts/validate --mutation-tests`;
+- complete `repo/scripts/validate`;
+- complete `repo/scripts/validate --mutation-tests`;
 - generated artifact freshness checks;
 - exact-head CI;
 - changed-file inventory review;

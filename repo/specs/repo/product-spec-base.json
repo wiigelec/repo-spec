@@ -1,0 +1,142 @@
+{
+  "spec_id": "repo.product-spec-base",
+  "title": "Product Specification Base Contract",
+  "purpose": "Defines the normative common envelope shared by all product specifications.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-PSB-001",
+      "text": "The repository shall define `repo.product-spec-base` as the normative common envelope for all Level 0-3 product specifications and shall keep it subordinate to `repo.manifest`, `repo.repository-structure`, `repo.artifact-taxonomy`, `repo.product-manifest`, and `repo.validation`."
+    },
+    {
+      "id": "REPO-PSB-002",
+      "text": "Product specifications shall use stable `spec_id` values in the `product.*` namespace, and each registered product specification shall correspond to exactly one manifest entry with the same identity."
+    },
+    {
+      "id": "REPO-PSB-003",
+      "text": "A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, `derived_artifacts`, and `correspondence` as its common base envelope."
+    },
+    {
+      "id": "REPO-PSB-004",
+      "text": "The lifecycle vocabulary for product specifications shall be `candidate`, `accepted`, `superseded`, and `retired`; only accepted product specifications are normative, and candidate product specifications are not normative."
+    },
+    {
+      "id": "REPO-PSB-005",
+      "text": "The `schema_version` field shall identify the base contract version and shall use the constant string `1`."
+    },
+    {
+      "id": "REPO-PSB-006",
+      "text": "The `level` field shall record the product specification Level as one of `0`, `1`, `2`, or `3`; the manifest entry and product file shall agree on that Level value."
+    },
+    {
+      "id": "REPO-PSB-007",
+      "text": "The `normative_requirements` collection shall contain requirement records with `id` and `text` fields, and requirement identifiers shall be unique within each specification."
+    },
+    {
+      "id": "REPO-PSB-008",
+      "text": "The `dependencies` collection shall contain dependency records with `spec_id` fields; candidate product specifications may depend on candidate or accepted product specifications, while accepted product specifications shall depend only on accepted product specifications."
+    },
+    {
+      "id": "REPO-PSB-009",
+      "text": "The `references` collection shall distinguish normative specification references, historical specification references, and artifact references; normative specification references shall target accepted product specifications only, historical specification references shall target superseded or retired product specifications only, and specification references shall remain within the governed product set."
+    },
+    {
+      "id": "REPO-PSB-010",
+      "text": "The `supersedes` and `superseded_by` lineage collections shall record product-specification identity relationships and shall not self-reference."
+    },
+    {
+      "id": "REPO-PSB-011",
+      "text": "The `derived_artifacts` collection shall be the declaration mechanism used by the product specification itself, shall remain subordinate to that source specification, and shall use repository-relative Markdown paths beneath `product/derived/specs/product/`."
+    },
+    {
+      "id": "REPO-PSB-012",
+      "text": "Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, Level, and declared derived-artifact ownership between the manifest entry and the product file, while product workflow authority shall remain outside the product specification contract."
+    },
+    {
+      "id": "REPO-PSB-013",
+      "text": "Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields."
+    },
+    {
+      "id": "REPO-PSB-014",
+      "text": "Each Level-specific product schema shall extend `product/schemas/product/product-spec-base.schema.json` through an `allOf` composition whose first member references the base schema and whose second member is the Level extension object schema."
+    },
+    {
+      "id": "REPO-PSB-015",
+      "text": "The Level extension object schema shall attach Level-specific fields at the product-specification root, shall refine `level` with the Level-specific constant, and shall not redefine common envelope fields other than that narrowing refinement."
+    },
+    {
+      "id": "REPO-PSB-016",
+      "text": "Each Level-specific product schema shall set root `unevaluatedProperties` to `false` so the base envelope and declared Level extension fields are the complete accepted root surface."
+    },
+    {
+      "id": "REPO-PSB-017",
+      "text": "Each nested object introduced by a Level-specific extension shall set `additionalProperties` to `false` and shall declare its complete Level-specific field surface."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "spec_id": "repo.product-manifest"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-framework-architecture-plan.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-correspondence"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/product-spec-base.md"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "spec_id": "repo.manifest",
+  "title": "Repository Spec Manifest",
+  "purpose": "Identifies the complete repository-spec JSON set.",
+  "status": "accepted",
+  "schema_version": "1",
+  "authoritative_specs": [
+    {
+      "spec_id": "repo.manifest",
+      "path": "repo/specs/repo/manifest.json"
+    },
+    {
+      "spec_id": "repo.governing-issue",
+      "path": "repo/specs/repo/governing-issue.json"
+    },
+    {
+      "spec_id": "repo.review-proposal",
+      "path": "repo/specs/repo/review-proposal.json"
+    },
+    {
+      "spec_id": "repo.repository-structure",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy",
+      "path": "repo/specs/repo/artifact-taxonomy.json"
+    },
+    {
+      "spec_id": "repo.platform-profiles",
+      "path": "repo/specs/repo/platform-profiles.json"
+    },
+    {
+      "spec_id": "repo.development-workflow",
+      "path": "repo/specs/repo/development-workflow.json"
+    },
+    {
+      "spec_id": "repo.validation",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "spec_id": "repo.product-manifest",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "spec_id": "repo.development-document-base",
+      "path": "repo/specs/repo/development-document-base.json"
+    },
+    {
+      "spec_id": "repo.product-overview",
+      "path": "repo/specs/repo/product-overview.json"
+    },
+    {
+      "spec_id": "repo.product-decomposition",
+      "path": "repo/specs/repo/product-decomposition.json"
+    },
+    {
+      "spec_id": "repo.implementation-plan",
+      "path": "repo/specs/repo/implementation-plan.json"
+    },
+    {
+      "spec_id": "repo.product-spec-base",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "spec_id": "repo.product-correspondence",
+      "path": "repo/specs/repo/product-correspondence.json"
+    },
+    {
+      "spec_id": "repo.product-levels",
+      "path": "repo/specs/repo/product-levels.json"
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "REPO-MAN-001",
+      "text": "The manifest shall identify the authoritative repository-spec JSON files."
+    }
+  ],
+  "dependencies": [],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.governing-issue"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.review-proposal"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.platform-profiles"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/manifest.md"
+    }
+  ]
+}

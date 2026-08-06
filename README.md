@@ -8,16 +8,16 @@ Supported runtime: Python 3.10+
 
 - [Repository chatbot initialization](AGENTS.md)
 - [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
-- [Initializer overview](docs/overview/INITIALIZER-OVERVIEW.md)
-- [Initializer decomposition](docs/decompositions/INITIALIZER-DECOMPOSITION.md)
-- [Initializer implementation plan](docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
-- [Initializer reference](docs/initializer/README.md)
-- [Repository manifest](specs/repo/manifest.json)
+- [Initializer overview](product/docs/overview/INITIALIZER-OVERVIEW.md)
+- [Initializer decomposition](product/docs/decompositions/INITIALIZER-DECOMPOSITION.md)
+- [Initializer implementation plan](product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
+- [Initializer reference](product/docs/initializer/README.md)
+- [Repository manifest](repo/specs/repo/manifest.json)
 - [Schemas](schemas/)
-- [Derived docs](derived/specs/repo/)
-- [Validation](scripts/validate)
+- [Derived docs](repo/derived/specs/repo/)
+- [Validation](repo/scripts/validate)
 
 ## Quick commands
 
-- `scripts/validate`
-- `scripts/generate-docs`
+- `repo/scripts/validate`
+- `repo/scripts/generate-docs`

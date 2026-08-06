@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "repo/schemas/repo-manifest.schema.json",
+  "title": "Repository Spec Manifest Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_id",
+    "title",
+    "purpose",
+    "status",
+    "schema_version",
+    "authoritative_specs",
+    "normative_requirements",
+    "dependencies",
+    "references",
+    "derived_artifacts"
+  ],
+  "properties": {
+    "spec_id": {
+      "type": "string",
+      "pattern": "^repo\\.manifest$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["candidate", "accepted", "superseded", "retired"]
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1"
+    },
+    "authoritative_specs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/authoritativeSpec" }
+    },
+    "supersedes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/specId" }
+    },
+    "superseded_by": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/specId" }
+    },
+    "normative_requirements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/dependency" }
+    },
+    "references": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reference" }
+    },
+    "derived_artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/derivedArtifact" }
+    }
+  },
+  "$defs": {
+    "authoritativeSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spec_id", "path"],
+      "properties": {
+        "spec_id": {
+          "type": "string",
+          "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^repo/specs/repo/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)(?!\\.$)[A-Za-z0-9._-]+\\.json$"
+        }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spec_id"],
+      "properties": {
+        "spec_id": {
+          "type": "string",
+          "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["specification", "artifact"]
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["normative", "historical"]
+        },
+        "spec_id": {
+          "type": "string",
+          "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "specification" } } },
+          "then": { "required": ["spec_id"] },
+          "else": { "required": ["path"] }
+        }
+      ]
+    },
+    "derivedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "path"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["markdown"]
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$",
+          "minLength": 1
+        }
+      }
+    },
+    "specId": {
+      "type": "string",
+      "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+    }
+  }
+}

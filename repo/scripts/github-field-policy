@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
+exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/repo/scripts:$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}" python3 "$root/repo/scripts/github_field_policy.py" "$root" "$@"
