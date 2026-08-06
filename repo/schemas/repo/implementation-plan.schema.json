@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "repo/schemas/repo/implementation-plan.schema.json",
+  "title": "Implementation Plan Document Schema",
+  "allOf": [
+    {
+      "$ref": "./development-document-base.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "artifact_type",
+        "root_path",
+        "required_content_areas"
+      ],
+      "properties": {
+        "artifact_type": {
+          "type": "string",
+          "const": "implementation-plan"
+        },
+        "root_path": {
+          "type": "string",
+          "enum": ["docs/plans/", "product/docs/plans/"]
+        },
+        "required_content_areas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "authority_and_basis",
+            "scope_and_exclusions",
+            "workstreams_and_dependencies",
+            "entry_and_exit_conditions",
+            "transition_gates",
+            "validation_strategy",
+            "risks_and_unresolved_decisions",
+            "completion_and_successor_work"
+          ],
+          "properties": {
+            "authority_and_basis": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "scope_and_exclusions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "workstreams_and_dependencies": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "entry_and_exit_conditions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "transition_gates": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "validation_strategy": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "risks_and_unresolved_decisions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            },
+            "completion_and_successor_work": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

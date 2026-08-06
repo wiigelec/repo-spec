@@ -1,0 +1,201 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "repository-framework",
+  "entries": [
+    {
+      "path": "repo/specs/repo/",
+      "classification": "framework-authoritative",
+      "authoritative": true,
+      "installable": true
+    },
+    {
+      "path": "repo/schemas/",
+      "classification": "framework-authoritative",
+      "authoritative": true,
+      "installable": true
+    },
+    {
+      "path": "AGENTS.md",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "README.md",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "LICENSE",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "product/scripts/repo-spec-init",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/validate",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/validate_impl.py",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/repo_model.py",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/docgen.py",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/generate-docs",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/github_profile.py",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/validation/",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "product/scripts/initializer/",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/github-field-policy",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/github_field_policy.py",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/scripts/github_field_policy_mutation_test.py",
+      "classification": "framework-support",
+      "authoritative": false,
+      "installable": true
+    },
+    {
+      "path": "repo/derived/",
+      "classification": "derived",
+      "authoritative": false,
+      "installable": true,
+      "derived_from": ["repo/specs/repo/"]
+    },
+    {
+      "path": "repo/profiles/",
+      "classification": "profile-source",
+      "authoritative": false,
+      "installable": false,
+      "profile": "github",
+      "exclusion_rationale": "profile source material selected only during platform-profile execution"
+    },
+    {
+      "path": ".github/",
+      "classification": "installed-adapter",
+      "authoritative": false,
+      "installable": false,
+      "profile": "github",
+      "exclusion_rationale": "installed hosting adapter; regenerated from profile source"
+    },
+    {
+      "path": "docs/overview/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repo-spec-specific product overview; not reusable framework"
+    },
+    {
+      "path": "docs/decompositions/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repo-spec-specific product decomposition; not reusable framework"
+    },
+    {
+      "path": "docs/plans/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repo-spec-specific implementation plans; not reusable framework"
+    },
+    {
+      "path": "product/docs/initializer/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repo-spec-specific initializer documentation; not reusable framework"
+    },
+    {
+      "path": "product/specs/product/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repo-spec-specific product specifications; not reusable framework"
+    },
+    {
+      "path": "product/tests/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repo-spec-specific product test placeholders; not reusable framework"
+    },
+    {
+      "path": ".gitignore",
+      "classification": "development-state",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "repository-local development state; not reusable framework"
+    },
+    {
+      "path": "reference/",
+      "classification": "excluded",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "reference material not intended for initializer installation"
+    },
+    {
+      "path": "validate/",
+      "classification": "excluded",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "validation workspace not intended for initializer installation"
+    },
+    {
+      "path": "product/src/",
+      "classification": "excluded",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "source tree placeholders not intended for initializer installation"
+    }
+  ]
+}

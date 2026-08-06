@@ -1,0 +1,116 @@
+{
+  "spec_id": "repo.product-correspondence",
+  "title": "Product Correspondence Contract",
+  "purpose": "Defines the normative contract for correspondence declarations linking accepted product specifications to maintained implementation, test, and conformance artifacts.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-PC-001",
+      "text": "The repository shall define exactly one canonical product correspondence contract for bounded product-specification work."
+    },
+    {
+      "id": "REPO-PC-002",
+      "text": "Each product specification shall own its own correspondence declaration, and the product manifest shall not independently author or override correspondence declarations."
+    },
+    {
+      "id": "REPO-PC-003",
+      "text": "The correspondence declaration shall be a common-envelope field named `correspondence` containing `implementations`, `tests`, and `conformance` collections."
+    },
+    {
+      "id": "REPO-PC-004",
+      "text": "Each implementation mapping record shall use a stable local identifier, repository-relative implementation paths, and an explicit requirement list; implementation paths shall remain repository-relative and shall not require source-symbol extraction."
+    },
+    {
+      "id": "REPO-PC-005",
+      "text": "Each test mapping record shall use a stable local identifier, repository-relative test paths, and an explicit requirement list; test paths shall remain repository-relative and shall not use external mutable run identifiers or CI URLs."
+    },
+    {
+      "id": "REPO-PC-006",
+      "text": "Each conformance record shall identify exactly one requirement, reference implementation and test mapping identifiers declared by the same source specification, and use the status vocabulary `covered` or `not-applicable`; a `not-applicable` record shall include a non-empty rationale."
+    },
+    {
+      "id": "REPO-PC-007",
+      "text": "Correspondence declarations shall participate according to lifecycle: accepted specifications require complete correspondence, candidate specifications may declare correspondence but are not required to be complete, and superseded or retired specifications may retain correspondence for historical continuity without current completeness requirements."
+    },
+    {
+      "id": "REPO-PC-008",
+      "text": "For each normative requirement in an accepted product specification, exactly one conformance record shall exist, every requirement reference shall match the owning specification, every covered record shall reference at least one implementation mapping and at least one test mapping, every not-applicable record shall reference none of those mappings, and every mapping identifier shall be reachable from at least one conformance record."
+    },
+    {
+      "id": "REPO-PC-009",
+      "text": "Correspondence validation shall prove structural ownership, identifier reachability, and completeness boundaries only; semantic correctness and runtime satisfaction shall remain review-owned."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "spec_id": "repo.product-manifest"
+    },
+    {
+      "spec_id": "repo.product-spec-base"
+    },
+    {
+      "spec_id": "repo.product-levels"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-spec-base"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-framework-architecture-plan.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/product-correspondence.md"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "spec_id": "product.initializer-level-1",
+  "title": "Initializer Level 1 Atomic Primitives",
+  "purpose": "Defines the atomic primitives and reusable product concepts for the repo-spec initializer, including the initialization request contract, source revision identity, material classification, destination representation, staging workspace contract, execution profile, platform profile interface, provenance record, handoff manifest, and execution report.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "initialization-request",
+      "source-revision-identity",
+      "material-role-classification",
+      "destination-representation",
+      "staging-workspace-contract",
+      "execution-profile",
+      "platform-profile-interface",
+      "provenance-record-format",
+      "handoff-manifest-format",
+      "execution-report-format"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-L1-001",
+      "text": "An initialization request shall be an atomic input unit that specifies the desired repository configuration, the intended destination, the source revision for framework material, and any supplied product-direction material."
+    },
+    {
+      "id": "INIT-L1-002",
+      "text": "The initialization request shall distinguish required fields from optional fields and shall reject a request when any required field is missing or structurally invalid."
+    },
+    {
+      "id": "INIT-L1-003",
+      "text": "A source revision identity shall be an atomic reference that uniquely identifies the exact revision of the initializer's reusable framework material."
+    },
+    {
+      "id": "INIT-L1-004",
+      "text": "The source revision identity shall support both a concrete pinned revision and a resolvable named reference, and the resolved identity shall be recorded in the provenance record."
+    },
+    {
+      "id": "INIT-L1-005",
+      "text": "Material role classification shall be an atomic taxonomy that distinguishes reusable framework material, project-specific product-direction material, project-specific product-specification material, and generated derived artifacts."
+    },
+    {
+      "id": "INIT-L1-006",
+      "text": "Every material item in the initialized repository shall carry or be traceable to its role classification, and the classification shall determine whether the initializer may modify the item during generation."
+    },
+    {
+      "id": "INIT-L1-007",
+      "text": "A destination representation shall be an atomic path or reference that identifies the target location for the initialized repository, together with an existence constraint that specifies whether the destination must not exist, may exist and be empty, or may be overwritten under explicit authority."
+    },
+    {
+      "id": "INIT-L1-008",
+      "text": "The destination representation shall support validation before any generation or mutation operation begins, and validation shall reject a destination that conflicts with the declared existence constraint."
+    },
+    {
+      "id": "INIT-L1-009",
+      "text": "A staging workspace contract shall define an atomic isolation boundary where generation and validation operations occur without modifying the declared destination."
+    },
+    {
+      "id": "INIT-L1-010",
+      "text": "The staging workspace contract shall define promotion as the explicit gated operation that atomically moves generated content from staging to the destination, and shall guarantee that failed or incomplete generation never appears in the destination."
+    },
+    {
+      "id": "INIT-L1-011",
+      "text": "An execution profile shall be an atomic mode selector that governs whether the initializer performs a dry-run validation pass, an actual generation pass with destination mutation, or a recovery pass that resumes from a preserved staging state."
+    },
+    {
+      "id": "INIT-L1-012",
+      "text": "The execution profile shall reject execution modes that are not supported for the given combination of request inputs, destination state, and source revision."
+    },
+    {
+      "id": "INIT-L1-013",
+      "text": "A platform profile interface shall be an atomic extension contract that encapsulates hosting-platform-specific repository establishment behavior behind a defined boundary."
+    },
+    {
+      "id": "INIT-L1-014",
+      "text": "The platform profile interface shall define the required operations that a profile must implement, the inputs it receives from the initializer, and the outputs or side effects it produces, without constraining the internal implementation of those operations."
+    },
+    {
+      "id": "INIT-L1-015",
+      "text": "A provenance record shall be an atomic output artifact that records the initializer identity, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied."
+    },
+    {
+      "id": "INIT-L1-016",
+      "text": "The provenance record shall be deterministically reproducible from the same request inputs and source revision, except for the timestamp which shall be explicitly declared as variable data."
+    },
+    {
+      "id": "INIT-L1-017",
+      "text": "A handoff manifest shall be an atomic output artifact that describes the initialized repository's state, lists the generated, selected, omitted, and deferred material, and names the next governed action for the initialized repository."
+    },
+    {
+      "id": "INIT-L1-018",
+      "text": "The handoff manifest shall not contain implementation artifacts or successor product behavior; it is a description of what was produced and what may come next."
+    },
+    {
+      "id": "INIT-L1-019",
+      "text": "An execution report shall be an atomic output artifact that records the outcome of each lifecycle stage, any warnings or errors produced, and the overall completion status."
+    },
+    {
+      "id": "INIT-L1-020",
+      "text": "The execution report shall distinguish completed stages from skipped, deferred, or failed stages, and shall not report overall success when any required stage failed or was skipped without explicit authority."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-correspondence.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/initializer-level-1.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

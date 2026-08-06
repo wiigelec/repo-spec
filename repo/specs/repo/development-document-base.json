@@ -1,0 +1,103 @@
+{
+  "spec_id": "repo.development-document-base",
+  "title": "Development Document Base Contract",
+  "purpose": "Defines the canonical composite-document envelope shared by product overviews, product decompositions, and implementation plans.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-DDB-001",
+      "text": "The repository shall define one canonical composite-document base contract for product overviews, product decompositions, and implementation plans."
+    },
+    {
+      "id": "REPO-DDB-002",
+      "text": "The canonical roots for governed development documents shall be `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and each artifact type shall remain confined to its own root."
+    },
+    {
+      "id": "REPO-DDB-003",
+      "text": "Each governed development document shall have a top-level controlling Markdown file directly under its root and a subordinate chunk directory with the same lower-case slug as the top-level file stem."
+    },
+    {
+      "id": "REPO-DDB-004",
+      "text": "The top-level controlling document shall declare the artifact identifier, artifact type, product scope, authority category, lifecycle status, governing issue, predecessor or controlling sources, subordinate chunk inventory, successor action, and contract version in a machine-readable envelope; an initial product-overview document may satisfy the controlling-source requirement through its governing issue and evidence without a controlling-document predecessor."
+    },
+    {
+      "id": "REPO-DDB-005",
+      "text": "The top-level controlling document shall be the discoverable entry point and index for the composite document, while subordinate chunks shall carry the substantive bounded content for each coherent concern."
+    },
+    {
+      "id": "REPO-DDB-006",
+      "text": "A governed development document shall be invalid if its top-level file, chunk directory, or chunk inventory does not match the declared metadata."
+    },
+    {
+      "id": "REPO-DDB-007",
+      "text": "Chunk numbering shall be contiguous, ordered, and unique within a composite document, and each chunk shall remain within the declared chunk directory."
+    },
+    {
+      "id": "REPO-DDB-008",
+      "text": "A governed development chunk shall cover one coherent concern, avoid unrelated lifecycle stages or authority domains, and remain small enough for direct human and AI inspection."
+    },
+    {
+      "id": "REPO-DDB-009",
+      "text": "Mechanically enforceable validation shall cover root containment, top-level filename pattern, subordinate directory naming, declared chunk inventory, chunk ordering, duplicate detection, missing or undeclared chunks, and declared chunk-size limits."
+    },
+    {
+      "id": "REPO-DDB-010",
+      "text": "Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/PRODUCT-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/development-document-base.md"
+    }
+  ]
+}

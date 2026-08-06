@@ -4,8 +4,8 @@ Before any repository mutation, initialize against the accepted repository workf
 
 Read, in order:
 - `README.md`
-- `specs/repo/manifest.json`
-- `specs/repo/development-workflow.json`
+- `repo/specs/repo/manifest.json`
+- `repo/specs/repo/development-workflow.json`
 - the governing issue for the current bounded change
 - only the relevant overview, decomposition, plan, specification, and predecessor records
 - the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state
@@ -22,4 +22,4 @@ The normative development lifecycle for product development is: accepted overvie
 
 Code, tests, schemas, templates, generated output, or prior implementation behavior do not become product authority merely because they exist.
 
-When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `specs/repo/governing-issue.json`. When drafting or updating pull requests or equivalent review proposals, chatbot sessions shall load and follow the canonical review-proposal contract in `specs/repo/review-proposal.json`. When working with product overviews, product decompositions, or implementation plans, chatbot sessions shall identify the required artifact class first, load the governing document specification, use the canonical root and controlling-document naming model, update the controlling entry point and subordinate chunks together, and avoid inventing headings, paths, metadata, or lifecycle vocabulary. Use the derived Markdown projection, GitHub issue form, or GitHub pull request template only as adapters; they do not replace the canonical contracts.
+When proposing or creating governed work, chatbot sessions shall load and follow the canonical governing-issue contract in `repo/specs/repo/governing-issue.json`. When drafting or updating pull requests or equivalent review proposals, chatbot sessions shall load and follow the canonical review-proposal contract in `repo/specs/repo/review-proposal.json`. When working with product overviews, product decompositions, or implementation plans, chatbot sessions shall identify the required artifact class first, load the governing document specification, use the canonical root and controlling-document naming model, update the controlling entry point and subordinate chunks together, and avoid inventing headings, paths, metadata, or lifecycle vocabulary. Use the derived Markdown projection, GitHub issue form, or GitHub pull request template only as adapters; they do not replace the canonical contracts.

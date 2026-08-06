@@ -1,0 +1,102 @@
+{
+  "spec_id": "repo.implementation-plan",
+  "title": "Implementation Plan Contract",
+  "purpose": "Defines the planning-authority contract for implementation plan documents.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-IPL-001",
+      "text": "An implementation plan shall be stored under `docs/plans/` and shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks."
+    },
+    {
+      "id": "REPO-IPL-002",
+      "text": "An implementation plan shall record the controlling overview and decomposition, controlling documents, predecessor documents, evidence, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work, with semantic coverage separated from subordinate chunk layout. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree."
+    },
+    {
+      "id": "REPO-IPL-003",
+      "text": "An implementation plan has planning authority but is non-normative with respect to product semantics, and it shall not redefine accepted overview direction or accepted specifications."
+    },
+    {
+      "id": "REPO-IPL-004",
+      "text": "The top-level controlling document shall act as the index, status declaration, and navigation entry point for the plan composite document."
+    },
+    {
+      "id": "REPO-IPL-005",
+      "text": "An implementation plan shall not claim acceptance, merge, or release merely because the planned work is complete."
+    },
+    {
+      "id": "REPO-IPL-006",
+      "text": "An implementation plan shall preserve unresolved planning decisions until a later governed decision closes them."
+    },
+    {
+      "id": "REPO-IPL-007",
+      "text": "An implementation plan shall identify the exact controlling accepted product specifications for every planned workstream or stage. The plan shall distinguish specification-complete scope, specification work still required, implementation-authorized scope, deferred implementation, unresolved semantic decisions, and non-product exploratory work."
+    },
+    {
+      "id": "REPO-IPL-008",
+      "text": "An implementation plan shall not be accepted when its required controlling product specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the product manifest, or missing required correspondence or dependency declarations."
+    },
+    {
+      "id": "REPO-IPL-009",
+      "text": "An implementation plan may include separately identified future specification work as a planned activity, but that portion shall not authorize product-artifact synthesis before the specifications are accepted and the plan is correspondingly updated or revalidated."
+    },
+    {
+      "id": "REPO-IPL-010",
+      "text": "An implementation plan shall not supply missing normative product semantics. Plans may sequence and coordinate work but shall not define product behavior that belongs in an accepted Level specification."
+    },
+    {
+      "id": "REPO-IPL-011",
+      "text": "A material specification change affecting specifications that an implementation plan relies upon shall invalidate the corresponding plan sections. The plan must be revised or the affected sections explicitly reaffirmed before implementation under the changed authority may proceed."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.development-document-base"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.validation"
+    },
+    {
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "spec_id": "repo.product-levels"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.development-document-base"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/implementation-plan.md"
+    }
+  ]
+}

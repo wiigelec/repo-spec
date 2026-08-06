@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "test",
+  "entries": [
+    {
+      "path": "repo/specs/repo/",
+      "classification": "unsupported-classification",
+      "authoritative": true,
+      "installable": true
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "spec_id": "repo.product-manifest",
+  "title": "Product Manifest Contract",
+  "purpose": "Defines the normative contract for the product-specification manifest.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-PM-001",
+      "text": "The repository shall define `product/specs/product/manifest.json` as the canonical product-manifest path and shall keep it distinct from `repo/specs/repo/manifest.json`."
+    },
+    {
+      "id": "REPO-PM-002",
+      "text": "The product manifest shall be authoritative for the governed product-specification registry and for declaration-driven product-derived projections under `product/specs/product/`, and shall not claim repository-workflow authority."
+    },
+    {
+      "id": "REPO-PM-003",
+      "text": "The product manifest shall identify itself with the stable manifest identity `product.manifest` and shall use the same repository-spec lifecycle statuses as repository specifications."
+    },
+    {
+      "id": "REPO-PM-004",
+      "text": "The presence of `product/specs/product/manifest.json` shall express activation of the product-specification system."
+    },
+    {
+      "id": "REPO-PM-005",
+      "text": "A product manifest may be empty."
+    },
+    {
+      "id": "REPO-PM-006",
+      "text": "The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level."
+    },
+    {
+      "id": "REPO-PM-007",
+      "text": "A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`."
+    },
+    {
+      "id": "REPO-PM-008",
+      "text": "The product manifest shall register the complete governed product-specification set, not only accepted specifications; candidate specifications shall appear when governed, and historical specifications shall remain registered while retained."
+    },
+    {
+      "id": "REPO-PM-009",
+      "text": "Each registered product specification shall have a unique identity and a unique path within the manifest."
+    },
+    {
+      "id": "REPO-PM-010",
+      "text": "Each registered product specification shall reside under exactly one reserved Level root: `product/specs/product/level-0/`, `product/specs/product/level-1/`, `product/specs/product/level-2/`, or `product/specs/product/level-3/`."
+    },
+    {
+      "id": "REPO-PM-011",
+      "text": "Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value."
+    },
+    {
+      "id": "REPO-PM-012",
+      "text": "Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries."
+    },
+    {
+      "id": "REPO-PM-013",
+      "text": "Declared derived product projections shall be registered by the product specification itself in its `derived_artifacts` collection, shall use repository-relative Markdown paths under `product/derived/specs/product/`, and shall remain subordinate to the authoritative product specification."
+    },
+    {
+      "id": "REPO-PM-014",
+      "text": "The product manifest shall be complete when it enumerates every governed product specification currently present under the reserved product-specification roots, excluding the manifest file itself."
+    },
+    {
+      "id": "REPO-PM-015",
+      "text": "Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "spec_id": "repo.validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/plans/01-framework-architecture-plan.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/01-product-direction.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/03-development-and-specifications.md"
+    },
+    {
+      "type": "artifact",
+      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/product-manifest.md"
+    }
+  ]
+}
