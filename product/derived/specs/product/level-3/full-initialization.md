@@ -52,9 +52,7 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `product.initializer-level-0`
 - `product.initialization-request`
 - `product.source-revision-identity`
-- `product.material-classification`
 - `product.destination`
-- `product.staging-workspace`
 - `product.local-git-repository`
 - `product.provenance-record`
 - `product.handoff-manifest`
