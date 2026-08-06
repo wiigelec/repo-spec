@@ -39,7 +39,7 @@
     },
     {
       "id": "REPO-PL-009",
-      "text": "Accepted Level 1, Level 2, and Level 3 specifications shall require at least one accepted Level 0 specification, and intermediate Levels shall not be mandatory merely because a higher Level exists."
+      "text": "Accepted Level 1, Level 2, and Level 3 specifications shall have at least one accepted Level 0 specification in their transitive dependency closure, and intermediate Levels shall not be mandatory merely because a higher Level exists."
     },
     {
       "id": "REPO-PL-010",

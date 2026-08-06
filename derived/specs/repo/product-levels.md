@@ -28,7 +28,7 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 - `REPO-PL-006`: Higher Levels may depend on the same or lower Levels, and lower Levels shall not depend on higher Levels.
 - `REPO-PL-007`: Same-Level dependencies shall be permitted only when they are explicit and the full product dependency graph remains acyclic.
 - `REPO-PL-008`: Product dependency targets shall be limited to candidate or accepted product specifications.
-- `REPO-PL-009`: Accepted Level 1, Level 2, and Level 3 specifications shall require at least one accepted Level 0 specification, and intermediate Levels shall not be mandatory merely because a higher Level exists.
+- `REPO-PL-009`: Accepted Level 1, Level 2, and Level 3 specifications shall have at least one accepted Level 0 specification in their transitive dependency closure, and intermediate Levels shall not be mandatory merely because a higher Level exists.
 - `REPO-PL-010`: Each product specification shall remain confined to its reserved Level root, and Level metadata recorded in the manifest and product file shall agree with the declared Level root.
 - `REPO-PL-011`: Future Level-specific schemas shall extend the common product-specification envelope through explicit governed extension boundaries and shall not redefine common fields or lower-Level semantics.
 - `REPO-PL-012`: Structural completeness shall be machine-checkable from the declared Level, path correspondence, dependency targets, and lifecycle agreement, while semantic completeness remains review-owned.
