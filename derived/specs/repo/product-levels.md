@@ -37,10 +37,10 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 - `REPO-PL-015`: Level 1 shall not coordinate multiple coherent responsibilities.
 - `REPO-PL-016`: Level 2 shall not define a complete product outcome.
 - `REPO-PL-017`: Level 3 shall not redefine primitive or component semantics.
-- `REPO-PL-018`: Level-specific schema extension fields shall be declared in the second `allOf` object subschema after the common product-specification base reference.
-- `REPO-PL-019`: Level-specific schemas shall narrow the common `level` field to their declared Level and shall not redefine other common envelope fields.
-- `REPO-PL-020`: Level-specific schemas shall reject undeclared root properties through `unevaluatedProperties: false`, and nested Level extension objects shall reject undeclared properties through `additionalProperties: false`.
-- `REPO-PL-021`: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics.
+- `REPO-PL-022`: Level-specific schema extension fields shall be declared in the second `allOf` object subschema after the common product-specification base reference.
+- `REPO-PL-023`: Level-specific schemas shall narrow the common `level` field to their declared Level and shall not redefine other common envelope fields.
+- `REPO-PL-024`: Level-specific schemas shall reject undeclared root properties through `unevaluatedProperties: false`, and nested Level extension objects shall reject undeclared properties through `additionalProperties: false`.
+- `REPO-PL-025`: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics.
 
 ## Dependencies
 
@@ -66,4 +66,3 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 ## Derived artifacts
 
 - `markdown`: `derived/specs/repo/product-levels.md`
-
