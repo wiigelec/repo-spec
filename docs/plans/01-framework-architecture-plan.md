@@ -463,7 +463,7 @@ Issue #211 revises the Level definitions without changing dependency direction, 
 
 ### Same-Level dependencies
 
-Same-Level dependencies may be permitted only when they are explicit, justified, acyclic, and do not hide prohibited upward dependencies or redefine another artifact's authority.
+Same-Level dependencies may be permitted only when they are explicit, acyclic, and do not hide prohibited upward dependencies or redefine another artifact's authority.
 
 ### Required dependency validation
 

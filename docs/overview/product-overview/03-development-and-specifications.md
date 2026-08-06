@@ -218,7 +218,7 @@ The Level model should also prevent:
 - orchestrations inventing missing primitive behavior;
 - implementation artifacts becoming undocumented sources of specification semantics.
 
-Same-Level dependencies may be permitted only when they are explicit, justified, and acyclic.
+Same-Level dependencies may be permitted only when they are explicit and acyclic.
 
 ### Classification matrix
 
