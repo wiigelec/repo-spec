@@ -118,6 +118,11 @@ Defines the atomic handoff manifest output artifact format for the initializer.
 - `INIT-HND-007`: A handoff manifest shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts or successor product behavior.
 - `INIT-HND-008`: The handoff manifest shall be deterministically serialized as JSON with object keys in the declaration order of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-HND-009`: The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently.
+- `INIT-HND-010`: The six material arrays (generated, selected, omitted, deferred, framework, and product) shall be mutually disjoint: no repository-relative path shall appear in more than one array.
+- `INIT-HND-011`: Every regular file in the initialized repository that is not listed in the foundations arrays shall appear in exactly one of generated, selected, omitted, or deferred; directories shall not appear in any array.
+- `INIT-HND-012`: Generated content (controlling documents, chunk documents, product manifest, discoverability README files, provenance record, and handoff manifest) shall be listed in the generated array; framework content copied verbatim from the source repository shall be listed in the selected array; content explicitly excluded by the execution profile or request shall be listed in the omitted array; content deferred by explicit authority shall be listed in the deferred array.
+- `INIT-HND-013`: Each material array shall be sorted lexicographically by repository-relative path using ASCII ordering; directory entries shall not include a trailing slash; any array may be empty when no item of that disposition exists, and empty arrays shall be represented as `[]`.
+- `INIT-HND-014`: Each entry in a material array shall be a repository-relative path to a regular file; paths shall use forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters.
 
 ## Dependencies
 

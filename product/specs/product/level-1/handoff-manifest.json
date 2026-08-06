@@ -46,6 +46,26 @@
     {
       "id": "INIT-HND-009",
       "text": "The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently."
+    },
+    {
+      "id": "INIT-HND-010",
+      "text": "The six material arrays (generated, selected, omitted, deferred, framework, and product) shall be mutually disjoint: no repository-relative path shall appear in more than one array."
+    },
+    {
+      "id": "INIT-HND-011",
+      "text": "Every regular file in the initialized repository that is not listed in the foundations arrays shall appear in exactly one of generated, selected, omitted, or deferred; directories shall not appear in any array."
+    },
+    {
+      "id": "INIT-HND-012",
+      "text": "Generated content (controlling documents, chunk documents, product manifest, discoverability README files, provenance record, and handoff manifest) shall be listed in the generated array; framework content copied verbatim from the source repository shall be listed in the selected array; content explicitly excluded by the execution profile or request shall be listed in the omitted array; content deferred by explicit authority shall be listed in the deferred array."
+    },
+    {
+      "id": "INIT-HND-013",
+      "text": "Each material array shall be sorted lexicographically by repository-relative path using ASCII ordering; directory entries shall not include a trailing slash; any array may be empty when no item of that disposition exists, and empty arrays shall be represented as `[]`."
+    },
+    {
+      "id": "INIT-HND-014",
+      "text": "Each entry in a material array shall be a repository-relative path to a regular file; paths shall use forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters."
     }
   ],
   "dependencies": [
