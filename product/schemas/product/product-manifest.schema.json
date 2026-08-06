@@ -63,6 +63,10 @@
             "level": {
               "type": "integer",
               "const": 0
+            },
+            "capability_group": {
+              "type": "string",
+              "enum": ["initial-bounded-workflow", "future-extension"]
             }
           }
         },
@@ -86,6 +90,10 @@
             "level": {
               "type": "integer",
               "const": 1
+            },
+            "capability_group": {
+              "type": "string",
+              "enum": ["initial-bounded-workflow", "future-extension"]
             }
           }
         },
@@ -109,6 +117,10 @@
             "level": {
               "type": "integer",
               "const": 2
+            },
+            "capability_group": {
+              "type": "string",
+              "enum": ["initial-bounded-workflow", "future-extension"]
             }
           }
         },
@@ -132,6 +144,10 @@
             "level": {
               "type": "integer",
               "const": 3
+            },
+            "capability_group": {
+              "type": "string",
+              "enum": ["initial-bounded-workflow", "future-extension"]
             }
           }
         }
