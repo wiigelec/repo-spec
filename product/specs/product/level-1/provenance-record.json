@@ -1,0 +1,87 @@
+{
+  "spec_id": "product.provenance-record",
+  "title": "Provenance Record Contract",
+  "purpose": "Defines the atomic provenance record output artifact format for the initializer.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["provenance-record-format"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-PRO-001",
+      "text": "A provenance record shall be an atomic output artifact that records the initializer identity and version, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied."
+    },
+    {
+      "id": "INIT-PRO-002",
+      "text": "The provenance record contract shall declare a machine-readable representation and the fields required by that representation."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/source-revision-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-profile.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/provenance-record.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

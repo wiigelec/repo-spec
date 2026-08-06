@@ -1,0 +1,73 @@
+{
+  "spec_id": "product.source-revision-identity",
+  "title": "Source Revision Identity",
+  "purpose": "Defines the atomic source revision identity reference for the initializer's reusable framework material.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["source-revision-identity"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-SRC-001",
+      "text": "A source revision identity shall be an atomic reference that uniquely identifies the exact revision of the initializer's reusable framework material."
+    },
+    {
+      "id": "INIT-SRC-002",
+      "text": "The source revision identity shall support both a concrete pinned revision and a resolvable named reference, and the resolved identity shall be recorded in the provenance record."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/source-revision-identity.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

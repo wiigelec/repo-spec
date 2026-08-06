@@ -72,12 +72,30 @@ Defines the reusable components and coherent product responsibilities for the re
 ## Dependencies
 
 - `product.initializer-level-0`
-- `product.initializer-level-1`
+- `product.initialization-request`
+- `product.source-revision-identity`
+- `product.material-classification`
+- `product.destination`
+- `product.staging-workspace`
+- `product.execution-profile`
+- `product.platform-profile-interface`
+- `product.provenance-record`
+- `product.handoff-manifest`
+- `product.execution-report`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
-- artifact: `product/specs/product/level-1/initializer-level-1.json`
+- artifact: `product/specs/product/level-1/initialization-request.json`
+- artifact: `product/specs/product/level-1/source-revision-identity.json`
+- artifact: `product/specs/product/level-1/material-classification.json`
+- artifact: `product/specs/product/level-1/destination.json`
+- artifact: `product/specs/product/level-1/staging-workspace.json`
+- artifact: `product/specs/product/level-1/execution-profile.json`
+- artifact: `product/specs/product/level-1/platform-profile-interface.json`
+- artifact: `product/specs/product/level-1/provenance-record.json`
+- artifact: `product/specs/product/level-1/handoff-manifest.json`
+- artifact: `product/specs/product/level-1/execution-report.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

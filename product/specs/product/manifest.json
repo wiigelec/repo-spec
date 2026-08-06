@@ -12,8 +12,62 @@
       "level": 0
     },
     {
-      "spec_id": "product.initializer-level-1",
-      "path": "product/specs/product/level-1/initializer-level-1.json",
+      "spec_id": "product.initialization-request",
+      "path": "product/specs/product/level-1/initialization-request.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "path": "product/specs/product/level-1/source-revision-identity.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.material-classification",
+      "path": "product/specs/product/level-1/material-classification.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.destination",
+      "path": "product/specs/product/level-1/destination.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.staging-workspace",
+      "path": "product/specs/product/level-1/staging-workspace.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.execution-profile",
+      "path": "product/specs/product/level-1/execution-profile.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.platform-profile-interface",
+      "path": "product/specs/product/level-1/platform-profile-interface.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.provenance-record",
+      "path": "product/specs/product/level-1/provenance-record.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "path": "product/specs/product/level-1/handoff-manifest.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.execution-report",
+      "path": "product/specs/product/level-1/execution-report.json",
       "status": "candidate",
       "level": 1
     },

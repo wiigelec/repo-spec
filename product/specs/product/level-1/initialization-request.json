@@ -1,0 +1,77 @@
+{
+  "spec_id": "product.initialization-request",
+  "title": "Initialization Request Contract",
+  "purpose": "Defines the atomic initialization request contract specifying the desired repository configuration, destination, and supplied source material.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["initialization-request"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-REQ-001",
+      "text": "An initialization request shall be an atomic input unit that specifies the desired repository configuration, the intended destination, the source revision for framework material, and any supplied product-direction material."
+    },
+    {
+      "id": "INIT-REQ-002",
+      "text": "The initialization request shall distinguish required fields from optional fields and shall reject a request when any required field is missing or structurally invalid."
+    },
+    {
+      "id": "INIT-REQ-003",
+      "text": "The initialization request contract shall declare a machine-readable representation and the fields required by that representation."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/initialization-request.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

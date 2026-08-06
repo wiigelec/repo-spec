@@ -106,7 +106,34 @@
       "spec_id": "product.initializer-level-0"
     },
     {
-      "spec_id": "product.initializer-level-1"
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.material-classification"
+    },
+    {
+      "spec_id": "product.destination"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "spec_id": "product.platform-profile-interface"
+    },
+    {
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "spec_id": "product.execution-report"
     }
   ],
   "references": [
@@ -116,7 +143,43 @@
     },
     {
       "type": "artifact",
-      "path": "product/specs/product/level-1/initializer-level-1.json"
+      "path": "product/specs/product/level-1/initialization-request.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/source-revision-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/material-classification.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/destination.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/staging-workspace.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-profile.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/platform-profile-interface.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/provenance-record.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/handoff-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-report.json"
     },
     {
       "type": "artifact",

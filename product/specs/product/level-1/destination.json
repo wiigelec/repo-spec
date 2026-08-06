@@ -1,0 +1,73 @@
+{
+  "spec_id": "product.destination",
+  "title": "Destination Contract",
+  "purpose": "Defines the atomic destination representation for the initialized repository target location.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["destination-representation"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-DST-001",
+      "text": "A destination representation shall be an atomic path or reference that identifies the target location for the initialized repository, together with an existence constraint that specifies whether the destination must not exist, may exist and be empty, or may be overwritten under explicit authority."
+    },
+    {
+      "id": "INIT-DST-002",
+      "text": "The destination representation shall support validation before any generation or mutation operation begins, and validation shall reject a destination that conflicts with the declared existence constraint."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/destination.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
