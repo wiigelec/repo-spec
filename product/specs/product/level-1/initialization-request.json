@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-REQ-002",
-      "text": "The governing authority identity, product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, structurally invalid, or contradictory."
+      "text": "The governing authority identity, product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, or structurally invalid."
     },
     {
       "id": "INIT-REQ-003",
@@ -65,7 +65,7 @@
     },
     {
       "id": "INIT-REQ-014",
-      "text": "The request shall not accept, infer, or substitute any other authority identity and shall be rejected when `authority.granted_by` is absent, empty, contradictory with the provenance request identifier, or inconsistent with the governing issue linkage."
+      "text": "The request shall not accept, infer, or substitute any other authority identity and shall be rejected when `authority.granted_by` is absent or empty; consistency of `authority.granted_by` with the provenance record request identifier or with the governing issue linkage shall be validated by repository validation as a post-promotion check, not by request intake."
     }
   ],
   "dependencies": [
