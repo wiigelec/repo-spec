@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["handoff-manifest-format"]
+    "concepts": [
+      "handoff-manifest-format"
+    ]
   },
   "normative_requirements": [
     {
@@ -96,6 +98,70 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": []
+    "conformance": [
+      {
+        "requirement_id": "INIT-HND-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff manifest concept \u2014 no handoff-assembly implementation writes the artifact. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff manifest is an output artifact contract; no dedicated module produces it. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Bounded-handoff manifest path contract; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff field enumeration; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Nested handoff field definitions; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance reference path; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unknown-field rejection; no handoff implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Deterministic serialization; no handoff implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-009",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Schema version evolution; no handoff implementation. Acceptance gap."
+      }
+    ]
   }
 }

@@ -22,15 +22,62 @@ Defines the atomic staging workspace isolation boundary for the initializer.
 
 ### Implementations
 
-- None
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
+
+- `impl.promotion`
+  - Paths:
+    - `product/scripts/initializer/promotion.py`
+  - Requirements:
+    - `INIT-STG-001`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
 
 ### Tests
 
-- None
+- `test.destination`
+  - Paths:
+    - `product/scripts/initializer/tests/test_destination_promotion.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
 
 ### Conformance
 
-- None
+- `INIT-STG-001`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.promotion`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-STG-002`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
 
 ## Primitives
 

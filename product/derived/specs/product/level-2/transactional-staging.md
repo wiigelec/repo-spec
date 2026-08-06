@@ -22,15 +22,90 @@ Defines same-filesystem isolated staging, validation gating, diagnostic preserva
 
 ### Implementations
 
-- None
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-TST-001`
+    - `INIT-TST-002`
+    - `INIT-TST-003`
+    - `INIT-TST-004`
+
+- `impl.promotion`
+  - Paths:
+    - `product/scripts/initializer/promotion.py`
+  - Requirements:
+    - `INIT-TST-001`
+    - `INIT-TST-004`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-TST-001`
+    - `INIT-TST-002`
+    - `INIT-TST-003`
+    - `INIT-TST-004`
 
 ### Tests
 
-- None
+- `test.destination`
+  - Paths:
+    - `product/scripts/initializer/tests/test_destination_promotion.py`
+  - Requirements:
+    - `INIT-TST-001`
+    - `INIT-TST-002`
+    - `INIT-TST-003`
+    - `INIT-TST-004`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-TST-001`
+    - `INIT-TST-002`
+    - `INIT-TST-003`
+    - `INIT-TST-004`
 
 ### Conformance
 
-- None
+- `INIT-TST-001`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.promotion`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-TST-002`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-TST-003`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-TST-004`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.promotion`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
 
 ## Components
 

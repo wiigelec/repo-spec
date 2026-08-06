@@ -22,15 +22,110 @@ Defines the platform-integrated initialization workflow that applies hosting-pla
 
 ### Implementations
 
-- None
+- `impl.foundations`
+  - Paths:
+    - `product/scripts/initializer/foundations.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `impl.git`
+  - Paths:
+    - `product/scripts/initializer/git.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-PII-006`
 
 ### Tests
 
-- None
+- `test.foundations`
+  - Paths:
+    - `product/scripts/initializer/tests/test_foundations.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `test.git`
+  - Paths:
+    - `product/scripts/initializer/tests/test_git.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-PII-006`
 
 ### Conformance
 
-- None
+- `INIT-PII-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Platform-integrated workflow composes platform profile execution, which has no implementation. Acceptance gap.`
+
+- `INIT-PII-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Platform-integrated lifecycle ordering requires platform profile execution stage, which does not exist. Acceptance gap.`
+
+- `INIT-PII-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Post-promotion platform execution stage does not exist. Acceptance gap.`
+
+- `INIT-PII-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Precondition for platform-integrated workflow; no dispatch mechanism selects it. Acceptance gap.`
+
+- `INIT-PII-006`
+  - Implementation Ids:
+    - `impl.foundations`
+    - `impl.git`
+    - `impl.staging`
+    - `impl.validation`
+  - Test Ids:
+    - `test.foundations`
+    - `test.git`
+    - `test.staging`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-PII-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Execution report with component identities is not implemented. Acceptance gap.`
 
 ## Orchestrations
 

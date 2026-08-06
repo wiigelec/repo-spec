@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["provenance-record-format"]
+    "concepts": [
+      "provenance-record-format"
+    ]
   },
   "normative_requirements": [
     {
@@ -99,6 +101,63 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": []
+    "conformance": [
+      {
+        "requirement_id": "INIT-PRO-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance record concept \u2014 no ProvenanceRecord model exists in the implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance record field enumeration is a data-structure contract; no dedicated implementation module exists \u2014 models.py has partial structures. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "File path requirement for the provenance record artifact; no implementation writes the provenance-record.json file yet. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Field-level contract for the provenance record; no implementation writes the complete provenance artifact. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "request_identifier equals authority.granted_by is a data-content contract; no provenance-record writing implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "completed_stages contract for provenance; no provenance writing implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unknown-field rejection is a schema requirement; no provenance writing implementation validates against this schema yet. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Deterministic serialization rule for the provenance artifact; no serialization implementation exists. Acceptance gap."
+      }
+    ]
   }
 }

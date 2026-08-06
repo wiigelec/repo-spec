@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["git-bootstrap-profile"]
+    "concepts": [
+      "git-bootstrap-profile"
+    ]
   },
   "normative_requirements": [
     {
@@ -74,8 +76,114 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-BPF-001",
+          "INIT-BPF-002",
+          "INIT-BPF-003",
+          "INIT-BPF-004"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-BPF-001",
+          "INIT-BPF-002"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-BPF-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-BPF-001",
+          "INIT-BPF-002",
+          "INIT-BPF-003",
+          "INIT-BPF-004"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-BPF-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-BPF-001",
+        "implementation_ids": [
+          "impl.git",
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-002",
+        "implementation_ids": [
+          "impl.git",
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-003",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-004",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Profile-identifier immutability is a governance rule for specification evolution; not an implementable runtime behavior."
+      }
+    ]
   }
 }

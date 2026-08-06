@@ -22,15 +22,65 @@ Defines the exact revision identity of reusable framework material already avail
 
 ### Implementations
 
-- None
+- `impl.inventory`
+  - Paths:
+    - `product/scripts/initializer/inventory.py`
+  - Requirements:
+    - `INIT-SRC-001`
+    - `INIT-SRC-002`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-SRC-001`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-SRC-002`
 
 ### Tests
 
-- None
+- `test.inventory`
+  - Paths:
+    - `product/scripts/initializer/tests/test_inventory.py`
+  - Requirements:
+    - `INIT-SRC-001`
+    - `INIT-SRC-002`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-SRC-001`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-SRC-002`
 
 ### Conformance
 
-- None
+- `INIT-SRC-001`
+  - Implementation Ids:
+    - `impl.inventory`
+    - `impl.staging`
+  - Test Ids:
+    - `test.inventory`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-SRC-002`
+  - Implementation Ids:
+    - `impl.inventory`
+    - `impl.validation`
+  - Test Ids:
+    - `test.inventory`
+    - `test.validation`
+  - Status: `covered`
 
 ## Primitives
 

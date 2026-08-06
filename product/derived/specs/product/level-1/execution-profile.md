@@ -22,15 +22,70 @@ Defines the atomic execution profile mode selector for the initializer.
 
 ### Implementations
 
-- None
+- `impl.cli`
+  - Paths:
+    - `product/scripts/initializer/cli.py`
+  - Requirements:
+    - `INIT-PRF-001`
+
+- `impl.models`
+  - Paths:
+    - `product/scripts/initializer/models.py`
+  - Requirements:
+    - `INIT-PRF-001`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-PRF-002`
 
 ### Tests
 
-- None
+- `test.cli`
+  - Paths:
+    - `product/scripts/initializer/tests/test_cli.py`
+  - Requirements:
+    - `INIT-PRF-001`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-PRF-002`
 
 ### Conformance
 
-- None
+- `INIT-PRF-001`
+  - Implementation Ids:
+    - `impl.cli`
+    - `impl.models`
+  - Test Ids:
+    - `test.cli`
+  - Status: `covered`
+
+- `INIT-PRF-002`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-PRF-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Execution-profile-to-workflow dispatch mapping is a specification-level orchestration contract; no dispatch implementation exists. Acceptance gap — the cli.py dispatch is a hardcoded fall-through, not profile-driven.`
+
+- `INIT-PRF-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Unsupported-combination rejection is a dispatch responsibility; no profile-driven rejection exists. Acceptance gap.`
 
 ## Primitives
 

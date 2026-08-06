@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["deterministic-local-git-repository"]
+    "concepts": [
+      "deterministic-local-git-repository"
+    ]
   },
   "normative_requirements": [
     {
@@ -73,8 +75,75 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-GIT-001",
+          "INIT-GIT-002",
+          "INIT-GIT-003",
+          "INIT-GIT-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-GIT-001",
+          "INIT-GIT-002",
+          "INIT-GIT-003",
+          "INIT-GIT-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-GIT-001",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-002",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-003",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-004",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

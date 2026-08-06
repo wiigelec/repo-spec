@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 3,
   "orchestrations": {
-    "workflows": ["resume-from-staging"]
+    "workflows": [
+      "resume-from-staging"
+    ]
   },
   "normative_requirements": [
     {
@@ -91,6 +93,28 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": []
+    "conformance": [
+      {
+        "requirement_id": "INIT-RSM-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Resume-from-staging workflow is not implemented \u2014 no mechanism validates or recovers from preserved staging. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RSM-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Preserved staging consistency verification is not implemented. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RSM-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for resume workflow; no dispatch mechanism selects resume. Acceptance gap."
+      }
+    ]
   }
 }

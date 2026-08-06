@@ -30,7 +30,77 @@ Defines the atomic execution report output artifact format for the initializer.
 
 ### Conformance
 
-- None
+- `INIT-RPT-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Execution report is an output artifact contract; no dedicated module produces a unified execution-report.json. Acceptance gap.`
+
+- `INIT-RPT-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Path contract for execution report in staging; no implementation. Acceptance gap.`
+
+- `INIT-RPT-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `completion_status field; no implementation. Acceptance gap.`
+
+- `INIT-RPT-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `stages array structure; no implementation. Acceptance gap.`
+
+- `INIT-RPT-005`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Stage status enumeration; no implementation. Acceptance gap.`
+
+- `INIT-RPT-006`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `warnings and errors per stage; no implementation. Acceptance gap.`
+
+- `INIT-RPT-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `schema_version constant; no implementation. Acceptance gap.`
+
+- `INIT-RPT-008`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Unknown-field rejection; no execution report implementation. Acceptance gap.`
+
+- `INIT-RPT-009`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Deterministic serialization; no execution report implementation. Acceptance gap.`
 
 ## Primitives
 

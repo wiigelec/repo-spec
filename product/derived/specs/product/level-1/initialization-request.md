@@ -22,15 +22,174 @@ Defines the atomic JSON initialization request for the bounded local initializat
 
 ### Implementations
 
-- None
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-REQ-009`
+
+- `impl.models`
+  - Paths:
+    - `product/scripts/initializer/models.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-008`
+    - `INIT-REQ-013`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-002`
+    - `INIT-REQ-003`
+    - `INIT-REQ-004`
+    - `INIT-REQ-005`
+    - `INIT-REQ-006`
+    - `INIT-REQ-007`
+    - `INIT-REQ-008`
+    - `INIT-REQ-009`
+    - `INIT-REQ-010`
+    - `INIT-REQ-011`
+    - `INIT-REQ-012`
+    - `INIT-REQ-013`
+    - `INIT-REQ-014`
 
 ### Tests
 
-- None
+- `test.models`
+  - Paths:
+    - `product/scripts/initializer/tests/test_models.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-008`
+    - `INIT-REQ-013`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-002`
+    - `INIT-REQ-003`
+    - `INIT-REQ-004`
+    - `INIT-REQ-005`
+    - `INIT-REQ-006`
+    - `INIT-REQ-007`
+    - `INIT-REQ-008`
+    - `INIT-REQ-009`
+    - `INIT-REQ-010`
+    - `INIT-REQ-011`
+    - `INIT-REQ-012`
+    - `INIT-REQ-013`
+    - `INIT-REQ-014`
 
 ### Conformance
 
-- None
+- `INIT-REQ-001`
+  - Implementation Ids:
+    - `impl.models`
+    - `impl.validation`
+  - Test Ids:
+    - `test.models`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-002`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-003`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-004`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-005`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-006`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-007`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-008`
+  - Implementation Ids:
+    - `impl.models`
+    - `impl.validation`
+  - Test Ids:
+    - `test.models`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-009`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-010`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-011`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-012`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-013`
+  - Implementation Ids:
+    - `impl.models`
+    - `impl.validation`
+  - Test Ids:
+    - `test.models`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-014`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
 
 ## Primitives
 

@@ -6,7 +6,10 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["canonicalization", "equivalence-class"]
+    "concepts": [
+      "canonicalization",
+      "equivalence-class"
+    ]
   },
   "normative_requirements": [
     {
@@ -114,8 +117,280 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-EQV-003"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-007"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-008",
+          "INIT-EQV-010",
+          "INIT-EQV-011"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-009"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-003",
+          "INIT-EQV-004",
+          "INIT-EQV-011"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-EQV-003"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-007"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-008",
+          "INIT-EQV-010",
+          "INIT-EQV-011"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-009"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-003",
+          "INIT-EQV-004",
+          "INIT-EQV-011"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-EQV-001",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.models",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-002",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-003",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-004",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-005",
+        "implementation_ids": [
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-006",
+        "implementation_ids": [
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-007",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-008",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-009",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-010",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-011",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-012",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Equivalence relation properties (reflexive, symmetric, transitive) are mathematical axioms that govern the contract, not implementable runtime behaviors."
+      }
+    ]
   }
 }

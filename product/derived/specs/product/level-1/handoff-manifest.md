@@ -30,7 +30,77 @@ Defines the atomic handoff manifest output artifact format for the initializer.
 
 ### Conformance
 
-- None
+- `INIT-HND-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Handoff manifest concept — no handoff-assembly implementation writes the artifact. Acceptance gap.`
+
+- `INIT-HND-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Handoff manifest is an output artifact contract; no dedicated module produces it. Acceptance gap.`
+
+- `INIT-HND-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Bounded-handoff manifest path contract; no implementation. Acceptance gap.`
+
+- `INIT-HND-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Handoff field enumeration; no implementation. Acceptance gap.`
+
+- `INIT-HND-005`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Nested handoff field definitions; no implementation. Acceptance gap.`
+
+- `INIT-HND-006`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Provenance reference path; no implementation. Acceptance gap.`
+
+- `INIT-HND-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Unknown-field rejection; no handoff implementation. Acceptance gap.`
+
+- `INIT-HND-008`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Deterministic serialization; no handoff implementation. Acceptance gap.`
+
+- `INIT-HND-009`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Schema version evolution; no handoff implementation. Acceptance gap.`
 
 ## Primitives
 
