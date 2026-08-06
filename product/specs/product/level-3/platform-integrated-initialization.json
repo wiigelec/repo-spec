@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 3,
   "orchestrations": {
-    "workflows": ["platform-integrated-initialization"]
+    "workflows": [
+      "platform-integrated-initialization"
+    ]
   },
   "normative_requirements": [
     {
@@ -23,11 +25,7 @@
     },
     {
       "id": "INIT-PII-004",
-      "text": "The initializer shall accept an initialization request, select the platform-integrated initialization workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
-    },
-    {
-      "id": "INIT-PII-005",
-      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+      "text": "The platform-integrated initialization workflow applies when the execution profile selects generation with platform integration after staging promotion."
     },
     {
       "id": "INIT-PII-006",
@@ -141,8 +139,134 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-PII-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Platform-integrated workflow composes platform profile execution, which has no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Platform-integrated lifecycle ordering requires platform profile execution stage, which does not exist. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Post-promotion platform execution stage does not exist. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for platform-integrated workflow; no dispatch mechanism selects it. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-006",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-PII-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Execution report with component identities is not implemented. Acceptance gap."
+      }
+    ]
   }
 }

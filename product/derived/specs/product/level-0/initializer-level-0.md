@@ -22,15 +22,203 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 
 ### Implementations
 
-- None
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-L0-002`
+    - `INIT-L0-005`
+
+- `impl.foundations`
+  - Paths:
+    - `product/scripts/initializer/foundations.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-004`
+
+- `impl.git`
+  - Paths:
+    - `product/scripts/initializer/git.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-004`
+
+- `impl.inventory`
+  - Paths:
+    - `product/scripts/initializer/inventory.py`
+  - Requirements:
+    - `INIT-L0-003`
+    - `INIT-L0-004`
+
+- `impl.models`
+  - Paths:
+    - `product/scripts/initializer/models.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-009`
+
+- `impl.promotion`
+  - Paths:
+    - `product/scripts/initializer/promotion.py`
+  - Requirements:
+    - `INIT-L0-002`
+    - `INIT-L0-005`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-002`
+    - `INIT-L0-003`
+    - `INIT-L0-004`
+    - `INIT-L0-005`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-006`
 
 ### Tests
 
-- None
+- `test.destination`
+  - Paths:
+    - `product/scripts/initializer/tests/test_destination_promotion.py`
+  - Requirements:
+    - `INIT-L0-002`
+    - `INIT-L0-005`
+
+- `test.foundations`
+  - Paths:
+    - `product/scripts/initializer/tests/test_foundations.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-004`
+
+- `test.git`
+  - Paths:
+    - `product/scripts/initializer/tests/test_git.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-004`
+
+- `test.inventory`
+  - Paths:
+    - `product/scripts/initializer/tests/test_inventory.py`
+  - Requirements:
+    - `INIT-L0-003`
+    - `INIT-L0-004`
+
+- `test.models`
+  - Paths:
+    - `product/scripts/initializer/tests/test_models.py`
+  - Requirements:
+    - `INIT-L0-009`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-002`
+    - `INIT-L0-003`
+    - `INIT-L0-005`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-L0-001`
+    - `INIT-L0-006`
 
 ### Conformance
 
-- None
+- `INIT-L0-001`
+  - Implementation Ids:
+    - `impl.foundations`
+    - `impl.git`
+    - `impl.models`
+    - `impl.staging`
+    - `impl.validation`
+  - Test Ids:
+    - `test.foundations`
+    - `test.git`
+    - `test.staging`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-L0-002`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.promotion`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-L0-003`
+  - Implementation Ids:
+    - `impl.inventory`
+    - `impl.staging`
+  - Test Ids:
+    - `test.inventory`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-L0-004`
+  - Implementation Ids:
+    - `impl.foundations`
+    - `impl.git`
+    - `impl.inventory`
+    - `impl.staging`
+  - Test Ids:
+    - `test.foundations`
+    - `test.git`
+    - `test.inventory`
+  - Status: `covered`
+
+- `INIT-L0-005`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.promotion`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-L0-006`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-L0-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Governance statement defining the normative status of directional documents; not an implementable behavior.`
+
+- `INIT-L0-008`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Identity and versioning is a packaging/build concern not yet implemented; acceptance gap.`
+
+- `INIT-L0-009`
+  - Implementation Ids:
+    - `impl.models`
+  - Test Ids:
+    - `test.models`
+  - Status: `covered`
 
 ## Kernel
 
@@ -45,7 +233,7 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 
 ## Normative requirements
 
-- `INIT-L0-001`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared.
+- `INIT-L0-001`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly declared variable data whose scope, representation, and source shall be declared; the equivalence relation shall be defined by the content-equivalence contract of the governing product specification and shall be evaluated on canonical forms.
 - `INIT-L0-002`: The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed.
 - `INIT-L0-003`: The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository.
 - `INIT-L0-004`: The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision.

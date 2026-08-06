@@ -22,15 +22,86 @@ Defines the dry-run validation workflow that validates an initialization request
 
 ### Implementations
 
-- None
+- `impl.cli`
+  - Paths:
+    - `product/scripts/initializer/cli.py`
+  - Requirements:
+    - `INIT-DRV-001`
+
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-DRV-001`
+
+- `impl.foundations`
+  - Paths:
+    - `product/scripts/initializer/foundations.py`
+  - Requirements:
+    - `INIT-DRV-001`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-DRV-001`
 
 ### Tests
 
-- None
+- `test.cli`
+  - Paths:
+    - `product/scripts/initializer/tests/test_cli.py`
+  - Requirements:
+    - `INIT-DRV-001`
+
+- `test.destination`
+  - Paths:
+    - `product/scripts/initializer/tests/test_destination_promotion.py`
+  - Requirements:
+    - `INIT-DRV-001`
+
+- `test.foundations`
+  - Paths:
+    - `product/scripts/initializer/tests/test_foundations.py`
+  - Requirements:
+    - `INIT-DRV-001`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-DRV-001`
 
 ### Conformance
 
-- None
+- `INIT-DRV-001`
+  - Implementation Ids:
+    - `impl.cli`
+    - `impl.destination`
+    - `impl.foundations`
+    - `impl.staging`
+  - Test Ids:
+    - `test.cli`
+    - `test.destination`
+    - `test.foundations`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-DRV-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Dry-run validation report generation is not implemented — no dry-run dispatch exists. Acceptance gap.`
+
+- `INIT-DRV-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Precondition for dry-run workflow; no dispatch mechanism selects dry-run over other workflows. Acceptance gap — INIT-PRF-003 covers the dispatch contract but no implementation enforces it.`
 
 ## Orchestrations
 
@@ -41,8 +112,7 @@ Defines the dry-run validation workflow that validates an initialization request
 
 - `INIT-DRV-001`: The dry-run validation workflow shall compose the request intake, source material resolver, destination preflight, transactional staging manager, framework installation, foundation seeding, and repository validation components to validate that an initialization request is structurally valid, the source revision is resolvable, the destination is compatible, and the expected generated content passes repository validation, using an ephemeral staging workspace that is discarded after validation completes.
 - `INIT-DRV-002`: The dry-run validation workflow shall produce a validation report indicating whether the initialization request would succeed, and shall report the exact reasons for any predicted failure without permanently modifying the destination.
-- `INIT-DRV-003`: The initializer shall accept an initialization request, select the dry-run validation workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration.
-- `INIT-DRV-004`: The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization.
+- `INIT-DRV-003`: The dry-run validation workflow applies when the execution profile selects a non-mutating validation pass; this workflow produces a validation report without permanently modifying the destination.
 
 ## Dependencies
 

@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 3,
   "orchestrations": {
-    "workflows": ["resume-from-staging"]
+    "workflows": [
+      "resume-from-staging"
+    ]
   },
   "normative_requirements": [
     {
@@ -19,11 +21,7 @@
     },
     {
       "id": "INIT-RSM-003",
-      "text": "The initializer shall accept an initialization request, select the resume-from-staging workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
-    },
-    {
-      "id": "INIT-RSM-004",
-      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+      "text": "The resume-from-staging workflow applies when the execution profile selects recovery from a previously preserved staging workspace and the request references a valid staging location."
     }
   ],
   "dependencies": [
@@ -95,6 +93,28 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": []
+    "conformance": [
+      {
+        "requirement_id": "INIT-RSM-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Resume-from-staging workflow is not implemented \u2014 no mechanism validates or recovers from preserved staging. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RSM-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Preserved staging consistency verification is not implemented. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RSM-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for resume workflow; no dispatch mechanism selects resume. Acceptance gap."
+      }
+    ]
   }
 }

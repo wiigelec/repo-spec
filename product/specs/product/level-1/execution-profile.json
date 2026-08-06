@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["execution-profile"]
+    "concepts": [
+      "execution-profile"
+    ]
   },
   "normative_requirements": [
     {
@@ -16,6 +18,14 @@
     {
       "id": "INIT-PRF-002",
       "text": "The execution profile shall reject execution modes that are not supported for the given combination of request inputs, destination state, and source revision."
+    },
+    {
+      "id": "INIT-PRF-003",
+      "text": "The execution profile shall map each supported combination of execution mode and request parameters to exactly one Level 3 initialization workflow, and the initializer shall select the corresponding workflow before performing any generation, validation, or destination mutation work."
+    },
+    {
+      "id": "INIT-PRF-004",
+      "text": "The initializer shall reject any combination of execution profile and request parameters that maps to no supported Level 3 workflow, and shall report the reason for rejection without performing partial initialization."
     }
   ],
   "dependencies": [
@@ -66,8 +76,91 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.cli",
+        "paths": [
+          "product/scripts/initializer/cli.py"
+        ],
+        "requirements": [
+          "INIT-PRF-001"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-PRF-001"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-PRF-002"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.cli",
+        "paths": [
+          "product/scripts/initializer/tests/test_cli.py"
+        ],
+        "requirements": [
+          "INIT-PRF-001"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-PRF-002"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-PRF-001",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.cli"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-PRF-002",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-PRF-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Execution-profile-to-workflow dispatch mapping is a specification-level orchestration contract; no dispatch implementation exists. Acceptance gap \u2014 the cli.py dispatch is a hardcoded fall-through, not profile-driven."
+      },
+      {
+        "requirement_id": "INIT-PRF-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unsupported-combination rejection is a dispatch responsibility; no profile-driven rejection exists. Acceptance gap."
+      }
+    ]
   }
 }

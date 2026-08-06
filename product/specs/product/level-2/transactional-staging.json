@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["transactional-staging"]
+    "contracts": [
+      "transactional-staging"
+    ]
   },
   "normative_requirements": [
     {
@@ -15,7 +17,15 @@
     },
     {
       "id": "INIT-TST-002",
-      "text": "Incomplete generation, local Git establishment, or validation shall leave the destination unmodified and preserve staging for diagnostics; promotion shall occur only after every required staged check succeeds."
+      "text": "Failure before staging workspace establishment shall leave the destination unmodified; in this case there is no staging workspace to preserve and the initializer shall not create a potentially inconsistent diagnostic directory."
+    },
+    {
+      "id": "INIT-TST-003",
+      "text": "Failure after staging workspace establishment shall, when technically feasible, preserve the staging workspace at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed."
+    },
+    {
+      "id": "INIT-TST-004",
+      "text": "Promotion to the declared destination shall occur only after every required staged check succeeds."
     }
   ],
   "dependencies": [
@@ -65,8 +75,119 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-004"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-TST-001",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-TST-002",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-TST-003",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-TST-004",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["staging-workspace-contract"]
+    "concepts": [
+      "staging-workspace-contract"
+    ]
   },
   "normative_requirements": [
     {
@@ -15,7 +17,7 @@
     },
     {
       "id": "INIT-STG-002",
-      "text": "A failed workflow shall preserve its staging workspace for diagnostics and shall report its location; this preservation shall not authorize resuming from arbitrary prior staging."
+      "text": "A failed workflow that has established a valid staging workspace shall, when technically feasible, preserve that workspace for diagnostics and report its location; when the workspace was never established or preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), the initializer shall report the inability to preserve; preservation shall not authorize resuming from arbitrary prior staging."
     }
   ],
   "dependencies": [
@@ -66,8 +68,85 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-STG-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-STG-001",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-STG-002",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

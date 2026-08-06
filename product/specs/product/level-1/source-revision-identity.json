@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["source-revision-identity"]
+    "concepts": [
+      "source-revision-identity"
+    ]
   },
   "normative_requirements": [
     {
@@ -66,8 +68,91 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.inventory",
+        "paths": [
+          "product/scripts/initializer/inventory.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001",
+          "INIT-SRC-002"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-SRC-002"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.inventory",
+        "paths": [
+          "product/scripts/initializer/tests/test_inventory.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001",
+          "INIT-SRC-002"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-SRC-002"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-SRC-001",
+        "implementation_ids": [
+          "impl.inventory",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.inventory",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-SRC-002",
+        "implementation_ids": [
+          "impl.inventory",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.inventory",
+          "test.validation"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

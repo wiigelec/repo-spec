@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 3,
   "orchestrations": {
-    "workflows": ["full-initialization"]
+    "workflows": [
+      "full-initialization"
+    ]
   },
   "normative_requirements": [
     {
@@ -31,7 +33,7 @@
     },
     {
       "id": "INIT-FIN-006",
-      "text": "Equivalent validated JSON requests and equivalent local source revisions shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp."
+      "text": "Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp."
     },
     {
       "id": "INIT-FIN-007",
@@ -49,13 +51,7 @@
       "spec_id": "product.source-revision-identity"
     },
     {
-      "spec_id": "product.material-classification"
-    },
-    {
       "spec_id": "product.destination"
-    },
-    {
-      "spec_id": "product.staging-workspace"
     },
     {
       "spec_id": "product.local-git-repository"
@@ -95,6 +91,9 @@
     },
     {
       "spec_id": "product.local-git-initialization"
+    },
+    {
+      "spec_id": "product.content-equivalence"
     }
   ],
   "references": [
@@ -132,8 +131,245 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.cli",
+        "paths": [
+          "product/scripts/initializer/cli.py"
+        ],
+        "requirements": [
+          "INIT-FIN-001",
+          "INIT-FIN-002",
+          "INIT-FIN-003",
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-005"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.cli",
+        "paths": [
+          "product/scripts/initializer/tests/test_cli.py"
+        ],
+        "requirements": [
+          "INIT-FIN-001",
+          "INIT-FIN-002",
+          "INIT-FIN-003",
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-005"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-FIN-001",
+        "implementation_ids": [
+          "impl.cli"
+        ],
+        "test_ids": [
+          "test.cli"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-002",
+        "implementation_ids": [
+          "impl.cli"
+        ],
+        "test_ids": [
+          "test.cli"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-003",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-004",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-005",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.destination",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.destination",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-006",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-007",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.foundations",
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.foundations",
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

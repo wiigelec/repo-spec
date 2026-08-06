@@ -22,15 +22,174 @@ Defines the atomic JSON initialization request for the bounded local initializat
 
 ### Implementations
 
-- None
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-REQ-009`
+
+- `impl.models`
+  - Paths:
+    - `product/scripts/initializer/models.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-008`
+    - `INIT-REQ-013`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-002`
+    - `INIT-REQ-003`
+    - `INIT-REQ-004`
+    - `INIT-REQ-005`
+    - `INIT-REQ-006`
+    - `INIT-REQ-007`
+    - `INIT-REQ-008`
+    - `INIT-REQ-009`
+    - `INIT-REQ-010`
+    - `INIT-REQ-011`
+    - `INIT-REQ-012`
+    - `INIT-REQ-013`
+    - `INIT-REQ-014`
 
 ### Tests
 
-- None
+- `test.models`
+  - Paths:
+    - `product/scripts/initializer/tests/test_models.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-008`
+    - `INIT-REQ-013`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-REQ-001`
+    - `INIT-REQ-002`
+    - `INIT-REQ-003`
+    - `INIT-REQ-004`
+    - `INIT-REQ-005`
+    - `INIT-REQ-006`
+    - `INIT-REQ-007`
+    - `INIT-REQ-008`
+    - `INIT-REQ-009`
+    - `INIT-REQ-010`
+    - `INIT-REQ-011`
+    - `INIT-REQ-012`
+    - `INIT-REQ-013`
+    - `INIT-REQ-014`
 
 ### Conformance
 
-- None
+- `INIT-REQ-001`
+  - Implementation Ids:
+    - `impl.models`
+    - `impl.validation`
+  - Test Ids:
+    - `test.models`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-002`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-003`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-004`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-005`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-006`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-007`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-008`
+  - Implementation Ids:
+    - `impl.models`
+    - `impl.validation`
+  - Test Ids:
+    - `test.models`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-009`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-010`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-011`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-012`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-013`
+  - Implementation Ids:
+    - `impl.models`
+    - `impl.validation`
+  - Test Ids:
+    - `test.models`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-REQ-014`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
 
 ## Primitives
 
@@ -39,9 +198,20 @@ Defines the atomic JSON initialization request for the bounded local initializat
 
 ## Normative requirements
 
-- `INIT-REQ-001`: An initialization request shall be one JSON object that explicitly supplies a product identifier, an absent or empty destination path, a local source repository path, an exact source revision identifier, and product-direction material.
-- `INIT-REQ-002`: The product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, structurally invalid, or contradictory.
+- `INIT-REQ-001`: An initialization request shall be one JSON object that explicitly supplies a governing authority identity, a product identifier, an absent or empty destination path, a local source repository path, an exact source revision identifier, and product-direction material.
+- `INIT-REQ-002`: The governing authority identity, product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, structurally invalid, or contradictory.
 - `INIT-REQ-003`: The initialization request representation shall be JSON and shall not infer omitted authority-bearing values from environment state, repository configuration, remote services, or named references.
+- `INIT-REQ-004`: The request root object shall define exactly the following fields: required `schema_version` as a string, required `destination` as a string, required `authority` as an object, required `source` as an object, required `product` as an object, and optional `profile` as a string; the request shall be rejected when any other root field is present.
+- `INIT-REQ-005`: The `authority` object shall define required `granted_by` as a non-empty string identifying the governing request authority and optional `scope` as a non-empty string, and shall be rejected when any other authority field is present; `granted_by` shall be of the form `issue-<number>` (for example `issue-221`).
+- `INIT-REQ-006`: The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as a non-empty string that is the exact 40-character lowercase hexadecimal Git object identifier of the source revision, and shall be rejected when any other source field is present.
+- `INIT-REQ-007`: The `product` object shall define required `id` as a non-empty string product identifier and required `direction_material` as a non-empty array of non-empty strings, and shall be rejected when any other product field is present.
+- `INIT-REQ-008`: The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty string naming supplied product-direction material.
+- `INIT-REQ-009`: The `destination` path and `source.repository` path shall be interpreted as local filesystem paths; relative paths shall be resolved against the invoking process working directory at intake, path resolution shall be the only value transformation applied, and the request shall be rejected when a path names a URL, a named reference, or a remote identity.
+- `INIT-REQ-010`: The `profile` field, when present, shall have the constant value `standard`; the request shall be rejected for any other profile value or profile shape, and `schema_version` shall be the constant string `1` with requests declaring any other schema version rejected.
+- `INIT-REQ-011`: Request validation shall reject unknown fields at the root and at every nested object, shall reject empty or whitespace-only authority-bearing strings without trimming or normalizing supplied values, and shall retain every accepted value verbatim.
+- `INIT-REQ-012`: The canonical request schema for `schema_version` `1` shall be the representation defined by this specification, and consumers shall not extend, relax, or substitute an alternative schema for the bounded local workflow.
+- `INIT-REQ-013`: The governing authority identity supplied as `authority.granted_by` shall be the single source of the governing request identifier for the bounded local workflow, shall be passed unchanged to provenance recording, and shall be recorded as the `request_identifier` of the provenance record so every generated authority artifact in the promoted repository traces to the governing request.
+- `INIT-REQ-014`: The request shall not accept, infer, or substitute any other authority identity and shall be rejected when `authority.granted_by` is absent, empty, contradictory with the provenance request identifier, or inconsistent with the governing issue linkage.
 
 ## Dependencies
 

@@ -22,15 +22,62 @@ Defines the atomic staging workspace isolation boundary for the initializer.
 
 ### Implementations
 
-- None
+- `impl.destination`
+  - Paths:
+    - `product/scripts/initializer/destination.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
+
+- `impl.promotion`
+  - Paths:
+    - `product/scripts/initializer/promotion.py`
+  - Requirements:
+    - `INIT-STG-001`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
 
 ### Tests
 
-- None
+- `test.destination`
+  - Paths:
+    - `product/scripts/initializer/tests/test_destination_promotion.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-STG-001`
+    - `INIT-STG-002`
 
 ### Conformance
 
-- None
+- `INIT-STG-001`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.promotion`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
+
+- `INIT-STG-002`
+  - Implementation Ids:
+    - `impl.destination`
+    - `impl.staging`
+  - Test Ids:
+    - `test.destination`
+    - `test.staging`
+  - Status: `covered`
 
 ## Primitives
 
@@ -40,7 +87,7 @@ Defines the atomic staging workspace isolation boundary for the initializer.
 ## Normative requirements
 
 - `INIT-STG-001`: A staging workspace contract shall define an isolated directory on the destination filesystem where generation, local Git establishment, and validation occur without modifying the declared destination before promotion.
-- `INIT-STG-002`: A failed workflow shall preserve its staging workspace for diagnostics and shall report its location; this preservation shall not authorize resuming from arbitrary prior staging.
+- `INIT-STG-002`: A failed workflow that has established a valid staging workspace shall, when technically feasible, preserve that workspace for diagnostics and report its location; when the workspace was never established or preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), the initializer shall report the inability to preserve; preservation shall not authorize resuming from arbitrary prior staging.
 
 ## Dependencies
 

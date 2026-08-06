@@ -6,27 +6,44 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["deterministic-local-git-repository"]
+    "concepts": [
+      "deterministic-local-git-repository"
+    ]
   },
   "normative_requirements": [
     {
       "id": "INIT-GIT-001",
-      "text": "The initialized local Git repository shall have `main` as its initial branch, exactly one root commit containing all generated repository content, a clean worktree, and no configured remotes."
+      "text": "The initialized local Git repository shall have exactly one root commit containing all generated repository content, a clean worktree, and no configured remotes; the initial branch name and root-commit model shall be determined by the governing git bootstrap profile."
     },
     {
       "id": "INIT-GIT-002",
-      "text": "The root commit shall use the fixed message `Initial repository foundation`, fixed author and committer identity `Repo-Spec Initializer <initializer@repo-spec.local>`, and fixed author and committer timestamp `1234567890 +0000` so equivalent generated content produces equivalent local Git history."
+      "text": "The root commit shall use the commit message, author identity, and author timestamp defined by the governing git bootstrap profile, so that equivalent generated content produced under the same bootstrap profile version produces equivalent local Git history."
+    },
+    {
+      "id": "INIT-GIT-003",
+      "text": "The root commit object identifier shall be deterministic: identical generated repository content produced under the same bootstrap profile version shall produce identical tree and commit object identifiers, and the initializer shall not include non-deterministic data such as wall-clock timestamps or host-dependent values."
+    },
+    {
+      "id": "INIT-GIT-004",
+      "text": "The repository shall contain no additional commits beyond the root commit, no merge commits, no tag references, and no orphan references, and the root commit shall have no parent commit."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-bootstrap-profile"
     }
   ],
   "references": [
     {
       "type": "artifact",
       "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/git-bootstrap-profile.json"
     },
     {
       "type": "artifact",
@@ -58,8 +75,75 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-GIT-001",
+          "INIT-GIT-002",
+          "INIT-GIT-003",
+          "INIT-GIT-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-GIT-001",
+          "INIT-GIT-002",
+          "INIT-GIT-003",
+          "INIT-GIT-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-GIT-001",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-002",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-003",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-004",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

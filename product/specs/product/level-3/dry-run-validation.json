@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 3,
   "orchestrations": {
-    "workflows": ["dry-run-validation"]
+    "workflows": [
+      "dry-run-validation"
+    ]
   },
   "normative_requirements": [
     {
@@ -19,11 +21,7 @@
     },
     {
       "id": "INIT-DRV-003",
-      "text": "The initializer shall accept an initialization request, select the dry-run validation workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
-    },
-    {
-      "id": "INIT-DRV-004",
-      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+      "text": "The dry-run validation workflow applies when the execution profile selects a non-mutating validation pass; this workflow produces a validation report without permanently modifying the destination."
     }
   ],
   "dependencies": [
@@ -105,8 +103,113 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.cli",
+        "paths": [
+          "product/scripts/initializer/cli.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.cli",
+        "paths": [
+          "product/scripts/initializer/tests/test_cli.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-DRV-001",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.destination",
+          "impl.foundations",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.destination",
+          "test.foundations",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-DRV-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Dry-run validation report generation is not implemented \u2014 no dry-run dispatch exists. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-DRV-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for dry-run workflow; no dispatch mechanism selects dry-run over other workflows. Acceptance gap \u2014 INIT-PRF-003 covers the dispatch contract but no implementation enforces it."
+      }
+    ]
   }
 }

@@ -30,7 +30,29 @@ Defines the resume-from-staging workflow that recovers and completes an initiali
 
 ### Conformance
 
-- None
+- `INIT-RSM-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Resume-from-staging workflow is not implemented — no mechanism validates or recovers from preserved staging. Acceptance gap.`
+
+- `INIT-RSM-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Preserved staging consistency verification is not implemented. Acceptance gap.`
+
+- `INIT-RSM-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Precondition for resume workflow; no dispatch mechanism selects resume. Acceptance gap.`
 
 ## Orchestrations
 
@@ -41,8 +63,7 @@ Defines the resume-from-staging workflow that recovers and completes an initiali
 
 - `INIT-RSM-001`: The resume-from-staging workflow shall compose the transactional staging manager, repository validation, provenance recording, and handoff assembly components to recover and complete an initialization from a previously preserved staging workspace, without re-executing request intake, source material resolution, framework installation, or foundation seeding.
 - `INIT-RSM-002`: The resume-from-staging workflow shall verify that the preserved staging workspace is internally consistent and compatible with the original initialization request before proceeding with validation and promotion.
-- `INIT-RSM-003`: The initializer shall accept an initialization request, select the resume-from-staging workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration.
-- `INIT-RSM-004`: The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization.
+- `INIT-RSM-003`: The resume-from-staging workflow applies when the execution profile selects recovery from a previously preserved staging workspace and the request references a valid staging location.
 
 ## Dependencies
 

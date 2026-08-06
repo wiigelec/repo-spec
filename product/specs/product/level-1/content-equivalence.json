@@ -1,0 +1,396 @@
+{
+  "spec_id": "product.content-equivalence",
+  "title": "Content Equivalence and Canonicalization Contract",
+  "purpose": "Defines the canonicalization and equivalence relation for the bounded local initialization workflow, establishing when equivalent accepted initialization requests and equivalent local source revisions are required to produce equivalent repository content, handoff manifests, and local Git structure.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "canonicalization",
+      "equivalence-class"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-EQV-001",
+      "text": "The equivalence relation shall be defined in terms of canonical forms: each accepted initialization request, local source revision, generated content entry, handoff manifest, provenance record, and local Git object shall have exactly one canonical representation, and two items shall be equivalent exactly when their canonical representations are identical."
+    },
+    {
+      "id": "INIT-EQV-002",
+      "text": "Canonicalization shall be a normalization onto the canonical representation: it shall retain every authoritative value verbatim, shall apply only declared, deterministic transformations, and shall never trim, coerce, reorder, deduplicate, case-fold, or otherwise alter authoritative content."
+    },
+    {
+      "id": "INIT-EQV-003",
+      "text": "Request canonicalization shall normalize exactly the dimensions declared by the request representation: relative destination and source repository paths resolved against the invoking process working directory, with all other request fields retained verbatim; requests differing only in the lexical spelling of a resolved path shall be equivalent when the resolved canonical forms are identical."
+    },
+    {
+      "id": "INIT-EQV-004",
+      "text": "Request equivalence shall require identical canonical forms of `authority`, `product.id`, `destination`, `source.repository`, and `source.revision`, and shall require `direction_material` arrays to be identical in both membership and declared order; requests differing in any of these dimensions shall not be equivalent."
+    },
+    {
+      "id": "INIT-EQV-005",
+      "text": "Repository file system enumerations, generation traversals, serialization order, and manifest ordering shall be driven by a declared canonical order (repository-relative path sorted deterministically, then content order stable), so that equivalent runs do not differ as a result of filesystem enumeration order."
+    },
+    {
+      "id": "INIT-EQV-006",
+      "text": "Repository content equivalence shall be evaluated as a deterministic tree of entries keyed by canonical repository-relative path, comparing each entry by its type (regular file, directory, or symbolic link), its byte contents for regular files, its target text for symbolic links, and its executable-bit mode for regular files."
+    },
+    {
+      "id": "INIT-EQV-007",
+      "text": "File access and modification timestamps, inode numbers, ownership, and other filesystem metadata shall not be part of repository content equivalence, and the initializer shall not depend on filesystem metadata for determinism."
+    },
+    {
+      "id": "INIT-EQV-008",
+      "text": "Local source revision equivalence shall require the same exact 40-character lowercase hexadecimal Git object identifier in the same resolved source repository path, so that equivalent revisions address identical byte sequences and subtree structure."
+    },
+    {
+      "id": "INIT-EQV-009",
+      "text": "The initializer shall ensure content byte equivalence for regular files without line-ending translation, encoding conversion, or Unicode normalization: bytes shall be compared and produced verbatim, and nothing shall treat distinct byte sequences (including differing line endings or Unicode encodings) as equivalent."
+    },
+    {
+      "id": "INIT-EQV-010",
+      "text": "The produced local Git structure (initial branch, root commit, tree identifiers, author and committer identities, commit message, and remote configuration) shall be equivalent across Git implementations and versions, so that equivalent inputs produce equivalent Git object structure independent of Git tool differences."
+    },
+    {
+      "id": "INIT-EQV-011",
+      "text": "The variables permitted to differ between equivalent outcomes shall be explicitly declared with their scope, representation, and source: the only declared variable data for the bounded workflow is the initialization timestamp recorded in the provenance record, and no other element may vary between equivalent outcomes."
+    },
+    {
+      "id": "INIT-EQV-012",
+      "text": "The equivalence relation shall be reflexive, symmetric, and transitive over canonical forms, and shall partition accepted requests, source revisions, and outcomes into stable equivalence classes such that membership is decidable from canonical representations alone."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/source-revision-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/local-git-repository.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/provenance-record.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/handoff-manifest.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/content-equivalence.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-EQV-003"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-007"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-008",
+          "INIT-EQV-010",
+          "INIT-EQV-011"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-009"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-003",
+          "INIT-EQV-004",
+          "INIT-EQV-011"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-EQV-003"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-007"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-008",
+          "INIT-EQV-010",
+          "INIT-EQV-011"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-009"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-003",
+          "INIT-EQV-004",
+          "INIT-EQV-011"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-EQV-001",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.models",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-002",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-003",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-004",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-005",
+        "implementation_ids": [
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-006",
+        "implementation_ids": [
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-007",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-008",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-009",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-010",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-011",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-012",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Equivalence relation properties (reflexive, symmetric, transitive) are mathematical axioms that govern the contract, not implementable runtime behaviors."
+      }
+    ]
+  }
+}

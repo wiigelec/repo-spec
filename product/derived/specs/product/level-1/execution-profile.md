@@ -22,15 +22,70 @@ Defines the atomic execution profile mode selector for the initializer.
 
 ### Implementations
 
-- None
+- `impl.cli`
+  - Paths:
+    - `product/scripts/initializer/cli.py`
+  - Requirements:
+    - `INIT-PRF-001`
+
+- `impl.models`
+  - Paths:
+    - `product/scripts/initializer/models.py`
+  - Requirements:
+    - `INIT-PRF-001`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-PRF-002`
 
 ### Tests
 
-- None
+- `test.cli`
+  - Paths:
+    - `product/scripts/initializer/tests/test_cli.py`
+  - Requirements:
+    - `INIT-PRF-001`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-PRF-002`
 
 ### Conformance
 
-- None
+- `INIT-PRF-001`
+  - Implementation Ids:
+    - `impl.cli`
+    - `impl.models`
+  - Test Ids:
+    - `test.cli`
+  - Status: `covered`
+
+- `INIT-PRF-002`
+  - Implementation Ids:
+    - `impl.validation`
+  - Test Ids:
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-PRF-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Execution-profile-to-workflow dispatch mapping is a specification-level orchestration contract; no dispatch implementation exists. Acceptance gap — the cli.py dispatch is a hardcoded fall-through, not profile-driven.`
+
+- `INIT-PRF-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Unsupported-combination rejection is a dispatch responsibility; no profile-driven rejection exists. Acceptance gap.`
 
 ## Primitives
 
@@ -41,6 +96,8 @@ Defines the atomic execution profile mode selector for the initializer.
 
 - `INIT-PRF-001`: An execution profile shall be an atomic mode selector that governs whether the initializer performs a dry-run validation pass, an actual generation pass with destination mutation, or a recovery pass that resumes from a preserved staging state.
 - `INIT-PRF-002`: The execution profile shall reject execution modes that are not supported for the given combination of request inputs, destination state, and source revision.
+- `INIT-PRF-003`: The execution profile shall map each supported combination of execution mode and request parameters to exactly one Level 3 initialization workflow, and the initializer shall select the corresponding workflow before performing any generation, validation, or destination mutation work.
+- `INIT-PRF-004`: The initializer shall reject any combination of execution profile and request parameters that maps to no supported Level 3 workflow, and shall report the reason for rejection without performing partial initialization.
 
 ## Dependencies
 

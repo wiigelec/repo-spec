@@ -22,15 +22,110 @@ Defines the platform-integrated initialization workflow that applies hosting-pla
 
 ### Implementations
 
-- None
+- `impl.foundations`
+  - Paths:
+    - `product/scripts/initializer/foundations.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `impl.git`
+  - Paths:
+    - `product/scripts/initializer/git.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `impl.staging`
+  - Paths:
+    - `product/scripts/initializer/staging.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `impl.validation`
+  - Paths:
+    - `product/scripts/initializer/validation.py`
+  - Requirements:
+    - `INIT-PII-006`
 
 ### Tests
 
-- None
+- `test.foundations`
+  - Paths:
+    - `product/scripts/initializer/tests/test_foundations.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `test.git`
+  - Paths:
+    - `product/scripts/initializer/tests/test_git.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `test.staging`
+  - Paths:
+    - `product/scripts/initializer/tests/test_staging.py`
+  - Requirements:
+    - `INIT-PII-006`
+
+- `test.validation`
+  - Paths:
+    - `product/scripts/initializer/tests/test_validation.py`
+  - Requirements:
+    - `INIT-PII-006`
 
 ### Conformance
 
-- None
+- `INIT-PII-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Platform-integrated workflow composes platform profile execution, which has no implementation. Acceptance gap.`
+
+- `INIT-PII-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Platform-integrated lifecycle ordering requires platform profile execution stage, which does not exist. Acceptance gap.`
+
+- `INIT-PII-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Post-promotion platform execution stage does not exist. Acceptance gap.`
+
+- `INIT-PII-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Precondition for platform-integrated workflow; no dispatch mechanism selects it. Acceptance gap.`
+
+- `INIT-PII-006`
+  - Implementation Ids:
+    - `impl.foundations`
+    - `impl.git`
+    - `impl.staging`
+    - `impl.validation`
+  - Test Ids:
+    - `test.foundations`
+    - `test.git`
+    - `test.staging`
+    - `test.validation`
+  - Status: `covered`
+
+- `INIT-PII-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Execution report with component identities is not implemented. Acceptance gap.`
 
 ## Orchestrations
 
@@ -42,8 +137,7 @@ Defines the platform-integrated initialization workflow that applies hosting-pla
 - `INIT-PII-001`: The platform-integrated initialization workflow shall compose the request intake, source material resolver, destination preflight, transactional staging manager, framework installation, foundation seeding, execution orchestrator, repository validation, platform profile executor, provenance recording, and handoff assembly components to produce a validated, provenance-tracked initialized repository with hosting-platform integration.
 - `INIT-PII-002`: The platform-integrated initialization workflow shall execute the lifecycle stages in order: request intake, source material resolution, destination preflight, staging workspace creation, framework installation, foundation seeding, repository validation, staging promotion, platform profile execution, provenance recording, and handoff assembly.
 - `INIT-PII-003`: The platform-integrated initialization workflow shall treat platform profile execution as a distinct post-promotion stage whose failure does not roll back the promoted repository content but shall be recorded in the execution report.
-- `INIT-PII-004`: The initializer shall accept an initialization request, select the platform-integrated initialization workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration.
-- `INIT-PII-005`: The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization.
+- `INIT-PII-004`: The platform-integrated initialization workflow applies when the execution profile selects generation with platform integration after staging promotion.
 - `INIT-PII-006`: The platform-integrated initialization workflow shall produce deterministic output for equivalent initialization requests, source revisions, execution profiles, and platform profile inputs: the same input quadruple shall produce the same initialized repository content and the same handoff manifest, except for explicitly declared variable data in the provenance record.
 - `INIT-PII-007`: The platform-integrated initialization workflow shall record the completed workflow identity, the composition of components used, and the version of each component in the execution report for diagnostic and provenance purposes.
 
