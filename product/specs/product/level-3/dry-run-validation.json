@@ -1,0 +1,112 @@
+{
+  "spec_id": "product.dry-run-validation",
+  "title": "Dry-Run Validation Workflow",
+  "purpose": "Defines the dry-run validation workflow that validates an initialization request and expected generated content without permanently modifying the destination.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 3,
+  "orchestrations": {
+    "workflows": ["dry-run-validation"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-DRV-001",
+      "text": "The dry-run validation workflow shall compose the request intake, source material resolver, destination preflight, transactional staging manager, framework installation, foundation seeding, and repository validation components to validate that an initialization request is structurally valid, the source revision is resolvable, the destination is compatible, and the expected generated content passes repository validation, using an ephemeral staging workspace that is discarded after validation completes."
+    },
+    {
+      "id": "INIT-DRV-002",
+      "text": "The dry-run validation workflow shall produce a validation report indicating whether the initialization request would succeed, and shall report the exact reasons for any predicted failure without permanently modifying the destination."
+    },
+    {
+      "id": "INIT-DRV-003",
+      "text": "The initializer shall accept an initialization request, select the dry-run validation workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
+    },
+    {
+      "id": "INIT-DRV-004",
+      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.material-classification"
+    },
+    {
+      "spec_id": "product.destination"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "spec_id": "product.request-intake"
+    },
+    {
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "spec_id": "product.destination-preflight"
+    },
+    {
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "spec_id": "product.repository-validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-3/dry-run-validation.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

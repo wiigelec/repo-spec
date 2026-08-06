@@ -138,8 +138,32 @@
       "level": 2
     },
     {
-      "spec_id": "product.initializer-level-3",
-      "path": "product/specs/product/level-3/initializer-level-3.json",
+      "spec_id": "product.dry-run-validation",
+      "path": "product/specs/product/level-3/dry-run-validation.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.full-initialization",
+      "path": "product/specs/product/level-3/full-initialization.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.platform-integrated-initialization",
+      "path": "product/specs/product/level-3/platform-integrated-initialization.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.recovery-and-cleanup",
+      "path": "product/specs/product/level-3/recovery-and-cleanup.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.resume-from-staging",
+      "path": "product/specs/product/level-3/resume-from-staging.json",
       "status": "candidate",
       "level": 3
     }
