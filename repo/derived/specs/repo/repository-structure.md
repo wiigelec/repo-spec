@@ -44,3 +44,4 @@ Defines the repository layout and top-level separation of concerns.
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/repository-structure.md`
+
