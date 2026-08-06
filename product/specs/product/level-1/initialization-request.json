@@ -49,7 +49,7 @@
     },
     {
       "id": "INIT-REQ-016",
-      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently, and the ordered list may convey positional semantics for foundation-seeding behavior."
+      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently, and positional semantics for the ordered list (including the mapping of 0-based array indices to projection destinations) are defined by the foundation-seeding contract."
     },
     {
       "id": "INIT-REQ-009",
