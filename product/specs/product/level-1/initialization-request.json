@@ -41,7 +41,15 @@
     },
     {
       "id": "INIT-REQ-008",
-      "text": "The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty string naming supplied product-direction material."
+      "text": "The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty repository-relative path within the local source repository that names supplied product-direction material."
+    },
+    {
+      "id": "INIT-REQ-015",
+      "text": "Each `direction_material` entry shall be a repository-relative path that resolves to an existing regular file at the specified source revision; the request shall be rejected when any direction_material entry resolves to a nonexistent path, a directory, a symbolic link, a path outside the source repository, or a non-regular file."
+    },
+    {
+      "id": "INIT-REQ-016",
+      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently, and the ordered list may convey positional semantics for foundation-seeding behavior."
     },
     {
       "id": "INIT-REQ-009",

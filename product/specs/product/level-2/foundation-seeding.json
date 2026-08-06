@@ -11,7 +11,7 @@
   "normative_requirements": [
     {
       "id": "INIT-FSD-001",
-      "text": "The foundation seeding component shall use the explicit product identifier and supplied product-direction material to create project-specific direction documents and candidate product-specification foundations in the staging workspace."
+      "text": "The foundation seeding component shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to copy each direction_material entry verbatim from the source repository into the staging workspace and create project-specific direction documents and candidate product-specification foundations."
     },
     {
       "id": "INIT-FSD-002",
@@ -21,6 +21,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initialization-request"
     },
     {
       "spec_id": "product.material-classification"
