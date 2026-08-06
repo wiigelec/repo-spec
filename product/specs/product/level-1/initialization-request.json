@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-REQ-005",
-      "text": "The `authority` object shall define required `granted_by` as a non-empty string identifying the governing request authority and optional `scope` as a non-empty string, and shall be rejected when any other authority field is present; `granted_by` shall be of the form `issue-<number>` (for example `issue-221`)."
+      "text": "The `authority` object shall define required `granted_by` as a non-empty opaque string identifying the governing request authority, optional `type` as a non-empty string naming the authority type (such as `governing-issue`, `review-proposal`, or `local-bootstrap`), and optional `scope` as a non-empty string, and shall be rejected when any other authority field is present."
     },
     {
       "id": "INIT-REQ-006",

@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-PRO-005",
-      "text": "The provenance `request_identifier` shall be a non-empty string of the form `issue-<number>` (for example `issue-221`) that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request."
+      "text": "The provenance `request_identifier` shall be a non-empty string that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request."
     },
     {
       "id": "INIT-PRO-006",
