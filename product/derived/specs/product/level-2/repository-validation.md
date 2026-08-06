@@ -39,8 +39,8 @@ Defines repository validation performed against the complete staged repository b
 
 ## Normative requirements
 
-- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion.
-- `INIT-RVA-002`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails.
+- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion.
+- `INIT-RVA-002`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails; the report shall be written at `transaction/validation-report.json` inside the staging transaction root and shall never be part of the promoted repository content.
 
 ## Dependencies
 

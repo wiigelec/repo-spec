@@ -1,7 +1,7 @@
 {
   "spec_id": "product.transactional-staging",
   "title": "Transactional Staging Manager",
-  "purpose": "Defines same-filesystem isolated staging, validation gating, diagnostic preservation, and atomic destination promotion.",
+  "purpose": "Defines same-filesystem staging transaction with isolated repository content, validation gating, diagnostic preservation, and atomic destination promotion.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
@@ -13,19 +13,27 @@
   "normative_requirements": [
     {
       "id": "INIT-TST-001",
-      "text": "The transactional staging manager shall create an isolated staging workspace on the destination filesystem, provide operations to populate it, and promote the complete staged directory to the absent or empty destination with one atomic same-filesystem operation."
+      "text": "The transactional staging manager shall create an isolated staging transaction root on the destination filesystem, with the structure `<root>/transaction/` (staging-state, execution-report, validation-report) and `<root>/repository/` (the exact directory tree to be promoted), and shall promote only the `repository/` subtree to the absent destination with one atomic same-filesystem rename."
     },
     {
       "id": "INIT-TST-002",
-      "text": "Failure before staging workspace establishment shall leave the destination unmodified; in this case there is no staging workspace to preserve and the initializer shall not create a potentially inconsistent diagnostic directory."
+      "text": "Promotion shall be a single `os.rename()` (or equivalent same-filesystem atomic directory rename) of the complete `repository/` directory to the exact destination path, confirmed absent by a stat or lstat call immediately before the rename; the initializer shall not use recursive copy, cross-device fallback, or any non-atomic move mechanism."
     },
     {
       "id": "INIT-TST-003",
-      "text": "Failure after staging workspace establishment shall, when technically feasible, preserve the staging workspace at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed."
+      "text": "Failure before staging transaction root establishment shall leave the destination unmodified; in this case there is no staging root to preserve and the initializer shall not create a potentially inconsistent diagnostic directory."
     },
     {
       "id": "INIT-TST-004",
-      "text": "Promotion to the declared destination shall occur only after every required staged check succeeds."
+      "text": "Failure after staging transaction root establishment but before promotion shall, when technically feasible, preserve the staging transaction root at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed."
+    },
+    {
+      "id": "INIT-TST-005",
+      "text": "Promotion to the declared destination shall occur only after repository validation passes; validation failure shall cause the workflow to fail before promotion and shall leave the staging transaction root in its pre-promotion state for diagnostics."
+    },
+    {
+      "id": "INIT-TST-006",
+      "text": "Promotion shall be non-recoverable: the initializer shall not retry promotion after a failed or indeterminate outcome without external diagnosis and manual intervention."
     }
   ],
   "dependencies": [

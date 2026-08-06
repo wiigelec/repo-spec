@@ -39,8 +39,8 @@ Defines the destination preflight component that validates destination state com
 
 ## Normative requirements
 
-- `INIT-DPF-001`: The destination preflight component shall confirm that the destination is absent or is an empty local directory and that its parent filesystem can host both staging and destination promotion.
-- `INIT-DPF-002`: The destination preflight component shall reject a nonempty, non-directory, existing-repository, or cross-device destination arrangement and shall report the conflict without modifying the destination.
+- `INIT-DPF-001`: The destination preflight component shall confirm that the destination does not exist and that its parent filesystem can host both the staging transaction root and the destination itself on the same filesystem.
+- `INIT-DPF-002`: The destination preflight component shall reject an existing destination of any type (including a regular file, empty directory, nonempty directory, symbolic link, or existing repository), a cross-device arrangement where staging and destination cannot share a filesystem, or any inaccessible parent directory, and shall report the conflict without modifying the destination.
 
 ## Dependencies
 

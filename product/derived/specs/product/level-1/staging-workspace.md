@@ -1,4 +1,4 @@
-# Staging Workspace Contract
+# Staging Transaction Layout Contract
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the atomic staging workspace isolation boundary for the initializer.
+Defines the physical staging transaction directory layout that isolates repository content from transaction metadata for atomic promotion.
 
 ## Correspondence
 
@@ -39,8 +39,11 @@ Defines the atomic staging workspace isolation boundary for the initializer.
 
 ## Normative requirements
 
-- `INIT-STG-001`: A staging workspace contract shall define an isolated directory on the destination filesystem where generation, local Git establishment, and validation occur without modifying the declared destination before promotion.
-- `INIT-STG-002`: A failed workflow that has established a valid staging workspace shall, when technically feasible, preserve that workspace for diagnostics and report its location; when the workspace was never established or preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), the initializer shall report the inability to preserve; preservation shall not authorize resuming from arbitrary prior staging.
+- `INIT-STG-001`: The staging transaction root shall be a single empty directory created on the destination filesystem before any generation begins, whose parent filesystem is the same filesystem as the declared destination path.
+- `INIT-STG-002`: The staging transaction root shall contain exactly two children: a `transaction/` subdirectory and a `repository/` subdirectory, with `transaction/` containing the staging-state record (`staging-state.json`), execution report (`execution-report.json`), and validation report (`validation-report.json`), and `repository/` containing the exact directory tree to be promoted.
+- `INIT-STG-003`: Only the `repository/` subdirectory shall become the destination on successful promotion; the `transaction/` subdirectory and its contents shall never be part of the promoted repository.
+- `INIT-STG-004`: The content digest computed for staging integrity shall cover only the `repository/` subtree and shall not include any content under `transaction/`.
+- `INIT-STG-005`: A failed workflow that has established a staging transaction root shall, when technically feasible, preserve the root for diagnostics and report its location; when the root was never established or preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), the initializer shall report the inability to preserve; preservation shall not authorize resuming from the preserved staging state.
 
 ## Dependencies
 

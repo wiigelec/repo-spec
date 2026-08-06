@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the absent-or-empty local destination for the bounded initialization workflow.
+Defines the absent-only local destination for the bounded initialization workflow.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the absent-or-empty local destination for the bounded initialization wor
 
 ## Normative requirements
 
-- `INIT-DST-001`: A destination representation shall be a local filesystem path whose target is absent or is an empty directory.
-- `INIT-DST-002`: Destination validation shall occur before generation and shall reject non-directory targets, nonempty directories, existing repositories, and any request to overwrite or migrate destination content.
+- `INIT-DST-001`: A destination representation shall be a local filesystem path whose target does not exist; an existing path of any type (including empty directory) shall be rejected by destination preflight.
+- `INIT-DST-002`: Destination validation shall occur before generation and shall reject any existing target of any type, including a regular file, empty directory, nonempty directory, symbolic link, or existing repository.
 
 ## Dependencies
 

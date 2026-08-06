@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines mechanical repository-bootstrapping operations that preserve direction material as byte-identical source evidence, generate candidate document skeletons from fixed templates, and activate an empty product-specification workspace without semantic interpretation of supplied material.
+Defines the workspace-seeding operations that generate candidate document skeletons from fixed templates and activate an empty product-specification workspace, together with the direction-evidence-installation operations that preserve direction material as byte-identical source evidence.
 
 ## Correspondence
 
@@ -35,15 +35,13 @@ Defines mechanical repository-bootstrapping operations that preserve direction m
 ## Components
 
 - Contracts:
-  - `source-material-ingestion`
-  - `direction-material-projection`
-  - `skeleton-generation`
-  - `empty-workspace-initialization`
+  - `direction-evidence-installation`
+  - `workspace-seeding`
 
 ## Normative requirements
 
-- `INIT-FSD-001`: Foundation seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce the project-specific direction documents, generated skeleton documents, and an activated but empty product-specification workspace in the staging workspace.
-- `INIT-FSD-002`: Every document produced by foundation seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content.
+- `INIT-FSD-001`: Workspace seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce preserved direction evidence files, generated skeleton documents, and an activated but empty product-specification workspace in the repository/ directory inside the staging transaction root.
+- `INIT-FSD-002`: Every document produced by workspace seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content.
 - `INIT-FSD-003`: Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; each entry shall be interpreted as UTF-8 encoded text with line endings normalized to LF (U+000A), and the stage shall fail when any entry's content is not valid UTF-8 or when the resolved file at the source revision does not contain at least one non-whitespace byte.
 - `INIT-FSD-004`: Each direction_material entry shall be assigned a positional index equal to its 0-based position in the direction_material array as received from request intake; the array order shall be preserved as the authoritative ordering key for all projection and naming decisions, and duplicate entries shall each receive their own distinct positional index.
 - `INIT-FSD-005`: Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/{positional_index:03d}-{source_basename}, where source_basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes with LF line endings, and no summarization, embedding, transformation, truncation, or semantic interpretation of the content shall be performed.

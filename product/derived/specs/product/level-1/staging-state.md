@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the durable staging-transaction state record that captures initialization authority, provenance, stage progress, and integrity metadata for resume, recovery, and diagnostic workflows.
+Defines the staging-transaction state record that captures initialization identity, stage progress, repository content digest, promotion state, and failure information for the bounded local workflow.
 
 ## Correspondence
 
@@ -36,18 +36,19 @@ Defines the durable staging-transaction state record that captures initializatio
 
 - Root:
   - `schema_version`
-  - `request_identity`
+  - `request_fingerprint`
   - `source_revision`
   - `source_repository`
   - `initializer_version`
-  - `execution_profile`
-  - `stage_statuses`
-  - `staged_content_digest`
   - `expected_destination`
-  - `promotion_begun`
-  - `git_state_created`
-  - `staging_trustworthy`
-  - `compatibility_version`
+  - `current_stage`
+  - `completed_stages`
+  - `failed_stage`
+  - `repository_content_digest`
+  - `git_created`
+  - `validation_completed`
+  - `promotion_entered`
+  - `promotion_outcome`
 
 ## Primitives
 
@@ -56,18 +57,18 @@ Defines the durable staging-transaction state record that captures initializatio
 
 ## Normative requirements
 
-- `INIT-STA-001`: A staging-state record shall be an atomic authorization and integrity artifact that records the initialization request identity, source revision, initializer identity, execution profile, stage progress, staged-content digest, expected destination, and promotion and Git state flags.
-- `INIT-STA-002`: The staging-state record shall be a single UTF-8 encoded JSON object file written as `staging-state.json` at the root of the staging workspace alongside the execution report, and shall not be part of the promoted repository content.
-- `INIT-STA-003`: The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_identity` as a string, `source_revision` as a string, `source_repository` as a string, `initializer_version` as a string, `execution_profile` as a string, `stage_statuses` as an object, `staged_content_digest` as a string, `expected_destination` as a string, `promotion_begun` as a boolean, `git_state_created` as a boolean, `staging_trustworthy` as a boolean, and `compatibility_version` as an integer.
-- `INIT-STA-004`: The `request_identity` field shall equal the `authority.granted_by` value from the governing initialization request; `source_revision` shall be the exact 40-character lowercase hexadecimal Git object identifier of the source revision; `source_repository` shall be the resolved local source repository path.
-- `INIT-STA-005`: The `initializer_version` field shall record the initializer version that wrote the state record; `execution_profile` shall record the selected execution profile constant value (such as `standard`); `schema_version` shall be the constant string `1` and `compatibility_version` shall be the integer `1`.
-- `INIT-STA-006`: The `stage_statuses` object shall map each completed stage identifier (from the lifecycle-stage vocabulary) to the constant string `completed`; stages not yet reached or failed shall be absent from the map.
-- `INIT-STA-007`: The `staged_content_digest` shall be a deterministic content hash (SHA-256 hex digest) of the complete staging directory tree computed after all generation and before Git initialization, so that resume and recovery can verify staged content integrity.
-- `INIT-STA-008`: The `expected_destination` field shall be the resolved absolute filesystem path of the declared destination; `promotion_begun` shall be `true` when the promotion stage has been entered, `false` otherwise; `git_state_created` shall be `true` when local Git initialization has completed, `false` otherwise.
-- `INIT-STA-009`: The `staging_trustworthy` field shall be `true` when the staging workspace content matches the recorded digest and no integrity violation has been detected; a resume workflow shall verify `staging_trustworthy` before using a preserved staging workspace and shall reject the staging workspace when the flag is `false` or the digest does not match.
-- `INIT-STA-010`: The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields.
-- `INIT-STA-011`: The staging-state record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
-- `INIT-STA-012`: The staging-state record format shall evolve by incrementing `compatibility_version`; consumers of `compatibility_version` `1` shall reject records declaring any other version and shall not merge unknown or extra fields silently.
+- `INIT-STA-001`: A staging-state record shall capture the request fingerprint, source commit, initializer identity and version, destination path, current stage identity, completed stage identities, failed stage identity (if any), repository-content digest, Git-created flag, validation-completed flag, promotion-entered flag, and promotion outcome for the bounded local workflow.
+- `INIT-STA-002`: The staging-state record shall be a single UTF-8 encoded JSON object file written at `transaction/staging-state.json` inside the staging transaction root, and shall never be part of the promoted repository content.
+- `INIT-STA-003`: The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as a string, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null.
+- `INIT-STA-004`: The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the exact 40-character lowercase hexadecimal Git object identifier of the source revision; `source_repository` shall be the resolved local source repository path.
+- `INIT-STA-005`: The `initializer_version` field shall record the initializer version that wrote the state record; `schema_version` shall be the constant string `1`; `expected_destination` shall be the resolved absolute filesystem path of the declared destination.
+- `INIT-STA-006`: The `current_stage` field shall identify the most recently entered stage as a canonical stage identifier from the lifecycle-stage vocabulary; `completed_stages` shall map each completed stage identifier to the constant string `completed`; `failed_stage` shall be the canonical identifier of the failed stage when the transaction has failed, or `null` when no stage has failed.
+- `INIT-STA-007`: The `repository_content_digest` shall be a deterministic content hash (SHA-256 hex digest) of the `repository/` subtree inside the staging transaction root, computed after all generation and before Git initialization, and shall not cover any content under `transaction/`.
+- `INIT-STA-008`: The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation has finished regardless of pass or fail outcome.
+- `INIT-STA-009`: The `promotion_entered` field shall be `true` when the promotion stage has been entered; `promotion_outcome` shall be one of the constant strings `not-promoted`, `promoted`, or `indeterminate` when promotion has been attempted and resolved, or `null` when promotion has not been entered or an attempted promotion has not been resolved.
+- `INIT-STA-010`: The three promotion outcomes are: `not-promoted` when promotion did not occur (pre-promotion failure or explicit abort), `promoted` when the `repository/` directory was atomically renamed to the destination and the rename call returned success, and `indeterminate` when the filesystem operation returned an error or was interrupted such that the caller cannot safely determine whether the destination owns the repository content.
+- `INIT-STA-011`: The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields.
+- `INIT-STA-012`: The staging-state record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 
 ## Dependencies
 

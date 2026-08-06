@@ -1,26 +1,24 @@
 {
   "spec_id": "product.foundation-seeding",
   "title": "Foundation Seeding",
-  "purpose": "Defines mechanical repository-bootstrapping operations that preserve direction material as byte-identical source evidence, generate candidate document skeletons from fixed templates, and activate an empty product-specification workspace without semantic interpretation of supplied material.",
+  "purpose": "Defines the workspace-seeding operations that generate candidate document skeletons from fixed templates and activate an empty product-specification workspace, together with the direction-evidence-installation operations that preserve direction material as byte-identical source evidence.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
   "components": {
     "contracts": [
-      "source-material-ingestion",
-      "direction-material-projection",
-      "skeleton-generation",
-      "empty-workspace-initialization"
+      "direction-evidence-installation",
+      "workspace-seeding"
     ]
   },
   "normative_requirements": [
     {
       "id": "INIT-FSD-001",
-      "text": "Foundation seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce the project-specific direction documents, generated skeleton documents, and an activated but empty product-specification workspace in the staging workspace."
+      "text": "Workspace seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce preserved direction evidence files, generated skeleton documents, and an activated but empty product-specification workspace in the repository/ directory inside the staging transaction root."
     },
     {
       "id": "INIT-FSD-002",
-      "text": "Every document produced by foundation seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content."
+      "text": "Every document produced by workspace seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content."
     },
     {
       "id": "INIT-FSD-003",

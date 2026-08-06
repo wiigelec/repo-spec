@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines same-filesystem isolated staging, validation gating, diagnostic preservation, and atomic destination promotion.
+Defines same-filesystem staging transaction with isolated repository content, validation gating, diagnostic preservation, and atomic destination promotion.
 
 ## Correspondence
 
@@ -39,10 +39,12 @@ Defines same-filesystem isolated staging, validation gating, diagnostic preserva
 
 ## Normative requirements
 
-- `INIT-TST-001`: The transactional staging manager shall create an isolated staging workspace on the destination filesystem, provide operations to populate it, and promote the complete staged directory to the absent or empty destination with one atomic same-filesystem operation.
-- `INIT-TST-002`: Failure before staging workspace establishment shall leave the destination unmodified; in this case there is no staging workspace to preserve and the initializer shall not create a potentially inconsistent diagnostic directory.
-- `INIT-TST-003`: Failure after staging workspace establishment shall, when technically feasible, preserve the staging workspace at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed.
-- `INIT-TST-004`: Promotion to the declared destination shall occur only after every required staged check succeeds.
+- `INIT-TST-001`: The transactional staging manager shall create an isolated staging transaction root on the destination filesystem, with the structure `<root>/transaction/` (staging-state, execution-report, validation-report) and `<root>/repository/` (the exact directory tree to be promoted), and shall promote only the `repository/` subtree to the absent destination with one atomic same-filesystem rename.
+- `INIT-TST-002`: Promotion shall be a single `os.rename()` (or equivalent same-filesystem atomic directory rename) of the complete `repository/` directory to the exact destination path, confirmed absent by a stat or lstat call immediately before the rename; the initializer shall not use recursive copy, cross-device fallback, or any non-atomic move mechanism.
+- `INIT-TST-003`: Failure before staging transaction root establishment shall leave the destination unmodified; in this case there is no staging root to preserve and the initializer shall not create a potentially inconsistent diagnostic directory.
+- `INIT-TST-004`: Failure after staging transaction root establishment but before promotion shall, when technically feasible, preserve the staging transaction root at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed.
+- `INIT-TST-005`: Promotion to the declared destination shall occur only after repository validation passes; validation failure shall cause the workflow to fail before promotion and shall leave the staging transaction root in its pre-promotion state for diagnostics.
+- `INIT-TST-006`: Promotion shall be non-recoverable: the initializer shall not retry promotion after a failed or indeterminate outcome without external diagnosis and manual intervention.
 
 ## Dependencies
 
