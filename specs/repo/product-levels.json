@@ -56,6 +56,22 @@
     {
       "id": "REPO-PL-013",
       "text": "Product projection declarations shall be declaration-driven rather than mandatory, and any declared product projection shall remain within the repository-relative `derived/specs/product/` root and subordinate to the owning product specification."
+    },
+    {
+      "id": "REPO-PL-014",
+      "text": "Level 0 classification shall cover a product-wide interpretation or governance foundation."
+    },
+    {
+      "id": "REPO-PL-015",
+      "text": "Level 1 classification shall cover an independently meaningful concept requiring no coordination of responsibilities."
+    },
+    {
+      "id": "REPO-PL-016",
+      "text": "Level 2 classification shall cover a reusable coherent responsibility composed from primitives."
+    },
+    {
+      "id": "REPO-PL-017",
+      "text": "Level 3 classification shall cover a complete outcome coordinating responsibilities."
     }
   ],
   "dependencies": [
