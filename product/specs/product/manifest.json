@@ -96,6 +96,12 @@
       "level": 1
     },
     {
+      "spec_id": "product.generated-repository",
+      "path": "product/specs/product/level-1/generated-repository.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
       "spec_id": "product.lifecycle-stages",
       "path": "product/specs/product/level-1/lifecycle-stages.json",
       "status": "candidate",

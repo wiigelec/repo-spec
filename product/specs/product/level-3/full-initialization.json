@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-FIN-007",
-      "text": "The promoted repository shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state."
+      "text": "The promoted repository shall conform to the generated-repository layout contract and shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state."
     }
   ],
   "dependencies": [
@@ -94,6 +94,9 @@
     },
     {
       "spec_id": "product.content-equivalence"
+    },
+    {
+      "spec_id": "product.generated-repository"
     },
     {
       "spec_id": "product.lifecycle-stages"
