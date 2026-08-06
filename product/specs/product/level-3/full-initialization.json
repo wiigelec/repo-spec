@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-FIN-003",
-      "text": "The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, and report the failure and staging location without authorizing arbitrary resume."
+      "text": "The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, write an execution report to the preserved staging workspace, and report the failure and staging location without authorizing arbitrary resume."
     },
     {
       "id": "INIT-FIN-004",
