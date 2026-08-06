@@ -218,7 +218,39 @@ The Level model should also prevent:
 - orchestrations inventing missing primitive behavior;
 - implementation artifacts becoming undocumented sources of specification semantics.
 
-Same-Level dependencies may be permitted only when they are explicit, justified, and acyclic.
+Same-Level dependencies may be permitted only when they are explicit and acyclic.
+
+### Classification matrix
+
+The following examples are illustrative guidance for applying the accepted `repo.product-levels` contract. They are not additional normative requirements. When an example spans boundaries, classify it by the responsibility and outcome it actually defines, not by its implementation name.
+
+| Example | Classification | Reason | Boundary or edge case |
+| --- | --- | --- | --- |
+| Authority and precedence rules shared by all product areas | Level 0 | Product-wide governance foundation | A rule limited to one feature is not Level 0. |
+| Product-wide identity and versioning foundation | Level 0 | Common identity semantics | A feature-specific identifier belongs to that feature's lower-level contract. |
+| Universal lifecycle invariant | Level 0 | Product-wide lifecycle semantics | A workflow-specific transition belongs to Level 2 or Level 3. |
+| Feature-specific pricing value or discount-code contract | Level 1 | Independently meaningful concept | It is not Level 0 merely because the feature uses it broadly. |
+| User or account record definition | Level 1 | Atomic product concept | Coordinating account creation and notification is not a primitive. |
+| Elementary input-validation contract | Level 1 | Standalone contract requiring no responsibility coordination | A validator service coordinating persistence and policy is Level 2. |
+| Standalone operation interface or state definition | Level 1 | Independently understandable elementary contract | A complete operation using it may be Level 3. |
+| Reusable authentication-token validator | Level 2 | Coherent capability composed from primitive contracts | It remains Level 2 when it validates without completing a user outcome. |
+| Persistence adapter over entity and storage primitives | Level 2 | Reusable responsibility composed from primitives | The adapter does not become Level 3 because it has side effects. |
+| Import processor coordinating parsing, validation, and staging | Level 2 | One reusable coherent responsibility | Importing plus publishing and reporting a completed result is Level 3. |
+| Reusable coordinated state machine | Level 2 | Component-level responsibility | A full user lifecycle that drives it is an orchestration. |
+| Complete checkout use case | Level 3 | Complete outcome coordinating independent responsibilities | It remains Level 3 even when one component performs most of the work. |
+| Account onboarding lifecycle | Level 3 | Complete lifecycle transition with observable outcome | The individual account record remains Level 1. |
+| Cross-system deployment or release flow | Level 3 | Complete outcome coordinating systems and responsibilities | A deployment adapter alone is Level 2. |
+| User-facing validation-and-submission operation | Level 3 | Complete product outcome with success and failure behavior | A reusable validation capability alone is Level 2. |
+| Component that redefines primitive or component semantics | Not a valid Level 3 classification | Higher Levels must not redefine lower-Level authority | Clarify or move the semantics to the owning lower Level. |
+
+### Level schema extension mechanics
+
+Each Level-specific product schema extends `schemas/product/product-spec-base.schema.json` with a two-member `allOf` composition:
+
+1. The first member references the common base schema.
+2. The second member is an object schema that narrows `level` to the Level constant and declares that Level's extension fields at the product-specification root.
+
+The extension object must not redefine common envelope fields other than the `level` narrowing. The Level-specific schema must set root `unevaluatedProperties: false`, and every nested object introduced by the extension must set `additionalProperties: false`. This makes the base envelope and explicitly declared Level fields the complete accepted schema surface.
 
 ### Level artifact structure
 
@@ -226,7 +258,7 @@ The framework should define a predictable product-specification layout, such as:
 
 ```text
 specs/
-    levels/
+    product/
         level-0/
         level-1/
         level-2/

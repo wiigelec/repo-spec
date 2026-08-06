@@ -56,6 +56,22 @@
     {
       "id": "REPO-PSB-013",
       "text": "Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields."
+    },
+    {
+      "id": "REPO-PSB-014",
+      "text": "Each Level-specific product schema shall extend `schemas/product/product-spec-base.schema.json` through an `allOf` composition whose first member references the base schema and whose second member is the Level extension object schema."
+    },
+    {
+      "id": "REPO-PSB-015",
+      "text": "The Level extension object schema shall attach Level-specific fields at the product-specification root, shall refine `level` with the Level-specific constant, and shall not redefine common envelope fields other than that narrowing refinement."
+    },
+    {
+      "id": "REPO-PSB-016",
+      "text": "Each Level-specific product schema shall set root `unevaluatedProperties` to `false` so the base envelope and declared Level extension fields are the complete accepted root surface."
+    },
+    {
+      "id": "REPO-PSB-017",
+      "text": "Each nested object introduced by a Level-specific extension shall set `additionalProperties` to `false` and shall declare its complete Level-specific field surface."
     }
   ],
   "dependencies": [
