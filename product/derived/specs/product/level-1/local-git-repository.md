@@ -39,16 +39,20 @@ Defines the atomic local Git repository state produced by the bounded initializa
 
 ## Normative requirements
 
-- `INIT-GIT-001`: The initialized local Git repository shall have `main` as its initial branch, exactly one root commit containing all generated repository content, a clean worktree, and no configured remotes.
-- `INIT-GIT-002`: The root commit shall use the fixed message `Initial repository foundation`, fixed author and committer identity `Repo-Spec Initializer <initializer@repo-spec.local>`, and fixed author and committer timestamp `1234567890 +0000` so equivalent generated content produces equivalent local Git history.
+- `INIT-GIT-001`: The initialized local Git repository shall have exactly one root commit containing all generated repository content, a clean worktree, and no configured remotes; the initial branch name and root-commit model shall be determined by the governing git bootstrap profile.
+- `INIT-GIT-002`: The root commit shall use the commit message, author identity, and author timestamp defined by the governing git bootstrap profile, so that equivalent generated content produced under the same bootstrap profile version produces equivalent local Git history.
+- `INIT-GIT-003`: The root commit object identifier shall be deterministic: identical generated repository content produced under the same bootstrap profile version shall produce identical tree and commit object identifiers, and the initializer shall not include non-deterministic data such as wall-clock timestamps or host-dependent values.
+- `INIT-GIT-004`: The repository shall contain no additional commits beyond the root commit, no merge commits, no tag references, and no orphan references, and the root commit shall have no parent commit.
 
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-bootstrap-profile`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
+- artifact: `product/specs/product/level-1/git-bootstrap-profile.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

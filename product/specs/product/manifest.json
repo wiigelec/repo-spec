@@ -84,6 +84,12 @@
       "level": 1
     },
     {
+      "spec_id": "product.git-bootstrap-profile",
+      "path": "product/specs/product/level-1/git-bootstrap-profile.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
       "spec_id": "product.destination-preflight",
       "path": "product/specs/product/level-2/destination-preflight.json",
       "status": "candidate",
