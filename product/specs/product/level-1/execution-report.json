@@ -1,0 +1,77 @@
+{
+  "spec_id": "product.execution-report",
+  "title": "Execution Report Contract",
+  "purpose": "Defines the atomic execution report output artifact format for the initializer.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["execution-report-format"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-RPT-001",
+      "text": "An execution report shall be an atomic output artifact that records the outcome of each lifecycle stage, any warnings or errors produced, and the overall completion status."
+    },
+    {
+      "id": "INIT-RPT-002",
+      "text": "The execution report shall distinguish completed stages from skipped, deferred, or failed stages, and shall not report overall success when any required stage failed or was skipped without explicit authority."
+    },
+    {
+      "id": "INIT-RPT-003",
+      "text": "The execution report contract shall declare a machine-readable representation and the fields required by that representation."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/execution-report.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

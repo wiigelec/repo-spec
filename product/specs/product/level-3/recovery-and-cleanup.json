@@ -1,0 +1,98 @@
+{
+  "spec_id": "product.recovery-and-cleanup",
+  "title": "Recovery and Cleanup Workflow",
+  "purpose": "Defines the recovery and cleanup workflow that handles initialization failures, cleans up staging workspaces, and produces a failure execution report.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 3,
+  "orchestrations": {
+    "workflows": ["recovery-and-cleanup"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-RCV-001",
+      "text": "The recovery and cleanup workflow shall compose the transactional staging manager, execution orchestrator, and handoff assembly components to handle initialization failures, clean up staging workspaces, and produce a failure execution report that identifies the failing component, the error reason, and any preserved diagnostic state."
+    },
+    {
+      "id": "INIT-RCV-002",
+      "text": "The recovery and cleanup workflow shall not silently discard diagnostic state: when a staging workspace exists at the time of failure, the workflow shall either preserve it for inspection or explicitly report its cleanup with a record of the disposed content."
+    },
+    {
+      "id": "INIT-RCV-003",
+      "text": "The failure execution report produced by the recovery and cleanup workflow shall use the same execution report artifact format as successful workflows, with a failed completion status."
+    },
+    {
+      "id": "INIT-RCV-004",
+      "text": "The initializer shall accept an initialization request, select the recovery and cleanup workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
+    },
+    {
+      "id": "INIT-RCV-005",
+      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "spec_id": "product.execution-report"
+    },
+    {
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "spec_id": "product.execution-orchestration"
+    },
+    {
+      "spec_id": "product.handoff-assembly"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-3/recovery-and-cleanup.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

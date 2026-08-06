@@ -1,0 +1,73 @@
+{
+  "spec_id": "product.platform-profile-interface",
+  "title": "Platform Profile Interface",
+  "purpose": "Defines the atomic platform profile interface contract for hosting-platform-specific repository establishment behavior.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["platform-profile-interface"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-PPF-001",
+      "text": "A platform profile interface shall be an atomic extension contract that encapsulates hosting-platform-specific repository establishment behavior behind a defined boundary."
+    },
+    {
+      "id": "INIT-PPF-002",
+      "text": "The platform profile interface shall define the required operations that a profile must implement, the inputs it receives from the initializer, and the outputs or side effects it produces, without constraining the internal implementation of those operations."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/platform-profile-interface.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the product-wide kernel foundations for the repo-spec initializer, including core terminology, universal invariants, authority and precedence rules, identity and versioning foundations, common data constraints, lifecycle foundations, and extension boundaries.
+Defines the product-wide kernel foundations for the repo-spec initializer, including core terminology, universal invariants, authority and precedence rules, identity and versioning foundations, common data constraints, lifecycle terminology, and extension boundaries.
 
 ## Correspondence
 
@@ -40,17 +40,11 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
   - `authority-and-precedence-rules`
   - `identity-and-versioning`
   - `common-data-constraints`
-  - `lifecycle-foundations`
+  - `lifecycle-terminology`
   - `extension-boundaries`
 
 ## Normative requirements
 
-- `INIT-L0-001`: The initializer shall be a maintained product that applies the repo-spec framework to create a governed starting point for a new repository from an explicit initialization request.
-- `INIT-L0-002`: An initialization request shall be the authoritative bounded input that specifies the desired repository configuration, destination, and supplied source material.
-- `INIT-L0-003`: A destination shall be the target location where the initialized repository is established.
-- `INIT-L0-004`: A staging workspace shall be a bounded isolated area where generation and validation occur before the destination is modified.
-- `INIT-L0-005`: Repository framework material shall be reusable source content owned by the initializer and carried into the initialized repository without modification to its normative semantics.
-- `INIT-L0-006`: Product-specific foundations shall be project-direction and product-specification artifacts seeded from explicit request material rather than invented by the initializer.
 - `INIT-L0-007`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared.
 - `INIT-L0-008`: The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed.
 - `INIT-L0-009`: The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository.
@@ -58,18 +52,8 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 - `INIT-L0-011`: The initializer shall satisfy failure safety: a partial or failed initialization shall not falsely present the destination as a successfully initialized repository.
 - `INIT-L0-012`: Request authority shall take precedence over default or inferred behavior: the initializer shall not silently expand authority beyond what the explicit initialization request grants.
 - `INIT-L0-013`: Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.
-- `INIT-L0-014`: When request material and default behavior conflict, the request shall take precedence and the conflict shall be recorded in the execution provenance.
-- `INIT-L0-015`: The initializer shall identify itself with a stable product identity and version number that is recorded in every initialized repository's provenance.
-- `INIT-L0-016`: Each initialized repository shall carry a provenance record identifying the initializer identity, exact source revision, initialization timestamp, and the governing initialization request identifier.
-- `INIT-L0-017`: Every generated governed artifact in the initialized repository shall carry or be traceable to a source material identity and revision reference.
-- `INIT-L0-018`: The initializer shall declare the common data format for its inputs and outputs: initialization request representation, execution report, provenance record, and handoff manifest.
-- `INIT-L0-019`: The initialization lifecycle shall consist of four ordered stages: request intake, framework and product-foundation establishment, platform and execution processing, and generation validation and handoff.
-- `INIT-L0-020`: Each lifecycle stage shall produce explicit output consumed by its successor stage, and no stage shall be skipped or reordered.
-- `INIT-L0-021`: The initializer shall define a maintained extension boundary for platform profiles that encapsulate hosting-platform-specific repository establishment behavior.
-- `INIT-L0-022`: A platform profile shall be selectable by name at initialization time and shall not modify the core initializer behavior for reusable framework material or product-specific foundations.
-- `INIT-L0-023`: The initializer shall produce a governed handoff that describes the initialized repository's state and the next governed action, rather than performing that successor work.
-- `INIT-L0-024`: The initializer shall reject an initialization request when required authority, mandatory input, or a valid destination cannot be determined, and shall report the rejection reason without silently defaulting.
-- `INIT-L0-025`: The initializer shall validate the initialized repository against declared conformance requirements and shall not report success when validation fails.
+- `INIT-L0-015`: The initializer shall have a stable product identity and an explicit version identity.
+- `INIT-L0-026`: The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed.
 
 ## Dependencies
 

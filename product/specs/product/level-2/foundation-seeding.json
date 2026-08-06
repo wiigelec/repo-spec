@@ -1,0 +1,72 @@
+{
+  "spec_id": "product.foundation-seeding",
+  "title": "Foundation Seeding",
+  "purpose": "Defines the foundation seeding component that installs supplied product-direction and product-specification material into the staging workspace.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["foundation-seeding"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-FSD-001",
+      "text": "The foundation seeding component shall accept the validated request model containing supplied product-direction and product-specification material and shall install that material as project-specific foundations in the staging workspace."
+    },
+    {
+      "id": "INIT-FSD-002",
+      "text": "The foundation seeding component shall not invent product semantics, infer unspecified product direction, or silently expand the scope of supplied request material."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.material-classification"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/material-classification.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/foundation-seeding.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "spec_id": "product.framework-installation",
+  "title": "Framework Installation",
+  "purpose": "Defines the framework installation component that selects and places reusable repository framework material into the staging workspace.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["framework-installation"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-FIN-001",
+      "text": "The framework installation component shall select the reusable repository framework material from the inventoried source revision and install it into the staging workspace according to the target repository structure."
+    },
+    {
+      "id": "INIT-FIN-002",
+      "text": "The framework installation component shall install each material item in its correct repository-relative path, shall not modify the normative semantics of reusable framework material, and shall report any installation conflict or failure."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.material-classification"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/material-classification.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/framework-installation.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

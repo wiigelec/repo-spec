@@ -1,0 +1,100 @@
+{
+  "spec_id": "product.resume-from-staging",
+  "title": "Resume from Staging Workflow",
+  "purpose": "Defines the resume-from-staging workflow that recovers and completes an initialization from a previously preserved staging workspace.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 3,
+  "orchestrations": {
+    "workflows": ["resume-from-staging"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-RSM-001",
+      "text": "The resume-from-staging workflow shall compose the transactional staging manager, repository validation, provenance recording, and handoff assembly components to recover and complete an initialization from a previously preserved staging workspace, without re-executing request intake, source material resolution, framework installation, or foundation seeding."
+    },
+    {
+      "id": "INIT-RSM-002",
+      "text": "The resume-from-staging workflow shall verify that the preserved staging workspace is internally consistent and compatible with the original initialization request before proceeding with validation and promotion."
+    },
+    {
+      "id": "INIT-RSM-003",
+      "text": "The initializer shall accept an initialization request, select the resume-from-staging workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
+    },
+    {
+      "id": "INIT-RSM-004",
+      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "spec_id": "product.execution-report"
+    },
+    {
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "spec_id": "product.provenance-recording"
+    },
+    {
+      "spec_id": "product.handoff-assembly"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-3/resume-from-staging.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

@@ -12,20 +12,158 @@
       "level": 0
     },
     {
-      "spec_id": "product.initializer-level-1",
-      "path": "product/specs/product/level-1/initializer-level-1.json",
+      "spec_id": "product.initialization-request",
+      "path": "product/specs/product/level-1/initialization-request.json",
       "status": "candidate",
       "level": 1
     },
     {
-      "spec_id": "product.initializer-level-2",
-      "path": "product/specs/product/level-2/initializer-level-2.json",
+      "spec_id": "product.source-revision-identity",
+      "path": "product/specs/product/level-1/source-revision-identity.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.material-classification",
+      "path": "product/specs/product/level-1/material-classification.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.destination",
+      "path": "product/specs/product/level-1/destination.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.staging-workspace",
+      "path": "product/specs/product/level-1/staging-workspace.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.execution-profile",
+      "path": "product/specs/product/level-1/execution-profile.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.platform-profile-interface",
+      "path": "product/specs/product/level-1/platform-profile-interface.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.provenance-record",
+      "path": "product/specs/product/level-1/provenance-record.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "path": "product/specs/product/level-1/handoff-manifest.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.execution-report",
+      "path": "product/specs/product/level-1/execution-report.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
+      "spec_id": "product.destination-preflight",
+      "path": "product/specs/product/level-2/destination-preflight.json",
       "status": "candidate",
       "level": 2
     },
     {
-      "spec_id": "product.initializer-level-3",
-      "path": "product/specs/product/level-3/initializer-level-3.json",
+      "spec_id": "product.execution-orchestration",
+      "path": "product/specs/product/level-2/execution-orchestration.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "path": "product/specs/product/level-2/foundation-seeding.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "path": "product/specs/product/level-2/framework-installation.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.handoff-assembly",
+      "path": "product/specs/product/level-2/handoff-assembly.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.platform-profile-execution",
+      "path": "product/specs/product/level-2/platform-profile-execution.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.provenance-recording",
+      "path": "product/specs/product/level-2/provenance-recording.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.repository-validation",
+      "path": "product/specs/product/level-2/repository-validation.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.request-intake",
+      "path": "product/specs/product/level-2/request-intake.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.source-material-resolution",
+      "path": "product/specs/product/level-2/source-material-resolution.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "path": "product/specs/product/level-2/transactional-staging.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.dry-run-validation",
+      "path": "product/specs/product/level-3/dry-run-validation.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.full-initialization",
+      "path": "product/specs/product/level-3/full-initialization.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.platform-integrated-initialization",
+      "path": "product/specs/product/level-3/platform-integrated-initialization.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.recovery-and-cleanup",
+      "path": "product/specs/product/level-3/recovery-and-cleanup.json",
+      "status": "candidate",
+      "level": 3
+    },
+    {
+      "spec_id": "product.resume-from-staging",
+      "path": "product/specs/product/level-3/resume-from-staging.json",
       "status": "candidate",
       "level": 3
     }

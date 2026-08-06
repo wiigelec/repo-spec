@@ -1,0 +1,72 @@
+{
+  "spec_id": "product.destination-preflight",
+  "title": "Destination Preflight",
+  "purpose": "Defines the destination preflight component that validates destination state compatibility before generation begins.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["destination-preflight"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-DPF-001",
+      "text": "The destination preflight component shall accept a destination representation, validate it against the declared existence constraint, and confirm that the destination is in a state compatible with the requested initialization operation."
+    },
+    {
+      "id": "INIT-DPF-002",
+      "text": "The destination preflight component shall reject a destination that already exists in a conflicting state and shall report the conflict without modifying the destination."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.destination"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/destination.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/destination-preflight.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

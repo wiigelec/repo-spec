@@ -1,0 +1,72 @@
+{
+  "spec_id": "product.execution-orchestration",
+  "title": "Execution Orchestration",
+  "purpose": "Defines the generic execution orchestration component that sequences stage execution according to an execution profile without prescribing concrete workflows.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["execution-orchestration"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-EOR-001",
+      "text": "The execution orchestrator component shall accept a sequence of stages and an execution profile, execute each stage in order, enforce declared preconditions for each stage, and halt execution when any stage fails or produces an unrecoverable error."
+    },
+    {
+      "id": "INIT-EOR-002",
+      "text": "The execution orchestrator component shall respect the execution profile's declared safety gates: orchestration shall not skip declared required stages, bypass preconditions, or silently continue past a failure without explicit authority."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-profile.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/execution-orchestration.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

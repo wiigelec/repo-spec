@@ -1,0 +1,142 @@
+{
+  "spec_id": "product.full-initialization",
+  "title": "Full Initialization Workflow",
+  "purpose": "Defines the complete end-to-end initialization workflow that produces a validated, provenance-tracked initialized repository at the declared destination.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 3,
+  "orchestrations": {
+    "workflows": ["full-initialization"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-FIN-001",
+      "text": "The full initialization workflow shall compose the request intake, source material resolver, destination preflight, transactional staging manager, framework installation, foundation seeding, execution orchestrator, repository validation, provenance recording, and handoff assembly components into a single end-to-end orchestration that produces a validated, provenance-tracked initialized repository at the declared destination."
+    },
+    {
+      "id": "INIT-FIN-002",
+      "text": "The full initialization workflow shall execute the lifecycle stages in order: request intake, source material resolution, destination preflight, staging workspace creation, framework installation, foundation seeding, repository validation, provenance recording, handoff assembly, and destination promotion."
+    },
+    {
+      "id": "INIT-FIN-003",
+      "text": "The full initialization workflow shall halt and report failure when any required component produces an error, and shall not promote staging content to the destination when validation fails."
+    },
+    {
+      "id": "INIT-FIN-004",
+      "text": "The initializer shall accept an initialization request, select the full initialization workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
+    },
+    {
+      "id": "INIT-FIN-005",
+      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+    },
+    {
+      "id": "INIT-FIN-006",
+      "text": "The full initialization workflow shall produce deterministic output for equivalent initialization requests, source revisions, and execution profiles: the same input triple shall produce the same initialized repository content and the same handoff manifest, except for explicitly declared variable data in the provenance record."
+    },
+    {
+      "id": "INIT-FIN-007",
+      "text": "The full initialization workflow shall record the completed workflow identity, the composition of components used, and the version of each component in the execution report for diagnostic and provenance purposes."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.material-classification"
+    },
+    {
+      "spec_id": "product.destination"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "spec_id": "product.execution-report"
+    },
+    {
+      "spec_id": "product.request-intake"
+    },
+    {
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "spec_id": "product.destination-preflight"
+    },
+    {
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "spec_id": "product.execution-orchestration"
+    },
+    {
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "spec_id": "product.provenance-recording"
+    },
+    {
+      "spec_id": "product.handoff-assembly"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-3/full-initialization.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
