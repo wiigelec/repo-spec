@@ -15,7 +15,15 @@
     },
     {
       "id": "INIT-TST-002",
-      "text": "Incomplete generation, local Git establishment, or validation shall leave the destination unmodified and preserve staging for diagnostics; promotion shall occur only after every required staged check succeeds."
+      "text": "Failure before staging workspace establishment shall leave the destination unmodified; in this case there is no staging workspace to preserve and the initializer shall not create a potentially inconsistent diagnostic directory."
+    },
+    {
+      "id": "INIT-TST-003",
+      "text": "Failure after staging workspace establishment shall, when technically feasible, preserve the staging workspace at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed."
+    },
+    {
+      "id": "INIT-TST-004",
+      "text": "Promotion to the declared destination shall occur only after every required staged check succeeds."
     }
   ],
   "dependencies": [

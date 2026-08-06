@@ -40,7 +40,9 @@ Defines same-filesystem isolated staging, validation gating, diagnostic preserva
 ## Normative requirements
 
 - `INIT-TST-001`: The transactional staging manager shall create an isolated staging workspace on the destination filesystem, provide operations to populate it, and promote the complete staged directory to the absent or empty destination with one atomic same-filesystem operation.
-- `INIT-TST-002`: Incomplete generation, local Git establishment, or validation shall leave the destination unmodified and preserve staging for diagnostics; promotion shall occur only after every required staged check succeeds.
+- `INIT-TST-002`: Failure before staging workspace establishment shall leave the destination unmodified; in this case there is no staging workspace to preserve and the initializer shall not create a potentially inconsistent diagnostic directory.
+- `INIT-TST-003`: Failure after staging workspace establishment shall, when technically feasible, preserve the staging workspace at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed.
+- `INIT-TST-004`: Promotion to the declared destination shall occur only after every required staged check succeeds.
 
 ## Dependencies
 
