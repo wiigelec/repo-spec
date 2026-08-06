@@ -243,6 +243,15 @@ The following examples are illustrative guidance for applying the accepted `repo
 | User-facing validation-and-submission operation | Level 3 | Complete product outcome with success and failure behavior | A reusable validation capability alone is Level 2. |
 | Component that redefines primitive or component semantics | Not a valid Level 3 classification | Higher Levels must not redefine lower-Level authority | Clarify or move the semantics to the owning lower Level. |
 
+### Level schema extension mechanics
+
+Each Level-specific product schema extends `schemas/product/product-spec-base.schema.json` with a two-member `allOf` composition:
+
+1. The first member references the common base schema.
+2. The second member is an object schema that narrows `level` to the Level constant and declares that Level's extension fields at the product-specification root.
+
+The extension object must not redefine common envelope fields other than the `level` narrowing. The Level-specific schema must set root `unevaluatedProperties: false`, and every nested object introduced by the extension must set `additionalProperties: false`. This makes the base envelope and explicitly declared Level fields the complete accepted schema surface.
+
 ### Level artifact structure
 
 The framework should define a predictable product-specification layout, such as:

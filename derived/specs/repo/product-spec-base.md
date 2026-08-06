@@ -33,6 +33,10 @@ Defines the normative common envelope shared by all product specifications.
 - `REPO-PSB-011`: The `derived_artifacts` collection shall be the declaration mechanism used by the product specification itself, shall remain subordinate to that source specification, and shall use repository-relative Markdown paths beneath `derived/specs/product/`.
 - `REPO-PSB-012`: Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, Level, and declared derived-artifact ownership between the manifest entry and the product file, while product workflow authority shall remain outside the product specification contract.
 - `REPO-PSB-013`: Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields.
+- `REPO-PSB-014`: Each Level-specific product schema shall extend `schemas/product/product-spec-base.schema.json` through an `allOf` composition whose first member references the base schema and whose second member is the Level extension object schema.
+- `REPO-PSB-015`: The Level extension object schema shall attach Level-specific fields at the product-specification root, shall refine `level` with the Level-specific constant, and shall not redefine common envelope fields other than that narrowing refinement.
+- `REPO-PSB-016`: Each Level-specific product schema shall set root `unevaluatedProperties` to `false` so the base envelope and declared Level extension fields are the complete accepted root surface.
+- `REPO-PSB-017`: Each nested object introduced by a Level-specific extension shall set `additionalProperties` to `false` and shall declare its complete Level-specific field surface.
 
 ## Dependencies
 

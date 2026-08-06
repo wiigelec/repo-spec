@@ -72,6 +72,22 @@
     {
       "id": "REPO-PL-017",
       "text": "Level 3 shall not redefine primitive or component semantics."
+    },
+    {
+      "id": "REPO-PL-018",
+      "text": "Level-specific schema extension fields shall be declared in the second `allOf` object subschema after the common product-specification base reference."
+    },
+    {
+      "id": "REPO-PL-019",
+      "text": "Level-specific schemas shall narrow the common `level` field to their declared Level and shall not redefine other common envelope fields."
+    },
+    {
+      "id": "REPO-PL-020",
+      "text": "Level-specific schemas shall reject undeclared root properties through `unevaluatedProperties: false`, and nested Level extension objects shall reject undeclared properties through `additionalProperties: false`."
+    },
+    {
+      "id": "REPO-PL-021",
+      "text": "A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics."
     }
   ],
   "dependencies": [
