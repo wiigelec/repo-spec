@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-REQ-007",
-      "text": "The `product` object shall define required `id` as a non-empty string product identifier and required `direction_material` as a non-empty array of non-empty strings, and shall be rejected when any other product field is present."
+      "text": "The `product` object shall define required `id` as a non-empty string product identifier conforming to the product-identity contract and required `direction_material` as a non-empty array of non-empty strings, and shall be rejected when any other product field is present."
     },
     {
       "id": "INIT-REQ-008",
@@ -79,6 +79,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.product-identity"
     }
   ],
   "references": [

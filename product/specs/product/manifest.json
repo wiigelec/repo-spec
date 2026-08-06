@@ -60,6 +60,12 @@
       "level": 1
     },
     {
+      "spec_id": "product.product-identity",
+      "path": "product/specs/product/level-1/product-identity.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
       "spec_id": "product.provenance-record",
       "path": "product/specs/product/level-1/provenance-record.json",
       "status": "candidate",
