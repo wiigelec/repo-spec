@@ -258,7 +258,7 @@ The framework should define a predictable product-specification layout, such as:
 
 ```text
 specs/
-    levels/
+    product/
         level-0/
         level-1/
         level-2/
