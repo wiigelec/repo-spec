@@ -435,27 +435,31 @@ Level 3 — orchestrations
 
 ### Level 0 — Kernel
 
-Defines product-wide foundations such as terminology, universal invariants, authority, identity foundations, common constraints, error principles, lifecycle foundations, and extension boundaries.
+Defines minimal product-wide semantics that govern the interpretation, identity, authority, lifecycle, or common constraints of otherwise independent product areas.
 
 Dependency rule: Level 0 must not depend on Levels 1–3.
 
 ### Level 1 — Primitives
 
-Defines atomic product concepts such as entities, values, records, interfaces, elementary operations, validation primitives, and state definitions.
+Defines an independently meaningful product concept or elementary contract that can be understood without coordinating multiple coherent product responsibilities.
 
 Dependency rule: Level 1 may depend on Level 0 but must not depend on Levels 2 or 3.
 
 ### Level 2 — Components
 
-Defines reusable compositions such as services, processors, validators, adapters, repositories, subsystems, and coordinated state machines.
+Defines a reusable capability that composes primitives into one coherent product responsibility but does not itself establish a complete product outcome.
 
 Dependency rule: Level 2 may depend on Levels 0 and 1 but must not depend on Level 3.
 
 ### Level 3 — Orchestrations
 
-Defines complete workflows such as end-to-end use cases, user-facing operations, lifecycle orchestrations, cross-system coordination, and release or deployment flows.
+Defines a complete product outcome, use case, or lifecycle transition by coordinating one or more independently meaningful responsibilities, including observable success and failure behavior.
 
 Dependency rule: Level 3 may depend on Levels 0, 1, and 2.
+
+### Definition impact review
+
+Issue #211 revises the Level definitions without changing dependency direction, same-Level dependency rules, lifecycle requirements, structural rules, or validation ownership. The framework architecture plan remains applicable without sequencing or scope changes; its Level-model section is reaffirmed against the revised `repo.product-levels` authority.
 
 ### Same-Level dependencies
 

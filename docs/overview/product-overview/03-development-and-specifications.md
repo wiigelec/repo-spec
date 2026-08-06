@@ -135,7 +135,7 @@ Within that decomposition dimension, Level 0 constrains universal foundations, L
 
 ### Level 0 — Kernel
 
-Level 0 defines the product-wide foundations that all higher Levels depend upon.
+Level 0 defines minimal product-wide semantics that govern the interpretation, identity, authority, lifecycle, or common constraints of otherwise independent product areas.
 
 It may define:
 
@@ -152,7 +152,7 @@ Level 0 must remain minimal and foundational. It must not depend on higher Level
 
 ### Level 1 — Primitives
 
-Level 1 defines atomic product concepts and contracts built upon the kernel.
+Level 1 defines an independently meaningful product concept or elementary contract that can be understood without coordinating multiple coherent product responsibilities.
 
 It may define:
 
@@ -169,7 +169,7 @@ Level 1 may depend on Level 0 but must not depend on Levels 2 or 3.
 
 ### Level 2 — Components
 
-Level 2 defines reusable compositions of primitives that provide coherent product responsibilities.
+Level 2 defines a reusable capability that composes primitives into one coherent product responsibility but does not itself establish a complete product outcome.
 
 It may define:
 
@@ -186,7 +186,7 @@ Level 2 may depend on Levels 0 and 1 but must not depend on Level 3.
 
 ### Level 3 — Orchestrations
 
-Level 3 defines complete workflows and externally meaningful product behavior.
+Level 3 defines a complete product outcome, use case, or lifecycle transition by coordinating one or more independently meaningful responsibilities, including observable success and failure behavior.
 
 It may define:
 

@@ -21,10 +21,10 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 ## Normative requirements
 
 - `REPO-PL-001`: The repository shall define `repo.product-levels` as the normative contract for the Level 0-3 product-specification model.
-- `REPO-PL-002`: Level 0 shall define product-wide kernel foundations, including core terminology, universal invariants, authority and precedence rules, identity and versioning foundations, common data constraints, lifecycle foundations, and extension boundaries, and Level 0 specifications shall depend only on Level 0 specifications.
-- `REPO-PL-003`: Level 1 shall define atomic primitives and reusable product concepts, and Level 1 specifications shall depend only on Level 0 or Level 1 specifications.
-- `REPO-PL-004`: Level 2 shall define reusable components and coherent product responsibilities, and Level 2 specifications shall depend only on Level 0, Level 1, or Level 2 specifications.
-- `REPO-PL-005`: Level 3 shall define complete orchestrations and externally meaningful product behavior, and Level 3 specifications shall depend on Level 0, Level 1, Level 2, or Level 3 specifications.
+- `REPO-PL-002`: Level 0 shall define minimal product-wide semantics that govern the interpretation, identity, authority, lifecycle, or common constraints of otherwise independent product areas, and Level 0 specifications shall depend only on Level 0 specifications.
+- `REPO-PL-003`: Level 1 shall define an independently meaningful product concept or elementary contract that can be understood without coordinating multiple coherent product responsibilities, and Level 1 specifications shall depend only on Level 0 or Level 1 specifications.
+- `REPO-PL-004`: Level 2 shall define a reusable capability that composes primitives into one coherent product responsibility but does not itself establish a complete product outcome, and Level 2 specifications shall depend only on Level 0, Level 1, or Level 2 specifications.
+- `REPO-PL-005`: Level 3 shall define a complete product outcome, use case, or lifecycle transition by coordinating one or more independently meaningful responsibilities, including observable success and failure behavior, and Level 3 specifications shall depend on Level 0, Level 1, Level 2, or Level 3 specifications.
 - `REPO-PL-006`: Higher Levels may depend on the same or lower Levels, and lower Levels shall not depend on higher Levels.
 - `REPO-PL-007`: Same-Level dependencies shall be permitted only when they are explicit and the full product dependency graph remains acyclic.
 - `REPO-PL-008`: Product dependency targets shall be limited to candidate or accepted product specifications.
