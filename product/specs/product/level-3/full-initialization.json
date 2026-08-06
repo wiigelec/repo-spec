@@ -31,7 +31,7 @@
     },
     {
       "id": "INIT-FIN-006",
-      "text": "Equivalent validated JSON requests and equivalent local source revisions shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp."
+      "text": "Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp."
     },
     {
       "id": "INIT-FIN-007",
@@ -95,6 +95,9 @@
     },
     {
       "spec_id": "product.local-git-initialization"
+    },
+    {
+      "spec_id": "product.content-equivalence"
     }
   ],
   "references": [

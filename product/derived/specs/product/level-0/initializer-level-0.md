@@ -45,7 +45,7 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 
 ## Normative requirements
 
-- `INIT-L0-001`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared.
+- `INIT-L0-001`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly declared variable data whose scope, representation, and source shall be declared; the equivalence relation shall be defined by the content-equivalence contract of the governing product specification and shall be evaluated on canonical forms.
 - `INIT-L0-002`: The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed.
 - `INIT-L0-003`: The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository.
 - `INIT-L0-004`: The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision.

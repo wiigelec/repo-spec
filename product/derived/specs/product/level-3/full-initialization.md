@@ -44,7 +44,7 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `INIT-FIN-003`: The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, and report the failure and staging location without authorizing arbitrary resume.
 - `INIT-FIN-004`: The initializer shall perform only standard local execution for this workflow and shall require every authority-bearing input to be explicit in the JSON request.
 - `INIT-FIN-005`: The workflow shall reject named references, remote retrieval, nonempty-destination overwrite, platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation.
-- `INIT-FIN-006`: Equivalent validated JSON requests and equivalent local source revisions shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp.
+- `INIT-FIN-006`: Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp.
 - `INIT-FIN-007`: The promoted repository shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state.
 
 ## Dependencies
@@ -68,6 +68,7 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `product.provenance-recording`
 - `product.handoff-assembly`
 - `product.local-git-initialization`
+- `product.content-equivalence`
 
 ## References
 

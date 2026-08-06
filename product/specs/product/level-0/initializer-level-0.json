@@ -19,7 +19,7 @@
   "normative_requirements": [
     {
       "id": "INIT-L0-001",
-      "text": "The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared."
+      "text": "The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly declared variable data whose scope, representation, and source shall be declared; the equivalence relation shall be defined by the content-equivalence contract of the governing product specification and shall be evaluated on canonical forms."
     },
     {
       "id": "INIT-L0-002",
