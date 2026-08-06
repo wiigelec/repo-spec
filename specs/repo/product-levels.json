@@ -56,6 +56,22 @@
     {
       "id": "REPO-PL-013",
       "text": "Product projection declarations shall be declaration-driven rather than mandatory, and any declared product projection shall remain within the repository-relative `derived/specs/product/` root and subordinate to the owning product specification."
+    },
+    {
+      "id": "REPO-PL-014",
+      "text": "Level 0 shall not contain feature-specific semantics."
+    },
+    {
+      "id": "REPO-PL-015",
+      "text": "Level 1 shall not coordinate multiple coherent responsibilities."
+    },
+    {
+      "id": "REPO-PL-016",
+      "text": "Level 2 shall not define a complete product outcome."
+    },
+    {
+      "id": "REPO-PL-017",
+      "text": "Level 3 shall not redefine primitive or component semantics."
     }
   ],
   "dependencies": [
