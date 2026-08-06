@@ -94,7 +94,7 @@
     },
     {
       "id": "INIT-L2-019",
-      "text": "The provenance and handoff component shall capture provenance data from the initialization request, the resolved source revision, the execution profile, and the completed lifecycle stages, and shall write the provenance record to the initialized repository."
+      "text": "The provenance and handoff component shall capture provenance data from the initialization request, the resolved source revision, the execution profile, the completed lifecycle stages, and any conflict in which explicit request authority took precedence over default or inferred behavior, and shall write the provenance record to the initialized repository."
     },
     {
       "id": "INIT-L2-020",

@@ -66,7 +66,7 @@ Defines the reusable components and coherent product responsibilities for the re
 - `INIT-L2-016`: The platform profile executor component shall report profile execution outcomes separately from core initializer outcomes and shall not allow platform-specific behavior to suppress core validation or provenance recording.
 - `INIT-L2-017`: The repository validation component shall validate the staged or promoted repository against declared conformance requirements, structural constraints, and repository-specification rules.
 - `INIT-L2-018`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails.
-- `INIT-L2-019`: The provenance and handoff component shall capture provenance data from the initialization request, the resolved source revision, the execution profile, and the completed lifecycle stages, and shall write the provenance record to the initialized repository.
+- `INIT-L2-019`: The provenance and handoff component shall capture provenance data from the initialization request, the resolved source revision, the execution profile, the completed lifecycle stages, and any conflict in which explicit request authority took precedence over default or inferred behavior, and shall write the provenance record to the initialized repository.
 - `INIT-L2-020`: The provenance and handoff component shall assemble the execution report from stage outcomes, warnings, and errors, produce the handoff manifest describing the initialized repository state, and coordinate the final output of the initializer.
 
 ## Dependencies

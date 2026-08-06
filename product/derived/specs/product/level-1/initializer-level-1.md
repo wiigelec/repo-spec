@@ -62,12 +62,13 @@ Defines the atomic primitives and reusable product concepts for the repo-spec in
 - `INIT-L1-012`: The execution profile shall reject execution modes that are not supported for the given combination of request inputs, destination state, and source revision.
 - `INIT-L1-013`: A platform profile interface shall be an atomic extension contract that encapsulates hosting-platform-specific repository establishment behavior behind a defined boundary.
 - `INIT-L1-014`: The platform profile interface shall define the required operations that a profile must implement, the inputs it receives from the initializer, and the outputs or side effects it produces, without constraining the internal implementation of those operations.
-- `INIT-L1-015`: A provenance record shall be an atomic output artifact that records the initializer identity, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied.
+- `INIT-L1-015`: A provenance record shall be an atomic output artifact that records the initializer identity and version, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied.
 - `INIT-L1-016`: The provenance record shall be deterministically reproducible from the same request inputs and source revision, except for the timestamp which shall be explicitly declared as variable data.
 - `INIT-L1-017`: A handoff manifest shall be an atomic output artifact that describes the initialized repository's state, lists the generated, selected, omitted, and deferred material, and names the next governed action for the initialized repository.
 - `INIT-L1-018`: The handoff manifest shall not contain implementation artifacts or successor product behavior; it is a description of what was produced and what may come next.
 - `INIT-L1-019`: An execution report shall be an atomic output artifact that records the outcome of each lifecycle stage, any warnings or errors produced, and the overall completion status.
 - `INIT-L1-020`: The execution report shall distinguish completed stages from skipped, deferred, or failed stages, and shall not report overall success when any required stage failed or was skipped without explicit authority.
+- `INIT-L1-021`: The initialization request, provenance record, handoff manifest, and execution report contracts shall each declare a machine-readable representation and the fields required by that representation.
 
 ## Dependencies
 

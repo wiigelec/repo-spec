@@ -1,7 +1,7 @@
 {
   "spec_id": "product.initializer-level-0",
   "title": "Initializer Level 0 Kernel Foundations",
-  "purpose": "Defines the product-wide kernel foundations for the repo-spec initializer, including core terminology, universal invariants, authority and precedence rules, identity and versioning foundations, common data constraints, lifecycle foundations, and extension boundaries.",
+  "purpose": "Defines the product-wide kernel foundations for the repo-spec initializer, including core terminology, universal invariants, authority and precedence rules, identity and versioning foundations, common data constraints, lifecycle terminology, and extension boundaries.",
   "status": "candidate",
   "schema_version": "1",
   "level": 0,
@@ -12,35 +12,11 @@
       "authority-and-precedence-rules",
       "identity-and-versioning",
       "common-data-constraints",
-      "lifecycle-foundations",
+      "lifecycle-terminology",
       "extension-boundaries"
     ]
   },
   "normative_requirements": [
-    {
-      "id": "INIT-L0-001",
-      "text": "The initializer shall be a maintained product that applies the repo-spec framework to create a governed starting point for a new repository from an explicit initialization request."
-    },
-    {
-      "id": "INIT-L0-002",
-      "text": "An initialization request shall be the authoritative bounded input that specifies the desired repository configuration, destination, and supplied source material."
-    },
-    {
-      "id": "INIT-L0-003",
-      "text": "A destination shall be the target location where the initialized repository is established."
-    },
-    {
-      "id": "INIT-L0-004",
-      "text": "A staging workspace shall be a bounded isolated area where generation and validation occur before the destination is modified."
-    },
-    {
-      "id": "INIT-L0-005",
-      "text": "Repository framework material shall be reusable source content owned by the initializer and carried into the initialized repository without modification to its normative semantics."
-    },
-    {
-      "id": "INIT-L0-006",
-      "text": "Product-specific foundations shall be project-direction and product-specification artifacts seeded from explicit request material rather than invented by the initializer."
-    },
     {
       "id": "INIT-L0-007",
       "text": "The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared."
@@ -70,52 +46,12 @@
       "text": "Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior."
     },
     {
-      "id": "INIT-L0-014",
-      "text": "When request material and default behavior conflict, the request shall take precedence and the conflict shall be recorded in the execution provenance."
-    },
-    {
       "id": "INIT-L0-015",
-      "text": "The initializer shall identify itself with a stable product identity and version number that is recorded in every initialized repository's provenance."
+      "text": "The initializer shall have a stable product identity and an explicit version identity."
     },
     {
-      "id": "INIT-L0-016",
-      "text": "Each initialized repository shall carry a provenance record identifying the initializer identity, exact source revision, initialization timestamp, and the governing initialization request identifier."
-    },
-    {
-      "id": "INIT-L0-017",
-      "text": "Every generated governed artifact in the initialized repository shall carry or be traceable to a source material identity and revision reference."
-    },
-    {
-      "id": "INIT-L0-018",
-      "text": "The initializer shall declare the common data format for its inputs and outputs: initialization request representation, execution report, provenance record, and handoff manifest."
-    },
-    {
-      "id": "INIT-L0-019",
-      "text": "The initialization lifecycle shall consist of four ordered stages: request intake, framework and product-foundation establishment, platform and execution processing, and generation validation and handoff."
-    },
-    {
-      "id": "INIT-L0-020",
-      "text": "Each lifecycle stage shall produce explicit output consumed by its successor stage, and no stage shall be skipped or reordered."
-    },
-    {
-      "id": "INIT-L0-021",
-      "text": "The initializer shall define a maintained extension boundary for platform profiles that encapsulate hosting-platform-specific repository establishment behavior."
-    },
-    {
-      "id": "INIT-L0-022",
-      "text": "A platform profile shall be selectable by name at initialization time and shall not modify the core initializer behavior for reusable framework material or product-specific foundations."
-    },
-    {
-      "id": "INIT-L0-023",
-      "text": "The initializer shall produce a governed handoff that describes the initialized repository's state and the next governed action, rather than performing that successor work."
-    },
-    {
-      "id": "INIT-L0-024",
-      "text": "The initializer shall reject an initialization request when required authority, mandatory input, or a valid destination cannot be determined, and shall report the rejection reason without silently defaulting."
-    },
-    {
-      "id": "INIT-L0-025",
-      "text": "The initializer shall validate the initialized repository against declared conformance requirements and shall not report success when validation fails."
+      "id": "INIT-L0-026",
+      "text": "The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed."
     }
   ],
   "dependencies": [],

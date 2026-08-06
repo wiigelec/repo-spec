@@ -78,7 +78,7 @@
     },
     {
       "id": "INIT-L1-015",
-      "text": "A provenance record shall be an atomic output artifact that records the initializer identity, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied."
+      "text": "A provenance record shall be an atomic output artifact that records the initializer identity and version, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied."
     },
     {
       "id": "INIT-L1-016",
@@ -99,6 +99,10 @@
     {
       "id": "INIT-L1-020",
       "text": "The execution report shall distinguish completed stages from skipped, deferred, or failed stages, and shall not report overall success when any required stage failed or was skipped without explicit authority."
+    },
+    {
+      "id": "INIT-L1-021",
+      "text": "The initialization request, provenance record, handoff manifest, and execution report contracts shall each declare a machine-readable representation and the fields required by that representation."
     }
   ],
   "dependencies": [
