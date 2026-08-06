@@ -55,11 +55,11 @@
     },
     {
       "id": "INIT-HND-005",
-      "text": "The handoff `repository` object shall define `branch` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings."
+      "text": "The handoff `repository` object shall define `branch` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings, where `framework` lists paths of installed reusable framework content and `product` lists paths of generated candidate document skeletons and the empty product-specification workspace; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings."
     },
     {
       "id": "INIT-HND-006",
-      "text": "The handoff `status` shall be the constant string `completed`, the `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be a non-empty string naming the next governed action; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`."
+      "text": "The handoff `status` shall be the constant string `completed`, the `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be the constant string 'Develop and accept the product overview and decomposition, then create product specifications. Create an implementation plan only after the controlling specifications are accepted.'; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`."
     },
     {
       "id": "INIT-HND-007",
@@ -83,7 +83,7 @@
     },
     {
       "id": "INIT-HND-012",
-      "text": "Generated content (controlling documents, chunk documents, product manifest, discoverability README files, provenance record, and handoff manifest) shall be listed in the generated array; framework content copied verbatim from the source repository shall be listed in the selected array; content explicitly excluded by the execution profile or request shall be listed in the omitted array; content deferred by explicit authority shall be listed in the deferred array."
+      "text": "Generated content (controlling documents, chunk documents, product manifest, discoverability README files, provenance record, and handoff manifest) that is not copied framework material shall be listed in the generated array; framework content copied verbatim from the source repository shall be listed in the selected array; content explicitly excluded by the execution profile or request shall be listed in the omitted array; content deferred by explicit authority shall be listed in the deferred array."
     },
     {
       "id": "INIT-HND-013",

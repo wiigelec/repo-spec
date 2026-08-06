@@ -39,8 +39,8 @@ Defines the generic execution orchestration component that sequences stage execu
 
 ## Normative requirements
 
-- `INIT-EOR-001`: The execution orchestrator component shall accept a sequence of stages and an execution profile, execute each stage in order, enforce declared preconditions for each stage, and halt execution when any stage fails or produces an unrecoverable error.
-- `INIT-EOR-002`: The execution orchestrator component shall respect the execution profile's declared safety gates: orchestration shall not skip declared required stages, bypass preconditions, or silently continue past a failure without explicit authority.
+- `INIT-EOR-001`: The execution orchestrator component shall accept a sequence of stages and an execution profile, execute each stage in order, enforce declared preconditions for each stage, and halt execution when any stage fails or produces an unrecoverable error; on pre-promotion failure, the orchestrator shall record the failure in the staging-state record and write an execution report without authorizing arbitrary resume.
+- `INIT-EOR-002`: The execution orchestrator component shall respect the execution profile's declared safety gates: orchestration shall not skip declared required stages, bypass preconditions, or silently continue past a failure without explicit authority; success may not be declared before the promotion stage has committed.
 
 ## Dependencies
 

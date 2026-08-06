@@ -40,7 +40,7 @@ Defines the atomic material role classification taxonomy for the initializer.
 ## Normative requirements
 
 - `INIT-MAT-001`: Material role classification shall be an atomic taxonomy that distinguishes reusable framework material, project-specific product-direction material, project-specific product-specification material, and generated derived artifacts.
-- `INIT-MAT-002`: Every material item in the initialized repository shall carry or be traceable to its role classification, and the classification shall determine whether the initializer may modify the item during generation.
+- `INIT-MAT-002`: Every material item in the initialized repository shall carry or be traceable to its role classification, and the classification shall determine whether the initializer may modify the item during generation; the classification for each source path is declared in the material manifest, and the manifest is the authoritative source for role assignments.
 
 ## Dependencies
 

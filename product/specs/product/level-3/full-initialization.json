@@ -13,15 +13,15 @@
   "normative_requirements": [
     {
       "id": "INIT-FIN-001",
-      "text": "The bounded local initialization workflow shall compose the canonical lifecycle stages (request-intake, source-resolution, destination-preflight, staging-establishment, framework-installation, foundation-seeding, provenance-recording, handoff-assembly, git-initialization, repository-validation, result-finalization, and promotion) into one outcome at the declared destination."
+      "text": "The bounded local initialization workflow shall compose the canonical lifecycle stages (request-intake, source-resolution, destination-preflight, staging-establishment, framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, git-initialization, repository-validation, promotion, and success-finalization) into one outcome at the declared destination."
     },
     {
       "id": "INIT-FIN-002",
-      "text": "The workflow shall execute the canonical lifecycle stages in order: request-intake (validate and normalize the JSON request), source-resolution (resolve the exact local source revision), destination-preflight (preflight the destination and filesystem), staging-establishment (establish the staging transaction), framework-installation (select and install framework material), foundation-seeding (generate product foundations), provenance-recording (assemble immutable origin provenance), handoff-assembly (assemble handoff inputs), git-initialization (establish the deterministic Git repository including all final artifacts), repository-validation (validate repository content and Git state), result-finalization (finalize external execution result and prepare caller return value), and promotion (atomically promote staging to the destination)."
+      "text": "The workflow shall execute the canonical lifecycle stages in order: request-intake (validate and normalize the JSON request), source-resolution (resolve the exact local source revision), destination-preflight (preflight the destination for absent-only), staging-establishment (create transaction root with transaction/ and repository/), framework-installation (install framework material into repository/), direction-evidence-installation (copy direction material into repository/ as source evidence), workspace-seeding (generate candidate document skeletons from fixed templates, activate empty product-specification workspace), provenance-recording (assemble immutable origin provenance into repository/), handoff-assembly (assemble handoff manifest into repository/), git-initialization (establish deterministic Git repository inside repository/), repository-validation (validate repository/ content and Git state, write validation report to transaction/), promotion (atomically rename repository/ to the confirmed-absent destination), and success-finalization (record success outcome after promotion commits)."
     },
     {
       "id": "INIT-FIN-003",
-      "text": "The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, write an execution report to the preserved staging workspace, and report the failure and staging location without authorizing arbitrary resume."
+      "text": "The workflow shall halt when any required stage fails, leave the destination unmodified until promotion, preserve the staging transaction root for diagnostics when it exists, write an execution report at transaction/execution-report.json and update the staging-state record at transaction/staging-state.json with the failed stage identity, and report the failure and staging location without authorizing arbitrary resume."
     },
     {
       "id": "INIT-FIN-004",
@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-FIN-005",
-      "text": "The workflow shall reject named references, remote retrieval, nonempty-destination overwrite, platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation."
+      "text": "The workflow shall reject named references, remote retrieval, any existing destination (including empty directories), platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation."
     },
     {
       "id": "INIT-FIN-006",
@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-FIN-007",
-      "text": "The promoted repository shall conform to the generated-repository layout contract and shall contain reusable framework foundations, product-identified direction material, an activated but empty product-specification workspace, a provenance record, a handoff manifest, and the validated deterministic local Git state."
+      "text": "The promoted repository shall conform to the generated-repository layout contract and shall contain installed reusable framework material, product-identified direction material preserved as source evidence, an activated but empty product-specification workspace, a provenance record, a handoff manifest, and the validated deterministic local Git state. Only the repository/ directory inside the staging transaction root shall become the destination; the transaction/ directory and all contents (staging-state, execution-report, validation-report) shall be discarded after successful promotion."
     }
   ],
   "dependencies": [

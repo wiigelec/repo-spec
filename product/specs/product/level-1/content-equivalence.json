@@ -42,7 +42,7 @@
     },
     {
       "id": "INIT-EQV-008",
-      "text": "Local source revision equivalence shall require the same exact 40-character lowercase hexadecimal Git object identifier in the same resolved source repository path, so that equivalent revisions address identical byte sequences and subtree structure."
+      "text": "Local source revision equivalence shall require the same exact Git object identifier (in the repository's native object format) in the same resolved source repository path, so that equivalent revisions address identical byte sequences and subtree structure."
     },
     {
       "id": "INIT-EQV-009",

@@ -45,7 +45,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Predecessors:
   - None
 - Purpose: `Validate and normalize the JSON initialization request and extract all authority-bearing fields.`
-- Recoverable: `True`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `source-resolution`
@@ -53,55 +53,63 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Predecessors:
   - `request-intake`
 - Purpose: `Resolve the exact local source revision and inventory its material for selection.`
-- Recoverable: `True`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `destination-preflight`
 - Output: `Preflight result`
 - Predecessors:
   - `request-intake`
-- Purpose: `Preflight the destination and filesystem to verify the destination is absent or empty and supports same-filesystem atomic promotion.`
-- Recoverable: `True`
+- Purpose: `Preflight the destination and filesystem to verify the destination is absent and supports same-filesystem atomic promotion.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `staging-establishment`
-- Output: `Staging workspace`
+- Output: `Staging transaction root`
 - Predecessors:
   - `destination-preflight`
-- Purpose: `Establish the staging transaction by creating an isolated same-filesystem staging workspace at the destination.`
-- Recoverable: `True`
+- Purpose: `Establish the staging transaction root with isolated transaction/ and repository/ directories on the destination filesystem.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `framework-installation`
 - Output: `Installed framework material`
 - Predecessors:
   - `staging-establishment`
-- Purpose: `Select and install reusable repository framework material from the source revision into the staging workspace.`
-- Recoverable: `True`
+- Purpose: `Select and install reusable repository framework material from the source revision into the repository/ directory inside the staging transaction root.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
-- Id: `foundation-seeding`
-- Output: `Generated product foundations`
+- Id: `direction-evidence-installation`
+- Output: `Preserved direction material as source evidence`
 - Predecessors:
   - `framework-installation`
-- Purpose: `Generate product foundations from the explicit product identifier and supplied direction material.`
-- Recoverable: `True`
+- Purpose: `Copy direction_material entries as byte-identical source evidence into the repository/ directory under a deterministic path, preserving the supplied order and content without transformation beyond front-matter addition.`
+- Recoverable: `False`
+- Required: `True`
+- Deferrable: `False`
+- Id: `workspace-seeding`
+- Output: `Generated candidate document skeletons and activated empty product-specification workspace`
+- Predecessors:
+  - `direction-evidence-installation`
+- Purpose: `Generate candidate document skeletons from fixed templates and activate an empty product-specification workspace with empty Level roots and an empty product manifest in the repository/ directory.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `provenance-recording`
 - Output: `Immutable origin provenance record`
 - Predecessors:
-  - `foundation-seeding`
-- Purpose: `Assemble the immutable origin provenance record and write it into the staged repository content.`
-- Recoverable: `True`
+  - `workspace-seeding`
+- Purpose: `Assemble the immutable origin provenance record and write it into the repository/ directory inside the staging transaction root.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `handoff-assembly`
 - Output: `Handoff manifest`
 - Predecessors:
-  - `foundation-seeding`
-- Purpose: `Assemble handoff inputs and write the handoff manifest into the staged repository content.`
-- Recoverable: `True`
+  - `workspace-seeding`
+- Purpose: `Assemble handoff inputs and write the handoff manifest into the repository/ directory inside the staging transaction root.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `git-initialization`
@@ -109,31 +117,31 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Predecessors:
   - `provenance-recording`
   - `handoff-assembly`
-- Purpose: `Establish the deterministic local Git repository including all final staged artifacts.`
-- Recoverable: `True`
+- Purpose: `Establish the deterministic local Git repository inside the repository/ directory including all staged artifacts.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `repository-validation`
-- Output: `Validation result`
+- Output: `Validation report`
 - Predecessors:
   - `git-initialization`
-- Purpose: `Validate repository content and Git state against conformance requirements.`
-- Recoverable: `True`
-- Required: `True`
-- Deferrable: `False`
-- Id: `result-finalization`
-- Output: `Finalized execution result`
-- Predecessors:
-  - `repository-validation`
-- Purpose: `Finalize the external execution result by recording the workflow outcome and preparing the caller return value.`
-- Recoverable: `True`
+- Purpose: `Validate repository content and Git state inside the repository/ directory against conformance requirements, writing the validation report to transaction/.`
+- Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `promotion`
-- Output: `Initialized repository at destination`
+- Output: `Promoted destination or recorded outcome`
 - Predecessors:
-  - `result-finalization`
-- Purpose: `Atomically promote the complete staged directory to the declared destination.`
+  - `repository-validation`
+- Purpose: `Atomically rename the complete repository/ directory to the confirmed-absent destination with a single same-filesystem rename, recording the promotion outcome as not-promoted, promoted, or indeterminate.`
+- Recoverable: `False`
+- Required: `True`
+- Deferrable: `False`
+- Id: `success-finalization`
+- Output: `Success execution result`
+- Predecessors:
+  - `promotion`
+- Purpose: `Finalize the external execution result by recording the workflow success outcome and preparing the caller return value after promotion has committed.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `True`
@@ -142,17 +150,19 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Predecessors:
   - `promotion`
 - Purpose: `Execute a hosting-platform profile against the promoted repository as a post-promotion stage.`
-- Recoverable: `True`
+- Recoverable: `False`
 - Required: `False`
 
 ## Normative requirements
 
-- `INIT-STG-001`: Every stage identifier defined in the lifecycle stage vocabulary shall be unique, shall use lowercase-kebab-case format, and shall be stable across specification versions.
-- `INIT-STG-002`: Workflows, execution reports, provenance records, and orchestration components that reference bounded-initialization stages shall use the canonical stage identifiers defined by this vocabulary and shall not introduce ad-hoc stage names.
-- `INIT-STG-003`: Each stage definition shall declare its purpose, whether it is required or optional, whether it may be deferred, whether failure is recoverable, its predecessor stage identifiers, and its output.
-- `INIT-STG-004`: A stage declared as required must execute in every workflow that includes its stage identifier; a stage declared as optional may be skipped when the execution profile or workflow definition explicitly omits it.
-- `INIT-STG-005`: A stage declared as non-recoverable (such as promotion) shall not be retried after failure without an explicit recovery or cleanup workflow; a recoverable stage may be retried after its predecessor conditions are re-established.
-- `INIT-STG-006`: Predecessor stage identifiers declared for a stage shall refer only to other stages defined in this vocabulary, and the predecessor relation shall not form a cycle.
+- `INIT-LCS-001`: Every stage identifier defined in the lifecycle stage vocabulary shall be unique, shall use lowercase-kebab-case format, and shall be stable across specification versions.
+- `INIT-LCS-002`: Workflows, execution reports, provenance records, and orchestration components that reference bounded-initialization stages shall use the canonical stage identifiers defined by this vocabulary and shall not introduce ad-hoc stage names.
+- `INIT-LCS-003`: Each stage definition shall declare its purpose, whether it is required or optional, whether it may be deferred, its predecessor stage identifiers, and its output.
+- `INIT-LCS-004`: A stage declared as required must execute in every workflow that includes its stage identifier; a stage declared as optional may be skipped when the execution profile or workflow definition explicitly omits it.
+- `INIT-LCS-005`: A stage declared as non-recoverable shall not be retried after failure without external diagnosis and manual intervention; every stage in the initial bounded workflow shall be non-recoverable because the workflow rejects arbitrary resume.
+- `INIT-LCS-006`: Predecessor stage identifiers declared for a stage shall refer only to other stages defined in this vocabulary, and the predecessor relation shall not form a cycle.
+- `INIT-LCS-007`: No stage may declare success or completed status before promotion has committed; success-finalization shall be the only stage that reports workflow success, and it must follow promotion.
+- `INIT-LCS-008`: Failure finalization is available from any failed pre-promotion stage and records the failure in the execution report and staging-state record without authorizing arbitrary resume.
 
 ## Dependencies
 

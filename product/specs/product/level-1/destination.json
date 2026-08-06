@@ -1,7 +1,7 @@
 {
   "spec_id": "product.destination",
   "title": "Destination Contract",
-  "purpose": "Defines the absent-or-empty local destination for the bounded initialization workflow.",
+  "purpose": "Defines the absent-only local destination for the bounded initialization workflow.",
   "status": "candidate",
   "schema_version": "1",
   "level": 1,
@@ -13,11 +13,11 @@
   "normative_requirements": [
     {
       "id": "INIT-DST-001",
-      "text": "A destination representation shall be a local filesystem path whose target is absent or is an empty directory."
+      "text": "A destination representation shall be a local filesystem path whose target does not exist; an existing path of any type (including empty directory) shall be rejected by destination preflight."
     },
     {
       "id": "INIT-DST-002",
-      "text": "Destination validation shall occur before generation and shall reject non-directory targets, nonempty directories, existing repositories, and any request to overwrite or migrate destination content."
+      "text": "Destination validation shall occur before generation and shall reject any existing target of any type, including a regular file, empty directory, nonempty directory, symbolic link, or existing repository."
     }
   ],
   "dependencies": [

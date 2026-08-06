@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines selection and inventory of framework material from an explicit revision in a local source repository.
+Defines selection and inventory of framework material from an explicit commit in a local source repository, validated against the material manifest.
 
 ## Correspondence
 
@@ -39,20 +39,25 @@ Defines selection and inventory of framework material from an explicit revision 
 
 ## Normative requirements
 
-- `INIT-SMR-001`: The local source material component shall verify that the explicit revision exists in the supplied local source repository, read material only from that revision, inventory the available framework material, and classify each material item by role.
-- `INIT-SMR-002`: The component shall reject an unavailable exact revision without resolving a named reference, contacting a remote source, or retrieving additional source material.
+- `INIT-SMR-001`: The local source material component shall verify that the explicit revision resolves to a commit object in the supplied local source Git repository using `git rev-parse --verify <revision>^{commit}`, and that all required Git objects for the commit tree exist locally.
+- `INIT-SMR-002`: The component shall read material only from the commit tree of the resolved revision, ignoring the working tree, and shall reject an unavailable exact revision without resolving a named reference, contacting a remote source, calling `git fetch`, following Git replacement-object references, or retrieving additional source material.
+- `INIT-SMR-003`: The component shall load the material manifest from the source commit at `product/scripts/initializer/framework-inventory.json`, validate its structure against the material-manifest contract schema, and classify each manifest entry by its declared role.
+- `INIT-SMR-004`: The component shall reject the source revision when the material manifest is absent from the commit tree, fails structural validation, contains unknown operation types, or has overlapping or duplicate destination paths.
+- `INIT-SMR-005`: The component shall verify that every source_path declared in the manifest exists at the expected source_type (blob, tree, or symlink) in the source commit tree, and shall reject the source revision when any declared path is missing or has an unexpected type.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.source-revision-identity`
 - `product.material-classification`
+- `product.material-manifest`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
 - artifact: `product/specs/product/level-1/source-revision-identity.json`
 - artifact: `product/specs/product/level-1/material-classification.json`
+- artifact: `product/specs/product/level-1/material-manifest.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

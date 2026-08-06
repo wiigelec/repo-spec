@@ -34,7 +34,7 @@
     },
     {
       "id": "INIT-RPT-003",
-      "text": "The execution report shall be a single UTF-8 encoded JSON object file written as `execution-report.json` at the root of the preserved staging workspace when the workflow fails, and shall not be part of the promoted repository content."
+      "text": "The execution report shall be a single UTF-8 encoded JSON object file written at `transaction/execution-report.json` inside the staging transaction root when the workflow fails, and shall never be part of the promoted repository content."
     },
     {
       "id": "INIT-RPT-004",

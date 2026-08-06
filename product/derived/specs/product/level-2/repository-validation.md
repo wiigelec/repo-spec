@@ -39,8 +39,8 @@ Defines repository validation performed against the complete staged repository b
 
 ## Normative requirements
 
-- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository, including its candidate product foundations and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion.
-- `INIT-RVA-002`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails.
+- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion; validation shall include at least the following checks: source is valid local Git repository, revision resolves to a valid commit, all required Git objects for the commit tree exist locally, material manifest validates against its schema, every selected source path in the manifest exists and has the expected source_type, no undeclared output path exists in the staged repository, every copied blob matches the source commit tree bytes, every generated record validates against its governing schema, the repository-tree digest matches the expected digest, and the Git topology matches the bootstrap profile.
+- `INIT-RVA-002`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails; the report shall be written at `transaction/validation-report.json` inside the staging transaction root and shall never be part of the promoted repository content.
 
 ## Dependencies
 
