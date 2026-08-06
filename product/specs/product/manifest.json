@@ -118,6 +118,13 @@
       "capability_group": "initial-bounded-workflow"
     },
     {
+      "spec_id": "product.material-manifest",
+      "path": "product/specs/product/level-1/material-manifest.json",
+      "status": "candidate",
+      "level": 1,
+      "capability_group": "initial-bounded-workflow"
+    },
+    {
       "spec_id": "product.generated-repository",
       "path": "product/specs/product/level-1/generated-repository.json",
       "status": "candidate",

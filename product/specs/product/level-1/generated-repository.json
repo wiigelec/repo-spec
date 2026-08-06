@@ -13,15 +13,15 @@
   "normative_requirements": [
     {
       "id": "INIT-GRL-001",
-      "text": "The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as copied framework-support material from the source repository."
+      "text": "The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as framework-support material selected by the material manifest with operation copy-verbatim from the source commit tree."
     },
     {
       "id": "INIT-GRL-002",
-      "text": "The initialized repository shall contain the repo/ tree as copied framework material: repo/specs/repo/ (framework-authoritative), repo/schemas/ (framework-authoritative), repo/scripts/ (framework-support), repo/derived/ (derived output), and repo/profiles/ shall be excluded when no platform profile is selected."
+      "text": "The initialized repository shall contain the paths under repo/ as declared by the material manifest: framework-authoritative entries at repo/specs/repo/ and repo/schemas/, framework-support entries at repo/scripts/, derived entries at repo/derived/, and repo/profiles/ entries shall be excluded when no platform profile is selected, with each path produced by its declared operation from the source commit tree."
     },
     {
       "id": "INIT-GRL-003",
-      "text": "The initialized repository shall contain product/scripts/initializer/ and product/scripts/repo-spec-init as copied framework-support material from the source repository."
+      "text": "The initialized repository shall contain product/scripts/initializer/ and product/scripts/repo-spec-init as framework-support entries declared by the material manifest with operation copy-verbatim from the source commit tree."
     },
     {
       "id": "INIT-GRL-004",
@@ -69,11 +69,11 @@
     },
     {
       "id": "INIT-GRL-015",
-      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository."
+      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository as declared by the material manifest with operation excluded or absent from the manifest entirely."
     },
     {
       "id": "INIT-GRL-016",
-      "text": "The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output."
+      "text": "The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output as declared by the material manifest with operation instantiate-template or generate-record."
     },
     {
       "id": "INIT-GRL-017",

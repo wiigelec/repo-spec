@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the exact revision identity of reusable framework material already available in a local source repository.
+Defines the exact commit identity of reusable framework material already present in a local source Git repository, using the repository's native object format.
 
 ## Correspondence
 
@@ -39,8 +39,14 @@ Defines the exact revision identity of reusable framework material already avail
 
 ## Normative requirements
 
-- `INIT-SRC-001`: A local source revision identity shall uniquely identify an exact revision already present in the explicitly supplied local source repository.
-- `INIT-SRC-002`: The source revision identity shall be explicit and immutable; named-reference resolution, remote lookup, and remote retrieval are outside this contract.
+- `INIT-SRC-001`: A local source revision identity shall uniquely identify an exact commit object in the explicitly supplied local source Git repository; the source is a local Git repository, and the revision must resolve directly to a commit object via `git rev-parse --verify <revision>^{commit}`.
+- `INIT-SRC-002`: The commit tree of the resolved commit shall be the sole source-content authority for all material selection, installation, and inventory operations; the working tree of the source repository shall be ignored.
+- `INIT-SRC-003`: The revision identity shall use the native object format of the source repository: for SHA-1 repositories the identifier shall be a 40-character lowercase hexadecimal string, and for SHA-256 repositories the identifier shall be a 64-character lowercase hexadecimal string; the initializer shall detect the repository's object format and validate the identifier length accordingly.
+- `INIT-SRC-004`: All required Git objects (commit, tree, and referenced blobs and subtrees) must already exist locally in the source repository; the initializer shall reject a revision whose objects are not fully available without performing a remote fetch, named-reference resolution, or object transfer.
+- `INIT-SRC-005`: The initializer shall reject any source revision whose resolution requires: named-reference resolution (branch, tag, or remote-tracking name), remote fetch or network access, Git replacement-object behavior, Git submodule checkout or initialization, or LFS pointer resolution.
+- `INIT-SRC-006`: Symbolic links in the source commit tree shall be handled according to the declared material-manifest entry: when the manifest entry source_type is `symlink`, the link target text shall be copied as the destination symlink target when the destination filesystem supports symbolic links; when the manifest entry does not declare symlink support or the filesystem does not support symbolic links, the entry shall be rejected.
+- `INIT-SRC-007`: The supported Git object format for Version 1 shall be the repository's native object format as reported by `git rev-parse --show-object-format`; the initializer shall not convert between object formats.
+- `INIT-SRC-008`: The source revision identity shall be explicit and immutable; named-reference resolution, remote lookup, and remote retrieval are outside this contract.
 
 ## Dependencies
 

@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion."
+      "text": "The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion; validation shall include at least the following checks: source is valid local Git repository, revision resolves to a valid commit, all required Git objects for the commit tree exist locally, material manifest validates against its schema, every selected source path in the manifest exists and has the expected source_type, no undeclared output path exists in the staged repository, every copied blob matches the source commit tree bytes, every generated record validates against its governing schema, the repository-tree digest matches the expected digest, and the Git topology matches the bootstrap profile."
     },
     {
       "id": "INIT-RVA-002",

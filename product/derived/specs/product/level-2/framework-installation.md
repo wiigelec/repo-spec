@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the framework installation component that selects and places reusable repository framework material into the staging workspace.
+Defines the framework installation component that selects and installs reusable repository framework material into the repository/ directory according to the material manifest.
 
 ## Correspondence
 
@@ -39,18 +39,26 @@ Defines the framework installation component that selects and places reusable re
 
 ## Normative requirements
 
-- `INIT-FIN-001`: The framework installation component shall install reusable repository framework material inventoried from the explicit local source revision into the staging workspace according to the target repository structure.
-- `INIT-FIN-002`: The framework installation component shall install each material item in its correct repository-relative path, shall not modify the normative semantics of reusable framework material, and shall report any installation conflict or failure.
+- `INIT-FIN-001`: The framework installation component shall iterate every manifest entry with a role classified as installable framework material, resolve its source_path from the source commit tree, and produce the destination_path in the repository/ directory using the declared operation type.
+- `INIT-FIN-002`: For entries with operation `copy-verbatim`: the component shall read the Git blob identified by the source commit tree at source_path, write its bytes verbatim to destination_path with the mode declared in the manifest entry (100644 for non-executable, 100755 for executable), record the source commit and source_path in the provenance record, and not apply encoding, newline, or timestamp transformations.
+- `INIT-FIN-003`: For entries with operation `instantiate-template`: the component shall read the template blob from the source commit tree at source_path, apply only the declared substitution fields using the defined escaping rules, serialize the result using canonical encoding, and reject the entry when a required substitution field is missing.
+- `INIT-FIN-004`: For entries with operation `generate-record`: the component shall assemble the record from declared source fields using canonical field order and canonical JSON serialization, as specified by the governing schema referenced by the manifest entry.
+- `INIT-FIN-005`: The component shall not use broad recursive directory copying to install any path; every output path shall be produced by exactly one manifest entry, and the component shall report any installation conflict, missing source blob, type mismatch, or operation failure without silently skipping.
+- `INIT-FIN-006`: The component shall install each material item in its declared destination_path, shall not modify the normative semantics of reusable framework material beyond the declared operation, and shall ensure that no output path is produced by more than one manifest entry.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.material-classification`
+- `product.material-manifest`
+- `product.source-revision-identity`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
 - artifact: `product/specs/product/level-1/material-classification.json`
+- artifact: `product/specs/product/level-1/material-manifest.json`
+- artifact: `product/specs/product/level-1/source-revision-identity.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`
