@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-PID-006",
-      "text": "There shall be no separate display name for the product identifier; the identifier itself is the display name, slug, directory name, and identity — all derived values shall equal the identifier verbatim."
+      "text": "There shall be no separate display name for the product identifier; the identifier itself is the display name, slug, directory name, and identity \u2014 all derived values shall equal the identifier verbatim."
     },
     {
       "id": "INIT-PID-007",

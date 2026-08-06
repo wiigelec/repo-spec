@@ -22,55 +22,15 @@ Defines the atomic local Git repository state produced by the bounded initializa
 
 ### Implementations
 
-- `impl.git`
-  - Paths:
-    - `product/scripts/initializer/git.py`
-  - Requirements:
-    - `INIT-GIT-001`
-    - `INIT-GIT-002`
-    - `INIT-GIT-003`
-    - `INIT-GIT-004`
+- None
 
 ### Tests
 
-- `test.git`
-  - Paths:
-    - `product/scripts/initializer/tests/test_git.py`
-  - Requirements:
-    - `INIT-GIT-001`
-    - `INIT-GIT-002`
-    - `INIT-GIT-003`
-    - `INIT-GIT-004`
+- None
 
 ### Conformance
 
-- `INIT-GIT-001`
-  - Implementation Ids:
-    - `impl.git`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
-
-- `INIT-GIT-002`
-  - Implementation Ids:
-    - `impl.git`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
-
-- `INIT-GIT-003`
-  - Implementation Ids:
-    - `impl.git`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
-
-- `INIT-GIT-004`
-  - Implementation Ids:
-    - `impl.git`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
+- None
 
 ## Primitives
 

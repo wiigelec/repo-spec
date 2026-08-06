@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["request-intake"]
+    "contracts": [
+      "request-intake"
+    ]
   },
   "normative_requirements": [
     {

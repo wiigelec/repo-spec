@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["platform-profile-interface"]
+    "concepts": [
+      "platform-profile-interface"
+    ]
   },
   "normative_requirements": [
     {

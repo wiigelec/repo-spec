@@ -30,69 +30,7 @@ Defines the atomic provenance record output artifact format for the initializer.
 
 ### Conformance
 
-- `INIT-PRO-001`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Provenance record concept — no ProvenanceRecord model exists in the implementation. Acceptance gap.`
-
-- `INIT-PRO-002`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Provenance record field enumeration is a data-structure contract; no dedicated implementation module exists — models.py has partial structures. Acceptance gap.`
-
-- `INIT-PRO-003`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `File path requirement for the provenance record artifact; no implementation writes the provenance-record.json file yet. Acceptance gap.`
-
-- `INIT-PRO-004`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Field-level contract for the provenance record; no implementation writes the complete provenance artifact. Acceptance gap.`
-
-- `INIT-PRO-005`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `request_identifier equals authority.granted_by is a data-content contract; no provenance-record writing implementation. Acceptance gap.`
-
-- `INIT-PRO-006`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Unknown-field rejection and execution-report exclusion; no provenance-record writing implementation validates against this schema yet. Acceptance gap.`
-
-- `INIT-PRO-007`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Unknown-field rejection is a schema requirement; no provenance writing implementation validates against this schema yet. Acceptance gap.`
-
-- `INIT-PRO-008`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Deterministic serialization rule for the provenance artifact; no serialization implementation exists. Acceptance gap.`
+- None
 
 ## Field Order
 

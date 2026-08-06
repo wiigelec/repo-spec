@@ -22,86 +22,15 @@ Defines the dry-run validation workflow that validates an initialization request
 
 ### Implementations
 
-- `impl.cli`
-  - Paths:
-    - `product/scripts/initializer/cli.py`
-  - Requirements:
-    - `INIT-DRV-001`
-
-- `impl.destination`
-  - Paths:
-    - `product/scripts/initializer/destination.py`
-  - Requirements:
-    - `INIT-DRV-001`
-
-- `impl.foundations`
-  - Paths:
-    - `product/scripts/initializer/foundations.py`
-  - Requirements:
-    - `INIT-DRV-001`
-
-- `impl.staging`
-  - Paths:
-    - `product/scripts/initializer/staging.py`
-  - Requirements:
-    - `INIT-DRV-001`
+- None
 
 ### Tests
 
-- `test.cli`
-  - Paths:
-    - `product/scripts/initializer/tests/test_cli.py`
-  - Requirements:
-    - `INIT-DRV-001`
-
-- `test.destination`
-  - Paths:
-    - `product/scripts/initializer/tests/test_destination_promotion.py`
-  - Requirements:
-    - `INIT-DRV-001`
-
-- `test.foundations`
-  - Paths:
-    - `product/scripts/initializer/tests/test_foundations.py`
-  - Requirements:
-    - `INIT-DRV-001`
-
-- `test.staging`
-  - Paths:
-    - `product/scripts/initializer/tests/test_staging.py`
-  - Requirements:
-    - `INIT-DRV-001`
+- None
 
 ### Conformance
 
-- `INIT-DRV-001`
-  - Implementation Ids:
-    - `impl.cli`
-    - `impl.destination`
-    - `impl.foundations`
-    - `impl.staging`
-  - Test Ids:
-    - `test.cli`
-    - `test.destination`
-    - `test.foundations`
-    - `test.staging`
-  - Status: `covered`
-
-- `INIT-DRV-002`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Dry-run validation report generation is not implemented — no dry-run dispatch exists. Acceptance gap.`
-
-- `INIT-DRV-003`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Precondition for dry-run workflow; no dispatch mechanism selects dry-run over other workflows. Acceptance gap — INIT-PRF-003 covers the dispatch contract but no implementation enforces it.`
+- None
 
 ## Orchestrations
 

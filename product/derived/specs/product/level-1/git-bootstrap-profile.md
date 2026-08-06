@@ -22,86 +22,15 @@ Defines versioned bootstrap constants for the deterministic local Git repository
 
 ### Implementations
 
-- `impl.git`
-  - Paths:
-    - `product/scripts/initializer/git.py`
-  - Requirements:
-    - `INIT-BPF-001`
-    - `INIT-BPF-002`
-    - `INIT-BPF-003`
-    - `INIT-BPF-004`
-
-- `impl.models`
-  - Paths:
-    - `product/scripts/initializer/models.py`
-  - Requirements:
-    - `INIT-BPF-001`
-    - `INIT-BPF-002`
-
-- `impl.validation`
-  - Paths:
-    - `product/scripts/initializer/validation.py`
-  - Requirements:
-    - `INIT-BPF-004`
+- None
 
 ### Tests
 
-- `test.git`
-  - Paths:
-    - `product/scripts/initializer/tests/test_git.py`
-  - Requirements:
-    - `INIT-BPF-001`
-    - `INIT-BPF-002`
-    - `INIT-BPF-003`
-    - `INIT-BPF-004`
-
-- `test.validation`
-  - Paths:
-    - `product/scripts/initializer/tests/test_validation.py`
-  - Requirements:
-    - `INIT-BPF-004`
+- None
 
 ### Conformance
 
-- `INIT-BPF-001`
-  - Implementation Ids:
-    - `impl.git`
-    - `impl.models`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
-
-- `INIT-BPF-002`
-  - Implementation Ids:
-    - `impl.git`
-    - `impl.models`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
-
-- `INIT-BPF-003`
-  - Implementation Ids:
-    - `impl.git`
-  - Test Ids:
-    - `test.git`
-  - Status: `covered`
-
-- `INIT-BPF-004`
-  - Implementation Ids:
-    - `impl.git`
-    - `impl.validation`
-  - Test Ids:
-    - `test.git`
-    - `test.validation`
-  - Status: `covered`
-
-- `INIT-BPF-005`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Profile-identifier immutability is a governance rule for specification evolution; not an implementable runtime behavior.`
+- None
 
 ## Primitives
 

@@ -61,7 +61,21 @@
     }
   ],
   "field_order": {
-    "root": ["schema_version", "request_identity", "source_revision", "source_repository", "initializer_version", "execution_profile", "stage_statuses", "staged_content_digest", "expected_destination", "promotion_begun", "git_state_created", "staging_trustworthy", "compatibility_version"]
+    "root": [
+      "schema_version",
+      "request_identity",
+      "source_revision",
+      "source_repository",
+      "initializer_version",
+      "execution_profile",
+      "stage_statuses",
+      "staged_content_digest",
+      "expected_destination",
+      "promotion_begun",
+      "git_state_created",
+      "staging_trustworthy",
+      "compatibility_version"
+    ]
   },
   "dependencies": [
     {

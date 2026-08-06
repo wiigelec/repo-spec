@@ -30,29 +30,7 @@ Defines the resume-from-staging workflow that recovers and completes an initiali
 
 ### Conformance
 
-- `INIT-RSM-001`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Resume-from-staging workflow is not implemented — no mechanism validates or recovers from preserved staging. Acceptance gap.`
-
-- `INIT-RSM-002`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Preserved staging consistency verification is not implemented. Acceptance gap.`
-
-- `INIT-RSM-003`
-  - Implementation Ids:
-    - None
-  - Test Ids:
-    - None
-  - Status: `not-applicable`
-  - Rationale: `Precondition for resume workflow; no dispatch mechanism selects resume. Acceptance gap.`
+- None
 
 ## Orchestrations
 

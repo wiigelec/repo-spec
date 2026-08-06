@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["source-material-resolution"]
+    "contracts": [
+      "source-material-resolution"
+    ]
   },
   "normative_requirements": [
     {
