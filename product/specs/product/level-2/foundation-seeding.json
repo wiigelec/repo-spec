@@ -1,7 +1,7 @@
 {
   "spec_id": "product.foundation-seeding",
   "title": "Foundation Seeding",
-  "purpose": "Defines candidate product foundation creation from the explicit product identifier and supplied product-direction material, including source-material ingestion, direction-material projection, skeleton document generation, and candidate specification initialization.",
+  "purpose": "Defines activation of an empty product-specification workspace from the explicit product identifier and supplied product-direction material, including source-material ingestion, direction-material projection, skeleton document generation, and empty workspace initialization.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
@@ -10,17 +10,17 @@
       "source-material-ingestion",
       "direction-material-projection",
       "skeleton-generation",
-      "candidate-specification-initialization"
+      "empty-workspace-initialization"
     ]
   },
   "normative_requirements": [
     {
       "id": "INIT-FSD-001",
-      "text": "Foundation seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce the project-specific direction documents, generated skeleton documents, and candidate product-specification foundations in the staging workspace."
+      "text": "Foundation seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce the project-specific direction documents, generated skeleton documents, and an activated but empty product-specification workspace in the staging workspace."
     },
     {
       "id": "INIT-FSD-002",
-      "text": "Every document and specification produced by foundation seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content."
+      "text": "Every document produced by foundation seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content."
     },
     {
       "id": "INIT-FSD-003",
@@ -80,15 +80,15 @@
     },
     {
       "id": "INIT-FSD-017",
-      "text": "Candidate specification initialization shall create the empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/ in the staging workspace; no specification JSON files shall be created inside these directories, and the component shall not produce candidate specification documents with normative requirement content."
+      "text": "Empty workspace initialization shall create the empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/ in the staging workspace; no specification JSON files shall be created inside these directories, and the component shall not produce candidate specification documents with normative requirement content."
     },
     {
       "id": "INIT-FSD-018",
-      "text": "Candidate specification initialization shall create a generated product manifest at product/specs/product/manifest.json containing spec_id 'product.manifest', status 'candidate', schema_version '1', an empty product_specifications array, and a title and purpose drawn from the product identifier; the manifest shall declare a dependency on repo.manifest and repo.product-manifest."
+      "text": "Empty workspace initialization shall create a generated product manifest at product/specs/product/manifest.json containing spec_id 'product.manifest', status 'candidate', schema_version '1', an empty product_specifications array, and a title and purpose drawn from the product identifier; the manifest shall declare a dependency on repo.manifest and repo.product-manifest."
     },
     {
       "id": "INIT-FSD-019",
-      "text": "Candidate specification initialization shall produce a discoverability README at product/specs/product/README.md containing an H1 heading with the product identifier and the text 'This directory contains the candidate product specifications for {product_id}.' followed by links to the overview, decomposition, and implementation plan controlling documents; the README shall have lifecycle_status candidate."
+      "text": "Empty workspace initialization shall produce a discoverability README at product/specs/product/README.md containing an H1 heading with the product identifier and the text 'This directory contains the activated but empty product-specification workspace for {product_id}.' followed by links to the overview, decomposition, and implementation plan controlling documents; the README shall have lifecycle_status candidate."
     }
   ],
   "dependencies": [
