@@ -10,6 +10,10 @@
       "execution-report-format"
     ]
   },
+  "field_order": {
+    "root": ["schema_version", "completion_status", "stages"],
+    "stages": ["id", "status", "warnings", "errors"]
+  },
   "normative_requirements": [
     {
       "id": "INIT-RPT-001",
@@ -41,7 +45,7 @@
     },
     {
       "id": "INIT-RPT-008",
-      "text": "The execution report shall be deterministically serialized as JSON with object keys in the declaration order of this specification (and the declared order of each stage object), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
+      "text": "The execution report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys and stages for each stage entry), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
     },
     {
       "id": "INIT-RPT-009",

@@ -10,6 +10,9 @@
       "provenance-record-format"
     ]
   },
+  "field_order": {
+    "root": ["schema_version", "initializer_name", "initializer_version", "product_identifier", "source_repository", "source_revision", "initialization_timestamp", "request_identifier"]
+  },
   "normative_requirements": [
     {
       "id": "INIT-PRO-001",
@@ -37,7 +40,7 @@
     },
     {
       "id": "INIT-PRO-007",
-      "text": "The provenance record shall be deterministically serialized as JSON with object keys in the declaration order of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
+      "text": "The provenance record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
     },
     {
       "id": "INIT-PRO-008",

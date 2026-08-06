@@ -102,6 +102,18 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
   - Status: `not-applicable`
   - Rationale: `Deterministic serialization; no execution report implementation. Acceptance gap.`
 
+## Field Order
+
+- Root:
+  - `schema_version`
+  - `completion_status`
+  - `stages`
+- Stages:
+  - `id`
+  - `status`
+  - `warnings`
+  - `errors`
+
 ## Primitives
 
 - Concepts:
@@ -116,7 +128,7 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 - `INIT-RPT-005`: Each `stages` entry shall define `id` as a canonical stage identifier from the lifecycle-stage vocabulary, `status` as one of `completed`, `skipped`, `deferred`, or `failed`, `warnings` as an array of strings, and `errors` as an array of strings, with `errors` listing a failure reason when `status` is `failed`.
 - `INIT-RPT-006`: The report `completion_status` shall be the constant string `failed` because the execution report is produced only when the workflow fails; `schema_version` shall be the constant string `1`.
 - `INIT-RPT-007`: An execution report shall reject unknown fields and shall treat every field of this specification as required with no optional fields.
-- `INIT-RPT-008`: The execution report shall be deterministically serialized as JSON with object keys in the declaration order of this specification (and the declared order of each stage object), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
+- `INIT-RPT-008`: The execution report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys and stages for each stage entry), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-RPT-009`: The execution report format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
 
 ## Dependencies

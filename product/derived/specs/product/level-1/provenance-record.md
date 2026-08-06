@@ -94,6 +94,18 @@ Defines the atomic provenance record output artifact format for the initializer.
   - Status: `not-applicable`
   - Rationale: `Deterministic serialization rule for the provenance artifact; no serialization implementation exists. Acceptance gap.`
 
+## Field Order
+
+- Root:
+  - `schema_version`
+  - `initializer_name`
+  - `initializer_version`
+  - `product_identifier`
+  - `source_repository`
+  - `source_revision`
+  - `initialization_timestamp`
+  - `request_identifier`
+
 ## Primitives
 
 - Concepts:
@@ -107,7 +119,7 @@ Defines the atomic provenance record output artifact format for the initializer.
 - `INIT-PRO-004`: The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the exact 40-character lowercase hexadecimal Git object identifier of the source revision.
 - `INIT-PRO-005`: The provenance `request_identifier` shall be a non-empty string that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request.
 - `INIT-PRO-006`: A provenance record shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts, execution report content, or successor product behavior.
-- `INIT-PRO-007`: The provenance record shall be deterministically serialized as JSON with object keys in the declaration order of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
+- `INIT-PRO-007`: The provenance record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-PRO-008`: The provenance record format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject records declaring any other version and shall not merge unknown or extra fields silently.
 
 ## Dependencies

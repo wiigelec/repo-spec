@@ -102,6 +102,29 @@ Defines the atomic handoff manifest output artifact format for the initializer.
   - Status: `not-applicable`
   - Rationale: `Schema version evolution; no handoff implementation. Acceptance gap.`
 
+## Field Order
+
+- Foundations:
+  - `framework`
+  - `product`
+- Material:
+  - `generated`
+  - `selected`
+  - `omitted`
+  - `deferred`
+- Repository:
+  - `branch`
+  - `worktree_clean`
+  - `remotes`
+- Root:
+  - `schema_version`
+  - `status`
+  - `repository`
+  - `foundations`
+  - `material`
+  - `provenance`
+  - `next_action`
+
 ## Primitives
 
 - Concepts:
@@ -116,7 +139,7 @@ Defines the atomic handoff manifest output artifact format for the initializer.
 - `INIT-HND-005`: The handoff `repository` object shall define `branch` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings.
 - `INIT-HND-006`: The handoff `status` shall be the constant string `completed`, the `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be a non-empty string naming the next governed action; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`.
 - `INIT-HND-007`: A handoff manifest shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts or successor product behavior.
-- `INIT-HND-008`: The handoff manifest shall be deterministically serialized as JSON with object keys in the declaration order of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
+- `INIT-HND-008`: The handoff manifest shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, repository, foundations, and material for nested objects), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-HND-009`: The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently.
 - `INIT-HND-010`: The six material arrays (generated, selected, omitted, deferred, framework, and product) shall be mutually disjoint: no repository-relative path shall appear in more than one array.
 - `INIT-HND-011`: Every regular file in the initialized repository that is not listed in the foundations arrays shall appear in exactly one of generated, selected, omitted, or deferred; directories shall not appear in any array.
