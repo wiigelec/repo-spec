@@ -81,10 +81,10 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Required: `True`
 - Deferrable: `False`
 - Id: `foundation-seeding`
-- Output: `Generated product foundations`
+- Output: `Preserved direction material, generated candidate skeletons, activated empty product-specification workspace`
 - Predecessors:
   - `framework-installation`
-- Purpose: `Generate product foundations from the explicit product identifier and supplied direction material.`
+- Purpose: `Preserve direction material as source evidence, generate candidate document skeletons, and activate empty product-specification workspace from the explicit product identifier and supplied direction material.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`

@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines activation of an empty product-specification workspace from the explicit product identifier and supplied product-direction material, including source-material ingestion, direction-material projection, skeleton document generation, and empty workspace initialization.
+Defines mechanical repository-bootstrapping operations that preserve direction material as byte-identical source evidence, generate candidate document skeletons from fixed templates, and activate an empty product-specification workspace without semantic interpretation of supplied material.
 
 ## Correspondence
 

@@ -66,14 +66,14 @@
     },
     {
       "id": "foundation-seeding",
-      "purpose": "Generate product foundations from the explicit product identifier and supplied direction material.",
+      "purpose": "Preserve direction material as source evidence, generate candidate document skeletons, and activate empty product-specification workspace from the explicit product identifier and supplied direction material.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
       "predecessors": [
         "framework-installation"
       ],
-      "output": "Generated product foundations"
+      "output": "Preserved direction material, generated candidate skeletons, activated empty product-specification workspace"
     },
     {
       "id": "provenance-recording",

@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall validate the complete staged repository, including its candidate product foundations and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion."
+      "text": "The repository validation component shall validate the complete staged repository, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion."
     },
     {
       "id": "INIT-RVA-002",

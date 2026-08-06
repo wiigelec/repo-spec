@@ -39,7 +39,7 @@ Defines assembly of the handoff manifest inside the staged repository.
 
 ## Normative requirements
 
-- `INIT-HAS-001`: The handoff assembly component shall write a handoff manifest into staging that identifies generated framework foundations, the activated but empty product-specification workspace, omitted and deferred material, provenance, local Git expectations, and the next governed action.
+- `INIT-HAS-001`: The handoff assembly component shall write a handoff manifest into staging that identifies installed framework material in `foundations.framework`, generated candidate document skeletons and the empty product-specification workspace in `foundations.product`, omitted and deferred material in the `material` arrays, provenance record path, local Git state, and the next governed action as the constant string 'Develop and accept the product overview and decomposition, then create product specifications. Create an implementation plan only after the controlling specifications are accepted.'
 
 ## Dependencies
 
