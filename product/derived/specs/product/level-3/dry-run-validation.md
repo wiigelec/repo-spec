@@ -41,8 +41,7 @@ Defines the dry-run validation workflow that validates an initialization request
 
 - `INIT-DRV-001`: The dry-run validation workflow shall compose the request intake, source material resolver, destination preflight, transactional staging manager, framework installation, foundation seeding, and repository validation components to validate that an initialization request is structurally valid, the source revision is resolvable, the destination is compatible, and the expected generated content passes repository validation, using an ephemeral staging workspace that is discarded after validation completes.
 - `INIT-DRV-002`: The dry-run validation workflow shall produce a validation report indicating whether the initialization request would succeed, and shall report the exact reasons for any predicted failure without permanently modifying the destination.
-- `INIT-DRV-003`: The initializer shall accept an initialization request, select the dry-run validation workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration.
-- `INIT-DRV-004`: The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization.
+- `INIT-DRV-003`: The dry-run validation workflow applies when the execution profile selects a non-mutating validation pass; this workflow produces a validation report without permanently modifying the destination.
 
 ## Dependencies
 

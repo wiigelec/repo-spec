@@ -19,11 +19,7 @@
     },
     {
       "id": "INIT-DRV-003",
-      "text": "The initializer shall accept an initialization request, select the dry-run validation workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
-    },
-    {
-      "id": "INIT-DRV-004",
-      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+      "text": "The dry-run validation workflow applies when the execution profile selects a non-mutating validation pass; this workflow produces a validation report without permanently modifying the destination."
     }
   ],
   "dependencies": [

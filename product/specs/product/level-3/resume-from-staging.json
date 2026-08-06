@@ -19,11 +19,7 @@
     },
     {
       "id": "INIT-RSM-003",
-      "text": "The initializer shall accept an initialization request, select the resume-from-staging workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
-    },
-    {
-      "id": "INIT-RSM-004",
-      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+      "text": "The resume-from-staging workflow applies when the execution profile selects recovery from a previously preserved staging workspace and the request references a valid staging location."
     }
   ],
   "dependencies": [

@@ -23,11 +23,7 @@
     },
     {
       "id": "INIT-PII-004",
-      "text": "The initializer shall accept an initialization request, select the platform-integrated initialization workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration."
-    },
-    {
-      "id": "INIT-PII-005",
-      "text": "The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization."
+      "text": "The platform-integrated initialization workflow applies when the execution profile selects generation with platform integration after staging promotion."
     },
     {
       "id": "INIT-PII-006",

@@ -41,6 +41,8 @@ Defines the atomic execution profile mode selector for the initializer.
 
 - `INIT-PRF-001`: An execution profile shall be an atomic mode selector that governs whether the initializer performs a dry-run validation pass, an actual generation pass with destination mutation, or a recovery pass that resumes from a preserved staging state.
 - `INIT-PRF-002`: The execution profile shall reject execution modes that are not supported for the given combination of request inputs, destination state, and source revision.
+- `INIT-PRF-003`: The execution profile shall map each supported combination of execution mode and request parameters to exactly one Level 3 initialization workflow, and the initializer shall select the corresponding workflow before performing any generation, validation, or destination mutation work.
+- `INIT-PRF-004`: The initializer shall reject any combination of execution profile and request parameters that maps to no supported Level 3 workflow, and shall report the reason for rejection without performing partial initialization.
 
 ## Dependencies
 
