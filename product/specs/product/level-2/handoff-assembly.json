@@ -6,12 +6,14 @@
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["handoff-assembly"]
+    "contracts": [
+      "handoff-assembly"
+    ]
   },
   "normative_requirements": [
     {
       "id": "INIT-HAS-001",
-      "text": "The handoff assembly component shall write a handoff manifest into staging that identifies generated framework foundations, candidate product foundations, omitted and deferred material, provenance, local Git expectations, and the next governed action."
+      "text": "The handoff assembly component shall write a handoff manifest into staging that identifies generated framework foundations, the activated but empty product-specification workspace, omitted and deferred material, provenance, local Git expectations, and the next governed action."
     }
   ],
   "dependencies": [

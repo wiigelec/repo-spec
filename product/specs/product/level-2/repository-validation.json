@@ -6,7 +6,9 @@
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["repository-validation"]
+    "contracts": [
+      "repository-validation"
+    ]
   },
   "normative_requirements": [
     {

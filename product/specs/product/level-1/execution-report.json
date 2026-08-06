@@ -11,8 +11,17 @@
     ]
   },
   "field_order": {
-    "root": ["schema_version", "completion_status", "stages"],
-    "stages": ["id", "status", "warnings", "errors"]
+    "root": [
+      "schema_version",
+      "completion_status",
+      "stages"
+    ],
+    "stages": [
+      "id",
+      "status",
+      "warnings",
+      "errors"
+    ]
   },
   "normative_requirements": [
     {
@@ -105,70 +114,6 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": [
-      {
-        "requirement_id": "INIT-RPT-001",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "Execution report is an output artifact contract; no dedicated module produces a unified execution-report.json. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-002",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "Path contract for execution report in staging; no implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-003",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "completion_status field; no implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-004",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "stages array structure; no implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-005",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "Stage status enumeration; no implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-006",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "warnings and errors per stage; no implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-007",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "schema_version constant; no implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-008",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "Unknown-field rejection; no execution report implementation. Acceptance gap."
-      },
-      {
-        "requirement_id": "INIT-RPT-009",
-        "implementation_ids": [],
-        "test_ids": [],
-        "status": "not-applicable",
-        "rationale": "Deterministic serialization; no execution report implementation. Acceptance gap."
-      }
-    ]
+    "conformance": []
   }
 }

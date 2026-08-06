@@ -26,7 +26,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["request-intake"],
+      "predecessors": [
+        "request-intake"
+      ],
       "output": "Resolved source material inventory"
     },
     {
@@ -35,7 +37,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["request-intake"],
+      "predecessors": [
+        "request-intake"
+      ],
       "output": "Preflight result"
     },
     {
@@ -44,7 +48,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["destination-preflight"],
+      "predecessors": [
+        "destination-preflight"
+      ],
       "output": "Staging workspace"
     },
     {
@@ -53,7 +59,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["staging-establishment"],
+      "predecessors": [
+        "staging-establishment"
+      ],
       "output": "Installed framework material"
     },
     {
@@ -62,7 +70,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["framework-installation"],
+      "predecessors": [
+        "framework-installation"
+      ],
       "output": "Generated product foundations"
     },
     {
@@ -71,7 +81,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["foundation-seeding"],
+      "predecessors": [
+        "foundation-seeding"
+      ],
       "output": "Immutable origin provenance record"
     },
     {
@@ -80,7 +92,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["foundation-seeding"],
+      "predecessors": [
+        "foundation-seeding"
+      ],
       "output": "Handoff manifest"
     },
     {
@@ -89,7 +103,10 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["provenance-recording", "handoff-assembly"],
+      "predecessors": [
+        "provenance-recording",
+        "handoff-assembly"
+      ],
       "output": "Deterministic local Git repository"
     },
     {
@@ -98,7 +115,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["git-initialization"],
+      "predecessors": [
+        "git-initialization"
+      ],
       "output": "Validation result"
     },
     {
@@ -107,7 +126,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": true,
-      "predecessors": ["repository-validation"],
+      "predecessors": [
+        "repository-validation"
+      ],
       "output": "Finalized execution result"
     },
     {
@@ -116,7 +137,9 @@
       "required": true,
       "deferrable": false,
       "recoverable": false,
-      "predecessors": ["result-finalization"],
+      "predecessors": [
+        "result-finalization"
+      ],
       "output": "Initialized repository at destination"
     },
     {
@@ -125,7 +148,9 @@
       "required": false,
       "deferrable": true,
       "recoverable": true,
-      "predecessors": ["promotion"],
+      "predecessors": [
+        "promotion"
+      ],
       "output": "Platform-modified repository"
     }
   ],

@@ -1,0 +1,2403 @@
+{
+  "product/specs/product/level-0/initializer-level-0.json": {
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-L0-002",
+          "INIT-L0-005"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-004"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-004"
+        ]
+      },
+      {
+        "id": "impl.inventory",
+        "paths": [
+          "product/scripts/initializer/inventory.py"
+        ],
+        "requirements": [
+          "INIT-L0-003",
+          "INIT-L0-004"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-009"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-L0-002",
+          "INIT-L0-005"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-002",
+          "INIT-L0-003",
+          "INIT-L0-004",
+          "INIT-L0-005"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-L0-002",
+          "INIT-L0-005"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-004"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-004"
+        ]
+      },
+      {
+        "id": "test.inventory",
+        "paths": [
+          "product/scripts/initializer/tests/test_inventory.py"
+        ],
+        "requirements": [
+          "INIT-L0-003",
+          "INIT-L0-004"
+        ]
+      },
+      {
+        "id": "test.models",
+        "paths": [
+          "product/scripts/initializer/tests/test_models.py"
+        ],
+        "requirements": [
+          "INIT-L0-009"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-002",
+          "INIT-L0-003",
+          "INIT-L0-005"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-L0-001",
+          "INIT-L0-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-L0-001",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.models",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-L0-002",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-L0-003",
+        "implementation_ids": [
+          "impl.inventory",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.inventory",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-L0-004",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.inventory",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.inventory"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-L0-005",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-L0-006",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-L0-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Governance statement defining the normative status of directional documents; not an implementable behavior."
+      },
+      {
+        "requirement_id": "INIT-L0-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Identity and versioning is a packaging/build concern not yet implemented; acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-L0-009",
+        "implementation_ids": [
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.models"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-1/content-equivalence.json": {
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-EQV-003"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-007"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-008",
+          "INIT-EQV-010",
+          "INIT-EQV-011"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-009"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-003",
+          "INIT-EQV-004",
+          "INIT-EQV-011"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-EQV-003"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-007"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-008",
+          "INIT-EQV-010",
+          "INIT-EQV-011"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-005",
+          "INIT-EQV-006",
+          "INIT-EQV-007",
+          "INIT-EQV-009"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-EQV-001",
+          "INIT-EQV-002",
+          "INIT-EQV-003",
+          "INIT-EQV-004",
+          "INIT-EQV-011"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-EQV-001",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.models",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-002",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-003",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-004",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-005",
+        "implementation_ids": [
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-006",
+        "implementation_ids": [
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-007",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-008",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-009",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-010",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-011",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-EQV-012",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Equivalence relation properties (reflexive, symmetric, transitive) are mathematical axioms that govern the contract, not implementable runtime behaviors."
+      }
+    ]
+  },
+  "product/specs/product/level-1/destination.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-1/execution-profile.json": {
+    "implementations": [
+      {
+        "id": "impl.cli",
+        "paths": [
+          "product/scripts/initializer/cli.py"
+        ],
+        "requirements": [
+          "INIT-PRF-001"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-PRF-001"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-PRF-002"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.cli",
+        "paths": [
+          "product/scripts/initializer/tests/test_cli.py"
+        ],
+        "requirements": [
+          "INIT-PRF-001"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-PRF-002"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-PRF-001",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.cli"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-PRF-002",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-PRF-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Execution-profile-to-workflow dispatch mapping is a specification-level orchestration contract; no dispatch implementation exists. Acceptance gap \u2014 the cli.py dispatch is a hardcoded fall-through, not profile-driven."
+      },
+      {
+        "requirement_id": "INIT-PRF-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unsupported-combination rejection is a dispatch responsibility; no profile-driven rejection exists. Acceptance gap."
+      }
+    ]
+  },
+  "product/specs/product/level-1/execution-report.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": [
+      {
+        "requirement_id": "INIT-RPT-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Execution report is an output artifact contract; no dedicated module produces a unified execution-report.json. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Path contract for execution report in staging; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "completion_status field; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "stages array structure; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Stage status enumeration; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "warnings and errors per stage; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "schema_version constant; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unknown-field rejection; no execution report implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RPT-009",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Deterministic serialization; no execution report implementation. Acceptance gap."
+      }
+    ]
+  },
+  "product/specs/product/level-1/generated-repository.json": {
+    "implementations": [
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-GRL-004",
+          "INIT-GRL-005",
+          "INIT-GRL-006",
+          "INIT-GRL-007",
+          "INIT-GRL-008",
+          "INIT-GRL-009",
+          "INIT-GRL-010",
+          "INIT-GRL-011",
+          "INIT-GRL-012",
+          "INIT-GRL-013",
+          "INIT-GRL-014",
+          "INIT-GRL-020"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py",
+          "product/scripts/initializer/inventory.py"
+        ],
+        "requirements": [
+          "INIT-GRL-001",
+          "INIT-GRL-002",
+          "INIT-GRL-003",
+          "INIT-GRL-015",
+          "INIT-GRL-016",
+          "INIT-GRL-017"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-GRL-004",
+          "INIT-GRL-005",
+          "INIT-GRL-006",
+          "INIT-GRL-007",
+          "INIT-GRL-008",
+          "INIT-GRL-009",
+          "INIT-GRL-010",
+          "INIT-GRL-011",
+          "INIT-GRL-012",
+          "INIT-GRL-013",
+          "INIT-GRL-014",
+          "INIT-GRL-020"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-GRL-001",
+          "INIT-GRL-002",
+          "INIT-GRL-003",
+          "INIT-GRL-015",
+          "INIT-GRL-016",
+          "INIT-GRL-017"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-GRL-001",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-002",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-003",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-004",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-005",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-006",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-007",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-008",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-009",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-010",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-011",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-012",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-013",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-014",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-015",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-016",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-017",
+        "implementation_ids": [
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-018",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance record generation is not yet implemented; acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-GRL-019",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff manifest generation is not yet implemented; acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-GRL-020",
+        "implementation_ids": [
+          "impl.foundations"
+        ],
+        "test_ids": [
+          "test.foundations"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-1/git-bootstrap-profile.json": {
+    "implementations": [
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-BPF-001",
+          "INIT-BPF-002",
+          "INIT-BPF-003",
+          "INIT-BPF-004"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-BPF-001",
+          "INIT-BPF-002"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-BPF-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-BPF-001",
+          "INIT-BPF-002",
+          "INIT-BPF-003",
+          "INIT-BPF-004"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-BPF-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-BPF-001",
+        "implementation_ids": [
+          "impl.git",
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-002",
+        "implementation_ids": [
+          "impl.git",
+          "impl.models"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-003",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-004",
+        "implementation_ids": [
+          "impl.git",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.git",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-BPF-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Profile-identifier immutability is a governance rule for specification evolution; not an implementable runtime behavior."
+      }
+    ]
+  },
+  "product/specs/product/level-1/handoff-manifest.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": [
+      {
+        "requirement_id": "INIT-HND-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff manifest concept \u2014 no handoff-assembly implementation writes the artifact. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff manifest is an output artifact contract; no dedicated module produces it. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Bounded-handoff manifest path contract; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff field enumeration; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Nested handoff field definitions; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance reference path; no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unknown-field rejection; no handoff implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Deterministic serialization; no handoff implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-HND-009",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Schema version evolution; no handoff implementation. Acceptance gap."
+      }
+    ]
+  },
+  "product/specs/product/level-1/initialization-request.json": {
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-REQ-009"
+        ]
+      },
+      {
+        "id": "impl.models",
+        "paths": [
+          "product/scripts/initializer/models.py"
+        ],
+        "requirements": [
+          "INIT-REQ-001",
+          "INIT-REQ-008",
+          "INIT-REQ-013"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-REQ-001",
+          "INIT-REQ-002",
+          "INIT-REQ-003",
+          "INIT-REQ-004",
+          "INIT-REQ-005",
+          "INIT-REQ-006",
+          "INIT-REQ-007",
+          "INIT-REQ-008",
+          "INIT-REQ-009",
+          "INIT-REQ-010",
+          "INIT-REQ-011",
+          "INIT-REQ-012",
+          "INIT-REQ-013",
+          "INIT-REQ-014"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.models",
+        "paths": [
+          "product/scripts/initializer/tests/test_models.py"
+        ],
+        "requirements": [
+          "INIT-REQ-001",
+          "INIT-REQ-008",
+          "INIT-REQ-013"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-REQ-001",
+          "INIT-REQ-002",
+          "INIT-REQ-003",
+          "INIT-REQ-004",
+          "INIT-REQ-005",
+          "INIT-REQ-006",
+          "INIT-REQ-007",
+          "INIT-REQ-008",
+          "INIT-REQ-009",
+          "INIT-REQ-010",
+          "INIT-REQ-011",
+          "INIT-REQ-012",
+          "INIT-REQ-013",
+          "INIT-REQ-014"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-REQ-001",
+        "implementation_ids": [
+          "impl.models",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.models",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-002",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-003",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-004",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-005",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-006",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-007",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-008",
+        "implementation_ids": [
+          "impl.models",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.models",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-009",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-010",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-011",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-012",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-013",
+        "implementation_ids": [
+          "impl.models",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.models",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-REQ-014",
+        "implementation_ids": [
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.validation"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-1/lifecycle-stages.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-1/local-git-repository.json": {
+    "implementations": [
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-GIT-001",
+          "INIT-GIT-002",
+          "INIT-GIT-003",
+          "INIT-GIT-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-GIT-001",
+          "INIT-GIT-002",
+          "INIT-GIT-003",
+          "INIT-GIT-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-GIT-001",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-002",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-003",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GIT-004",
+        "implementation_ids": [
+          "impl.git"
+        ],
+        "test_ids": [
+          "test.git"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-1/material-classification.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-1/platform-profile-interface.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-1/product-identity.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-1/provenance-record.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": [
+      {
+        "requirement_id": "INIT-PRO-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance record concept \u2014 no ProvenanceRecord model exists in the implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance record field enumeration is a data-structure contract; no dedicated implementation module exists \u2014 models.py has partial structures. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "File path requirement for the provenance record artifact; no implementation writes the provenance-record.json file yet. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Field-level contract for the provenance record; no implementation writes the complete provenance artifact. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "request_identifier equals authority.granted_by is a data-content contract; no provenance-record writing implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unknown-field rejection and execution-report exclusion; no provenance-record writing implementation validates against this schema yet. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Unknown-field rejection is a schema requirement; no provenance writing implementation validates against this schema yet. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PRO-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Deterministic serialization rule for the provenance artifact; no serialization implementation exists. Acceptance gap."
+      }
+    ]
+  },
+  "product/specs/product/level-1/source-revision-identity.json": {
+    "implementations": [
+      {
+        "id": "impl.inventory",
+        "paths": [
+          "product/scripts/initializer/inventory.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001",
+          "INIT-SRC-002"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-SRC-002"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.inventory",
+        "paths": [
+          "product/scripts/initializer/tests/test_inventory.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001",
+          "INIT-SRC-002"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-SRC-001"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-SRC-002"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-SRC-001",
+        "implementation_ids": [
+          "impl.inventory",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.inventory",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-SRC-002",
+        "implementation_ids": [
+          "impl.inventory",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.inventory",
+          "test.validation"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-1/staging-state.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-1/staging-workspace.json": {
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-STG-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-STG-001",
+          "INIT-STG-002"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-STG-001",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-STG-002",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-2/destination-preflight.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/execution-orchestration.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/foundation-seeding.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/framework-installation.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/handoff-assembly.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/local-git-initialization.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/platform-profile-execution.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/provenance-recording.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/repository-validation.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/request-intake.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/source-material-resolution.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-2/transactional-staging.json": {
+    "implementations": [
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-004"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-TST-001",
+          "INIT-TST-002",
+          "INIT-TST-003",
+          "INIT-TST-004"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-TST-001",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-TST-002",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-TST-003",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-TST-004",
+        "implementation_ids": [
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-3/dry-run-validation.json": {
+    "implementations": [
+      {
+        "id": "impl.cli",
+        "paths": [
+          "product/scripts/initializer/cli.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.cli",
+        "paths": [
+          "product/scripts/initializer/tests/test_cli.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-DRV-001"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-DRV-001",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.destination",
+          "impl.foundations",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.destination",
+          "test.foundations",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-DRV-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Dry-run validation report generation is not implemented \u2014 no dry-run dispatch exists. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-DRV-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for dry-run workflow; no dispatch mechanism selects dry-run over other workflows. Acceptance gap \u2014 INIT-PRF-003 covers the dispatch contract but no implementation enforces it."
+      }
+    ]
+  },
+  "product/specs/product/level-3/full-initialization.json": {
+    "implementations": [
+      {
+        "id": "impl.cli",
+        "paths": [
+          "product/scripts/initializer/cli.py"
+        ],
+        "requirements": [
+          "INIT-FIN-001",
+          "INIT-FIN-002",
+          "INIT-FIN-003",
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.destination",
+        "paths": [
+          "product/scripts/initializer/destination.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-005"
+        ]
+      },
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.promotion",
+        "paths": [
+          "product/scripts/initializer/promotion.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.cli",
+        "paths": [
+          "product/scripts/initializer/tests/test_cli.py"
+        ],
+        "requirements": [
+          "INIT-FIN-001",
+          "INIT-FIN-002",
+          "INIT-FIN-003",
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.destination",
+        "paths": [
+          "product/scripts/initializer/tests/test_destination_promotion.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-005"
+        ]
+      },
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-FIN-003",
+          "INIT-FIN-006",
+          "INIT-FIN-007"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-FIN-004",
+          "INIT-FIN-005",
+          "INIT-FIN-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-FIN-001",
+        "implementation_ids": [
+          "impl.cli"
+        ],
+        "test_ids": [
+          "test.cli"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-002",
+        "implementation_ids": [
+          "impl.cli"
+        ],
+        "test_ids": [
+          "test.cli"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-003",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.destination",
+          "impl.promotion",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.destination",
+          "test.staging"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-004",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-005",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.destination",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.destination",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-006",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-FIN-007",
+        "implementation_ids": [
+          "impl.cli",
+          "impl.foundations",
+          "impl.git",
+          "impl.staging"
+        ],
+        "test_ids": [
+          "test.cli",
+          "test.foundations",
+          "test.git",
+          "test.staging"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "product/specs/product/level-3/platform-integrated-initialization.json": {
+    "implementations": [
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "impl.git",
+        "paths": [
+          "product/scripts/initializer/git.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "impl.validation",
+        "paths": [
+          "product/scripts/initializer/validation.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "test.git",
+        "paths": [
+          "product/scripts/initializer/tests/test_git.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      },
+      {
+        "id": "test.validation",
+        "paths": [
+          "product/scripts/initializer/tests/test_validation.py"
+        ],
+        "requirements": [
+          "INIT-PII-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-PII-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Platform-integrated workflow composes platform profile execution, which has no implementation. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Platform-integrated lifecycle ordering requires platform profile execution stage, which does not exist. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Post-promotion platform execution stage does not exist. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for platform-integrated workflow; no dispatch mechanism selects it. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-PII-006",
+        "implementation_ids": [
+          "impl.foundations",
+          "impl.git",
+          "impl.staging",
+          "impl.validation"
+        ],
+        "test_ids": [
+          "test.foundations",
+          "test.git",
+          "test.staging",
+          "test.validation"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-PII-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Execution report with component identities is not implemented. Acceptance gap."
+      }
+    ]
+  },
+  "product/specs/product/level-3/recovery-and-cleanup.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  },
+  "product/specs/product/level-3/resume-from-staging.json": {
+    "implementations": [],
+    "tests": [],
+    "conformance": [
+      {
+        "requirement_id": "INIT-RSM-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Resume-from-staging workflow is not implemented \u2014 no mechanism validates or recovers from preserved staging. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RSM-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Preserved staging consistency verification is not implemented. Acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-RSM-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Precondition for resume workflow; no dispatch mechanism selects resume. Acceptance gap."
+      }
+    ]
+  }
+}

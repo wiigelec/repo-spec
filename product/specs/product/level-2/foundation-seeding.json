@@ -1,21 +1,94 @@
 {
   "spec_id": "product.foundation-seeding",
   "title": "Foundation Seeding",
-  "purpose": "Defines candidate product foundation creation from the explicit product identifier and supplied product-direction material.",
+  "purpose": "Defines activation of an empty product-specification workspace from the explicit product identifier and supplied product-direction material, including source-material ingestion, direction-material projection, skeleton document generation, and empty workspace initialization.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["foundation-seeding"]
+    "contracts": [
+      "source-material-ingestion",
+      "direction-material-projection",
+      "skeleton-generation",
+      "empty-workspace-initialization"
+    ]
   },
   "normative_requirements": [
     {
       "id": "INIT-FSD-001",
-      "text": "The foundation seeding component shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to copy each direction_material entry verbatim from the source repository into the staging workspace and create project-specific direction documents and candidate product-specification foundations."
+      "text": "Foundation seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce the project-specific direction documents, generated skeleton documents, and an activated but empty product-specification workspace in the staging workspace."
     },
     {
       "id": "INIT-FSD-002",
-      "text": "Created product specifications shall remain candidate, and the component shall not invent product semantics, infer unspecified direction, or make acceptance claims."
+      "text": "Every document produced by foundation seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content."
+    },
+    {
+      "id": "INIT-FSD-003",
+      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; each entry shall be interpreted as UTF-8 encoded text with line endings normalized to LF (U+000A), and the stage shall fail when any entry's content is not valid UTF-8 or when the resolved file at the source revision does not contain at least one non-whitespace byte."
+    },
+    {
+      "id": "INIT-FSD-004",
+      "text": "Each direction_material entry shall be assigned a positional index equal to its 0-based position in the direction_material array as received from request intake; the array order shall be preserved as the authoritative ordering key for all projection and naming decisions, and duplicate entries shall each receive their own distinct positional index."
+    },
+    {
+      "id": "INIT-FSD-005",
+      "text": "Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/{positional_index:03d}-{source_basename}, where source_basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes with LF line endings, and no summarization, embedding, transformation, truncation, or semantic interpretation of the content shall be performed."
+    },
+    {
+      "id": "INIT-FSD-006",
+      "text": "Every projected direction-material file in product/docs/direction/ shall include a leading YAML front-matter block containing key source_path with the original repository-relative source path, key source_revision with the exact source revision identifier, and key positional_index with the 0-based array index; the front-matter block shall be separated from the verbatim content by a line containing only --- after the front-matter and a line containing only --- before it, with the verbatim content following the closing ---."
+    },
+    {
+      "id": "INIT-FSD-007",
+      "text": "When two or more direction_material entries resolve to the same source_basename, the projected filenames shall remain unique because each uses a distinct positional_index prefix; no deduplication, renaming beyond the positional prefix, or content merging shall occur."
+    },
+    {
+      "id": "INIT-FSD-008",
+      "text": "Skeleton generation shall produce exactly one overview controlling document at docs/overview/{product_id}-OVERVIEW.md, one decomposition controlling document at docs/decompositions/{product_id}-DECOMPOSITION.md, and one implementation plan controlling document at docs/plans/{product_id}-IMPLEMENTATION-PLAN.md, where {product_id} is the product identifier from the initialization request."
+    },
+    {
+      "id": "INIT-FSD-009",
+      "text": "The overview controlling document skeleton shall contain an H1 heading with the product identifier and the suffix 'Overview', a ## Purpose section with the static text 'This overview establishes the product direction, scope, and boundaries for {product_id}. It is a candidate directional document and is not normative.', a ## Scope section with the static text 'Overview scope is determined by the accepted decomposition and governing product specifications. This document records the directional boundary for the product.', a numbered placeholder sub-section for each of the six overview chunks (identity-and-purpose, problem-and-outcome, users-principles-boundaries, capabilities-and-success, unresolved-questions, lifecycle-and-handoff) each containing the static text 'Direction material for this section is available at the positional index identified by the chunk document. Content is not synthesized by the initializer.', an ## Open Questions section with the static text 'Unresolved questions are recorded in the unresolved-questions chunk document. No questions are synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate, authority_category: directional, and overview_role: initial."
+    },
+    {
+      "id": "INIT-FSD-010",
+      "text": "Skeleton generation shall produce exactly six overview chunk files under docs/overview/{product_id}-overview/ with the following filenames and H1 headings: chunk-01-identity-and-purpose.md ('Product Identity and Purpose'), chunk-02-problem-and-outcome.md ('Problem and Outcome'), chunk-03-users-principles-boundaries.md ('Users, Principles, and Boundaries'), chunk-04-capabilities-and-success.md ('Capabilities and Success'), chunk-05-unresolved-questions.md ('Unresolved Questions'), and chunk-06-lifecycle-and-handoff.md ('Lifecycle and Handoff'); each chunk file shall contain only its H1 heading, a single paragraph reading 'Direction material entries with positional indices relevant to this section are projected to product/docs/direction/. This chunk is a mechanically generated skeleton and does not contain synthesized product semantics.', and a front-matter block with lifecycle_status: candidate."
+    },
+    {
+      "id": "INIT-FSD-011",
+      "text": "Skeleton generation shall produce exactly one decomposition controlling document at docs/decompositions/{product_id}-DECOMPOSITION.md containing an H1 heading with the product identifier and the suffix 'Decomposition', a ## Scope section with static text 'This decomposition identifies product areas and cross-cutting concerns for {product_id}. It is a candidate directional document and is not normative.', a ## Product Areas section listing four empty placeholder sub-sections (invocation-and-authority, product-areas, cross-cutting-concerns, stopping-criteria-and-handoff) each with the static text 'Decomposition area content is not synthesized by the initializer. Direction material for this area may be available in product/docs/direction/.', a ## Cross-cutting Concerns section with the static text 'Cross-cutting concerns are identified in the decomposition chunk documents. No concerns are synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate and authority_category: directional."
+    },
+    {
+      "id": "INIT-FSD-012",
+      "text": "Skeleton generation shall produce exactly four decomposition chunk files under docs/decompositions/{product_id}-decomposition/ with the following filenames and H1 headings: chunk-01-invocation-and-authority.md ('Invocation and Authority'), chunk-02-product-areas.md ('Product Areas'), chunk-03-cross-cutting-concerns.md ('Cross-cutting Concerns'), and chunk-04-stopping-criteria-and-handoff.md ('Stopping Criteria and Handoff'); each chunk file shall contain only its H1 heading, a single paragraph reading 'This decomposition chunk is a mechanically generated skeleton. Decomposition content is not synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate."
+    },
+    {
+      "id": "INIT-FSD-013",
+      "text": "Skeleton generation shall produce exactly one implementation plan controlling document at docs/plans/{product_id}-IMPLEMENTATION-PLAN.md containing an H1 heading with the product identifier and the suffix 'Implementation Plan', a ## Scope and Preconditions section with static text 'Implementation scope is defined by the governing product specifications and decomposition. This plan is a candidate planning document and is not normative.', a ## Workstreams and Dependencies section with static text 'Workstreams are identified in the implementation plan chunk documents. No workstream content is synthesized by the initializer.', a ## Validation and Completion section with static text 'Validation criteria are defined by the governing product specifications. No validation content is synthesized by the initializer.', a ## Risks and Unresolved Decisions section with static text 'Risks and unresolved decisions are recorded in the implementation plan chunk documents. No risk content is synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate and authority_category: planning."
+    },
+    {
+      "id": "INIT-FSD-014",
+      "text": "Skeleton generation shall produce exactly four implementation plan chunk files under docs/plans/{product_id}-implementation-plan/ with the following filenames and H1 headings: chunk-01-scope-and-preconditions.md ('Scope and Preconditions'), chunk-02-workstreams-and-dependencies.md ('Workstreams and Dependencies'), chunk-03-validation-and-completion.md ('Validation and Completion'), and chunk-04-risks-and-unresolved-decisions.md ('Risks and Unresolved Decisions'); each chunk file shall contain only its H1 heading, a single paragraph reading 'This implementation plan chunk is a mechanically generated skeleton. Plan content is not synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate."
+    },
+    {
+      "id": "INIT-FSD-015",
+      "text": "Skeleton generation shall produce discoverability README files at docs/overview/README.md, docs/decompositions/README.md, and docs/plans/README.md, each containing an H1 heading with the directory name and a link to the corresponding controlling document using the format 'See the [{title}]({relative_path}) controlling document.', plus a front-matter block with lifecycle_status: candidate."
+    },
+    {
+      "id": "INIT-FSD-016",
+      "text": "A skeleton document that references direction material shall never embed, quote, paraphrase, summarize, or transform the content of any direction_material entry; all direction material content exists solely in product/docs/direction/ and is referenced only through the front-matter source metadata and the static placeholder text in the controlling documents."
+    },
+    {
+      "id": "INIT-FSD-017",
+      "text": "Empty workspace initialization shall create the empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/ in the staging workspace; no specification JSON files shall be created inside these directories, and the component shall not produce candidate specification documents with normative requirement content."
+    },
+    {
+      "id": "INIT-FSD-018",
+      "text": "Empty workspace initialization shall create a generated product manifest at product/specs/product/manifest.json containing spec_id 'product.manifest', status 'candidate', schema_version '1', an empty product_specifications array, and a title and purpose drawn from the product identifier; the manifest shall declare a dependency on repo.manifest and repo.product-manifest."
+    },
+    {
+      "id": "INIT-FSD-019",
+      "text": "Empty workspace initialization shall produce a discoverability README at product/specs/product/README.md containing an H1 heading with the product identifier and the text 'This directory contains the activated but empty product-specification workspace for {product_id}.' followed by links to the overview, decomposition, and implementation plan controlling documents; the README shall have lifecycle_status candidate."
     }
   ],
   "dependencies": [
@@ -27,6 +100,12 @@
     },
     {
       "spec_id": "product.material-classification"
+    },
+    {
+      "spec_id": "product.product-identity"
+    },
+    {
+      "spec_id": "product.generated-repository"
     }
   ],
   "references": [
@@ -36,7 +115,19 @@
     },
     {
       "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
+    },
+    {
+      "type": "artifact",
       "path": "product/specs/product/level-1/material-classification.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/product-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/generated-repository.json"
     },
     {
       "type": "artifact",

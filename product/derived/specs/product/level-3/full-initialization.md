@@ -22,183 +22,15 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 
 ### Implementations
 
-- `impl.cli`
-  - Paths:
-    - `product/scripts/initializer/cli.py`
-  - Requirements:
-    - `INIT-FIN-001`
-    - `INIT-FIN-002`
-    - `INIT-FIN-003`
-    - `INIT-FIN-004`
-    - `INIT-FIN-005`
-    - `INIT-FIN-007`
-
-- `impl.destination`
-  - Paths:
-    - `product/scripts/initializer/destination.py`
-  - Requirements:
-    - `INIT-FIN-003`
-    - `INIT-FIN-005`
-
-- `impl.foundations`
-  - Paths:
-    - `product/scripts/initializer/foundations.py`
-  - Requirements:
-    - `INIT-FIN-006`
-    - `INIT-FIN-007`
-
-- `impl.git`
-  - Paths:
-    - `product/scripts/initializer/git.py`
-  - Requirements:
-    - `INIT-FIN-006`
-    - `INIT-FIN-007`
-
-- `impl.promotion`
-  - Paths:
-    - `product/scripts/initializer/promotion.py`
-  - Requirements:
-    - `INIT-FIN-003`
-
-- `impl.staging`
-  - Paths:
-    - `product/scripts/initializer/staging.py`
-  - Requirements:
-    - `INIT-FIN-003`
-    - `INIT-FIN-006`
-    - `INIT-FIN-007`
-
-- `impl.validation`
-  - Paths:
-    - `product/scripts/initializer/validation.py`
-  - Requirements:
-    - `INIT-FIN-004`
-    - `INIT-FIN-005`
-    - `INIT-FIN-006`
+- None
 
 ### Tests
 
-- `test.cli`
-  - Paths:
-    - `product/scripts/initializer/tests/test_cli.py`
-  - Requirements:
-    - `INIT-FIN-001`
-    - `INIT-FIN-002`
-    - `INIT-FIN-003`
-    - `INIT-FIN-004`
-    - `INIT-FIN-005`
-    - `INIT-FIN-007`
-
-- `test.destination`
-  - Paths:
-    - `product/scripts/initializer/tests/test_destination_promotion.py`
-  - Requirements:
-    - `INIT-FIN-003`
-    - `INIT-FIN-005`
-
-- `test.foundations`
-  - Paths:
-    - `product/scripts/initializer/tests/test_foundations.py`
-  - Requirements:
-    - `INIT-FIN-006`
-    - `INIT-FIN-007`
-
-- `test.git`
-  - Paths:
-    - `product/scripts/initializer/tests/test_git.py`
-  - Requirements:
-    - `INIT-FIN-006`
-    - `INIT-FIN-007`
-
-- `test.staging`
-  - Paths:
-    - `product/scripts/initializer/tests/test_staging.py`
-  - Requirements:
-    - `INIT-FIN-003`
-    - `INIT-FIN-006`
-    - `INIT-FIN-007`
-
-- `test.validation`
-  - Paths:
-    - `product/scripts/initializer/tests/test_validation.py`
-  - Requirements:
-    - `INIT-FIN-004`
-    - `INIT-FIN-005`
-    - `INIT-FIN-006`
+- None
 
 ### Conformance
 
-- `INIT-FIN-001`
-  - Implementation Ids:
-    - `impl.cli`
-  - Test Ids:
-    - `test.cli`
-  - Status: `covered`
-
-- `INIT-FIN-002`
-  - Implementation Ids:
-    - `impl.cli`
-  - Test Ids:
-    - `test.cli`
-  - Status: `covered`
-
-- `INIT-FIN-003`
-  - Implementation Ids:
-    - `impl.cli`
-    - `impl.destination`
-    - `impl.promotion`
-    - `impl.staging`
-  - Test Ids:
-    - `test.cli`
-    - `test.destination`
-    - `test.staging`
-  - Status: `covered`
-
-- `INIT-FIN-004`
-  - Implementation Ids:
-    - `impl.cli`
-    - `impl.validation`
-  - Test Ids:
-    - `test.cli`
-    - `test.validation`
-  - Status: `covered`
-
-- `INIT-FIN-005`
-  - Implementation Ids:
-    - `impl.cli`
-    - `impl.destination`
-    - `impl.validation`
-  - Test Ids:
-    - `test.cli`
-    - `test.destination`
-    - `test.validation`
-  - Status: `covered`
-
-- `INIT-FIN-006`
-  - Implementation Ids:
-    - `impl.foundations`
-    - `impl.git`
-    - `impl.staging`
-    - `impl.validation`
-  - Test Ids:
-    - `test.foundations`
-    - `test.git`
-    - `test.staging`
-    - `test.validation`
-  - Status: `covered`
-
-- `INIT-FIN-007`
-  - Implementation Ids:
-    - `impl.cli`
-    - `impl.foundations`
-    - `impl.git`
-    - `impl.staging`
-  - Test Ids:
-    - `test.cli`
-    - `test.foundations`
-    - `test.git`
-    - `test.staging`
-  - Status: `covered`
+- None
 
 ## Orchestrations
 
@@ -213,7 +45,7 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `INIT-FIN-004`: The initializer shall perform only standard local execution for this workflow and shall require every authority-bearing input to be explicit in the JSON request.
 - `INIT-FIN-005`: The workflow shall reject named references, remote retrieval, nonempty-destination overwrite, platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation.
 - `INIT-FIN-006`: Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content and handoff manifests except for the provenance record's explicitly declared initialization timestamp; local Git topology and metadata (branch name, root commit count, author identity, commit message, worktree state, and remote count) shall be equivalent, but exact tree and commit object identifiers may differ when the committed provenance timestamp varies between runs.
-- `INIT-FIN-007`: The promoted repository shall conform to the generated-repository layout contract and shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state.
+- `INIT-FIN-007`: The promoted repository shall conform to the generated-repository layout contract and shall contain reusable framework foundations, product-identified direction material, an activated but empty product-specification workspace, a provenance record, a handoff manifest, and the validated deterministic local Git state.
 
 ## Dependencies
 
