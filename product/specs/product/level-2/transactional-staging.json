@@ -1,0 +1,72 @@
+{
+  "spec_id": "product.transactional-staging",
+  "title": "Transactional Staging Manager",
+  "purpose": "Defines the transactional staging manager component that provides a complete workspace lifecycle: creation, population, validation gating, atomic promotion, and rollback isolation.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["transactional-staging"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-TST-001",
+      "text": "The transactional staging manager component shall create a staging workspace that conforms to the staging workspace contract, provide operations to populate the workspace with generated content, and support atomic promotion of the workspace contents to the destination."
+    },
+    {
+      "id": "INIT-TST-002",
+      "text": "The transactional staging manager component shall guarantee that incomplete or failed generation leaves the destination unmodified and that promotion only occurs when all preceding stages have completed successfully."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/staging-workspace.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/transactional-staging.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

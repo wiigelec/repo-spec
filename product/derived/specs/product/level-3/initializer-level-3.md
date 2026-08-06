@@ -72,7 +72,17 @@ Defines the complete orchestrations and externally meaningful product behavior f
 - `product.provenance-record`
 - `product.handoff-manifest`
 - `product.execution-report`
-- `product.initializer-level-2`
+- `product.destination-preflight`
+- `product.execution-orchestration`
+- `product.foundation-seeding`
+- `product.framework-installation`
+- `product.handoff-assembly`
+- `product.platform-profile-execution`
+- `product.provenance-recording`
+- `product.repository-validation`
+- `product.request-intake`
+- `product.source-material-resolution`
+- `product.transactional-staging`
 
 ## References
 
@@ -87,7 +97,17 @@ Defines the complete orchestrations and externally meaningful product behavior f
 - artifact: `product/specs/product/level-1/provenance-record.json`
 - artifact: `product/specs/product/level-1/handoff-manifest.json`
 - artifact: `product/specs/product/level-1/execution-report.json`
-- artifact: `product/specs/product/level-2/initializer-level-2.json`
+- artifact: `product/specs/product/level-2/destination-preflight.json`
+- artifact: `product/specs/product/level-2/execution-orchestration.json`
+- artifact: `product/specs/product/level-2/foundation-seeding.json`
+- artifact: `product/specs/product/level-2/framework-installation.json`
+- artifact: `product/specs/product/level-2/handoff-assembly.json`
+- artifact: `product/specs/product/level-2/platform-profile-execution.json`
+- artifact: `product/specs/product/level-2/provenance-recording.json`
+- artifact: `product/specs/product/level-2/repository-validation.json`
+- artifact: `product/specs/product/level-2/request-intake.json`
+- artifact: `product/specs/product/level-2/source-material-resolution.json`
+- artifact: `product/specs/product/level-2/transactional-staging.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

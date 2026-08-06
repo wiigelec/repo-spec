@@ -111,7 +111,37 @@
       "spec_id": "product.execution-report"
     },
     {
-      "spec_id": "product.initializer-level-2"
+      "spec_id": "product.destination-preflight"
+    },
+    {
+      "spec_id": "product.execution-orchestration"
+    },
+    {
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "spec_id": "product.handoff-assembly"
+    },
+    {
+      "spec_id": "product.platform-profile-execution"
+    },
+    {
+      "spec_id": "product.provenance-recording"
+    },
+    {
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "spec_id": "product.request-intake"
+    },
+    {
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "spec_id": "product.transactional-staging"
     }
   ],
   "references": [
@@ -161,7 +191,47 @@
     },
     {
       "type": "artifact",
-      "path": "product/specs/product/level-2/initializer-level-2.json"
+      "path": "product/specs/product/level-2/destination-preflight.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/execution-orchestration.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/foundation-seeding.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/framework-installation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/handoff-assembly.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/platform-profile-execution.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/provenance-recording.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/repository-validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/request-intake.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/source-material-resolution.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/transactional-staging.json"
     },
     {
       "type": "artifact",

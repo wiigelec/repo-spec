@@ -1,0 +1,79 @@
+{
+  "spec_id": "product.source-material-resolution",
+  "title": "Source Material Resolution",
+  "purpose": "Defines the source material resolver component that pins source revisions and inventories framework material by role.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["source-material-resolution"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-SMR-001",
+      "text": "The source material resolver component shall accept a source revision reference, resolve it to an exact pinned revision, inventory the available repository framework material under that revision, and classify each material item by role according to the material role classification taxonomy."
+    },
+    {
+      "id": "INIT-SMR-002",
+      "text": "The source material resolver component shall reject unresolvable revision references and shall report the exact cause of resolution failure."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.material-classification"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/source-revision-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/material-classification.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/source-material-resolution.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

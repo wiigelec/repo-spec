@@ -1,0 +1,65 @@
+{
+  "spec_id": "product.repository-validation",
+  "title": "Repository Validation",
+  "purpose": "Defines the repository validation component that evaluates conformance of the staged or promoted repository.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["repository-validation"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-RVA-001",
+      "text": "The repository validation component shall validate the staged or promoted repository against declared conformance requirements, structural constraints, and repository-specification rules."
+    },
+    {
+      "id": "INIT-RVA-002",
+      "text": "The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/repository-validation.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

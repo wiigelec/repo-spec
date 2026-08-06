@@ -1,0 +1,75 @@
+{
+  "spec_id": "product.handoff-assembly",
+  "title": "Handoff Assembly",
+  "purpose": "Defines the handoff assembly component that produces the execution report and handoff manifest from stage outcomes.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["handoff-assembly"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-HAS-001",
+      "text": "The handoff assembly component shall assemble the execution report from stage outcomes, warnings, and errors, produce the handoff manifest describing the initialized repository state, and produce the final output of the initializer."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.execution-report"
+    },
+    {
+      "spec_id": "product.handoff-manifest"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-report.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/handoff-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/handoff-assembly.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

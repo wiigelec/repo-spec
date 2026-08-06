@@ -72,8 +72,68 @@
       "level": 1
     },
     {
-      "spec_id": "product.initializer-level-2",
-      "path": "product/specs/product/level-2/initializer-level-2.json",
+      "spec_id": "product.destination-preflight",
+      "path": "product/specs/product/level-2/destination-preflight.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.execution-orchestration",
+      "path": "product/specs/product/level-2/execution-orchestration.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "path": "product/specs/product/level-2/foundation-seeding.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "path": "product/specs/product/level-2/framework-installation.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.handoff-assembly",
+      "path": "product/specs/product/level-2/handoff-assembly.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.platform-profile-execution",
+      "path": "product/specs/product/level-2/platform-profile-execution.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.provenance-recording",
+      "path": "product/specs/product/level-2/provenance-recording.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.repository-validation",
+      "path": "product/specs/product/level-2/repository-validation.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.request-intake",
+      "path": "product/specs/product/level-2/request-intake.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.source-material-resolution",
+      "path": "product/specs/product/level-2/source-material-resolution.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "path": "product/specs/product/level-2/transactional-staging.json",
       "status": "candidate",
       "level": 2
     },

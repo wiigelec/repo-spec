@@ -1,0 +1,82 @@
+{
+  "spec_id": "product.provenance-recording",
+  "title": "Provenance Recording",
+  "purpose": "Defines the provenance recording component that captures and writes provenance data to the initialized repository.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": ["provenance-recording"]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-PRC-001",
+      "text": "The provenance recording component shall capture provenance data from the initialization request, the resolved source revision, the execution profile, the completed lifecycle stages, and any conflict in which explicit request authority took precedence over default or inferred behavior, and shall write the provenance record to the initialized repository."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.execution-profile"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/provenance-record.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/source-revision-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-profile.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/provenance-recording.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
