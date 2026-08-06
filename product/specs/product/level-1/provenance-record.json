@@ -27,7 +27,7 @@
     },
     {
       "id": "INIT-PRO-005",
-      "text": "The provenance `request_identifier` shall be a non-empty string of the form `issue-<number>` (for example `issue-221`) that identifies the governing initialization request authority, and `completed_stages` shall list the identifiers of the bounded-workflow stages that completed before recording."
+      "text": "The provenance `request_identifier` shall be a non-empty string of the form `issue-<number>` (for example `issue-221`) that identifies the governing initialization request authority, shall equal the `authority.granted_by` value supplied by the governing initialization request, and `completed_stages` shall list the identifiers of the bounded-workflow stages that completed before recording."
     },
     {
       "id": "INIT-PRO-006",
