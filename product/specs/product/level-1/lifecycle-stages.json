@@ -1,0 +1,206 @@
+{
+  "spec_id": "product.lifecycle-stages",
+  "title": "Lifecycle Stage Vocabulary",
+  "purpose": "Defines the canonical lifecycle stage identifiers used by workflows, execution reports, provenance records, and orchestration components to refer to bounded-initialization stages with stable machine-readable names.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "stage-identifier"
+    ]
+  },
+  "stages": [
+    {
+      "id": "request-intake",
+      "purpose": "Validate and normalize the JSON initialization request and extract all authority-bearing fields.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": [],
+      "output": "Validated and normalized request"
+    },
+    {
+      "id": "source-resolution",
+      "purpose": "Resolve the exact local source revision and inventory its material for selection.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["request-intake"],
+      "output": "Resolved source material inventory"
+    },
+    {
+      "id": "destination-preflight",
+      "purpose": "Preflight the destination and filesystem to verify the destination is absent or empty and supports same-filesystem atomic promotion.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["request-intake"],
+      "output": "Preflight result"
+    },
+    {
+      "id": "staging-establishment",
+      "purpose": "Establish the staging transaction by creating an isolated same-filesystem staging workspace at the destination.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["destination-preflight"],
+      "output": "Staging workspace"
+    },
+    {
+      "id": "framework-installation",
+      "purpose": "Select and install reusable repository framework material from the source revision into the staging workspace.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["staging-establishment"],
+      "output": "Installed framework material"
+    },
+    {
+      "id": "foundation-seeding",
+      "purpose": "Generate product foundations from the explicit product identifier and supplied direction material.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["framework-installation"],
+      "output": "Generated product foundations"
+    },
+    {
+      "id": "provenance-recording",
+      "purpose": "Assemble the immutable origin provenance record and write it into the staged repository content.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["foundation-seeding"],
+      "output": "Immutable origin provenance record"
+    },
+    {
+      "id": "handoff-assembly",
+      "purpose": "Assemble handoff inputs and write the handoff manifest into the staged repository content.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["foundation-seeding"],
+      "output": "Handoff manifest"
+    },
+    {
+      "id": "git-initialization",
+      "purpose": "Establish the deterministic local Git repository including all final staged artifacts.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["provenance-recording", "handoff-assembly"],
+      "output": "Deterministic local Git repository"
+    },
+    {
+      "id": "repository-validation",
+      "purpose": "Validate repository content and Git state against conformance requirements.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["git-initialization"],
+      "output": "Validation result"
+    },
+    {
+      "id": "result-finalization",
+      "purpose": "Finalize the external execution result by recording the workflow outcome and preparing the caller return value.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["repository-validation"],
+      "output": "Finalized execution result"
+    },
+    {
+      "id": "promotion",
+      "purpose": "Atomically promote the complete staged directory to the declared destination.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": false,
+      "predecessors": ["result-finalization"],
+      "output": "Initialized repository at destination"
+    },
+    {
+      "id": "platform-profile-execution",
+      "purpose": "Execute a hosting-platform profile against the promoted repository as a post-promotion stage.",
+      "required": false,
+      "deferrable": true,
+      "recoverable": true,
+      "predecessors": ["promotion"],
+      "output": "Platform-modified repository"
+    }
+  ],
+  "normative_requirements": [
+    {
+      "id": "INIT-STG-001",
+      "text": "Every stage identifier defined in the lifecycle stage vocabulary shall be unique, shall use lowercase-kebab-case format, and shall be stable across specification versions."
+    },
+    {
+      "id": "INIT-STG-002",
+      "text": "Workflows, execution reports, provenance records, and orchestration components that reference bounded-initialization stages shall use the canonical stage identifiers defined by this vocabulary and shall not introduce ad-hoc stage names."
+    },
+    {
+      "id": "INIT-STG-003",
+      "text": "Each stage definition shall declare its purpose, whether it is required or optional, whether it may be deferred, whether failure is recoverable, its predecessor stage identifiers, and its output."
+    },
+    {
+      "id": "INIT-STG-004",
+      "text": "A stage declared as required must execute in every workflow that includes its stage identifier; a stage declared as optional may be skipped when the execution profile or workflow definition explicitly omits it."
+    },
+    {
+      "id": "INIT-STG-005",
+      "text": "A stage declared as non-recoverable (such as promotion) shall not be retried after failure without an explicit recovery or cleanup workflow; a recoverable stage may be retried after its predecessor conditions are re-established."
+    },
+    {
+      "id": "INIT-STG-006",
+      "text": "Predecessor stage identifiers declared for a stage shall refer only to other stages defined in this vocabulary, and the predecessor relation shall not form a cycle."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-3/full-initialization.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/execution-report.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/lifecycle-stages.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

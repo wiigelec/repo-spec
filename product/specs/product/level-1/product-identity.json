@@ -1,0 +1,91 @@
+{
+  "spec_id": "product.product-identity",
+  "title": "Product Identity Contract",
+  "purpose": "Defines the canonical product identifier format, constraints, and semantics for initialized products across the bounded workflow.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "product-identifier"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-PID-001",
+      "text": "A product identifier shall be a stable, non-empty string that uniquely identifies a product in the bounded initialization workflow and shall be supplied as the `product.id` field of the initialization request."
+    },
+    {
+      "id": "INIT-PID-002",
+      "text": "The product identifier shall match the pattern `^[a-z][a-z0-9]*(-[a-z0-9]+)*$`: it shall start with a lowercase letter, contain only lowercase ASCII letters, ASCII digits, and hyphens, and hyphens shall not appear consecutively or at the end."
+    },
+    {
+      "id": "INIT-PID-003",
+      "text": "The product identifier shall be case-sensitive and lowercase; uppercase letters, mixed case, or non-ASCII characters shall be rejected."
+    },
+    {
+      "id": "INIT-PID-004",
+      "text": "The product identifier shall serve as the canonical product directory name in the initialized repository: generated product paths under `product/` shall use the identifier verbatim as the product subdirectory name."
+    },
+    {
+      "id": "INIT-PID-005",
+      "text": "The product identifier shall be immutable for the initialized repository: once a product is initialized with a given identifier, that identifier shall not change through subsequent initialization operations."
+    },
+    {
+      "id": "INIT-PID-006",
+      "text": "There shall be no separate display name for the product identifier; the identifier itself is the display name, slug, directory name, and identity — all derived values shall equal the identifier verbatim."
+    },
+    {
+      "id": "INIT-PID-007",
+      "text": "Two initialization requests with different product identifiers address distinct products; the initializer shall not equate, alias, or map between different identifiers."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/product-identity.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

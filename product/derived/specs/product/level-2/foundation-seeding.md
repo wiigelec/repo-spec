@@ -39,12 +39,13 @@ Defines candidate product foundation creation from the explicit product identifi
 
 ## Normative requirements
 
-- `INIT-FSD-001`: The foundation seeding component shall use the explicit product identifier and supplied product-direction material to create project-specific direction documents and candidate product-specification foundations in the staging workspace.
+- `INIT-FSD-001`: The foundation seeding component shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to copy each direction_material entry verbatim from the source repository into the staging workspace and create project-specific direction documents and candidate product-specification foundations.
 - `INIT-FSD-002`: Created product specifications shall remain candidate, and the component shall not invent product semantics, infer unspecified direction, or make acceptance claims.
 
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.initialization-request`
 - `product.material-classification`
 
 ## References

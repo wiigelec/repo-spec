@@ -1,0 +1,339 @@
+{
+  "spec_id": "product.generated-repository",
+  "title": "Generated Repository Layout Contract",
+  "purpose": "Defines the complete output tree of the initialized repository: every required path, its content origin (copied, generated, or created), lifecycle status, and classification.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "generated-repository-layout"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-GRL-001",
+      "text": "The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as copied framework-support material from the source repository."
+    },
+    {
+      "id": "INIT-GRL-002",
+      "text": "The initialized repository shall contain the repo/ tree as copied framework material: repo/specs/repo/ (framework-authoritative), repo/schemas/ (framework-authoritative), repo/scripts/ (framework-support), repo/derived/ (derived output), and repo/profiles/ shall be excluded when no platform profile is selected."
+    },
+    {
+      "id": "INIT-GRL-003",
+      "text": "The initialized repository shall contain product/scripts/initializer/ and product/scripts/repo-spec-init as copied framework-support material from the source repository."
+    },
+    {
+      "id": "INIT-GRL-004",
+      "text": "The initialized repository shall contain a generated product manifest at product/specs/product/manifest.json with status candidate, an empty product_specifications array, and dependencies on repo.manifest and repo.product-manifest."
+    },
+    {
+      "id": "INIT-GRL-005",
+      "text": "The initialized repository shall contain empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/."
+    },
+    {
+      "id": "INIT-GRL-006",
+      "text": "The initialized repository shall contain a generated discoverability README at product/specs/product/README.md that links to the overview, decomposition, and implementation plan."
+    },
+    {
+      "id": "INIT-GRL-007",
+      "text": "The initialized repository shall contain a generated product overview controlling document at docs/overview/{slug}-OVERVIEW.md, where {slug} is the product identifier, with lifecycle_status candidate, authority_category directional, and overview_role initial."
+    },
+    {
+      "id": "INIT-GRL-008",
+      "text": "The initialized repository shall contain six generated overview chunk files under docs/overview/{slug}-overview/ covering product identity and purpose, problem and outcome, users principles and boundaries, capabilities and success, unresolved questions, and lifecycle and handoff."
+    },
+    {
+      "id": "INIT-GRL-009",
+      "text": "The initialized repository shall contain a generated product decomposition controlling document at docs/decompositions/{slug}-DECOMPOSITION.md with lifecycle_status candidate and authority_category directional."
+    },
+    {
+      "id": "INIT-GRL-010",
+      "text": "The initialized repository shall contain four generated decomposition chunk files under docs/decompositions/{slug}-decomposition/ covering invocation and authority, product areas, cross-cutting concerns, and stopping criteria and handoff."
+    },
+    {
+      "id": "INIT-GRL-011",
+      "text": "The initialized repository shall contain a generated implementation plan controlling document at docs/plans/{slug}-IMPLEMENTATION-PLAN.md with lifecycle_status candidate and authority_category planning."
+    },
+    {
+      "id": "INIT-GRL-012",
+      "text": "The initialized repository shall contain four generated implementation plan chunk files under docs/plans/{slug}-implementation-plan/ covering scope and preconditions, workstreams and dependencies, validation and completion, and risks and unresolved decisions."
+    },
+    {
+      "id": "INIT-GRL-013",
+      "text": "The initialized repository shall contain generated discoverability README files at docs/overview/README.md, docs/decompositions/README.md, and docs/plans/README.md that link to their respective controlling documents."
+    },
+    {
+      "id": "INIT-GRL-014",
+      "text": "Every generated controlling document and chunk shall have lifecycle_status candidate; no generated document shall claim accepted, superseded, or retired status."
+    },
+    {
+      "id": "INIT-GRL-015",
+      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository."
+    },
+    {
+      "id": "INIT-GRL-016",
+      "text": "The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output."
+    },
+    {
+      "id": "INIT-GRL-017",
+      "text": "Profile-specific paths (repo/profiles/ and .github/) shall be excluded from the initialized repository unless the execution profile selects a platform profile for installation."
+    },
+    {
+      "id": "INIT-GRL-018",
+      "text": "The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts."
+    },
+    {
+      "id": "INIT-GRL-019",
+      "text": "The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action."
+    },
+    {
+      "id": "INIT-GRL-020",
+      "text": "All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.product-identity"
+    },
+    {
+      "spec_id": "product.material-classification"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/generated-repository.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.foundations",
+        "paths": [
+          "product/scripts/initializer/foundations.py"
+        ],
+        "requirements": [
+          "INIT-GRL-004",
+          "INIT-GRL-005",
+          "INIT-GRL-006",
+          "INIT-GRL-007",
+          "INIT-GRL-008",
+          "INIT-GRL-009",
+          "INIT-GRL-010",
+          "INIT-GRL-011",
+          "INIT-GRL-012",
+          "INIT-GRL-013",
+          "INIT-GRL-014",
+          "INIT-GRL-020"
+        ]
+      },
+      {
+        "id": "impl.staging",
+        "paths": [
+          "product/scripts/initializer/staging.py",
+          "product/scripts/initializer/inventory.py"
+        ],
+        "requirements": [
+          "INIT-GRL-001",
+          "INIT-GRL-002",
+          "INIT-GRL-003",
+          "INIT-GRL-015",
+          "INIT-GRL-016",
+          "INIT-GRL-017"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.foundations",
+        "paths": [
+          "product/scripts/initializer/tests/test_foundations.py"
+        ],
+        "requirements": [
+          "INIT-GRL-004",
+          "INIT-GRL-005",
+          "INIT-GRL-006",
+          "INIT-GRL-007",
+          "INIT-GRL-008",
+          "INIT-GRL-009",
+          "INIT-GRL-010",
+          "INIT-GRL-011",
+          "INIT-GRL-012",
+          "INIT-GRL-013",
+          "INIT-GRL-014",
+          "INIT-GRL-020"
+        ]
+      },
+      {
+        "id": "test.staging",
+        "paths": [
+          "product/scripts/initializer/tests/test_staging.py"
+        ],
+        "requirements": [
+          "INIT-GRL-001",
+          "INIT-GRL-002",
+          "INIT-GRL-003",
+          "INIT-GRL-015",
+          "INIT-GRL-016",
+          "INIT-GRL-017"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "INIT-GRL-001",
+        "implementation_ids": ["impl.staging"],
+        "test_ids": ["test.staging"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-002",
+        "implementation_ids": ["impl.staging"],
+        "test_ids": ["test.staging"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-003",
+        "implementation_ids": ["impl.staging"],
+        "test_ids": ["test.staging"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-004",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-005",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-006",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-007",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-008",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-009",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-010",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-011",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-012",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-013",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-014",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-015",
+        "implementation_ids": ["impl.staging"],
+        "test_ids": ["test.staging"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-016",
+        "implementation_ids": ["impl.staging"],
+        "test_ids": ["test.staging"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-017",
+        "implementation_ids": ["impl.staging"],
+        "test_ids": ["test.staging"],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "INIT-GRL-018",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Provenance record generation is not yet implemented; acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-GRL-019",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Handoff manifest generation is not yet implemented; acceptance gap."
+      },
+      {
+        "requirement_id": "INIT-GRL-020",
+        "implementation_ids": ["impl.foundations"],
+        "test_ids": ["test.foundations"],
+        "status": "covered"
+      }
+    ]
+  }
+}

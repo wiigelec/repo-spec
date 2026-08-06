@@ -1,0 +1,117 @@
+{
+  "spec_id": "product.staging-state",
+  "title": "Staging Transaction State Contract",
+  "purpose": "Defines the durable staging-transaction state record that captures initialization authority, provenance, stage progress, and integrity metadata for resume, recovery, and diagnostic workflows.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "staging-transaction-state"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-STA-001",
+      "text": "A staging-state record shall be an atomic authorization and integrity artifact that records the initialization request identity, source revision, initializer identity, execution profile, stage progress, staged-content digest, expected destination, and promotion and Git state flags."
+    },
+    {
+      "id": "INIT-STA-002",
+      "text": "The staging-state record shall be a single UTF-8 encoded JSON object file written as `staging-state.json` at the root of the staging workspace alongside the execution report, and shall not be part of the promoted repository content."
+    },
+    {
+      "id": "INIT-STA-003",
+      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_identity` as a string, `source_revision` as a string, `source_repository` as a string, `initializer_version` as a string, `execution_profile` as a string, `stage_statuses` as an object, `staged_content_digest` as a string, `expected_destination` as a string, `promotion_begun` as a boolean, `git_state_created` as a boolean, `staging_trustworthy` as a boolean, and `compatibility_version` as an integer."
+    },
+    {
+      "id": "INIT-STA-004",
+      "text": "The `request_identity` field shall equal the `authority.granted_by` value from the governing initialization request; `source_revision` shall be the exact 40-character lowercase hexadecimal Git object identifier of the source revision; `source_repository` shall be the resolved local source repository path."
+    },
+    {
+      "id": "INIT-STA-005",
+      "text": "The `initializer_version` field shall record the initializer version that wrote the state record; `execution_profile` shall record the selected execution profile constant value (such as `standard`); `schema_version` shall be the constant string `1` and `compatibility_version` shall be the integer `1`."
+    },
+    {
+      "id": "INIT-STA-006",
+      "text": "The `stage_statuses` object shall map each completed stage identifier (from the lifecycle-stage vocabulary) to the constant string `completed`; stages not yet reached or failed shall be absent from the map."
+    },
+    {
+      "id": "INIT-STA-007",
+      "text": "The `staged_content_digest` shall be a deterministic content hash (SHA-256 hex digest) of the complete staging directory tree computed after all generation and before Git initialization, so that resume and recovery can verify staged content integrity."
+    },
+    {
+      "id": "INIT-STA-008",
+      "text": "The `expected_destination` field shall be the resolved absolute filesystem path of the declared destination; `promotion_begun` shall be `true` when the promotion stage has been entered, `false` otherwise; `git_state_created` shall be `true` when local Git initialization has completed, `false` otherwise."
+    },
+    {
+      "id": "INIT-STA-009",
+      "text": "The `staging_trustworthy` field shall be `true` when the staging workspace content matches the recorded digest and no integrity violation has been detected; a resume workflow shall verify `staging_trustworthy` before using a preserved staging workspace and shall reject the staging workspace when the flag is `false` or the digest does not match."
+    },
+    {
+      "id": "INIT-STA-010",
+      "text": "The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields."
+    },
+    {
+      "id": "INIT-STA-011",
+      "text": "The staging-state record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
+    },
+    {
+      "id": "INIT-STA-012",
+      "text": "The staging-state record format shall evolve by incrementing `compatibility_version`; consumers of `compatibility_version` `1` shall reject records declaring any other version and shall not merge unknown or extra fields silently."
+    }
+  ],
+  "field_order": {
+    "root": ["schema_version", "request_identity", "source_revision", "source_repository", "initializer_version", "execution_profile", "stage_statuses", "staged_content_digest", "expected_destination", "promotion_begun", "git_state_created", "staging_trustworthy", "compatibility_version"]
+  },
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.lifecycle-stages"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/lifecycle-stages.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/staging-state.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

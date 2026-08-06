@@ -19,7 +19,7 @@
     },
     {
       "id": "INIT-RCV-003",
-      "text": "The failure execution report produced by the recovery and cleanup workflow shall use the same execution report artifact format as successful workflows, with a failed completion status."
+      "text": "The failure execution report produced by the recovery and cleanup workflow shall use the execution report artifact format defined by the execution report specification and shall report completion status as failed."
     },
     {
       "id": "INIT-RCV-004",

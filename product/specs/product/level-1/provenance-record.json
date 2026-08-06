@@ -10,6 +10,9 @@
       "provenance-record-format"
     ]
   },
+  "field_order": {
+    "root": ["schema_version", "initializer_name", "initializer_version", "product_identifier", "source_repository", "source_revision", "initialization_timestamp", "request_identifier"]
+  },
   "normative_requirements": [
     {
       "id": "INIT-PRO-001",
@@ -21,7 +24,7 @@
     },
     {
       "id": "INIT-PRO-003",
-      "text": "The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier`, `source_repository`, and `source_revision` as strings, `initialization_timestamp` as a string, `request_identifier` as a string, and `completed_stages` as an array of strings."
+      "text": "The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier`, `source_repository`, and `source_revision` as strings, `initialization_timestamp` as a string, and `request_identifier` as a string."
     },
     {
       "id": "INIT-PRO-004",
@@ -29,7 +32,7 @@
     },
     {
       "id": "INIT-PRO-005",
-      "text": "The provenance `request_identifier` shall be a non-empty string of the form `issue-<number>` (for example `issue-221`) that identifies the governing initialization request authority, shall equal the `authority.granted_by` value supplied by the governing initialization request, and `completed_stages` shall list the identifiers of the bounded-workflow stages that completed before recording."
+      "text": "The provenance `request_identifier` shall be a non-empty string that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request."
     },
     {
       "id": "INIT-PRO-006",
@@ -37,7 +40,7 @@
     },
     {
       "id": "INIT-PRO-007",
-      "text": "The provenance record shall be deterministically serialized as JSON with object keys in the declaration order of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
+      "text": "The provenance record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
     },
     {
       "id": "INIT-PRO-008",
@@ -142,7 +145,7 @@
         "implementation_ids": [],
         "test_ids": [],
         "status": "not-applicable",
-        "rationale": "completed_stages contract for provenance; no provenance writing implementation. Acceptance gap."
+        "rationale": "Unknown-field rejection and execution-report exclusion; no provenance-record writing implementation validates against this schema yet. Acceptance gap."
       },
       {
         "requirement_id": "INIT-PRO-007",

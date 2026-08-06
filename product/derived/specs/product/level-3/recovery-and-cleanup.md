@@ -41,7 +41,7 @@ Defines the recovery and cleanup workflow that handles initialization failures, 
 
 - `INIT-RCV-001`: The recovery and cleanup workflow shall compose the transactional staging manager, execution orchestrator, and handoff assembly components to handle initialization failures, clean up staging workspaces, and produce a failure execution report that identifies the failing component, the error reason, and any preserved diagnostic state.
 - `INIT-RCV-002`: The recovery and cleanup workflow shall not silently discard diagnostic state: when a staging workspace exists at the time of failure, the workflow shall either preserve it for inspection or explicitly report its cleanup with a record of the disposed content.
-- `INIT-RCV-003`: The failure execution report produced by the recovery and cleanup workflow shall use the same execution report artifact format as successful workflows, with a failed completion status.
+- `INIT-RCV-003`: The failure execution report produced by the recovery and cleanup workflow shall use the execution report artifact format defined by the execution report specification and shall report completion status as failed.
 - `INIT-RCV-004`: The initializer shall accept an initialization request, select the recovery and cleanup workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration.
 - `INIT-RCV-005`: The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization.
 

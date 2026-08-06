@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-GIT-003",
-      "text": "The root commit object identifier shall be deterministic: identical generated repository content produced under the same bootstrap profile version shall produce identical tree and commit object identifiers, and the initializer shall not include non-deterministic data such as wall-clock timestamps or host-dependent values."
+      "text": "The root commit object identifier shall be deterministic: identical generated repository content produced under the same bootstrap profile version shall produce identical tree and commit object identifiers, and the initializer shall not include non-deterministic data in the committed tree outside the explicitly declared variable fields defined by the content-equivalence contract."
     },
     {
       "id": "INIT-GIT-004",

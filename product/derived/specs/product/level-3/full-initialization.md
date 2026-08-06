@@ -207,13 +207,13 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 
 ## Normative requirements
 
-- `INIT-FIN-001`: The bounded local initialization workflow shall compose request intake, local source material selection, destination preflight, transactional staging, framework installation, foundation seeding, provenance recording, handoff assembly, local Git initialization, and staged repository validation into one outcome at the declared destination.
-- `INIT-FIN-002`: The workflow shall execute in order: parse and validate the JSON request; verify and inventory the explicit local source revision; preflight the absent or empty destination; create same-filesystem staging; install framework foundations; create candidate product foundations; write provenance and handoff artifacts; establish deterministic local Git state; validate the complete staged repository; and atomically promote staging to the destination.
-- `INIT-FIN-003`: The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, and report the failure and staging location without authorizing arbitrary resume.
+- `INIT-FIN-001`: The bounded local initialization workflow shall compose the canonical lifecycle stages (request-intake, source-resolution, destination-preflight, staging-establishment, framework-installation, foundation-seeding, provenance-recording, handoff-assembly, git-initialization, repository-validation, result-finalization, and promotion) into one outcome at the declared destination.
+- `INIT-FIN-002`: The workflow shall execute the canonical lifecycle stages in order: request-intake (validate and normalize the JSON request), source-resolution (resolve the exact local source revision), destination-preflight (preflight the destination and filesystem), staging-establishment (establish the staging transaction), framework-installation (select and install framework material), foundation-seeding (generate product foundations), provenance-recording (assemble immutable origin provenance), handoff-assembly (assemble handoff inputs), git-initialization (establish the deterministic Git repository including all final artifacts), repository-validation (validate repository content and Git state), result-finalization (finalize external execution result and prepare caller return value), and promotion (atomically promote staging to the destination).
+- `INIT-FIN-003`: The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, write an execution report to the preserved staging workspace, and report the failure and staging location without authorizing arbitrary resume.
 - `INIT-FIN-004`: The initializer shall perform only standard local execution for this workflow and shall require every authority-bearing input to be explicit in the JSON request.
 - `INIT-FIN-005`: The workflow shall reject named references, remote retrieval, nonempty-destination overwrite, platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation.
-- `INIT-FIN-006`: Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp.
-- `INIT-FIN-007`: The promoted repository shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state.
+- `INIT-FIN-006`: Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content and handoff manifests except for the provenance record's explicitly declared initialization timestamp; local Git topology and metadata (branch name, root commit count, author identity, commit message, worktree state, and remote count) shall be equivalent, but exact tree and commit object identifiers may differ when the committed provenance timestamp varies between runs.
+- `INIT-FIN-007`: The promoted repository shall conform to the generated-repository layout contract and shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state.
 
 ## Dependencies
 
@@ -235,6 +235,8 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `product.handoff-assembly`
 - `product.local-git-initialization`
 - `product.content-equivalence`
+- `product.generated-repository`
+- `product.lifecycle-stages`
 
 ## References
 
