@@ -41,7 +41,13 @@ Defines the atomic execution report output artifact format for the initializer.
 
 - `INIT-RPT-001`: An execution report shall be an atomic output artifact that records the outcome of each lifecycle stage, any warnings or errors produced, and the overall completion status.
 - `INIT-RPT-002`: The execution report shall distinguish completed stages from skipped, deferred, or failed stages, and shall not report overall success when any required stage failed or was skipped without explicit authority.
-- `INIT-RPT-003`: The execution report contract shall declare a machine-readable representation and the fields required by that representation.
+- `INIT-RPT-003`: The execution report shall be a single UTF-8 encoded JSON object file written as `execution-report.json` at the root of the preserved staging workspace used for diagnostics, and shall not be part of the promoted repository content.
+- `INIT-RPT-004`: The execution report representation shall define the following required fields with the given JSON types: `schema_version` as a string, `completion_status` as a string, and `stages` as an array of objects.
+- `INIT-RPT-005`: Each `stages` entry shall define `id` as a string, `status` as one of `completed`, `skipped`, `deferred`, or `failed`, `warnings` as an array of strings, and `errors` as an array of strings, with `errors` listing a failure reason when `status` is `failed`.
+- `INIT-RPT-006`: The report `completion_status` shall be `completed` only when every required stage has status `completed` or was skipped with explicit authority, and shall be `failed` otherwise; `schema_version` shall be the constant string `1`.
+- `INIT-RPT-007`: An execution report shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not report overall success when any required stage failed or was skipped without explicit authority.
+- `INIT-RPT-008`: The execution report shall be deterministically serialized as JSON with object keys in the declaration order of this specification (and the declared order of each stage object), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
+- `INIT-RPT-009`: The execution report format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
 
 ## Dependencies
 

@@ -41,7 +41,13 @@ Defines the atomic handoff manifest output artifact format for the initializer.
 
 - `INIT-HND-001`: A handoff manifest shall be an atomic output artifact that describes the initialized repository's state, lists the generated, selected, omitted, and deferred material, and names the next governed action for the initialized repository.
 - `INIT-HND-002`: The handoff manifest shall not contain implementation artifacts or successor product behavior; it is a description of what was produced and what may come next.
-- `INIT-HND-003`: The handoff manifest contract shall declare a machine-readable representation and the fields required by that representation.
+- `INIT-HND-003`: The handoff manifest shall be a single UTF-8 encoded JSON object file written to the repository-relative path `repo/initializer/handoff.json` in the staged and promoted repository.
+- `INIT-HND-004`: The handoff representation shall define the following required fields with the given JSON types: `schema_version` as a string, `repository` as an object, `foundations` as an object, `material` as an object, `provenance` as a string, and `next_action` as a string.
+- `INIT-HND-005`: The handoff `repository` object shall define `branch` as a string, `root_commit` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings.
+- `INIT-HND-006`: The handoff `provenance` field shall reference the repository-relative path of the provenance record and `next_action` shall be a non-empty string naming the next governed action; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`.
+- `INIT-HND-007`: A handoff manifest shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts or successor product behavior.
+- `INIT-HND-008`: The handoff manifest shall be deterministically serialized as JSON with object keys in the declaration order of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
+- `INIT-HND-009`: The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently.
 
 ## Dependencies
 
