@@ -207,8 +207,8 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 
 ## Normative requirements
 
-- `INIT-FIN-001`: The bounded local initialization workflow shall compose request intake, local source material selection, destination preflight, transactional staging, framework installation, foundation seeding, provenance recording, handoff assembly, local Git initialization, and staged repository validation into one outcome at the declared destination.
-- `INIT-FIN-002`: The workflow shall execute in order: parse and validate the JSON request; verify and inventory the explicit local source revision; preflight the absent or empty destination; create same-filesystem staging; install framework foundations; create candidate product foundations; write provenance and handoff artifacts; establish deterministic local Git state; validate the complete staged repository; and atomically promote staging to the destination.
+- `INIT-FIN-001`: The bounded local initialization workflow shall compose the canonical lifecycle stages (request-intake, source-resolution, destination-preflight, staging-establishment, framework-installation, foundation-seeding, provenance-recording, handoff-assembly, git-initialization, repository-validation, and promotion) into one outcome at the declared destination.
+- `INIT-FIN-002`: The workflow shall execute the canonical lifecycle stages in order: request-intake (parse and validate the JSON request), source-resolution (verify and inventory the explicit local source revision), destination-preflight (preflight the absent or empty destination), staging-establishment (create same-filesystem staging), framework-installation (install framework foundations), foundation-seeding (create candidate product foundations), provenance-recording (write provenance record), handoff-assembly (write handoff manifest), git-initialization (establish deterministic local Git state), repository-validation (validate the complete staged repository), and promotion (atomically promote staging to the destination).
 - `INIT-FIN-003`: The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, write an execution report to the preserved staging workspace, and report the failure and staging location without authorizing arbitrary resume.
 - `INIT-FIN-004`: The initializer shall perform only standard local execution for this workflow and shall require every authority-bearing input to be explicit in the JSON request.
 - `INIT-FIN-005`: The workflow shall reject named references, remote retrieval, nonempty-destination overwrite, platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation.
@@ -235,6 +235,7 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `product.handoff-assembly`
 - `product.local-git-initialization`
 - `product.content-equivalence`
+- `product.lifecycle-stages`
 
 ## References
 

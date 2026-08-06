@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-RPT-005",
-      "text": "Each `stages` entry shall define `id` as a string, `status` as one of `completed`, `skipped`, `deferred`, or `failed`, `warnings` as an array of strings, and `errors` as an array of strings, with `errors` listing a failure reason when `status` is `failed`."
+      "text": "Each `stages` entry shall define `id` as a canonical stage identifier from the lifecycle-stage vocabulary, `status` as one of `completed`, `skipped`, `deferred`, or `failed`, `warnings` as an array of strings, and `errors` as an array of strings, with `errors` listing a failure reason when `status` is `failed`."
     },
     {
       "id": "INIT-RPT-006",
@@ -51,6 +51,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.lifecycle-stages"
     }
   ],
   "references": [

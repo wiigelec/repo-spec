@@ -113,7 +113,7 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 - `INIT-RPT-002`: The execution report shall be produced only when the workflow fails, shall distinguish completed stages from the failed stage and any pending stages not reached, and shall report completion status as failed.
 - `INIT-RPT-003`: The execution report shall be a single UTF-8 encoded JSON object file written as `execution-report.json` at the root of the preserved staging workspace when the workflow fails, and shall not be part of the promoted repository content.
 - `INIT-RPT-004`: The execution report representation shall define the following required fields with the given JSON types: `schema_version` as a string, `completion_status` as a string, and `stages` as an array of objects.
-- `INIT-RPT-005`: Each `stages` entry shall define `id` as a string, `status` as one of `completed`, `skipped`, `deferred`, or `failed`, `warnings` as an array of strings, and `errors` as an array of strings, with `errors` listing a failure reason when `status` is `failed`.
+- `INIT-RPT-005`: Each `stages` entry shall define `id` as a canonical stage identifier from the lifecycle-stage vocabulary, `status` as one of `completed`, `skipped`, `deferred`, or `failed`, `warnings` as an array of strings, and `errors` as an array of strings, with `errors` listing a failure reason when `status` is `failed`.
 - `INIT-RPT-006`: The report `completion_status` shall be the constant string `failed` because the execution report is produced only when the workflow fails; `schema_version` shall be the constant string `1`.
 - `INIT-RPT-007`: An execution report shall reject unknown fields and shall treat every field of this specification as required with no optional fields.
 - `INIT-RPT-008`: The execution report shall be deterministically serialized as JSON with object keys in the declaration order of this specification (and the declared order of each stage object), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
@@ -122,6 +122,7 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.lifecycle-stages`
 
 ## References
 
