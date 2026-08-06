@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-FIN-006",
-      "text": "Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp."
+      "text": "Equivalent validated JSON requests and equivalent local source revisions, as defined by the request canonicalization, content-equivalence, and canonicalization contract, shall produce equivalent repository content and handoff manifests except for the provenance record's explicitly declared initialization timestamp; local Git topology and metadata (branch name, root commit count, author identity, commit message, worktree state, and remote count) shall be equivalent, but exact tree and commit object identifiers may differ when the committed provenance timestamp varies between runs."
     },
     {
       "id": "INIT-FIN-007",
