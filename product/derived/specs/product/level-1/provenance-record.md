@@ -39,20 +39,18 @@ Defines the atomic provenance record output artifact format for the initializer.
 
 ## Normative requirements
 
-- `INIT-PRO-001`: A provenance record shall be an atomic output artifact that records the initializer identity and version, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied.
+- `INIT-PRO-001`: A provenance record shall be an atomic output artifact that records the initializer identity and version, product identifier, local source repository identity, exact source revision used, initialization timestamp, and governing request identifier.
 - `INIT-PRO-002`: The provenance record contract shall declare a machine-readable representation and the fields required by that representation.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.source-revision-identity`
-- `product.execution-profile`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
 - artifact: `product/specs/product/level-1/source-revision-identity.json`
-- artifact: `product/specs/product/level-1/execution-profile.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

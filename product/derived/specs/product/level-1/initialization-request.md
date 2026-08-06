@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the atomic initialization request contract specifying the desired repository configuration, destination, and supplied source material.
+Defines the atomic JSON initialization request for the bounded local initialization workflow.
 
 ## Correspondence
 
@@ -39,9 +39,9 @@ Defines the atomic initialization request contract specifying the desired reposi
 
 ## Normative requirements
 
-- `INIT-REQ-001`: An initialization request shall be an atomic input unit that specifies the desired repository configuration, the intended destination, the source revision for framework material, and any supplied product-direction material.
-- `INIT-REQ-002`: The initialization request shall distinguish required fields from optional fields and shall reject a request when any required field is missing or structurally invalid.
-- `INIT-REQ-003`: The initialization request contract shall declare a machine-readable representation and the fields required by that representation.
+- `INIT-REQ-001`: An initialization request shall be one JSON object that explicitly supplies a product identifier, an absent or empty destination path, a local source repository path, an exact source revision identifier, and product-direction material.
+- `INIT-REQ-002`: The product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, structurally invalid, or contradictory.
+- `INIT-REQ-003`: The initialization request representation shall be JSON and shall not infer omitted authority-bearing values from environment state, repository configuration, remote services, or named references.
 
 ## Dependencies
 

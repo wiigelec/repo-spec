@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the foundation seeding component that installs supplied product-direction and product-specification material into the staging workspace.
+Defines candidate product foundation creation from the explicit product identifier and supplied product-direction material.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the foundation seeding component that installs supplied product-directio
 
 ## Normative requirements
 
-- `INIT-FSD-001`: The foundation seeding component shall accept the validated request model containing supplied product-direction and product-specification material and shall install that material as project-specific foundations in the staging workspace.
-- `INIT-FSD-002`: The foundation seeding component shall not invent product semantics, infer unspecified product direction, or silently expand the scope of supplied request material.
+- `INIT-FSD-001`: The foundation seeding component shall use the explicit product identifier and supplied product-direction material to create project-specific direction documents and candidate product-specification foundations in the staging workspace.
+- `INIT-FSD-002`: Created product specifications shall remain candidate, and the component shall not invent product semantics, infer unspecified direction, or make acceptance claims.
 
 ## Dependencies
 

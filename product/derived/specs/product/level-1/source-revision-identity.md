@@ -1,4 +1,4 @@
-# Source Revision Identity
+# Local Source Revision Identity
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the atomic source revision identity reference for the initializer's reusable framework material.
+Defines the exact revision identity of reusable framework material already available in a local source repository.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the atomic source revision identity reference for the initializer's reus
 
 ## Normative requirements
 
-- `INIT-SRC-001`: A source revision identity shall be an atomic reference that uniquely identifies the exact revision of the initializer's reusable framework material.
-- `INIT-SRC-002`: The source revision identity shall support both a concrete pinned revision and a resolvable named reference, and the resolved identity shall be recorded in the provenance record.
+- `INIT-SRC-001`: A local source revision identity shall uniquely identify an exact revision already present in the explicitly supplied local source repository.
+- `INIT-SRC-002`: The source revision identity shall be explicit and immutable; named-reference resolution, remote lookup, and remote retrieval are outside this contract.
 
 ## Dependencies
 

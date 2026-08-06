@@ -1,7 +1,7 @@
 {
   "spec_id": "product.destination",
   "title": "Destination Contract",
-  "purpose": "Defines the atomic destination representation for the initialized repository target location.",
+  "purpose": "Defines the absent-or-empty local destination for the bounded initialization workflow.",
   "status": "candidate",
   "schema_version": "1",
   "level": 1,
@@ -11,11 +11,11 @@
   "normative_requirements": [
     {
       "id": "INIT-DST-001",
-      "text": "A destination representation shall be an atomic path or reference that identifies the target location for the initialized repository, together with an existence constraint that specifies whether the destination must not exist, may exist and be empty, or may be overwritten under explicit authority."
+      "text": "A destination representation shall be a local filesystem path whose target is absent or is an empty directory."
     },
     {
       "id": "INIT-DST-002",
-      "text": "The destination representation shall support validation before any generation or mutation operation begins, and validation shall reject a destination that conflicts with the declared existence constraint."
+      "text": "Destination validation shall occur before generation and shall reject non-directory targets, nonempty directories, existing repositories, and any request to overwrite or migrate destination content."
     }
   ],
   "dependencies": [

@@ -11,7 +11,7 @@
   "normative_requirements": [
     {
       "id": "INIT-PRO-001",
-      "text": "A provenance record shall be an atomic output artifact that records the initializer identity and version, the exact source revision used, the initialization timestamp, the governing request identifier, and the execution profile applied."
+      "text": "A provenance record shall be an atomic output artifact that records the initializer identity and version, product identifier, local source repository identity, exact source revision used, initialization timestamp, and governing request identifier."
     },
     {
       "id": "INIT-PRO-002",
@@ -24,9 +24,6 @@
     },
     {
       "spec_id": "product.source-revision-identity"
-    },
-    {
-      "spec_id": "product.execution-profile"
     }
   ],
   "references": [
@@ -37,10 +34,6 @@
     {
       "type": "artifact",
       "path": "product/specs/product/level-1/source-revision-identity.json"
-    },
-    {
-      "type": "artifact",
-      "path": "product/specs/product/level-1/execution-profile.json"
     },
     {
       "type": "artifact",

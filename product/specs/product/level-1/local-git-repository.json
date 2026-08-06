@@ -1,21 +1,21 @@
 {
-  "spec_id": "product.staging-workspace",
-  "title": "Staging Workspace Contract",
-  "purpose": "Defines the atomic staging workspace isolation boundary for the initializer.",
+  "spec_id": "product.local-git-repository",
+  "title": "Deterministic Local Git Repository",
+  "purpose": "Defines the atomic local Git repository state produced by the bounded initialization workflow.",
   "status": "candidate",
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["staging-workspace-contract"]
+    "concepts": ["deterministic-local-git-repository"]
   },
   "normative_requirements": [
     {
-      "id": "INIT-STG-001",
-      "text": "A staging workspace contract shall define an isolated directory on the destination filesystem where generation, local Git establishment, and validation occur without modifying the declared destination before promotion."
+      "id": "INIT-GIT-001",
+      "text": "The initialized local Git repository shall have `main` as its initial branch, exactly one root commit containing all generated repository content, a clean worktree, and no configured remotes."
     },
     {
-      "id": "INIT-STG-002",
-      "text": "A failed workflow shall preserve its staging workspace for diagnostics and shall report its location; this preservation shall not authorize resuming from arbitrary prior staging."
+      "id": "INIT-GIT-002",
+      "text": "The root commit shall use the fixed message `Initial repository foundation`, fixed author and committer identity `Repo-Spec Initializer <initializer@repo-spec.local>`, and fixed author and committer timestamp `1234567890 +0000` so equivalent generated content produces equivalent local Git history."
     }
   ],
   "dependencies": [
@@ -47,14 +47,6 @@
     {
       "type": "artifact",
       "path": "repo/specs/repo/repository-structure.json"
-    },
-    {
-      "type": "artifact",
-      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
-    },
-    {
-      "type": "artifact",
-      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
     }
   ],
   "supersedes": [],
@@ -62,7 +54,7 @@
   "derived_artifacts": [
     {
       "type": "markdown",
-      "path": "product/derived/specs/product/level-1/staging-workspace.md"
+      "path": "product/derived/specs/product/level-1/local-git-repository.md"
     }
   ],
   "correspondence": {

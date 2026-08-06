@@ -11,7 +11,7 @@
   "normative_requirements": [
     {
       "id": "INIT-PRC-001",
-      "text": "The provenance recording component shall capture provenance data from the initialization request, the resolved source revision, the execution profile, the completed lifecycle stages, and any conflict in which explicit request authority took precedence over default or inferred behavior, and shall write the provenance record to the initialized repository."
+      "text": "The provenance recording component shall capture the initializer identity and version, product identifier, local source repository identity, exact source revision, request identifier, initialization timestamp, and completed bounded-workflow stages, and shall write the provenance record into staging before local Git initialization and validation."
     }
   ],
   "dependencies": [
@@ -23,9 +23,6 @@
     },
     {
       "spec_id": "product.source-revision-identity"
-    },
-    {
-      "spec_id": "product.execution-profile"
     }
   ],
   "references": [
@@ -40,10 +37,6 @@
     {
       "type": "artifact",
       "path": "product/specs/product/level-1/source-revision-identity.json"
-    },
-    {
-      "type": "artifact",
-      "path": "product/specs/product/level-1/execution-profile.json"
     },
     {
       "type": "artifact",

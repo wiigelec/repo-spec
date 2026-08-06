@@ -39,7 +39,7 @@ Defines the framework installation component that selects and places reusable re
 
 ## Normative requirements
 
-- `INIT-FIN-001`: The framework installation component shall select the reusable repository framework material from the inventoried source revision and install it into the staging workspace according to the target repository structure.
+- `INIT-FIN-001`: The framework installation component shall install reusable repository framework material inventoried from the explicit local source revision into the staging workspace according to the target repository structure.
 - `INIT-FIN-002`: The framework installation component shall install each material item in its correct repository-relative path, shall not modify the normative semantics of reusable framework material, and shall report any installation conflict or failure.
 
 ## Dependencies

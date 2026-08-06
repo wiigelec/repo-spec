@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the atomic destination representation for the initialized repository target location.
+Defines the absent-or-empty local destination for the bounded initialization workflow.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the atomic destination representation for the initialized repository tar
 
 ## Normative requirements
 
-- `INIT-DST-001`: A destination representation shall be an atomic path or reference that identifies the target location for the initialized repository, together with an existence constraint that specifies whether the destination must not exist, may exist and be empty, or may be overwritten under explicit authority.
-- `INIT-DST-002`: The destination representation shall support validation before any generation or mutation operation begins, and validation shall reject a destination that conflicts with the declared existence constraint.
+- `INIT-DST-001`: A destination representation shall be a local filesystem path whose target is absent or is an empty directory.
+- `INIT-DST-002`: Destination validation shall occur before generation and shall reject non-directory targets, nonempty directories, existing repositories, and any request to overwrite or migrate destination content.
 
 ## Dependencies
 

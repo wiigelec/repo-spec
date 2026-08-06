@@ -1,21 +1,21 @@
 {
-  "spec_id": "product.source-material-resolution",
-  "title": "Local Source Material Selection",
-  "purpose": "Defines selection and inventory of framework material from an explicit revision in a local source repository.",
+  "spec_id": "product.local-git-initialization",
+  "title": "Local Git Initialization",
+  "purpose": "Defines deterministic local Git establishment within the complete staging workspace.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
   "components": {
-    "contracts": ["source-material-resolution"]
+    "contracts": ["local-git-initialization"]
   },
   "normative_requirements": [
     {
-      "id": "INIT-SMR-001",
-      "text": "The local source material component shall verify that the explicit revision exists in the supplied local source repository, read material only from that revision, inventory the available framework material, and classify each material item by role."
+      "id": "INIT-LGI-001",
+      "text": "The local Git initialization component shall initialize the complete staged content as the deterministic local Git repository defined by `product.local-git-repository` before repository validation begins."
     },
     {
-      "id": "INIT-SMR-002",
-      "text": "The component shall reject an unavailable exact revision without resolving a named reference, contacting a remote source, or retrieving additional source material."
+      "id": "INIT-LGI-002",
+      "text": "The component shall verify the branch, root commit count, commit tree, identities, timestamps, clean worktree, and absence of remotes, and shall fail without promoting the destination when any required Git state differs."
     }
   ],
   "dependencies": [
@@ -23,10 +23,10 @@
       "spec_id": "product.initializer-level-0"
     },
     {
-      "spec_id": "product.source-revision-identity"
+      "spec_id": "product.local-git-repository"
     },
     {
-      "spec_id": "product.material-classification"
+      "spec_id": "product.staging-workspace"
     }
   ],
   "references": [
@@ -36,11 +36,11 @@
     },
     {
       "type": "artifact",
-      "path": "product/specs/product/level-1/source-revision-identity.json"
+      "path": "product/specs/product/level-1/local-git-repository.json"
     },
     {
       "type": "artifact",
-      "path": "product/specs/product/level-1/material-classification.json"
+      "path": "product/specs/product/level-1/staging-workspace.json"
     },
     {
       "type": "artifact",
@@ -68,7 +68,7 @@
   "derived_artifacts": [
     {
       "type": "markdown",
-      "path": "product/derived/specs/product/level-2/source-material-resolution.md"
+      "path": "product/derived/specs/product/level-2/local-git-initialization.md"
     }
   ],
   "correspondence": {

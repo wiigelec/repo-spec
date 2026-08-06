@@ -1,7 +1,7 @@
 {
   "spec_id": "product.initialization-request",
   "title": "Initialization Request Contract",
-  "purpose": "Defines the atomic initialization request contract specifying the desired repository configuration, destination, and supplied source material.",
+  "purpose": "Defines the atomic JSON initialization request for the bounded local initialization workflow.",
   "status": "candidate",
   "schema_version": "1",
   "level": 1,
@@ -11,15 +11,15 @@
   "normative_requirements": [
     {
       "id": "INIT-REQ-001",
-      "text": "An initialization request shall be an atomic input unit that specifies the desired repository configuration, the intended destination, the source revision for framework material, and any supplied product-direction material."
+      "text": "An initialization request shall be one JSON object that explicitly supplies a product identifier, an absent or empty destination path, a local source repository path, an exact source revision identifier, and product-direction material."
     },
     {
       "id": "INIT-REQ-002",
-      "text": "The initialization request shall distinguish required fields from optional fields and shall reject a request when any required field is missing or structurally invalid."
+      "text": "The product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, structurally invalid, or contradictory."
     },
     {
       "id": "INIT-REQ-003",
-      "text": "The initialization request contract shall declare a machine-readable representation and the fields required by that representation."
+      "text": "The initialization request representation shall be JSON and shall not infer omitted authority-bearing values from environment state, repository configuration, remote services, or named references."
     }
   ],
   "dependencies": [

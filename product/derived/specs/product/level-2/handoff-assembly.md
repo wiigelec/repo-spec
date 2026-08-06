@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the handoff assembly component that produces the execution report and handoff manifest from stage outcomes.
+Defines assembly of the handoff manifest inside the staged repository.
 
 ## Correspondence
 
@@ -39,18 +39,16 @@ Defines the handoff assembly component that produces the execution report and ha
 
 ## Normative requirements
 
-- `INIT-HAS-001`: The handoff assembly component shall assemble the execution report from stage outcomes, warnings, and errors, produce the handoff manifest describing the initialized repository state, and produce the final output of the initializer.
+- `INIT-HAS-001`: The handoff assembly component shall write a handoff manifest into staging that identifies generated framework foundations, candidate product foundations, omitted and deferred material, provenance, local Git expectations, and the next governed action.
 
 ## Dependencies
 
 - `product.initializer-level-0`
-- `product.execution-report`
 - `product.handoff-manifest`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
-- artifact: `product/specs/product/level-1/execution-report.json`
 - artifact: `product/specs/product/level-1/handoff-manifest.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`

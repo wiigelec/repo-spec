@@ -1,4 +1,4 @@
-# Source Material Resolution
+# Local Source Material Selection
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the source material resolver component that pins source revisions and inventories framework material by role.
+Defines selection and inventory of framework material from an explicit revision in a local source repository.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the source material resolver component that pins source revisions and in
 
 ## Normative requirements
 
-- `INIT-SMR-001`: The source material resolver component shall accept a source revision reference, resolve it to an exact pinned revision, inventory the available repository framework material under that revision, and classify each material item by role according to the material role classification taxonomy.
-- `INIT-SMR-002`: The source material resolver component shall reject unresolvable revision references and shall report the exact cause of resolution failure.
+- `INIT-SMR-001`: The local source material component shall verify that the explicit revision exists in the supplied local source repository, read material only from that revision, inventory the available framework material, and classify each material item by role.
+- `INIT-SMR-002`: The component shall reject an unavailable exact revision without resolving a named reference, contacting a remote source, or retrieving additional source material.
 
 ## Dependencies
 

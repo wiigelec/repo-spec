@@ -39,8 +39,8 @@ Defines the destination preflight component that validates destination state com
 
 ## Normative requirements
 
-- `INIT-DPF-001`: The destination preflight component shall accept a destination representation, validate it against the declared existence constraint, and confirm that the destination is in a state compatible with the requested initialization operation.
-- `INIT-DPF-002`: The destination preflight component shall reject a destination that already exists in a conflicting state and shall report the conflict without modifying the destination.
+- `INIT-DPF-001`: The destination preflight component shall confirm that the destination is absent or is an empty local directory and that its parent filesystem can host both staging and destination promotion.
+- `INIT-DPF-002`: The destination preflight component shall reject a nonempty, non-directory, existing-repository, or cross-device destination arrangement and shall report the conflict without modifying the destination.
 
 ## Dependencies
 
