@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-PRO-003",
-      "text": "The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier`, `source_repository`, and `source_revision` as strings, `initialization_timestamp` as a string, `request_identifier` as a string, and `completed_stages` as an array of strings."
+      "text": "The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier`, `source_repository`, and `source_revision` as strings, `initialization_timestamp` as a string, and `request_identifier` as a string."
     },
     {
       "id": "INIT-PRO-004",
@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-PRO-005",
-      "text": "The provenance `request_identifier` shall be a non-empty string of the form `issue-<number>` (for example `issue-221`) that identifies the governing initialization request authority, shall equal the `authority.granted_by` value supplied by the governing initialization request, and `completed_stages` shall list the identifiers of the bounded-workflow stages that completed before recording."
+      "text": "The provenance `request_identifier` shall be a non-empty string of the form `issue-<number>` (for example `issue-221`) that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request."
     },
     {
       "id": "INIT-PRO-006",
@@ -142,7 +142,7 @@
         "implementation_ids": [],
         "test_ids": [],
         "status": "not-applicable",
-        "rationale": "completed_stages contract for provenance; no provenance writing implementation. Acceptance gap."
+        "rationale": "Unknown-field rejection and execution-report exclusion; no provenance-record writing implementation validates against this schema yet. Acceptance gap."
       },
       {
         "requirement_id": "INIT-PRO-007",

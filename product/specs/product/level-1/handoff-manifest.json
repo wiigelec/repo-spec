@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-HND-001",
-      "text": "A handoff manifest shall be an atomic output artifact that describes the initialized repository's state, lists the generated, selected, omitted, and deferred material, and names the next governed action for the initialized repository."
+      "text": "A handoff manifest shall be an atomic output artifact that describes the initialized repository's state, lists the generated, selected, omitted, and deferred material, confirms that the bounded local workflow completed successfully, and names the next governed action for the initialized repository."
     },
     {
       "id": "INIT-HND-002",
@@ -25,7 +25,7 @@
     },
     {
       "id": "INIT-HND-004",
-      "text": "The handoff representation shall define the following required fields with the given JSON types: `schema_version` as a string, `repository` as an object, `foundations` as an object, `material` as an object, `provenance` as a string, and `next_action` as a string."
+      "text": "The handoff representation shall define the following required fields with the given JSON types: `schema_version` as a string, `status` as a string, `repository` as an object, `foundations` as an object, `material` as an object, `provenance` as a string, and `next_action` as a string."
     },
     {
       "id": "INIT-HND-005",
@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-HND-006",
-      "text": "The handoff `provenance` field shall reference the repository-relative path of the provenance record and `next_action` shall be a non-empty string naming the next governed action; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`."
+      "text": "The handoff `status` shall be the constant string `completed`, the `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be a non-empty string naming the next governed action; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`."
     },
     {
       "id": "INIT-HND-007",
