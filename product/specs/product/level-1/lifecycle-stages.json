@@ -13,16 +13,16 @@
   "stages": [
     {
       "id": "request-intake",
-      "purpose": "Parse and validate the JSON initialization request and extract all authority-bearing fields.",
+      "purpose": "Validate and normalize the JSON initialization request and extract all authority-bearing fields.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
       "predecessors": [],
-      "output": "Validated initialization request"
+      "output": "Validated and normalized request"
     },
     {
       "id": "source-resolution",
-      "purpose": "Verify the explicit local source revision and inventory its material for selection.",
+      "purpose": "Resolve the exact local source revision and inventory its material for selection.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
@@ -31,7 +31,7 @@
     },
     {
       "id": "destination-preflight",
-      "purpose": "Verify that the declared destination is absent or an empty directory.",
+      "purpose": "Preflight the destination and filesystem to verify the destination is absent or empty and supports same-filesystem atomic promotion.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
@@ -40,7 +40,7 @@
     },
     {
       "id": "staging-establishment",
-      "purpose": "Create an isolated same-filesystem staging workspace at the destination.",
+      "purpose": "Establish the staging transaction by creating an isolated same-filesystem staging workspace at the destination.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
@@ -49,34 +49,34 @@
     },
     {
       "id": "framework-installation",
-      "purpose": "Install reusable repository framework foundations into the staging workspace.",
+      "purpose": "Select and install reusable repository framework material from the source revision into the staging workspace.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
       "predecessors": ["staging-establishment"],
-      "output": "Framework foundations"
+      "output": "Installed framework material"
     },
     {
       "id": "foundation-seeding",
-      "purpose": "Create candidate product-specification foundations from the supplied direction material.",
+      "purpose": "Generate product foundations from the explicit product identifier and supplied direction material.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
       "predecessors": ["framework-installation"],
-      "output": "Candidate product foundations"
+      "output": "Generated product foundations"
     },
     {
       "id": "provenance-recording",
-      "purpose": "Write the provenance record into the staged repository content.",
+      "purpose": "Assemble the immutable origin provenance record and write it into the staged repository content.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
       "predecessors": ["foundation-seeding"],
-      "output": "Provenance record"
+      "output": "Immutable origin provenance record"
     },
     {
       "id": "handoff-assembly",
-      "purpose": "Write the handoff manifest into the staged repository content.",
+      "purpose": "Assemble handoff inputs and write the handoff manifest into the staged repository content.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
@@ -85,7 +85,7 @@
     },
     {
       "id": "git-initialization",
-      "purpose": "Establish the deterministic local Git repository containing all staged content.",
+      "purpose": "Establish the deterministic local Git repository including all final staged artifacts.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
@@ -94,7 +94,7 @@
     },
     {
       "id": "repository-validation",
-      "purpose": "Validate the complete staged repository including Git state against conformance requirements.",
+      "purpose": "Validate repository content and Git state against conformance requirements.",
       "required": true,
       "deferrable": false,
       "recoverable": true,
@@ -102,12 +102,21 @@
       "output": "Validation result"
     },
     {
+      "id": "result-finalization",
+      "purpose": "Finalize the external execution result by recording the workflow outcome and preparing the caller return value.",
+      "required": true,
+      "deferrable": false,
+      "recoverable": true,
+      "predecessors": ["repository-validation"],
+      "output": "Finalized execution result"
+    },
+    {
       "id": "promotion",
       "purpose": "Atomically promote the complete staged directory to the declared destination.",
       "required": true,
       "deferrable": false,
       "recoverable": false,
-      "predecessors": ["repository-validation"],
+      "predecessors": ["result-finalization"],
       "output": "Initialized repository at destination"
     },
     {

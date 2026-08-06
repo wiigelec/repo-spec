@@ -41,10 +41,10 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 
 - Deferrable: `False`
 - Id: `request-intake`
-- Output: `Validated initialization request`
+- Output: `Validated and normalized request`
 - Predecessors:
   - None
-- Purpose: `Parse and validate the JSON initialization request and extract all authority-bearing fields.`
+- Purpose: `Validate and normalize the JSON initialization request and extract all authority-bearing fields.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
@@ -52,7 +52,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Resolved source material inventory`
 - Predecessors:
   - `request-intake`
-- Purpose: `Verify the explicit local source revision and inventory its material for selection.`
+- Purpose: `Resolve the exact local source revision and inventory its material for selection.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
@@ -60,7 +60,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Preflight result`
 - Predecessors:
   - `request-intake`
-- Purpose: `Verify that the declared destination is absent or an empty directory.`
+- Purpose: `Preflight the destination and filesystem to verify the destination is absent or empty and supports same-filesystem atomic promotion.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
@@ -68,31 +68,31 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Staging workspace`
 - Predecessors:
   - `destination-preflight`
-- Purpose: `Create an isolated same-filesystem staging workspace at the destination.`
+- Purpose: `Establish the staging transaction by creating an isolated same-filesystem staging workspace at the destination.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
 - Id: `framework-installation`
-- Output: `Framework foundations`
+- Output: `Installed framework material`
 - Predecessors:
   - `staging-establishment`
-- Purpose: `Install reusable repository framework foundations into the staging workspace.`
+- Purpose: `Select and install reusable repository framework material from the source revision into the staging workspace.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
 - Id: `foundation-seeding`
-- Output: `Candidate product foundations`
+- Output: `Generated product foundations`
 - Predecessors:
   - `framework-installation`
-- Purpose: `Create candidate product-specification foundations from the supplied direction material.`
+- Purpose: `Generate product foundations from the explicit product identifier and supplied direction material.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
 - Id: `provenance-recording`
-- Output: `Provenance record`
+- Output: `Immutable origin provenance record`
 - Predecessors:
   - `foundation-seeding`
-- Purpose: `Write the provenance record into the staged repository content.`
+- Purpose: `Assemble the immutable origin provenance record and write it into the staged repository content.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
@@ -100,7 +100,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Handoff manifest`
 - Predecessors:
   - `foundation-seeding`
-- Purpose: `Write the handoff manifest into the staged repository content.`
+- Purpose: `Assemble handoff inputs and write the handoff manifest into the staged repository content.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
@@ -109,7 +109,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Predecessors:
   - `provenance-recording`
   - `handoff-assembly`
-- Purpose: `Establish the deterministic local Git repository containing all staged content.`
+- Purpose: `Establish the deterministic local Git repository including all final staged artifacts.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
@@ -117,14 +117,22 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Validation result`
 - Predecessors:
   - `git-initialization`
-- Purpose: `Validate the complete staged repository including Git state against conformance requirements.`
+- Purpose: `Validate repository content and Git state against conformance requirements.`
+- Recoverable: `True`
+- Required: `True`
+- Deferrable: `False`
+- Id: `result-finalization`
+- Output: `Finalized execution result`
+- Predecessors:
+  - `repository-validation`
+- Purpose: `Finalize the external execution result by recording the workflow outcome and preparing the caller return value.`
 - Recoverable: `True`
 - Required: `True`
 - Deferrable: `False`
 - Id: `promotion`
 - Output: `Initialized repository at destination`
 - Predecessors:
-  - `repository-validation`
+  - `result-finalization`
 - Purpose: `Atomically promote the complete staged directory to the declared destination.`
 - Recoverable: `False`
 - Required: `True`
