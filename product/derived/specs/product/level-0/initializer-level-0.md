@@ -45,15 +45,15 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 
 ## Normative requirements
 
-- `INIT-L0-007`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared.
-- `INIT-L0-008`: The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed.
-- `INIT-L0-009`: The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository.
-- `INIT-L0-010`: The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision.
-- `INIT-L0-011`: The initializer shall satisfy failure safety: a partial or failed initialization shall not falsely present the destination as a successfully initialized repository.
-- `INIT-L0-012`: Request authority shall take precedence over default or inferred behavior: the initializer shall not silently expand authority beyond what the explicit initialization request grants.
-- `INIT-L0-013`: Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.
-- `INIT-L0-015`: The initializer shall have a stable product identity and an explicit version identity.
-- `INIT-L0-026`: The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed.
+- `INIT-L0-001`: The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared.
+- `INIT-L0-002`: The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed.
+- `INIT-L0-003`: The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository.
+- `INIT-L0-004`: The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision.
+- `INIT-L0-005`: The initializer shall satisfy failure safety: a partial or failed initialization shall not falsely present the destination as a successfully initialized repository.
+- `INIT-L0-006`: Request authority shall take precedence over default or inferred behavior: the initializer shall not silently expand authority beyond what the explicit initialization request grants.
+- `INIT-L0-007`: Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.
+- `INIT-L0-008`: The initializer shall have a stable product identity and an explicit version identity.
+- `INIT-L0-009`: The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed.
 
 ## Dependencies
 

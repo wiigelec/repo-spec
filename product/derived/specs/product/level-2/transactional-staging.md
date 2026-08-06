@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the transactional staging manager component that provides a complete workspace lifecycle: creation, population, validation gating, atomic promotion, and rollback isolation.
+Defines same-filesystem isolated staging, validation gating, diagnostic preservation, and atomic destination promotion.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the transactional staging manager component that provides a complete wor
 
 ## Normative requirements
 
-- `INIT-TST-001`: The transactional staging manager component shall create a staging workspace that conforms to the staging workspace contract, provide operations to populate the workspace with generated content, and support atomic promotion of the workspace contents to the destination.
-- `INIT-TST-002`: The transactional staging manager component shall guarantee that incomplete or failed generation leaves the destination unmodified and that promotion only occurs when all preceding stages have completed successfully.
+- `INIT-TST-001`: The transactional staging manager shall create an isolated staging workspace on the destination filesystem, provide operations to populate it, and promote the complete staged directory to the absent or empty destination with one atomic same-filesystem operation.
+- `INIT-TST-002`: Incomplete generation, local Git establishment, or validation shall leave the destination unmodified and preserve staging for diagnostics; promotion shall occur only after every required staged check succeeds.
 
 ## Dependencies
 

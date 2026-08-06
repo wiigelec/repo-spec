@@ -39,7 +39,8 @@ Defines the atomic staging workspace isolation boundary for the initializer.
 
 ## Normative requirements
 
-- `INIT-STG-001`: A staging workspace contract shall define an atomic isolation boundary where generation and validation operations occur without modifying the declared destination.
+- `INIT-STG-001`: A staging workspace contract shall define an isolated directory on the destination filesystem where generation, local Git establishment, and validation occur without modifying the declared destination before promotion.
+- `INIT-STG-002`: A failed workflow shall preserve its staging workspace for diagnostics and shall report its location; this preservation shall not authorize resuming from arbitrary prior staging.
 
 ## Dependencies
 

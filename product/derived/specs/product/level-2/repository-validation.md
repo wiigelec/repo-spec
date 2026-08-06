@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the repository validation component that evaluates conformance of the staged or promoted repository.
+Defines repository validation performed against the complete staged repository before promotion.
 
 ## Correspondence
 
@@ -39,7 +39,7 @@ Defines the repository validation component that evaluates conformance of the st
 
 ## Normative requirements
 
-- `INIT-RVA-001`: The repository validation component shall validate the staged or promoted repository against declared conformance requirements, structural constraints, and repository-specification rules.
+- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository, including its candidate product foundations and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion.
 - `INIT-RVA-002`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails.
 
 ## Dependencies

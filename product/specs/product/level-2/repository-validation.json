@@ -1,7 +1,7 @@
 {
   "spec_id": "product.repository-validation",
   "title": "Repository Validation",
-  "purpose": "Defines the repository validation component that evaluates conformance of the staged or promoted repository.",
+  "purpose": "Defines repository validation performed against the complete staged repository before promotion.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
@@ -11,7 +11,7 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall validate the staged or promoted repository against declared conformance requirements, structural constraints, and repository-specification rules."
+      "text": "The repository validation component shall validate the complete staged repository, including its candidate product foundations and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion."
     },
     {
       "id": "INIT-RVA-002",

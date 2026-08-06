@@ -11,7 +11,7 @@
   "normative_requirements": [
     {
       "id": "INIT-FIN-001",
-      "text": "The framework installation component shall select the reusable repository framework material from the inventoried source revision and install it into the staging workspace according to the target repository structure."
+      "text": "The framework installation component shall install reusable repository framework material inventoried from the explicit local source revision into the staging workspace according to the target repository structure."
     },
     {
       "id": "INIT-FIN-002",

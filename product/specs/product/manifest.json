@@ -42,6 +42,12 @@
       "level": 1
     },
     {
+      "spec_id": "product.local-git-repository",
+      "path": "product/specs/product/level-1/local-git-repository.json",
+      "status": "candidate",
+      "level": 1
+    },
+    {
       "spec_id": "product.execution-profile",
       "path": "product/specs/product/level-1/execution-profile.json",
       "status": "candidate",
@@ -98,6 +104,12 @@
     {
       "spec_id": "product.handoff-assembly",
       "path": "product/specs/product/level-2/handoff-assembly.json",
+      "status": "candidate",
+      "level": 2
+    },
+    {
+      "spec_id": "product.local-git-initialization",
+      "path": "product/specs/product/level-2/local-git-initialization.json",
       "status": "candidate",
       "level": 2
     },

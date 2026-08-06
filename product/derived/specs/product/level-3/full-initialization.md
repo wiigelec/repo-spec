@@ -1,4 +1,4 @@
-# Full Initialization Workflow
+# Bounded Local Initialization Workflow
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the complete end-to-end initialization workflow that produces a validated, provenance-tracked initialized repository at the declared destination.
+Defines the complete bounded local workflow from an explicit JSON request and local source revision to an atomically promoted deterministic local Git repository.
 
 ## Correspondence
 
@@ -39,13 +39,13 @@ Defines the complete end-to-end initialization workflow that produces a validate
 
 ## Normative requirements
 
-- `INIT-FIN-001`: The full initialization workflow shall compose the request intake, source material resolver, destination preflight, transactional staging manager, framework installation, foundation seeding, execution orchestrator, repository validation, provenance recording, and handoff assembly components into a single end-to-end orchestration that produces a validated, provenance-tracked initialized repository at the declared destination.
-- `INIT-FIN-002`: The full initialization workflow shall execute the lifecycle stages in order: request intake, source material resolution, destination preflight, staging workspace creation, framework installation, foundation seeding, repository validation, provenance recording, handoff assembly, and destination promotion.
-- `INIT-FIN-003`: The full initialization workflow shall halt and report failure when any required component produces an error, and shall not promote staging content to the destination when validation fails.
-- `INIT-FIN-004`: The initializer shall accept an initialization request, select the full initialization workflow based on the execution profile and request parameters, and dispatch to the corresponding orchestration.
-- `INIT-FIN-005`: The initializer shall reject a request that selects an unsupported workflow combination and shall report the reason for rejection without performing partial initialization.
-- `INIT-FIN-006`: The full initialization workflow shall produce deterministic output for equivalent initialization requests, source revisions, and execution profiles: the same input triple shall produce the same initialized repository content and the same handoff manifest, except for explicitly declared variable data in the provenance record.
-- `INIT-FIN-007`: The full initialization workflow shall record the completed workflow identity, the composition of components used, and the version of each component in the execution report for diagnostic and provenance purposes.
+- `INIT-FIN-001`: The bounded local initialization workflow shall compose request intake, local source material selection, destination preflight, transactional staging, framework installation, foundation seeding, provenance recording, handoff assembly, local Git initialization, and staged repository validation into one outcome at the declared destination.
+- `INIT-FIN-002`: The workflow shall execute in order: parse and validate the JSON request; verify and inventory the explicit local source revision; preflight the absent or empty destination; create same-filesystem staging; install framework foundations; create candidate product foundations; write provenance and handoff artifacts; establish deterministic local Git state; validate the complete staged repository; and atomically promote staging to the destination.
+- `INIT-FIN-003`: The workflow shall halt when any required stage fails, leave the destination unmodified, preserve staging for diagnostics when staging exists, and report the failure and staging location without authorizing arbitrary resume.
+- `INIT-FIN-004`: The initializer shall perform only standard local execution for this workflow and shall require every authority-bearing input to be explicit in the JSON request.
+- `INIT-FIN-005`: The workflow shall reject named references, remote retrieval, nonempty-destination overwrite, platform or hosting operations, arbitrary staging resume, migration, and cross-device promotion before destination mutation.
+- `INIT-FIN-006`: Equivalent validated JSON requests and equivalent local source revisions shall produce equivalent repository content, handoff manifests, and local Git structure except for the provenance record's explicitly declared initialization timestamp.
+- `INIT-FIN-007`: The promoted repository shall contain reusable framework foundations, product-identified direction material, candidate product-specification foundations, a provenance record, a handoff manifest, and the validated deterministic local Git state.
 
 ## Dependencies
 
@@ -55,20 +55,19 @@ Defines the complete end-to-end initialization workflow that produces a validate
 - `product.material-classification`
 - `product.destination`
 - `product.staging-workspace`
-- `product.execution-profile`
+- `product.local-git-repository`
 - `product.provenance-record`
 - `product.handoff-manifest`
-- `product.execution-report`
 - `product.request-intake`
 - `product.source-material-resolution`
 - `product.destination-preflight`
 - `product.transactional-staging`
 - `product.framework-installation`
 - `product.foundation-seeding`
-- `product.execution-orchestration`
 - `product.repository-validation`
 - `product.provenance-recording`
 - `product.handoff-assembly`
+- `product.local-git-initialization`
 
 ## References
 

@@ -18,39 +18,39 @@
   },
   "normative_requirements": [
     {
-      "id": "INIT-L0-007",
+      "id": "INIT-L0-001",
       "text": "The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly defined variable data whose scope, representation, and source shall be declared."
     },
     {
-      "id": "INIT-L0-008",
+      "id": "INIT-L0-002",
       "text": "The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed."
     },
     {
-      "id": "INIT-L0-009",
+      "id": "INIT-L0-003",
       "text": "The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository."
     },
     {
-      "id": "INIT-L0-010",
+      "id": "INIT-L0-004",
       "text": "The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision."
     },
     {
-      "id": "INIT-L0-011",
+      "id": "INIT-L0-005",
       "text": "The initializer shall satisfy failure safety: a partial or failed initialization shall not falsely present the destination as a successfully initialized repository."
     },
     {
-      "id": "INIT-L0-012",
+      "id": "INIT-L0-006",
       "text": "Request authority shall take precedence over default or inferred behavior: the initializer shall not silently expand authority beyond what the explicit initialization request grants."
     },
     {
-      "id": "INIT-L0-013",
+      "id": "INIT-L0-007",
       "text": "Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior."
     },
     {
-      "id": "INIT-L0-015",
+      "id": "INIT-L0-008",
       "text": "The initializer shall have a stable product identity and an explicit version identity."
     },
     {
-      "id": "INIT-L0-026",
+      "id": "INIT-L0-009",
       "text": "The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed."
     }
   ],

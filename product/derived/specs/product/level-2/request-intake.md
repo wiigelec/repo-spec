@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the request intake component that validates and normalizes raw initialization input against the initialization request contract.
+Defines intake and validation of the explicit JSON initialization request.
 
 ## Correspondence
 
@@ -39,8 +39,8 @@ Defines the request intake component that validates and normalizes raw initializ
 
 ## Normative requirements
 
-- `INIT-INT-001`: The request intake component shall receive raw initialization input, validate it against the initialization request contract, reject input that fails structural or semantic validation, and produce a validated request model consumed by downstream components.
-- `INIT-INT-002`: The request intake component shall distinguish required input fields from optional fields and shall report distinct rejection reasons for missing required fields, structurally invalid values, and contradictory field combinations.
+- `INIT-INT-001`: The request intake component shall parse one explicit JSON object, validate it against the initialization request contract, reject input that fails structural or semantic validation, and produce a validated request model consumed by downstream components.
+- `INIT-INT-002`: The request intake component shall report distinct rejection reasons for missing required fields, empty authority-bearing values, structurally invalid values, contradictory combinations, and any request for excluded behavior.
 
 ## Dependencies
 
