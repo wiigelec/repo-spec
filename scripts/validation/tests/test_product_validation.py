@@ -83,6 +83,28 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "specs/product/level-2/component.json",
+            lambda spec: spec.__setitem__("status", "candidate") or spec,
+        )
+        mutate_json(
+            temp_repo / "specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"][2].__setitem__("status", "candidate") or manifest,
+        )
+        expect_failure(
+            "accepted product depends on candidate",
+            lambda: validate_repo(temp_repo),
+            "accepted spec product.orchestration -> candidate target product.component",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid-four.json", "specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "specs/product/level-1/primitive.json")
+        install_fixture(temp_repo, "level-2-accepted.json", "specs/product/level-2/component.json")
+        install_fixture(temp_repo, "level-3-accepted.json", "specs/product/level-3/orchestration.json")
+        accept_kernel(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_repo(temp_repo)
 
@@ -94,7 +116,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         expect_failure(
             "accepted higher level without accepted level 0",
             lambda: validate_repo(temp_repo),
-            "product completeness failed",
+            "accepted spec product.primitive -> candidate target product.kernel",
         )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)

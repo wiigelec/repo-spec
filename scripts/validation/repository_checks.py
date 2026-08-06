@@ -763,7 +763,10 @@ def check_product_specification_root_phase(context: ValidationContext) -> None:
             target_spec_id = dep["spec_id"]
             expect(target_spec_id in context.product.specs, f"product dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
             target_spec = context.product.specs[target_spec_id]
-            expect(target_spec["status"] in {"candidate", "accepted"}, f"product dependencies failed: {spec_id} -> {target_spec_id}")
+            if spec["status"] == "accepted":
+                expect(target_spec["status"] == "accepted", f"product dependencies failed: accepted spec {spec_id} -> candidate target {target_spec_id}")
+            else:
+                expect(target_spec["status"] in {"candidate", "accepted"}, f"product dependencies failed: {spec_id} -> {target_spec_id}")
 
         for ref in spec.get("references", []):
             if ref["type"] == "specification":

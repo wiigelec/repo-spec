@@ -35,7 +35,7 @@
     },
     {
       "id": "REPO-PL-008",
-      "text": "Product dependency targets shall be limited to candidate or accepted product specifications."
+      "text": "Candidate product specification dependencies may target candidate or accepted product specifications, while accepted product specification dependencies shall target only accepted product specifications."
     },
     {
       "id": "REPO-PL-009",
@@ -88,6 +88,14 @@
     {
       "id": "REPO-PL-025",
       "text": "A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics."
+    },
+    {
+      "id": "REPO-PL-026",
+      "text": "Published product-level requirement identifiers shall remain stable and shall never be reused after a requirement is withdrawn or superseded."
+    },
+    {
+      "id": "REPO-PL-027",
+      "text": "Requirement identifiers `REPO-PL-018` through `REPO-PL-021` are intentionally withdrawn from the accepted Level contract and remain reserved rather than being reused."
     }
   ],
   "dependencies": [

@@ -27,7 +27,7 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 - `REPO-PL-005`: Level 3 shall define a complete product outcome, use case, or lifecycle transition by coordinating one or more independently meaningful responsibilities, including observable success and failure behavior, and Level 3 specifications shall depend only on Level 0, Level 1, Level 2, or Level 3 specifications.
 - `REPO-PL-006`: Higher Levels may depend on the same or lower Levels, and lower Levels shall not depend on higher Levels.
 - `REPO-PL-007`: Same-Level dependencies shall be permitted only when they are explicit and the full product dependency graph remains acyclic.
-- `REPO-PL-008`: Product dependency targets shall be limited to candidate or accepted product specifications.
+- `REPO-PL-008`: Candidate product specification dependencies may target candidate or accepted product specifications, while accepted product specification dependencies shall target only accepted product specifications.
 - `REPO-PL-009`: Accepted Level 1, Level 2, and Level 3 specifications shall have at least one accepted Level 0 specification in their transitive dependency closure, and intermediate Levels shall not be mandatory merely because a higher Level exists.
 - `REPO-PL-010`: Each product specification shall remain confined to its reserved Level root, and Level metadata recorded in the manifest and product file shall agree with the declared Level root.
 - `REPO-PL-011`: Future Level-specific schemas shall extend the common product-specification envelope through explicit governed extension boundaries and shall not redefine common fields or lower-Level semantics.
@@ -41,6 +41,8 @@ Defines the normative Level 0-3 product-specification model and its dependency s
 - `REPO-PL-023`: Level-specific schemas shall narrow the common `level` field to their declared Level and shall not redefine other common envelope fields.
 - `REPO-PL-024`: Level-specific schemas shall reject undeclared root properties through `unevaluatedProperties: false`, and nested Level extension objects shall reject undeclared properties through `additionalProperties: false`.
 - `REPO-PL-025`: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics.
+- `REPO-PL-026`: Published product-level requirement identifiers shall remain stable and shall never be reused after a requirement is withdrawn or superseded.
+- `REPO-PL-027`: Requirement identifiers `REPO-PL-018` through `REPO-PL-021` are intentionally withdrawn from the accepted Level contract and remain reserved rather than being reused.
 
 ## Dependencies
 
