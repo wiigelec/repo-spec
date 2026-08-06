@@ -27,6 +27,13 @@
       "capability_group": "initial-bounded-workflow"
     },
     {
+      "spec_id": "product.staging-state",
+      "path": "product/specs/product/level-1/staging-state.json",
+      "status": "candidate",
+      "level": 1,
+      "capability_group": "initial-bounded-workflow"
+    },
+    {
       "spec_id": "product.material-classification",
       "path": "product/specs/product/level-1/material-classification.json",
       "status": "candidate",
