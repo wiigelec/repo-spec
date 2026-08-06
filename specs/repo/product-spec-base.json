@@ -35,7 +35,7 @@
     },
     {
       "id": "REPO-PSB-008",
-      "text": "The `dependencies` collection shall contain dependency records with `spec_id` fields, and dependency targets shall be product specifications whose lifecycle is candidate or accepted."
+      "text": "The `dependencies` collection shall contain dependency records with `spec_id` fields; candidate product specifications may depend on candidate or accepted product specifications, while accepted product specifications shall depend only on accepted product specifications."
     },
     {
       "id": "REPO-PSB-009",

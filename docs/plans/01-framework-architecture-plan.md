@@ -128,7 +128,7 @@ This matrix records the integrated Stage 3 authority reading after reconciling t
 | Level metadata | `repo.product-manifest` and `repo.product-spec-base` | Manifest and file must agree on Level value; the base contract owns the common `level` field |
 | Level/path correspondence | `repo.product-manifest` plus `repo.product-spec-base` | Each manifest entry must match exactly one product file under its reserved Level root |
 | Level schema ownership | `schemas/product/product-level-0.schema.json` through `schemas/product/product-level-3.schema.json` | Level-specific schemas extend the base envelope rather than redefining common fields |
-| Dependency lifecycle | `repo.product-spec-base` and `repo.validation` | Dependency targets must be candidate or accepted product specifications |
+| Dependency lifecycle | `repo.product-spec-base` and `repo.validation` | Candidate specifications may target candidate or accepted specifications; accepted specifications may target only accepted specifications |
 | Dependency direction | `repo.product-levels` plus `repo.validation` | Lower Levels must not depend on higher Levels |
 | Same-Level dependencies | `repo.product-levels` plus `repo.validation` | Permitted only when explicit and acyclic |
 | Graph acyclicity | `repo.validation` plus implementation | The full product dependency graph must remain acyclic |

@@ -87,6 +87,8 @@ Candidate specifications remain proposals until accepted through the applicable 
 
 Accepted normative specifications control maintained product artifacts. No specification at a given Level may be accepted until its required lower-Level dependencies satisfy the product-level contract. Higher-Level specification drafting may begin while lower-Level specifications remain candidate, provided the dependency targets and unresolved authority are explicit, but a higher-Level specification may not be accepted until its required lower-Level dependencies are accepted.
 
+Candidate product specifications may depend on candidate or accepted product specifications. Accepted product specifications may depend only on accepted product specifications, so the accepted dependency graph remains entirely normative.
+
 Repository decomposition and product decomposition are related but distinct: repository decomposition governs how work is represented and authorized, while product decomposition governs what the product must do.
 
 ### Product artifacts
@@ -280,6 +282,8 @@ The exact subordinate structure may evolve, but the framework should define:
 - completeness requirements.
 
 A product repository may contain multiple specification artifacts within each Level. The framework should define how those artifacts collectively form the product specification system.
+
+Requirement identifiers are stable publication identities and are not reused after withdrawal or supersession. The current Level contract intentionally reserves the gap from `REPO-PL-018` through `REPO-PL-021` for withdrawn requirements.
 
 ### Relationship to product development
 
