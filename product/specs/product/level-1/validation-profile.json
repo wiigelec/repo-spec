@@ -25,12 +25,12 @@
       "failure_codes": ["canonicalization-error", "unresolvable-path"]
     },
     {
-      "check_id": "request.authority-consistency",
+      "check_id": "request.authority-propagation",
       "classification": "required",
       "order": 25,
       "applies_to": "request",
-      "pass_condition": "The authority.granted_by value is a non-empty string and matches the governing issue or bootstrap authority identifier expected by the execution context.",
-      "failure_codes": ["missing-authority", "authority-mismatch"]
+      "pass_condition": "The authority.granted_by value is a non-empty string. The initializer does not authenticate the governing issue or consult an external authority source; it records the value verbatim and propagates it to the provenance record. Consistency between the request authority and the provenance record request_identifier is verified by the provenance.consistent check.",
+      "failure_codes": ["missing-authority", "empty-authority"]
     },
     {
       "check_id": "source.repository-local",
@@ -133,7 +133,7 @@
       "classification": "required",
       "order": 120,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every generated record (product manifest, provenance record, handoff manifest, direction evidence manifest, staging state, validation report) validates against its governing schema and has correct required fields.",
+      "pass_condition": "Every promoted generated record (product manifest, provenance record, handoff manifest, direction evidence manifest) validates against its governing schema and has correct required fields. Staging-state and validation-report are transaction records not in the repository worktree and are not validated by this check.",
       "failure_codes": ["schema-mismatch", "missing-field", "invalid-value"]
     },
     {
@@ -157,8 +157,8 @@
       "classification": "required",
       "order": 140,
       "applies_to": "repository-worktree",
-      "pass_condition": "The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request.",
-      "failure_codes": ["provenance-mismatch", "request-identifier-mismatch", "source-revision-mismatch"]
+      "pass_condition": "The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request, confirming exact authority propagation.",
+      "failure_codes": ["provenance-mismatch", "authority-propagation-failure", "source-revision-mismatch"]
     },
     {
       "check_id": "handoff.consistent",
@@ -215,6 +215,38 @@
       "applies_to": "git-state",
       "pass_condition": "The repository has zero configured Git remotes.",
       "failure_codes": ["remote-count-mismatch"]
+    },
+    {
+      "check_id": "transaction.staging-state-valid",
+      "classification": "required",
+      "order": 300,
+      "applies_to": "transaction",
+      "pass_condition": "The staging-state record at transaction/staging-state.json validates against its governing schema, has correct required fields, and its request_fingerprint matches the canonical initialization request fingerprint.",
+      "failure_codes": ["schema-mismatch", "missing-field", "fingerprint-mismatch"]
+    },
+    {
+      "check_id": "transaction.fingerprint-linkage",
+      "classification": "required",
+      "order": 310,
+      "applies_to": "transaction",
+      "pass_condition": "The request_fingerprint in the validation-report matches the request_fingerprint in the staging-state record, linking the validation outcome to the originating initialization request.",
+      "failure_codes": ["fingerprint-mismatch", "missing-fingerprint"]
+    },
+    {
+      "check_id": "transaction.digest-linkage",
+      "classification": "required",
+      "order": 320,
+      "applies_to": "transaction",
+      "pass_condition": "The repository_content_digest in the validation-report matches the expected digest recorded in the staging-state record and matches the digest computed during output.repository-digest-match.",
+      "failure_codes": ["digest-mismatch", "missing-digest"]
+    },
+    {
+      "check_id": "transaction.check-completeness",
+      "classification": "required",
+      "order": 330,
+      "applies_to": "transaction",
+      "pass_condition": "The validation-report checks array contains exactly one entry per check_id in the validation profile, in ascending order-number order, with no missing or duplicate entries.",
+      "failure_codes": ["missing-check", "duplicate-check", "ordering-violation"]
     }
   ],
   "normative_requirements": [
@@ -222,8 +254,8 @@
     {"id": "INIT-VP-002", "text": "A required check that produces a status of failed or error shall cause overall validation to fail and shall block promotion."},
     {"id": "INIT-VP-003", "text": "An advisory check that produces a status of failed or error shall be recorded in the validation report but shall not cause overall validation to fail or block promotion."},
     {"id": "INIT-VP-004", "text": "The validation profile shall be versioned via profile_version. Successor versions may add new checks at new order numbers without renumbering existing checks. No check_id shall be removed from a published profile version; a check may be deprecated but shall remain defined."},
-    {"id": "INIT-VP-005", "text": "Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, or git-state. The validation component shall execute checks in ascending order number within each execution phase."},
-    {"id": "INIT-VP-006", "text": "Promotion is permitted only when every required check in the validation profile has status passed and no required check has status failed, error, or skipped. The validation component shall not proceed to promotion when a required check has not passed."}
+    {"id": "INIT-VP-005", "text": "Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, git-state, or transaction. Checks are executed in three phases: Phase 1 (input and source, orders 10-70), Phase 2 (staged repository, orders 80-200), and Phase 3 (transaction, orders 300-330). Each phase executes checks in ascending order number within that phase."},
+    {"id": "INIT-VP-006", "text": "Promotion is permitted only when every required check in Phase 1 and Phase 2 has status passed. Phase 3 (transaction) checks validate finalization but do not block promotion; a Phase 3 failure is recorded in the validation report and prevents transaction closure without blocking the promoted repository state."}
   ],
   "dependencies": [
     {"spec_id": "product.initializer-level-0"},
