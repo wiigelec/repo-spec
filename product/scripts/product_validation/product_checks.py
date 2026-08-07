@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .product_state import load_product_validation_context
+
 from validation.repository_checks import (
     ExternalRepositoryValidationContext,
     ValidationContext,
@@ -21,7 +23,6 @@ from validation.repository_checks import (
     check_supersession_pairs,
     check_unique_item_properties,
     expect,
-    load_product_validation_context,
     load_repo_schemas,
     load_repo_specs,
 )

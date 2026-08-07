@@ -301,38 +301,3 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.product-decomposition"], "repo/schemas/repo/product-decomposition.schema.json")
     ensure_schema_keywords(schemas["repo.implementation-plan"], "repo/schemas/repo/implementation-plan.schema.json")
     return schemas
-
-
-def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
-    schemas = {
-        "product.manifest": load_json(repo_root / "product/schemas/product/product-manifest.schema.json"),
-        "product.spec-base": load_json(repo_root / "product/schemas/product/product-spec-base.schema.json"),
-    }
-    base_schema = schemas["product.spec-base"]
-    base_defs = copy.deepcopy(base_schema.get("$defs", {}))
-
-    def materialize_level_schema(schema: dict[str, Any]) -> dict[str, Any]:
-        schema = copy.deepcopy(schema)
-        defs = schema.setdefault("$defs", {})
-        for name, subschema in base_defs.items():
-            defs.setdefault(name, copy.deepcopy(subschema))
-        all_of = schema.get("allOf")
-        if isinstance(all_of, list):
-            for index, subschema in enumerate(all_of):
-                if isinstance(subschema, dict) and subschema.get("$ref") in {"./product-spec-base.schema.json", "product-spec-base.schema.json"}:
-                    inline_base = copy.deepcopy(base_schema)
-                    inline_base.pop("$defs", None)
-                    all_of[index] = inline_base
-        return schema
-
-    schemas["product.level-0"] = materialize_level_schema(load_json(repo_root / "product/schemas/product/product-level-0.schema.json"))
-    schemas["product.level-1"] = materialize_level_schema(load_json(repo_root / "product/schemas/product/product-level-1.schema.json"))
-    schemas["product.level-2"] = materialize_level_schema(load_json(repo_root / "product/schemas/product/product-level-2.schema.json"))
-    schemas["product.level-3"] = materialize_level_schema(load_json(repo_root / "product/schemas/product/product-level-3.schema.json"))
-    ensure_schema_keywords(schemas["product.manifest"], "product/schemas/product/product-manifest.schema.json")
-    ensure_schema_keywords(schemas["product.spec-base"], "product/schemas/product/product-spec-base.schema.json")
-    ensure_schema_keywords(schemas["product.level-0"], "product/schemas/product/product-level-0.schema.json")
-    ensure_schema_keywords(schemas["product.level-1"], "product/schemas/product/product-level-1.schema.json")
-    ensure_schema_keywords(schemas["product.level-2"], "product/schemas/product/product-level-2.schema.json")
-    ensure_schema_keywords(schemas["product.level-3"], "product/schemas/product/product-level-3.schema.json")
-    return schemas

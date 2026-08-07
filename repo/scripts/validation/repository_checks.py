@@ -13,23 +13,12 @@ from github_profile import GitHubProfileError, check_profile_freshness
 
 from .errors import expect, fail
 from .generated_outputs import check_generated_document_freshness
-from .schema_subset import load_product_schemas, load_repo_schemas, validate_instance
+from .schema_subset import load_repo_schemas, validate_instance
 
 
 @dataclass(frozen=True)
 class RepositoryValidationContext:
     manifest: dict[str, Any]
-    specs: dict[str, dict[str, Any]]
-    source_paths: dict[str, str]
-    actual_paths: list[str]
-    schemas: dict[str, dict[str, Any]]
-
-
-@dataclass(frozen=True)
-class ProductValidationContext:
-    manifest: dict[str, Any]
-    manifest_path: Path
-    entries: list[dict[str, Any]]
     specs: dict[str, dict[str, Any]]
     source_paths: dict[str, str]
     actual_paths: list[str]
@@ -56,7 +45,7 @@ class ExternalRepositoryValidationContext:
 class ValidationContext:
     repo_root: Path
     repository: RepositoryValidationContext | None
-    product: ProductValidationContext | None
+    product: Any | None
     external_repository: ExternalRepositoryValidationContext | None = None
 
 
@@ -673,73 +662,6 @@ def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
 
     for node in graph:
         visit(node)
-
-
-def load_validation_context(repo_root: Path) -> ValidationContext:
-    manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
-    schemas = load_repo_schemas(repo_root)
-    repository = RepositoryValidationContext(manifest, specs, source_paths, actual_paths, schemas)
-    product = load_product_validation_context(repo_root)
-    return ValidationContext(repo_root, repository, product)
-
-
-def actual_product_paths(repo_root: Path) -> list[str]:
-    product_root = repo_root / "product/specs/product"
-    if not product_root.exists():
-        return []
-    return sorted(
-        path.relative_to(repo_root).as_posix()
-        for path in product_root.rglob("*.json")
-        if path.is_file() and path.relative_to(repo_root).as_posix() != "product/specs/product/manifest.json"
-    )
-
-
-def load_product_validation_context(repo_root: Path) -> ProductValidationContext | None:
-    manifest_path = repo_root / "product/specs/product/manifest.json"
-    actual_paths = actual_product_paths(repo_root)
-    if not manifest_path.exists():
-        expect(
-            not actual_paths,
-            "product specification root failed: undeclared JSON content under product/specs/product/",
-        )
-        return None
-
-    schemas = load_product_schemas(repo_root)
-    try:
-        manifest = load_repo_json(manifest_path)
-    except RepositoryError as exc:
-        fail(str(exc))
-    validate_instance(manifest, schemas["product.manifest"], "product/specs/product/manifest.json", schemas["product.manifest"])
-    entries = manifest["product_specifications"]
-    manifest_paths = [entry["path"] for entry in entries]
-    expect(len(entries) == len({entry["spec_id"] for entry in entries}), "duplicate product specification id")
-    expect(len(manifest_paths) == len(set(manifest_paths)), "duplicate product specification path")
-    expect(set(actual_paths) == set(manifest_paths), "product manifest completeness failed")
-
-    specs: dict[str, dict[str, Any]] = {}
-    source_paths: dict[str, str] = {}
-    for entry in entries:
-        path = entry["path"]
-        try:
-            spec = load_repo_json(repo_root / path)
-        except RepositoryError as exc:
-            fail(str(exc))
-        validate_instance(spec, schemas["product.spec-base"], path, schemas["product.spec-base"])
-        level_schema_key = f"product.level-{spec['level']}"
-        expect(level_schema_key in schemas, f"product schema loading failed: missing {level_schema_key}")
-        validate_instance(spec, schemas[level_schema_key], path, schemas[level_schema_key])
-        expect(spec["spec_id"] == entry["spec_id"], f"product manifest correspondence failed: spec_id mismatch for {path}")
-        expect(spec["status"] == entry["status"], f"product manifest correspondence failed: lifecycle mismatch for {path}")
-        expect(spec["level"] == entry["level"], f"product manifest correspondence failed: level mismatch for {path}")
-        if spec["spec_id"] in specs:
-            raise RepositoryError(f"duplicate product specification id: {spec['spec_id']}")
-        specs[spec["spec_id"]] = spec
-        source_paths[spec["spec_id"]] = path
-
-    if len(source_paths) != len(set(source_paths.values())):
-        raise RepositoryError("duplicate product specification path")
-
-    return ProductValidationContext(manifest, manifest_path, entries, specs, source_paths, actual_paths, schemas)
 
 
 def check_schema_conformance(context: ValidationContext) -> None:
