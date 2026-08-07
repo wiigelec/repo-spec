@@ -1,7 +1,7 @@
 {
   "spec_id": "product.repository-validation",
   "title": "Repository Validation",
-  "purpose": "Defines the three-phase validation contract performed against the staged repository and transaction records before promotion.",
+  "purpose": "Defines validation performed against the staged repository and transaction records before promotion.",
   "status": "candidate",
   "schema_version": "1",
   "level": 2,
@@ -10,26 +10,6 @@
       "repository-validation"
     ]
   },
-  "phases": [
-    {
-      "phase": 1,
-      "name": "Input and source validation",
-      "scope": "request, source, material-manifest",
-      "description": "Validates the initialization request, source repository, source commit, material-manifest schema, source objects, and authority propagation inputs before any generation begins."
-    },
-    {
-      "phase": 2,
-      "name": "Staged repository validation",
-      "scope": "repository-worktree, git-state",
-      "description": "Validates the complete staged repository at repository/ inside the staging transaction root, including output inventory completeness, copied file byte identity, direction evidence, generated templates, promoted records, provenance, handoff, content digest, and Git state. Only Phase 2 and Phase 1 required checks determine promotion eligibility."
-    },
-    {
-      "phase": 3,
-      "name": "Transaction finalization validation",
-      "scope": "transaction",
-      "description": "Validates transaction records (staging-state, validation-report serialization, request fingerprint linkage, repository digest linkage, check completeness and ordering). Phase 3 checks validate finalization correctness but do not block promotion."
-    }
-  ],
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
