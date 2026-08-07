@@ -18,11 +18,11 @@ from .product_correspondence import (
 )
 from .product_development_documents import check_product_development_documents
 from .product_lifecycle import check_product_lifecycle_readiness
+from .product_generated_freshness import check_product_generated_freshness
 
 from validation.repository_checks import (
     ExternalRepositoryValidationContext,
     ValidationContext,
-    _check_generated_freshness_for_domain,
     check_supersession_acyclicity,
     check_supersession_pairs,
     check_unique_item_properties,
@@ -152,8 +152,5 @@ def validate_product(repo_root: Path) -> None:
     print("ok: product development documents")
     check_product_lifecycle_readiness(context)
     print("ok: product lifecycle authority sequence")
-    _check_generated_freshness_for_domain(
-        context,
-        product_mode=True,
-    )
+    check_product_generated_freshness(context)
     print("ok: product generated-document freshness")

@@ -25,6 +25,7 @@ REPO_FORBIDDEN_PRODUCT_SYMBOLS = {
     "_product_development_roots_for_shared_lifecycle",
     "_check_lifecycle_for_domain",
     "check_lifecycle_lifecycle_phase",
+    "_check_generated_freshness_for_domain",
 }
 
 PRODUCT_REQUIRED_SYMBOLS = {
@@ -55,6 +56,9 @@ PRODUCT_REQUIRED_SYMBOLS = {
     },
     "product_lifecycle.py": {
         "check_product_lifecycle_readiness",
+    },
+    "product_generated_freshness.py": {
+        "check_product_generated_freshness",
     },
 }
 

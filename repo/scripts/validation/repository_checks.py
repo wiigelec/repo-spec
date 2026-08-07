@@ -1058,26 +1058,14 @@ def _check_repository_development_documents(
 
 
 
-def _check_generated_freshness_for_domain(
+def _check_repository_generated_freshness(
     context: ValidationContext,
-    *,
-    product_mode: bool,
 ) -> None:
     from docgen import SPECIAL_RENDERERS, render_spec_projection
 
-    if product_mode:
-        if context.product is None:
-            specs = {}
-            source_paths = {}
-        else:
-            specs = context.product.specs
-            source_paths = context.product.source_paths
-        derived_root = context.repo_root / "product/derived/specs/product"
-    else:
-        specs = context.repository.specs
-        source_paths = context.repository.source_paths
-        derived_root = context.repo_root / "repo/derived/specs/repo"
-
+    specs = context.repository.specs
+    source_paths = context.repository.source_paths
+    derived_root = context.repo_root / "repo/derived/specs/repo"
     expected_markdown_paths: set[str] = set()
 
     for spec_id in sorted(specs, key=lambda item: source_paths[item]):
@@ -1100,9 +1088,7 @@ def _check_generated_freshness_for_domain(
                     spec["title"],
                     source_path,
                     spec,
-                    include_authoritative_specs=(
-                        not product_mode and spec_id == "repo.manifest"
-                    ),
+                    include_authoritative_specs=(spec_id == "repo.manifest"),
                 )
             else:
                 renderer = SPECIAL_RENDERERS.get(renderer_id)
@@ -1144,6 +1130,8 @@ def _check_generated_freshness_for_domain(
         if extra:
             parts.append(f"orphaned derived markdown: {', '.join(extra)}")
         fail("generated-document freshness failed: " + "; ".join(parts))
+
+
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository JSON Schema conformance", check_schema_conformance),
     ("manifest completeness", check_manifest_phase),
@@ -1168,8 +1156,5 @@ def validate_repo(repo_root: Path) -> None:
     print("ok: repository development documents")
     _check_repository_lifecycle(context)
     print("ok: repository lifecycle authority sequence")
-    _check_generated_freshness_for_domain(
-        context,
-        product_mode=False,
-    )
+    _check_repository_generated_freshness(context)
     print("ok: repository generated-document freshness")
