@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the stable set of validation checks that the initializer executes against the staged or promoted repository, each with a stable ID, classification, and overall-success contribution.
+Defines the stable ordered set of Version 1 validation checks, each with a stable ID, classification, order, pass condition, and failure-code vocabulary. Together these checks determine whether the staged repository is eligible for promotion.
 
 ## Correspondence
 
@@ -32,27 +32,263 @@ Defines the stable set of validation checks that the initializer executes agains
 
 - None
 
+## Checks
+
+- Applies To: `request`
+- Check Id: `request.schema`
+- Classification: `required`
+- Failure Codes:
+  - `invalid-json`
+  - `schema-mismatch`
+  - `missing-field`
+  - `unknown-field`
+- Order: `10`
+- Pass Condition: `The initialization request is valid JSON whose structure and field types match the initialization-request contract (product.initialization-request) for schema_version 1.`
+- Applies To: `request`
+- Check Id: `request.canonicalization`
+- Classification: `required`
+- Failure Codes:
+  - `canonicalization-error`
+  - `unresolvable-path`
+- Order: `20`
+- Pass Condition: `The request canonicalizes without error: relative paths resolve, the authority and product fields are present, and no transformation alters authoritative content.`
+- Applies To: `request`
+- Check Id: `request.authority-consistency`
+- Classification: `required`
+- Failure Codes:
+  - `missing-authority`
+  - `authority-mismatch`
+- Order: `25`
+- Pass Condition: `The authority.granted_by value is a non-empty string and matches the governing issue or bootstrap authority identifier expected by the execution context.`
+- Applies To: `source`
+- Check Id: `source.repository-local`
+- Classification: `required`
+- Failure Codes:
+  - `not-a-repository`
+  - `path-not-found`
+  - `path-not-directory`
+- Order: `30`
+- Pass Condition: `The source.repository path resolves to an existing local directory that is a valid Git repository (contains a .git/ directory or equivalent).`
+- Applies To: `source`
+- Check Id: `source.object-format`
+- Classification: `required`
+- Failure Codes:
+  - `unsupported-object-format`
+- Order: `35`
+- Pass Condition: `The source repository's native object format (reported by git rev-parse --show-object-format) is sha1.`
+- Applies To: `source`
+- Check Id: `source.revision-commit`
+- Classification: `required`
+- Failure Codes:
+  - `revision-not-found`
+  - `not-a-commit`
+  - `ambiguous-reference`
+- Order: `40`
+- Pass Condition: `The source revision resolves to a valid commit object in the local source repository via \`git rev-parse --verify <revision>^{commit}\`.`
+- Applies To: `source`
+- Check Id: `source.objects-complete`
+- Classification: `required`
+- Failure Codes:
+  - `object-missing`
+  - `incomplete-tree`
+- Order: `50`
+- Pass Condition: `All Git objects referenced by the resolved commit tree (blobs, trees, and subtrees needed for declared material-manifest entries) exist locally in the source repository.`
+- Applies To: `material-manifest`
+- Check Id: `material-manifest.schema`
+- Classification: `required`
+- Failure Codes:
+  - `manifest-not-found`
+  - `schema-mismatch`
+  - `missing-field`
+  - `invalid-entry`
+- Order: `60`
+- Pass Condition: `The material manifest at product/scripts/initializer/framework-inventory.json in the source commit tree validates against the material-manifest contract schema (product.material-manifest).`
+- Applies To: `material-manifest`
+- Check Id: `material-manifest.source-paths`
+- Classification: `required`
+- Failure Codes:
+  - `source-path-missing`
+  - `source-type-mismatch`
+- Order: `65`
+- Pass Condition: `Every source_path declared in the material manifest exists at the expected source_type (blob, tree, or symlink) in the source commit tree.`
+- Applies To: `material-manifest`
+- Check Id: `material-manifest.no-overlap`
+- Classification: `required`
+- Failure Codes:
+  - `overlapping-destination`
+  - `duplicate-destination`
+- Order: `70`
+- Pass Condition: `No two material-manifest entries declare overlapping or duplicate destination_path values.`
+- Applies To: `repository-worktree`
+- Check Id: `output.inventory-complete`
+- Classification: `required`
+- Failure Codes:
+  - `missing-path`
+  - `missing-directory`
+  - `inventory-incomplete`
+- Order: `80`
+- Pass Condition: `Every entry in the output inventory (fixed worktree file with required true, resolved dynamic family path, required directory) is present in the staged repository.`
+- Applies To: `repository-worktree`
+- Check Id: `output.no-undeclared-paths`
+- Classification: `required`
+- Failure Codes:
+  - `undeclared-path`
+  - `prohibited-path`
+  - `ambiguous-inventory-match`
+- Order: `90`
+- Pass Condition: `Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, resolved dynamic family path, or required directory) and no prohibited path exists.`
+- Applies To: `repository-worktree`
+- Check Id: `output.required-directories`
+- Classification: `required`
+- Failure Codes:
+  - `missing-directory`
+  - `directory-not-empty`
+- Order: `95`
+- Pass Condition: `Every required directory in the output inventory is present as an empty directory in the staged repository.`
+- Applies To: `repository-worktree`
+- Check Id: `output.copied-bytes-match`
+- Classification: `required`
+- Failure Codes:
+  - `byte-mismatch`
+  - `source-blob-not-found`
+- Order: `100`
+- Pass Condition: `Every file produced by copy-verbatim (framework-installation dynamic family) has byte content identical to its corresponding source Git blob at the declared source revision.`
+- Applies To: `repository-worktree`
+- Check Id: `output.direction-evidence-match`
+- Classification: `required`
+- Failure Codes:
+  - `byte-mismatch`
+  - `evidence-missing`
+  - `manifest-entry-mismatch`
+  - `orphan-evidence`
+- Order: `110`
+- Pass Condition: `Every direction evidence file under product/docs/direction/evidence/ is byte-identical to its declared source Git blob and every manifest entry in product/docs/direction/manifest.json matches an existing evidence file with correct metadata.`
+- Applies To: `repository-worktree`
+- Check Id: `output.generated-records-valid`
+- Classification: `required`
+- Failure Codes:
+  - `schema-mismatch`
+  - `missing-field`
+  - `invalid-value`
+- Order: `120`
+- Pass Condition: `Every generated record (product manifest, provenance record, handoff manifest, direction evidence manifest, staging state, validation report) validates against its governing schema and has correct required fields.`
+- Applies To: `repository-worktree`
+- Check Id: `output.generated-templates-match`
+- Classification: `required`
+- Failure Codes:
+  - `template-mismatch`
+  - `missing-lifecycle-status`
+  - `incorrect-status`
+- Order: `125`
+- Pass Condition: `Every generated template document (controlling documents, chunk documents, discoverability READMEs) matches its governing template structure and has lifecycle_status candidate.`
+- Applies To: `repository-worktree`
+- Check Id: `output.repository-digest-match`
+- Classification: `required`
+- Failure Codes:
+  - `digest-mismatch`
+  - `digest-not-computed`
+- Order: `130`
+- Pass Condition: `The SHA-256 content digest of the repository/ subtree (excluding .git/) matches the expected digest recorded in the staging-state record.`
+- Applies To: `repository-worktree`
+- Check Id: `provenance.consistent`
+- Classification: `required`
+- Failure Codes:
+  - `provenance-mismatch`
+  - `request-identifier-mismatch`
+  - `source-revision-mismatch`
+- Order: `140`
+- Pass Condition: `The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request.`
+- Applies To: `repository-worktree`
+- Check Id: `handoff.consistent`
+- Classification: `required`
+- Failure Codes:
+  - `handoff-mismatch`
+  - `path-not-covered`
+  - `duplicate-array-entry`
+  - `ordering-violation`
+- Order: `150`
+- Pass Condition: `The handoff manifest at repo/initializer/handoff.json correctly describes the repository state: its arrays are disjoint, cover every non-foundation file, and have lexicographic ordering.`
+- Applies To: `git-state`
+- Check Id: `git.initial-branch`
+- Classification: `required`
+- Failure Codes:
+  - `branch-mismatch`
+  - `no-branch`
+- Order: `160`
+- Pass Condition: `The repository's active branch name matches the bootstrap profile constant (main for standard-v1).`
+- Applies To: `git-state`
+- Check Id: `git.root-commit-count`
+- Classification: `required`
+- Failure Codes:
+  - `wrong-commit-count`
+  - `root-commit-has-parent`
+- Order: `170`
+- Pass Condition: `The repository contains exactly one root commit with no parent.`
+- Applies To: `git-state`
+- Check Id: `git.author-identity`
+- Classification: `required`
+- Failure Codes:
+  - `author-name-mismatch`
+  - `author-email-mismatch`
+- Order: `175`
+- Pass Condition: `The root commit author name and email match the bootstrap profile constants (author_name and author_email for standard-v1).`
+- Applies To: `git-state`
+- Check Id: `git.commit-message`
+- Classification: `required`
+- Failure Codes:
+  - `commit-message-mismatch`
+- Order: `180`
+- Pass Condition: `The root commit message matches the bootstrap profile commit_message constant.`
+- Applies To: `git-state`
+- Check Id: `git.worktree-clean`
+- Classification: `required`
+- Failure Codes:
+  - `worktree-dirty`
+  - `untracked-files`
+- Order: `190`
+- Pass Condition: `The Git worktree inside the repository/ directory has no unstaged changes and no untracked files.`
+- Applies To: `git-state`
+- Check Id: `git.remote-count`
+- Classification: `required`
+- Failure Codes:
+  - `remote-count-mismatch`
+- Order: `200`
+- Pass Condition: `The repository has zero configured Git remotes.`
+
 ## Primitives
 
 - Concepts:
   - `validation-profile`
 
+## Profile Version
+
+- `v1`
+
 ## Normative requirements
 
-- `INIT-VP-001`: The validation profile shall declare a stable ordered set of checks, each with a unique ID, required or advisory classification, and deterministic order: request.schema, request.canonicalization, source.repository-local, source.revision-commit, source.objects-complete, material-manifest.schema, material-manifest.paths, output.inventory-complete, output.no-undeclared-paths, output.copied-bytes-match, output.generated-records-valid, output.direction-evidence-match, output.repository-digest-match, git.branch, git.root-commit-count, git.worktree-clean, git.remote-count (advisory), handoff.consistent, provenance.consistent.
-- `INIT-VP-002`: A required check that fails or errors shall cause overall validation to fail.
-- `INIT-VP-003`: An advisory check that fails or errors shall be recorded in the validation report but shall not cause overall validation to fail.
-- `INIT-VP-004`: The validation profile shall be versioned and may be extended by successor versions that add new checks without renumbering existing checks.
+- `INIT-VP-001`: The validation profile shall declare a stable ordered set of checks, each with a unique check_id, classification (required or advisory), deterministic order number, applies_to scope, pass_condition, and an explicit list of failure_codes.
+- `INIT-VP-002`: A required check that produces a status of failed or error shall cause overall validation to fail and shall block promotion.
+- `INIT-VP-003`: An advisory check that produces a status of failed or error shall be recorded in the validation report but shall not cause overall validation to fail or block promotion.
+- `INIT-VP-004`: The validation profile shall be versioned via profile_version. Successor versions may add new checks at new order numbers without renumbering existing checks. No check_id shall be removed from a published profile version; a check may be deprecated but shall remain defined.
+- `INIT-VP-005`: Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, or git-state. The validation component shall execute checks in ascending order number within each execution phase.
+- `INIT-VP-006`: Promotion is permitted only when every required check in the validation profile has status passed and no required check has status failed, error, or skipped. The validation component shall not proceed to promotion when a required check has not passed.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.git-object-identity`
+- `product.initialization-request`
+- `product.initializer-output-inventory-v1`
+- `product.material-manifest`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
 - artifact: `product/specs/product/level-1/git-object-identity.json`
+- artifact: `product/specs/product/level-1/initialization-request.json`
+- artifact: `product/specs/product/level-1/initializer-output-inventory-v1.json`
+- artifact: `product/specs/product/level-1/material-manifest.json`
+- artifact: `product/specs/product/level-1/validation-report.json`
 - artifact: `repo/specs/repo/validation.json`
 
 ## Derived artifacts

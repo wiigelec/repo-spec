@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the canonical validation report shape that the repository validation component produces, including per-check status, failure codes, evidence, and the overall pass/fail rule.
+Defines the canonical validation report that the repository validation component produces, including deterministic per-check status, stable failure codes, structured evidence, overall-result calculation, and the promotion-eligibility rule.
 
 ## Correspondence
 
@@ -32,6 +32,23 @@ Defines the canonical validation report shape that the repository validation com
 
 - None
 
+## Field Order
+
+- Checks:
+  - `check_id`
+  - `status`
+  - `failure_code`
+  - `failure_message`
+  - `evidence`
+- Root:
+  - `schema_version`
+  - `report_version`
+  - `profile_version`
+  - `request_fingerprint`
+  - `repository_content_digest`
+  - `overall_status`
+  - `checks`
+
 ## Primitives
 
 - Concepts:
@@ -39,14 +56,18 @@ Defines the canonical validation report shape that the repository validation com
 
 ## Normative requirements
 
-- `INIT-VR-001`: The validation report shall contain an overall_status field whose value is pass only when every required check has a pass status, regardless of advisory check results.
-- `INIT-VR-002`: The validation report shall contain a checks array in the same order as the validation profile, each entry containing id (string), status (pass, fail, or error), and optionally failure_code (string), failure_message (string), and evidence (object).
-- `INIT-VR-003`: A check whose status is error shall indicate that the check itself could not be executed due to a precondition failure or internal error, as distinct from a deterministic fail result.
-- `INIT-VR-004`: The failure_code field shall use a machine-readable identifier from a defined enumeration, enabling automated interpretation of failure causes.
-- `INIT-VR-005`: The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings, and shall not be considered authoritative product specification content.
-- `INIT-VR-006`: The validation report shall not report overall success when any required check has status fail or error, regardless of the number or type of passed checks.
-- `INIT-VR-007`: The validation report may contain timestamp (ISO-8601 string), initializer_version (product identity and version string), and source_revision (canonical Git object identity) fields for diagnostic context.
-- `INIT-VR-008`: The failure_code field shall use one of the following machine-readable identifiers: SCHEMA_MISMATCH, MISSING_FIELD, INVALID_VALUE, SOURCE_NOT_FOUND, REVISION_NOT_FOUND, OBJECT_MISSING, PATH_MISMATCH, TYPE_MISMATCH, BYTE_MISMATCH, DIGEST_MISMATCH, UNDECLARED_PATH, PROHIBITED_PATH, INVENTORY_INCOMPLETE, BOOTSTRAP_MISMATCH, WORKTREE_DIRTY, BRANCH_MISMATCH, REMOTE_MISMATCH, PROVENANCE_MISMATCH, HANDOFF_MISMATCH, INTERNAL_ERROR, or PRECONDITION_FAILED.
+- `INIT-VR-001`: The validation report shall contain an overall_status field whose value is pass only when every required check in the validation profile has status passed. If any required check has status failed, error, or skipped, overall_status shall be fail.
+- `INIT-VR-002`: Promotion is permitted only when overall_status is pass. The validation component shall not proceed to the promotion stage when overall_status is fail.
+- `INIT-VR-003`: The validation report shall contain a checks array in ascending order-number as defined by the validation profile. Each entry shall contain check_id (string), status (one of passed, failed, error, or skipped), and the following optional fields: failure_code (string), failure_message (string), and evidence (object).
+- `INIT-VR-004`: The four status values are: passed (the check executed and its pass_condition is satisfied), failed (the check executed and its pass_condition is not satisfied), error (the check could not be executed due to a precondition failure or internal error, as distinct from a deterministic fail), and skipped (the check was intentionally not executed because its applicable scope does not exist or the execution profile explicitly exempted it).
+- `INIT-VR-005`: The skipped status is permitted only for checks whose applies_to scope was determined to be absent or inapplicable during validation. A check whose scope is present must not be skipped; it must execute and produce passed, failed, or error.
+- `INIT-VR-006`: The failure_code field shall use one of the check-specific failure codes declared in the validation profile's failure_codes array for that check_id. A failure_code not declared in the profile is invalid.
+- `INIT-VR-007`: The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings. Evidence shall be structured as a JSON object and shall not contain authoritative product specification content.
+- `INIT-VR-008`: The validation report shall define the following top-level fields: schema_version (constant string "1"), report_version (constant string "1"), profile_version (string matching the validation profile version used), request_fingerprint (SHA-256 hex digest of the canonical initialization request JSON), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects).
+- `INIT-VR-009`: The request_fingerprint field shall link the validation report to the specific initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority.
+- `INIT-VR-010`: The validation report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, checks for each check entry), 2-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
+- `INIT-VR-011`: The validation report shall be written at transaction/validation-report.json inside the staging transaction root and shall never be part of the promoted repository content.
+- `INIT-VR-012`: The validation report format shall evolve by incrementing schema_version. Consumers of schema_version 1 shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
 
 ## Dependencies
 
@@ -57,6 +78,7 @@ Defines the canonical validation report shape that the repository validation com
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
+- artifact: `product/specs/product/level-1/git-object-identity.json`
 - artifact: `product/specs/product/level-1/validation-profile.json`
 - artifact: `repo/specs/repo/validation.json`
 

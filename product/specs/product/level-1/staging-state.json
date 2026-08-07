@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-STA-003",
-      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null."
+      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `validation_overall_status` as either a string or null, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null."
     },
     {
       "id": "INIT-STA-004",
@@ -41,7 +41,7 @@
     },
     {
       "id": "INIT-STA-008",
-      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation has finished regardless of pass or fail outcome."
+      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the validation report."
     },
     {
       "id": "INIT-STA-009",
@@ -74,6 +74,7 @@
       "repository_content_digest",
       "git_created",
       "validation_completed",
+      "validation_overall_status",
       "promotion_entered",
       "promotion_outcome"
     ]

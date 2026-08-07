@@ -197,6 +197,10 @@
     {
       "id": "INIT-LCS-008",
       "text": "Failure finalization is available from any failed pre-promotion stage and records the failure in the execution report and staging-state record without authorizing arbitrary resume."
+    },
+    {
+      "id": "INIT-LCS-009",
+      "text": "Promotion shall not occur unless the validation report's overall_status is pass. The repository-validation stage must execute all required checks and produce a validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
     }
   ],
   "dependencies": [

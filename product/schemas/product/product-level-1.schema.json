@@ -113,6 +113,29 @@
             "rule": {"type": "string", "minLength": 1}
           }
         },
+        "profile_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check_id", "classification", "order", "applies_to", "pass_condition", "failure_codes"],
+            "properties": {
+              "check_id": {"type": "string", "minLength": 1},
+              "classification": {"type": "string", "enum": ["required", "advisory"]},
+              "order": {"type": "integer", "minimum": 1},
+              "applies_to": {"type": "string", "minLength": 1},
+              "pass_condition": {"type": "string", "minLength": 1},
+              "failure_codes": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        },
         "prohibited_paths": {
           "type": "array",
           "items": {"type": "string", "minLength": 1}
@@ -151,6 +174,13 @@
               }
             },
             "stages": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "checks": {
               "type": "array",
               "items": {
                 "type": "string",
