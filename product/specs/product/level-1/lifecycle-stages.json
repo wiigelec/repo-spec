@@ -122,14 +122,14 @@
     },
     {
       "id": "repository-validation",
-      "purpose": "Validate repository content and Git state inside the repository/ directory against conformance requirements, finalize the validation report (linkage verification, check completeness, schema validation), and write the final report to transaction/.",
+      "purpose": "Validate repository content and Git state inside the repository/ directory against conformance requirements, finalize the validation report and the staging-state record through an ordered write protocol (in-memory construction and validation, durable write of the finalized validation report, durable write of the finalized staging-state record, then dual-record consistency verification), and write both finalized records to transaction/.",
       "required": true,
       "deferrable": false,
       "recoverable": false,
       "predecessors": [
         "git-initialization"
       ],
-      "output": "Finalized validation report"
+      "output": "Finalized validation report and mutually consistent finalized staging-state record"
     },
     {
       "id": "promotion",
@@ -200,7 +200,7 @@
     },
     {
       "id": "INIT-LCS-009",
-      "text": "Promotion shall not occur unless the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization (fingerprint linkage, digest linkage, check ordering, check completeness, schema validation), and produce a finalized validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
+      "text": "Promotion shall not occur unless both the finalized validation report and the finalized staging-state record are durably written and mutually consistent and the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization as an ordered write protocol (construct and validate the proposed validation report and proposed staging-state representation in memory, write the finalized validation report durably, write the finalized staging-state record durably, then verify both durable records are mutually consistent), and produce both finalized records before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
     },
     {
       "id": "INIT-LCS-010",
@@ -208,11 +208,11 @@
     },
     {
       "id": "INIT-LCS-011",
-      "text": "The bounded local workflow has four terminal outcomes: pre-promotion failure (any required stage fails before promotion), promoted success (promotion commits and success-finalization completes), indeterminate promotion (rename outcome cannot be determined), and cleanup failure (promotion committed but post-promotion staging-root removal fails). Each terminal outcome has distinct diagnostic preservation, caller return, and retry-authorization rules defined by the governing workflow specification. Under cleanup failure, the staging-state record shall have: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes promotion (completed) and excludes success-finalization (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string."
+      "text": "The bounded local workflow has four terminal outcomes: pre-promotion failure (any required stage fails before promotion), promoted success (promotion commits and success-finalization completes), indeterminate promotion (rename outcome cannot be determined), and cleanup failure (promotion committed but post-promotion staging-root removal fails). Each terminal outcome has distinct diagnostic preservation, caller return, and retry-authorization rules defined by the governing workflow specification. The execution report and staging-state record shall record a mutually consistent terminal outcome: they shall agree on the request fingerprint, expected destination, promotion outcome, failed stage, and terminal result. Under cleanup failure, the staging-state record shall have: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes promotion (completed) and excludes success-finalization (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string."
     },
     {
       "id": "INIT-LCS-012",
-      "text": "A cleanup failure after successful promotion is distinct from a pre-promotion failure: the repository is successfully promoted and must not be misreported as unpromoted. The workflow returns a promoted-with-finalization-error result. No automatic retry of the failed cleanup operation is authorized without external diagnosis. Under cleanup failure, `promotion_outcome` remains `promoted`; the `cleanup_failure` field records the failure reason. The staging transaction root is preserved when accessible for diagnostics. The destination remains authoritative and must not be reported as absent or unpromoted."
+      "text": "A cleanup failure after successful promotion is distinct from a pre-promotion failure: the repository is successfully promoted and must not be misreported as unpromoted. The workflow returns a promoted-with-finalization-error result. No automatic retry of the failed cleanup operation is authorized without external diagnosis. Under cleanup failure, `promotion_outcome` remains `promoted`; the `cleanup_failure` field records the failure reason. The execution report shall record `promotion_outcome` `promoted` and `completion_status` `promoted-with-finalization-error`, agreeing with the staging-state record so that both records together report the repository as promoted. The staging transaction root is preserved when accessible for diagnostics. The destination remains authoritative and must not be reported as absent or unpromoted."
     }
   ],
   "dependencies": [
