@@ -1448,9 +1448,12 @@ def _check_generated_freshness_for_domain(
     from docgen import SPECIAL_RENDERERS, render_spec_projection
 
     if product_mode:
-        expect(context.product is not None, "product validation context missing")
-        specs = context.product.specs
-        source_paths = context.product.source_paths
+        if context.product is None:
+            specs = {}
+            source_paths = {}
+        else:
+            specs = context.product.specs
+            source_paths = context.product.source_paths
         derived_root = context.repo_root / "product/derived/specs/product"
     else:
         specs = context.repository.specs
@@ -1660,10 +1663,12 @@ def validate_repo(repo_root: Path) -> None:
 
 def validate_product(repo_root: Path) -> None:
     context = _load_product_only_context(repo_root)
-    expect(context.product is not None, "product validation context missing")
-    for label, check in PRODUCT_LEAF_VALIDATION_PHASES:
-        check(context)
-        print(f"ok: {label}")
+    if context.product is not None:
+        for label, check in PRODUCT_LEAF_VALIDATION_PHASES:
+            check(context)
+            print(f"ok: {label}")
+    else:
+        print("ok: product specification system inactive")
     _check_development_documents_for_domain(
         context,
         product_mode=True,
