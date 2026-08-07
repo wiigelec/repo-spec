@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-MMF-002",
-      "text": "Each manifest entry shall be a JSON object defining: `source_path` (repository-relative source path), `destination_path` (repository-relative destination path), `role` (one of the material role classifications), `operation` (one of the supported operations), `source_type` (the expected Git object type: blob, tree, or symlink), `mode` (the expected Git mode string such as 100644 or 100755), and optional `profile` and `exclusion_rationale`."
+      "text": "Each manifest entry shall be a JSON object defining: `material_key` (a stable unique identifier that links to the output inventory's material_index), `source_path` (repository-relative source path), `role` (one of the material role classifications), `operation` (one of the supported operations), `source_type` (the expected Git object type: blob, tree, or symlink), `mode` (the expected Git mode string such as 100644 or 100755), and optional `profile` and `exclusion_rationale`."
     },
     {
       "id": "INIT-MMF-003",
@@ -25,11 +25,11 @@
     },
     {
       "id": "INIT-MMF-004",
-      "text": "The manifest shall not rely on broad recursive directory copying as the authority for any path; every output path shall be declared by exactly one manifest entry, and overlapping or duplicate entries shall be rejected as invalid."
+      "text": "The manifest shall not rely on broad recursive directory copying as the authority for any path; every output path shall have exactly one material_index entry in the output inventory, and the material manifest provides the source resolution for that entry via material_key. Overlapping or duplicate material_key values shall be rejected as invalid."
     },
     {
       "id": "INIT-MMF-005",
-      "text": "Source paths in the manifest shall be interpreted relative to the root of the source commit tree; destination paths shall be interpreted relative to the root of the generated repository/ directory in the staging transaction root."
+      "text": "Source paths in the manifest shall be interpreted relative to the root of the source commit tree."
     },
     {
       "id": "INIT-MMF-006",
@@ -37,11 +37,11 @@
     },
     {
       "id": "INIT-MMF-007",
-      "text": "Every material manifest entry whose operation is copy-verbatim shall be covered by the framework-installation dynamic path family in the output inventory (product.initializer-output-inventory-v1). The manifest entry's destination_path shall be a member of the framework-installation dynamic family."
+      "text": "Every material manifest entry whose operation is copy-verbatim shall have a material_key that matches exactly one material_index entry in the output inventory (product.initializer-output-inventory-v1). The material manifest shall not independently declare output paths; it resolves source information for output paths already declared by the output inventory."
     },
     {
       "id": "INIT-MMF-008",
-      "text": "The union of all framework-installation dynamic family paths (resolved from material-manifest copy-verbatim entries) and all fixed worktree file entries and other dynamic family paths (direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly) shall equal the complete closed output inventory. Every output path shall have exactly one producer, and no material manifest entry shall produce a path that matches a fixed worktree file entry or another dynamic family path."
+      "text": "Every material_key in the material manifest shall have a corresponding material_index entry in the output inventory. Unused material_key values (present in the material manifest but absent from the output inventory) shall be rejected. Every output inventory material_index entry shall have a corresponding material_key in the material manifest. The mapping is one-to-one and bidirectional for copy-verbatim entries."
     }
   ],
   "dependencies": [

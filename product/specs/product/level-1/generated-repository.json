@@ -13,15 +13,15 @@
   "normative_requirements": [
     {
       "id": "INIT-GRL-001",
-      "text": "The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as framework-support material selected by the material manifest with operation copy-verbatim from the source commit tree."
+      "text": "The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as framework-support material linked by material_key in the output inventory's material_index, with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree."
     },
     {
       "id": "INIT-GRL-002",
-      "text": "The initialized repository shall contain the paths under repo/ as declared by the material manifest (framework-inventory.json) with operation copy-verbatim, each produced individually from its source entry in the source commit tree. No broad directory copy is permitted; every repo/ path shall have exactly one material-manifest entry and one corresponding inventory entry in the framework-installation dynamic family."
+      "text": "The initialized repository shall contain the paths under repo/ as declared by the output inventory's material_index entries with material_key values, each with source resolved from the material manifest (framework-inventory.json) via matching material_key and operation copy-verbatim from the source commit tree. No broad directory copy is permitted; every repo/ path shall have exactly one material_index entry and one corresponding material-manifest entry with the same material_key."
     },
     {
       "id": "INIT-GRL-003",
-      "text": "The initialized repository shall contain product/scripts/initializer/ and product/scripts/repo-spec-init as framework-support entries declared by the material manifest with operation copy-verbatim from the source commit tree."
+      "text": "The initialized repository shall contain product/scripts/repo-spec-init and product/scripts/initializer/ as framework-support entries declared in the output inventory's material_index with material_key values repo-spec-init and product-initializer respectively, with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree."
     },
     {
       "id": "INIT-GRL-004",
@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-GRL-005",
-      "text": "The initialized repository shall contain empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/."
+      "text": "The initialized repository shall contain governed README.md files at product/specs/product/level-0/README.md, product/specs/product/level-1/README.md, product/specs/product/level-2/README.md, and product/specs/product/level-3/README.md to preserve the Level workspace directories in Git. Each Level README shall state its Level identity, that the workspace is activated, that no product specifications currently exist at that Level, that generated content remains candidate and non-normative, and the governed next action for adding specifications to that Level."
     },
     {
       "id": "INIT-GRL-006",
@@ -101,7 +101,7 @@
     },
     {
       "id": "INIT-GRL-023",
-      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every dynamic family path shall be present per its expansion rule, every required directory shall be present, no prohibited_path shall appear, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile."
+      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every material_index entry shall be present, every dynamic family path shall be present per its expansion rule, every Level workspace README.md placeholder shall be present, no prohibited_path shall appear under its matching rule, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile."
     }
   ],
   "dependencies": [

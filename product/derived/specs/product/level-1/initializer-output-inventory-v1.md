@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, dynamic path families, and required directories with separately governed Git administrative state.
+Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, material_index entries, and dynamic path families with separately governed Git administrative state.
 
 ## Correspondence
 
@@ -34,13 +34,6 @@ Complete closed inventory of every path the initializer produces in the initiali
 
 ## Dynamic Path Families
 
-- Expansion Pattern: `{material-manifest.destination_path}`
-- Governing Spec: `product.material-manifest`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Rule: `Every entry in the material manifest (product/scripts/initializer/framework-inventory.json) with operation copy-verbatim produces its declared destination_path. The set of all such paths constitutes the framework-installation dynamic family.`
-- Type: `regular-file`
 - Expansion Pattern: `product/docs/direction/evidence/{index:03d}-{basename}`
 - Governing Spec: `product.foundation-seeding`
 - Operation: `copy-verbatim`
@@ -79,30 +72,6 @@ Complete closed inventory of every path the initializer produces in the initiali
 
 ## Fixed Worktree Files
 
-- Destination Path: `README.md`
-- Governing Spec: `product.material-manifest`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Destination Path: `AGENTS.md`
-- Governing Spec: `product.material-manifest`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Destination Path: `LICENSE`
-- Governing Spec: `product.material-manifest`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Destination Path: `product/scripts/repo-spec-init`
-- Governing Spec: `product.material-manifest`
-- Mode: `100755`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
 - Destination Path: `product/docs/direction/manifest.json`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
@@ -151,6 +120,30 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Operation: `generate-record`
 - Producer: `handoff-assembly`
 - Required: `True`
+- Destination Path: `product/specs/product/level-0/README.md`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `100644`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Destination Path: `product/specs/product/level-1/README.md`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `100644`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Destination Path: `product/specs/product/level-2/README.md`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `100644`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Destination Path: `product/specs/product/level-3/README.md`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `100644`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
 
 ## Git State
 
@@ -159,6 +152,201 @@ Complete closed inventory of every path the initializer produces in the initiali
   - `product.git-bootstrap-profile`
 - Rule: `Git administrative state (.git/ directory) is governed separately by product.local-git-repository and product.git-bootstrap-profile. It is not part of the worktree output inventory. Repository validation checks (git.branch, git.root-commit-count, git.worktree-clean, git.remote-count) verify Git state requirements.`
 
+## Material Index
+
+- Destination Path: `README.md`
+- Material Key: `root-readme`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `AGENTS.md`
+- Material Key: `root-agents`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `LICENSE`
+- Material Key: `root-license`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `product/scripts/repo-spec-init`
+- Material Key: `repo-spec-init`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/manifest.json`
+- Material Key: `repo-manifest`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/governing-issue.json`
+- Material Key: `repo-governing-issue`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/review-proposal.json`
+- Material Key: `repo-review-proposal`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/repository-structure.json`
+- Material Key: `repo-repository-structure`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/artifact-taxonomy.json`
+- Material Key: `repo-artifact-taxonomy`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/platform-profiles.json`
+- Material Key: `repo-platform-profiles`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/development-workflow.json`
+- Material Key: `repo-development-workflow`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/validation.json`
+- Material Key: `repo-validation`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/product-manifest.json`
+- Material Key: `repo-product-manifest`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/development-document-base.json`
+- Material Key: `repo-development-document-base`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/product-overview.json`
+- Material Key: `repo-product-overview`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/product-decomposition.json`
+- Material Key: `repo-product-decomposition`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/implementation-plan.json`
+- Material Key: `repo-implementation-plan`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/product-spec-base.json`
+- Material Key: `repo-product-spec-base`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/product-correspondence.json`
+- Material Key: `repo-product-correspondence`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/specs/repo/product-levels.json`
+- Material Key: `repo-product-levels`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/validate`
+- Material Key: `repo-validate-script`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/validate_impl.py`
+- Material Key: `repo-validate-impl`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/repo_model.py`
+- Material Key: `repo-repo-model`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/docgen.py`
+- Material Key: `repo-docgen`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/generate-docs`
+- Material Key: `repo-generate-docs`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/github_profile.py`
+- Material Key: `repo-github-profile`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/validation/`
+- Material Key: `repo-validation-dir`
+- Mode: `040000`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/github-field-policy`
+- Material Key: `repo-github-field-policy`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/github_field_policy.py`
+- Material Key: `repo-github-field-policy-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/scripts/github_field_policy_mutation_test.py`
+- Material Key: `repo-github-field-policy-test`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `repo/derived/`
+- Material Key: `repo-derived`
+- Mode: `040000`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Destination Path: `product/scripts/initializer/`
+- Material Key: `product-initializer`
+- Mode: `040000`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+
 ## Primitives
 
 - Concepts:
@@ -166,51 +354,30 @@ Complete closed inventory of every path the initializer produces in the initiali
 
 ## Prohibited Paths
 
-- `reference/`
-- `validate/`
-- `product/src/`
-- `product/tests/`
-- `product/scripts/initializer/`
-
-## Required Directories
-
-- Destination Path: `product/specs/product/level-0/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/level-1/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/level-2/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/level-3/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
+- Path: `reference/`
+- Rule: `exact`
+- Path: `validate/`
+- Rule: `exact`
+- Path: `product/src/`
+- Rule: `exact`
+- Path: `product/tests/`
+- Rule: `exact`
+- Path: `product/scripts/initializer/`
+- Rule: `exact`
 
 ## Normative requirements
 
 - `INV-V1-001`: The output inventory shall enumerate every destination path the initializer may create in the initialized repository worktree, assigning each to exactly one producer. Git administrative state (.git/) is governed separately.
 - `INV-V1-002`: Fixed worktree files are individually enumerated with their producer, operation, governing spec, mode, and required status.
-- `INV-V1-003`: Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry or with another dynamic family.
-- `INV-V1-004`: The framework-installation dynamic family resolves to every destination_path declared by the material manifest (product/scripts/initializer/framework-inventory.json) with operation copy-verbatim. No overlapping inventory entries are permitted.
+- `INV-V1-003`: Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry, material_index entry, or another dynamic family.
+- `INV-V1-004`: The material_index declares every framework-installation output path with a stable material_key. Each material_key shall map to exactly one material-manifest entry (product/scripts/initializer/framework-inventory.json) that provides the source_path, source_type, and mode. The material manifest shall not independently expand or modify the set of output paths.
 - `INV-V1-005`: A required entry must be present in every successful initialization; no entry may be marked optional in the Version 1 bounded local workflow.
-- `INV-V1-006`: The inventory shall declare prohibited_paths that shall not appear in the initialized repository worktree. product/scripts/initializer/ is prohibited because its contents are installed individually through the material manifest dynamic family.
+- `INV-V1-006`: The inventory shall declare prohibited_paths as structured rules. An exact-path rule matches only paths equal to the declared path. A prefix rule matches any path that starts with the declared prefix. product/scripts/initializer/ is prohibited with exact rule because its contents are installed individually through material_index entries, not as a bulk directory.
 - `INV-V1-007`: The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization. Only the first five produce worktree paths; git-initialization produces the Git administrative state (.git/) governed separately.
 - `INV-V1-008`: Dynamic path families may use template placeholders {slug} for the product identifier and {index:03d}-{basename} for evidence files; the governing specification for each producer defines the exact resolution of these placeholders.
-- `INV-V1-009`: Repository validation shall include checks that every path in the staged repository matches either a fixed worktree file entry or a resolved dynamic family path, that no prohibited_path appears, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile.
-- `INV-V1-010`: Parent directories of declared files are implicit and are not separately inventoried. Only explicitly listed required_directories must be present as empty directories.
+- `INV-V1-009`: Repository validation shall include checks that every path in the staged repository matches exactly one output-inventory entry (fixed worktree file, material_index entry, or resolved dynamic family path), that every material_key in the output inventory has a matching material-manifest entry, that no material_key in the material manifest is unused, that no prohibited_path appears under any matching rule, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile.
+- `INV-V1-010`: Parent directories of declared files are implicit and are not separately inventoried. Level workspace directories (product/specs/product/level-0/ through level-3/) are preserved in Git via governed README.md files declared as fixed worktree files.
+- `INV-V1-011`: Every material_index entry shall have a unique material_key. Every material_key shall match exactly one material-manifest entry. Every material-manifest entry with operation copy-verbatim shall have a material_key that matches exactly one material_index entry. Unused material-manifest entries and orphan material_index entries shall be rejected.
 
 ## Dependencies
 

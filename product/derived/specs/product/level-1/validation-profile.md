@@ -53,13 +53,13 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Order: `20`
 - Pass Condition: `The request canonicalizes without error: relative paths resolve, the authority and product fields are present, and no transformation alters authoritative content.`
 - Applies To: `request`
-- Check Id: `request.authority-consistency`
+- Check Id: `request.authority-propagation`
 - Classification: `required`
 - Failure Codes:
   - `missing-authority`
-  - `authority-mismatch`
+  - `empty-authority`
 - Order: `25`
-- Pass Condition: `The authority.granted_by value is a non-empty string and matches the governing issue or bootstrap authority identifier expected by the execution context.`
+- Pass Condition: `The authority.granted_by value is a non-empty string. The initializer does not authenticate the governing issue or consult an external authority source; it records the value verbatim and propagates it to the provenance record. Consistency between the request authority and the provenance record request_identifier is verified by the provenance.consistent check.`
 - Applies To: `source`
 - Check Id: `source.repository-local`
 - Classification: `required`
@@ -100,9 +100,10 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `manifest-not-found`
   - `schema-mismatch`
   - `missing-field`
+  - `duplicate-key`
   - `invalid-entry`
 - Order: `60`
-- Pass Condition: `The material manifest at product/scripts/initializer/framework-inventory.json in the source commit tree validates against the material-manifest contract schema (product.material-manifest).`
+- Pass Condition: `The material manifest at product/scripts/initializer/framework-inventory.json in the source commit tree validates against the material-manifest contract schema (product.material-manifest), including material_key uniqueness.`
 - Applies To: `material-manifest`
 - Check Id: `material-manifest.source-paths`
 - Classification: `required`
@@ -112,22 +113,22 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Order: `65`
 - Pass Condition: `Every source_path declared in the material manifest exists at the expected source_type (blob, tree, or symlink) in the source commit tree.`
 - Applies To: `material-manifest`
-- Check Id: `material-manifest.no-overlap`
+- Check Id: `material-manifest.key-coverage`
 - Classification: `required`
 - Failure Codes:
-  - `overlapping-destination`
-  - `duplicate-destination`
+  - `orphan-material-key`
+  - `missing-material-key`
+  - `key-mismatch`
 - Order: `70`
-- Pass Condition: `No two material-manifest entries declare overlapping or duplicate destination_path values.`
+- Pass Condition: `Every material_key in the material manifest has a matching material_index entry in the output inventory, and every material_index entry in the output inventory has a matching material_key in the material manifest. No orphan keys and no unused entries.`
 - Applies To: `repository-worktree`
 - Check Id: `output.inventory-complete`
 - Classification: `required`
 - Failure Codes:
   - `missing-path`
-  - `missing-directory`
   - `inventory-incomplete`
 - Order: `80`
-- Pass Condition: `Every entry in the output inventory (fixed worktree file with required true, resolved dynamic family path, required directory) is present in the staged repository.`
+- Pass Condition: `Every entry in the output inventory (fixed worktree file with required true, material_index entry, resolved dynamic family path) is present in the staged repository.`
 - Applies To: `repository-worktree`
 - Check Id: `output.no-undeclared-paths`
 - Classification: `required`
@@ -136,23 +137,25 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `prohibited-path`
   - `ambiguous-inventory-match`
 - Order: `90`
-- Pass Condition: `Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, resolved dynamic family path, or required directory) and no prohibited path exists.`
+- Pass Condition: `Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, material_index entry, or resolved dynamic family path) and no prohibited path exists under its matching rule.`
 - Applies To: `repository-worktree`
-- Check Id: `output.required-directories`
+- Check Id: `output.level-readmes`
 - Classification: `required`
 - Failure Codes:
-  - `missing-directory`
-  - `directory-not-empty`
+  - `missing-readme`
+  - `content-mismatch`
+  - `mode-mismatch`
 - Order: `95`
-- Pass Condition: `Every required directory in the output inventory is present as an empty directory in the staged repository.`
+- Pass Condition: `Every Level workspace README.md (product/specs/product/level-{N}/README.md) declared in the output inventory is present in the staged repository and contains the correct Level identity, activated-workspace status, and governed next action per product.generated-repository.`
 - Applies To: `repository-worktree`
 - Check Id: `output.copied-bytes-match`
 - Classification: `required`
 - Failure Codes:
   - `byte-mismatch`
   - `source-blob-not-found`
+  - `material-key-unresolved`
 - Order: `100`
-- Pass Condition: `Every file produced by copy-verbatim (framework-installation dynamic family) has byte content identical to its corresponding source Git blob at the declared source revision.`
+- Pass Condition: `Every file produced by copy-verbatim (material_index entries with operation copy-verbatim) has byte content identical to its corresponding source Git blob, resolved by matching material_key between the output inventory and the material manifest at the declared source revision.`
 - Applies To: `repository-worktree`
 - Check Id: `output.direction-evidence-match`
 - Classification: `required`
@@ -171,7 +174,7 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `missing-field`
   - `invalid-value`
 - Order: `120`
-- Pass Condition: `Every generated record (product manifest, provenance record, handoff manifest, direction evidence manifest, staging state, validation report) validates against its governing schema and has correct required fields.`
+- Pass Condition: `Every promoted generated record (product manifest, provenance record, handoff manifest, direction evidence manifest) validates against its governing schema and has correct required fields. Staging-state and validation-report are transaction records not in the repository worktree and are not validated by this check.`
 - Applies To: `repository-worktree`
 - Check Id: `output.generated-templates-match`
 - Classification: `required`
@@ -194,10 +197,10 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Classification: `required`
 - Failure Codes:
   - `provenance-mismatch`
-  - `request-identifier-mismatch`
+  - `authority-propagation-failure`
   - `source-revision-mismatch`
 - Order: `140`
-- Pass Condition: `The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request.`
+- Pass Condition: `The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request, confirming exact authority propagation.`
 - Applies To: `repository-worktree`
 - Check Id: `handoff.consistent`
 - Classification: `required`
@@ -254,6 +257,40 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `remote-count-mismatch`
 - Order: `200`
 - Pass Condition: `The repository has zero configured Git remotes.`
+- Applies To: `transaction`
+- Check Id: `transaction.staging-state-valid`
+- Classification: `required`
+- Failure Codes:
+  - `schema-mismatch`
+  - `missing-field`
+  - `fingerprint-mismatch`
+- Order: `300`
+- Pass Condition: `The staging-state record at transaction/staging-state.json validates against its governing schema, has correct required fields, and its request_fingerprint matches the canonical initialization request fingerprint.`
+- Applies To: `transaction`
+- Check Id: `transaction.fingerprint-linkage`
+- Classification: `required`
+- Failure Codes:
+  - `fingerprint-mismatch`
+  - `missing-fingerprint`
+- Order: `310`
+- Pass Condition: `The request_fingerprint in the validation-report matches the request_fingerprint in the staging-state record, linking the validation outcome to the originating initialization request.`
+- Applies To: `transaction`
+- Check Id: `transaction.digest-linkage`
+- Classification: `required`
+- Failure Codes:
+  - `digest-mismatch`
+  - `missing-digest`
+- Order: `320`
+- Pass Condition: `The repository_content_digest in the validation-report matches the expected digest recorded in the staging-state record and matches the digest computed during output.repository-digest-match.`
+- Applies To: `transaction`
+- Check Id: `transaction.check-completeness`
+- Classification: `required`
+- Failure Codes:
+  - `missing-check`
+  - `duplicate-check`
+  - `ordering-violation`
+- Order: `330`
+- Pass Condition: `The validation-report checks array contains exactly one entry per check_id in the validation profile, in ascending order-number order, with no missing or duplicate entries.`
 
 ## Primitives
 
@@ -270,8 +307,8 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - `INIT-VP-002`: A required check that produces a status of failed or error shall cause overall validation to fail and shall block promotion.
 - `INIT-VP-003`: An advisory check that produces a status of failed or error shall be recorded in the validation report but shall not cause overall validation to fail or block promotion.
 - `INIT-VP-004`: The validation profile shall be versioned via profile_version. Successor versions may add new checks at new order numbers without renumbering existing checks. No check_id shall be removed from a published profile version; a check may be deprecated but shall remain defined.
-- `INIT-VP-005`: Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, or git-state. The validation component shall execute checks in ascending order number within each execution phase.
-- `INIT-VP-006`: Promotion is permitted only when every required check in the validation profile has status passed and no required check has status failed, error, or skipped. The validation component shall not proceed to promotion when a required check has not passed.
+- `INIT-VP-005`: Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, git-state, or transaction. Checks are executed in three phases: Phase 1 (input and source, orders 10-70), Phase 2 (staged repository, orders 80-200), and Phase 3 (transaction, orders 300-330). Each phase executes checks in ascending order number within that phase.
+- `INIT-VP-006`: Promotion is permitted only when every required check in Phase 1 and Phase 2 has status passed. Phase 3 (transaction) checks validate finalization but do not block promotion; a Phase 3 failure is recorded in the validation report and prevents transaction closure without blocking the promoted repository state.
 
 ## Dependencies
 
