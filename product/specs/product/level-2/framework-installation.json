@@ -38,6 +38,10 @@
     {
       "id": "INIT-FIN-007",
       "text": "The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must have a matching material_index entry, the operation must match, and the mode must match the material-manifest entry. No installed path shall match a fixed worktree file entry or another dynamic family path."
+    },
+    {
+      "id": "INIT-FIN-008",
+      "text": "The component shall not interpret any material-manifest entry as a source subtree to be expanded into multiple output paths. Every entry produces exactly one output path from exactly one source blob or supported symlink. Entries with role development-only in the output inventory shall not be installed."
     }
   ],
   "dependencies": [

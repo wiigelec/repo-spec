@@ -44,6 +44,7 @@ Defines selection and inventory of framework material from an explicit commit in
 - `INIT-SMR-003`: The component shall load the material manifest from the source commit at `product/scripts/initializer/framework-inventory.json`, validate its structure against the material-manifest contract schema, and classify each manifest entry by its declared role.
 - `INIT-SMR-004`: The component shall reject the source revision when the material manifest is absent from the commit tree, fails structural validation, contains unknown operation types, or has overlapping or duplicate destination paths.
 - `INIT-SMR-005`: The component shall verify that every source_path declared in the manifest exists at the expected source_type (blob or symlink) in the source commit tree, and shall reject the source revision when any declared path is missing or has an unexpected type. A source_type of tree is not permitted for the Version 1 bounded local workflow; any manifest entry declaring source_type tree shall cause the source revision to be rejected.
+- `INIT-SMR-006`: No source_path may resolve to a Git tree object (directory). Every source_path shall resolve to exactly one Git blob (regular file) or Git symlink. Undeclared descendants of any source directory in the source commit tree shall have no effect on initialized output; the output inventory, not the source tree, determines every output path.
 
 ## Dependencies
 

@@ -61,8 +61,8 @@
       "classification": "required",
       "order": 50,
       "applies_to": "source",
-      "pass_condition": "All Git objects referenced by the resolved commit tree (blobs, trees, and subtrees needed for declared material-manifest entries) exist locally in the source repository.",
-      "failure_codes": ["object-missing", "incomplete-tree"]
+      "pass_condition": "The exact source commit exists locally. Every source_path declared in the material manifest is reachable from the commit tree root and resolves to exactly one Git blob or supported symlink. Every blob or symlink referenced by a declared source_path exists as a local object. No material-manifest entry declares source_type tree. Undeclared source-directory descendants have no effect on initialized output because the output inventory, not the source tree, determines every output path.",
+      "failure_codes": ["object-missing", "source-path-not-resolved", "tree-type-rejected"]
     },
     {
       "check_id": "material-manifest.schema",

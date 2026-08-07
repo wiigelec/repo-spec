@@ -90,9 +90,10 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Classification: `required`
 - Failure Codes:
   - `object-missing`
-  - `incomplete-tree`
+  - `source-path-not-resolved`
+  - `tree-type-rejected`
 - Order: `50`
-- Pass Condition: `All Git objects referenced by the resolved commit tree (blobs, trees, and subtrees needed for declared material-manifest entries) exist locally in the source repository.`
+- Pass Condition: `The exact source commit exists locally. Every source_path declared in the material manifest is reachable from the commit tree root and resolves to exactly one Git blob or supported symlink. Every blob or symlink referenced by a declared source_path exists as a local object. No material-manifest entry declares source_type tree. Undeclared source-directory descendants have no effect on initialized output because the output inventory, not the source tree, determines every output path.`
 - Applies To: `material-manifest`
 - Check Id: `material-manifest.schema`
 - Classification: `required`

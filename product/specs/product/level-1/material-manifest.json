@@ -50,6 +50,10 @@
     {
       "id": "INIT-MMF-010",
       "text": "Every material-manifest entry with operation copy-verbatim shall have source_type blob or symlink. An entry with source_type tree and operation copy-verbatim is undefined and shall be rejected before installation."
+    },
+    {
+      "id": "INIT-MMF-011",
+      "text": "No material-manifest entry may be interpreted as an installation unit for a source subtree. Every entry declares exactly one source_path that resolves to one Git blob or supported symlink. Undeclared source-directory descendants shall not be installed."
     }
   ],
   "dependencies": [
