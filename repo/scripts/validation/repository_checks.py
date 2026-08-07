@@ -45,10 +45,33 @@ class ProductCorrespondenceInventory:
 
 
 @dataclass(frozen=True)
+class ExternalRepositoryValidationContext:
+    """Repository authority read by another validation domain without certifying it."""
+
+    specs: dict[str, dict[str, Any]]
+    schemas: dict[str, dict[str, Any]]
+
+
+@dataclass(frozen=True)
 class ValidationContext:
     repo_root: Path
-    repository: RepositoryValidationContext
+    repository: RepositoryValidationContext | None
     product: ProductValidationContext | None
+    external_repository: ExternalRepositoryValidationContext | None = None
+
+
+def repository_reference_specs(context: ValidationContext) -> dict[str, dict[str, Any]]:
+    if context.repository is not None:
+        return context.repository.specs
+    expect(context.external_repository is not None, "validation context missing external repository reference state")
+    return context.external_repository.specs
+
+
+def development_document_schemas(context: ValidationContext) -> dict[str, dict[str, Any]]:
+    if context.repository is not None:
+        return context.repository.schemas
+    expect(context.external_repository is not None, "validation context missing external repository schema state")
+    return context.external_repository.schemas
 
 
 @dataclass(frozen=True)
@@ -165,7 +188,13 @@ def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
     return [chunk["path"] for chunk in metadata["subordinate_chunks"]]
 
 
-def load_development_document_compatibility_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
+def load_development_document_compatibility_registry(
+    repo_root: Path,
+    *,
+    development_roots: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, dict[str, Any]]:
+    if development_roots is None:
+        development_roots = DEVELOPMENT_DOCUMENT_ROOTS
     registry_path = repo_root / DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH
     expect(registry_path.exists(), f"development document classification failed: missing compatibility registry {DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH}")
     try:
@@ -191,7 +220,7 @@ def load_development_document_compatibility_registry(repo_root: Path) -> dict[st
         path_obj = Path(path)
         expect(path_obj.name != "README.md", f"development document classification failed: compatibility registry may not include README.md {path}")
         expect(path_obj.suffix == ".md", f"development document classification failed: compatibility registry path must be Markdown {path}")
-        expect(f"{path_obj.parent.as_posix()}/" in DEVELOPMENT_DOCUMENT_ROOTS, f"development document classification failed: compatibility registry path must be under a canonical root {path}")
+        expect(f"{path_obj.parent.as_posix()}/" in development_roots, f"development document classification failed: compatibility registry path must be under a canonical root {path}")
         registry[path] = entry
 
     return registry
@@ -1065,13 +1094,30 @@ def check_generated_document_freshness_phase(context: ValidationContext) -> None
     check_generated_document_freshness(context.repo_root)
 
 
-def check_development_documents_phase(context: ValidationContext) -> None:
-    compatibility_registry = load_development_document_compatibility_registry(context.repo_root)
+def check_development_documents_phase(
+    context: ValidationContext,
+    *,
+    development_roots: dict[str, dict[str, Any]] | None = None,
+    compatibility_registry: dict[str, dict[str, Any]] | None = None,
+    owned_compatibility_paths: set[str] | None = None,
+) -> None:
+    if development_roots is None:
+        development_roots = DEVELOPMENT_DOCUMENT_ROOTS
+    if compatibility_registry is None:
+        compatibility_registry = load_development_document_compatibility_registry(
+            context.repo_root,
+            development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
+        )
+    if owned_compatibility_paths is None:
+        prefixes = tuple(development_roots)
+        owned_compatibility_paths = {
+            path for path in compatibility_registry if path.startswith(prefixes)
+        }
     unmarked_docs: set[str] = set()
     records: dict[str, DevelopmentDocumentRecord] = {}
     chunk_owner_paths: dict[str, str] = {}
 
-    for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items():
+    for root_rel, info in development_roots.items():
         root = context.repo_root / root_rel
         expect(root.exists(), f"development document root failed: missing root {root_rel}")
         readme = root / "README.md"
@@ -1093,7 +1139,8 @@ def check_development_documents_phase(context: ValidationContext) -> None:
 
             metadata = extract_document_metadata(text, rel_path)
             schema_key = info["schema_key"]
-            validate_instance(metadata, context.repository.schemas[schema_key], rel_path, context.repository.schemas[schema_key])
+            schemas = development_document_schemas(context)
+            validate_instance(metadata, schemas[schema_key], rel_path, schemas[schema_key])
 
             expect(metadata["artifact_type"] == info["artifact_type"], f"development document metadata failed: artifact type mismatch in {rel_path}")
             expect(metadata["root_path"] == root_rel, f"development document metadata failed: root path mismatch in {rel_path}")
@@ -1209,16 +1256,24 @@ def check_development_documents_phase(context: ValidationContext) -> None:
             canonical_links = {resolve_markdown_link_target(f"{root_rel}README.md", target) for _label, target in markdown_links(markdown_section(readme_text, "Canonical documents"))}
             expect(rel_path in canonical_links, f"development document discovery failed: README does not link to {rel_path}")
 
-    expect(unmarked_docs == set(compatibility_registry), f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(compatibility_registry)}")
+    expect(unmarked_docs == owned_compatibility_paths, f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(owned_compatibility_paths)}")
     check_development_document_relationships(context.repo_root, records, compatibility_registry, chunk_owner_paths)
 
 
-def check_lifecycle_lifecycle_phase(context: ValidationContext) -> None:
-    for spec_id, spec in context.repository.specs.items():
+def check_lifecycle_lifecycle_phase(
+    context: ValidationContext,
+    *,
+    development_records: dict[str, DevelopmentDocumentRecord] | None = None,
+) -> None:
+    repository_specs = repository_reference_specs(context)
+    if development_records is None:
+        development_records = get_development_document_records(context)
+
+    for spec_id, spec in repository_specs.items():
         if spec_id == "repo.manifest":
             continue
 
-    for plan_path, record in get_development_document_records(context).items():
+    for plan_path, record in development_records.items():
         metadata = record.metadata
         if metadata["artifact_type"] != "implementation-plan":
             continue
@@ -1236,13 +1291,13 @@ def check_lifecycle_lifecycle_phase(context: ValidationContext) -> None:
                 expect(target_spec["status"] == "accepted", f"lifecycle plan failed: plan {plan_path} references non-accepted specification {target_spec_id} (status: {target_spec['status']})")
                 manifest_entry = next((entry for entry in context.product.entries if entry["spec_id"] == target_spec_id), None)
                 expect(manifest_entry is not None, f"lifecycle plan failed: plan {plan_path} references specification {target_spec_id} absent from product manifest")
-            elif target_spec_id in context.repository.specs:
-                target_spec = context.repository.specs[target_spec_id]
+            elif target_spec_id in repository_specs:
+                target_spec = repository_specs[target_spec_id]
                 expect(target_spec["status"] == "accepted", f"lifecycle plan failed: plan {plan_path} references non-accepted repository specification {target_spec_id} (status: {target_spec['status']})")
             else:
                 fail(f"lifecycle plan failed: plan {plan_path} references unknown specification {target_spec_id}")
 
-    for decomp_path, record in get_development_document_records(context).items():
+    for decomp_path, record in development_records.items():
         metadata = record.metadata
         if metadata["artifact_type"] != "product-decomposition":
             continue
@@ -1258,12 +1313,17 @@ def check_lifecycle_lifecycle_phase(context: ValidationContext) -> None:
             expect("dependency_direction" in family, f"lifecycle decomposition failed: expected_specification_families entry missing dependency_direction in {decomp_path}")
 
 
-def get_development_document_records(context: ValidationContext) -> dict[str, DevelopmentDocumentRecord]:
-    compatibility_registry = load_development_document_compatibility_registry(context.repo_root)
+def get_development_document_records(
+    context: ValidationContext,
+    *,
+    development_roots: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, DevelopmentDocumentRecord]:
+    if development_roots is None:
+        development_roots = DEVELOPMENT_DOCUMENT_ROOTS
     records: dict[str, DevelopmentDocumentRecord] = {}
     chunk_owner_paths: dict[str, str] = {}
 
-    for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items():
+    for root_rel, info in development_roots.items():
         root = context.repo_root / root_rel
         if not root.exists():
             continue
@@ -1323,36 +1383,6 @@ def validate_repo(repo_root: Path) -> None:
 
 # PATCH-2-SPLIT-VALIDATION-OWNERSHIP
 
-class _DomainCompatibilityRegistry(dict):
-    """Expose owned entries for classification while retaining cross-domain lookup."""
-
-    def __init__(self, full: dict[str, dict[str, Any]], prefixes: tuple[str, ...]):
-        super().__init__(full)
-        self._owned_keys = tuple(
-            key for key in full
-            if key.startswith(prefixes)
-        )
-
-    def __iter__(self):
-        return iter(self._owned_keys)
-
-    def __len__(self):
-        return len(self._owned_keys)
-
-    def keys(self):
-        return {key: None for key in self._owned_keys}.keys()
-
-    def items(self):
-        return ((key, dict.__getitem__(self, key)) for key in self._owned_keys)
-
-    def values(self):
-        return (dict.__getitem__(self, key) for key in self._owned_keys)
-
-
-_COMBINED_DEVELOPMENT_DOCUMENT_CHECK = check_development_documents_phase
-_COMBINED_LIFECYCLE_CHECK = check_lifecycle_lifecycle_phase
-
-
 def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
@@ -1363,7 +1393,7 @@ def _load_repository_only_context(repo_root: Path) -> ValidationContext:
         actual_paths,
         schemas,
     )
-    return ValidationContext(repo_root, repository, None)
+    return ValidationContext(repo_root, repository, None, None)
 
 
 def _owned_development_roots(product_mode: bool) -> dict[str, dict[str, Any]]:
@@ -1379,25 +1409,21 @@ def _check_development_documents_for_domain(
     *,
     product_mode: bool,
 ) -> None:
-    global DEVELOPMENT_DOCUMENT_ROOTS
-    global load_development_document_compatibility_registry
-
-    original_roots = DEVELOPMENT_DOCUMENT_ROOTS
-    original_loader = load_development_document_compatibility_registry
     selected_roots = _owned_development_roots(product_mode)
+    full_registry = load_development_document_compatibility_registry(
+        context.repo_root,
+        development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
+    )
     prefixes = tuple(selected_roots)
-
-    def scoped_loader(repo_root: Path) -> dict[str, dict[str, Any]]:
-        full = original_loader(repo_root)
-        globals()["DEVELOPMENT_DOCUMENT_ROOTS"] = selected_roots
-        return _DomainCompatibilityRegistry(full, prefixes)
-
-    try:
-        load_development_document_compatibility_registry = scoped_loader
-        _COMBINED_DEVELOPMENT_DOCUMENT_CHECK(context)
-    finally:
-        DEVELOPMENT_DOCUMENT_ROOTS = original_roots
-        load_development_document_compatibility_registry = original_loader
+    owned_compatibility_paths = {
+        path for path in full_registry if path.startswith(prefixes)
+    }
+    check_development_documents_phase(
+        context,
+        development_roots=selected_roots,
+        compatibility_registry=full_registry,
+        owned_compatibility_paths=owned_compatibility_paths,
+    )
 
 
 def _check_lifecycle_for_domain(
@@ -1405,26 +1431,9 @@ def _check_lifecycle_for_domain(
     *,
     product_mode: bool,
 ) -> None:
-    global get_development_document_records
-
-    original_get_records = get_development_document_records
-    prefixes = tuple(_owned_development_roots(product_mode))
-
-    def scoped_get_records(
-        scoped_context: ValidationContext,
-    ) -> dict[str, DevelopmentDocumentRecord]:
-        records = original_get_records(scoped_context)
-        return {
-            path: record
-            for path, record in records.items()
-            if path.startswith(prefixes)
-        }
-
-    try:
-        get_development_document_records = scoped_get_records
-        _COMBINED_LIFECYCLE_CHECK(context)
-    finally:
-        get_development_document_records = original_get_records
+    selected_roots = _owned_development_roots(product_mode)
+    records = get_development_document_records(context, development_roots=selected_roots)
+    check_lifecycle_lifecycle_phase(context, development_records=records)
 
 
 def _check_generated_freshness_for_domain(

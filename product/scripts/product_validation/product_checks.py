@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from validation.repository_checks import (
-    RepositoryValidationContext,
+    ExternalRepositoryValidationContext,
     ValidationContext,
     _check_development_documents_for_domain,
     _check_generated_freshness_for_domain,
@@ -28,16 +28,13 @@ from validation.repository_checks import (
 
 
 def _load_product_only_context(repo_root: Path) -> ValidationContext:
-    manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
-    repository = RepositoryValidationContext(
-        manifest,
+    _manifest, specs, _source_paths, _actual_paths = load_repo_specs(repo_root)
+    external_repository = ExternalRepositoryValidationContext(
         specs,
-        source_paths,
-        actual_paths,
         load_repo_schemas(repo_root),
     )
     product = load_product_validation_context(repo_root)
-    return ValidationContext(repo_root, repository, product)
+    return ValidationContext(repo_root, None, product, external_repository)
 
 
 def _check_product_unique_spec_ids(context: ValidationContext) -> None:
