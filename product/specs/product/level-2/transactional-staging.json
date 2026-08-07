@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-TST-005",
-      "text": "Promotion to the declared destination shall occur only after the validation report's overall_status is pass. When overall_status is fail (because a required check has status failed, error, or skipped), promotion shall not occur and the workflow shall fail before promotion, leaving the staging transaction root in its pre-promotion state for diagnostics."
+      "text": "Promotion to the declared destination shall occur only after report finalization completes and the finalized validation report's overall_status is pass. When overall_status is fail (because a required Phase 1 or Phase 2 check has status failed, error, or skipped, or because report finalization failed), promotion shall not occur and the workflow shall fail before promotion, leaving the staging transaction root in its pre-promotion state for diagnostics."
     },
     {
       "id": "INIT-TST-006",

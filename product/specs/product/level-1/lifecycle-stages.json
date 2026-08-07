@@ -122,14 +122,14 @@
     },
     {
       "id": "repository-validation",
-      "purpose": "Validate repository content and Git state inside the repository/ directory against conformance requirements, writing the validation report to transaction/.",
+      "purpose": "Validate repository content and Git state inside the repository/ directory against conformance requirements, finalize the validation report (linkage verification, check completeness, schema validation), and write the final report to transaction/.",
       "required": true,
       "deferrable": false,
       "recoverable": false,
       "predecessors": [
         "git-initialization"
       ],
-      "output": "Validation report"
+      "output": "Finalized validation report"
     },
     {
       "id": "promotion",
@@ -200,7 +200,7 @@
     },
     {
       "id": "INIT-LCS-009",
-      "text": "Promotion shall not occur unless the validation report's overall_status is pass. The repository-validation stage must execute all required checks and produce a validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
+      "text": "Promotion shall not occur unless the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization (fingerprint linkage, digest linkage, check ordering, check completeness, schema validation), and produce a finalized validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
     }
   ],
   "dependencies": [

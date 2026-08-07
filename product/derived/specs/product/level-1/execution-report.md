@@ -61,6 +61,7 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 - `INIT-RPT-008`: The execution report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys and stages for each stage entry), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-RPT-009`: The execution report format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
 - `INIT-RPT-010`: When repository-validation produces a validation report with overall_status fail, the execution report shall record the repository-validation stage status as failed, record the validation report path in the errors array, and the workflow shall not proceed to promotion.
+- `INIT-RPT-011`: When report finalization fails (fingerprint linkage mismatch, digest linkage mismatch, check ordering violation, check completeness violation, schema validation failure, or serialization error), the execution report shall record the repository-validation stage status as failed with the specific finalization error in the errors array. Report-finalization failure is a pre-promotion failure; the staging transaction root shall be preserved for diagnostics and the workflow shall not proceed to promotion.
 
 ## Dependencies
 

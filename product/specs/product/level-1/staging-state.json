@@ -41,7 +41,7 @@
     },
     {
       "id": "INIT-STA-008",
-      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the validation report."
+      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation, including report finalization, has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the finalized validation report."
     },
     {
       "id": "INIT-STA-009",
