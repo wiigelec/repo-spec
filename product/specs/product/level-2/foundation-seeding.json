@@ -82,7 +82,7 @@
     },
     {
       "id": "INIT-FSD-017",
-      "text": "Empty workspace initialization shall create the empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/ in the staging workspace; no specification JSON files shall be created inside these directories, and the component shall not produce candidate specification documents with normative requirement content."
+      "text": "Empty workspace initialization shall create the Level workspace README.md placeholder files at product/specs/product/level-0/README.md, product/specs/product/level-1/README.md, product/specs/product/level-2/README.md, and product/specs/product/level-3/README.md in the staging workspace to preserve the Level directories in Git. Each Level README shall state its Level identity, that the workspace is activated, that no product specifications currently exist at that Level, that generated content remains candidate and non-normative, and the governed next action for adding specifications to that Level. No specification JSON files shall be created inside these directories, and the component shall not produce candidate specification documents with normative requirement content."
     },
     {
       "id": "INIT-FSD-018",
