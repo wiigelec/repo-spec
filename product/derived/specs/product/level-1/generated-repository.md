@@ -61,6 +61,7 @@ Defines the complete output tree of the initialized repository: every required p
 - `INIT-GRL-020`: The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts.
 - `INIT-GRL-021`: The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action.
 - `INIT-GRL-022`: All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record.
+- `INIT-GRL-023`: The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every path in the inventory with required true shall be present, every present path shall match its inventory entry's type and mode, and no prohibited_path shall appear.
 
 ## Dependencies
 

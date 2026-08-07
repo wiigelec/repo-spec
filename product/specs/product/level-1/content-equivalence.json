@@ -45,6 +45,10 @@
       "text": "Direction evidence equivalence shall require that every projected evidence file in product/docs/direction/evidence/ be byte-identical to the corresponding source Git blob at the declared source revision, and that the direction evidence manifest entries match the actual evidence files and their source material without omission or mismatch."
     },
     {
+      "id": "INIT-EQV-015",
+      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1) with required true, and equivalence shall be evaluated on the full inventory-defined path set."
+    },
+    {
       "id": "INIT-EQV-013",
       "text": "Duplicate direction_material entries shall each produce their own distinct evidence file with a unique positional index, and the equivalence relation shall treat two direction_material arrays as equivalent only when they have identical membership, order, and duplicate positions."
     },

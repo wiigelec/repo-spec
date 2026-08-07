@@ -39,7 +39,7 @@ Defines the stable set of validation checks that the initializer executes agains
 
 ## Normative requirements
 
-- `INIT-VP-001`: The validation profile shall declare a stable ordered set of checks, each with a unique ID, required or advisory classification, and deterministic order: request.schema, source.repository-local, source.revision-commit, source.objects-complete, material-manifest.schema, material-manifest.paths, output.inventory-complete, output.no-undeclared-paths, output.copied-bytes-match, output.generated-records-valid, output.direction-evidence-match, output.repository-digest-match, git.branch, git.root-commit-count, git.worktree-clean, git.remote-count (advisory), handoff.consistent, provenance.consistent.
+- `INIT-VP-001`: The validation profile shall declare a stable ordered set of checks, each with a unique ID, required or advisory classification, and deterministic order: request.schema, request.canonicalization, source.repository-local, source.revision-commit, source.objects-complete, material-manifest.schema, material-manifest.paths, output.inventory-complete, output.no-undeclared-paths, output.copied-bytes-match, output.generated-records-valid, output.direction-evidence-match, output.repository-digest-match, git.branch, git.root-commit-count, git.worktree-clean, git.remote-count (advisory), handoff.consistent, provenance.consistent.
 - `INIT-VP-002`: A required check that fails or errors shall cause overall validation to fail.
 - `INIT-VP-003`: An advisory check that fails or errors shall be recorded in the validation report but shall not cause overall validation to fail.
 - `INIT-VP-004`: The validation profile shall be versioned and may be extended by successor versions that add new checks without renumbering existing checks.

@@ -98,6 +98,10 @@
     {
       "id": "INIT-GRL-022",
       "text": "All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record."
+    },
+    {
+      "id": "INIT-GRL-023",
+      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every path in the inventory with required true shall be present, every present path shall match its inventory entry's type and mode, and no prohibited_path shall appear."
     }
   ],
   "dependencies": [

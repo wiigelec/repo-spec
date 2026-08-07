@@ -13,7 +13,8 @@
     {"id": "INIT-VR-004", "text": "The failure_code field shall use a machine-readable identifier from a defined enumeration, enabling automated interpretation of failure causes."},
     {"id": "INIT-VR-005", "text": "The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings, and shall not be considered authoritative product specification content."},
     {"id": "INIT-VR-006", "text": "The validation report shall not report overall success when any required check has status fail or error, regardless of the number or type of passed checks."},
-    {"id": "INIT-VR-007", "text": "The validation report may contain timestamp (ISO-8601 string), initializer_version (product identity and version string), and source_revision (canonical Git object identity) fields for diagnostic context."}
+    {"id": "INIT-VR-007", "text": "The validation report may contain timestamp (ISO-8601 string), initializer_version (product identity and version string), and source_revision (canonical Git object identity) fields for diagnostic context."},
+    {"id": "INIT-VR-008", "text": "The failure_code field shall use one of the following machine-readable identifiers: SCHEMA_MISMATCH, MISSING_FIELD, INVALID_VALUE, SOURCE_NOT_FOUND, REVISION_NOT_FOUND, OBJECT_MISSING, PATH_MISMATCH, TYPE_MISMATCH, BYTE_MISMATCH, DIGEST_MISMATCH, UNDECLARED_PATH, PROHIBITED_PATH, INVENTORY_INCOMPLETE, BOOTSTRAP_MISMATCH, WORKTREE_DIRTY, BRANCH_MISMATCH, REMOTE_MISMATCH, PROVENANCE_MISMATCH, HANDOFF_MISMATCH, INTERNAL_ERROR, or PRECONDITION_FAILED."}
   ],
   "dependencies": [{"spec_id": "product.initializer-level-0"}, {"spec_id": "product.validation-profile"}],
   "references": [

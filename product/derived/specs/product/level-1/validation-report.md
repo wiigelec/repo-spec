@@ -46,6 +46,7 @@ Defines the canonical validation report shape that the repository validation com
 - `INIT-VR-005`: The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings, and shall not be considered authoritative product specification content.
 - `INIT-VR-006`: The validation report shall not report overall success when any required check has status fail or error, regardless of the number or type of passed checks.
 - `INIT-VR-007`: The validation report may contain timestamp (ISO-8601 string), initializer_version (product identity and version string), and source_revision (canonical Git object identity) fields for diagnostic context.
+- `INIT-VR-008`: The failure_code field shall use one of the following machine-readable identifiers: SCHEMA_MISMATCH, MISSING_FIELD, INVALID_VALUE, SOURCE_NOT_FOUND, REVISION_NOT_FOUND, OBJECT_MISSING, PATH_MISMATCH, TYPE_MISMATCH, BYTE_MISMATCH, DIGEST_MISMATCH, UNDECLARED_PATH, PROHIBITED_PATH, INVENTORY_INCOMPLETE, BOOTSTRAP_MISMATCH, WORKTREE_DIRTY, BRANCH_MISMATCH, REMOTE_MISMATCH, PROVENANCE_MISMATCH, HANDOFF_MISMATCH, INTERNAL_ERROR, or PRECONDITION_FAILED.
 
 ## Dependencies
 

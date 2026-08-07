@@ -91,6 +91,10 @@
     {
       "id": "INIT-FSD-019",
       "text": "Empty workspace initialization shall produce a discoverability README at product/specs/product/README.md containing an H1 heading with the product identifier and the text 'This directory contains the activated but empty product-specification workspace for {product_id}.' followed by links to the overview, decomposition, and implementation plan controlling documents; the README shall have lifecycle_status candidate."
+    },
+    {
+      "id": "INIT-FSD-021",
+      "text": "Foundation seeding shall produce only paths declared in the output inventory (product.initializer-output-inventory-v1) with producer direction-evidence-installation or workspace-seeding; every produced path shall match its inventory entry's operation, type, and mode, and no inventory entry with required true shall be omitted."
     }
   ],
   "dependencies": [

@@ -153,6 +153,13 @@
       "capability_group": "initial-bounded-workflow"
     },
     {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "status": "candidate",
+      "level": 1,
+      "capability_group": "initial-bounded-workflow"
+    },
+    {
       "spec_id": "product.lifecycle-stages",
       "path": "product/specs/product/level-1/lifecycle-stages.json",
       "status": "candidate",
