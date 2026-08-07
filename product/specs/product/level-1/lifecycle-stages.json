@@ -122,14 +122,14 @@
     },
     {
       "id": "repository-validation",
-      "purpose": "Validate repository content and Git state inside the repository/ directory against conformance requirements, finalize the validation report (linkage verification, check completeness, schema validation), and write the final report to transaction/.",
+      "purpose": "Validate repository content and Git state inside the repository/ directory against conformance requirements, finalize the validation report and the staging-state record through an ordered write protocol (in-memory construction and validation, durable write of the finalized validation report, durable write of the finalized staging-state record, then dual-record consistency verification), and write both finalized records to transaction/.",
       "required": true,
       "deferrable": false,
       "recoverable": false,
       "predecessors": [
         "git-initialization"
       ],
-      "output": "Finalized validation report"
+      "output": "Finalized validation report and mutually consistent finalized staging-state record"
     },
     {
       "id": "promotion",
@@ -200,7 +200,7 @@
     },
     {
       "id": "INIT-LCS-009",
-      "text": "Promotion shall not occur unless the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization (fingerprint linkage, digest linkage, check ordering, check completeness, schema validation), and produce a finalized validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
+      "text": "Promotion shall not occur unless both the finalized validation report and the finalized staging-state record are durably written and mutually consistent and the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization as an ordered write protocol (construct and validate the proposed validation report and proposed staging-state representation in memory, write the finalized validation report durably, write the finalized staging-state record durably, then verify both durable records are mutually consistent), and produce both finalized records before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate."
     },
     {
       "id": "INIT-LCS-010",
