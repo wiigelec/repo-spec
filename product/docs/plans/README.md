@@ -1,5 +1,7 @@
 # Product Plan Root
 
-No initializer implementation plan is currently maintained.
+This root holds the initializer implementation plan.
 
-Patch 3 of governed issue #243 will create the replacement candidate plan scaffold.
+## Canonical documents
+
+- [Initializer implementation plan](./INITIALIZER-IMPLEMENTATION-PLAN.md)

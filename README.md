@@ -20,3 +20,5 @@ Supported runtime: Python 3.10+
 
 - `repo/scripts/validate`
 - `repo/scripts/generate-docs`
+
+- [Initializer implementation plan](product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
