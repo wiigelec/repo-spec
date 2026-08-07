@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-FIN-002",
-      "text": "For entries with operation `copy-verbatim`: the component shall read the Git blob identified by the source commit tree at source_path, write its bytes verbatim to destination_path with the mode declared in the manifest entry (100644 for non-executable, 100755 for executable), record the source commit and source_path in the provenance record, and not apply encoding, newline, or timestamp transformations. The component shall reject any copy-verbatim entry whose source_type is tree; every copy-verbatim entry must source from a single Git blob or supported symlink."
+      "text": "For entries with operation `copy-verbatim`: the component shall read the Git blob identified by the source commit tree at source_path, write its bytes verbatim to destination_path with the mode declared in the manifest entry (100644 for non-executable, 100755 for executable), and not apply encoding, newline, or timestamp transformations. The component shall reject any copy-verbatim entry whose source_type is tree; every copy-verbatim entry must source from a single Git blob or supported symlink."
     },
     {
       "id": "INIT-FIN-003",

@@ -13,17 +13,10 @@
   "field_order": {
     "root": [
       "schema_version",
-      "status",
-      "repository",
       "foundations",
       "material",
       "provenance",
       "next_action"
-    ],
-    "repository": [
-      "branch",
-      "worktree_clean",
-      "remotes"
     ],
     "foundations": [
       "framework",
@@ -39,7 +32,7 @@
   "normative_requirements": [
     {
       "id": "INIT-HND-001",
-      "text": "A handoff manifest shall be an atomic output artifact that describes the initialized repository's state, lists the generated, selected, omitted, and deferred material, confirms that the bounded local workflow completed successfully, and names the next governed action for the initialized repository."
+      "text": "A handoff manifest shall be an atomic output artifact that describes the prepared repository content assembled before Git initialization, lists the generated, selected, omitted, and deferred material, and names the next governed action for the repository."
     },
     {
       "id": "INIT-HND-002",
@@ -51,15 +44,15 @@
     },
     {
       "id": "INIT-HND-004",
-      "text": "The handoff representation shall define the following required fields with the given JSON types: `schema_version` as a string, `status` as a string, `repository` as an object, `foundations` as an object, `material` as an object, `provenance` as a string, and `next_action` as a string."
+      "text": "The handoff representation shall define the following required fields with the given JSON types: `schema_version` as a string, `foundations` as an object, `material` as an object, `provenance` as a string, and `next_action` as a string."
     },
     {
       "id": "INIT-HND-005",
-      "text": "The handoff `repository` object shall define `branch` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings, where `framework` lists paths of installed reusable framework content and `product` lists paths of generated candidate document skeletons and the Level workspace README.md files preserving Level directories; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings."
+      "text": "The handoff `foundations` object shall define `framework` and `product` arrays of repository-relative strings, where `framework` lists paths of installed reusable framework content and `product` lists paths of generated candidate document skeletons and the Level workspace README.md files preserving Level directories; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings."
     },
     {
       "id": "INIT-HND-006",
-      "text": "The handoff `status` shall be the constant string `completed`, the `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be the constant string 'Develop and accept the product overview and decomposition, then create product specifications. Create an implementation plan only after the controlling specifications are accepted.'; `schema_version` shall be the constant string `1`, `branch` shall be `main`, and `remotes` shall be `0`."
+      "text": "The handoff `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be the constant string 'Develop and accept the product overview and decomposition, then create product specifications. Create an implementation plan only after the controlling specifications are accepted.'; `schema_version` shall be the constant string `2`."
     },
     {
       "id": "INIT-HND-007",
@@ -67,23 +60,23 @@
     },
     {
       "id": "INIT-HND-008",
-      "text": "The handoff manifest shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, repository, foundations, and material for nested objects), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
+      "text": "The handoff manifest shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, foundations and material for nested objects), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
     },
     {
       "id": "INIT-HND-009",
-      "text": "The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently."
+      "text": "The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `2` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently."
     },
     {
       "id": "INIT-HND-010",
-      "text": "The six material arrays (generated, selected, omitted, deferred, framework, and product) shall be mutually disjoint: no repository-relative path shall appear in more than one array."
+      "text": "The six classification arrays (`foundations.framework`, `foundations.product`, `material.generated`, `material.selected`, `material.omitted`, and `material.deferred`) shall be mutually disjoint: no repository-relative path shall appear in more than one array."
     },
     {
       "id": "INIT-HND-011",
-      "text": "Every regular file in the initialized repository that is not listed in the foundations arrays shall appear in exactly one of generated, selected, omitted, or deferred; directories shall not appear in any array."
+      "text": "Every regular file present in the prepared repository shall appear in exactly one of `foundations.framework`, `foundations.product`, `material.generated`, or `material.selected`; a path listed in `material.omitted` or `material.deferred` shall not be present as a regular file in the prepared repository; directories shall not appear in any classification array."
     },
     {
       "id": "INIT-HND-012",
-      "text": "Generated content (controlling documents, chunk documents, product manifest, discoverability README files, provenance record, and handoff manifest) that is not copied framework material shall be listed in the generated array; framework content copied verbatim from the source repository shall be listed in the selected array; content explicitly excluded by the execution profile or request shall be listed in the omitted array; content deferred by explicit authority shall be listed in the deferred array."
+      "text": "Installed reusable framework files shall be listed only in `foundations.framework`; generated candidate document skeletons and Level workspace README.md files preserving the product specification workspace shall be listed only in `foundations.product`; other generated files, including the product manifest, provenance record, and handoff manifest, shall be listed in `material.generated`; source-derived non-foundation files installed into the prepared repository shall be listed in `material.selected`; paths explicitly excluded by the execution profile or request shall be listed in `material.omitted`; paths deferred by explicit authority shall be listed in `material.deferred`."
     },
     {
       "id": "INIT-HND-013",
@@ -91,7 +84,7 @@
     },
     {
       "id": "INIT-HND-014",
-      "text": "Each entry in a material array shall be a repository-relative path to a regular file; paths shall use forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters."
+      "text": "Each classification-array entry shall be a normalized repository-relative file path using forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters. Entries in `foundations.framework`, `foundations.product`, `material.generated`, and `material.selected` shall identify regular files present in the prepared repository; entries in `material.omitted` and `material.deferred` shall identify authorized file paths that are not present in the prepared repository."
     }
   ],
   "dependencies": [
