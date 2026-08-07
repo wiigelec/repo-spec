@@ -12,6 +12,10 @@ from .product_policy import (
     check_product_completeness_phase,
     check_product_specification_root_phase,
 )
+from .product_correspondence import (
+    check_product_conformance_completeness_phase,
+    check_product_correspondence_phase,
+)
 
 from validation.repository_checks import (
     ExternalRepositoryValidationContext,
@@ -19,8 +23,6 @@ from validation.repository_checks import (
     _check_development_documents_for_domain,
     _check_generated_freshness_for_domain,
     _check_lifecycle_for_domain,
-    check_product_conformance_completeness_phase,
-    check_product_correspondence_phase,
     check_supersession_acyclicity,
     check_supersession_pairs,
     check_unique_item_properties,
