@@ -4,7 +4,6 @@ This root holds governed implementation-planning documents and compatibility-man
 
 ## Canonical documents
 
-- [Initializer implementation plan candidate placeholder](./INITIALIZER-IMPLEMENTATION-PLAN.md)
 
 ## Compatibility-managed legacy records
 

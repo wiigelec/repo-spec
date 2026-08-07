@@ -82,4 +82,3 @@ The next authorized action is initializer decomposition under `docs/decompositio
 
 - [Initializer overview root index](./README.md)
 - [Initializer decomposition](../decompositions/INITIALIZER-DECOMPOSITION.md)
-- [Initializer implementation plan](../plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
