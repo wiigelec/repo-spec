@@ -29,26 +29,14 @@ def load_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any
 
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
-    mode = argv[2] if len(argv) > 2 else "--write"
 
-    if mode == "--self-test-failure":
-        print("forced failure for behavior test", file=sys.stderr)
+    if len(argv) > 2:
+        print(f"validation error: unknown mode: {argv[2]}", file=sys.stderr)
         return 1
 
     try:
-        if mode == "--write":
-            validate_repo(repo_root)
-            return 0
-        if mode == "--mutation-tests":
-            from validation.tests.mutation_tests import run_complete_validation_tests
-
-            run_complete_validation_tests(repo_root)
-
-            from initializer.tests.run_tests import run_initializer_tests
-            run_initializer_tests(repo_root)
-
-            return 0
-        fail(f"unknown mode: {mode}")
+        validate_repo(repo_root)
+        return 0
     except ValidationFailure as exc:
         print(f"validation error: {exc}", file=sys.stderr)
         return 1

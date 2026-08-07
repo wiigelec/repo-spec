@@ -33,7 +33,7 @@
       "required": true,
       "input_type": "textarea",
       "description": "List the validation commands run and the results observed.",
-      "placeholder": "repo/scripts/validate\nrepo/scripts/validate --mutation-tests\nResults and any noteworthy revision evidence.",
+      "placeholder": "scripts/validate\nResults and any noteworthy revision evidence.",
       "validation": {
         "kind": "meaningful"
       }

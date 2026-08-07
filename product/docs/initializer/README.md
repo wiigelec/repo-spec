@@ -542,7 +542,7 @@ To run the initializer test suite directly:
 python3 -c "import sys; sys.path.insert(0, 'scripts'); from initializer.tests.run_tests import run_initializer_tests; from pathlib import Path; run_initializer_tests(Path.cwd())"
 ```
 
-Initializer tests are also integrated into `repo/scripts/validate --mutation-tests`.
+Initializer tests are also integrated into the product-owned validation self-tests run by `scripts/validate`.
 
 ### Deferred content
 

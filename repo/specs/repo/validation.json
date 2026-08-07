@@ -1,49 +1,49 @@
 {
   "spec_id": "repo.validation",
   "title": "Validation",
-  "purpose": "Defines repository validation during repo-spec formation.",
+  "purpose": "Defines ownership, scope, and aggregate orchestration for repository and product validation during repo-spec formation.",
   "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
       "id": "REPO-VAL-001",
-      "text": "The repository shall provide one validation entry point."
+      "text": "The repository shall provide `repo/scripts/validate` as the repository-owned leaf validation entry point, `product/scripts/validate` as the product-owned leaf validation entry point, and `scripts/validate` as the aggregate repository-wide validation entry point. Each leaf validation entry point shall validate only its owned tree, and the aggregate entry point shall run both leaf validators plus the repository-owned and product-owned validation mutation/self-test suites."
     },
     {
       "id": "REPO-VAL-002",
-      "text": "The public validation entry point shall be a shell script wrapper, and the implementation it invokes shall not rely on third-party packages."
+      "text": "Each public validation entry point shall be a shell script wrapper, and the implementation it invokes shall not rely on third-party packages."
     },
     {
       "id": "REPO-VAL-003",
-      "text": "The validation entry point shall enforce conformance to the repository's JSON Schemas."
+      "text": "Each leaf validation entry point shall enforce conformance to the repository's JSON Schemas for artifacts within its owned validation domain."
     },
     {
       "id": "REPO-VAL-004",
-      "text": "The validation entry point shall enforce manifest completeness."
+      "text": "Each leaf validation entry point shall enforce manifest completeness for manifests and authoritative content within its owned validation domain."
     },
     {
       "id": "REPO-VAL-005",
-      "text": "The validation entry point shall enforce unique specification IDs."
+      "text": "Each leaf validation entry point shall enforce unique specification IDs within its owned validation domain."
     },
     {
       "id": "REPO-VAL-006",
-      "text": "The validation entry point shall enforce resolvable references according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository."
+      "text": "Each leaf validation entry point shall enforce resolvable references within its owned validation domain according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository."
     },
     {
       "id": "REPO-VAL-007",
-      "text": "The validation entry point shall enforce allowed dependency directions, product completeness rules, acyclic dependencies, and shall allow candidate product specifications to depend on candidate or accepted product specifications while allowing accepted product specifications to depend only on accepted product specifications."
+      "text": "The product leaf validation entry point shall enforce allowed product dependency directions, product completeness rules, acyclic dependencies, and shall allow candidate product specifications to depend on candidate or accepted product specifications while allowing accepted product specifications to depend only on accepted product specifications."
     },
     {
       "id": "REPO-VAL-008",
-      "text": "The validation entry point shall enforce generated-document freshness."
+      "text": "Each leaf validation entry point shall enforce generated-document freshness for generated artifacts owned by its validation domain."
     },
     {
       "id": "REPO-VAL-009",
-      "text": "The validation entry point shall enforce clean failure behavior."
+      "text": "Each public validation entry point shall enforce clean failure behavior."
     },
     {
       "id": "REPO-VAL-010",
-      "text": "The validation entry point shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior."
+      "text": "Leaf validation entry points shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior except where an accepted validation requirement explicitly assigns a repository-local structural contract to that leaf."
     },
     {
       "id": "REPO-VAL-011",
@@ -51,111 +51,111 @@
     },
     {
       "id": "REPO-VAL-012",
-      "text": "The validation entry point shall enforce that replacement-lineage relations resolve to manifest-listed specifications and do not self-reference."
+      "text": "Each leaf validation entry point shall enforce that replacement-lineage relations within its owned validation domain resolve to manifest-listed specifications and do not self-reference."
     },
     {
       "id": "REPO-VAL-013",
-      "text": "The validation entry point shall enforce separation between repository-specification and product-specification roots, and shall reject undeclared JSON content under `product/specs/product/` until the product-manifest system is introduced."
+      "text": "The leaf validation entry points shall enforce separation between repository-specification and product-specification roots within their owned trees and shall reject undeclared specification JSON content under an owned specification root when that root is governed by a manifest."
     },
     {
       "id": "REPO-VAL-014",
-      "text": "The validation entry point shall reject repository specifications that are placed under `product/specs/product/` and product specifications that are placed under `repo/specs/repo/` where those placements are detectable from repository-local JSON files."
+      "text": "The repository leaf validation entry point shall reject product specifications placed under `repo/specs/repo/`, and the product leaf validation entry point shall reject repository specifications placed under `product/specs/product/`, where those placements are detectable from repository-local JSON files."
     },
     {
       "id": "REPO-VAL-015",
-      "text": "The validation entry point shall enforce repository-local platform-profile classification consistency, including the accepted GitHub profile boundary, installed adapter ownership, and declared remote-state kinds."
+      "text": "The repository leaf validation entry point shall enforce repository-local platform-profile classification consistency, including the accepted GitHub profile boundary, installed adapter ownership, and declared remote-state kinds."
     },
     {
       "id": "REPO-VAL-016",
-      "text": "The validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification fields."
+      "text": "The repository leaf validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification fields."
     },
     {
       "id": "REPO-VAL-017",
-      "text": "The validation entry point shall enforce product projection declaration shape, repository-relative `product/derived/specs/product/` path boundaries, and declaration ownership by the source product specification."
+      "text": "The product leaf validation entry point shall enforce product projection declaration shape, repository-relative `product/derived/specs/product/` path boundaries, and declaration ownership by the source product specification."
     },
     {
       "id": "REPO-VAL-018",
-      "text": "The validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations."
+      "text": "The repository leaf validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations."
     },
     {
       "id": "REPO-VAL-019",
-      "text": "The validation entry point shall enforce the canonical development-document roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering for governed overview, decomposition, and planning artifacts."
+      "text": "Each leaf validation entry point shall enforce, for governed development-document roots within its owned tree, the canonical roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering."
     },
     {
       "id": "REPO-VAL-020",
-      "text": "The validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts."
+      "text": "Each leaf validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts within its owned tree."
     },
     {
       "id": "REPO-VAL-021",
-      "text": "The validation entry point shall classify every non-README top-level Markdown file in `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry."
+      "text": "Each leaf validation entry point shall classify every non-README top-level Markdown file in governed development-document roots within its owned tree and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry when that registry applies to the owned root."
     },
     {
       "id": "REPO-VAL-022",
-      "text": "The validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts so the declared chunk roles cover the subordinate chunks exactly once."
+      "text": "Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts within its owned tree so the declared chunk roles cover the subordinate chunks exactly once."
     },
     {
       "id": "REPO-VAL-023",
-      "text": "The validation entry point shall build a cross-document registry for governed development documents and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them."
+      "text": "Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them."
     },
     {
       "id": "REPO-VAL-024",
-      "text": "The validation entry point shall enforce reciprocal and acyclic supersession relationships for repository and product specifications that declare supersedes or superseded_by relations."
+      "text": "The repository and product leaf validation entry points shall each enforce reciprocal and acyclic supersession relationships for specifications within their owned validation domains that declare supersedes or superseded_by relations."
     },
     {
       "id": "REPO-VAL-025",
-      "text": "The validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical."
+      "text": "Each applicable leaf validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical."
     },
     {
       "id": "REPO-VAL-026",
-      "text": "The validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks so chunk manageability remains deterministic without relying on token counts."
+      "text": "Each applicable leaf validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks within its owned tree so chunk manageability remains deterministic without relying on token counts."
     },
     {
       "id": "REPO-VAL-027",
-      "text": "The validation entry point shall enforce that an implementation plan may only be marked as planning-complete or ready for acceptance when every required controlling product specification referenced by the plan is accepted, structurally valid, registered in the product manifest, and not mutually contradictory with other referenced specifications."
+      "text": "The applicable leaf validation entry point shall enforce that an implementation plan may only be marked as planning-complete or ready for acceptance when every required controlling product specification referenced by the plan is accepted, structurally valid, registered in the product manifest, and not mutually contradictory with other referenced specifications."
     },
     {
       "id": "REPO-VAL-028",
-      "text": "The validation entry point shall reject an implementation plan that references a product specification that is absent from the product manifest or whose lifecycle status has not reached the minimum required state."
+      "text": "The applicable leaf validation entry point shall reject an implementation plan that references a product specification that is absent from the product manifest or whose lifecycle status has not reached the minimum required state."
     },
     {
       "id": "REPO-VAL-029",
-      "text": "The validation entry point shall reject an implementation plan that references only placeholder specification roots or scaffolding instead of substantive accepted product specifications for any planned workstream that would produce maintained product artifacts."
+      "text": "The applicable leaf validation entry point shall reject an implementation plan that references only placeholder specification roots or scaffolding instead of substantive accepted product specifications for any planned workstream that would produce maintained product artifacts."
     },
     {
       "id": "REPO-VAL-030",
-      "text": "The validation entry point shall reject an implementation plan that references candidate product specifications where accepted specifications are required by the governing scope."
+      "text": "The applicable leaf validation entry point shall reject an implementation plan that references candidate product specifications where accepted specifications are required by the governing scope."
     },
     {
       "id": "REPO-VAL-031",
-      "text": "The validation entry point shall reject an implementation plan that references product specifications with invalid upward or circular dependency chains as defined by repo.product-levels."
+      "text": "The applicable leaf validation entry point shall reject an implementation plan that references product specifications with invalid upward or circular dependency chains as defined by repo.product-levels."
     },
     {
       "id": "REPO-VAL-032",
-      "text": "The validation entry point shall reject an implementation plan that references mutually contradictory product specifications where the contradiction is machine-detectable (e.g., overlapping normative requirement identifiers, incompatible Level-participation requirements)."
+      "text": "The applicable leaf validation entry point shall reject an implementation plan that references mutually contradictory product specifications where the contradiction is machine-detectable (e.g., overlapping normative requirement identifiers, incompatible Level-participation requirements)."
     },
     {
       "id": "REPO-VAL-033",
-      "text": "The validation entry point shall reject an implementation plan that claims specification-complete scope for any workstream whose referenced product specifications are missing required correspondence or dependency declarations."
+      "text": "The applicable leaf validation entry point shall reject an implementation plan that claims specification-complete scope for any workstream whose referenced product specifications are missing required correspondence or dependency declarations."
     },
     {
       "id": "REPO-VAL-034",
-      "text": "The validation entry point shall enforce that a product decomposition identifies expected Level 0-3 specification families, responsibility boundaries, and intended dependency directions, and shall reject a decomposition that lacks this identification when the decomposition declares readiness for specification work."
+      "text": "The applicable leaf validation entry point shall enforce that a product decomposition identifies expected Level 0-3 specification families, responsibility boundaries, and intended dependency directions, and shall reject a decomposition that lacks this identification when the decomposition declares readiness for specification work."
     },
     {
       "id": "REPO-VAL-035",
-      "text": "The validation entry point shall enforce that exploratory experiment classifications are explicitly non-product, isolated from maintained product paths where practical, and include disposal, archival, or adoption criteria."
+      "text": "The applicable leaf validation entry point shall enforce that exploratory experiment classifications are explicitly non-product, isolated from maintained product paths where practical, and include disposal, archival, or adoption criteria."
     },
     {
       "id": "REPO-VAL-036",
-      "text": "The validation entry point shall reject an implementation governing issue that creates or modifies maintained product artifacts when the issue does not cite the accepted implementation plan, applicable accepted product specifications, the exact accepted default-branch base, and predecessor implementation evidence, where those fields are machine-checkable."
+      "text": "The applicable leaf validation entry point shall reject an implementation governing issue that creates or modifies maintained product artifacts when the issue does not cite the accepted implementation plan, applicable accepted product specifications, the exact accepted default-branch base, and predecessor implementation evidence, where those fields are machine-checkable."
     },
     {
       "id": "REPO-VAL-037",
-      "text": "The validation entry point shall enforce that no validation rule treats generated Markdown as authoritative over source specifications. Generated artifacts remain subordinate to their declared source artifacts."
+      "text": "Each leaf validation entry point shall enforce that no validation rule within its owned validation domain treats generated Markdown as authoritative over source specifications. Generated artifacts remain subordinate to their declared source artifacts."
     },
     {
       "id": "REPO-VAL-038",
-      "text": "The validation entry point shall enforce that a higher-Level product specification may depend directly on an accepted lower-Level specification without requiring intermediate-Level specifications, consistent with repo.product-levels."
+      "text": "The product leaf validation entry point shall enforce that a higher-Level product specification may depend directly on an accepted lower-Level specification without requiring intermediate-Level specifications, consistent with repo.product-levels."
     }
   ],
   "dependencies": [

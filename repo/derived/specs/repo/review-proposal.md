@@ -59,8 +59,7 @@ Validation metadata:
 List the validation commands run and the results observed.
 
 Placeholder:
-> repo/scripts/validate
-> repo/scripts/validate --mutation-tests
+> scripts/validate
 > Results and any noteworthy revision evidence.
 
 Validation metadata:
