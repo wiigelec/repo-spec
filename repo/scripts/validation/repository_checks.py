@@ -909,20 +909,16 @@ def check_development_documents_phase(
     check_development_document_relationships(context.repo_root, records, compatibility_registry, chunk_owner_paths)
 
 
-def check_lifecycle_lifecycle_phase(
+def _check_repository_lifecycle(
     context: ValidationContext,
-    *,
-    development_records: dict[str, DevelopmentDocumentRecord] | None = None,
 ) -> None:
     repository_specs = repository_reference_specs(context)
-    if development_records is None:
-        development_records = get_development_document_records(context)
+    records = get_development_document_records(
+        context,
+        development_roots=_repository_development_roots(),
+    )
 
-    for spec_id, spec in repository_specs.items():
-        if spec_id == "repo.manifest":
-            continue
-
-    for plan_path, record in development_records.items():
+    for plan_path, record in records.items():
         metadata = record.metadata
         if metadata["artifact_type"] != "implementation-plan":
             continue
@@ -934,32 +930,24 @@ def check_lifecycle_lifecycle_phase(
             continue
 
         for spec_ref in required_specs:
-            target_spec_id = spec_ref.get("spec_id") if isinstance(spec_ref, dict) else spec_ref
-            if context.product is not None and target_spec_id in context.product.specs:
-                target_spec = context.product.specs[target_spec_id]
-                expect(target_spec["status"] == "accepted", f"lifecycle plan failed: plan {plan_path} references non-accepted specification {target_spec_id} (status: {target_spec['status']})")
-                manifest_entry = next((entry for entry in context.product.entries if entry["spec_id"] == target_spec_id), None)
-                expect(manifest_entry is not None, f"lifecycle plan failed: plan {plan_path} references specification {target_spec_id} absent from product manifest")
-            elif target_spec_id in repository_specs:
+            target_spec_id = (
+                spec_ref.get("spec_id") if isinstance(spec_ref, dict) else spec_ref
+            )
+            if target_spec_id in repository_specs:
                 target_spec = repository_specs[target_spec_id]
-                expect(target_spec["status"] == "accepted", f"lifecycle plan failed: plan {plan_path} references non-accepted repository specification {target_spec_id} (status: {target_spec['status']})")
+                expect(
+                    target_spec["status"] == "accepted",
+                    f"lifecycle plan failed: plan {plan_path} references "
+                    f"non-accepted repository specification {target_spec_id} "
+                    f"(status: {target_spec['status']})",
+                )
             else:
-                fail(f"lifecycle plan failed: plan {plan_path} references unknown specification {target_spec_id}")
+                fail(
+                    f"lifecycle plan failed: plan {plan_path} references "
+                    f"unknown specification {target_spec_id}"
+                )
 
-    for decomp_path, record in development_records.items():
-        metadata = record.metadata
-        if metadata["artifact_type"] != "product-decomposition":
-            continue
-        if metadata.get("lifecycle_status") not in {"accepted", "candidate"}:
-            continue
-        expected_spec_families = metadata.get("expected_specification_families", [])
-        if not expected_spec_families:
-            continue
-        for family in expected_spec_families:
-            expect(isinstance(family, dict), f"lifecycle decomposition failed: expected_specification_families entry must be an object in {decomp_path}")
-            expect("level" in family, f"lifecycle decomposition failed: expected_specification_families entry missing level in {decomp_path}")
-            expect("responsibility" in family, f"lifecycle decomposition failed: expected_specification_families entry missing responsibility in {decomp_path}")
-            expect("dependency_direction" in family, f"lifecycle decomposition failed: expected_specification_families entry missing dependency_direction in {decomp_path}")
+
 
 
 def get_development_document_records(
@@ -1013,7 +1001,6 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("lineage relations", check_lineage_relations_phase),
     ("acyclic dependencies", check_acyclic_dependencies_phase),
     ("development documents", check_development_documents_phase),
-    ("lifecycle authority sequence", check_lifecycle_lifecycle_phase),
     ("generated-document freshness", check_generated_document_freshness_phase),
 ]
 
@@ -1039,20 +1026,18 @@ def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     return ValidationContext(repo_root, repository, None, None)
 
 
-def _owned_development_roots(product_mode: bool) -> dict[str, dict[str, Any]]:
+def _repository_development_roots() -> dict[str, dict[str, Any]]:
     return {
         root_rel: info
         for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items()
-        if root_rel.startswith("product/") == product_mode
+        if not root_rel.startswith("product/")
     }
 
 
-def _check_development_documents_for_domain(
+def _check_repository_development_documents(
     context: ValidationContext,
-    *,
-    product_mode: bool,
 ) -> None:
-    selected_roots = _owned_development_roots(product_mode)
+    selected_roots = _repository_development_roots()
     full_registry = load_development_document_compatibility_registry(
         context.repo_root,
         development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
@@ -1069,36 +1054,18 @@ def _check_development_documents_for_domain(
     )
 
 
-def _check_lifecycle_for_domain(
-    context: ValidationContext,
-    *,
-    product_mode: bool,
-) -> None:
-    selected_roots = _owned_development_roots(product_mode)
-    records = get_development_document_records(context, development_roots=selected_roots)
-    check_lifecycle_lifecycle_phase(context, development_records=records)
 
 
-def _check_generated_freshness_for_domain(
+
+
+def _check_repository_generated_freshness(
     context: ValidationContext,
-    *,
-    product_mode: bool,
 ) -> None:
     from docgen import SPECIAL_RENDERERS, render_spec_projection
 
-    if product_mode:
-        if context.product is None:
-            specs = {}
-            source_paths = {}
-        else:
-            specs = context.product.specs
-            source_paths = context.product.source_paths
-        derived_root = context.repo_root / "product/derived/specs/product"
-    else:
-        specs = context.repository.specs
-        source_paths = context.repository.source_paths
-        derived_root = context.repo_root / "repo/derived/specs/repo"
-
+    specs = context.repository.specs
+    source_paths = context.repository.source_paths
+    derived_root = context.repo_root / "repo/derived/specs/repo"
     expected_markdown_paths: set[str] = set()
 
     for spec_id in sorted(specs, key=lambda item: source_paths[item]):
@@ -1121,9 +1088,7 @@ def _check_generated_freshness_for_domain(
                     spec["title"],
                     source_path,
                     spec,
-                    include_authoritative_specs=(
-                        not product_mode and spec_id == "repo.manifest"
-                    ),
+                    include_authoritative_specs=(spec_id == "repo.manifest"),
                 )
             else:
                 renderer = SPECIAL_RENDERERS.get(renderer_id)
@@ -1165,6 +1130,8 @@ def _check_generated_freshness_for_domain(
         if extra:
             parts.append(f"orphaned derived markdown: {', '.join(extra)}")
         fail("generated-document freshness failed: " + "; ".join(parts))
+
+
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository JSON Schema conformance", check_schema_conformance),
     ("manifest completeness", check_manifest_phase),
@@ -1185,18 +1152,9 @@ def validate_repo(repo_root: Path) -> None:
     for label, check in REPOSITORY_LEAF_VALIDATION_PHASES:
         check(context)
         print(f"ok: {label}")
-    _check_development_documents_for_domain(
-        context,
-        product_mode=False,
-    )
+    _check_repository_development_documents(context)
     print("ok: repository development documents")
-    _check_lifecycle_for_domain(
-        context,
-        product_mode=False,
-    )
+    _check_repository_lifecycle(context)
     print("ok: repository lifecycle authority sequence")
-    _check_generated_freshness_for_domain(
-        context,
-        product_mode=False,
-    )
+    _check_repository_generated_freshness(context)
     print("ok: repository generated-document freshness")

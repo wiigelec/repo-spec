@@ -16,13 +16,13 @@ from .product_correspondence import (
     check_product_conformance_completeness_phase,
     check_product_correspondence_phase,
 )
+from .product_development_documents import check_product_development_documents
+from .product_lifecycle import check_product_lifecycle_readiness
+from .product_generated_freshness import check_product_generated_freshness
 
 from validation.repository_checks import (
     ExternalRepositoryValidationContext,
     ValidationContext,
-    _check_development_documents_for_domain,
-    _check_generated_freshness_for_domain,
-    _check_lifecycle_for_domain,
     check_supersession_acyclicity,
     check_supersession_pairs,
     check_unique_item_properties,
@@ -148,18 +148,9 @@ def validate_product(repo_root: Path) -> None:
             print(f"ok: {label}")
     else:
         print("ok: product specification system inactive")
-    _check_development_documents_for_domain(
-        context,
-        product_mode=True,
-    )
+    check_product_development_documents(context)
     print("ok: product development documents")
-    _check_lifecycle_for_domain(
-        context,
-        product_mode=True,
-    )
+    check_product_lifecycle_readiness(context)
     print("ok: product lifecycle authority sequence")
-    _check_generated_freshness_for_domain(
-        context,
-        product_mode=True,
-    )
+    check_product_generated_freshness(context)
     print("ok: product generated-document freshness")
