@@ -208,11 +208,11 @@
     },
     {
       "id": "INIT-LCS-011",
-      "text": "The bounded local workflow has four terminal outcomes: pre-promotion failure (any required stage fails before promotion), promoted success (promotion commits and success-finalization completes), indeterminate promotion (rename outcome cannot be determined), and cleanup failure (promotion committed but post-promotion staging-root removal fails). Each terminal outcome has distinct diagnostic preservation, caller return, and retry-authorization rules defined by the governing workflow specification."
+      "text": "The bounded local workflow has four terminal outcomes: pre-promotion failure (any required stage fails before promotion), promoted success (promotion commits and success-finalization completes), indeterminate promotion (rename outcome cannot be determined), and cleanup failure (promotion committed but post-promotion staging-root removal fails). Each terminal outcome has distinct diagnostic preservation, caller return, and retry-authorization rules defined by the governing workflow specification. Under cleanup failure, the staging-state record shall have: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes promotion (completed) and excludes success-finalization (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string."
     },
     {
       "id": "INIT-LCS-012",
-      "text": "A cleanup failure after successful promotion is distinct from a pre-promotion failure: the repository is successfully promoted and must not be misreported as unpromoted. The workflow returns a promoted-with-finalization-error result. No automatic retry of the failed cleanup operation is authorized without external diagnosis."
+      "text": "A cleanup failure after successful promotion is distinct from a pre-promotion failure: the repository is successfully promoted and must not be misreported as unpromoted. The workflow returns a promoted-with-finalization-error result. No automatic retry of the failed cleanup operation is authorized without external diagnosis. Under cleanup failure, `promotion_outcome` remains `promoted`; the `cleanup_failure` field records the failure reason. The staging transaction root is preserved when accessible for diagnostics. The destination remains authoritative and must not be reported as absent or unpromoted."
     }
   ],
   "dependencies": [

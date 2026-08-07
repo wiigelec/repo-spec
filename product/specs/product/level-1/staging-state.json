@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-STA-003",
-      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `validation_overall_status` as either a string or null, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null."
+      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `validation_overall_status` as either a string or null, `promotion_entered` as a boolean, `promotion_outcome` as either a string or null, and `cleanup_failure` as either a string or null."
     },
     {
       "id": "INIT-STA-004",
@@ -45,7 +45,7 @@
     },
     {
       "id": "INIT-STA-009",
-      "text": "The `promotion_entered` field shall be `true` when the promotion stage has been entered; `promotion_outcome` shall be one of the constant strings `not-promoted`, `promoted`, or `indeterminate` when promotion has been attempted and resolved, or `null` when promotion has not been entered or an attempted promotion has not been resolved."
+      "text": "The `promotion_entered` field shall be `true` when the promotion stage has been entered; `promotion_outcome` shall be one of the constant strings `not-promoted`, `promoted`, or `indeterminate` when promotion has been attempted and resolved, or `null` when promotion has not been entered or an attempted promotion has not been resolved. When cleanup after successful promotion fails, `promotion_outcome` remains `promoted`; the `cleanup_failure` field, not a changed promotion outcome, records the failure."
     },
     {
       "id": "INIT-STA-010",
@@ -53,11 +53,11 @@
     },
     {
       "id": "INIT-STA-011",
-      "text": "When promotion_outcome is promoted and post-promotion staging-root removal fails, the staging-state record may record an additional `cleanup_failure` field that captures the cleanup failure reason as a string. The presence of a `cleanup_failure` field does not change the promotion outcome: the repository remains promoted. The staging-state record shall treat `cleanup_failure` as an optional field present only when cleanup after successful promotion fails."
+      "text": "When `promotion_outcome` is `promoted` and post-promotion staging-root removal fails, the staging-state record shall record `cleanup_failure` as a non-empty diagnostic string describing the cleanup failure reason. The canonical cleanup-failure state is: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes `promotion` (completed) and does not include `success-finalization` (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = the non-empty diagnostic string. The presence of a `cleanup_failure` field does not change the promotion outcome: the repository remains promoted. The staging-state record shall treat `cleanup_failure` as an optional field that must be present (as a non-empty string) when cleanup after successful promotion fails, and must be absent (null or omitted) when cleanup succeeds."
     },
     {
       "id": "INIT-STA-012",
-      "text": "The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields, except where a field is explicitly declared optional (such as `cleanup_failure`)."
+      "text": "The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields. The `cleanup_failure` field shall be `null` when cleanup has not been attempted or succeeded, and a non-empty string when cleanup after successful promotion failed."
     },
     {
       "id": "INIT-STA-013",
@@ -80,7 +80,8 @@
       "validation_completed",
       "validation_overall_status",
       "promotion_entered",
-      "promotion_outcome"
+      "promotion_outcome",
+      "cleanup_failure"
     ]
   },
   "dependencies": [
