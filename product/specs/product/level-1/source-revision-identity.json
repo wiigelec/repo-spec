@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-SRC-003",
-      "text": "The revision identity shall use the canonical Git object identity representation defined by product.git-object-identity, with object_format matching the source repository's native object format as reported by `git rev-parse --show-object-format`, and the object_id shall be the full-length identifier validated according to the declared format."
+      "text": "The revision identity shall use the canonical Git object identity representation defined by product.git-object-identity, with object_format \"sha1\" and the object_id shall be exactly 40 lowercase hexadecimal characters."
     },
     {
       "id": "INIT-SRC-004",
@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-SRC-007",
-      "text": "The supported Git object format for Version 1 shall be the repository's native object format as reported by `git rev-parse --show-object-format`; the initializer shall not convert between object formats."
+      "text": "The supported Git object format for Version 1 shall be SHA-1 only; the initializer shall reject any source repository whose native object format is not SHA-1."
     },
     {
       "id": "INIT-SRC-008",

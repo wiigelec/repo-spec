@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-REQ-006",
-      "text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as a non-empty string that is the canonical Git object identity object_id as defined by product.git-object-identity, and shall be rejected when any other source field is present."
+      "text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity with object_format \"sha1\", and shall be rejected when any other source field is present."
     },
     {
       "id": "INIT-REQ-007",
@@ -79,6 +79,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     },
     {
       "spec_id": "product.product-identity"

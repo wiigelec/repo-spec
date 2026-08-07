@@ -40,16 +40,15 @@ Defines the canonical Git object identity representation used by every initializ
 ## Normative requirements
 
 - `INIT-OID-001`: A Git object identity shall be a structured representation with exactly two fields: object_format and object_id.
-- `INIT-OID-002`: The object_format field shall be a string whose value is one of: "sha1" or "sha256".
+- `INIT-OID-002`: The object_format field shall be a string whose value is the constant "sha1" for Version 1.
 - `INIT-OID-003`: When object_format is "sha1", the object_id shall be exactly 40 lowercase hexadecimal characters.
-- `INIT-OID-004`: When object_format is "sha256", the object_id shall be exactly 64 lowercase hexadecimal characters.
-- `INIT-OID-005`: The object_format shall match the source repository's native object format: a SHA-256 repository shall not accept a SHA-1 object identity, and a SHA-1 repository shall not accept a SHA-256 object identity.
-- `INIT-OID-006`: Abbreviated object IDs are forbidden: every object_id shall be the full required length for its declared format.
-- `INIT-OID-007`: Named references (branch names, tag names, symbolic refs) are forbidden as object_id values.
-- `INIT-OID-008`: The identified source revision shall resolve directly to a commit object, not to a blob, tree, or tag object that does not ultimately resolve to a commit.
-- `INIT-OID-009`: Version 1 of the initializer shall restrict Git object identity to SHA-1 only: object_format must be "sha1" and object_id must be exactly 40 lowercase hexadecimal characters. Support for SHA-256 is reserved for a future version.
-- `INIT-OID-010`: When a record field stores a revision or blob reference as a flat string rather than a structured object_format/object_id pair, the string shall be the object_id value alone and the implied object_format shall be determined by the source repository's native format.
-- `INIT-OID-011`: Every record in the initializer that stores or transmits a revision reference shall use the canonical Git object identity representation and shall preserve the exact full object_id value.
+- `INIT-OID-004`: Abbreviated object IDs are forbidden: every object_id shall be the full required length for its declared format.
+- `INIT-OID-005`: Named references (branch names, tag names, symbolic refs) are forbidden as object_id values.
+- `INIT-OID-006`: Version 1 of the initializer shall restrict Git object identity to SHA-1 only: object_format must be "sha1" and object_id must be exactly 40 lowercase hexadecimal characters. Support for SHA-256 is reserved for a future schema version.
+- `INIT-OID-007`: A source commit identity shall use the structured representation with object_format "sha1" and the object_id shall resolve directly to a commit object in the source repository via `git rev-parse --verify <object_id>^{commit}`.
+- `INIT-OID-008`: A source blob identity shall use the structured representation with object_format "sha1" and the object_id shall resolve directly to a blob object in the source repository via `git rev-parse --verify <object_id>^{blob}`.
+- `INIT-OID-009`: A generated Git tree or commit identity shall use the structured representation with object_format "sha1" and the object_id shall be the full-length SHA-1 of the generated Git object in the staged or promoted repository.
+- `INIT-OID-010`: Every record in the initializer that stores or transmits a Git object identity shall use the canonical structured representation defined by this specification and shall preserve the exact full object_id value.
 
 ## Dependencies
 

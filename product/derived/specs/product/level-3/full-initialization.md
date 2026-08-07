@@ -68,6 +68,7 @@ Defines the complete bounded local workflow from an explicit JSON request and lo
 - `product.local-git-initialization`
 - `product.content-equivalence`
 - `product.generated-repository`
+- `product.git-object-identity`
 - `product.lifecycle-stages`
 
 ## References

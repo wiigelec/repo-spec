@@ -44,7 +44,7 @@ Defines the atomic JSON initialization request for the bounded local initializat
 - `INIT-REQ-003`: The initialization request representation shall be JSON and shall not infer omitted authority-bearing values from environment state, repository configuration, remote services, or named references.
 - `INIT-REQ-004`: The request root object shall define exactly the following fields: required `schema_version` as a string, required `destination` as a string, required `authority` as an object, required `source` as an object, required `product` as an object, and optional `profile` as a string; the request shall be rejected when any other root field is present.
 - `INIT-REQ-005`: The `authority` object shall define required `granted_by` as a non-empty opaque string identifying the governing request authority, optional `type` as a non-empty string naming the authority type (such as `governing-issue`, `review-proposal`, or `local-bootstrap`), and optional `scope` as a non-empty string, and shall be rejected when any other authority field is present.
-- `INIT-REQ-006`: The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as a non-empty string that is the canonical Git object identity object_id as defined by product.git-object-identity, and shall be rejected when any other source field is present.
+- `INIT-REQ-006`: The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity with object_format "sha1", and shall be rejected when any other source field is present.
 - `INIT-REQ-007`: The `product` object shall define required `id` as a non-empty string product identifier conforming to the product-identity contract and required `direction_material` as a non-empty array of non-empty strings, and shall be rejected when any other product field is present.
 - `INIT-REQ-008`: The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty repository-relative path within the local source repository that names supplied product-direction material; duplicate source entries shall each receive their own distinct positional index and each occurrence shall produce its own deterministic evidence path, and duplicates shall not be deduplicated, collapsed, or merged.
 - `INIT-REQ-015`: Each `direction_material` entry shall be a repository-relative path that resolves to an existing regular file at the specified source revision; the request shall be rejected when any direction_material entry resolves to a nonexistent path, a directory, a symbolic link, a path outside the source repository, or a non-regular file.
@@ -59,6 +59,7 @@ Defines the atomic JSON initialization request for the bounded local initializat
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.product-identity`
 
 ## References

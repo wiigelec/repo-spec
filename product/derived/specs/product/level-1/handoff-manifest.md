@@ -80,6 +80,7 @@ Defines the atomic handoff manifest output artifact format for the initializer.
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 
 ## References
 

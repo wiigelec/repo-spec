@@ -45,6 +45,7 @@ Defines repository validation performed against the complete staged repository b
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.validation-profile`
 - `product.validation-report`
 

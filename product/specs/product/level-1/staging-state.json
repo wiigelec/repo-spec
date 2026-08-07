@@ -21,11 +21,11 @@
     },
     {
       "id": "INIT-STA-003",
-      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as a string, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null."
+      "text": "The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null."
     },
     {
       "id": "INIT-STA-004",
-      "text": "The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the canonical Git object identity object_id as defined by product.git-object-identity for the source revision; `source_repository` shall be the resolved local source repository path."
+      "text": "The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the full canonical Git object identity representation as defined by product.git-object-identity for the source revision; `source_repository` shall be the resolved local source repository path."
     },
     {
       "id": "INIT-STA-005",

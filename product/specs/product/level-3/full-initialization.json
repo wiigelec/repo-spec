@@ -99,6 +99,9 @@
       "spec_id": "product.generated-repository"
     },
     {
+      "spec_id": "product.git-object-identity"
+    },
+    {
       "spec_id": "product.lifecycle-stages"
     }
   ],

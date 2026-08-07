@@ -64,6 +64,7 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.lifecycle-stages`
 
 ## References

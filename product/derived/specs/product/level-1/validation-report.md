@@ -51,6 +51,7 @@ Defines the canonical validation report shape that the repository validation com
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.validation-profile`
 
 ## References

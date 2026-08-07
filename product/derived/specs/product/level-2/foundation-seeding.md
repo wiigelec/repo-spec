@@ -65,6 +65,7 @@ Defines the workspace-seeding operations that generate candidate document skelet
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.initialization-request`
 - `product.material-classification`
 - `product.product-identity`
