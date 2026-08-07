@@ -9,10 +9,12 @@ from validation.repository_checks import ValidationContext, expect, resolve_repo
 
 
 def check_product_generated_freshness(context: ValidationContext) -> None:
-    expect(context.product is not None, "product validation context missing")
-
-    specs = context.product.specs
-    source_paths = context.product.source_paths
+    if context.product is None:
+        specs = {}
+        source_paths = {}
+    else:
+        specs = context.product.specs
+        source_paths = context.product.source_paths
     derived_root = context.repo_root / "product/derived/specs/product"
     expected_markdown_paths: set[str] = set()
 

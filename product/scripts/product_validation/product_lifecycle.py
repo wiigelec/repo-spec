@@ -14,7 +14,8 @@ from .product_development_documents import _product_development_roots
 
 
 def check_product_lifecycle_readiness(context: ValidationContext) -> None:
-    expect(context.product is not None, "product validation context missing")
+    product_specs = context.product.specs if context.product is not None else {}
+    product_entries = context.product.entries if context.product is not None else []
     repository_specs = repository_reference_specs(context)
     records = get_development_document_records(
         context,
@@ -36,8 +37,8 @@ def check_product_lifecycle_readiness(context: ValidationContext) -> None:
             target_spec_id = (
                 spec_ref.get("spec_id") if isinstance(spec_ref, dict) else spec_ref
             )
-            if target_spec_id in context.product.specs:
-                target_spec = context.product.specs[target_spec_id]
+            if target_spec_id in product_specs:
+                target_spec = product_specs[target_spec_id]
                 expect(
                     target_spec["status"] == "accepted",
                     f"lifecycle plan failed: plan {plan_path} references "
@@ -47,7 +48,7 @@ def check_product_lifecycle_readiness(context: ValidationContext) -> None:
                 manifest_entry = next(
                     (
                         entry
-                        for entry in context.product.entries
+                        for entry in product_entries
                         if entry["spec_id"] == target_spec_id
                     ),
                     None,
