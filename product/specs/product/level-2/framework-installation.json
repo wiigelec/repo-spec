@@ -37,12 +37,15 @@
     },
     {
       "id": "INIT-FIN-007",
-      "text": "The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must match an inventory entry, the operation must match, and the mode must match the inventory declaration."
+      "text": "The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must be a member of the framework-installation dynamic path family, the operation must match, and the mode must match the material-manifest entry. No installed path shall match a fixed worktree file entry or another dynamic family path."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
     },
     {
       "spec_id": "product.material-classification"

@@ -26,6 +26,10 @@
     {
       "id": "INIT-GIT-004",
       "text": "The repository shall contain no additional commits beyond the root commit, no merge commits, no tag references, and no orphan references, and the root commit shall have no parent commit."
+    },
+    {
+      "id": "INIT-GIT-005",
+      "text": "Git administrative state (.git/ directory) is governed by this specification and product.git-bootstrap-profile. It is not part of the worktree output inventory (product.initializer-output-inventory-v1). Repository validation checks verify Git state independently from worktree file enumeration."
     }
   ],
   "dependencies": [

@@ -30,7 +30,7 @@
     },
     {
       "id": "INIT-FSD-005",
-      "text": "Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/evidence/{positional_index:03d}-{source_basename}, where source_basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes without any front matter, encoding conversion, line ending normalization, or other content modification."
+      "text": "Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes without any front matter, encoding conversion, line ending normalization, or other content modification."
     },
     {
       "id": "INIT-FSD-006",
@@ -38,7 +38,7 @@
     },
     {
       "id": "INIT-FSD-007",
-      "text": "When two or more direction_material entries resolve to the same source_basename, the projected filenames shall remain unique because each uses a distinct positional_index prefix; no deduplication, renaming beyond the positional prefix, or content merging shall occur."
+      "text": "When two or more direction_material entries resolve to the same basename, the projected filenames shall remain unique because each uses a distinct index prefix; no deduplication, renaming beyond the index prefix, or content merging shall occur."
     },
     {
       "id": "INIT-FSD-020",

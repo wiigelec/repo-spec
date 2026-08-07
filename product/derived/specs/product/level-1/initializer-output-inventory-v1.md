@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Complete closed inventory of every path the initializer produces in the initialized repository, assigning each to exactly one producer with its operation, governing specification, type, mode, and required-or-prohibited status.
+Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, dynamic path families, and required directories with separately governed Git administrative state.
 
 ## Correspondence
 
@@ -32,309 +32,132 @@ Complete closed inventory of every path the initializer produces in the initiali
 
 - None
 
-## Entries
+## Dynamic Path Families
+
+- Expansion Pattern: `{material-manifest.destination_path}`
+- Governing Spec: `product.material-manifest`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Rule: `Every entry in the material manifest (product/scripts/initializer/framework-inventory.json) with operation copy-verbatim produces its declared destination_path. The set of all such paths constitutes the framework-installation dynamic family.`
+- Type: `regular-file`
+- Expansion Pattern: `product/docs/direction/evidence/{index:03d}-{basename}`
+- Governing Spec: `product.foundation-seeding`
+- Operation: `copy-verbatim`
+- Producer: `direction-evidence-installation`
+- Required: `True`
+- Rule: `Each direction_material entry produces one file at product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path.`
+- Type: `regular-file`
+- Expansion Pattern: `docs/overview/{slug}-OVERVIEW.md, docs/decompositions/{slug}-DECOMPOSITION.md, docs/plans/{slug}-IMPLEMENTATION-PLAN.md`
+- Governing Spec: `product.foundation-seeding`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Rule: `One controlling document per product identifier at docs/overview/{slug}-OVERVIEW.md, docs/decompositions/{slug}-DECOMPOSITION.md, and docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.`
+- Type: `regular-file`
+- Expansion Pattern: `docs/overview/{slug}-overview/chunk-{NN}-{topic}.md`
+- Governing Spec: `product.foundation-seeding`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Rule: `Six overview chunk files under docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.`
+- Type: `regular-file`
+- Expansion Pattern: `docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md`
+- Governing Spec: `product.foundation-seeding`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Rule: `Four decomposition chunk files under docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.`
+- Type: `regular-file`
+- Expansion Pattern: `docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md`
+- Governing Spec: `product.foundation-seeding`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Rule: `Four implementation plan chunk files under docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.`
+- Type: `regular-file`
+
+## Fixed Worktree Files
 
 - Destination Path: `README.md`
-- Governing Spec: `product.framework-installation`
+- Governing Spec: `product.material-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
-- Type: `file`
 - Destination Path: `AGENTS.md`
-- Governing Spec: `product.framework-installation`
+- Governing Spec: `product.material-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
-- Type: `file`
 - Destination Path: `LICENSE`
-- Governing Spec: `product.framework-installation`
+- Governing Spec: `product.material-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
-- Type: `file`
-- Destination Path: `repo/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Type: `tree`
-- Destination Path: `repo/specs/repo/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Type: `tree`
-- Destination Path: `repo/schemas/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Type: `tree`
-- Destination Path: `repo/scripts/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Type: `tree`
-- Destination Path: `repo/derived/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Type: `tree`
-- Destination Path: `repo/profiles/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `False`
-- Type: `tree`
-- Destination Path: `.github/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `False`
-- Type: `tree`
-- Destination Path: `product/scripts/initializer/`
-- Governing Spec: `product.framework-installation`
-- Mode: `040000`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Type: `tree`
 - Destination Path: `product/scripts/repo-spec-init`
-- Governing Spec: `product.framework-installation`
+- Governing Spec: `product.material-manifest`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
-- Type: `file`
-- Destination Path: `product/docs/direction/evidence/{name}`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `direction-evidence-installation`
-- Required: `True`
-- Type: `file`
 - Destination Path: `product/docs/direction/manifest.json`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `generate-record`
 - Producer: `direction-evidence-installation`
 - Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-OVERVIEW.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-overview/chunk-01-identity-and-purpose.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-overview/chunk-02-problem-and-outcome.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-overview/chunk-03-users-principles-boundaries.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-overview/chunk-04-capabilities-and-success.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-overview/chunk-05-unresolved-questions.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/overview/{slug}-overview/chunk-06-lifecycle-and-handoff.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/decompositions/{slug}-DECOMPOSITION.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/decompositions/{slug}-decomposition/chunk-01-invocation-and-authority.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/decompositions/{slug}-decomposition/chunk-02-product-areas.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/decompositions/{slug}-decomposition/chunk-03-cross-cutting-concerns.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/decompositions/{slug}-decomposition/chunk-04-stopping-criteria-and-handoff.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/plans/{slug}-IMPLEMENTATION-PLAN.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/plans/{slug}-implementation-plan/chunk-01-scope-and-preconditions.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/plans/{slug}-implementation-plan/chunk-02-workstreams-and-dependencies.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/plans/{slug}-implementation-plan/chunk-03-validation-and-completion.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
-- Destination Path: `docs/plans/{slug}-implementation-plan/chunk-04-risks-and-unresolved-decisions.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `file`
 - Destination Path: `docs/overview/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Type: `file`
 - Destination Path: `docs/decompositions/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Type: `file`
 - Destination Path: `docs/plans/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Type: `file`
 - Destination Path: `product/specs/product/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Type: `file`
 - Destination Path: `product/specs/product/manifest.json`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `generate-record`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Type: `file`
-- Destination Path: `product/specs/product/level-0/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `directory`
-- Destination Path: `product/specs/product/level-1/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `directory`
-- Destination Path: `product/specs/product/level-2/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `directory`
-- Destination Path: `product/specs/product/level-3/`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `040000`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Type: `directory`
 - Destination Path: `repo/initializer/provenance.json`
 - Governing Spec: `product.provenance-record`
 - Mode: `100644`
 - Operation: `generate-record`
 - Producer: `provenance-recording`
 - Required: `True`
-- Type: `file`
 - Destination Path: `repo/initializer/handoff.json`
 - Governing Spec: `product.handoff-manifest`
 - Mode: `100644`
 - Operation: `generate-record`
 - Producer: `handoff-assembly`
 - Required: `True`
-- Type: `file`
-- Destination Path: `.git/`
-- Governing Spec: `product.local-git-repository`
-- Mode: `040000`
-- Operation: `generate-record`
-- Producer: `git-initialization`
-- Required: `True`
-- Type: `tree`
+
+## Git State
+
+- Governing Specs:
+  - `product.local-git-repository`
+  - `product.git-bootstrap-profile`
+- Rule: `Git administrative state (.git/ directory) is governed separately by product.local-git-repository and product.git-bootstrap-profile. It is not part of the worktree output inventory. Repository validation checks (git.branch, git.root-commit-count, git.worktree-clean, git.remote-count) verify Git state requirements.`
 
 ## Primitives
 
@@ -347,23 +170,53 @@ Complete closed inventory of every path the initializer produces in the initiali
 - `validate/`
 - `product/src/`
 - `product/tests/`
+- `product/scripts/initializer/`
+
+## Required Directories
+
+- Destination Path: `product/specs/product/level-0/`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `040000`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Destination Path: `product/specs/product/level-1/`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `040000`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Destination Path: `product/specs/product/level-2/`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `040000`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
+- Destination Path: `product/specs/product/level-3/`
+- Governing Spec: `product.foundation-seeding`
+- Mode: `040000`
+- Operation: `instantiate-template`
+- Producer: `workspace-seeding`
+- Required: `True`
 
 ## Normative requirements
 
-- `INV-V1-001`: The output inventory shall enumerate every destination path the initializer may create in the initialized repository, assigning each to exactly one producer.
-- `INV-V1-002`: Each inventory entry shall declare destination_path, type, producer, operation, governing_spec, mode, and required status.
-- `INV-V1-003`: An entry with required true must be present in every successful initialization; an entry with required false is present only when the execution profile selects it.
-- `INV-V1-004`: The inventory shall declare prohibited_paths that shall not appear in the initialized repository worktree.
-- `INV-V1-005`: The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization.
-- `INV-V1-006`: The inventory may use template placeholders {slug} for the product identifier and {name} for dynamically-named evidence files; the governing specification for each producer defines the exact resolution of these placeholders.
-- `INV-V1-007`: Repository validation shall include a check that every path in the staged repository matches an inventory entry and that no prohibited_path appears.
+- `INV-V1-001`: The output inventory shall enumerate every destination path the initializer may create in the initialized repository worktree, assigning each to exactly one producer. Git administrative state (.git/) is governed separately.
+- `INV-V1-002`: Fixed worktree files are individually enumerated with their producer, operation, governing spec, mode, and required status.
+- `INV-V1-003`: Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry or with another dynamic family.
+- `INV-V1-004`: The framework-installation dynamic family resolves to every destination_path declared by the material manifest (product/scripts/initializer/framework-inventory.json) with operation copy-verbatim. No overlapping inventory entries are permitted.
+- `INV-V1-005`: A required entry must be present in every successful initialization; no entry may be marked optional in the Version 1 bounded local workflow.
+- `INV-V1-006`: The inventory shall declare prohibited_paths that shall not appear in the initialized repository worktree. product/scripts/initializer/ is prohibited because its contents are installed individually through the material manifest dynamic family.
+- `INV-V1-007`: The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization. Only the first five produce worktree paths; git-initialization produces the Git administrative state (.git/) governed separately.
+- `INV-V1-008`: Dynamic path families may use template placeholders {slug} for the product identifier and {index:03d}-{basename} for evidence files; the governing specification for each producer defines the exact resolution of these placeholders.
+- `INV-V1-009`: Repository validation shall include checks that every path in the staged repository matches either a fixed worktree file entry or a resolved dynamic family path, that no prohibited_path appears, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile.
+- `INV-V1-010`: Parent directories of declared files are implicit and are not separately inventoried. Only explicitly listed required_directories must be present as empty directories.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.provenance-record`
 - `product.handoff-manifest`
-- `product.local-git-repository`
 
 ## References
 
@@ -371,6 +224,7 @@ Complete closed inventory of every path the initializer produces in the initiali
 - artifact: `product/specs/product/level-1/provenance-record.json`
 - artifact: `product/specs/product/level-1/handoff-manifest.json`
 - artifact: `product/specs/product/level-1/local-git-repository.json`
+- artifact: `product/specs/product/level-1/git-bootstrap-profile.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

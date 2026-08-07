@@ -37,16 +37,19 @@
     },
     {
       "id": "INIT-MMF-007",
-      "text": "Every material manifest entry whose operation is copy-verbatim shall correspond to exactly one entry in the output inventory (product.initializer-output-inventory-v1) with producer framework-installation, and the manifest entry's destination_path shall match the inventory entry's destination_path."
+      "text": "Every material manifest entry whose operation is copy-verbatim shall be covered by the framework-installation dynamic path family in the output inventory (product.initializer-output-inventory-v1). The manifest entry's destination_path shall be a member of the framework-installation dynamic family."
     },
     {
       "id": "INIT-MMF-008",
-      "text": "The union of all manifest-destined paths (copy-verbatim operations) and the generated output inventory entries (instantiate-template and generate-record operations) shall equal the complete closed output inventory; any material manifest entry whose path has no matching output inventory entry or whose output inventory entry has no matching producer shall be rejected."
+      "text": "The union of all framework-installation dynamic family paths (resolved from material-manifest copy-verbatim entries) and all fixed worktree file entries and other dynamic family paths (direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly) shall equal the complete closed output inventory. Every output path shall have exactly one producer, and no material manifest entry shall produce a path that matches a fixed worktree file entry or another dynamic family path."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
     },
     {
       "spec_id": "product.material-classification"

@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-GRL-002",
-      "text": "The initialized repository shall contain the paths under repo/ as declared by the material manifest: framework-authoritative entries at repo/specs/repo/ and repo/schemas/, framework-support entries at repo/scripts/, derived entries at repo/derived/, and repo/profiles/ entries shall be excluded when no platform profile is selected, with each path produced by its declared operation from the source commit tree."
+      "text": "The initialized repository shall contain the paths under repo/ as declared by the material manifest (framework-inventory.json) with operation copy-verbatim, each produced individually from its source entry in the source commit tree. No broad directory copy is permitted; every repo/ path shall have exactly one material-manifest entry and one corresponding inventory entry in the framework-installation dynamic family."
     },
     {
       "id": "INIT-GRL-003",
@@ -85,7 +85,7 @@
     },
     {
       "id": "INIT-GRL-019",
-      "text": "Profile-specific paths (repo/profiles/ and .github/) shall be excluded from the initialized repository unless the execution profile selects a platform profile for installation."
+      "text": "Profile-specific paths (repo/profiles/ and .github/) are not part of the Version 1 bounded local output inventory and shall not appear in the initialized repository."
     },
     {
       "id": "INIT-GRL-020",
@@ -97,16 +97,19 @@
     },
     {
       "id": "INIT-GRL-022",
-      "text": "All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record."
+      "text": "All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record. Git administrative state (.git/) is governed separately by product.local-git-repository and product.git-bootstrap-profile and is not part of the worktree inventory."
     },
     {
       "id": "INIT-GRL-023",
-      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every path in the inventory with required true shall be present, every present path shall match its inventory entry's type and mode, and no prohibited_path shall appear."
+      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every dynamic family path shall be present per its expansion rule, every required directory shall be present, no prohibited_path shall appear, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
     },
     {
       "spec_id": "product.product-identity"

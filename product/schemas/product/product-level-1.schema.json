@@ -51,6 +51,68 @@
             }
           }
         },
+        "fixed_worktree_files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["destination_path", "producer", "operation", "governing_spec", "mode", "required"],
+            "properties": {
+              "destination_path": {"type": "string", "minLength": 1},
+              "producer": {"type": "string", "minLength": 1},
+              "operation": {"type": "string", "minLength": 1},
+              "governing_spec": {"type": "string", "minLength": 1},
+              "mode": {"type": "string", "minLength": 1},
+              "required": {"type": "boolean"}
+            }
+          }
+        },
+        "dynamic_path_families": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["producer", "rule", "expansion_pattern", "operation", "governing_spec", "type", "required"],
+            "properties": {
+              "producer": {"type": "string", "minLength": 1},
+              "rule": {"type": "string", "minLength": 1},
+              "expansion_pattern": {"type": "string", "minLength": 1},
+              "operation": {"type": "string", "minLength": 1},
+              "governing_spec": {"type": "string", "minLength": 1},
+              "type": {"type": "string", "minLength": 1},
+              "mode": {"type": "string"},
+              "required": {"type": "boolean"}
+            }
+          }
+        },
+        "required_directories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["destination_path", "producer", "operation", "governing_spec", "required"],
+            "properties": {
+              "destination_path": {"type": "string", "minLength": 1},
+              "producer": {"type": "string", "minLength": 1},
+              "operation": {"type": "string", "minLength": 1},
+              "governing_spec": {"type": "string", "minLength": 1},
+              "mode": {"type": "string"},
+              "required": {"type": "boolean"}
+            }
+          }
+        },
+        "git_state": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["governing_specs", "rule"],
+          "properties": {
+            "governing_specs": {
+              "type": "array",
+              "items": {"type": "string", "minLength": 1}
+            },
+            "rule": {"type": "string", "minLength": 1}
+          }
+        },
         "prohibited_paths": {
           "type": "array",
           "items": {"type": "string", "minLength": 1}

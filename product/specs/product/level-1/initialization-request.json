@@ -49,7 +49,7 @@
     },
     {
       "id": "INIT-REQ-016",
-      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently, and positional semantics for the ordered list (including the mapping of 0-based array indices to projection destinations) are defined by the foundation-seeding contract."
+      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently. Each direction_material entry is assigned a positional 0-based array index, and evidence paths follow the pattern product/docs/direction/evidence/{index:03d}-{basename} as defined by the output inventory (product.initializer-output-inventory-v1)."
     },
     {
       "id": "INIT-REQ-009",

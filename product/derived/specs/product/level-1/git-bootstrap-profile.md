@@ -48,6 +48,7 @@ Defines versioned bootstrap constants for the deterministic local Git repository
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.initializer-output-inventory-v1`
 
 ## References
 
