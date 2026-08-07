@@ -1,0 +1,32 @@
+{
+  "spec_id": "product.git-object-identity",
+  "title": "Initializer Git Object Identity",
+  "purpose": "Defines the canonical Git object identity representation used by every initializer record, eliminating independent and contradictory revision-string rules.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": ["git-object-identity"]
+  },
+  "normative_requirements": [
+    {"id": "INIT-OID-001", "text": "A Git object identity shall be a structured representation with exactly two fields: object_format and object_id."},
+    {"id": "INIT-OID-002", "text": "The object_format field shall be a string whose value is one of: \"sha1\" or \"sha256\"."},
+    {"id": "INIT-OID-003", "text": "When object_format is \"sha1\", the object_id shall be exactly 40 lowercase hexadecimal characters."},
+    {"id": "INIT-OID-004", "text": "When object_format is \"sha256\", the object_id shall be exactly 64 lowercase hexadecimal characters."},
+    {"id": "INIT-OID-005", "text": "The object_format shall match the source repository's native object format: a SHA-256 repository shall not accept a SHA-1 object identity, and a SHA-1 repository shall not accept a SHA-256 object identity."},
+    {"id": "INIT-OID-006", "text": "Abbreviated object IDs are forbidden: every object_id shall be the full required length for its declared format."},
+    {"id": "INIT-OID-007", "text": "Named references (branch names, tag names, symbolic refs) are forbidden as object_id values."},
+    {"id": "INIT-OID-008", "text": "The identified source revision shall resolve directly to a commit object, not to a blob, tree, or tag object that does not ultimately resolve to a commit."},
+    {"id": "INIT-OID-009", "text": "Every record in the initializer that stores or transmits a revision reference shall use the canonical Git object identity representation and shall preserve the exact full object_id value."}
+  ],
+  "dependencies": [{"spec_id": "product.initializer-level-0"}],
+  "references": [
+    {"type": "artifact", "path": "product/specs/product/level-0/initializer-level-0.json"},
+    {"type": "artifact", "path": "repo/specs/repo/product-levels.json"},
+    {"type": "artifact", "path": "repo/specs/repo/product-spec-base.json"}
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [{"type": "markdown", "path": "product/derived/specs/product/level-1/git-object-identity.md"}],
+  "correspondence": {"implementations": [], "tests": [], "conformance": []}
+}

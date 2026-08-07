@@ -24,6 +24,14 @@ KNOWN_PRODUCT_FIELDS = {"id", "direction_material"}
 REQUIRED_FIELDS = {"schema_version", "destination", "authority"}
 OPTIONAL_FIELDS = {"source", "profile", "product", "deferred", "metadata"}
 
+
+def is_canonical_object_id(value: str) -> bool:
+    if len(value) == 40:
+        return all(c in "0123456789abcdef" for c in value)
+    if len(value) == 64:
+        return all(c in "0123456789abcdef" for c in value)
+    return False
+
 VALID_PROFILES = {"standard"}
 
 
@@ -184,6 +192,8 @@ def _check_source(source: Any, result: ValidationResult) -> None:
         result.add("source.repository must not be empty")
     if rev is not None and not isinstance(rev, str):
         result.add("source.revision must be a string")
+    elif rev is not None and is_canonical_object_id(rev):
+        pass
     elif rev is not None and not rev.strip():
         result.add("source.revision must not be empty")
     if rev and not repo:

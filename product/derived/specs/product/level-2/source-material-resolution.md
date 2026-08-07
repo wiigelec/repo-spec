@@ -39,7 +39,7 @@ Defines selection and inventory of framework material from an explicit commit in
 
 ## Normative requirements
 
-- `INIT-SMR-001`: The local source material component shall verify that the explicit revision resolves to a commit object in the supplied local source Git repository using `git rev-parse --verify <revision>^{commit}`, and that all required Git objects for the commit tree exist locally.
+- `INIT-SMR-001`: The local source material component shall verify that the explicit revision resolves to a commit object in the supplied local source Git repository using `git rev-parse --verify <revision>^{commit}`; the revision shall conform to the canonical Git object identity representation defined by product.git-object-identity, and abbreviated object IDs, named references, and object-format mismatches shall be rejected.
 - `INIT-SMR-002`: The component shall read material only from the commit tree of the resolved revision, ignoring the working tree, and shall reject an unavailable exact revision without resolving a named reference, contacting a remote source, calling `git fetch`, following Git replacement-object references, or retrieving additional source material.
 - `INIT-SMR-003`: The component shall load the material manifest from the source commit at `product/scripts/initializer/framework-inventory.json`, validate its structure against the material-manifest contract schema, and classify each manifest entry by its declared role.
 - `INIT-SMR-004`: The component shall reject the source revision when the material manifest is absent from the commit tree, fails structural validation, contains unknown operation types, or has overlapping or duplicate destination paths.
@@ -48,6 +48,7 @@ Defines selection and inventory of framework material from an explicit commit in
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.source-revision-identity`
 - `product.material-classification`
 - `product.material-manifest`
@@ -55,6 +56,7 @@ Defines selection and inventory of framework material from an explicit commit in
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
+- artifact: `product/specs/product/level-1/git-object-identity.json`
 - artifact: `product/specs/product/level-1/source-revision-identity.json`
 - artifact: `product/specs/product/level-1/material-classification.json`
 - artifact: `product/specs/product/level-1/material-manifest.json`

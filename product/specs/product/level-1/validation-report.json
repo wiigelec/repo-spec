@@ -1,0 +1,28 @@
+{
+  "spec_id": "product.validation-report",
+  "title": "Initializer Validation Report",
+  "purpose": "Defines the canonical validation report shape that the repository validation component produces, including per-check status, failure codes, evidence, and the overall pass/fail rule.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {"concepts": ["validation-report"]},
+  "normative_requirements": [
+    {"id": "INIT-VR-001", "text": "The validation report shall contain an overall_status field whose value is pass only when every required check has a pass status, regardless of advisory check results."},
+    {"id": "INIT-VR-002", "text": "The validation report shall contain a checks array in the same order as the validation profile, each entry containing id (string), status (pass, fail, or error), and optionally failure_code (string), failure_message (string), and evidence (object)."},
+    {"id": "INIT-VR-003", "text": "A check whose status is error shall indicate that the check itself could not be executed due to a precondition failure or internal error, as distinct from a deterministic fail result."},
+    {"id": "INIT-VR-004", "text": "The failure_code field shall use a machine-readable identifier from a defined enumeration, enabling automated interpretation of failure causes."},
+    {"id": "INIT-VR-005", "text": "The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings, and shall not be considered authoritative product specification content."},
+    {"id": "INIT-VR-006", "text": "The validation report shall not report overall success when any required check has status fail or error, regardless of the number or type of passed checks."},
+    {"id": "INIT-VR-007", "text": "The validation report may contain timestamp (ISO-8601 string), initializer_version (product identity and version string), and source_revision (canonical Git object identity) fields for diagnostic context."}
+  ],
+  "dependencies": [{"spec_id": "product.initializer-level-0"}, {"spec_id": "product.validation-profile"}],
+  "references": [
+    {"type": "artifact", "path": "product/specs/product/level-0/initializer-level-0.json"},
+    {"type": "artifact", "path": "product/specs/product/level-1/validation-profile.json"},
+    {"type": "artifact", "path": "repo/specs/repo/validation.json"}
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [{"type": "markdown", "path": "product/derived/specs/product/level-1/validation-report.md"}],
+  "correspondence": {"implementations": [], "tests": [], "conformance": []}
+}

@@ -125,6 +125,27 @@
       "capability_group": "initial-bounded-workflow"
     },
     {
+      "spec_id": "product.git-object-identity",
+      "path": "product/specs/product/level-1/git-object-identity.json",
+      "status": "candidate",
+      "level": 1,
+      "capability_group": "initial-bounded-workflow"
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "path": "product/specs/product/level-1/validation-profile.json",
+      "status": "candidate",
+      "level": 1,
+      "capability_group": "initial-bounded-workflow"
+    },
+    {
+      "spec_id": "product.validation-report",
+      "path": "product/specs/product/level-1/validation-report.json",
+      "status": "candidate",
+      "level": 1,
+      "capability_group": "initial-bounded-workflow"
+    },
+    {
       "spec_id": "product.generated-repository",
       "path": "product/specs/product/level-1/generated-repository.json",
       "status": "candidate",

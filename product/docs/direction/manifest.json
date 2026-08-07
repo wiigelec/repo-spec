@@ -1,0 +1,67 @@
+{
+  "spec_id": "product.direction-manifest",
+  "title": "Direction Evidence Manifest",
+  "purpose": "Records the authoritative mapping of direction evidence files from source material to projected evidence paths.",
+  "status": "candidate",
+  "schema_version": "1",
+  "source_revision": {
+    "object_format": "sha1",
+    "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"
+  },
+  "entries": [
+    {
+      "positional_index": 0,
+      "original_source_path": "product/docs/overview/initializer-overview/01-product-identity-and-purpose.md",
+      "source_revision": {"object_format": "sha1", "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"},
+      "source_blob_object_id": {"object_format": "sha1", "object_id": "d6d6d413d6af613ab60b787b1dc40e87f77c9138"},
+      "projected_evidence_path": "product/docs/direction/evidence/000-product-identity-and-purpose.md",
+      "byte_length": 180,
+      "detected_media_type": null
+    },
+    {
+      "positional_index": 1,
+      "original_source_path": "product/docs/overview/initializer-overview/02-problem-and-outcome.md",
+      "source_revision": {"object_format": "sha1", "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"},
+      "source_blob_object_id": {"object_format": "sha1", "object_id": "d6d6d413d6af613ab60b787b1dc40e87f77c9138"},
+      "projected_evidence_path": "product/docs/direction/evidence/001-problem-and-outcome.md",
+      "byte_length": 180,
+      "detected_media_type": null
+    },
+    {
+      "positional_index": 2,
+      "original_source_path": "product/docs/overview/initializer-overview/03-users-principles-and-boundaries.md",
+      "source_revision": {"object_format": "sha1", "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"},
+      "source_blob_object_id": {"object_format": "sha1", "object_id": "d6d6d413d6af613ab60b787b1dc40e87f77c9138"},
+      "projected_evidence_path": "product/docs/direction/evidence/002-users-principles-and-boundaries.md",
+      "byte_length": 180,
+      "detected_media_type": null
+    },
+    {
+      "positional_index": 3,
+      "original_source_path": "product/docs/overview/initializer-overview/04-capabilities-and-success.md",
+      "source_revision": {"object_format": "sha1", "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"},
+      "source_blob_object_id": {"object_format": "sha1", "object_id": "d6d6d413d6af613ab60b787b1dc40e87f77c9138"},
+      "projected_evidence_path": "product/docs/direction/evidence/003-capabilities-and-success.md",
+      "byte_length": 180,
+      "detected_media_type": null
+    },
+    {
+      "positional_index": 4,
+      "original_source_path": "product/docs/overview/initializer-overview/05-unresolved-questions.md",
+      "source_revision": {"object_format": "sha1", "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"},
+      "source_blob_object_id": {"object_format": "sha1", "object_id": "d6d6d413d6af613ab60b787b1dc40e87f77c9138"},
+      "projected_evidence_path": "product/docs/direction/evidence/004-unresolved-questions.md",
+      "byte_length": 180,
+      "detected_media_type": null
+    },
+    {
+      "positional_index": 5,
+      "original_source_path": "product/docs/overview/initializer-overview/06-lifecycle-and-handoff.md",
+      "source_revision": {"object_format": "sha1", "object_id": "afc9828a3504c569d3fd8e3e0250cc6794348899"},
+      "source_blob_object_id": {"object_format": "sha1", "object_id": "d6d6d413d6af613ab60b787b1dc40e87f77c9138"},
+      "projected_evidence_path": "product/docs/direction/evidence/005-lifecycle-and-handoff.md",
+      "byte_length": 180,
+      "detected_media_type": null
+    }
+  ]
+}

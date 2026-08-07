@@ -1,0 +1,14 @@
+{
+  "spec_id": "product.initializer-output-inventory-v1",
+  "title": "Initializer Version 1 Output Inventory",
+  "purpose": "Complete closed inventory of every path the initializer produces in the initialized repository.",
+  "schema_version": "1",
+  "entries": [],
+  "prohibited_paths": ["reference/", "validate/"],
+  "normative_requirements": [
+    {"id": "INV-V1-001", "text": "The output inventory shall enumerate every destination path the initializer may create in the initialized repository."},
+    {"id": "INV-V1-002", "text": "Each inventory entry shall declare destination_path, producer, operation, role, type, mode, and required status."},
+    {"id": "INV-V1-003", "text": "The inventory shall declare prohibited_paths that shall not appear in the initialized repository worktree."}
+  ],
+  "correspondence": {"implementations": [], "tests": [], "conformance": []}
+}

@@ -41,7 +41,7 @@ Defines the exact commit identity of reusable framework material already present
 
 - `INIT-SRC-001`: A local source revision identity shall uniquely identify an exact commit object in the explicitly supplied local source Git repository; the source is a local Git repository, and the revision must resolve directly to a commit object via `git rev-parse --verify <revision>^{commit}`.
 - `INIT-SRC-002`: The commit tree of the resolved commit shall be the sole source-content authority for all material selection, installation, and inventory operations; the working tree of the source repository shall be ignored.
-- `INIT-SRC-003`: The revision identity shall use the native object format of the source repository: for SHA-1 repositories the identifier shall be a 40-character lowercase hexadecimal string, and for SHA-256 repositories the identifier shall be a 64-character lowercase hexadecimal string; the initializer shall detect the repository's object format and validate the identifier length accordingly.
+- `INIT-SRC-003`: The revision identity shall use the canonical Git object identity representation defined by product.git-object-identity, with object_format matching the source repository's native object format as reported by `git rev-parse --show-object-format`, and the object_id shall be the full-length identifier validated according to the declared format.
 - `INIT-SRC-004`: All required Git objects (commit, tree, and referenced blobs and subtrees) must already exist locally in the source repository; the initializer shall reject a revision whose objects are not fully available without performing a remote fetch, named-reference resolution, or object transfer.
 - `INIT-SRC-005`: The initializer shall reject any source revision whose resolution requires: named-reference resolution (branch, tag, or remote-tracking name), remote fetch or network access, Git replacement-object behavior, Git submodule checkout or initialization, or LFS pointer resolution.
 - `INIT-SRC-006`: Symbolic links in the source commit tree shall be handled according to the declared material-manifest entry: when the manifest entry source_type is `symlink`, the link target text shall be copied as the destination symlink target when the destination filesystem supports symbolic links; when the manifest entry does not declare symlink support or the filesystem does not support symbolic links, the entry shall be rejected.
@@ -51,10 +51,12 @@ Defines the exact commit identity of reusable framework material already present
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
+- artifact: `product/specs/product/level-1/git-object-identity.json`
 - artifact: `repo/specs/repo/product-levels.json`
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`

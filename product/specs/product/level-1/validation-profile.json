@@ -1,0 +1,25 @@
+{
+  "spec_id": "product.validation-profile",
+  "title": "Initializer Validation Profile",
+  "purpose": "Defines the stable set of validation checks that the initializer executes against the staged or promoted repository, each with a stable ID, classification, and overall-success contribution.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {"concepts": ["validation-profile"]},
+  "normative_requirements": [
+    {"id": "INIT-VP-001", "text": "The validation profile shall declare a stable ordered set of checks, each with a unique ID, required or advisory classification, and deterministic order: request.schema, source.repository-local, source.revision-commit, source.objects-complete, material-manifest.schema, material-manifest.paths, output.inventory-complete, output.no-undeclared-paths, output.copied-bytes-match, output.generated-records-valid, output.direction-evidence-match, output.repository-digest-match, git.branch, git.root-commit-count, git.worktree-clean, git.remote-count (advisory), handoff.consistent, provenance.consistent."},
+    {"id": "INIT-VP-002", "text": "A required check that fails or errors shall cause overall validation to fail."},
+    {"id": "INIT-VP-003", "text": "An advisory check that fails or errors shall be recorded in the validation report but shall not cause overall validation to fail."},
+    {"id": "INIT-VP-004", "text": "The validation profile shall be versioned and may be extended by successor versions that add new checks without renumbering existing checks."}
+  ],
+  "dependencies": [{"spec_id": "product.initializer-level-0"}, {"spec_id": "product.git-object-identity"}],
+  "references": [
+    {"type": "artifact", "path": "product/specs/product/level-0/initializer-level-0.json"},
+    {"type": "artifact", "path": "product/specs/product/level-1/git-object-identity.json"},
+    {"type": "artifact", "path": "repo/specs/repo/validation.json"}
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [{"type": "markdown", "path": "product/derived/specs/product/level-1/validation-profile.md"}],
+  "correspondence": {"implementations": [], "tests": [], "conformance": []}
+}
