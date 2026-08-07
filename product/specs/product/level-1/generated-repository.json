@@ -65,30 +65,38 @@
     },
     {
       "id": "INIT-GRL-014",
-      "text": "Every generated controlling document and chunk shall have lifecycle_status candidate; no generated document shall claim accepted, superseded, or retired status."
+      "text": "The initialized repository shall contain direction evidence files under product/docs/direction/evidence/ with one file per direction_material entry, where each file is a byte-identical copy of its source Git blob content and is named using the deterministic pattern {positional_index:03d}-{source_basename}."
     },
     {
       "id": "INIT-GRL-015",
-      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository as declared by the material manifest with operation excluded or absent from the manifest entirely."
+      "text": "The initialized repository shall contain a direction evidence manifest at product/docs/direction/manifest.json that records the mapping from source direction material to projected evidence paths, stored separately from the evidence bytes."
     },
     {
       "id": "INIT-GRL-016",
-      "text": "The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output as declared by the material manifest with operation instantiate-template or generate-record."
+      "text": "Every generated controlling document and chunk shall have lifecycle_status candidate; no generated document shall claim accepted, superseded, or retired status."
     },
     {
       "id": "INIT-GRL-017",
-      "text": "Profile-specific paths (repo/profiles/ and .github/) shall be excluded from the initialized repository unless the execution profile selects a platform profile for installation."
+      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository as declared by the material manifest with operation excluded or absent from the manifest entirely."
     },
     {
       "id": "INIT-GRL-018",
-      "text": "The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts."
+      "text": "The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output as declared by the material manifest with operation instantiate-template or generate-record."
     },
     {
       "id": "INIT-GRL-019",
-      "text": "The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action."
+      "text": "Profile-specific paths (repo/profiles/ and .github/) shall be excluded from the initialized repository unless the execution profile selects a platform profile for installation."
     },
     {
       "id": "INIT-GRL-020",
+      "text": "The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts."
+    },
+    {
+      "id": "INIT-GRL-021",
+      "text": "The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action."
+    },
+    {
+      "id": "INIT-GRL-022",
       "text": "All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record."
     }
   ],

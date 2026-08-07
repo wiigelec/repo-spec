@@ -22,7 +22,7 @@
     },
     {
       "id": "INIT-FSD-003",
-      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; the file shall be read as raw bytes without encoding conversion, line ending normalization, or other transformation, and the stage shall fail when the resolved file at the source revision does not contain at least one non-whitespace byte."
+      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; the file shall be read as raw bytes without encoding conversion, line ending normalization, or other transformation, and the full byte content of each entry shall be preserved as-is regardless of content."
     },
     {
       "id": "INIT-FSD-004",

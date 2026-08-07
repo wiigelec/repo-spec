@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-REQ-001",
-      "text": "An initialization request shall be one JSON object that explicitly supplies a governing authority identity, a product identifier, an absent or empty destination path, a local source repository path, an exact source revision identifier, and product-direction material."
+      "text": "An initialization request shall be one JSON object that explicitly supplies a governing authority identity, a product identifier, an absent destination path, a local source repository path, an exact source revision identifier, and product-direction material."
     },
     {
       "id": "INIT-REQ-002",
@@ -41,7 +41,7 @@
     },
     {
       "id": "INIT-REQ-008",
-      "text": "The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty repository-relative path within the local source repository that names supplied product-direction material; duplicate source entries shall remain duplicated in the recorded source-evidence list but shall not cause duplicate destination files (the same path appearing multiple times produces one destination file with the first occurrence's content)."
+      "text": "The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty repository-relative path within the local source repository that names supplied product-direction material; duplicate source entries shall each receive their own distinct positional index and each occurrence shall produce its own deterministic evidence path, and duplicates shall not be deduplicated, collapsed, or merged."
     },
     {
       "id": "INIT-REQ-015",
@@ -73,7 +73,7 @@
     },
     {
       "id": "INIT-REQ-014",
-      "text": "The request shall not accept, infer, or substitute any other authority identity and shall be rejected when `authority.granted_by` is absent or empty; consistency of `authority.granted_by` with the provenance record request identifier or with the governing issue linkage shall be validated by repository validation as a post-promotion check, not by request intake."
+      "text": "The request shall not accept, infer, or substitute any other authority identity and shall be rejected when `authority.granted_by` is absent or empty; consistency of `authority.granted_by` with the provenance record request identifier or with the governing issue linkage shall be validated by repository validation as a pre-promotion check, not by request intake."
     }
   ],
   "dependencies": [
