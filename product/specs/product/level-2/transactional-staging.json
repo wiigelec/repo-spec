@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-TST-007",
-      "text": "After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the execution report and caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact."
+      "text": "After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact. If step 3 fails, the repository remains successfully promoted; the workflow shall return a promoted-with-finalization-error result; the staging transaction root shall be preserved when accessible; and cleanup failure must not cause the repository to be misreported as unpromoted. An execution report with completion_status promoted-with-finalization-error shall be written to transaction/execution-report.json for diagnostics."
     }
   ],
   "dependencies": [
@@ -46,6 +46,9 @@
     },
     {
       "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.execution-report"
     }
   ],
   "references": [

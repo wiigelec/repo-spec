@@ -51,6 +51,7 @@ Defines validation performed against the staged repository and transaction recor
 - `product.git-object-identity`
 - `product.validation-profile`
 - `product.validation-report`
+- `product.initializer-output-inventory-v1`
 
 ## References
 
