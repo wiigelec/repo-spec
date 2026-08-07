@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-SRC-003",
-      "text": "The revision identity shall use the native object format of the source repository: for SHA-1 repositories the identifier shall be a 40-character lowercase hexadecimal string, and for SHA-256 repositories the identifier shall be a 64-character lowercase hexadecimal string; the initializer shall detect the repository's object format and validate the identifier length accordingly."
+      "text": "The revision identity shall use the canonical Git object identity representation defined by product.git-object-identity, with object_format matching the source repository's native object format as reported by `git rev-parse --show-object-format`, and the object_id shall be the full-length identifier validated according to the declared format."
     },
     {
       "id": "INIT-SRC-004",
@@ -47,12 +47,19 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     }
   ],
   "references": [
     {
       "type": "artifact",
       "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/git-object-identity.json"
     },
     {
       "type": "artifact",

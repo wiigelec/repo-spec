@@ -31,7 +31,7 @@
     },
     {
       "id": "INIT-L0-004",
-      "text": "The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision."
+      "text": "The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision, and projected direction evidence shall be byte-identical to its source Git blob."
     },
     {
       "id": "INIT-L0-005",

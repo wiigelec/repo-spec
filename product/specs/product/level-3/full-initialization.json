@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-FIN-007",
-      "text": "The promoted repository shall conform to the generated-repository layout contract and shall contain installed reusable framework material, product-identified direction material preserved as source evidence, an activated but empty product-specification workspace, a provenance record, a handoff manifest, and the validated deterministic local Git state. Only the repository/ directory inside the staging transaction root shall become the destination; the transaction/ directory and all contents (staging-state, execution-report, validation-report) shall be discarded after successful promotion."
+      "text": "The promoted repository shall conform to the generated-repository layout contract and the output inventory (product.initializer-output-inventory-v1), and shall contain installed reusable framework material, product-identified direction material preserved as source evidence, an activated but empty product-specification workspace, a provenance record, a handoff manifest, and the validated deterministic local Git state. Only the repository/ directory inside the staging transaction root shall become the destination; the transaction/ directory and all contents (staging-state, execution-report, validation-report) shall be discarded after successful promotion."
     }
   ],
   "dependencies": [

@@ -22,7 +22,7 @@
     },
     {
       "id": "INIT-FSD-003",
-      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; each entry shall be interpreted as UTF-8 encoded text with line endings normalized to LF (U+000A), and the stage shall fail when any entry's content is not valid UTF-8 or when the resolved file at the source revision does not contain at least one non-whitespace byte."
+      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; the file shall be read as raw bytes without encoding conversion, line ending normalization, or other transformation, and the stage shall fail when the resolved file at the source revision does not contain at least one non-whitespace byte."
     },
     {
       "id": "INIT-FSD-004",
@@ -30,15 +30,19 @@
     },
     {
       "id": "INIT-FSD-005",
-      "text": "Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/{positional_index:03d}-{source_basename}, where source_basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes with LF line endings, and no summarization, embedding, transformation, truncation, or semantic interpretation of the content shall be performed."
+      "text": "Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/evidence/{positional_index:03d}-{source_basename}, where source_basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes without any front matter, encoding conversion, line ending normalization, or other content modification."
     },
     {
       "id": "INIT-FSD-006",
-      "text": "Every projected direction-material file in product/docs/direction/ shall include a leading YAML front-matter block containing key source_path with the original repository-relative source path, key source_revision with the exact source revision identifier, and key positional_index with the 0-based array index; the front-matter block shall be separated from the verbatim content by a line containing only --- after the front-matter and a line containing only --- before it, with the verbatim content following the closing ---."
+      "text": "Each projected direction-material file in product/docs/direction/evidence/ shall be a byte-identical copy of its source Git blob; the file shall receive no YAML front matter, no newline normalization, and no encoding transformation. Metadata about each entry shall be recorded separately in product/docs/direction/manifest.json."
     },
     {
       "id": "INIT-FSD-007",
       "text": "When two or more direction_material entries resolve to the same source_basename, the projected filenames shall remain unique because each uses a distinct positional_index prefix; no deduplication, renaming beyond the positional prefix, or content merging shall occur."
+    },
+    {
+      "id": "INIT-FSD-020",
+      "text": "Foundation seeding shall produce a direction evidence manifest at product/docs/direction/manifest.json containing for each entry the positional index, original source path, source revision (as a canonical Git object identity), source blob object ID (as a canonical Git object identity), projected evidence path, byte length, and optional non-authoritative detected media type; the manifest shall be stored separately from the evidence bytes."
     },
     {
       "id": "INIT-FSD-008",

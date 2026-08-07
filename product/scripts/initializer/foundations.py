@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -487,6 +489,86 @@ def _readme_discoverability_content(slug: str, product_id: str) -> str:
     ])
 
 
+def _git_blob_id(path: Path) -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "hash-object", str(path)],
+            capture_output=True, text=True, check=True,
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+
+
+def _canonical_object_id(raw_id: str) -> dict[str, str]:
+    if len(raw_id) == 40 and all(c in "0123456789abcdef" for c in raw_id):
+        return {"object_format": "sha1", "object_id": raw_id}
+    if len(raw_id) == 64 and all(c in "0123456789abcdef" for c in raw_id):
+        return {"object_format": "sha256", "object_id": raw_id}
+    return {"object_format": "sha1", "object_id": raw_id}
+
+
+def _project_direction_evidence(
+    direction_material: list[str],
+    staging_root: Path,
+    source_revision: str,
+) -> list[dict[str, str]]:
+    evidence_dir = staging_root / "product" / "docs" / "direction" / "evidence"
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+
+    entries: list[dict[str, Any]] = []
+    created: list[dict[str, str]] = []
+    rev_identity = _canonical_object_id(source_revision)
+
+    for idx, source_path_str in enumerate(direction_material):
+        source_path = Path(source_path_str)
+        if not source_path.is_file():
+            created.append({
+                "path": f"product/docs/direction/evidence/{idx:03d}-{source_path.name}",
+                "artifact": "direction-evidence-skipped",
+                "reason": "source file not found",
+            })
+            continue
+
+        evidence_name = f"{idx:03d}-{source_path.name}"
+        evidence_path = evidence_dir / evidence_name
+        raw_bytes = source_path.read_bytes()
+        evidence_path.write_bytes(raw_bytes)
+
+        blob_id_raw = _git_blob_id(source_path)
+        blob_identity = _canonical_object_id(blob_id_raw) if blob_id_raw else None
+        byte_len = len(raw_bytes)
+
+        entries.append({
+            "positional_index": idx,
+            "original_source_path": str(source_path),
+            "source_revision": rev_identity,
+            "source_blob_object_id": blob_identity,
+            "projected_evidence_path": f"product/docs/direction/evidence/{evidence_name}",
+            "byte_length": byte_len,
+            "detected_media_type": None,
+        })
+        created.append({
+            "path": f"product/docs/direction/evidence/{evidence_name}",
+            "artifact": "direction-evidence",
+        })
+
+    if entries:
+        manifest_path = staging_root / "product" / "docs" / "direction" / "manifest.json"
+        manifest = {
+            "spec_id": "product.direction-manifest",
+            "title": "Direction Evidence Manifest",
+            "purpose": "Records the authoritative mapping of direction evidence files.",
+            "source_revision": rev_identity,
+            "entries": entries,
+        }
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+        created.append({"path": "product/docs/direction/manifest.json", "artifact": "direction-evidence-manifest"})
+
+    return created
+
+
 def establish_product_foundations(
     plan: FoundationPlan,
     staging_root: Path,
@@ -626,6 +708,16 @@ def establish_product_foundations(
             _readme_discoverability_content(slug, product_id),
             "product-spec-readme",
         )
+
+    # Direction evidence: project source material as byte-identical evidence files
+    evidence_created = _project_direction_evidence(
+        direction_material,
+        staging,
+        "initializing",
+    )
+    for item in evidence_created:
+        if "reason" not in item:
+            created.append(item)
 
     return FoundationResult(
         product_id=product_id,

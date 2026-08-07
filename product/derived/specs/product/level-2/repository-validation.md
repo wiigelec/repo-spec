@@ -39,12 +39,14 @@ Defines repository validation performed against the complete staged repository b
 
 ## Normative requirements
 
-- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion; validation shall include at least the following checks: source is valid local Git repository, revision resolves to a valid commit, all required Git objects for the commit tree exist locally, material manifest validates against its schema, every selected source path in the manifest exists and has the expected source_type, no undeclared output path exists in the staged repository, every copied blob matches the source commit tree bytes, every generated record validates against its governing schema, the repository-tree digest matches the expected digest, and the Git topology matches the bootstrap profile.
-- `INIT-RVA-002`: The repository validation component shall produce a validation report that lists each check, its result, and any details required to diagnose failures, and shall not report overall success when any required check fails; the report shall be written at `transaction/validation-report.json` inside the staging transaction root and shall never be part of the promoted repository content.
+- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion, using the checks declared in the validation profile (product.validation-profile) and producing a validation report conforming to the validation report spec (product.validation-report); validation shall include at least the following checks: source is valid local Git repository, revision resolves to a valid commit, all required Git objects for the commit tree exist locally, material manifest validates against its schema, every selected source path in the manifest exists and has the expected source_type, no undeclared output path exists in the staged repository, every copied blob matches the source commit tree bytes, every generated record validates against its governing schema, the repository-tree digest matches the expected digest, and the Git topology matches the bootstrap profile.
+- `INIT-RVA-002`: The repository validation component shall produce a validation report conforming to product.validation-report that lists each check in validation-profile order, its status (pass, fail, or error), failure code and message when applicable, and evidence fields, and shall not report overall success when any required check fails; the report shall be written at `transaction/validation-report.json` inside the staging transaction root and shall never be part of the promoted repository content.
 
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.validation-profile`
+- `product.validation-report`
 
 ## References
 
@@ -54,6 +56,9 @@ Defines repository validation performed against the complete staged repository b
 - artifact: `repo/specs/repo/product-manifest.json`
 - artifact: `repo/specs/repo/validation.json`
 - artifact: `repo/specs/repo/repository-structure.json`
+- artifact: `product/specs/product/level-1/validation-profile.json`
+- artifact: `product/specs/product/level-1/validation-report.json`
+- artifact: `product/specs/initializer-output-inventory-v1.json`
 
 ## Derived artifacts
 
