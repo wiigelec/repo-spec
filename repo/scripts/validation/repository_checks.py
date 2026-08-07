@@ -1320,3 +1320,362 @@ def validate_repo(repo_root: Path) -> None:
     for label, check in VALIDATION_PHASES:
         check(context)
         print(f"ok: {label}")
+
+# PATCH-2-SPLIT-VALIDATION-OWNERSHIP
+
+class _DomainCompatibilityRegistry(dict):
+    """Expose owned entries for classification while retaining cross-domain lookup."""
+
+    def __init__(self, full: dict[str, dict[str, Any]], prefixes: tuple[str, ...]):
+        super().__init__(full)
+        self._owned_keys = tuple(
+            key for key in full
+            if key.startswith(prefixes)
+        )
+
+    def __iter__(self):
+        return iter(self._owned_keys)
+
+    def __len__(self):
+        return len(self._owned_keys)
+
+    def keys(self):
+        return {key: None for key in self._owned_keys}.keys()
+
+    def items(self):
+        return ((key, dict.__getitem__(self, key)) for key in self._owned_keys)
+
+    def values(self):
+        return (dict.__getitem__(self, key) for key in self._owned_keys)
+
+
+_COMBINED_DEVELOPMENT_DOCUMENT_CHECK = check_development_documents_phase
+_COMBINED_LIFECYCLE_CHECK = check_lifecycle_lifecycle_phase
+
+
+def _load_repository_only_context(repo_root: Path) -> ValidationContext:
+    manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
+    schemas = load_repo_schemas(repo_root)
+    repository = RepositoryValidationContext(
+        manifest,
+        specs,
+        source_paths,
+        actual_paths,
+        schemas,
+    )
+    return ValidationContext(repo_root, repository, None)
+
+
+def _load_product_only_context(repo_root: Path) -> ValidationContext:
+    manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
+    repository = RepositoryValidationContext(
+        manifest,
+        specs,
+        source_paths,
+        actual_paths,
+        load_repo_schemas(repo_root),
+    )
+    product = load_product_validation_context(repo_root)
+    return ValidationContext(repo_root, repository, product)
+
+
+def _owned_development_roots(product_mode: bool) -> dict[str, dict[str, Any]]:
+    return {
+        root_rel: info
+        for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items()
+        if root_rel.startswith("product/") == product_mode
+    }
+
+
+def _check_development_documents_for_domain(
+    context: ValidationContext,
+    *,
+    product_mode: bool,
+) -> None:
+    global DEVELOPMENT_DOCUMENT_ROOTS
+    global load_development_document_compatibility_registry
+
+    original_roots = DEVELOPMENT_DOCUMENT_ROOTS
+    original_loader = load_development_document_compatibility_registry
+    selected_roots = _owned_development_roots(product_mode)
+    prefixes = tuple(selected_roots)
+
+    def scoped_loader(repo_root: Path) -> dict[str, dict[str, Any]]:
+        full = original_loader(repo_root)
+        globals()["DEVELOPMENT_DOCUMENT_ROOTS"] = selected_roots
+        return _DomainCompatibilityRegistry(full, prefixes)
+
+    try:
+        load_development_document_compatibility_registry = scoped_loader
+        _COMBINED_DEVELOPMENT_DOCUMENT_CHECK(context)
+    finally:
+        DEVELOPMENT_DOCUMENT_ROOTS = original_roots
+        load_development_document_compatibility_registry = original_loader
+
+
+def _check_lifecycle_for_domain(
+    context: ValidationContext,
+    *,
+    product_mode: bool,
+) -> None:
+    global get_development_document_records
+
+    original_get_records = get_development_document_records
+    prefixes = tuple(_owned_development_roots(product_mode))
+
+    def scoped_get_records(
+        scoped_context: ValidationContext,
+    ) -> dict[str, DevelopmentDocumentRecord]:
+        records = original_get_records(scoped_context)
+        return {
+            path: record
+            for path, record in records.items()
+            if path.startswith(prefixes)
+        }
+
+    try:
+        get_development_document_records = scoped_get_records
+        _COMBINED_LIFECYCLE_CHECK(context)
+    finally:
+        get_development_document_records = original_get_records
+
+
+def _check_generated_freshness_for_domain(
+    context: ValidationContext,
+    *,
+    product_mode: bool,
+) -> None:
+    from docgen import SPECIAL_RENDERERS, render_spec_projection
+
+    if product_mode:
+        expect(context.product is not None, "product validation context missing")
+        specs = context.product.specs
+        source_paths = context.product.source_paths
+        derived_root = context.repo_root / "product/derived/specs/product"
+    else:
+        specs = context.repository.specs
+        source_paths = context.repository.source_paths
+        derived_root = context.repo_root / "repo/derived/specs/repo"
+
+    expected_markdown_paths: set[str] = set()
+
+    for spec_id in sorted(specs, key=lambda item: source_paths[item]):
+        spec = specs[spec_id]
+        source_path = source_paths[spec_id]
+
+        for artifact in spec.get("derived_artifacts", []):
+            relative_path = artifact["path"]
+            path = resolve_repo_path(context.repo_root, relative_path)
+            renderer_id = artifact.get("renderer")
+
+            if renderer_id is None:
+                expect(
+                    artifact["type"] == "markdown",
+                    "generated-document freshness failed: "
+                    f"unsupported derived artifact type without renderer: "
+                    f"{artifact['type']}",
+                )
+                content = render_spec_projection(
+                    spec["title"],
+                    source_path,
+                    spec,
+                    include_authoritative_specs=(
+                        not product_mode and spec_id == "repo.manifest"
+                    ),
+                )
+            else:
+                renderer = SPECIAL_RENDERERS.get(renderer_id)
+                expect(
+                    renderer is not None,
+                    "generated-document freshness failed: "
+                    f"unsupported renderer: {renderer_id}",
+                )
+                content = renderer(spec)
+
+            if (
+                relative_path.endswith(".md")
+                and relative_path.startswith(
+                    derived_root.relative_to(context.repo_root).as_posix() + "/"
+                )
+            ):
+                expected_markdown_paths.add(relative_path)
+
+            if not path.exists() or path.read_text() != content:
+                fail(
+                    "generated-document freshness failed: "
+                    f"source {source_path} -> output {relative_path}"
+                )
+
+    actual_markdown_paths: set[str] = set()
+    if derived_root.exists():
+        actual_markdown_paths = {
+            path.relative_to(context.repo_root).as_posix()
+            for path in derived_root.rglob("*.md")
+            if path.is_file()
+        }
+
+    missing = sorted(expected_markdown_paths - actual_markdown_paths)
+    extra = sorted(actual_markdown_paths - expected_markdown_paths)
+    if missing or extra:
+        parts = []
+        if missing:
+            parts.append(f"missing derived markdown: {', '.join(missing)}")
+        if extra:
+            parts.append(f"orphaned derived markdown: {', '.join(extra)}")
+        fail("generated-document freshness failed: " + "; ".join(parts))
+def _check_product_unique_spec_ids(context: ValidationContext) -> None:
+    expect(context.product is not None, "product validation context missing")
+    expect(
+        len(context.product.specs) == len(set(context.product.specs)),
+        "duplicate product specification id",
+    )
+
+
+def _check_product_unique_item_properties(context: ValidationContext) -> None:
+    expect(context.product is not None, "product validation context missing")
+    for spec_id in context.product.specs:
+        check_unique_item_properties(
+            context.product.specs,
+            spec_id,
+            "normative_requirements",
+            ["id"],
+        )
+        check_unique_item_properties(
+            context.product.specs,
+            spec_id,
+            "dependencies",
+            ["spec_id"],
+        )
+        check_unique_item_properties(
+            context.product.specs,
+            spec_id,
+            "references",
+            ["type", "spec_id", "path", "kind"],
+        )
+        check_unique_item_properties(
+            context.product.specs,
+            spec_id,
+            "derived_artifacts",
+            ["path"],
+        )
+
+
+def _check_product_unique_derived_artifact_paths(
+    context: ValidationContext,
+) -> None:
+    expect(context.product is not None, "product validation context missing")
+    paths: list[str] = []
+    for spec in context.product.specs.values():
+        for artifact in spec.get("derived_artifacts", []):
+            paths.append(artifact["path"])
+    expect(
+        len(paths) == len(set(paths)),
+        "duplicate product derived artifact paths failed",
+    )
+
+
+def _check_product_lineage(context: ValidationContext) -> None:
+    expect(context.product is not None, "product validation context missing")
+    for spec_id, spec in context.product.specs.items():
+        for field in ("supersedes", "superseded_by"):
+            for target_spec_id in spec.get(field, []):
+                expect(
+                    target_spec_id in context.product.specs,
+                    f"product lineage failed: unresolved spec "
+                    f"{spec_id} -> {target_spec_id}",
+                )
+                expect(
+                    target_spec_id != spec_id,
+                    f"product lineage failed: self reference {spec_id}",
+                )
+    check_supersession_pairs(
+        context.product.specs,
+        "product supersession relations",
+    )
+    check_supersession_acyclicity(
+        context.product.specs,
+        "product supersession relations",
+    )
+
+
+REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("repository JSON Schema conformance", check_schema_conformance),
+    ("manifest completeness", check_manifest_phase),
+    ("unique specification IDs", check_unique_spec_ids_phase),
+    ("unique item properties", check_unique_item_properties_phase),
+    ("platform profile boundary", check_platform_profile_boundary),
+    ("GitHub profile freshness", check_github_profile_freshness_phase),
+    ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
+    ("dependency target lifecycle", check_dependency_targets_phase),
+    ("resolvable references", check_resolvable_references_phase),
+    ("lineage relations", check_lineage_relations_phase),
+    ("acyclic dependencies", check_acyclic_dependencies_phase),
+]
+
+
+PRODUCT_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("product unique specification IDs", _check_product_unique_spec_ids),
+    ("product unique item properties", _check_product_unique_item_properties),
+    (
+        "product unique derived artifact paths",
+        _check_product_unique_derived_artifact_paths,
+    ),
+    ("product specification root", check_product_specification_root_phase),
+    ("product correspondence inventory", check_product_correspondence_phase),
+    (
+        "product conformance completeness",
+        check_product_conformance_completeness_phase,
+    ),
+    ("product dependency directions", check_dependency_directions_phase),
+    ("product completeness", check_product_completeness_phase),
+    ("product lineage relations", _check_product_lineage),
+    (
+        "product acyclic dependencies",
+        check_product_acyclic_dependencies_phase,
+    ),
+]
+
+
+def validate_repo(repo_root: Path) -> None:
+    context = _load_repository_only_context(repo_root)
+    for label, check in REPOSITORY_LEAF_VALIDATION_PHASES:
+        check(context)
+        print(f"ok: {label}")
+    _check_development_documents_for_domain(
+        context,
+        product_mode=False,
+    )
+    print("ok: repository development documents")
+    _check_lifecycle_for_domain(
+        context,
+        product_mode=False,
+    )
+    print("ok: repository lifecycle authority sequence")
+    _check_generated_freshness_for_domain(
+        context,
+        product_mode=False,
+    )
+    print("ok: repository generated-document freshness")
+
+
+def validate_product(repo_root: Path) -> None:
+    context = _load_product_only_context(repo_root)
+    expect(context.product is not None, "product validation context missing")
+    for label, check in PRODUCT_LEAF_VALIDATION_PHASES:
+        check(context)
+        print(f"ok: {label}")
+    _check_development_documents_for_domain(
+        context,
+        product_mode=True,
+    )
+    print("ok: product development documents")
+    _check_lifecycle_for_domain(
+        context,
+        product_mode=True,
+    )
+    print("ok: product lifecycle authority sequence")
+    _check_generated_freshness_for_domain(
+        context,
+        product_mode=True,
+    )
+    print("ok: product generated-document freshness")
