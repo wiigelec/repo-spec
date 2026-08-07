@@ -13,6 +13,10 @@
   "field_order": {
     "root": [
       "schema_version",
+      "request_fingerprint",
+      "staging_root",
+      "expected_destination",
+      "promotion_outcome",
       "completion_status",
       "stages"
     ],
@@ -38,7 +42,15 @@
     },
     {
       "id": "INIT-RPT-004",
-      "text": "The execution report representation shall define the following required fields with the given JSON types: `schema_version` as a string, `completion_status` as a string, and `stages` as an array of objects."
+      "text": "The execution report representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `staging_root` as a string, `expected_destination` as a string, `promotion_outcome` as a string, `completion_status` as a string, and `stages` as an array of objects."
+    },
+    {
+      "id": "INIT-RPT-004a",
+      "text": "The `request_fingerprint` field shall link the execution report to the exact initialization request that produced the workflow run, using the same SHA-256 hex digest of the canonical initialization request used by the validation report and staging-state record. The `staging_root` field shall identify the preserved diagnostic staging transaction root path and may remain the original resolved path even when cleanup partially removed content. The `expected_destination` field shall record the resolved destination path from the request."
+    },
+    {
+      "id": "INIT-RPT-004b",
+      "text": "The `promotion_outcome` field shall be one of the constant strings `not-promoted`, `promoted`, or `indeterminate`, matching the promotion outcome recorded in the staging-state record. The `completion_status` field shall be one of the constant strings `failed` or `promoted-with-finalization-error`. The execution report and the staging-state record shall agree on the request fingerprint, expected destination, promotion outcome, failed stage, and terminal result."
     },
     {
       "id": "INIT-RPT-005",
@@ -46,7 +58,7 @@
     },
     {
       "id": "INIT-RPT-006",
-      "text": "The report `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). `schema_version` shall be the constant string `1`. A `promoted-with-finalization-error` completion_status shall not be misreported as a pre-promotion failure; the repository is successfully promoted."
+      "text": "The report `schema_version` shall be the constant string `1`. The `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). The required `promotion_outcome` / `completion_status` combinations are: pre-promotion failure — `promotion_outcome` = `not-promoted` and `completion_status` = `failed`; indeterminate promotion — `promotion_outcome` = `indeterminate` and `completion_status` = `failed`; cleanup failure after committed promotion — `promotion_outcome` = `promoted` and `completion_status` = `promoted-with-finalization-error`. A `promoted-with-finalization-error` completion_status shall not be misreported as a pre-promotion failure; the repository is successfully promoted. Every required terminal outcome shall be representable using only the required fields, with no undeclared fields."
     },
     {
       "id": "INIT-RPT-007",
@@ -70,7 +82,7 @@
     },
     {
       "id": "INIT-RPT-012",
-      "text": "When post-promotion cleanup fails after successful promotion, the execution report shall have completion_status promoted-with-finalization-error. The report shall record the success-finalization stage status as failed with the cleanup failure reason in the errors array, and shall record the promotion stage status as completed. The execution report shall reference the promoted destination path and shall not misreport the repository as unpromoted. Under cleanup failure, the execution report stages shall represent: promotion as completed, success-finalization as failed, and all prior stages as completed. The execution report and staging-state record shall agree on the terminal outcome: both shall record promotion as committed and success-finalization as failed."
+      "text": "When post-promotion cleanup fails after successful promotion, the execution report shall have completion_status promoted-with-finalization-error and promotion_outcome promoted. The report shall record the success-finalization stage status as failed with the cleanup failure reason in the errors array, and shall record the promotion stage status as completed. The execution report shall record the promoted destination path in the expected_destination field and shall not misreport the repository as unpromoted. Under cleanup failure, the execution report stages shall represent: promotion as completed, success-finalization as failed, and all prior stages as completed. The staging_root field shall identify the preserved staging transaction root used for diagnostics. The execution report and staging-state record shall agree on the request fingerprint, destination, and promotion outcome (both shall record promotion as promoted) and on the terminal result (both shall record success-finalization as failed); the two records must not disagree about promotion."
     }
   ],
   "dependencies": [

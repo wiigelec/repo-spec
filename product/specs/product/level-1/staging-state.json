@@ -45,7 +45,7 @@
     },
     {
       "id": "INIT-STA-009",
-      "text": "The `promotion_entered` field shall be `true` when the promotion stage has been entered; `promotion_outcome` shall be one of the constant strings `not-promoted`, `promoted`, or `indeterminate` when promotion has been attempted and resolved, or `null` when promotion has not been entered or an attempted promotion has not been resolved. When cleanup after successful promotion fails, `promotion_outcome` remains `promoted`; the `cleanup_failure` field, not a changed promotion outcome, records the failure."
+      "text": "The `promotion_entered` field shall be `true` when the promotion stage has been entered; `promotion_outcome` shall be one of the constant strings `not-promoted`, `promoted`, or `indeterminate` when promotion has been attempted and resolved, or `null` when promotion has not been entered or an attempted promotion has not been resolved. When cleanup after successful promotion fails, `promotion_outcome` remains `promoted`; the `cleanup_failure` field, not a changed promotion outcome, records the failure. The `request_fingerprint`, `expected_destination`, and `promotion_outcome` fields of the staging-state record shall agree with the corresponding `request_fingerprint`, `expected_destination`, and `promotion_outcome` fields of the execution report, and the two records shall agree on the failed stage and terminal result; the two records must not disagree about promotion."
     },
     {
       "id": "INIT-STA-010",
