@@ -20,6 +20,8 @@ REPO_FORBIDDEN_PRODUCT_SYMBOLS = {
     "load_product_correspondence_inventory",
     "check_product_correspondence_phase",
     "check_product_conformance_completeness_phase",
+    "_owned_development_roots",
+    "_check_development_documents_for_domain",
 }
 
 PRODUCT_REQUIRED_SYMBOLS = {
@@ -43,6 +45,10 @@ PRODUCT_REQUIRED_SYMBOLS = {
         "load_product_correspondence_inventory",
         "check_product_correspondence_phase",
         "check_product_conformance_completeness_phase",
+    },
+    "product_development_documents.py": {
+        "_product_development_roots",
+        "check_product_development_documents",
     },
 }
 

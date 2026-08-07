@@ -1039,20 +1039,18 @@ def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     return ValidationContext(repo_root, repository, None, None)
 
 
-def _owned_development_roots(product_mode: bool) -> dict[str, dict[str, Any]]:
+def _repository_development_roots() -> dict[str, dict[str, Any]]:
     return {
         root_rel: info
         for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items()
-        if root_rel.startswith("product/") == product_mode
+        if not root_rel.startswith("product/")
     }
 
 
-def _check_development_documents_for_domain(
+def _check_repository_development_documents(
     context: ValidationContext,
-    *,
-    product_mode: bool,
 ) -> None:
-    selected_roots = _owned_development_roots(product_mode)
+    selected_roots = _repository_development_roots()
     full_registry = load_development_document_compatibility_registry(
         context.repo_root,
         development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
@@ -1069,12 +1067,24 @@ def _check_development_documents_for_domain(
     )
 
 
+def _product_development_roots_for_shared_lifecycle() -> dict[str, dict[str, Any]]:
+    return {
+        root_rel: info
+        for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items()
+        if root_rel.startswith("product/")
+    }
+
+
 def _check_lifecycle_for_domain(
     context: ValidationContext,
     *,
     product_mode: bool,
 ) -> None:
-    selected_roots = _owned_development_roots(product_mode)
+    selected_roots = (
+        _product_development_roots_for_shared_lifecycle()
+        if product_mode
+        else _repository_development_roots()
+    )
     records = get_development_document_records(context, development_roots=selected_roots)
     check_lifecycle_lifecycle_phase(context, development_records=records)
 
@@ -1185,10 +1195,7 @@ def validate_repo(repo_root: Path) -> None:
     for label, check in REPOSITORY_LEAF_VALIDATION_PHASES:
         check(context)
         print(f"ok: {label}")
-    _check_development_documents_for_domain(
-        context,
-        product_mode=False,
-    )
+    _check_repository_development_documents(context)
     print("ok: repository development documents")
     _check_lifecycle_for_domain(
         context,
