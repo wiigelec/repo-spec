@@ -22,6 +22,9 @@ REPO_FORBIDDEN_PRODUCT_SYMBOLS = {
     "check_product_conformance_completeness_phase",
     "_owned_development_roots",
     "_check_development_documents_for_domain",
+    "_product_development_roots_for_shared_lifecycle",
+    "_check_lifecycle_for_domain",
+    "check_lifecycle_lifecycle_phase",
 }
 
 PRODUCT_REQUIRED_SYMBOLS = {
@@ -49,6 +52,9 @@ PRODUCT_REQUIRED_SYMBOLS = {
     "product_development_documents.py": {
         "_product_development_roots",
         "check_product_development_documents",
+    },
+    "product_lifecycle.py": {
+        "check_product_lifecycle_readiness",
     },
 }
 
