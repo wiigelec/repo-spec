@@ -54,7 +54,7 @@ Defines the atomic provenance record output artifact format for the initializer.
 - `INIT-PRO-001`: A provenance record shall be an atomic output artifact that records the initializer identity and version, product identifier, local source repository identity, exact source revision used, initialization timestamp, and governing request identifier.
 - `INIT-PRO-002`: The provenance record shall be a single UTF-8 encoded JSON object file written to the repository-relative path `repo/initializer/provenance.json` in the staged and promoted repository.
 - `INIT-PRO-003`: The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier`, `source_repository`, and `source_revision` as strings, `initialization_timestamp` as a string, and `request_identifier` as a string.
-- `INIT-PRO-004`: The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the exact Git object identifier of the source commit in the source repository's native object format.
+- `INIT-PRO-004`: The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the canonical Git object identity object_id as defined by product.git-object-identity.
 - `INIT-PRO-005`: The provenance `request_identifier` shall be a non-empty string that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request.
 - `INIT-PRO-006`: A provenance record shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts, execution report content, or successor product behavior.
 - `INIT-PRO-007`: The provenance record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
@@ -64,6 +64,7 @@ Defines the atomic provenance record output artifact format for the initializer.
 
 - `product.initializer-level-0`
 - `product.source-revision-identity`
+- `product.git-object-identity`
 
 ## References
 

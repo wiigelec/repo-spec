@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-PRO-004",
-      "text": "The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the exact Git object identifier of the source commit in the source repository's native object format."
+      "text": "The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the canonical Git object identity object_id as defined by product.git-object-identity."
     },
     {
       "id": "INIT-PRO-005",
@@ -62,6 +62,9 @@
     },
     {
       "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     }
   ],
   "references": [

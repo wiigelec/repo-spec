@@ -144,7 +144,7 @@
     },
     {
       "id": "success-finalization",
-      "purpose": "Finalize the external execution result by recording the workflow success outcome and preparing the caller return value after promotion has committed.",
+      "purpose": "Finalize the external execution result by recording the workflow success outcome, removing the staging transaction root, and preparing the caller return value after promotion has committed.",
       "required": true,
       "deferrable": false,
       "recoverable": false,

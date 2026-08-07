@@ -45,6 +45,7 @@ Defines same-filesystem staging transaction with isolated repository content, va
 - `INIT-TST-004`: Failure after staging transaction root establishment but before promotion shall, when technically feasible, preserve the staging transaction root at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed.
 - `INIT-TST-005`: Promotion to the declared destination shall occur only after repository validation passes; validation failure shall cause the workflow to fail before promotion and shall leave the staging transaction root in its pre-promotion state for diagnostics.
 - `INIT-TST-006`: Promotion shall be non-recoverable: the initializer shall not retry promotion after a failed or indeterminate outcome without external diagnosis and manual intervention.
+- `INIT-TST-007`: After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the execution report and caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact.
 
 ## Dependencies
 

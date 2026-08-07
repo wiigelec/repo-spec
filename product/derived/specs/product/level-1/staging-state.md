@@ -60,7 +60,7 @@ Defines the staging-transaction state record that captures initialization identi
 - `INIT-STA-001`: A staging-state record shall capture the request fingerprint, source commit, initializer identity and version, destination path, current stage identity, completed stage identities, failed stage identity (if any), repository-content digest, Git-created flag, validation-completed flag, promotion-entered flag, and promotion outcome for the bounded local workflow.
 - `INIT-STA-002`: The staging-state record shall be a single UTF-8 encoded JSON object file written at `transaction/staging-state.json` inside the staging transaction root, and shall never be part of the promoted repository content.
 - `INIT-STA-003`: The staging-state representation shall define the following required fields with the given JSON types: `schema_version` as a string, `request_fingerprint` as a string, `source_revision` as a string, `source_repository` as a string, `initializer_version` as a string, `expected_destination` as a string, `current_stage` as a string, `completed_stages` as an object, `failed_stage` as either a string or null, `repository_content_digest` as a string, `git_created` as a boolean, `validation_completed` as a boolean, `promotion_entered` as a boolean, and `promotion_outcome` as either a string or null.
-- `INIT-STA-004`: The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the exact 40-character lowercase hexadecimal Git object identifier of the source revision; `source_repository` shall be the resolved local source repository path.
+- `INIT-STA-004`: The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the canonical Git object identity object_id as defined by product.git-object-identity for the source revision; `source_repository` shall be the resolved local source repository path.
 - `INIT-STA-005`: The `initializer_version` field shall record the initializer version that wrote the state record; `schema_version` shall be the constant string `1`; `expected_destination` shall be the resolved absolute filesystem path of the declared destination.
 - `INIT-STA-006`: The `current_stage` field shall identify the most recently entered stage as a canonical stage identifier from the lifecycle-stage vocabulary; `completed_stages` shall map each completed stage identifier to the constant string `completed`; `failed_stage` shall be the canonical identifier of the failed stage when the transaction has failed, or `null` when no stage has failed.
 - `INIT-STA-007`: The `repository_content_digest` shall be a deterministic content hash (SHA-256 hex digest) of the `repository/` subtree inside the staging transaction root, computed after all generation and before Git initialization, and shall not cover any content under `transaction/`.
@@ -74,6 +74,7 @@ Defines the staging-transaction state record that captures initialization identi
 
 - `product.initializer-level-0`
 - `product.lifecycle-stages`
+- `product.git-object-identity`
 
 ## References
 

@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-REQ-006",
-      "text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as a non-empty string that is the exact Git object identifier of the source commit in the repository's native object format (40-character hexadecimal for SHA-1, 64-character hexadecimal for SHA-256), and shall be rejected when any other source field is present."
+      "text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as a non-empty string that is the canonical Git object identity object_id as defined by product.git-object-identity, and shall be rejected when any other source field is present."
     },
     {
       "id": "INIT-REQ-007",
