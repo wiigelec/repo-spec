@@ -11,7 +11,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | --- | --- |
 | Every I1-owned key has one baseline classification (preserve/repair/replace/implement) with cited source/test evidence | Machine-readable matrix; counts reconcile to ownership for `product.request-intake`, `product.source-revision-identity`, `product.destination`, `product.product-identity`, `product.material-manifest`, `product.git-object-identity`, `product.destination-preflight`, `product.request-intake`, `product.source-material-resolution` |
 | No I1 key classified by file presence or undifferentiated tests alone | Each entry cites specific behavior/assertion; absence citations explicit |
-| Three provenance-conflict keys flagged blocked, not classified | Matrix blocker flag confirmed |
+| Issue #255 repaired provenance/handoff keys are classified against current accepted text | Matrix cites current accepted specification revision |
 
 ### I1 -> I2 gate
 | Requirement | Evidence |
@@ -30,24 +30,22 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | Deterministic repository-only digest available for I3 | Digest artifact; producer citations per inventory entry |
 | I1-carried request/source/identity/manifest values preserved | Value comparison against I1 validated model |
 
-### I3 -> I4 gate (blocked)
-Inherits blocked entry condition from Patch 2: separate governed spec repair of `product.provenance-recording::INIT-PRC-001` / `product.provenance-record::INIT-PRO-003,006` plus required plan impact review. Until met, no I3 exit or I4 authorization.
+### I3 -> I4 gate
 
 | Requirement | Evidence |
 | --- | --- |
-| Blocked provenance entry condition resolved | Accepted repair, plan impact review record |
-| All I3-owned keys (excluding three conflicting) have requirement-level evidence | Composite-key reconciliation to Patch 1 I3 rows minus three blocked |
-| Unblocked I3: provenance/handoff/Git consistent with repaired contract, I2 content, I1 identities | Traceability across request/source/product/material/content/records/Git |
+| Issue #255 provenance/handoff repair reflected in B0 and I3 evidence | Current accepted specs plus this impact-review record |
+| All I3-owned keys have requirement-level evidence | Composite-key reconciliation to Patch 1 I3 rows |
+| Provenance/handoff/Git consistent with repaired contracts, I2 content, I1 identities | Traceability across request/source/product/material/content/records/Git |
 
-### I4 -> I5 gate (blocked)
-Inherits I3->I4 blockage.
+### I4 -> I5 gate
 
 | Requirement | Evidence |
 | --- | --- |
 | I4-owned validation/promotion evidence at requirement level | Composite-key reconciliation to Patch 1 I4 rows |
 | Promotion: destination rechecked, single rename, post-rename stat commitment | Fault-injection at each boundary |
 | Terminal boundaries: pre-promotion failure, promoted success, indeterminate promotion, promoted-with-finalization-error | Outcome-class evidence; consistent caller result/destination/staging/report/diagnostics |
-| I3-carried provenance/handoff/Git validated as owned input | Validation-profile check results; blocked until I3 exit |
+| I3-carried provenance/handoff/Git validated as owned input | Validation-profile check results after I3 exit |
 
 ## Validation strategy
 
@@ -61,7 +59,7 @@ Cross-component validation: request values preserved through consumers, source/m
 
 End-to-end (I5): promoted success, pre-promotion failure (including report-finalization partial-write), indeterminate promotion, promoted-with-finalization-error, deterministic equivalent-input behavior, rejection of unsupported V1 (named refs, remotes, existing destination, platform, resume, migration, cross-device, undeclared output).
 
-Evidence artifacts: B0 classification matrix, requirement-level test suite, validation report, staging state, execution report, provenance record (blocked), handoff manifest, Git repository, E2E outcome evidence.
+Evidence artifacts: B0 classification matrix, requirement-level test suite, validation report, staging state, execution report, provenance record, handoff manifest, Git repository, E2E outcome evidence.
 
 ## Completion and successor work
 
@@ -70,11 +68,11 @@ Evidence artifacts: B0 classification matrix, requirement-level test suite, vali
 - Patch 2: acyclic B0→I1→I2→I3→I4→I5 DAG; each increment has controlling specs, requirements, predecessors, entry/exit conditions, exclusions; provenance blocker propagated
 - Patch 3: requirement-level transition gates; validation strategy (component/cross-component/E2E); terminal outcomes/determinism/rejection evidence; risk/decision register substantive
 
-### Plan acceptance (blocked)
-Not while provenance conflict unresolved or any controlling spec missing/candidate/contradictory/structurally invalid. Separately governed decision; not authorized by issue #253.
+### Plan acceptance
+Issue #255 completed the required specification repair and plan impact review. Plan acceptance remains a separately governed decision and is not authorized by issue #255.
 
-### Successor implementation work (blocked)
-Requires: (1) provenance spec repair, (2) plan impact review, (3) plan acceptance, (4) individual issues citing accepted plan/specs/base/B0 evidence.
+### Successor implementation work
+Requires: (1) plan acceptance, (2) B0 requirement-level evidence, and (3) individual governed issues citing accepted plan/specifications/base and predecessor evidence.
 
 ### Unblocked preparatory work
 B0 evidence classification, I1 evidence for non-conflicting keys (controlled experimental context), provenance spec repair — each requires separate governed issue.
@@ -90,9 +88,9 @@ B0 evidence classification, I1 evidence for non-conflicting keys (controlled exp
 | Validation strategy (component/cross-component/E2E) defined | Patch 3 |
 | Terminal outcomes, determinism, rejection evidence defined | Patch 3 |
 | Risk/decision register substantive | Patch 3 |
-| Provenance conflict blocker at every affected boundary | Patches 1-3 |
+| Issue #255 specification repair reflected at every affected boundary | Impact review complete |
 | Future-extension specs excluded | Patches 1-3 |
 | Three patches; no fourth functional correction | Verified |
 | No product source/tests/schemas/specs modified | Verified |
 | `./scripts/validate` passes each commit | Verified |
-| Clean-room review: blocked gaps, no invented semantics | Pending |
+| Clean-room review: current accepted specs, no invented semantics | Pending post-issue-255 |

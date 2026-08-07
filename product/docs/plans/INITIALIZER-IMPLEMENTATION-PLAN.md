@@ -6,9 +6,10 @@ Candidate; non-authorizing.
 
 This document is non-normative with respect to product semantics. In its
 current candidate state it does not authorize initializer implementation work.
-Implementation authorization, plan acceptance, and affected implementation-issue
-derivation are blocked by the accepted provenance conflict recorded in this
-plan.
+Implementation authorization and implementation-issue derivation remain blocked because
+this candidate plan has not yet been accepted. Issue #255 repaired the accepted
+provenance/handoff specification conflicts and this plan has received the required
+specification-impact review, but it remains candidate and non-authorizing.
 
 ## Metadata
 
@@ -23,7 +24,7 @@ plan.
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "candidate",
-  "governing_issue": "#243, #253",
+  "governing_issue": "#243, #253, #255",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -107,7 +108,7 @@ plan.
       ]
     }
   ],
-  "successor_action": "Perform a clean-room post-patch review of this completed three-patch candidate plan. If no material planning gap prevents safe derivation of bounded implementation issues, the candidate plan may proceed to a governed acceptance decision after the accepted provenance conflict is repaired through separate specification work and the required plan impact review is complete. No implementation work is authorized by this candidate plan.",
+  "successor_action": "Perform a clean-room post-patch review of this completed three-patch candidate plan. If no material planning gap prevents safe derivation of bounded implementation issues, the candidate plan may proceed to a governed acceptance decision after a clean-room review confirms this impact-reviewed plan remains complete under the repaired accepted specifications. No implementation work is authorized by this candidate plan.",
   "schema_version": "1"
 }
 ```
@@ -134,12 +135,11 @@ The candidate plan defines six bounded increments in a single forward DAG:
 | 4 | I4 | Two-phase validation, report finalization, atomic promotion, and cleanup |
 | 5 | I5 | End-to-end lifecycle orchestration, terminal outcomes, and whole-workflow conformance |
 
-The provenance-dependent portion of I3 and all downstream authorization (I4,
-I5) are blocked by the accepted specification conflict among
-`product.provenance-recording::INIT-PRC-001`,
-`product.provenance-record::INIT-PRO-003`, and
-`product.provenance-record::INIT-PRO-006`. No implementation authorization,
-plan acceptance, or implementation-issue derivation passes through that blocker.
+Issue #255 repaired the accepted provenance and handoff specification conflicts that
+previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
+unchanged. Because this plan remains candidate, no implementation authorization
+or implementation-issue derivation is granted until a separately governed
+plan-acceptance decision.
 
 ## Chunk index
 
@@ -166,11 +166,10 @@ plan acceptance, or implementation-issue derivation passes through that blocker.
 
 ## Next authorized action
 
-Perform a clean-room post-patch review to confirm that the completed three-patch
-candidate plan contains no invented product semantics, that the provenance
-blocker is visible at every affected increment and gate, and that successor
-implementation cannot proceed through the blocked dependency without separate
-governed specification repair and plan impact review.
+Perform a clean-room post-issue-255 review to confirm that this impact-reviewed
+candidate plan remains complete and consistent with the repaired accepted
+specifications. If no material planning gap remains, a separately governed
+plan-acceptance decision may follow.
 
 No product implementation is authorized by this plan.
 

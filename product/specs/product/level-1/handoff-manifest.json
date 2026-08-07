@@ -68,15 +68,15 @@
     },
     {
       "id": "INIT-HND-010",
-      "text": "The six material arrays (generated, selected, omitted, deferred, framework, and product) shall be mutually disjoint: no repository-relative path shall appear in more than one array."
+      "text": "The six classification arrays (`foundations.framework`, `foundations.product`, `material.generated`, `material.selected`, `material.omitted`, and `material.deferred`) shall be mutually disjoint: no repository-relative path shall appear in more than one array."
     },
     {
       "id": "INIT-HND-011",
-      "text": "Every regular file in the initialized repository that is not listed in the foundations arrays shall appear in exactly one of generated, selected, omitted, or deferred; directories shall not appear in any array."
+      "text": "Every regular file present in the prepared repository shall appear in exactly one of `foundations.framework`, `foundations.product`, `material.generated`, or `material.selected`; a path listed in `material.omitted` or `material.deferred` shall not be present as a regular file in the prepared repository; directories shall not appear in any classification array."
     },
     {
       "id": "INIT-HND-012",
-      "text": "Generated content (controlling documents, chunk documents, product manifest, discoverability README files, provenance record, and handoff manifest) that is not copied framework material shall be listed in the generated array; framework content copied verbatim from the source repository shall be listed in the selected array; content explicitly excluded by the execution profile or request shall be listed in the omitted array; content deferred by explicit authority shall be listed in the deferred array."
+      "text": "Installed reusable framework files shall be listed only in `foundations.framework`; generated candidate document skeletons and Level workspace README.md files preserving the product specification workspace shall be listed only in `foundations.product`; other generated files, including the product manifest, provenance record, and handoff manifest, shall be listed in `material.generated`; source-derived non-foundation files installed into the prepared repository shall be listed in `material.selected`; paths explicitly excluded by the execution profile or request shall be listed in `material.omitted`; paths deferred by explicit authority shall be listed in `material.deferred`."
     },
     {
       "id": "INIT-HND-013",
@@ -84,7 +84,7 @@
     },
     {
       "id": "INIT-HND-014",
-      "text": "Each entry in a material array shall be a repository-relative path to a regular file; paths shall use forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters."
+      "text": "Each classification-array entry shall be a normalized repository-relative file path using forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters. Entries in `foundations.framework`, `foundations.product`, `material.generated`, and `material.selected` shall identify regular files present in the prepared repository; entries in `material.omitted` and `material.deferred` shall identify authorized file paths that are not present in the prepared repository."
     }
   ],
   "dependencies": [

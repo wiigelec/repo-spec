@@ -9,7 +9,7 @@ Maps accepted requirements to planning responsibilities; does not restate, narro
 | Planning fact | Value |
 | --- | --- |
 | Planning basis | `d3cf252dd6022aa19bd52ee335b1ef114ccfae1b` |
-| Governing issue | #253 Patch 1, including the provenance-conflict amendment (`#issuecomment-5222594632`) |
+| Governing issue | #253 planning cycle plus #255 accepted specification repair and plan impact review |
 | Normative authority | Accepted `initial-bounded-workflow` specs registered in `product/specs/product/manifest.json` |
 | Repository planning authority | `repo.implementation-plan`, `repo.development-workflow` |
 
@@ -103,11 +103,14 @@ Accepted specifications are authority. Source, tests, schemas, templates, genera
 
 No composite key is classified here. Lack of correspondence records and a requirement-keyed audit prevent blanket conformance conclusions.
 
-## Authority gap
+## Specification-impact review
 
-| Conflicting keys | Conflict | Planning effect |
-| --- | --- | --- |
-| `product.provenance-recording::INIT-PRC-001`; `product.provenance-record::INIT-PRO-003`; `product.provenance-record::INIT-PRO-006` | `INIT-PRC-001` requires capturing material-manifest schema version, entry count, and completed stages; `INIT-PRO-003/006` define a closed required field set with no fields for those values and reject unknown fields | No omitted-field, extra-field, or alternate-record choice in this plan. I3, I4, I5 blocked pending separate governed specification repair and required plan impact review |
+Issue #255 repaired the accepted provenance producer/record conflict, pre-Git handoff
+completion-state conflict, and handoff disposition conflict. Requirement identities,
+accepted-spec count (34), and total normative-requirement count (291) are unchanged.
+The existing B0/I1-I5 ownership map therefore remains valid without reassignment.
+Affected I3/I4/I5 descriptions and gates are reaffirmed against the repaired semantics;
+the plan remains candidate and non-authorizing pending separate acceptance.
 
 ## Scope
 
