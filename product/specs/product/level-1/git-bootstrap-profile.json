@@ -2,7 +2,7 @@
   "spec_id": "product.git-bootstrap-profile",
   "title": "Git Bootstrap Profile",
   "purpose": "Defines versioned bootstrap constants for the deterministic local Git repository produced by the bounded initialization workflow.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

@@ -2,7 +2,7 @@
   "spec_id": "product.initializer-level-0",
   "title": "Initializer Level 0 Kernel Foundations",
   "purpose": "Defines the product-wide kernel foundations for the repo-spec initializer, including core terminology, universal invariants, authority and precedence rules, identity and versioning foundations, common data constraints, lifecycle terminology, and extension boundaries.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 0,
   "kernel": {

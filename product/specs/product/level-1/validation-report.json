@@ -2,10 +2,14 @@
   "spec_id": "product.validation-report",
   "title": "Initializer Validation Report",
   "purpose": "Defines the canonical validation report that the repository validation component produces, including deterministic per-check status, stable failure codes, structured evidence, overall-result calculation, and the promotion-eligibility rule.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
-  "primitives": {"concepts": ["validation-report"]},
+  "primitives": {
+    "concepts": [
+      "validation-report"
+    ]
+  },
   "field_order": {
     "root": [
       "schema_version",
@@ -25,36 +29,111 @@
     ]
   },
   "normative_requirements": [
-    {"id": "INIT-VR-001", "text": "The validation report shall contain an overall_status field whose value is pass only when every required check in Phase 1 and Phase 2 of the validation profile has status passed. If any required check in Phase 1 or Phase 2 has status failed, error, or skipped, overall_status shall be fail."},
-    {"id": "INIT-VR-002", "text": "Promotion is permitted only when overall_status is pass. The validation component shall not proceed to the promotion stage when overall_status is fail."},
-    {"id": "INIT-VR-003", "text": "The validation report shall contain a checks array in ascending order-number as defined by the validation profile. Each entry shall contain check_id (string), status (one of passed, failed, error, or skipped), and the following optional fields: failure_code (string), failure_message (string), and evidence (object)."},
-    {"id": "INIT-VR-004", "text": "The four status values are: passed (the check executed and its pass_condition is satisfied), failed (the check executed and its pass_condition is not satisfied), error (the check could not be executed due to a precondition failure or internal error, as distinct from a deterministic fail), and skipped (the check was intentionally not executed because its applicable scope does not exist or the execution profile explicitly exempted it)."},
-    {"id": "INIT-VR-005", "text": "The skipped status is permitted only for checks whose applies_to scope was determined to be absent or inapplicable during validation. A check whose scope is present must not be skipped; it must execute and produce passed, failed, or error."},
-    {"id": "INIT-VR-006", "text": "The failure_code field shall use one of the check-specific failure codes declared in the validation profile's failure_codes array for that check_id. A failure_code not declared in the profile is invalid."},
-    {"id": "INIT-VR-007", "text": "The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings. Evidence shall be structured as a JSON object and shall not contain authoritative product specification content."},
-    {"id": "INIT-VR-008", "text": "The validation report shall define the following top-level fields: schema_version (constant string \"1\"), report_version (constant string \"1\"), profile_version (string matching the validation profile version used), request_fingerprint (SHA-256 hex digest of the canonical initialization request JSON), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects)."},
-    {"id": "INIT-VR-009", "text": "The request_fingerprint field shall link the validation report to the specific initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority."},
-    {"id": "INIT-VR-010", "text": "The validation report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, checks for each check entry), 2-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."},
-    {"id": "INIT-VR-011", "text": "The validation report shall be written at transaction/validation-report.json inside the staging transaction root and shall never be part of the promoted repository content."},
-    {"id": "INIT-VR-012", "text": "The validation report format shall evolve by incrementing schema_version. Consumers of schema_version 1 shall reject reports declaring any other version and shall not merge unknown or extra fields silently."},
-    {"id": "INIT-VR-013", "text": "The validation report shall not include a check that recursively validates the report itself. Fingerprint linkage, digest linkage, check ordering, check uniqueness, report schema validation, serialization, and staging-state validation are not ordinary profile checks; they are validation-component postconditions enforced during report finalization before promotion."},
-    {"id": "INIT-VR-014", "text": "Report finalization is a deterministic ordered write operation that occurs after all Phase 1 and Phase 2 checks are recorded. Finalization shall proceed in this exact order: (a) calculate the proposed overall_status as pass only when every required Phase 1 and Phase 2 check has status passed, otherwise fail; (b) construct in memory a proposed final validation report carrying the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest; (c) construct in memory a proposed final staging-state representation carrying validation_completed equal to true, validation_overall_status equal to the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest (the same digest recorded in the staging-state record and computed during the output.repository-digest-match check); (d) validate the proposed staging-state representation against the product.staging-state schema in memory without writing it, verifying that its request_fingerprint matches the canonical request fingerprint and its repository_content_digest matches the expected digest; (e) validate the proposed validation report against the validation-report schema in memory, verifying that the checks array contains exactly one entry per profile check_id in ascending order-number order with no missing or duplicate entries; (f) serialize and write the finalized validation report atomically to transaction/validation-report.json; (g) serialize and write the finalized staging-state record atomically to transaction/staging-state.json; and (h) re-read or otherwise verify that the two durable records are mutually consistent, confirming they share the same request_fingerprint and repository_content_digest and that the staging-state validation_completed and validation_overall_status agree with the completed validation result. Promotion is permitted only when steps (a) through (h) all succeed."},
-    {"id": "INIT-VR-015", "text": "Report finalization shall complete before promotion begins. Promotion must not proceed unless both the finalized validation report and the finalized staging-state record are durably written and verified mutually consistent, and the report overall_status is pass. The staging-state record must not claim validation_completed equal to true before the validation report has been successfully serialized, written, and consistency-verified. The initializer must not begin promotion when only one of the two records has been durably written. Any finalization failure (staging-state schema validation failure, fingerprint mismatch, digest mismatch, validation-status mismatch, linkage mismatch, ordering violation, report schema validation failure, serialization error, or failure of the final consistency verification) shall prevent promotion, shall be recorded as a pre-promotion failure, and shall preserve the staging transaction root for diagnostics."},
-    {"id": "INIT-VR-016", "text": "The staging-state record shall be validated during report finalization using the following stable failure codes: staging-state-invalid-schema when the record does not conform to the product.staging-state schema; staging-state-fingerprint-mismatch when the request_fingerprint in the staging-state record does not match the canonical request fingerprint; staging-state-digest-mismatch when the repository_content_digest in the staging-state record does not match the expected digest; staging-state-validation-status-mismatch when the validation_completed or validation_overall_status fields in the staging-state record disagree with the completed validation result. Any of these failures shall prevent promotion."}
+    {
+      "id": "INIT-VR-001",
+      "text": "The validation report shall contain an overall_status field whose value is pass only when every required check in Phase 1 and Phase 2 of the validation profile has status passed. If any required check in Phase 1 or Phase 2 has status failed, error, or skipped, overall_status shall be fail."
+    },
+    {
+      "id": "INIT-VR-002",
+      "text": "Promotion is permitted only when overall_status is pass. The validation component shall not proceed to the promotion stage when overall_status is fail."
+    },
+    {
+      "id": "INIT-VR-003",
+      "text": "The validation report shall contain a checks array in ascending order-number as defined by the validation profile. Each entry shall contain check_id (string), status (one of passed, failed, error, or skipped), and the following optional fields: failure_code (string), failure_message (string), and evidence (object)."
+    },
+    {
+      "id": "INIT-VR-004",
+      "text": "The four status values are: passed (the check executed and its pass_condition is satisfied), failed (the check executed and its pass_condition is not satisfied), error (the check could not be executed due to a precondition failure or internal error, as distinct from a deterministic fail), and skipped (the check was intentionally not executed because its applicable scope does not exist or the execution profile explicitly exempted it)."
+    },
+    {
+      "id": "INIT-VR-005",
+      "text": "The skipped status is permitted only for checks whose applies_to scope was determined to be absent or inapplicable during validation. A check whose scope is present must not be skipped; it must execute and produce passed, failed, or error."
+    },
+    {
+      "id": "INIT-VR-006",
+      "text": "The failure_code field shall use one of the check-specific failure codes declared in the validation profile's failure_codes array for that check_id. A failure_code not declared in the profile is invalid."
+    },
+    {
+      "id": "INIT-VR-007",
+      "text": "The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings. Evidence shall be structured as a JSON object and shall not contain authoritative product specification content."
+    },
+    {
+      "id": "INIT-VR-008",
+      "text": "The validation report shall define the following top-level fields: schema_version (constant string \"1\"), report_version (constant string \"1\"), profile_version (string matching the validation profile version used), request_fingerprint (SHA-256 hex digest of the canonical initialization request JSON), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects)."
+    },
+    {
+      "id": "INIT-VR-009",
+      "text": "The request_fingerprint field shall link the validation report to the specific initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority."
+    },
+    {
+      "id": "INIT-VR-010",
+      "text": "The validation report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, checks for each check entry), 2-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
+    },
+    {
+      "id": "INIT-VR-011",
+      "text": "The validation report shall be written at transaction/validation-report.json inside the staging transaction root and shall never be part of the promoted repository content."
+    },
+    {
+      "id": "INIT-VR-012",
+      "text": "The validation report format shall evolve by incrementing schema_version. Consumers of schema_version 1 shall reject reports declaring any other version and shall not merge unknown or extra fields silently."
+    },
+    {
+      "id": "INIT-VR-013",
+      "text": "The validation report shall not include a check that recursively validates the report itself. Fingerprint linkage, digest linkage, check ordering, check uniqueness, report schema validation, serialization, and staging-state validation are not ordinary profile checks; they are validation-component postconditions enforced during report finalization before promotion."
+    },
+    {
+      "id": "INIT-VR-014",
+      "text": "Report finalization is a deterministic ordered write operation that occurs after all Phase 1 and Phase 2 checks are recorded. Finalization shall proceed in this exact order: (a) calculate the proposed overall_status as pass only when every required Phase 1 and Phase 2 check has status passed, otherwise fail; (b) construct in memory a proposed final validation report carrying the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest; (c) construct in memory a proposed final staging-state representation carrying validation_completed equal to true, validation_overall_status equal to the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest (the same digest recorded in the staging-state record and computed during the output.repository-digest-match check); (d) validate the proposed staging-state representation against the product.staging-state schema in memory without writing it, verifying that its request_fingerprint matches the canonical request fingerprint and its repository_content_digest matches the expected digest; (e) validate the proposed validation report against the validation-report schema in memory, verifying that the checks array contains exactly one entry per profile check_id in ascending order-number order with no missing or duplicate entries; (f) serialize and write the finalized validation report atomically to transaction/validation-report.json; (g) serialize and write the finalized staging-state record atomically to transaction/staging-state.json; and (h) re-read or otherwise verify that the two durable records are mutually consistent, confirming they share the same request_fingerprint and repository_content_digest and that the staging-state validation_completed and validation_overall_status agree with the completed validation result. Promotion is permitted only when steps (a) through (h) all succeed."
+    },
+    {
+      "id": "INIT-VR-015",
+      "text": "Report finalization shall complete before promotion begins. Promotion must not proceed unless both the finalized validation report and the finalized staging-state record are durably written and verified mutually consistent, and the report overall_status is pass. The staging-state record must not claim validation_completed equal to true before the validation report has been successfully serialized, written, and consistency-verified. The initializer must not begin promotion when only one of the two records has been durably written. Any finalization failure (staging-state schema validation failure, fingerprint mismatch, digest mismatch, validation-status mismatch, linkage mismatch, ordering violation, report schema validation failure, serialization error, or failure of the final consistency verification) shall prevent promotion, shall be recorded as a pre-promotion failure, and shall preserve the staging transaction root for diagnostics."
+    },
+    {
+      "id": "INIT-VR-016",
+      "text": "The staging-state record shall be validated during report finalization using the following stable failure codes: staging-state-invalid-schema when the record does not conform to the product.staging-state schema; staging-state-fingerprint-mismatch when the request_fingerprint in the staging-state record does not match the canonical request fingerprint; staging-state-digest-mismatch when the repository_content_digest in the staging-state record does not match the expected digest; staging-state-validation-status-mismatch when the validation_completed or validation_overall_status fields in the staging-state record disagree with the completed validation result. Any of these failures shall prevent promotion."
+    }
   ],
   "dependencies": [
-    {"spec_id": "product.initializer-level-0"},
-    {"spec_id": "product.git-object-identity"},
-    {"spec_id": "product.validation-profile"}
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "spec_id": "product.validation-profile"
+    }
   ],
   "references": [
-    {"type": "artifact", "path": "product/specs/product/level-0/initializer-level-0.json"},
-    {"type": "artifact", "path": "product/specs/product/level-1/git-object-identity.json"},
-    {"type": "artifact", "path": "product/specs/product/level-1/validation-profile.json"},
-    {"type": "artifact", "path": "repo/specs/repo/validation.json"}
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/git-object-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/validation-profile.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    }
   ],
   "supersedes": [],
   "superseded_by": [],
-  "derived_artifacts": [{"type": "markdown", "path": "product/derived/specs/product/level-1/validation-report.md"}],
-  "correspondence": {"implementations": [], "tests": [], "conformance": []}
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/validation-report.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
 }

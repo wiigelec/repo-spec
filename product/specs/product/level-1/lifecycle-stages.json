@@ -2,7 +2,7 @@
   "spec_id": "product.lifecycle-stages",
   "title": "Lifecycle Stage Vocabulary",
   "purpose": "Defines the canonical lifecycle stage identifiers used by workflows, execution reports, provenance records, and orchestration components to refer to bounded-initialization stages with stable machine-readable names.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

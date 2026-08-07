@@ -2,7 +2,7 @@
   "spec_id": "product.foundation-seeding",
   "title": "Foundation Seeding",
   "purpose": "Defines the workspace-seeding operations that generate candidate document skeletons from fixed templates and activate an empty product-specification workspace, together with the direction-evidence-installation operations that preserve direction material as byte-identical source evidence.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

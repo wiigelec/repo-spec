@@ -2,7 +2,7 @@
   "spec_id": "product.transactional-staging",
   "title": "Transactional Staging Manager",
   "purpose": "Defines same-filesystem staging transaction with isolated repository content, validation gating, diagnostic preservation, and atomic destination promotion.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

@@ -2,7 +2,7 @@
   "spec_id": "product.staging-workspace",
   "title": "Staging Transaction Layout Contract",
   "purpose": "Defines the physical staging transaction directory layout that isolates repository content from transaction metadata for atomic promotion.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

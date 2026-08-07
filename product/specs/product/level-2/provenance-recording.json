@@ -2,7 +2,7 @@
   "spec_id": "product.provenance-recording",
   "title": "Provenance Recording",
   "purpose": "Defines the provenance recording component that captures and writes provenance data to the initialized repository.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

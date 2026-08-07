@@ -2,7 +2,7 @@
   "spec_id": "product.handoff-manifest",
   "title": "Handoff Manifest Contract",
   "purpose": "Defines the atomic handoff manifest output artifact format for the initializer.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

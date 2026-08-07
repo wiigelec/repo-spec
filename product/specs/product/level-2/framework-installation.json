@@ -2,7 +2,7 @@
   "spec_id": "product.framework-installation",
   "title": "Framework Installation",
   "purpose": "Defines the framework installation component that selects and installs reusable repository framework material into the repository/ directory according to the material manifest.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

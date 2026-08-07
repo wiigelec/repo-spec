@@ -2,7 +2,7 @@
   "spec_id": "product.execution-profile",
   "title": "Execution Profile",
   "purpose": "Defines the atomic execution profile mode selector for the initializer.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {
