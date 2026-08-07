@@ -3,7 +3,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from validation.cli_contracts import check_product_validate_cli_contract
+from .cli_contracts import check_product_validate_cli_contract
 
 from .test_product_acyclicity import run_product_acyclicity_tests
 from .test_product_dependency_directions import (

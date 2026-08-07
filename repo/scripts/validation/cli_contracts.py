@@ -17,6 +17,13 @@ def check_generate_docs_cli_contract(repo_root: Path) -> None:
 
 
 def check_validate_cli_contract(repo_root: Path) -> None:
+    validate_launcher = (repo_root / "repo/scripts/validate").read_text()
+    test_launcher = (repo_root / "repo/scripts/test-validation").read_text()
+    expect("$root/product/scripts" not in validate_launcher, "repository validate launcher depends on product scripts")
+    expect("$root/product/scripts" not in test_launcher, "repository validation-test launcher depends on product scripts")
+    expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
+
     proc = subprocess.run(
         [str(repo_root / "repo/scripts/validate"), "--unknown-mode"],
         cwd=repo_root,
@@ -28,19 +35,4 @@ def check_validate_cli_contract(repo_root: Path) -> None:
     expect(
         proc.stderr.strip() == "validation error: unknown mode: --unknown-mode",
         "repository validate unknown-mode stderr mismatch",
-    )
-
-
-def check_product_validate_cli_contract(repo_root: Path) -> None:
-    proc = subprocess.run(
-        [str(repo_root / "product/scripts/validate"), "--unknown-mode"],
-        cwd=repo_root,
-        capture_output=True,
-        text=True,
-    )
-    expect(proc.returncode != 0, "product validate unknown mode succeeded")
-    expect(proc.stdout.strip() == "", "product validate unknown mode wrote stdout")
-    expect(
-        proc.stderr.strip() == "validation error: unknown mode: --unknown-mode",
-        "product validate unknown-mode stderr mismatch",
     )
