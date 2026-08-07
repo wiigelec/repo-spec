@@ -6,6 +6,12 @@ from pathlib import Path
 from typing import Any
 
 from .product_state import load_product_validation_context
+from .product_policy import (
+    check_dependency_directions_phase,
+    check_product_acyclic_dependencies_phase,
+    check_product_completeness_phase,
+    check_product_specification_root_phase,
+)
 
 from validation.repository_checks import (
     ExternalRepositoryValidationContext,
@@ -13,12 +19,8 @@ from validation.repository_checks import (
     _check_development_documents_for_domain,
     _check_generated_freshness_for_domain,
     _check_lifecycle_for_domain,
-    check_dependency_directions_phase,
-    check_product_acyclic_dependencies_phase,
-    check_product_completeness_phase,
     check_product_conformance_completeness_phase,
     check_product_correspondence_phase,
-    check_product_specification_root_phase,
     check_supersession_acyclicity,
     check_supersession_pairs,
     check_unique_item_properties,

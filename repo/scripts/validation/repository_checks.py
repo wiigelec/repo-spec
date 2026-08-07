@@ -563,63 +563,6 @@ def check_dependency_targets(specs: dict[str, dict[str, Any]]) -> None:
             expect(specs[target_spec_id]["status"] in {"candidate", "accepted"}, f"dependencies failed: {spec_id} -> {target_spec_id}")
 
 
-def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:
-    allowed_target_levels = {
-        0: {0},
-        1: {0, 1},
-        2: {0, 1, 2},
-        3: {0, 1, 2, 3},
-    }
-    for spec_id, spec in specs.items():
-        source_level = spec["level"]
-        allowed_levels = allowed_target_levels[source_level]
-        for index, dep in enumerate(spec.get("dependencies", [])):
-            target_spec_id = dep["spec_id"]
-            target_spec = specs[target_spec_id]
-            expect(
-                target_spec["level"] in allowed_levels,
-                f"product dependency direction failed: {spec_id} (level {source_level}) -> {target_spec_id} (level {target_spec['level']})",
-            )
-
-
-def check_product_completeness(specs: dict[str, dict[str, Any]]) -> None:
-    accepted_level0_exists = any(spec["status"] == "accepted" and spec["level"] == 0 for spec in specs.values())
-    accepted_higher_level_exists = any(spec["status"] == "accepted" and spec["level"] in {1, 2, 3} for spec in specs.values())
-    if accepted_higher_level_exists:
-        expect(
-            accepted_level0_exists,
-            "product completeness failed: accepted Level 1-3 specifications require at least one accepted Level 0 specification",
-        )
-
-
-def check_product_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
-    graph = {spec["spec_id"]: [dep["spec_id"] for dep in spec.get("dependencies", [])] for spec in specs.values()}
-    visiting: list[str] = []
-    visited: set[str] = set()
-
-    def cycle_fragment(node: str) -> str:
-        if node in visiting:
-            start = visiting.index(node)
-            cycle = visiting[start:] + [node]
-            return " -> ".join(cycle)
-        return node
-
-    def visit(node: str) -> None:
-        if node in visited:
-            return
-        if node in visiting:
-            fail(f"product acyclic dependencies failed: {cycle_fragment(node)}")
-        visiting.append(node)
-        for dep in graph[node]:
-            expect(dep in graph, f"product acyclic dependencies failed: unresolved dependency {node} -> {dep}")
-            visit(dep)
-        visiting.pop()
-        visited.add(node)
-
-    for node in graph:
-        visit(node)
-
-
 def check_lineage_relations(specs: dict[str, dict[str, Any]]) -> None:
     check_relation_targets(specs, "supersedes", {"candidate", "accepted", "superseded", "retired"}, "supersedes")
     check_relation_targets(specs, "superseded_by", {"candidate", "accepted", "superseded", "retired"}, "superseded_by")
@@ -674,11 +617,6 @@ def check_manifest_phase(context: ValidationContext) -> None:
 
 def check_unique_spec_ids_phase(context: ValidationContext) -> None:
     check_unique_spec_ids(context.repository.specs)
-    if context.product is not None:
-        expect(
-            len(context.product.specs) == len(set(context.product.specs)),
-            "duplicate product specification id",
-        )
 
 
 def check_unique_item_properties_phase(context: ValidationContext) -> None:
@@ -698,76 +636,14 @@ def check_unique_item_properties_phase(context: ValidationContext) -> None:
         check_unique_item_properties(context.repository.specs, spec_id, "dependencies", ["spec_id"])
         check_unique_item_properties(context.repository.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
         check_unique_item_properties(context.repository.specs, spec_id, "derived_artifacts", ["path"])
-    if context.product is not None:
-        for spec_id in context.product.specs:
-            check_unique_item_properties(context.product.specs, spec_id, "normative_requirements", ["id"])
-            check_unique_item_properties(context.product.specs, spec_id, "dependencies", ["spec_id"])
-            check_unique_item_properties(context.product.specs, spec_id, "references", ["type", "spec_id", "path", "kind"])
-            check_unique_item_properties(context.product.specs, spec_id, "derived_artifacts", ["path"])
 
 
 def check_unique_derived_artifact_paths_phase(context: ValidationContext) -> None:
     check_unique_derived_artifact_paths(context.repository.specs)
-    if context.product is not None:
-        paths: list[str] = []
-        for spec in context.product.specs.values():
-            for artifact in spec.get("derived_artifacts", []):
-                paths.append(artifact["path"])
-        expect(len(paths) == len(set(paths)), "duplicate product derived artifact paths failed")
-
-
-def check_product_specification_root_phase(context: ValidationContext) -> None:
-    if context.product is None:
-        return
-    for spec_id, spec in context.product.specs.items():
-        for index, dep in enumerate(spec.get("dependencies", [])):
-            target_spec_id = dep["spec_id"]
-            expect(target_spec_id in context.product.specs, f"product dependencies failed: unresolved dependency {spec_id} -> {target_spec_id}")
-            target_spec = context.product.specs[target_spec_id]
-            if spec["status"] == "accepted":
-                expect(target_spec["status"] == "accepted", f"product dependencies failed: accepted spec {spec_id} -> candidate target {target_spec_id}")
-            else:
-                expect(target_spec["status"] in {"candidate", "accepted"}, f"product dependencies failed: {spec_id} -> {target_spec_id}")
-
-        for ref in spec.get("references", []):
-            if ref["type"] == "specification":
-                target_spec = context.product.specs.get(ref["spec_id"])
-                expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
-                kind = ref.get("kind", "normative")
-                if kind == "historical":
-                    expect(target_spec["status"] in {"superseded", "retired"}, f"product references failed: {spec_id} -> {ref['spec_id']}")
-                else:
-                    expect(kind == "normative", f"product references failed: {spec_id} -> {ref['spec_id']}")
-                    expect(target_spec["status"] == "accepted", f"product references failed: {spec_id} -> {ref['spec_id']}")
-            else:
-                expect(resolve_repo_path(context.repo_root, ref["path"]).exists(), f"product references failed: missing artifact {ref['path']}")
-
-        for field in ("supersedes", "superseded_by"):
-            for target_spec_id in spec.get(field, []):
-                expect(target_spec_id in context.product.specs, f"product lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
-                expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
 
 
 def check_dependency_targets_phase(context: ValidationContext) -> None:
     check_dependency_targets(context.repository.specs)
-
-
-def check_dependency_directions_phase(context: ValidationContext) -> None:
-    if context.product is None:
-        return
-    check_dependency_directions(context.product.specs)
-
-
-def check_product_completeness_phase(context: ValidationContext) -> None:
-    if context.product is None:
-        return
-    check_product_completeness(context.product.specs)
-
-
-def check_product_acyclic_dependencies_phase(context: ValidationContext) -> None:
-    if context.product is None:
-        return
-    check_product_acyclic_dependencies(context.product.specs)
 
 
 def load_product_correspondence_inventory(context: ValidationContext, spec_id: str, spec: dict[str, Any]) -> ProductCorrespondenceInventory:
@@ -978,38 +854,14 @@ def check_github_profile_freshness_phase(context: ValidationContext) -> None:
 
 def check_resolvable_references_phase(context: ValidationContext) -> None:
     check_resolvable_references(context.repo_root, context.repository.specs)
-    if context.product is not None:
-        for spec_id, spec in context.product.specs.items():
-            for ref in spec.get("references", []):
-                if ref["type"] == "specification":
-                    target_spec = context.product.specs.get(ref["spec_id"])
-                    expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
-                    kind = ref.get("kind", "normative")
-                    if kind == "historical":
-                        expect(target_spec["status"] in {"superseded", "retired"}, f"product references failed: {spec_id} -> {ref['spec_id']}")
-                    else:
-                        expect(kind == "normative", f"product references failed: {spec_id} -> {ref['spec_id']}")
-                        expect(target_spec["status"] == "accepted", f"product references failed: {spec_id} -> {ref['spec_id']}")
-                else:
-                    expect(resolve_repo_path(context.repo_root, ref["path"]).exists(), f"product references failed: missing artifact {ref['path']}")
 
 
 def check_lineage_relations_phase(context: ValidationContext) -> None:
     check_lineage_relations(context.repository.specs)
-    if context.product is not None:
-        for spec_id, spec in context.product.specs.items():
-            for field in ("supersedes", "superseded_by"):
-                for target_spec_id in spec.get(field, []):
-                    expect(target_spec_id in context.product.specs, f"product lineage failed: unresolved spec {spec_id} -> {target_spec_id}")
-                    expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
-        check_supersession_pairs(context.product.specs, "product supersession relations")
-        check_supersession_acyclicity(context.product.specs, "product supersession relations")
 
 
 def check_acyclic_dependencies_phase(context: ValidationContext) -> None:
     check_acyclic_dependencies(context.repository.specs)
-    if context.product is not None:
-        check_acyclic_dependencies(context.product.specs)
 
 
 def check_generated_document_freshness_phase(context: ValidationContext) -> None:
@@ -1281,15 +1133,11 @@ VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("platform profile boundary", check_platform_profile_boundary),
     ("GitHub profile freshness", check_github_profile_freshness_phase),
     ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
-    ("product specification root", check_product_specification_root_phase),
     ("product correspondence inventory", check_product_correspondence_phase),
     ("product conformance completeness", check_product_conformance_completeness_phase),
     ("dependency target lifecycle", check_dependency_targets_phase),
-    ("product dependency directions", check_dependency_directions_phase),
-    ("product completeness", check_product_completeness_phase),
     ("resolvable references", check_resolvable_references_phase),
     ("lineage relations", check_lineage_relations_phase),
-    ("product acyclic dependencies", check_product_acyclic_dependencies_phase),
     ("acyclic dependencies", check_acyclic_dependencies_phase),
     ("development documents", check_development_documents_phase),
     ("lifecycle authority sequence", check_lifecycle_lifecycle_phase),
