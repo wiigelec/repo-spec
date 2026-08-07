@@ -49,6 +49,7 @@ Defines the versioned material-manifest format that declares every source path e
 - `INIT-MMF-008`: Every material_key in the material manifest shall have a corresponding material_index entry in the output inventory. Unused material_key values (present in the material manifest but absent from the output inventory) shall be rejected. Every output inventory material_index entry shall have a corresponding material_key in the material manifest. The mapping is one-to-one and bidirectional for copy-verbatim entries.
 - `INIT-MMF-009`: No material-manifest entry with source_type tree shall be accepted. Every source_path in the material manifest must resolve to a Git blob (regular file) or symlink in the source commit tree. A source_path that resolves to a Git tree object (directory) is invalid because it would make the set of output paths depend on source-directory contents rather than the closed output inventory.
 - `INIT-MMF-010`: Every material-manifest entry with operation copy-verbatim shall have source_type blob or symlink. An entry with source_type tree and operation copy-verbatim is undefined and shall be rejected before installation.
+- `INIT-MMF-011`: No material-manifest entry may be interpreted as an installation unit for a source subtree. Every entry declares exactly one source_path that resolves to one Git blob or supported symlink. Undeclared source-directory descendants shall not be installed.
 
 ## Dependencies
 

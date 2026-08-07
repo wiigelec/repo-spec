@@ -30,7 +30,7 @@
     },
     {
       "id": "INIT-RPT-002",
-      "text": "The execution report shall be produced when the workflow fails or when cleanup after successful promotion fails. It shall distinguish completed stages from the failed stage and any pending stages not reached. The completion_status shall be failed for pre-promotion and indeterminate failures, and promoted-with-finalization-error when promotion committed but post-promotion cleanup failed."
+      "text": "The execution report shall be produced when the workflow fails or when cleanup after successful promotion fails. It shall distinguish completed stages from the failed stage and any pending stages not reached. The completion_status shall be failed for pre-promotion and indeterminate failures, and promoted-with-finalization-error when promotion committed but post-promotion cleanup failed. Under cleanup failure, the report shall record the promotion stage status as completed and the success-finalization stage status as failed with the cleanup failure reason in the errors array."
     },
     {
       "id": "INIT-RPT-003",
@@ -46,7 +46,7 @@
     },
     {
       "id": "INIT-RPT-006",
-      "text": "The report `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). `schema_version` shall be the constant string `1`."
+      "text": "The report `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). `schema_version` shall be the constant string `1`. A `promoted-with-finalization-error` completion_status shall not be misreported as a pre-promotion failure; the repository is successfully promoted."
     },
     {
       "id": "INIT-RPT-007",
@@ -70,7 +70,7 @@
     },
     {
       "id": "INIT-RPT-012",
-      "text": "When post-promotion cleanup fails after successful promotion, the execution report shall have completion_status promoted-with-finalization-error. The report shall record the success-finalization stage status as failed with the cleanup failure reason in the errors array, and shall record the promotion stage status as completed. The execution report shall reference the promoted destination path and shall not misreport the repository as unpromoted."
+      "text": "When post-promotion cleanup fails after successful promotion, the execution report shall have completion_status promoted-with-finalization-error. The report shall record the success-finalization stage status as failed with the cleanup failure reason in the errors array, and shall record the promotion stage status as completed. The execution report shall reference the promoted destination path and shall not misreport the repository as unpromoted. Under cleanup failure, the execution report stages shall represent: promotion as completed, success-finalization as failed, and all prior stages as completed. The execution report and staging-state record shall agree on the terminal outcome: both shall record promotion as committed and success-finalization as failed."
     }
   ],
   "dependencies": [

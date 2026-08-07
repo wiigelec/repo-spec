@@ -160,372 +160,427 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `runtime-framework`
 - Destination Path: `AGENTS.md`
 - Material Key: `root-agents`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `runtime-framework`
 - Destination Path: `LICENSE`
 - Material Key: `root-license`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `runtime-framework`
 - Destination Path: `product/scripts/repo-spec-init`
 - Material Key: `repo-spec-init`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `runtime-framework`
 - Destination Path: `repo/specs/repo/manifest.json`
 - Material Key: `repo-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/governing-issue.json`
 - Material Key: `repo-governing-issue`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/review-proposal.json`
 - Material Key: `repo-review-proposal`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/repository-structure.json`
 - Material Key: `repo-repository-structure`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/artifact-taxonomy.json`
 - Material Key: `repo-artifact-taxonomy`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/platform-profiles.json`
 - Material Key: `repo-platform-profiles`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/development-workflow.json`
 - Material Key: `repo-development-workflow`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/validation.json`
 - Material Key: `repo-validation`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/product-manifest.json`
 - Material Key: `repo-product-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/development-document-base.json`
 - Material Key: `repo-development-document-base`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/product-overview.json`
 - Material Key: `repo-product-overview`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/product-decomposition.json`
 - Material Key: `repo-product-decomposition`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/implementation-plan.json`
 - Material Key: `repo-implementation-plan`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/product-spec-base.json`
 - Material Key: `repo-product-spec-base`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/product-correspondence.json`
 - Material Key: `repo-product-correspondence`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/specs/repo/product-levels.json`
 - Material Key: `repo-product-levels`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `governing-specification`
 - Destination Path: `repo/scripts/validate`
 - Material Key: `repo-validate-script`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validate_impl.py`
 - Material Key: `repo-validate-impl`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/repo_model.py`
 - Material Key: `repo-repo-model`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/docgen.py`
 - Material Key: `repo-docgen`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `documentation-support`
 - Destination Path: `repo/scripts/generate-docs`
 - Material Key: `repo-generate-docs`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `documentation-support`
 - Destination Path: `repo/scripts/github_profile.py`
 - Material Key: `repo-github-profile`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/__init__.py`
 - Material Key: `repo-validation-init`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/cli_contracts.py`
 - Material Key: `repo-validation-cli-contracts`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/errors.py`
 - Material Key: `repo-validation-errors`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/generated_outputs.py`
 - Material Key: `repo-validation-generated-outputs`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/repository_checks.py`
 - Material Key: `repo-validation-repo-checks`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/schema_subset.py`
 - Material Key: `repo-validation-schema-subset`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/github-field-policy`
 - Material Key: `repo-github-field-policy`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/github_field_policy.py`
 - Material Key: `repo-github-field-policy-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
-- Destination Path: `repo/scripts/github_field_policy_mutation_test.py`
-- Material Key: `repo-github-field-policy-test`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/derived/specs/repo/artifact-taxonomy.md`
 - Material Key: `derived-artifact-taxonomy`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/development-document-base.md`
 - Material Key: `derived-development-document-base`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/development-workflow.md`
 - Material Key: `derived-development-workflow`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/governing-issue.md`
 - Material Key: `derived-governing-issue`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/implementation-plan.md`
 - Material Key: `derived-implementation-plan`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/manifest.md`
 - Material Key: `derived-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/platform-profiles.md`
 - Material Key: `derived-platform-profiles`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/product-correspondence.md`
 - Material Key: `derived-product-correspondence`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/product-decomposition.md`
 - Material Key: `derived-product-decomposition`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/product-levels.md`
 - Material Key: `derived-product-levels`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/product-manifest.md`
 - Material Key: `derived-product-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/product-overview.md`
 - Material Key: `derived-product-overview`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/product-spec-base.md`
 - Material Key: `derived-product-spec-base`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/repository-structure.md`
 - Material Key: `derived-repository-structure`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/review-proposal.md`
 - Material Key: `derived-review-proposal`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `repo/derived/specs/repo/validation.md`
 - Material Key: `derived-validation`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `generated-reference`
 - Destination Path: `product/scripts/initializer/__init__.py`
 - Material Key: `product-initializer-init`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/cli.py`
 - Material Key: `product-initializer-cli`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/destination.py`
 - Material Key: `product-initializer-destination`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/foundations.py`
 - Material Key: `product-initializer-foundations`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/framework-inventory.json`
 - Material Key: `product-initializer-framework-inventory`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/git.py`
 - Material Key: `product-initializer-git`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/inventory.py`
 - Material Key: `product-initializer-inventory`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/models.py`
 - Material Key: `product-initializer-models`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/promotion.py`
 - Material Key: `product-initializer-promotion`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/staging.py`
 - Material Key: `product-initializer-staging`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 - Destination Path: `product/scripts/initializer/validation.py`
 - Material Key: `product-initializer-validation`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
+- Role: `initializer-framework`
 
 ## Primitives
 
@@ -548,7 +603,7 @@ Complete closed inventory of every path the initializer produces in the initiali
 - `INV-V1-001`: The output inventory shall enumerate every destination path the initializer may create in the initialized repository worktree, assigning each to exactly one producer. Git administrative state (.git/) is governed separately.
 - `INV-V1-002`: Fixed worktree files are individually enumerated with their producer, operation, governing spec, mode, and required status.
 - `INV-V1-003`: Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry, material_index entry, or another dynamic family.
-- `INV-V1-004`: The material_index declares every framework-installation output path with a stable material_key. Each material_key shall map to exactly one material-manifest entry (product/scripts/initializer/framework-inventory.json) that provides the source_path, source_type, and mode. The material manifest shall not independently expand or modify the set of output paths.
+- `INV-V1-004`: The material_index declares every framework-installation output path with a stable material_key. Each material_key shall map to exactly one material-manifest entry (product/scripts/initializer/framework-inventory.json) that provides the source_path, source_type, and mode. The material manifest shall not independently expand or modify the set of output paths. Every material_index entry shall declare a role field that records its intentional product output role.
 - `INV-V1-005`: A required entry must be present in every successful initialization; no entry may be marked optional in the Version 1 bounded local workflow.
 - `INV-V1-006`: The inventory shall declare prohibited_paths as structured rules. An exact-path rule matches only paths equal to the declared path. A prefix rule matches any path that starts with the declared prefix. Every entry in material_index shall have a destination_path that is a regular file or a supported symlink path; directory-valued entries (mode 040000) are not permitted. No output path shall match both a material_index entry and a prohibited_path rule.
 - `INV-V1-007`: The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization. Only the first five produce worktree paths; git-initialization produces the Git administrative state (.git/) governed separately.
@@ -559,6 +614,7 @@ Complete closed inventory of every path the initializer produces in the initiali
 - `INV-V1-012`: Every material_index entry shall have a destination_path that identifies exactly one regular file or supported symlink. No material_index entry may have a destination_path that resolves to a Git tree object (directory). Parent directories of declared files are implicit filesystem containers and are not separately inventoried.
 - `INV-V1-013`: Every material_index entry of type copy-verbatim shall resolve via its material_key to a material-manifest entry whose source_type is blob or symlink. A material-manifest entry whose source_type is tree shall be rejected as undefined; the set of files it would contribute is unspecified and source-directory changes could silently alter the initialized product.
 - `INV-V1-014`: Any path that would be a descendant of a material_index entry whose source_type was tree is declared invalid. The output inventory enumerates every output path explicitly; no path may claim membership through a parent-directory tree entry.
+- `INV-V1-015`: Every material_index entry shall have an intentional product output role declared in its role field. The valid roles are: runtime-framework (root-level files required for every initialized repository), governing-specification (repo-level spec contracts), validation-utility (scripts that validate or verify repository state), documentation-support (scripts that generate or maintain documentation), generated-reference (derived Markdown projections of governing specs), and initializer-framework (initializer implementation modules). No material_index entry may have role development-only; such entries shall not be installed.
 
 ## Dependencies
 

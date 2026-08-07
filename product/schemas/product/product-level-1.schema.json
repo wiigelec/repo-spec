@@ -90,14 +90,15 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["material_key", "destination_path", "producer", "operation", "mode", "required"],
+            "required": ["material_key", "destination_path", "producer", "operation", "mode", "required", "role"],
             "properties": {
               "material_key": {"type": "string", "minLength": 1},
               "destination_path": {"type": "string", "minLength": 1},
               "producer": {"type": "string", "minLength": 1},
               "operation": {"type": "string", "minLength": 1},
               "mode": {"type": "string", "minLength": 1},
-              "required": {"type": "boolean"}
+              "required": {"type": "boolean"},
+              "role": {"type": "string", "minLength": 1}
             }
           }
         },

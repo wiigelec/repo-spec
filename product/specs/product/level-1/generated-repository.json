@@ -77,7 +77,7 @@
     },
     {
       "id": "INIT-GRL-017",
-      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository as declared by the material manifest with operation excluded or absent from the manifest entirely."
+      "text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, product/tests/, test files, mutation-test files, build artifacts, editor configuration, or other artifacts not required as reusable framework material. No material_index entry with role development-only shall be installed. The output inventory governs every installed path; undeclared source-directory descendants shall not appear in the initialized repository."
     },
     {
       "id": "INIT-GRL-018",

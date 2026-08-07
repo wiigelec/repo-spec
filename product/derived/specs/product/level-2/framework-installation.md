@@ -46,6 +46,7 @@ Defines the framework installation component that selects and installs reusable 
 - `INIT-FIN-005`: The component shall not use broad recursive directory copying to install any path; every output path shall be produced by exactly one manifest entry, and the component shall report any installation conflict, missing source blob, type mismatch, or operation failure without silently skipping. A manifest entry whose source_type is tree shall be rejected before any installation attempt.
 - `INIT-FIN-006`: The component shall install each material item in its declared destination_path, shall not modify the normative semantics of reusable framework material beyond the declared operation, and shall ensure that no output path is produced by more than one manifest entry.
 - `INIT-FIN-007`: The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must have a matching material_index entry, the operation must match, and the mode must match the material-manifest entry. No installed path shall match a fixed worktree file entry or another dynamic family path.
+- `INIT-FIN-008`: The component shall not interpret any material-manifest entry as a source subtree to be expanded into multiple output paths. Every entry produces exactly one output path from exactly one source blob or supported symlink. Entries with role development-only in the output inventory shall not be installed.
 
 ## Dependencies
 
