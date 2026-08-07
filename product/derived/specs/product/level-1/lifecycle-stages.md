@@ -122,10 +122,10 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Required: `True`
 - Deferrable: `False`
 - Id: `repository-validation`
-- Output: `Validation report`
+- Output: `Finalized validation report`
 - Predecessors:
   - `git-initialization`
-- Purpose: `Validate repository content and Git state inside the repository/ directory against conformance requirements, writing the validation report to transaction/.`
+- Purpose: `Validate repository content and Git state inside the repository/ directory against conformance requirements, finalize the validation report (linkage verification, check completeness, schema validation), and write the final report to transaction/.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
@@ -163,7 +163,10 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - `INIT-LCS-006`: Predecessor stage identifiers declared for a stage shall refer only to other stages defined in this vocabulary, and the predecessor relation shall not form a cycle.
 - `INIT-LCS-007`: No stage may declare success or completed status before promotion has committed; success-finalization shall be the only stage that reports workflow success, and it must follow promotion.
 - `INIT-LCS-008`: Failure finalization is available from any failed pre-promotion stage and records the failure in the execution report and staging-state record without authorizing arbitrary resume.
-- `INIT-LCS-009`: Promotion shall not occur unless the validation report's overall_status is pass. The repository-validation stage must execute all required checks and produce a validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate.
+- `INIT-LCS-009`: Promotion shall not occur unless the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization (fingerprint linkage, digest linkage, check ordering, check completeness, schema validation), and produce a finalized validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate.
+- `INIT-LCS-010`: Success is externally observable only after the promotion stage completes with outcome promoted and the success-finalization stage records the success result with the caller. The post-rename stat of the destination that confirms the renamed repository exists is the exact point at which promotion commitment is externally detectable, but the workflow does not report success to its caller until success-finalization has recorded the outcome.
+- `INIT-LCS-011`: The bounded local workflow has four terminal outcomes: pre-promotion failure (any required stage fails before promotion), promoted success (promotion commits and success-finalization completes), indeterminate promotion (rename outcome cannot be determined), and cleanup failure (promotion committed but post-promotion staging-root removal fails). Each terminal outcome has distinct diagnostic preservation, caller return, and retry-authorization rules defined by the governing workflow specification.
+- `INIT-LCS-012`: A cleanup failure after successful promotion is distinct from a pre-promotion failure: the repository is successfully promoted and must not be misreported as unpromoted. The workflow returns a promoted-with-finalization-error result. No automatic retry of the failed cleanup operation is authorized without external diagnosis.
 
 ## Dependencies
 

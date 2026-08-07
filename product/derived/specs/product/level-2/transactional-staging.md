@@ -43,14 +43,15 @@ Defines same-filesystem staging transaction with isolated repository content, va
 - `INIT-TST-002`: Promotion shall be a single `os.rename()` (or equivalent same-filesystem atomic directory rename) of the complete `repository/` directory to the exact destination path, confirmed absent by a stat or lstat call immediately before the rename; the initializer shall not use recursive copy, cross-device fallback, or any non-atomic move mechanism.
 - `INIT-TST-003`: Failure before staging transaction root establishment shall leave the destination unmodified; in this case there is no staging root to preserve and the initializer shall not create a potentially inconsistent diagnostic directory.
 - `INIT-TST-004`: Failure after staging transaction root establishment but before promotion shall, when technically feasible, preserve the staging transaction root at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed.
-- `INIT-TST-005`: Promotion to the declared destination shall occur only after the validation report's overall_status is pass. When overall_status is fail (because a required check has status failed, error, or skipped), promotion shall not occur and the workflow shall fail before promotion, leaving the staging transaction root in its pre-promotion state for diagnostics.
+- `INIT-TST-005`: Promotion to the declared destination shall occur only after report finalization completes and the finalized validation report's overall_status is pass. When overall_status is fail (because a required Phase 1 or Phase 2 check has status failed, error, or skipped, or because report finalization failed), promotion shall not occur and the workflow shall fail before promotion, leaving the staging transaction root in its pre-promotion state for diagnostics.
 - `INIT-TST-006`: Promotion shall be non-recoverable: the initializer shall not retry promotion after a failed or indeterminate outcome without external diagnosis and manual intervention.
-- `INIT-TST-007`: After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the execution report and caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact.
+- `INIT-TST-007`: After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact. If step 3 fails, the repository remains successfully promoted; the workflow shall return a promoted-with-finalization-error result; the staging transaction root shall be preserved when accessible; and cleanup failure must not cause the repository to be misreported as unpromoted. An execution report with completion_status promoted-with-finalization-error shall be written to transaction/execution-report.json for diagnostics.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.staging-workspace`
+- `product.execution-report`
 
 ## References
 

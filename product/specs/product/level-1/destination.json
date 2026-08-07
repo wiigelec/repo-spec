@@ -18,6 +18,10 @@
     {
       "id": "INIT-DST-002",
       "text": "Destination validation shall occur before generation and shall reject any existing target of any type, including a regular file, empty directory, nonempty directory, symbolic link, or existing repository."
+    },
+    {
+      "id": "INIT-DST-003",
+      "text": "After successful promotion, the destination path shall contain the promoted repository content that was previously staged at the repository/ directory inside the staging transaction root. The destination is no longer absent; its content is the initialized repository with all declared worktree paths, generated records, and Git administrative state."
     }
   ],
   "dependencies": [

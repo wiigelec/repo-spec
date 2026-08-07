@@ -30,7 +30,7 @@
     },
     {
       "id": "INIT-RPT-002",
-      "text": "The execution report shall be produced only when the workflow fails, shall distinguish completed stages from the failed stage and any pending stages not reached, and shall report completion status as failed."
+      "text": "The execution report shall be produced when the workflow fails or when cleanup after successful promotion fails. It shall distinguish completed stages from the failed stage and any pending stages not reached. The completion_status shall be failed for pre-promotion and indeterminate failures, and promoted-with-finalization-error when promotion committed but post-promotion cleanup failed."
     },
     {
       "id": "INIT-RPT-003",
@@ -46,7 +46,7 @@
     },
     {
       "id": "INIT-RPT-006",
-      "text": "The report `completion_status` shall be the constant string `failed` because the execution report is produced only when the workflow fails; `schema_version` shall be the constant string `1`."
+      "text": "The report `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). `schema_version` shall be the constant string `1`."
     },
     {
       "id": "INIT-RPT-007",
@@ -63,6 +63,14 @@
     {
       "id": "INIT-RPT-010",
       "text": "When repository-validation produces a validation report with overall_status fail, the execution report shall record the repository-validation stage status as failed, record the validation report path in the errors array, and the workflow shall not proceed to promotion."
+    },
+    {
+      "id": "INIT-RPT-011",
+      "text": "When report finalization fails (fingerprint linkage mismatch, digest linkage mismatch, check ordering violation, check completeness violation, schema validation failure, or serialization error), the execution report shall record the repository-validation stage status as failed with the specific finalization error in the errors array. Report-finalization failure is a pre-promotion failure; the staging transaction root shall be preserved for diagnostics and the workflow shall not proceed to promotion."
+    },
+    {
+      "id": "INIT-RPT-012",
+      "text": "When post-promotion cleanup fails after successful promotion, the execution report shall have completion_status promoted-with-finalization-error. The report shall record the success-finalization stage status as failed with the cleanup failure reason in the errors array, and shall record the promotion stage status as completed. The execution report shall reference the promoted destination path and shall not misreport the repository as unpromoted."
     }
   ],
   "dependencies": [

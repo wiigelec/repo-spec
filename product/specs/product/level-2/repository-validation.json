@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall execute three validation phases in order: Phase 1 (input and source) validates request schema, canonicalization, authority propagation, source repository, source commit, material-manifest schema, source paths, and key coverage. Phase 2 (staged repository) validates the complete staged repository at repository/ including output inventory, copied files, direction evidence, generated templates, promoted records, provenance, handoff, content digest, Git branch, commit count, author identity, commit message, worktree cleanliness, and remote count. Phase 3 (transaction) validates staging-state, validation-report conformance via component postcondition, fingerprint and digest linkage, and check completeness."
+      "text": "The repository validation component shall execute two validation phases in order: Phase 1 (input and source) validates request schema, canonicalization, authority propagation, source repository, source commit, material-manifest schema, source paths (rejecting tree-valued entries), and key coverage. Phase 2 (staged repository and Git state) validates the complete staged repository at repository/ including output inventory (confirming no tree-valued material_index entries), staging-state record validation, copied files, direction evidence, generated templates, promoted records, provenance, handoff, content digest, Git branch, commit count, author identity, commit message, worktree cleanliness, and remote count."
     },
     {
       "id": "INIT-RVA-002",
@@ -21,11 +21,11 @@
     },
     {
       "id": "INIT-RVA-003",
-      "text": "Promotion is permitted only when every required check in Phase 1 and Phase 2 has status passed. The validation component shall not proceed to the promotion stage when any required Phase 1 or Phase 2 check has status failed, error, or skipped."
+      "text": "After all Phase 1 and Phase 2 checks are recorded, the validation component shall perform report finalization: verify request_fingerprint linkage, repository_content_digest linkage, check ordering and uniqueness, calculate overall_status, validate the completed report schema, and serialize the final report. Promotion is permitted only when a finalized report exists, the report validates against its schema, every required Phase 1 and Phase 2 check has status passed, and overall_status is pass. The validation component shall not proceed to the promotion stage when any required Phase 1 or Phase 2 check has status failed, error, or skipped, or when report finalization fails."
     },
     {
       "id": "INIT-RVA-004",
-      "text": "The validation report shall not contain a check that recursively validates the report itself. After all profile checks are recorded, the validation component shall serialize the complete report according to product.validation-report and shall verify its schema conformance as a component postcondition. Failure during serialization or final schema validation shall be recorded as a transaction error and shall prevent transaction closure."
+      "text": "The validation report shall not include a check that recursively validates the report itself. Fingerprint linkage, digest linkage, check ordering, check uniqueness, report schema validation, and serialization are not ordinary profile checks; they are validation-component postconditions enforced during report finalization before promotion. Report finalization failure shall be recorded as a pre-promotion failure and shall prevent promotion."
     },
     {
       "id": "INIT-RVA-005",
@@ -44,6 +44,9 @@
     },
     {
       "spec_id": "product.validation-report"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
     }
   ],
   "references": [

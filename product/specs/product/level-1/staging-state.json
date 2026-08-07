@@ -41,7 +41,7 @@
     },
     {
       "id": "INIT-STA-008",
-      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the validation report."
+      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation, including report finalization, has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the finalized validation report."
     },
     {
       "id": "INIT-STA-009",
@@ -53,10 +53,14 @@
     },
     {
       "id": "INIT-STA-011",
-      "text": "The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields."
+      "text": "When promotion_outcome is promoted and post-promotion staging-root removal fails, the staging-state record may record an additional `cleanup_failure` field that captures the cleanup failure reason as a string. The presence of a `cleanup_failure` field does not change the promotion outcome: the repository remains promoted. The staging-state record shall treat `cleanup_failure` as an optional field present only when cleanup after successful promotion fails."
     },
     {
       "id": "INIT-STA-012",
+      "text": "The staging-state record shall reject unknown fields and shall treat every field of this specification as required with no optional fields, except where a field is explicitly declared optional (such as `cleanup_failure`)."
+    },
+    {
+      "id": "INIT-STA-013",
       "text": "The staging-state record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values."
     }
   ],

@@ -41,6 +41,7 @@ Defines the absent-only local destination for the bounded initialization workflo
 
 - `INIT-DST-001`: A destination representation shall be a local filesystem path whose target does not exist; an existing path of any type (including empty directory) shall be rejected by destination preflight.
 - `INIT-DST-002`: Destination validation shall occur before generation and shall reject any existing target of any type, including a regular file, empty directory, nonempty directory, symbolic link, or existing repository.
+- `INIT-DST-003`: After successful promotion, the destination path shall contain the promoted repository content that was previously staged at the repository/ directory inside the staging transaction root. The destination is no longer absent; its content is the initialized repository with all declared worktree paths, generated records, and Git administrative state.
 
 ## Dependencies
 
