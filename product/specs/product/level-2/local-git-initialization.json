@@ -2,7 +2,7 @@
   "spec_id": "product.local-git-initialization",
   "title": "Local Git Initialization",
   "purpose": "Defines deterministic local Git establishment within the complete staging workspace.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

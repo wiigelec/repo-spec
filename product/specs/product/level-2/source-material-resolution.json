@@ -2,7 +2,7 @@
   "spec_id": "product.source-material-resolution",
   "title": "Local Source Material Selection",
   "purpose": "Defines selection and inventory of framework material from an explicit commit in a local source repository, validated against the material manifest.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

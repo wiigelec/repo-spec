@@ -47,7 +47,6 @@ Defines the planning-authority contract for implementation plan documents.
 - specification: `repo.validation`
 - specification: `repo.development-workflow`
 - specification: `repo.product-levels`
-- artifact: `product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md`
 
 ## Derived artifacts
 

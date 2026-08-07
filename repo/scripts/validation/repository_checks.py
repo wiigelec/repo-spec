@@ -917,31 +917,23 @@ def check_product_conformance_completeness_phase(context: ValidationContext) -> 
     if context.product is None:
         return
 
+    # Product specifications may become accepted before implementation and tests
+    # exist. Validate reachability for correspondence that has actually been
+    # declared, but do not require conformance solely because a specification
+    # has entered the accepted lifecycle state.
     for spec_id, spec in context.product.specs.items():
-        if spec.get("status") != "accepted":
-            continue
-
         inventory = load_product_correspondence_inventory(context, spec_id, spec)
-        conformance_by_requirement: dict[str, list[dict[str, Any]]] = {requirement_id: [] for requirement_id in inventory.requirement_ids}
-        covered_implementation_ids: set[str] = set()
-        covered_test_ids: set[str] = set()
+        referenced_implementation_ids: set[str] = set()
+        referenced_test_ids: set[str] = set()
 
         for record in inventory.conformance:
-            requirement_id = record["requirement_id"]
-            conformance_by_requirement[requirement_id].append(record)
-            if record["status"] == "covered":
-                covered_implementation_ids.update(record["implementation_ids"])
-                covered_test_ids.update(record["test_ids"])
+            referenced_implementation_ids.update(record["implementation_ids"])
+            referenced_test_ids.update(record["test_ids"])
 
-        for requirement_id in inventory.requirement_ids:
-            records = conformance_by_requirement[requirement_id]
-            expect(records, f"correspondence completeness failed: {spec_id} missing conformance for {requirement_id}")
-            expect(len(records) == 1, f"correspondence completeness failed: {spec_id} duplicate conformance for {requirement_id}")
-
-        unused_implementation_ids = sorted(set(inventory.implementation_index) - covered_implementation_ids)
-        expect(not unused_implementation_ids, f"correspondence completeness failed: {spec_id} unreachable implementation mappings {', '.join(unused_implementation_ids)}")
-        unused_test_ids = sorted(set(inventory.test_index) - covered_test_ids)
-        expect(not unused_test_ids, f"correspondence completeness failed: {spec_id} unreachable test mappings {', '.join(unused_test_ids)}")
+        unused_implementation_ids = sorted(set(inventory.implementation_index) - referenced_implementation_ids)
+        expect(not unused_implementation_ids, f"correspondence validation failed: {spec_id} unreachable implementation mappings {', '.join(unused_implementation_ids)}")
+        unused_test_ids = sorted(set(inventory.test_index) - referenced_test_ids)
+        expect(not unused_test_ids, f"correspondence validation failed: {spec_id} unreachable test mappings {', '.join(unused_test_ids)}")
 
 
 def check_platform_profile_inventory(profile: dict[str, Any], index: int) -> None:

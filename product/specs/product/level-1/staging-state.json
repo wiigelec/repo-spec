@@ -2,7 +2,7 @@
   "spec_id": "product.staging-state",
   "title": "Staging Transaction State Contract",
   "purpose": "Defines the staging-transaction state record that captures initialization identity, stage progress, repository content digest, promotion state, and failure information for the bounded local workflow.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {
@@ -53,7 +53,7 @@
     },
     {
       "id": "INIT-STA-011",
-      "text": "The `cleanup_failure` field shall be a required nullable field that is always present in every staging-state record. When cleanup has not been attempted or when cleanup succeeds, `cleanup_failure` shall be `null`. When post-promotion staging-root removal fails after `promotion_outcome` is `promoted`, `cleanup_failure` shall be a non-empty diagnostic string describing the cleanup failure reason; the presence of a non-null `cleanup_failure` value does not change the promotion outcome. The deterministic serialized forms are: normal state — `\"cleanup_failure\": null`; cleanup-failure state — `\"cleanup_failure\": \"<non-empty diagnostic string>\"`. The canonical cleanup-failure staging-state is: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes `promotion` (completed) and does not include `success-finalization` (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string. No automatic rollback or retry of the failed cleanup operation is authorized."
+      "text": "The `cleanup_failure` field shall be a required nullable field that is always present in every staging-state record. When cleanup has not been attempted or when cleanup succeeds, `cleanup_failure` shall be `null`. When post-promotion staging-root removal fails after `promotion_outcome` is `promoted`, `cleanup_failure` shall be a non-empty diagnostic string describing the cleanup failure reason; the presence of a non-null `cleanup_failure` value does not change the promotion outcome. The deterministic serialized forms are: normal state \u2014 `\"cleanup_failure\": null`; cleanup-failure state \u2014 `\"cleanup_failure\": \"<non-empty diagnostic string>\"`. The canonical cleanup-failure staging-state is: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes `promotion` (completed) and does not include `success-finalization` (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string. No automatic rollback or retry of the failed cleanup operation is authorized."
     },
     {
       "id": "INIT-STA-012",

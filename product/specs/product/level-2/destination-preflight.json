@@ -2,7 +2,7 @@
   "spec_id": "product.destination-preflight",
   "title": "Destination Preflight",
   "purpose": "Defines the destination preflight component that validates destination state compatibility before generation begins.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

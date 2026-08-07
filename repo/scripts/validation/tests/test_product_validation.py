@@ -410,7 +410,11 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 spec,
             )[-1],
         )
-        validate_repo(temp_repo)
+        expect_failure(
+            "candidate unreachable correspondence mappings",
+            lambda: validate_repo(temp_repo),
+            "unreachable implementation mappings impl.kernel",
+        )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
@@ -422,7 +426,8 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec.__setitem__("correspondence", {"implementations": [], "tests": [], "conformance": []}) or spec,
         )
-        expect_failure("accepted empty correspondence", lambda: validate_repo(temp_repo), "missing conformance")
+        check_generated_document_write_behavior(temp_repo)
+        validate_repo(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

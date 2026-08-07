@@ -31,15 +31,15 @@
     },
     {
       "id": "REPO-PC-007",
-      "text": "Correspondence declarations shall participate according to lifecycle: accepted specifications require complete correspondence, candidate specifications may declare correspondence but are not required to be complete, and superseded or retired specifications may retain correspondence for historical continuity without current completeness requirements."
+      "text": "Correspondence declarations shall participate according to lifecycle: accepted specifications may exist before implementation and test artifacts and therefore are not required to declare complete correspondence merely to become accepted; candidate specifications may declare correspondence; and superseded or retired specifications may retain correspondence for historical continuity."
     },
     {
       "id": "REPO-PC-008",
-      "text": "For each normative requirement in an accepted product specification, exactly one conformance record shall exist, every requirement reference shall match the owning specification, every covered record shall reference at least one implementation mapping and at least one test mapping, every not-applicable record shall reference none of those mappings, and every mapping identifier shall be reachable from at least one conformance record."
+      "text": "For correspondence records that are declared, every requirement reference shall match a normative requirement in the owning specification, no requirement shall have more than one conformance record, every covered record shall reference at least one implementation mapping and at least one test mapping, every not-applicable record shall reference none of those mappings and shall include a non-empty rationale, and every declared mapping identifier shall be reachable from at least one conformance record. Repository validation shall not require undeclared requirements to have conformance records solely because the owning product specification is accepted."
     },
     {
       "id": "REPO-PC-009",
-      "text": "Correspondence validation shall prove structural ownership, identifier reachability, and completeness boundaries only; semantic correctness and runtime satisfaction shall remain review-owned."
+      "text": "Correspondence validation shall prove structural ownership, identifier reachability, declared-record consistency, and lifecycle boundaries only; semantic correctness, runtime satisfaction, and the decision that implementation coverage is complete shall remain review-owned unless a separate governing contract defines a later completion gate."
     }
   ],
   "dependencies": [

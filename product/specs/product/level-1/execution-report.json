@@ -2,7 +2,7 @@
   "spec_id": "product.execution-report",
   "title": "Execution Report Contract",
   "purpose": "Defines the atomic failure-diagnostic execution report artifact format for the initializer.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {
@@ -58,7 +58,7 @@
     },
     {
       "id": "INIT-RPT-006",
-      "text": "The report `schema_version` shall be the constant string `1`. The `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). The required `promotion_outcome` / `completion_status` combinations are: pre-promotion failure — `promotion_outcome` = `not-promoted` and `completion_status` = `failed`; indeterminate promotion — `promotion_outcome` = `indeterminate` and `completion_status` = `failed`; cleanup failure after committed promotion — `promotion_outcome` = `promoted` and `completion_status` = `promoted-with-finalization-error`. A `promoted-with-finalization-error` completion_status shall not be misreported as a pre-promotion failure; the repository is successfully promoted. Every required terminal outcome shall be representable using only the required fields, with no undeclared fields."
+      "text": "The report `schema_version` shall be the constant string `1`. The `completion_status` shall be one of: `failed` (pre-promotion failure or indeterminate promotion) or `promoted-with-finalization-error` (promotion committed but post-promotion cleanup failed). The required `promotion_outcome` / `completion_status` combinations are: pre-promotion failure \u2014 `promotion_outcome` = `not-promoted` and `completion_status` = `failed`; indeterminate promotion \u2014 `promotion_outcome` = `indeterminate` and `completion_status` = `failed`; cleanup failure after committed promotion \u2014 `promotion_outcome` = `promoted` and `completion_status` = `promoted-with-finalization-error`. A `promoted-with-finalization-error` completion_status shall not be misreported as a pre-promotion failure; the repository is successfully promoted. Every required terminal outcome shall be representable using only the required fields, with no undeclared fields."
     },
     {
       "id": "INIT-RPT-007",

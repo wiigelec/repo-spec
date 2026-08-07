@@ -2,7 +2,7 @@
   "spec_id": "product.source-revision-identity",
   "title": "Local Source Revision Identity",
   "purpose": "Defines the exact commit identity of reusable framework material already present in a local source Git repository, using the repository's native object format.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

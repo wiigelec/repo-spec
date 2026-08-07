@@ -10,7 +10,6 @@ Supported runtime: Python 3.10+
 - [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
 - [Initializer overview](product/docs/overview/INITIALIZER-OVERVIEW.md)
 - [Initializer decomposition](product/docs/decompositions/INITIALIZER-DECOMPOSITION.md)
-- [Initializer implementation plan](product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
 - [Initializer reference](product/docs/initializer/README.md)
 - [Repository manifest](repo/specs/repo/manifest.json)
 - [Schemas](schemas/)
@@ -21,3 +20,5 @@ Supported runtime: Python 3.10+
 
 - `repo/scripts/validate`
 - `repo/scripts/generate-docs`
+
+- [Initializer implementation plan](product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)

@@ -2,32 +2,86 @@
   "spec_id": "product.git-object-identity",
   "title": "Initializer Git Object Identity",
   "purpose": "Defines the canonical Git object identity representation used by every initializer record, eliminating independent and contradictory revision-string rules.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {
-    "concepts": ["git-object-identity"]
+    "concepts": [
+      "git-object-identity"
+    ]
   },
   "normative_requirements": [
-    {"id": "INIT-OID-001", "text": "A Git object identity shall be a structured representation with exactly two fields: object_format and object_id."},
-    {"id": "INIT-OID-002", "text": "The object_format field shall be a string whose value is the constant \"sha1\" for Version 1."},
-    {"id": "INIT-OID-003", "text": "When object_format is \"sha1\", the object_id shall be exactly 40 lowercase hexadecimal characters."},
-    {"id": "INIT-OID-004", "text": "Abbreviated object IDs are forbidden: every object_id shall be the full required length for its declared format."},
-    {"id": "INIT-OID-005", "text": "Named references (branch names, tag names, symbolic refs) are forbidden as object_id values."},
-    {"id": "INIT-OID-006", "text": "Version 1 of the initializer shall restrict Git object identity to SHA-1 only: object_format must be \"sha1\" and object_id must be exactly 40 lowercase hexadecimal characters. Support for SHA-256 is reserved for a future schema version."},
-    {"id": "INIT-OID-007", "text": "A source commit identity shall use the structured representation with object_format \"sha1\" and the object_id shall resolve directly to a commit object in the source repository via `git rev-parse --verify <object_id>^{commit}`."},
-    {"id": "INIT-OID-008", "text": "A source blob identity shall use the structured representation with object_format \"sha1\" and the object_id shall resolve directly to a blob object in the source repository via `git rev-parse --verify <object_id>^{blob}`."},
-    {"id": "INIT-OID-009", "text": "A generated Git tree or commit identity shall use the structured representation with object_format \"sha1\" and the object_id shall be the full-length SHA-1 of the generated Git object in the staged or promoted repository."},
-    {"id": "INIT-OID-010", "text": "Every record in the initializer that stores or transmits a Git object identity shall use the canonical structured representation defined by this specification and shall preserve the exact full object_id value."}
+    {
+      "id": "INIT-OID-001",
+      "text": "A Git object identity shall be a structured representation with exactly two fields: object_format and object_id."
+    },
+    {
+      "id": "INIT-OID-002",
+      "text": "The object_format field shall be a string whose value is the constant \"sha1\" for Version 1."
+    },
+    {
+      "id": "INIT-OID-003",
+      "text": "When object_format is \"sha1\", the object_id shall be exactly 40 lowercase hexadecimal characters."
+    },
+    {
+      "id": "INIT-OID-004",
+      "text": "Abbreviated object IDs are forbidden: every object_id shall be the full required length for its declared format."
+    },
+    {
+      "id": "INIT-OID-005",
+      "text": "Named references (branch names, tag names, symbolic refs) are forbidden as object_id values."
+    },
+    {
+      "id": "INIT-OID-006",
+      "text": "Version 1 of the initializer shall restrict Git object identity to SHA-1 only: object_format must be \"sha1\" and object_id must be exactly 40 lowercase hexadecimal characters. Support for SHA-256 is reserved for a future schema version."
+    },
+    {
+      "id": "INIT-OID-007",
+      "text": "A source commit identity shall use the structured representation with object_format \"sha1\" and the object_id shall resolve directly to a commit object in the source repository via `git rev-parse --verify <object_id>^{commit}`."
+    },
+    {
+      "id": "INIT-OID-008",
+      "text": "A source blob identity shall use the structured representation with object_format \"sha1\" and the object_id shall resolve directly to a blob object in the source repository via `git rev-parse --verify <object_id>^{blob}`."
+    },
+    {
+      "id": "INIT-OID-009",
+      "text": "A generated Git tree or commit identity shall use the structured representation with object_format \"sha1\" and the object_id shall be the full-length SHA-1 of the generated Git object in the staged or promoted repository."
+    },
+    {
+      "id": "INIT-OID-010",
+      "text": "Every record in the initializer that stores or transmits a Git object identity shall use the canonical structured representation defined by this specification and shall preserve the exact full object_id value."
+    }
   ],
-  "dependencies": [{"spec_id": "product.initializer-level-0"}],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
   "references": [
-    {"type": "artifact", "path": "product/specs/product/level-0/initializer-level-0.json"},
-    {"type": "artifact", "path": "repo/specs/repo/product-levels.json"},
-    {"type": "artifact", "path": "repo/specs/repo/product-spec-base.json"}
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    }
   ],
   "supersedes": [],
   "superseded_by": [],
-  "derived_artifacts": [{"type": "markdown", "path": "product/derived/specs/product/level-1/git-object-identity.md"}],
-  "correspondence": {"implementations": [], "tests": [], "conformance": []}
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/git-object-identity.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
 }

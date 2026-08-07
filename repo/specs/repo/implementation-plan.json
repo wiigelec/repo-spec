@@ -87,10 +87,6 @@
     {
       "type": "specification",
       "spec_id": "repo.product-levels"
-    },
-    {
-      "type": "artifact",
-      "path": "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
     }
   ],
   "derived_artifacts": [

@@ -2,7 +2,7 @@
   "spec_id": "product.execution-orchestration",
   "title": "Execution Orchestration",
   "purpose": "Defines the generic execution orchestration component that sequences stage execution according to an execution profile without prescribing concrete workflows.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

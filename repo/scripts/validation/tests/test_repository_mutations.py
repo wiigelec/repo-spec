@@ -360,8 +360,8 @@ def run_repository_mutations(repo_root: Path) -> None:
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_text = plan_path.read_text()
         plan_text = plan_text.replace(
-            '    "workstreams_and_dependencies": [\n      "product/docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md"\n    ],',
-            '    "workstreams_and_dependencies": [\n      "product/docs/plans/initializer-implementation-plan/02-workstreams-and-dependencies.md",\n      "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md"\n    ],',
+            '    "workstreams_and_dependencies": [\n      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md"\n    ],',
+            '    "workstreams_and_dependencies": [\n      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md",\n      "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md"\n    ],',
             1,
         )
         plan_text = plan_text.replace(
@@ -370,8 +370,8 @@ def run_repository_mutations(repo_root: Path) -> None:
             1,
         )
         plan_text = plan_text.replace(
-            '* [04 - Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)',
-            '* [04 - Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)\n* [05 - Validation addendum](./initializer-implementation-plan/05-validation-addendum.md)',
+            '- [Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)',
+            '- [Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)\n- [Validation addendum](./initializer-implementation-plan/05-validation-addendum.md)',
             1,
         )
         plan_path.write_text(plan_text)
@@ -382,8 +382,8 @@ def run_repository_mutations(repo_root: Path) -> None:
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_text = plan_path.read_text()
         plan_text = plan_text.replace(
-            '      "order": 1,\n      "path": "product/docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",\n      "title": "Scope and preconditions",\n      "coverage": [\n        "authority_and_basis",\n        "scope_and_exclusions"\n      ]',
-            '      "order": 1,\n      "path": "product/docs/plans/initializer-implementation-plan/01-scope-and-preconditions.md",\n      "title": "Scope and preconditions"',
+            '      "order": 1,\n      "path": "product/docs/plans/initializer-implementation-plan/01-authority-scope-and-specification-map.md",\n      "title": "Authority, scope, and specification map",\n      "coverage": [\n        "authority_and_basis",\n        "scope_and_exclusions"\n      ]',
+            '      "order": 1,\n      "path": "product/docs/plans/initializer-implementation-plan/01-authority-scope-and-specification-map.md",\n      "title": "Authority, scope, and specification map"',
             1,
         )
         plan_path.write_text(plan_text)

@@ -2,7 +2,7 @@
   "spec_id": "product.destination",
   "title": "Destination Contract",
   "purpose": "Defines the absent-only local destination for the bounded initialization workflow.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

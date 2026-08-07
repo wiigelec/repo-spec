@@ -2,7 +2,7 @@
   "spec_id": "product.request-intake",
   "title": "Request Intake",
   "purpose": "Defines intake and validation of the explicit JSON initialization request.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

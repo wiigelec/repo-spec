@@ -2,7 +2,7 @@
   "spec_id": "product.material-manifest",
   "title": "Material Manifest Contract",
   "purpose": "Defines the versioned material-manifest format that declares every source path eligible for installation, its destination path, role, operation, source type, and mode policy for deterministic repository bootstrapping.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

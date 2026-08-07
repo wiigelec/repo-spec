@@ -47,7 +47,6 @@ Defines the canonical composite-document envelope shared by product overviews, p
 - artifact: `docs/overview/PRODUCT-OVERVIEW.md`
 - artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
 - artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
-- artifact: `product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md`
 
 ## Derived artifacts
 

@@ -2,7 +2,7 @@
   "spec_id": "product.initialization-request",
   "title": "Initialization Request Contract",
   "purpose": "Defines the atomic JSON initialization request for the bounded local initialization workflow.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {

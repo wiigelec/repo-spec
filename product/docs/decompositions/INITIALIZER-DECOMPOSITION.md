@@ -81,4 +81,5 @@ The next authorized action is an initializer implementation plan under `docs/pla
 
 - [Initializer decomposition root index](./README.md)
 - [Initializer overview](../overview/INITIALIZER-OVERVIEW.md)
+
 - [Initializer implementation plan](../plans/INITIALIZER-IMPLEMENTATION-PLAN.md)

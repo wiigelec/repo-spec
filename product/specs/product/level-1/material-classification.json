@@ -2,7 +2,7 @@
   "spec_id": "product.material-classification",
   "title": "Material Role Classification",
   "purpose": "Defines the atomic material role classification taxonomy for the initializer.",
-  "status": "candidate",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {
