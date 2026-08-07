@@ -25,7 +25,7 @@
     },
     {
       "id": "INIT-STA-004",
-      "text": "The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the exact 40-character lowercase hexadecimal Git object identifier of the source revision; `source_repository` shall be the resolved local source repository path."
+      "text": "The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the canonical Git object identity object_id as defined by product.git-object-identity for the source revision; `source_repository` shall be the resolved local source repository path."
     },
     {
       "id": "INIT-STA-005",
@@ -84,6 +84,9 @@
     },
     {
       "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     }
   ],
   "references": [

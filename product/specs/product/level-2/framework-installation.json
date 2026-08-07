@@ -34,6 +34,10 @@
     {
       "id": "INIT-FIN-006",
       "text": "The component shall install each material item in its declared destination_path, shall not modify the normative semantics of reusable framework material beyond the declared operation, and shall ensure that no output path is produced by more than one manifest entry."
+    },
+    {
+      "id": "INIT-FIN-007",
+      "text": "The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must match an inventory entry, the operation must match, and the mode must match the inventory declaration."
     }
   ],
   "dependencies": [

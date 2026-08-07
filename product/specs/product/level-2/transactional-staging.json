@@ -34,6 +34,10 @@
     {
       "id": "INIT-TST-006",
       "text": "Promotion shall be non-recoverable: the initializer shall not retry promotion after a failed or indeterminate outcome without external diagnosis and manual intervention."
+    },
+    {
+      "id": "INIT-TST-007",
+      "text": "After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the execution report and caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact."
     }
   ],
   "dependencies": [

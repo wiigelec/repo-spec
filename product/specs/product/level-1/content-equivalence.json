@@ -41,6 +41,18 @@
       "text": "File access and modification timestamps, inode numbers, ownership, and other filesystem metadata shall not be part of repository content equivalence, and the initializer shall not depend on filesystem metadata for determinism."
     },
     {
+      "id": "INIT-EQV-012",
+      "text": "Direction evidence equivalence shall require that every projected evidence file in product/docs/direction/evidence/ be byte-identical to the corresponding source Git blob at the declared source revision, and that the direction evidence manifest entries match the actual evidence files and their source material without omission or mismatch."
+    },
+    {
+      "id": "INIT-EQV-015",
+      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1) with required true, and equivalence shall be evaluated on the full inventory-defined path set."
+    },
+    {
+      "id": "INIT-EQV-013",
+      "text": "Duplicate direction_material entries shall each produce their own distinct evidence file with a unique positional index, and the equivalence relation shall treat two direction_material arrays as equivalent only when they have identical membership, order, and duplicate positions."
+    },
+    {
       "id": "INIT-EQV-008",
       "text": "Local source revision equivalence shall require the same exact Git object identifier (in the repository's native object format) in the same resolved source repository path, so that equivalent revisions address identical byte sequences and subtree structure."
     },
@@ -57,7 +69,7 @@
       "text": "The variables permitted to differ between equivalent outcomes shall be explicitly declared with their scope, representation, and source: the only declared variable data for the bounded workflow is the initialization timestamp recorded in the provenance record, and no other element may vary between equivalent outcomes."
     },
     {
-      "id": "INIT-EQV-012",
+      "id": "INIT-EQV-014",
       "text": "The equivalence relation shall be reflexive, symmetric, and transitive over canonical forms, and shall partition accepted requests, source revisions, and outcomes into stable equivalence classes such that membership is decidable from canonical representations alone."
     }
   ],

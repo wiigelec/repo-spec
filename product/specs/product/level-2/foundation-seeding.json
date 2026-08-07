@@ -22,7 +22,7 @@
     },
     {
       "id": "INIT-FSD-003",
-      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; the file shall be read as raw bytes without encoding conversion, line ending normalization, or other transformation, and the stage shall fail when the resolved file at the source revision does not contain at least one non-whitespace byte."
+      "text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; the file shall be read as raw bytes without encoding conversion, line ending normalization, or other transformation, and the full byte content of each entry shall be preserved as-is regardless of content."
     },
     {
       "id": "INIT-FSD-004",
@@ -91,6 +91,10 @@
     {
       "id": "INIT-FSD-019",
       "text": "Empty workspace initialization shall produce a discoverability README at product/specs/product/README.md containing an H1 heading with the product identifier and the text 'This directory contains the activated but empty product-specification workspace for {product_id}.' followed by links to the overview, decomposition, and implementation plan controlling documents; the README shall have lifecycle_status candidate."
+    },
+    {
+      "id": "INIT-FSD-021",
+      "text": "Foundation seeding shall produce only paths declared in the output inventory (product.initializer-output-inventory-v1) with producer direction-evidence-installation or workspace-seeding; every produced path shall match its inventory entry's operation, type, and mode, and no inventory entry with required true shall be omitted."
     }
   ],
   "dependencies": [

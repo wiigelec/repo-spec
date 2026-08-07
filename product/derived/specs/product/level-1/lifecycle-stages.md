@@ -141,7 +141,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Success execution result`
 - Predecessors:
   - `promotion`
-- Purpose: `Finalize the external execution result by recording the workflow success outcome and preparing the caller return value after promotion has committed.`
+- Purpose: `Finalize the external execution result by recording the workflow success outcome, removing the staging transaction root, and preparing the caller return value after promotion has committed.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `True`
