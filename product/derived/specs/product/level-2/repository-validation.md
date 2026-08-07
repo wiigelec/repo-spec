@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines repository validation performed against the complete staged repository before promotion.
+Defines validation performed against the staged repository and transaction records before promotion.
 
 ## Correspondence
 
@@ -39,9 +39,11 @@ Defines repository validation performed against the complete staged repository b
 
 ## Normative requirements
 
-- `INIT-RVA-001`: The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion, using the checks declared in the validation profile (product.validation-profile) in profile order and producing a validation report conforming to the validation report specification (product.validation-report) with status values passed, failed, error, or skipped, stable failure codes from each check's declared failure_codes array, and structured evidence fields.
-- `INIT-RVA-002`: The repository validation component shall produce a validation report conforming to product.validation-report that lists each check in profile order-number order with its status (passed, failed, error, or skipped), failure code from the check's declared failure_codes array, failure message when applicable, and structured evidence. The report shall include schema_version, report_version, profile_version, request_fingerprint, repository_content_digest, overall_status (pass or fail), and the checks array.
-- `INIT-RVA-003`: Promotion is permitted only when the validation report's overall_status is pass. The validation component shall not proceed to the promotion stage when overall_status is fail, and the staged repository shall remain in its pre-promotion state for diagnostics.
+- `INIT-RVA-001`: The repository validation component shall execute three validation phases in order: Phase 1 (input and source) validates request schema, canonicalization, authority propagation, source repository, source commit, material-manifest schema, source paths, and key coverage. Phase 2 (staged repository) validates the complete staged repository at repository/ including output inventory, copied files, direction evidence, generated templates, promoted records, provenance, handoff, content digest, Git branch, commit count, author identity, commit message, worktree cleanliness, and remote count. Phase 3 (transaction) validates staging-state, validation-report conformance via component postcondition, fingerprint and digest linkage, and check completeness.
+- `INIT-RVA-002`: Each phase shall execute checks in ascending order number within that phase, using the checks declared in the validation profile (product.validation-profile) for the corresponding applies_to scope, and shall produce a validation report conforming to the validation report specification (product.validation-report) with status values passed, failed, error, or skipped, stable failure codes from each check's declared failure_codes array, and structured evidence fields.
+- `INIT-RVA-003`: Promotion is permitted only when every required check in Phase 1 and Phase 2 has status passed. The validation component shall not proceed to the promotion stage when any required Phase 1 or Phase 2 check has status failed, error, or skipped.
+- `INIT-RVA-004`: The validation report shall not contain a check that recursively validates the report itself. After all profile checks are recorded, the validation component shall serialize the complete report according to product.validation-report and shall verify its schema conformance as a component postcondition. Failure during serialization or final schema validation shall be recorded as a transaction error and shall prevent transaction closure.
+- `INIT-RVA-005`: Authority validation in Version 1 is limited to exact authority propagation: the initializer shall verify that authority.granted_by is present in the request, that the provenance record request_identifier equals the same value, and that the handoff manifest records the required linkage. The initializer shall not authenticate the governing issue, consult an external authority source, or validate authority values against an undefined execution-context source.
 
 ## Dependencies
 

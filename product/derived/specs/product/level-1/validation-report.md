@@ -56,7 +56,7 @@ Defines the canonical validation report that the repository validation component
 
 ## Normative requirements
 
-- `INIT-VR-001`: The validation report shall contain an overall_status field whose value is pass only when every required check in the validation profile has status passed. If any required check has status failed, error, or skipped, overall_status shall be fail.
+- `INIT-VR-001`: The validation report shall contain an overall_status field whose value is pass only when every required check in Phase 1 and Phase 2 of the validation profile has status passed. If any required check in Phase 1 or Phase 2 has status failed, error, or skipped, overall_status shall be fail.
 - `INIT-VR-002`: Promotion is permitted only when overall_status is pass. The validation component shall not proceed to the promotion stage when overall_status is fail.
 - `INIT-VR-003`: The validation report shall contain a checks array in ascending order-number as defined by the validation profile. Each entry shall contain check_id (string), status (one of passed, failed, error, or skipped), and the following optional fields: failure_code (string), failure_message (string), and evidence (object).
 - `INIT-VR-004`: The four status values are: passed (the check executed and its pass_condition is satisfied), failed (the check executed and its pass_condition is not satisfied), error (the check could not be executed due to a precondition failure or internal error, as distinct from a deterministic fail), and skipped (the check was intentionally not executed because its applicable scope does not exist or the execution profile explicitly exempted it).
@@ -68,6 +68,7 @@ Defines the canonical validation report that the repository validation component
 - `INIT-VR-010`: The validation report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, checks for each check entry), 2-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-VR-011`: The validation report shall be written at transaction/validation-report.json inside the staging transaction root and shall never be part of the promoted repository content.
 - `INIT-VR-012`: The validation report format shall evolve by incrementing schema_version. Consumers of schema_version 1 shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
+- `INIT-VR-013`: The validation report shall not include a check that recursively validates the report itself. Validation-report schema conformance and serialization correctness shall be enforced as a validation-component postcondition: after all profile checks are recorded, the component shall serialize the complete report according to this specification and shall fail the transaction if serialization or final schema validation fails.
 
 ## Dependencies
 
