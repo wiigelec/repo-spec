@@ -80,7 +80,7 @@
     },
     {
       "id": "INIT-HND-013",
-      "text": "Each material array shall be sorted lexicographically by repository-relative path using ASCII ordering; directory entries shall not include a trailing slash; any array may be empty when no item of that disposition exists, and empty arrays shall be represented as `[]`."
+      "text": "Each classification array (`foundations.framework`, `foundations.product`, `material.generated`, `material.selected`, `material.omitted`, and `material.deferred`) shall be sorted lexicographically by repository-relative path using ASCII ordering; directory entries shall not include a trailing slash; any classification array may be empty when no item of that classification exists, and empty arrays shall be represented as `[]`."
     },
     {
       "id": "INIT-HND-014",
