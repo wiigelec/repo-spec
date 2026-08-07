@@ -69,8 +69,8 @@
       "classification": "required",
       "order": 60,
       "applies_to": "material-manifest",
-      "pass_condition": "The material manifest at product/scripts/initializer/framework-inventory.json in the source commit tree validates against the material-manifest contract schema (product.material-manifest).",
-      "failure_codes": ["manifest-not-found", "schema-mismatch", "missing-field", "invalid-entry"]
+      "pass_condition": "The material manifest at product/scripts/initializer/framework-inventory.json in the source commit tree validates against the material-manifest contract schema (product.material-manifest), including material_key uniqueness.",
+      "failure_codes": ["manifest-not-found", "schema-mismatch", "missing-field", "duplicate-key", "invalid-entry"]
     },
     {
       "check_id": "material-manifest.source-paths",
@@ -81,19 +81,19 @@
       "failure_codes": ["source-path-missing", "source-type-mismatch"]
     },
     {
-      "check_id": "material-manifest.no-overlap",
+      "check_id": "material-manifest.key-coverage",
       "classification": "required",
       "order": 70,
       "applies_to": "material-manifest",
-      "pass_condition": "No two material-manifest entries declare overlapping or duplicate destination_path values.",
-      "failure_codes": ["overlapping-destination", "duplicate-destination"]
+      "pass_condition": "Every material_key in the material manifest has a matching material_index entry in the output inventory, and every material_index entry in the output inventory has a matching material_key in the material manifest. No orphan keys and no unused entries.",
+      "failure_codes": ["orphan-material-key", "missing-material-key", "key-mismatch"]
     },
     {
       "check_id": "output.inventory-complete",
       "classification": "required",
       "order": 80,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every entry in the output inventory (fixed worktree file with required true, resolved dynamic family path) is present in the staged repository.",
+      "pass_condition": "Every entry in the output inventory (fixed worktree file with required true, material_index entry, resolved dynamic family path) is present in the staged repository.",
       "failure_codes": ["missing-path", "inventory-incomplete"]
     },
     {
@@ -101,7 +101,7 @@
       "classification": "required",
       "order": 90,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file or resolved dynamic family path) and no prohibited path exists.",
+      "pass_condition": "Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, material_index entry, or resolved dynamic family path) and no prohibited path exists under its matching rule.",
       "failure_codes": ["undeclared-path", "prohibited-path", "ambiguous-inventory-match"]
     },
     {
@@ -117,8 +117,8 @@
       "classification": "required",
       "order": 100,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every file produced by copy-verbatim (framework-installation dynamic family) has byte content identical to its corresponding source Git blob at the declared source revision.",
-      "failure_codes": ["byte-mismatch", "source-blob-not-found"]
+      "pass_condition": "Every file produced by copy-verbatim (material_index entries with operation copy-verbatim) has byte content identical to its corresponding source Git blob, resolved by matching material_key between the output inventory and the material manifest at the declared source revision.",
+      "failure_codes": ["byte-mismatch", "source-blob-not-found", "material-key-unresolved"]
     },
     {
       "check_id": "output.direction-evidence-match",

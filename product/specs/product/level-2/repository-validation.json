@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion, using the checks declared in the validation profile (product.validation-profile) in profile order and producing a validation report conforming to the validation report specification (product.validation-report) with status values passed, failed, error, or skipped, stable failure codes from each check's declared failure_codes array, and structured evidence fields."
+      "text": "The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons, Level workspace README.md placeholder files, and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion, using the checks declared in the validation profile (product.validation-profile) in profile order and producing a validation report conforming to the validation report specification (product.validation-report) with status values passed, failed, error, or skipped, stable failure codes from each check's declared failure_codes array, and structured evidence fields."
     },
     {
       "id": "INIT-RVA-002",

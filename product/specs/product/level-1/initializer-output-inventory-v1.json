@@ -1,23 +1,48 @@
 {
   "spec_id": "product.initializer-output-inventory-v1",
   "title": "Initializer Version 1 Output Inventory",
-  "purpose": "Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files and dynamic path families with separately governed Git administrative state.",
+  "purpose": "Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, material_index entries, and dynamic path families with separately governed Git administrative state.",
   "status": "candidate",
   "schema_version": "1",
   "level": 1,
   "primitives": {
     "concepts": ["output-inventory"]
   },
+  "material_index": [
+    {"material_key": "root-readme", "destination_path": "README.md", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "root-agents", "destination_path": "AGENTS.md", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "root-license", "destination_path": "LICENSE", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-spec-init", "destination_path": "product/scripts/repo-spec-init", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100755", "required": true},
+    {"material_key": "repo-manifest", "destination_path": "repo/specs/repo/manifest.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-governing-issue", "destination_path": "repo/specs/repo/governing-issue.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-review-proposal", "destination_path": "repo/specs/repo/review-proposal.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-repository-structure", "destination_path": "repo/specs/repo/repository-structure.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-artifact-taxonomy", "destination_path": "repo/specs/repo/artifact-taxonomy.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-platform-profiles", "destination_path": "repo/specs/repo/platform-profiles.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-development-workflow", "destination_path": "repo/specs/repo/development-workflow.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-validation", "destination_path": "repo/specs/repo/validation.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-product-manifest", "destination_path": "repo/specs/repo/product-manifest.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-development-document-base", "destination_path": "repo/specs/repo/development-document-base.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-product-overview", "destination_path": "repo/specs/repo/product-overview.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-product-decomposition", "destination_path": "repo/specs/repo/product-decomposition.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-implementation-plan", "destination_path": "repo/specs/repo/implementation-plan.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-product-spec-base", "destination_path": "repo/specs/repo/product-spec-base.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-product-correspondence", "destination_path": "repo/specs/repo/product-correspondence.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-product-levels", "destination_path": "repo/specs/repo/product-levels.json", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-validate-script", "destination_path": "repo/scripts/validate", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100755", "required": true},
+    {"material_key": "repo-validate-impl", "destination_path": "repo/scripts/validate_impl.py", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-repo-model", "destination_path": "repo/scripts/repo_model.py", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-docgen", "destination_path": "repo/scripts/docgen.py", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-generate-docs", "destination_path": "repo/scripts/generate-docs", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100755", "required": true},
+    {"material_key": "repo-github-profile", "destination_path": "repo/scripts/github_profile.py", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-validation-dir", "destination_path": "repo/scripts/validation/", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "040000", "required": true},
+    {"material_key": "repo-github-field-policy", "destination_path": "repo/scripts/github-field-policy", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100755", "required": true},
+    {"material_key": "repo-github-field-policy-py", "destination_path": "repo/scripts/github_field_policy.py", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-github-field-policy-test", "destination_path": "repo/scripts/github_field_policy_mutation_test.py", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "100644", "required": true},
+    {"material_key": "repo-derived", "destination_path": "repo/derived/", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "040000", "required": true},
+    {"material_key": "product-initializer", "destination_path": "product/scripts/initializer/", "producer": "framework-installation", "operation": "copy-verbatim", "mode": "040000", "required": true}
+  ],
   "dynamic_path_families": [
-    {
-      "producer": "framework-installation",
-      "rule": "Every entry in the material manifest (product/scripts/initializer/framework-inventory.json) with operation copy-verbatim produces its declared destination_path. The set of all such paths constitutes the framework-installation dynamic family.",
-      "expansion_pattern": "{material-manifest.destination_path}",
-      "operation": "copy-verbatim",
-      "governing_spec": "product.material-manifest",
-      "type": "regular-file",
-      "required": true
-    },
     {
       "producer": "direction-evidence-installation",
       "rule": "Each direction_material entry produces one file at product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path.",
@@ -65,10 +90,6 @@
     }
   ],
   "fixed_worktree_files": [
-    {"destination_path": "README.md", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
-    {"destination_path": "AGENTS.md", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
-    {"destination_path": "LICENSE", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
-    {"destination_path": "product/scripts/repo-spec-init", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100755", "required": true},
     {"destination_path": "product/docs/direction/manifest.json", "producer": "direction-evidence-installation", "operation": "generate-record", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
     {"destination_path": "docs/overview/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
     {"destination_path": "docs/decompositions/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
@@ -82,7 +103,13 @@
     {"destination_path": "product/specs/product/level-2/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
     {"destination_path": "product/specs/product/level-3/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true}
   ],
-  "prohibited_paths": ["reference/", "validate/", "product/src/", "product/tests/", "product/scripts/initializer/"],
+  "prohibited_paths": [
+    {"rule": "exact", "path": "reference/"},
+    {"rule": "exact", "path": "validate/"},
+    {"rule": "exact", "path": "product/src/"},
+    {"rule": "exact", "path": "product/tests/"},
+    {"rule": "exact", "path": "product/scripts/initializer/"}
+  ],
   "git_state": {
     "governing_specs": ["product.local-git-repository", "product.git-bootstrap-profile"],
     "rule": "Git administrative state (.git/ directory) is governed separately by product.local-git-repository and product.git-bootstrap-profile. It is not part of the worktree output inventory. Repository validation checks (git.branch, git.root-commit-count, git.worktree-clean, git.remote-count) verify Git state requirements."
@@ -90,14 +117,15 @@
   "normative_requirements": [
     {"id": "INV-V1-001", "text": "The output inventory shall enumerate every destination path the initializer may create in the initialized repository worktree, assigning each to exactly one producer. Git administrative state (.git/) is governed separately."},
     {"id": "INV-V1-002", "text": "Fixed worktree files are individually enumerated with their producer, operation, governing spec, mode, and required status."},
-    {"id": "INV-V1-003", "text": "Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry or with another dynamic family."},
-    {"id": "INV-V1-004", "text": "The framework-installation dynamic family resolves to every destination_path declared by the material manifest (product/scripts/initializer/framework-inventory.json) with operation copy-verbatim. No overlapping inventory entries are permitted."},
+    {"id": "INV-V1-003", "text": "Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry, material_index entry, or another dynamic family."},
+    {"id": "INV-V1-004", "text": "The material_index declares every framework-installation output path with a stable material_key. Each material_key shall map to exactly one material-manifest entry (product/scripts/initializer/framework-inventory.json) that provides the source_path, source_type, and mode. The material manifest shall not independently expand or modify the set of output paths."},
     {"id": "INV-V1-005", "text": "A required entry must be present in every successful initialization; no entry may be marked optional in the Version 1 bounded local workflow."},
-    {"id": "INV-V1-006", "text": "The inventory shall declare prohibited_paths that shall not appear in the initialized repository worktree. product/scripts/initializer/ is prohibited because its contents are installed individually through the material manifest dynamic family."},
+    {"id": "INV-V1-006", "text": "The inventory shall declare prohibited_paths as structured rules. An exact-path rule matches only paths equal to the declared path. A prefix rule matches any path that starts with the declared prefix. product/scripts/initializer/ is prohibited with exact rule because its contents are installed individually through material_index entries, not as a bulk directory."},
     {"id": "INV-V1-007", "text": "The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization. Only the first five produce worktree paths; git-initialization produces the Git administrative state (.git/) governed separately."},
     {"id": "INV-V1-008", "text": "Dynamic path families may use template placeholders {slug} for the product identifier and {index:03d}-{basename} for evidence files; the governing specification for each producer defines the exact resolution of these placeholders."},
-    {"id": "INV-V1-009", "text": "Repository validation shall include checks that every path in the staged repository matches either a fixed worktree file entry or a resolved dynamic family path, that no prohibited_path appears, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile."},
-    {"id": "INV-V1-010", "text": "Parent directories of declared files are implicit and are not separately inventoried. Level workspace directories (product/specs/product/level-0/ through level-3/) are preserved in Git via governed README.md files declared as fixed worktree files."}
+    {"id": "INV-V1-009", "text": "Repository validation shall include checks that every path in the staged repository matches exactly one output-inventory entry (fixed worktree file, material_index entry, or resolved dynamic family path), that every material_key in the output inventory has a matching material-manifest entry, that no material_key in the material manifest is unused, that no prohibited_path appears under any matching rule, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile."},
+    {"id": "INV-V1-010", "text": "Parent directories of declared files are implicit and are not separately inventoried. Level workspace directories (product/specs/product/level-0/ through level-3/) are preserved in Git via governed README.md files declared as fixed worktree files."},
+    {"id": "INV-V1-011", "text": "Every material_index entry shall have a unique material_key. Every material_key shall match exactly one material-manifest entry. Every material-manifest entry with operation copy-verbatim shall have a material_key that matches exactly one material_index entry. Unused material-manifest entries and orphan material_index entries shall be rejected."}
   ],
   "dependencies": [
     {"spec_id": "product.initializer-level-0"},
