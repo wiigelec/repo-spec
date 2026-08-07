@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-STA-001",
-      "text": "A staging-state record shall capture the request fingerprint, source commit, initializer identity and version, destination path, current stage identity, completed stage identities, failed stage identity (if any), repository-content digest, Git-created flag, validation-completed flag, promotion-entered flag, and promotion outcome for the bounded local workflow."
+      "text": "A staging-state record shall capture the request fingerprint, source commit, initializer identity and version, destination path, current stage identity, completed stage identities, failed stage identity (if any), repository-content digest, Git-created flag, validation-completed flag, promotion-entered flag, promotion outcome, and cleanup failure reason (or null) for the bounded local workflow."
     },
     {
       "id": "INIT-STA-002",
@@ -53,7 +53,7 @@
     },
     {
       "id": "INIT-STA-011",
-      "text": "When `promotion_outcome` is `promoted` and post-promotion staging-root removal fails, the staging-state record shall record `cleanup_failure` as a non-empty diagnostic string describing the cleanup failure reason. The canonical cleanup-failure state is: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes `promotion` (completed) and does not include `success-finalization` (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = the non-empty diagnostic string. The presence of a `cleanup_failure` field does not change the promotion outcome: the repository remains promoted. The staging-state record shall treat `cleanup_failure` as an optional field that must be present (as a non-empty string) when cleanup after successful promotion fails, and must be absent (null or omitted) when cleanup succeeds."
+      "text": "The `cleanup_failure` field shall be a required nullable field that is always present in every staging-state record. When cleanup has not been attempted or when cleanup succeeds, `cleanup_failure` shall be `null`. When post-promotion staging-root removal fails after `promotion_outcome` is `promoted`, `cleanup_failure` shall be a non-empty diagnostic string describing the cleanup failure reason; the presence of a non-null `cleanup_failure` value does not change the promotion outcome. The deterministic serialized forms are: normal state — `\"cleanup_failure\": null`; cleanup-failure state — `\"cleanup_failure\": \"<non-empty diagnostic string>\"`. The canonical cleanup-failure staging-state is: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes `promotion` (completed) and does not include `success-finalization` (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string. No automatic rollback or retry of the failed cleanup operation is authorized."
     },
     {
       "id": "INIT-STA-012",
