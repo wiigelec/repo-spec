@@ -110,8 +110,9 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Failure Codes:
   - `source-path-missing`
   - `source-type-mismatch`
+  - `tree-type-rejected`
 - Order: `65`
-- Pass Condition: `Every source_path declared in the material manifest exists at the expected source_type (blob, tree, or symlink) in the source commit tree.`
+- Pass Condition: `Every source_path declared in the material manifest exists at the expected source_type (blob or symlink) in the source commit tree, and no entry declares source_type tree.`
 - Applies To: `material-manifest`
 - Check Id: `material-manifest.key-coverage`
 - Classification: `required`
@@ -119,8 +120,9 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `orphan-material-key`
   - `missing-material-key`
   - `key-mismatch`
+  - `tree-valued-entry`
 - Order: `70`
-- Pass Condition: `Every material_key in the material manifest has a matching material_index entry in the output inventory, and every material_index entry in the output inventory has a matching material_key in the material manifest. No orphan keys and no unused entries.`
+- Pass Condition: `Every material_key in the material manifest has a matching material_index entry in the output inventory, and every material_index entry in the output inventory has a matching material_key in the material manifest. No orphan keys and no unused entries. No material_index entry has a destination_path that resolves to a Git tree object (mode 040000).`
 - Applies To: `repository-worktree`
 - Check Id: `output.inventory-complete`
 - Classification: `required`
@@ -136,8 +138,9 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `undeclared-path`
   - `prohibited-path`
   - `ambiguous-inventory-match`
+  - `descendant-of-tree-entry`
 - Order: `90`
-- Pass Condition: `Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, material_index entry, or resolved dynamic family path) and no prohibited path exists under its matching rule.`
+- Pass Condition: `Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, material_index entry, or resolved dynamic family path) and no prohibited path exists under its matching rule. No installed path claims membership as a descendant of a directory-valued material_index entry because tree-valued entries are not permitted.`
 - Applies To: `repository-worktree`
 - Check Id: `output.level-readmes`
 - Classification: `required`

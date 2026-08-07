@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-MMF-002",
-      "text": "Each manifest entry shall be a JSON object defining: `material_key` (a stable unique identifier that links to the output inventory's material_index), `source_path` (repository-relative source path), `role` (one of the material role classifications), `operation` (one of the supported operations), `source_type` (the expected Git object type: blob, tree, or symlink), `mode` (the expected Git mode string such as 100644 or 100755), and optional `profile` and `exclusion_rationale`."
+      "text": "Each manifest entry shall be a JSON object defining: `material_key` (a stable unique identifier that links to the output inventory's material_index), `source_path` (repository-relative source path), `role` (one of the material role classifications), `operation` (one of the supported operations), `source_type` (the expected Git object type: blob or symlink; tree is not permitted for the Version 1 bounded local workflow), `mode` (the expected Git mode string such as 100644 or 100755), and optional `profile` and `exclusion_rationale`."
     },
     {
       "id": "INIT-MMF-003",
@@ -42,6 +42,14 @@
     {
       "id": "INIT-MMF-008",
       "text": "Every material_key in the material manifest shall have a corresponding material_index entry in the output inventory. Unused material_key values (present in the material manifest but absent from the output inventory) shall be rejected. Every output inventory material_index entry shall have a corresponding material_key in the material manifest. The mapping is one-to-one and bidirectional for copy-verbatim entries."
+    },
+    {
+      "id": "INIT-MMF-009",
+      "text": "No material-manifest entry with source_type tree shall be accepted. Every source_path in the material manifest must resolve to a Git blob (regular file) or symlink in the source commit tree. A source_path that resolves to a Git tree object (directory) is invalid because it would make the set of output paths depend on source-directory contents rather than the closed output inventory."
+    },
+    {
+      "id": "INIT-MMF-010",
+      "text": "Every material-manifest entry with operation copy-verbatim shall have source_type blob or symlink. An entry with source_type tree and operation copy-verbatim is undefined and shall be rejected before installation."
     }
   ],
   "dependencies": [

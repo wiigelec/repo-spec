@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-GRL-003",
-      "text": "The initialized repository shall contain product/scripts/repo-spec-init and product/scripts/initializer/ as framework-support entries declared in the output inventory's material_index with material_key values repo-spec-init and product-initializer respectively, with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree."
+      "text": "The initialized repository shall contain product/scripts/repo-spec-init and the individual initializer framework files under product/scripts/initializer/ as framework-support entries declared in the output inventory's material_index with individual material_key values (repo-spec-init, product-initializer-init, product-initializer-cli, etc.), with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree. No bulk directory copy is permitted; every file under product/scripts/initializer/ shall have its own material_index entry."
     },
     {
       "id": "INIT-GRL-004",

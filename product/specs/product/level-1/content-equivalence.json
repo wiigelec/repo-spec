@@ -46,7 +46,7 @@
     },
     {
       "id": "INIT-EQV-015",
-      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry, every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository."
+      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry (each independently inventoried — no tree-valued entries), every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository."
     },
     {
       "id": "INIT-EQV-013",

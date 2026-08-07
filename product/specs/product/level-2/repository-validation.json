@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall execute three validation phases in order: Phase 1 (input and source) validates request schema, canonicalization, authority propagation, source repository, source commit, material-manifest schema, source paths, and key coverage. Phase 2 (staged repository) validates the complete staged repository at repository/ including output inventory, copied files, direction evidence, generated templates, promoted records, provenance, handoff, content digest, Git branch, commit count, author identity, commit message, worktree cleanliness, and remote count. Phase 3 (transaction) validates staging-state, validation-report conformance via component postcondition, fingerprint and digest linkage, and check completeness."
+      "text": "The repository validation component shall execute three validation phases in order: Phase 1 (input and source) validates request schema, canonicalization, authority propagation, source repository, source commit, material-manifest schema, source paths (rejecting tree-valued entries), and key coverage. Phase 2 (staged repository) validates the complete staged repository at repository/ including output inventory (confirming no tree-valued material_index entries), copied files, direction evidence, generated templates, promoted records, provenance, handoff, content digest, Git branch, commit count, author identity, commit message, worktree cleanliness, and remote count. Phase 3 (transaction) validates staging-state, validation-report conformance via component postcondition, fingerprint and digest linkage, and check completeness."
     },
     {
       "id": "INIT-RVA-002",

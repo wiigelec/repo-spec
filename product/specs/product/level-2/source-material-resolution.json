@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-SMR-005",
-      "text": "The component shall verify that every source_path declared in the manifest exists at the expected source_type (blob, tree, or symlink) in the source commit tree, and shall reject the source revision when any declared path is missing or has an unexpected type."
+      "text": "The component shall verify that every source_path declared in the manifest exists at the expected source_type (blob or symlink) in the source commit tree, and shall reject the source revision when any declared path is missing or has an unexpected type. A source_type of tree is not permitted for the Version 1 bounded local workflow; any manifest entry declaring source_type tree shall cause the source revision to be rejected."
     }
   ],
   "dependencies": [
