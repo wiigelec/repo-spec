@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-GRL-005",
-      "text": "The initialized repository shall contain empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/."
+      "text": "The initialized repository shall contain governed README.md files at product/specs/product/level-0/README.md, product/specs/product/level-1/README.md, product/specs/product/level-2/README.md, and product/specs/product/level-3/README.md to preserve the Level workspace directories in Git. Each Level README shall state its Level identity, that the workspace is activated, that no product specifications currently exist at that Level, that generated content remains candidate and non-normative, and the governed next action for adding specifications to that Level."
     },
     {
       "id": "INIT-GRL-006",
@@ -101,7 +101,7 @@
     },
     {
       "id": "INIT-GRL-023",
-      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every dynamic family path shall be present per its expansion rule, every required directory shall be present, no prohibited_path shall appear, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile."
+      "text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every dynamic family path shall be present per its expansion rule, every Level workspace README.md placeholder shall be present, no prohibited_path shall appear, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile."
     }
   ],
   "dependencies": [

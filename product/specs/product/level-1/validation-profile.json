@@ -93,24 +93,24 @@
       "classification": "required",
       "order": 80,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every entry in the output inventory (fixed worktree file with required true, resolved dynamic family path, required directory) is present in the staged repository.",
-      "failure_codes": ["missing-path", "missing-directory", "inventory-incomplete"]
+      "pass_condition": "Every entry in the output inventory (fixed worktree file with required true, resolved dynamic family path) is present in the staged repository.",
+      "failure_codes": ["missing-path", "inventory-incomplete"]
     },
     {
       "check_id": "output.no-undeclared-paths",
       "classification": "required",
       "order": 90,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, resolved dynamic family path, or required directory) and no prohibited path exists.",
+      "pass_condition": "Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file or resolved dynamic family path) and no prohibited path exists.",
       "failure_codes": ["undeclared-path", "prohibited-path", "ambiguous-inventory-match"]
     },
     {
-      "check_id": "output.required-directories",
+      "check_id": "output.level-readmes",
       "classification": "required",
       "order": 95,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every required directory in the output inventory is present as an empty directory in the staged repository.",
-      "failure_codes": ["missing-directory", "directory-not-empty"]
+      "pass_condition": "Every Level workspace README.md (product/specs/product/level-{N}/README.md) declared in the output inventory is present in the staged repository and contains the correct Level identity, activated-workspace status, and governed next action per product.generated-repository.",
+      "failure_codes": ["missing-readme", "content-mismatch", "mode-mismatch"]
     },
     {
       "check_id": "output.copied-bytes-match",

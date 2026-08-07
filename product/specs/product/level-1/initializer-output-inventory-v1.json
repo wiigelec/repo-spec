@@ -1,27 +1,13 @@
 {
   "spec_id": "product.initializer-output-inventory-v1",
   "title": "Initializer Version 1 Output Inventory",
-  "purpose": "Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, dynamic path families, and required directories with separately governed Git administrative state.",
+  "purpose": "Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files and dynamic path families with separately governed Git administrative state.",
   "status": "candidate",
   "schema_version": "1",
   "level": 1,
   "primitives": {
     "concepts": ["output-inventory"]
   },
-  "fixed_worktree_files": [
-    {"destination_path": "README.md", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
-    {"destination_path": "AGENTS.md", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
-    {"destination_path": "LICENSE", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
-    {"destination_path": "product/scripts/repo-spec-init", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100755", "required": true},
-    {"destination_path": "product/docs/direction/manifest.json", "producer": "direction-evidence-installation", "operation": "generate-record", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
-    {"destination_path": "docs/overview/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
-    {"destination_path": "docs/decompositions/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
-    {"destination_path": "docs/plans/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
-    {"destination_path": "product/specs/product/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
-    {"destination_path": "product/specs/product/manifest.json", "producer": "workspace-seeding", "operation": "generate-record", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
-    {"destination_path": "repo/initializer/provenance.json", "producer": "provenance-recording", "operation": "generate-record", "governing_spec": "product.provenance-record", "mode": "100644", "required": true},
-    {"destination_path": "repo/initializer/handoff.json", "producer": "handoff-assembly", "operation": "generate-record", "governing_spec": "product.handoff-manifest", "mode": "100644", "required": true}
-  ],
   "dynamic_path_families": [
     {
       "producer": "framework-installation",
@@ -78,11 +64,23 @@
       "required": true
     }
   ],
-  "required_directories": [
-    {"destination_path": "product/specs/product/level-0/", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "040000", "required": true},
-    {"destination_path": "product/specs/product/level-1/", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "040000", "required": true},
-    {"destination_path": "product/specs/product/level-2/", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "040000", "required": true},
-    {"destination_path": "product/specs/product/level-3/", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "040000", "required": true}
+  "fixed_worktree_files": [
+    {"destination_path": "README.md", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
+    {"destination_path": "AGENTS.md", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
+    {"destination_path": "LICENSE", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100644", "required": true},
+    {"destination_path": "product/scripts/repo-spec-init", "producer": "framework-installation", "operation": "copy-verbatim", "governing_spec": "product.material-manifest", "mode": "100755", "required": true},
+    {"destination_path": "product/docs/direction/manifest.json", "producer": "direction-evidence-installation", "operation": "generate-record", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "docs/overview/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "docs/decompositions/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "docs/plans/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "product/specs/product/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "product/specs/product/manifest.json", "producer": "workspace-seeding", "operation": "generate-record", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "repo/initializer/provenance.json", "producer": "provenance-recording", "operation": "generate-record", "governing_spec": "product.provenance-record", "mode": "100644", "required": true},
+    {"destination_path": "repo/initializer/handoff.json", "producer": "handoff-assembly", "operation": "generate-record", "governing_spec": "product.handoff-manifest", "mode": "100644", "required": true},
+    {"destination_path": "product/specs/product/level-0/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "product/specs/product/level-1/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "product/specs/product/level-2/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true},
+    {"destination_path": "product/specs/product/level-3/README.md", "producer": "workspace-seeding", "operation": "instantiate-template", "governing_spec": "product.foundation-seeding", "mode": "100644", "required": true}
   ],
   "prohibited_paths": ["reference/", "validate/", "product/src/", "product/tests/", "product/scripts/initializer/"],
   "git_state": {
@@ -99,7 +97,7 @@
     {"id": "INV-V1-007", "text": "The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization. Only the first five produce worktree paths; git-initialization produces the Git administrative state (.git/) governed separately."},
     {"id": "INV-V1-008", "text": "Dynamic path families may use template placeholders {slug} for the product identifier and {index:03d}-{basename} for evidence files; the governing specification for each producer defines the exact resolution of these placeholders."},
     {"id": "INV-V1-009", "text": "Repository validation shall include checks that every path in the staged repository matches either a fixed worktree file entry or a resolved dynamic family path, that no prohibited_path appears, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile."},
-    {"id": "INV-V1-010", "text": "Parent directories of declared files are implicit and are not separately inventoried. Only explicitly listed required_directories must be present as empty directories."}
+    {"id": "INV-V1-010", "text": "Parent directories of declared files are implicit and are not separately inventoried. Level workspace directories (product/specs/product/level-0/ through level-3/) are preserved in Git via governed README.md files declared as fixed worktree files."}
   ],
   "dependencies": [
     {"spec_id": "product.initializer-level-0"},

@@ -55,7 +55,7 @@
     },
     {
       "id": "INIT-HND-005",
-      "text": "The handoff `repository` object shall define `branch` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings, where `framework` lists paths of installed reusable framework content and `product` lists paths of generated candidate document skeletons and the empty product-specification workspace; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings."
+      "text": "The handoff `repository` object shall define `branch` as a string, `worktree_clean` as a boolean, and `remotes` as an integer; the `foundations` object shall define `framework` and `product` arrays of repository-relative strings, where `framework` lists paths of installed reusable framework content and `product` lists paths of generated candidate document skeletons and the Level workspace README.md files preserving Level directories; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings."
     },
     {
       "id": "INIT-HND-006",
