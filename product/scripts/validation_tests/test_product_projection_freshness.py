@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from docgen import write_all
-from validation.repository_checks import validate_product
+from product_validation.product_checks import validate_product
 
 from validation.tests.mutation_support import create_repo_fixture, expect_failure, mutate_json
 
