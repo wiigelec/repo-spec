@@ -166,9 +166,9 @@ plan-acceptance decision.
 
 ## Next authorized action
 
-Perform a clean-room post-issue-255 review to confirm that this impact-reviewed
+Perform a clean-room post-issue-257 review to confirm that this impact-reviewed
 candidate plan remains complete and consistent with the repaired accepted
-specifications. If no material planning gap remains, a separately governed
+specifications, including deterministic ordering across all six handoff classification arrays. If no material planning gap remains, a separately governed
 plan-acceptance decision may follow.
 
 No product implementation is authorized by this plan.
