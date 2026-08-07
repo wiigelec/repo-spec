@@ -97,6 +97,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     }
   ],
   "references": [

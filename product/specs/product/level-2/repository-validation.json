@@ -13,16 +13,23 @@
   "normative_requirements": [
     {
       "id": "INIT-RVA-001",
-      "text": "The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion, using the checks declared in the validation profile (product.validation-profile) in profile order and producing a validation report conforming to the validation report spec (product.validation-report) with machine-readable failure codes from the defined enumeration; validation shall execute every check in the validation profile: request.schema (request JSON structure and field types), request.canonicalization (canonical form derivation), source.repository-local (source is a valid local Git repository), source.revision-commit (revision resolves to a valid commit), source.objects-complete (all required Git objects exist locally), material-manifest.schema (material manifest validates against its schema), material-manifest.paths (every selected source path in the manifest exists and has the expected source_type), output.inventory-complete (every output inventory entry with required true is present in the staged repository), output.no-undeclared-paths (no path exists in the staged repository that is not in the inventory), output.copied-bytes-match (every copied blob matches the source commit tree bytes), output.generated-records-valid (every generated record validates against its governing schema), output.direction-evidence-match (every direction evidence file is byte-identical to its declared source Git blob and manifest entries match), output.repository-digest-match (the repository-tree digest matches the expected digest), git.branch (initial branch matches bootstrap profile), git.root-commit-count (exactly one root commit), git.worktree-clean (worktree has no unstaged or untracked files), git.remote-count (no remotes configured; advisory), handoff.consistent (handoff manifest content matches staged repository state), provenance.consistent (authority.granted_by matches provenance record request identifier)."
+      "text": "The repository validation component shall validate the complete staged repository at `repository/` inside the staging transaction root, including its candidate document skeletons and empty product-specification workspace and local Git state, against declared conformance requirements, structural constraints, and repository-specification rules before promotion, using the checks declared in the validation profile (product.validation-profile) in profile order and producing a validation report conforming to the validation report specification (product.validation-report) with status values passed, failed, error, or skipped, stable failure codes from each check's declared failure_codes array, and structured evidence fields."
     },
     {
       "id": "INIT-RVA-002",
-      "text": "The repository validation component shall produce a validation report conforming to product.validation-report that lists each check in validation-profile order, its status (pass, fail, or error), failure code and message when applicable, and evidence fields, and shall not report overall success when any required check fails; the report shall be written at `transaction/validation-report.json` inside the staging transaction root and shall never be part of the promoted repository content."
+      "text": "The repository validation component shall produce a validation report conforming to product.validation-report that lists each check in profile order-number order with its status (passed, failed, error, or skipped), failure code from the check's declared failure_codes array, failure message when applicable, and structured evidence. The report shall include schema_version, report_version, profile_version, request_fingerprint, repository_content_digest, overall_status (pass or fail), and the checks array."
+    },
+    {
+      "id": "INIT-RVA-003",
+      "text": "Promotion is permitted only when the validation report's overall_status is pass. The validation component shall not proceed to the promotion stage when overall_status is fail, and the staged repository shall remain in its pre-promotion state for diagnostics."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     },
     {
       "spec_id": "product.validation-profile"

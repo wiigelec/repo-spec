@@ -45,12 +45,13 @@ Defines the versioned material-manifest format that declares every source path e
 - `INIT-MMF-004`: The manifest shall not rely on broad recursive directory copying as the authority for any path; every output path shall be declared by exactly one manifest entry, and overlapping or duplicate entries shall be rejected as invalid.
 - `INIT-MMF-005`: Source paths in the manifest shall be interpreted relative to the root of the source commit tree; destination paths shall be interpreted relative to the root of the generated repository/ directory in the staging transaction root.
 - `INIT-MMF-006`: The manifest schema_version shall be the constant string `1` for this version; future versions shall increment schema_version and shall not silently merge unknown entry fields.
-- `INIT-MMF-007`: Every material manifest entry whose operation is copy-verbatim shall correspond to exactly one entry in the output inventory (product.initializer-output-inventory-v1) with producer framework-installation, and the manifest entry's destination_path shall match the inventory entry's destination_path.
-- `INIT-MMF-008`: The union of all manifest-destined paths (copy-verbatim operations) and the generated output inventory entries (instantiate-template and generate-record operations) shall equal the complete closed output inventory; any material manifest entry whose path has no matching output inventory entry or whose output inventory entry has no matching producer shall be rejected.
+- `INIT-MMF-007`: Every material manifest entry whose operation is copy-verbatim shall be covered by the framework-installation dynamic path family in the output inventory (product.initializer-output-inventory-v1). The manifest entry's destination_path shall be a member of the framework-installation dynamic family.
+- `INIT-MMF-008`: The union of all framework-installation dynamic family paths (resolved from material-manifest copy-verbatim entries) and all fixed worktree file entries and other dynamic family paths (direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly) shall equal the complete closed output inventory. Every output path shall have exactly one producer, and no material manifest entry shall produce a path that matches a fixed worktree file entry or another dynamic family path.
 
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.initializer-output-inventory-v1`
 - `product.material-classification`
 
 ## References

@@ -163,6 +163,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - `INIT-LCS-006`: Predecessor stage identifiers declared for a stage shall refer only to other stages defined in this vocabulary, and the predecessor relation shall not form a cycle.
 - `INIT-LCS-007`: No stage may declare success or completed status before promotion has committed; success-finalization shall be the only stage that reports workflow success, and it must follow promotion.
 - `INIT-LCS-008`: Failure finalization is available from any failed pre-promotion stage and records the failure in the execution report and staging-state record without authorizing arbitrary resume.
+- `INIT-LCS-009`: Promotion shall not occur unless the validation report's overall_status is pass. The repository-validation stage must execute all required checks and produce a validation report before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate.
 
 ## Dependencies
 

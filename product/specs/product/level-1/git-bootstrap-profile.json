@@ -35,6 +35,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
     }
   ],
   "references": [

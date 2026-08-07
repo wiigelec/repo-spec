@@ -33,11 +33,11 @@
     },
     {
       "id": "INIT-PRO-003",
-      "text": "The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier`, `source_repository`, and `source_revision` as strings, `initialization_timestamp` as a string, and `request_identifier` as a string."
+      "text": "The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier` and `source_repository` as strings, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `initialization_timestamp` as a string, and `request_identifier` as a string."
     },
     {
       "id": "INIT-PRO-004",
-      "text": "The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the canonical Git object identity object_id as defined by product.git-object-identity."
+      "text": "The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the full canonical Git object identity representation as defined by product.git-object-identity."
     },
     {
       "id": "INIT-PRO-005",

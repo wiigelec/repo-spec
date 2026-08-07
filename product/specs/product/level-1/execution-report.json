@@ -59,11 +59,18 @@
     {
       "id": "INIT-RPT-009",
       "text": "The execution report format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject reports declaring any other version and shall not merge unknown or extra fields silently."
+    },
+    {
+      "id": "INIT-RPT-010",
+      "text": "When repository-validation produces a validation report with overall_status fail, the execution report shall record the repository-validation stage status as failed, record the validation report path in the errors array, and the workflow shall not proceed to promotion."
     }
   ],
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     },
     {
       "spec_id": "product.lifecycle-stages"

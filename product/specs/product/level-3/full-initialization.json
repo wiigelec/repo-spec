@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-FIN-002",
-      "text": "The workflow shall execute the canonical lifecycle stages in order: request-intake (validate and normalize the JSON request), source-resolution (resolve the exact local source revision), destination-preflight (preflight the destination for absent-only), staging-establishment (create transaction root with transaction/ and repository/), framework-installation (install framework material into repository/), direction-evidence-installation (copy direction material into repository/ as source evidence), workspace-seeding (generate candidate document skeletons from fixed templates, activate empty product-specification workspace), provenance-recording (assemble immutable origin provenance into repository/), handoff-assembly (assemble handoff manifest into repository/), git-initialization (establish deterministic Git repository inside repository/), repository-validation (validate repository/ content and Git state, write validation report to transaction/), promotion (atomically rename repository/ to the confirmed-absent destination, recording outcome as not-promoted, promoted, or indeterminate), and success-finalization (confirm promotion committed, record success outcome, remove the remaining staging transaction root, and prepare caller return value)."
+      "text": "The workflow shall execute the canonical lifecycle stages in order: request-intake (validate and normalize the JSON request), source-resolution (resolve the exact local source revision), destination-preflight (preflight the destination for absent-only), staging-establishment (create transaction root with transaction/ and repository/), framework-installation (install framework material into repository/), direction-evidence-installation (copy direction material into repository/ as source evidence), workspace-seeding (generate candidate document skeletons from fixed templates, activate empty product-specification workspace), provenance-recording (assemble immutable origin provenance into repository/), handoff-assembly (assemble handoff manifest into repository/), git-initialization (establish deterministic Git repository inside repository/), repository-validation (validate repository/ content and Git state against the validation profile, write validation report with overall_status to transaction/), promotion (atomically rename repository/ to the confirmed-absent destination only when validation report overall_status is pass, recording outcome as not-promoted, promoted, or indeterminate), and success-finalization (confirm promotion committed, record success outcome, remove the remaining staging transaction root, and prepare caller return value)."
     },
     {
       "id": "INIT-FIN-003",
@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-FIN-007",
-      "text": "The promoted repository shall conform to the generated-repository layout contract and the output inventory (product.initializer-output-inventory-v1), and shall contain only paths declared by the inventory with each path matching its declared producer, operation, type, mode, and governing specification. The repository shall contain installed reusable framework material, product-identified direction material preserved as source evidence, an activated but empty product-specification workspace, a provenance record, a handoff manifest, and the validated deterministic local Git state. Only the repository/ directory inside the staging transaction root shall become the destination; the transaction/ directory and all contents (staging-state, execution-report, validation-report) shall be discarded during success-finalization after promotion commits, in the order: confirm promotion committed, record success, then remove the staging transaction root."
+      "text": "The promoted repository shall conform to the generated-repository layout contract and the output inventory (product.initializer-output-inventory-v1). Every worktree path must be a fixed worktree file, a resolved dynamic family path, or a required directory; no prohibited path may appear. The repository shall contain installed reusable framework material (from the material-manifest dynamic family), product-identified direction material preserved as source evidence (from the direction-evidence dynamic family), an activated but empty product-specification workspace (from workspace-seeding fixed files and directories), a provenance record, a handoff manifest, and the validated deterministic local Git state whose administrative state (.git/) is governed separately by product.local-git-repository and product.git-bootstrap-profile. Only the repository/ directory inside the staging transaction root shall become the destination; the transaction/ directory and all contents (staging-state, execution-report, validation-report) shall be discarded during success-finalization after promotion commits, in the order: confirm promotion committed, record success, then remove the staging transaction root."
     }
   ],
   "dependencies": [
@@ -97,6 +97,9 @@
     },
     {
       "spec_id": "product.generated-repository"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     },
     {
       "spec_id": "product.lifecycle-stages"

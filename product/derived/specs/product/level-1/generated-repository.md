@@ -40,7 +40,7 @@ Defines the complete output tree of the initialized repository: every required p
 ## Normative requirements
 
 - `INIT-GRL-001`: The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as framework-support material selected by the material manifest with operation copy-verbatim from the source commit tree.
-- `INIT-GRL-002`: The initialized repository shall contain the paths under repo/ as declared by the material manifest: framework-authoritative entries at repo/specs/repo/ and repo/schemas/, framework-support entries at repo/scripts/, derived entries at repo/derived/, and repo/profiles/ entries shall be excluded when no platform profile is selected, with each path produced by its declared operation from the source commit tree.
+- `INIT-GRL-002`: The initialized repository shall contain the paths under repo/ as declared by the material manifest (framework-inventory.json) with operation copy-verbatim, each produced individually from its source entry in the source commit tree. No broad directory copy is permitted; every repo/ path shall have exactly one material-manifest entry and one corresponding inventory entry in the framework-installation dynamic family.
 - `INIT-GRL-003`: The initialized repository shall contain product/scripts/initializer/ and product/scripts/repo-spec-init as framework-support entries declared by the material manifest with operation copy-verbatim from the source commit tree.
 - `INIT-GRL-004`: The initialized repository shall contain a generated product manifest at product/specs/product/manifest.json with status candidate, an empty product_specifications array, and dependencies on repo.manifest and repo.product-manifest.
 - `INIT-GRL-005`: The initialized repository shall contain empty level root directories product/specs/product/level-0/, product/specs/product/level-1/, product/specs/product/level-2/, and product/specs/product/level-3/.
@@ -57,15 +57,16 @@ Defines the complete output tree of the initialized repository: every required p
 - `INIT-GRL-016`: Every generated controlling document and chunk shall have lifecycle_status candidate; no generated document shall claim accepted, superseded, or retired status.
 - `INIT-GRL-017`: The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, and product/tests/ from the source repository shall be excluded from the initialized repository as declared by the material manifest with operation excluded or absent from the manifest entirely.
 - `INIT-GRL-018`: The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output as declared by the material manifest with operation instantiate-template or generate-record.
-- `INIT-GRL-019`: Profile-specific paths (repo/profiles/ and .github/) shall be excluded from the initialized repository unless the execution profile selects a platform profile for installation.
+- `INIT-GRL-019`: Profile-specific paths (repo/profiles/ and .github/) are not part of the Version 1 bounded local output inventory and shall not appear in the initialized repository.
 - `INIT-GRL-020`: The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts.
 - `INIT-GRL-021`: The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action.
-- `INIT-GRL-022`: All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record.
-- `INIT-GRL-023`: The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every path in the inventory with required true shall be present, every present path shall match its inventory entry's type and mode, and no prohibited_path shall appear.
+- `INIT-GRL-022`: All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record. Git administrative state (.git/) is governed separately by product.local-git-repository and product.git-bootstrap-profile and is not part of the worktree inventory.
+- `INIT-GRL-023`: The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every dynamic family path shall be present per its expansion rule, every required directory shall be present, no prohibited_path shall appear, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile.
 
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.initializer-output-inventory-v1`
 - `product.product-identity`
 - `product.material-classification`
 

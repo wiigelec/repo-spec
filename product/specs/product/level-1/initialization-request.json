@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-REQ-006",
-      "text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as a non-empty string that is the canonical Git object identity object_id as defined by product.git-object-identity, and shall be rejected when any other source field is present."
+      "text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity with object_format \"sha1\", and shall be rejected when any other source field is present."
     },
     {
       "id": "INIT-REQ-007",
@@ -49,7 +49,7 @@
     },
     {
       "id": "INIT-REQ-016",
-      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently, and positional semantics for the ordered list (including the mapping of 0-based array indices to projection destinations) are defined by the foundation-seeding contract."
+      "text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently. Each direction_material entry is assigned a positional 0-based array index, and evidence paths follow the pattern product/docs/direction/evidence/{index:03d}-{basename} as defined by the output inventory (product.initializer-output-inventory-v1)."
     },
     {
       "id": "INIT-REQ-009",
@@ -79,6 +79,9 @@
   "dependencies": [
     {
       "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
     },
     {
       "spec_id": "product.product-identity"

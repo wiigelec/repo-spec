@@ -60,10 +60,12 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 - `INIT-RPT-007`: An execution report shall reject unknown fields and shall treat every field of this specification as required with no optional fields.
 - `INIT-RPT-008`: The execution report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys and stages for each stage entry), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-RPT-009`: The execution report format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
+- `INIT-RPT-010`: When repository-validation produces a validation report with overall_status fail, the execution report shall record the repository-validation stage status as failed, record the validation report path in the errors array, and the workflow shall not proceed to promotion.
 
 ## Dependencies
 
 - `product.initializer-level-0`
+- `product.git-object-identity`
 - `product.lifecycle-stages`
 
 ## References

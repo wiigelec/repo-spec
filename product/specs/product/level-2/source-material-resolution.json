@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "INIT-SMR-001",
-      "text": "The local source material component shall verify that the explicit revision resolves to a commit object in the supplied local source Git repository using `git rev-parse --verify <revision>^{commit}`; the revision shall conform to the canonical Git object identity representation defined by product.git-object-identity, and abbreviated object IDs, named references, and object-format mismatches shall be rejected."
+      "text": "The local source material component shall verify that the explicit revision resolves to a commit object in the supplied local source Git repository using `git rev-parse --verify <revision>^{commit}`; the revision shall conform to the canonical Git object identity representation defined by product.git-object-identity with object_format \"sha1\", and abbreviated object IDs, named references, and unsupported object formats shall be rejected."
     },
     {
       "id": "INIT-SMR-002",
