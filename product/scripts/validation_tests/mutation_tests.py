@@ -19,10 +19,14 @@ from .test_product_projection_freshness import (
 )
 from .test_product_projection_rendering import run_product_projection_rendering_tests
 from .test_product_validation import run_product_validation_tests
+from .test_product_validation_ownership import (
+    run_product_validation_ownership_tests,
+)
 
 
 def run_product_mutation_tests(repo_root: Path) -> None:
     check_product_validate_cli_contract(repo_root)
+    run_product_validation_ownership_tests(repo_root)
     run_product_dependency_direction_tests(repo_root)
     run_product_acyclicity_tests(repo_root)
     run_product_level_schema_tests(repo_root)
