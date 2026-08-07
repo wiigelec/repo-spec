@@ -24,7 +24,4 @@ jobs:
           python-version: "3.10"
 
       - name: Run validation
-        run: repo/scripts/validate
-
-      - name: Run mutation tests
-        run: repo/scripts/validate --mutation-tests
+        run: scripts/validate

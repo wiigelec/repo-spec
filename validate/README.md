@@ -1,9 +1,11 @@
 Validation guidance lives in `repo/specs/repo/validation.json` and `repo/derived/specs/repo/validation.md`.
 
-The only enforcement entry point is `repo/scripts/validate`.
+The repository leaf entry point is `repo/scripts/validate`.
+
+The product leaf entry point is `product/scripts/validate`.
+
+The aggregate enforcement entry point is `scripts/validate`; it runs both leaf validators plus repository- and product-owned validation self-tests.
 
 Deterministic Markdown generation lives in `repo/scripts/generate-docs`.
 
-Validation is closed to the seven checks defined in the validation spec.
-
-`repo/scripts/validate --mutation-tests` runs the schema mutation checks for the supported repository JSON Schema subset.
+Validation ownership and checks are defined by the validation spec.
