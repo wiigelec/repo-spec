@@ -41,7 +41,7 @@
     },
     {
       "id": "INIT-STA-008",
-      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation, including report finalization, has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the finalized validation report."
+      "text": "The `git_created` field shall be `true` when local Git initialization has completed inside `repository/`; `validation_completed` shall be `true` when repository validation, including report finalization, has finished regardless of pass or fail outcome; when validation has completed, the `validation_overall_status` field shall record the overall_status value (pass or fail) from the finalized validation report. During report finalization, the staging-state `validation_completed` and `validation_overall_status` fields shall agree with the completed validation result. The staging-state record and the validation report shall share matching `request_fingerprint` and `repository_content_digest` values."
     },
     {
       "id": "INIT-STA-009",
@@ -92,6 +92,9 @@
     },
     {
       "spec_id": "product.git-object-identity"
+    },
+    {
+      "spec_id": "product.validation-report"
     }
   ],
   "references": [

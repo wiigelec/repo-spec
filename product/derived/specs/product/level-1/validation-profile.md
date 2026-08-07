@@ -260,15 +260,6 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `remote-count-mismatch`
 - Order: `200`
 - Pass Condition: `The repository has zero configured Git remotes.`
-- Applies To: `repository-worktree`
-- Check Id: `transaction.staging-state-valid`
-- Classification: `required`
-- Failure Codes:
-  - `schema-mismatch`
-  - `missing-field`
-  - `fingerprint-mismatch`
-- Order: `85`
-- Pass Condition: `The staging-state record at transaction/staging-state.json validates against its governing schema, has correct required fields, and its request_fingerprint matches the canonical initialization request fingerprint.`
 
 ## Primitives
 
@@ -285,9 +276,9 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - `INIT-VP-002`: A required check that produces a status of failed or error shall cause overall validation to fail and shall block promotion.
 - `INIT-VP-003`: An advisory check that produces a status of failed or error shall be recorded in the validation report but shall not cause overall validation to fail or block promotion.
 - `INIT-VP-004`: The validation profile shall be versioned via profile_version. Successor versions may add new checks at new order numbers without renumbering existing checks. No check_id shall be removed from a published profile version; a check may be deprecated but shall remain defined.
-- `INIT-VP-005`: Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, or git-state. Checks are executed in two phases: Phase 1 (input and source, orders 10-70) and Phase 2 (staged repository and Git state, orders 80-200). Each phase executes checks in ascending order number within that phase.
-- `INIT-VP-006`: After all Phase 1 and Phase 2 checks are complete, report finalization shall assemble every check result, verify the request_fingerprint linkage between the validation report and the staging-state record, verify the repository_content_digest linkage, verify check ordering and uniqueness, calculate overall_status (pass when every required Phase 1 and Phase 2 check has status passed, otherwise fail), validate the completed report schema, and serialize the final report deterministically. These postconditions are not ordinary profile checks; they are validation-component invariants enforced during report finalization before promotion.
-- `INIT-VP-007`: Promotion is permitted only when a finalized report exists, the report validates against its schema, every required Phase 1 and Phase 2 check has status passed, and overall_status is pass. Report finalization failure (schema validation failure, serialization failure, or linkage mismatch) shall prevent promotion and shall be recorded as a pre-promotion failure with the staging transaction root preserved for diagnostics.
+- `INIT-VP-005`: Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, or git-state. Checks are executed in two phases: Phase 1 (input and source, orders 10-70) and Phase 2 (staged repository and Git state, orders 80-200). Each phase executes checks in ascending order number within that phase. No ordinary check may read or validate content under transaction/; staging-state validation is not an ordinary profile check.
+- `INIT-VP-006`: After all Phase 1 and Phase 2 checks are complete, report finalization shall: (a) validate the staging-state record at transaction/staging-state.json against the product.staging-state schema, verifying its request_fingerprint matches the canonical request fingerprint, its repository_content_digest matches the expected digest from the output.repository-digest-match check, and its validation_completed and validation_overall_status agree with the completed validation result; (b) assemble every check result; (c) verify the request_fingerprint linkage between the validation report and the staging-state record; (d) verify the repository_content_digest linkage; (e) verify check ordering and uniqueness; (f) calculate overall_status (pass when every required Phase 1 and Phase 2 check has status passed, otherwise fail); (g) validate the completed report schema; and (h) serialize the final report deterministically. These postconditions are not ordinary profile checks; they are validation-component invariants enforced during report finalization before promotion. Staging-state validation failure during report finalization shall prevent promotion.
+- `INIT-VP-007`: Promotion is permitted only when a finalized report exists, the report validates against its schema, every required Phase 1 and Phase 2 check has status passed, and overall_status is pass. Report finalization failure (staging-state schema validation failure, fingerprint mismatch, digest mismatch, validation-status mismatch, report schema validation failure, serialization failure, or linkage mismatch) shall prevent promotion and shall be recorded as a pre-promotion failure with the staging transaction root preserved for diagnostics.
 
 ## Dependencies
 
