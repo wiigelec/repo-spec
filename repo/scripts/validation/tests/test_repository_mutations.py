@@ -18,6 +18,7 @@ def run_repository_mutations(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
     labels = [label for label, _check in REPOSITORY_LEAF_VALIDATION_PHASES]
     expected_labels = [
+        "repository root boundary",
         "repository JSON Schema conformance",
         "manifest completeness",
         "unique specification IDs",
@@ -36,6 +37,20 @@ def run_repository_mutations(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
         clone_index = 0
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        validate_repo(temp_repo)
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        (temp_repo / "undeclared-root-file.txt").write_text("mutation\\n")
+        expect_failure("undeclared root file", lambda: validate_repo(temp_repo), "repository root boundary failed: undeclared top-level entries: undeclared-root-file.txt")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        (temp_repo / "undeclared-root-directory").mkdir()
+        expect_failure("undeclared root directory", lambda: validate_repo(temp_repo), "repository root boundary failed: undeclared top-level entries: undeclared-root-directory")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

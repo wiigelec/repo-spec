@@ -58,6 +58,7 @@ Defines ownership, scope, and aggregate orchestration for repository and product
 - `REPO-VAL-036`: The applicable leaf validation entry point shall reject an implementation governing issue that creates or modifies maintained product artifacts when the issue does not cite the accepted implementation plan, applicable accepted product specifications, the exact accepted default-branch base, and predecessor implementation evidence, where those fields are machine-checkable.
 - `REPO-VAL-037`: Each leaf validation entry point shall enforce that no validation rule within its owned validation domain treats generated Markdown as authoritative over source specifications. Generated artifacts remain subordinate to their declared source artifacts.
 - `REPO-VAL-038`: The product leaf validation entry point shall enforce that a higher-Level product specification may depend directly on an accepted lower-Level specification without requiring intermediate-Level specifications, consistent with repo.product-levels.
+- `REPO-VAL-039`: The repository leaf validation entry point shall enforce the approved repository-root boundary declared by accepted repository structure and related accepted repository-local contracts, shall allow the governed `user/` convenience namespace, and shall reject undeclared top-level files or directories.
 
 ## Dependencies
 

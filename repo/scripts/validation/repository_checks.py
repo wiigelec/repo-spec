@@ -113,6 +113,29 @@ DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
+APPROVED_REPOSITORY_ROOT_ENTRIES = {
+    '.github',
+    '.gitignore',
+    'AGENTS.md',
+    'LICENSE',
+    'README.md',
+    'docs',
+    'product',
+    'reference',
+    'repo',
+    'scripts',
+    'user',
+    'validate',
+}
+IGNORED_REPOSITORY_ROOT_ENTRIES = {".git", ".pytest_cache"}
+
+
+def check_repository_root_boundary(context: ValidationContext) -> None:
+    actual = {path.name for path in context.repo_root.iterdir() if path.name not in IGNORED_REPOSITORY_ROOT_ENTRIES}
+    unexpected = sorted(actual - APPROVED_REPOSITORY_ROOT_ENTRIES)
+    expect(not unexpected, "repository root boundary failed: undeclared top-level entries: " + ", ".join(unexpected))
+
+
 
 def markdown_headings(text: str) -> set[str]:
     headings: set[str] = set()
@@ -1133,6 +1156,7 @@ def _check_repository_generated_freshness(
 
 
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("repository root boundary", check_repository_root_boundary),
     ("repository JSON Schema conformance", check_schema_conformance),
     ("manifest completeness", check_manifest_phase),
     ("unique specification IDs", check_unique_spec_ids_phase),
