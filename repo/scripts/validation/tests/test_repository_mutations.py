@@ -54,6 +54,29 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        (temp_repo / "README.md").unlink()
+        expect_failure("missing required root", lambda: validate_repo(temp_repo), "repository root boundary failed: missing required top-level entries: README.md")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        (temp_repo / "README.md").unlink()
+        (temp_repo / "README.md").mkdir()
+        expect_failure("wrong-kind required root file", lambda: validate_repo(temp_repo), "repository root boundary failed: wrong-kind top-level entries: README.md (expected file)")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        import shutil
+        shutil.rmtree(temp_repo / "user")
+        (temp_repo / "user").write_text("mutation\\n")
+        expect_failure("wrong-kind required root directory", lambda: validate_repo(temp_repo), "repository root boundary failed: wrong-kind top-level entries: user (expected directory)")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        (temp_repo / ".pytest_cache").mkdir()
+        expect_failure("pytest cache at repository root", lambda: validate_repo(temp_repo), "repository root boundary failed: undeclared top-level entries: .pytest_cache")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         mutate_json(
             temp_repo / "docs/development-document-compatibility.json",
             lambda registry: registry["entries"].__delitem__(0) or registry,
