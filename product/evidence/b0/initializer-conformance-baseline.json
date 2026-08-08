@@ -5,7 +5,7 @@
   "product_id": "repo-spec initializer",
   "governing_issue": "#269",
   "accepted_base": "8807abc9cdb25995f9c00c8654c9e1dae4dd44bf",
-  "status": "classifications-reaudited",
+  "status": "b0-repair-reconciled",
   "schema_version": "1",
   "classification_vocabulary": [
     "preserve",
@@ -10945,9 +10945,9 @@
     }
   ],
   "b0_to_i1_gate": {
-    "evaluated": false,
-    "satisfied": false,
-    "reason": "Patch 2 completed classification re-audit using concrete source/test bodies or explicit absence evidence. Patch 3 must reconcile counts, blockers, I1 subset, and evaluate the B0->I1 gate."
+    "evaluated": true,
+    "satisfied": true,
+    "reason": "Repaired B0 evidence reconciles 34 accepted specifications and 291 unique composite keys with requirement-specific path/line/symbol source or test citations and explicit absence evidence where positive evidence is absent. All 60 I1-owned keys are represented and explicitly gate-quality reviewed; issues #255/#257 affected provenance/handoff domains were reviewed against current accepted text; no material authority or semantic blocker is recorded. I1 is not yet authorized: issue #271 must merge, post-merge validation must succeed, and a fresh post-merge B0->I1 gate audit must pass before creating I1."
   },
   "completion_summary": {
     "accepted_specifications": 34,
@@ -11008,5 +11008,41 @@
     "i1_owned_keys_explicitly_reviewed": 60,
     "issues_255_257_current_text_reviewed": true,
     "rule": "Concrete source behavior supports repair, not preserve, unless full accepted behavior plus protecting verification is established. Explicit maintained-source absence supports implement. No evidence in this B0 audit supports replace."
+  },
+  "repair_completion_summary": {
+    "issue": 271,
+    "accepted_specifications": 34,
+    "composite_keys": 291,
+    "unique_composite_keys": 291,
+    "omitted_keys": 0,
+    "duplicate_keys": 0,
+    "classification_counts": {
+      "preserve": 0,
+      "repair": 213,
+      "replace": 0,
+      "implement": 78
+    },
+    "classification_total": 291,
+    "blocker_count": 0,
+    "blocker_keys": [],
+    "requirement_specific_positive_citations_verified": true,
+    "explicit_absence_citations_verified": true,
+    "issues_255_257_current_text_reviewed": true,
+    "i1_subset": {
+      "owned_composite_keys": 60,
+      "represented_composite_keys": 60,
+      "omitted_keys": 0,
+      "duplicate_keys": 0,
+      "classification_counts": {
+        "preserve": 0,
+        "repair": 60,
+        "replace": 0,
+        "implement": 0
+      },
+      "classification_total": 60,
+      "blocker_count": 0,
+      "blocker_keys": [],
+      "all_keys_gate_quality_reviewed": true
+    }
   }
 }
