@@ -25,7 +25,7 @@
     },
     {
       "id": "INIT-STA-004",
-      "text": "The `request_fingerprint` field shall be a deterministic hash (SHA-256 hex digest) of the canonical JSON representation of the validated initialization request; `source_revision` shall be the full canonical Git object identity representation as defined by product.git-object-identity for the source revision; `source_repository` shall be the resolved local source repository path."
+      "text": "The `request_fingerprint` field shall be the exactly 64-character lowercase hexadecimal SHA-256 value computed once by request intake from the canonical initialization request byte sequence defined by product.initialization-request::INIT-REQ-012. The staging-state producer shall copy that value from the validated request model unchanged and shall not reserialize the request, recompute the digest, or derive the fingerprint from any downstream record. `source_revision` shall be the full canonical Git object identity representation as defined by product.git-object-identity for the source revision; `source_repository` shall be the same resolved local source repository path that participates in the canonical request representation."
     },
     {
       "id": "INIT-STA-005",
@@ -95,6 +95,9 @@
       "spec_id": "product.git-object-identity"
     },
     {
+      "spec_id": "product.initialization-request"
+    },
+    {
       "spec_id": "product.validation-report"
     }
   ],
@@ -106,6 +109,10 @@
     {
       "type": "artifact",
       "path": "product/specs/product/level-1/lifecycle-stages.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
     },
     {
       "type": "artifact",

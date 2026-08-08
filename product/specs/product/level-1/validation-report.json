@@ -59,11 +59,11 @@
     },
     {
       "id": "INIT-VR-008",
-      "text": "The validation report shall define the following top-level fields: schema_version (constant string \"1\"), report_version (constant string \"1\"), profile_version (string matching the validation profile version used), request_fingerprint (SHA-256 hex digest of the canonical initialization request JSON), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects)."
+      "text": "The validation report shall define the following top-level fields: schema_version (constant string \"1\"), report_version (constant string \"1\"), profile_version (string matching the validation profile version used), request_fingerprint (the exactly 64-character lowercase hexadecimal SHA-256 value computed once by request intake from the canonical initialization request byte sequence defined by product.initialization-request::INIT-REQ-012), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects)."
     },
     {
       "id": "INIT-VR-009",
-      "text": "The request_fingerprint field shall link the validation report to the specific initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority."
+      "text": "The request_fingerprint field shall link the validation report to the specific validated initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority. The report shall copy the request fingerprint carried by the validated request model unchanged and shall not reserialize the request, recompute the digest, or derive the fingerprint from a staging-state, execution-report, provenance, or validation-report representation."
     },
     {
       "id": "INIT-VR-010",
@@ -102,6 +102,9 @@
       "spec_id": "product.git-object-identity"
     },
     {
+      "spec_id": "product.initialization-request"
+    },
+    {
       "spec_id": "product.validation-profile"
     }
   ],
@@ -113,6 +116,10 @@
     {
       "type": "artifact",
       "path": "product/specs/product/level-1/git-object-identity.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
     },
     {
       "type": "artifact",
