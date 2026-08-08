@@ -96,3 +96,182 @@ def canonical_outcome_inputs_equivalent(
         and canonical_direction_material(left.request)
         == canonical_direction_material(right.request)
     )
+
+
+CANONICAL_STANDARD_STAGES = (
+    "request-intake",
+    "source-resolution",
+    "destination-preflight",
+    "staging-establishment",
+    "framework-installation",
+    "direction-evidence-installation",
+    "workspace-seeding",
+    "provenance-recording",
+    "handoff-assembly",
+    "git-initialization",
+    "repository-validation",
+    "promotion",
+    "success-finalization",
+)
+
+PROMOTION_STAGE = "promotion"
+SUCCESS_FINALIZATION_STAGE = "success-finalization"
+
+TERMINAL_PRE_PROMOTION_FAILURE = "pre-promotion-failure"
+TERMINAL_PROMOTED_SUCCESS = "promoted-success"
+TERMINAL_INDETERMINATE_PROMOTION = "indeterminate-promotion"
+TERMINAL_PROMOTED_WITH_FINALIZATION_ERROR = "promoted-with-finalization-error"
+
+STAGE_COMPLETED = "completed"
+PROMOTION_PROMOTED = "promoted"
+PROMOTION_INDETERMINATE = "indeterminate"
+FINALIZATION_CLEANUP_FAILURE = "cleanup-failure"
+
+
+@dataclass(frozen=True)
+class StageStep:
+    stage_id: str
+    action: Any
+    precondition: Any = None
+
+
+@dataclass(frozen=True)
+class LifecycleResult:
+    terminal_result: str
+    completed_stages: tuple[str, ...]
+    failed_stage: str | None
+    promotion_outcome: str
+    diagnostic: str | None
+
+    @property
+    def succeeded(self) -> bool:
+        return self.terminal_result == TERMINAL_PROMOTED_SUCCESS
+
+
+def canonical_standard_stage_ids() -> tuple[str, ...]:
+    return CANONICAL_STANDARD_STAGES
+
+
+def _validate_standard_steps(steps: tuple[StageStep, ...]) -> None:
+    ids = tuple(step.stage_id for step in steps)
+    if ids != CANONICAL_STANDARD_STAGES:
+        raise OrchestrationError(
+            "invalid-stage-sequence",
+            "standard workflow must contain all 13 required canonical stages in exact order",
+        )
+    if len(set(ids)) != len(ids):
+        raise OrchestrationError(
+            "invalid-stage-sequence",
+            "standard workflow stage identifiers must be unique",
+        )
+
+
+def execute_standard_lifecycle(steps: tuple[StageStep, ...]) -> LifecycleResult:
+    _validate_standard_steps(steps)
+
+    completed: list[str] = []
+    promotion_outcome = "not-promoted"
+
+    for step in steps:
+        if step.precondition is not None and not bool(step.precondition(tuple(completed))):
+            return LifecycleResult(
+                terminal_result=TERMINAL_PRE_PROMOTION_FAILURE,
+                completed_stages=tuple(completed),
+                failed_stage=step.stage_id,
+                promotion_outcome=promotion_outcome,
+                diagnostic="stage precondition failed",
+            )
+
+        try:
+            outcome = step.action()
+        except Exception as exc:
+            if step.stage_id == PROMOTION_STAGE:
+                return LifecycleResult(
+                    terminal_result=TERMINAL_INDETERMINATE_PROMOTION,
+                    completed_stages=tuple(completed),
+                    failed_stage=PROMOTION_STAGE,
+                    promotion_outcome=PROMOTION_INDETERMINATE,
+                    diagnostic=str(exc),
+                )
+            if step.stage_id == SUCCESS_FINALIZATION_STAGE:
+                return LifecycleResult(
+                    terminal_result=TERMINAL_PROMOTED_WITH_FINALIZATION_ERROR,
+                    completed_stages=tuple(completed),
+                    failed_stage=SUCCESS_FINALIZATION_STAGE,
+                    promotion_outcome=PROMOTION_PROMOTED,
+                    diagnostic=str(exc),
+                )
+            return LifecycleResult(
+                terminal_result=TERMINAL_PRE_PROMOTION_FAILURE,
+                completed_stages=tuple(completed),
+                failed_stage=step.stage_id,
+                promotion_outcome=promotion_outcome,
+                diagnostic=str(exc),
+            )
+
+        if step.stage_id == PROMOTION_STAGE:
+            if outcome == PROMOTION_INDETERMINATE:
+                return LifecycleResult(
+                    terminal_result=TERMINAL_INDETERMINATE_PROMOTION,
+                    completed_stages=tuple(completed),
+                    failed_stage=PROMOTION_STAGE,
+                    promotion_outcome=PROMOTION_INDETERMINATE,
+                    diagnostic="promotion outcome is indeterminate",
+                )
+            if outcome != PROMOTION_PROMOTED:
+                return LifecycleResult(
+                    terminal_result=TERMINAL_PRE_PROMOTION_FAILURE,
+                    completed_stages=tuple(completed),
+                    failed_stage=PROMOTION_STAGE,
+                    promotion_outcome="not-promoted",
+                    diagnostic="promotion did not commit",
+                )
+            promotion_outcome = PROMOTION_PROMOTED
+            completed.append(step.stage_id)
+            continue
+
+        if step.stage_id == SUCCESS_FINALIZATION_STAGE:
+            if promotion_outcome != PROMOTION_PROMOTED:
+                raise OrchestrationError(
+                    "invalid-terminal-transition",
+                    "success-finalization cannot execute before committed promotion",
+                )
+            if outcome == FINALIZATION_CLEANUP_FAILURE:
+                return LifecycleResult(
+                    terminal_result=TERMINAL_PROMOTED_WITH_FINALIZATION_ERROR,
+                    completed_stages=tuple(completed),
+                    failed_stage=SUCCESS_FINALIZATION_STAGE,
+                    promotion_outcome=PROMOTION_PROMOTED,
+                    diagnostic="post-promotion cleanup failed",
+                )
+            if outcome != STAGE_COMPLETED:
+                return LifecycleResult(
+                    terminal_result=TERMINAL_PROMOTED_WITH_FINALIZATION_ERROR,
+                    completed_stages=tuple(completed),
+                    failed_stage=SUCCESS_FINALIZATION_STAGE,
+                    promotion_outcome=PROMOTION_PROMOTED,
+                    diagnostic="success-finalization did not complete",
+                )
+            completed.append(step.stage_id)
+            return LifecycleResult(
+                terminal_result=TERMINAL_PROMOTED_SUCCESS,
+                completed_stages=tuple(completed),
+                failed_stage=None,
+                promotion_outcome=PROMOTION_PROMOTED,
+                diagnostic=None,
+            )
+
+        if outcome != STAGE_COMPLETED:
+            return LifecycleResult(
+                terminal_result=TERMINAL_PRE_PROMOTION_FAILURE,
+                completed_stages=tuple(completed),
+                failed_stage=step.stage_id,
+                promotion_outcome=promotion_outcome,
+                diagnostic=f"stage returned non-completed outcome: {outcome!r}",
+            )
+        completed.append(step.stage_id)
+
+    raise OrchestrationError(
+        "invalid-terminal-transition",
+        "canonical workflow exhausted without success-finalization result",
+    )
