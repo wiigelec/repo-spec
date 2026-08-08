@@ -5,7 +5,7 @@
   "product_id": "repo-spec initializer",
   "governing_issue": "#269",
   "accepted_base": "8807abc9cdb25995f9c00c8654c9e1dae4dd44bf",
-  "status": "classified",
+  "status": "b0-reconciled",
   "schema_version": "1",
   "classification_vocabulary": [
     "preserve",
@@ -7387,6 +7387,37 @@
   "b0_to_i1_gate": {
     "evaluated": true,
     "satisfied": true,
-    "reason": "All 291 composite keys have exactly one supported B0 classification with requirement-specific positive or explicit absence evidence; aggregate authority counts reconcile to 34/291 and no material authority or semantic blocker was identified."
+    "reason": "B0 reconciles 34 accepted specifications and 291 unique composite keys with zero omissions and duplicates. All 60 I1-owned composite keys are represented with supported B0 classifications, and no material authority or semantic blocker is recorded. A fresh post-merge gate audit remains required before creating the I1 governing issue."
+  },
+  "completion_summary": {
+    "accepted_specifications": 34,
+    "composite_keys": 291,
+    "unique_composite_keys": 291,
+    "omitted_keys": 0,
+    "duplicate_keys": 0,
+    "classification_counts": {
+      "preserve": 0,
+      "repair": 213,
+      "replace": 0,
+      "implement": 78
+    },
+    "classification_total": 291,
+    "blocker_count": 0,
+    "blocker_keys": [],
+    "i1_subset": {
+      "owned_composite_keys": 60,
+      "represented_composite_keys": 60,
+      "omitted_keys": 0,
+      "duplicate_keys": 0,
+      "classification_counts": {
+        "preserve": 0,
+        "repair": 60,
+        "replace": 0,
+        "implement": 0
+      },
+      "classification_total": 60,
+      "blocker_count": 0,
+      "blocker_keys": []
+    }
   }
 }
