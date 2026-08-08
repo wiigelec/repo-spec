@@ -6,7 +6,7 @@
   "patches": {
     "patch_1": "7149ba84fd26485e514d103d6c64e1be9950a469",
     "patch_2": "4a5a8bb27bdb69dae473d7071465ab86e6545059",
-    "patch_3": "pending"
+    "patch_3": "84a07862ded21934ff2fa15d97a03d6af54aef56"
   },
   "owned_key_count": 46,
   "represented_i5_key_count": 46,
