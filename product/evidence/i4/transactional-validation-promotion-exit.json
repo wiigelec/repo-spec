@@ -1,0 +1,693 @@
+{
+  "schema_version": "1.0",
+  "increment": "I4",
+  "governing_issue": 283,
+  "repair_issue": 285,
+  "accepted_base": "e621c1a88b16b9dabeeb43d875c4fa9570719a09",
+  "merged_main": "116cbbb1aad3b8a4ba53300b21370edaebd0e5e3",
+  "patches": {
+    "patch_1": "99929bddfa3ef66e7edaa6666a07b2c5e1fd9713",
+    "patch_2": "7736ba9f8ab801355f3fd600df0d3e5a1ff667a6",
+    "patch_3": "2069a25db1c976d4fb76b13423d4c6b8be7d9153"
+  },
+  "owned_key_count": 65,
+  "represented_key_count": 65,
+  "b0_classification_counts": {
+    "preserve": 0,
+    "repair": 23,
+    "replace": 0,
+    "implement": 42
+  },
+  "blockers": [],
+  "successor_authorized": false,
+  "requirements": [
+    {
+      "composite_key": "product.destination::INIT-DST-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-002",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-003",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-004",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-004a",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-004b",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-005",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-006",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-007",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-008",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-009",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-010",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-011",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-012",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-002",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-003",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-004",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-005",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-007",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-008",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-009",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-010",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-011",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-012",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-013",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-007",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/destination.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py",
+        "product/scripts/initializer/tests/test_i4_promotion.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-002",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-003",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-004",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-005",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-006",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-007",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-002",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-003",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-004",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-005",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-006",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-007",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-008",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-009",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-010",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-011",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-012",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-013",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-014",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-015",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-016",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/validation.py",
+        "product/scripts/initializer/staging.py",
+        "product/scripts/initializer/tests/test_i4_repository_validation.py",
+        "product/scripts/initializer/tests/test_i4_report_finalization.py"
+      ]
+    }
+  ]
+}
