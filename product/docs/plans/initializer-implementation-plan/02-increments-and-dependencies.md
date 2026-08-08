@@ -4,7 +4,7 @@ Status: accepted; planning-authoritative; non-normative with respect to product 
 
 ## Authority boundary
 
-Non-normative with respect to product semantics. Sequences governed conformance and implementation work from Patch 1's composite key ownership and does not reinterpret requirements. Issue #261 accepted this plan; execution remains subject to the B0→I1→I2→I3→I4→I5 gates and separate governing issues. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; listed I1-I5 owner is sole implementation owner from Patch 1.
+Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan; execution remains subject to the B0→I1→I2→I3→I4→I5 gates and separate governing issues. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
 
 ## Bounded implementation DAG
 
@@ -16,7 +16,7 @@ Edges: B0→I1 (keyed evidence bounds all work), I1→I2 (validated request/reso
 
 Purpose: requirement-by-requirement evidence baseline across all 291 composite keys before maintained artifact changes. Outcome: one supported classification per key plus explicit blocked finding.
 
-Controlling requirements: all 34 accepted specs and all 291 composite keys from Patch 1. Sole planning owner of `product.initializer-level-0::INIT-L0-007`. Entry: current accepted initial-bounded-workflow specifications are accepted and traceable under the governing plan revision. Exit: machine-reviewable matrix with one classification per key (preserve/repair/replace/implement), cited evidence, and aggregate counts reconciled to 34/291. Exclusions: no implementation/test/schema/spec mutation, no inferred conformance, and no reinterpretation of accepted product semantics.
+Controlling requirements: all 34 accepted specs and all 291 composite keys from the accepted requirement-to-responsibility map. Sole planning owner of `product.initializer-level-0::INIT-L0-007`. Entry: current accepted initial-bounded-workflow specifications are accepted and traceable under the governing plan revision. Exit: machine-reviewable matrix with one classification per key (preserve/repair/replace/implement), cited evidence, and aggregate counts reconciled to 34/291. Exclusions: no implementation/test/schema/spec mutation, no inferred conformance, and no reinterpretation of accepted product semantics.
 
 ## I1 - Request and preflight
 
@@ -84,7 +84,7 @@ and separate governing issues.
 ## Coverage and DAG checks
 
 - B0 covers all 34 accepted specs and 291 unique composite keys
-- Sole ownership unchanged from Patch 1: B0 owns `INIT-L0-007`; I1-I5 contain the remaining 290 keys; no key reassigned
+- Sole ownership recorded by the accepted requirement-to-responsibility map: B0 owns `INIT-L0-007`; I1-I5 contain the remaining 290 keys; no key reassigned
 - Every sole-owner set carried to consumers; repaired provenance/handoff semantics carried through I3/I4/I5 without blocker state
 - Edges: B0→I1→I2→I3→I4→I5; every edge increases rank → acyclic
 - Six candidate future-extension specs excluded: `product.platform-profile-interface`, `product.platform-profile-execution`, `product.dry-run-validation`, `product.platform-integrated-initialization`, `product.recovery-and-cleanup`, `product.resume-from-staging`
