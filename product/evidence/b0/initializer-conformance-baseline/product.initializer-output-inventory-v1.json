@@ -1,0 +1,577 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.initializer-output-inventory-v1",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.initializer-output-inventory-v1",
+    "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+    "level": 1,
+    "requirement_count": 15
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 15,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-001",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-001",
+      "requirement_text": "The output inventory shall enumerate every destination path the initializer may create in the initialized repository worktree, assigning each to exactly one producer. Git administrative state (.git/) is governed separately.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-002",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-002",
+      "requirement_text": "Fixed worktree files are individually enumerated with their producer, operation, governing spec, mode, and required status.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-003",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-003",
+      "requirement_text": "Dynamic path families define expansion rules and patterns; the resolved set of paths from each rule must not overlap with any fixed file entry, material_index entry, or another dynamic family.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-004",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-004",
+      "requirement_text": "The material_index declares every framework-installation output path with a stable material_key. Each material_key shall map to exactly one material-manifest entry (product/scripts/initializer/framework-inventory.json) that provides the source_path, source_type, and mode. The material manifest shall not independently expand or modify the set of output paths. Every material_index entry shall declare a role field that records its intentional product output role.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-005",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-005",
+      "requirement_text": "A required entry must be present in every successful initialization; no entry may be marked optional in the Version 1 bounded local workflow.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-006",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-006",
+      "requirement_text": "The inventory shall declare prohibited_paths as structured rules. An exact-path rule matches only paths equal to the declared path. A prefix rule matches any path that starts with the declared prefix. Every entry in material_index shall have a destination_path that is a regular file or a supported symlink path; directory-valued entries (mode 040000) are not permitted. No output path shall match both a material_index entry and a prohibited_path rule.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-007",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-007",
+      "requirement_text": "The six producers are: framework-installation, direction-evidence-installation, workspace-seeding, provenance-recording, handoff-assembly, and git-initialization. Only the first five produce worktree paths; git-initialization produces the Git administrative state (.git/) governed separately.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-008",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-008",
+      "requirement_text": "Dynamic path families may use template placeholders {slug} for the product identifier and {index:03d}-{basename} for evidence files; the governing specification for each producer defines the exact resolution of these placeholders.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-009",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-009",
+      "requirement_text": "Repository validation shall include checks that every path in the staged repository matches exactly one output-inventory entry (fixed worktree file, material_index entry, or resolved dynamic family path), that every material_key in the output inventory has a matching material-manifest entry, that no material_key in the material manifest is unused, that no prohibited_path appears under any matching rule, and that Git state satisfies the requirements in product.local-git-repository and product.git-bootstrap-profile.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-010",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-010",
+      "requirement_text": "Parent directories of declared files are implicit and are not separately inventoried. Level workspace directories (product/specs/product/level-0/ through level-3/) are preserved in Git via governed README.md files declared as fixed worktree files.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-011",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-011",
+      "requirement_text": "Every material_index entry shall have a unique material_key. Every material_key shall match exactly one material-manifest entry. Every material-manifest entry with operation copy-verbatim shall have a material_key that matches exactly one material_index entry. Unused material-manifest entries and orphan material_index entries shall be rejected.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-011 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-012",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-012",
+      "requirement_text": "Every material_index entry shall have a destination_path that identifies exactly one regular file or supported symlink. No material_index entry may have a destination_path that resolves to a Git tree object (directory). Parent directories of declared files are implicit filesystem containers and are not separately inventoried.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-012 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-013",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-013",
+      "requirement_text": "Every material_index entry of type copy-verbatim shall resolve via its material_key to a material-manifest entry whose source_type is blob or symlink. A material-manifest entry whose source_type is tree shall be rejected as undefined; the set of files it would contribute is unspecified and source-directory changes could silently alter the initialized product.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-013 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-014",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-014",
+      "requirement_text": "Any path that would be a descendant of a material_index entry whose source_type was tree is declared invalid. The output inventory enumerates every output path explicitly; no path may claim membership through a parent-directory tree entry.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-014 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1",
+      "spec_path": "product/specs/product/level-1/initializer-output-inventory-v1.json",
+      "level": 1,
+      "requirement_id": "INV-V1-015",
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-015",
+      "requirement_text": "Every material_index entry shall have an intentional product output role declared in its role field. The valid roles are: runtime-framework (root-level files required for every initialized repository), governing-specification (repo-level spec contracts), validation-utility (scripts that validate or verify repository state), documentation-support (scripts that generate or maintain documentation), generated-reference (derived Markdown projections of governing specs), and initializer-framework (initializer implementation modules). No material_index entry may have role development-only; such entries shall not be installed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:243-248::InventoryOutputTests.test_output_ordering_deterministic \u2014 maintained named-test/assertion body excerpt: def test_output_ordering_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") classified = validate_and_load_inventory(raw) a = inventory_to_ordered_dict(classified, None) b = inventory_to_ordered_dict(classified, None) self.assertEqual(a, b)",
+        "product/scripts/initializer/tests/test_staging.py:90-99::InstallationPlanTests.test_entries_sorted_by_path \u2014 maintained named-test/assertion body excerpt: def test_entries_sorted_by_path(self): entries = [ _make_entry(\"zzz/\", classification=\"framework-support\"), _make_entry(\"aaa/\", classification=\"framework-authoritative\"), _make_entry(\"mmm/\", classification=\"derived\"), ] ci = ClassifiedInventory(entries) plan = InstallationPlan(ci) paths = [e.path for e in plan.entries] self.assertEqual(paths, sorted(paths))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-output-inventory-v1::INV-V1-015 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,778 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.foundation-seeding",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.foundation-seeding",
+    "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+    "level": 2,
+    "requirement_count": 21
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 21,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-001",
+      "composite_key": "product.foundation-seeding::INIT-FSD-001",
+      "requirement_text": "Workspace seeding shall use the explicit product identifier and supplied product-direction material (as defined by the initialization request contract) to produce preserved direction evidence files, generated skeleton documents, and an activated but empty product-specification workspace in the repository/ directory inside the staging transaction root.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-002",
+      "composite_key": "product.foundation-seeding::INIT-FSD-002",
+      "requirement_text": "Every document produced by workspace seeding shall have lifecycle_status candidate; the component shall not invent product semantics, infer unspecified direction, supply acceptance claims, or synthesize normative requirement content.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-003",
+      "composite_key": "product.foundation-seeding::INIT-FSD-003",
+      "requirement_text": "Foundation seeding shall read each direction_material entry declared in the initialization request as byte-exact content from the local source repository at the exact source revision; the file shall be read as raw bytes without encoding conversion, line ending normalization, or other transformation, and the full byte content of each entry shall be preserved as-is regardless of content.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-004",
+      "composite_key": "product.foundation-seeding::INIT-FSD-004",
+      "requirement_text": "Each direction_material entry shall be assigned a positional index equal to its 0-based position in the direction_material array as received from request intake; the array order shall be preserved as the authoritative ordering key for all projection and naming decisions, and duplicate entries shall each receive their own distinct positional index.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-005",
+      "composite_key": "product.foundation-seeding::INIT-FSD-005",
+      "requirement_text": "Direction-material projection shall place each ingested entry as a file in the staging workspace under the deterministic path product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path; the file content shall be the verbatim ingested bytes without any front matter, encoding conversion, line ending normalization, or other content modification.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-006",
+      "composite_key": "product.foundation-seeding::INIT-FSD-006",
+      "requirement_text": "Each projected direction-material file in product/docs/direction/evidence/ shall be a byte-identical copy of its source Git blob; the file shall receive no YAML front matter, no newline normalization, and no encoding transformation. Metadata about each entry shall be recorded separately in product/docs/direction/manifest.json.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-007",
+      "composite_key": "product.foundation-seeding::INIT-FSD-007",
+      "requirement_text": "When two or more direction_material entries resolve to the same basename, the projected filenames shall remain unique because each uses a distinct index prefix; no deduplication, renaming beyond the index prefix, or content merging shall occur.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-008",
+      "composite_key": "product.foundation-seeding::INIT-FSD-008",
+      "requirement_text": "Skeleton generation shall produce exactly one overview controlling document at docs/overview/{product_id}-OVERVIEW.md, one decomposition controlling document at docs/decompositions/{product_id}-DECOMPOSITION.md, and one implementation plan controlling document at docs/plans/{product_id}-IMPLEMENTATION-PLAN.md, where {product_id} is the product identifier from the initialization request.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-009",
+      "composite_key": "product.foundation-seeding::INIT-FSD-009",
+      "requirement_text": "The overview controlling document skeleton shall contain an H1 heading with the product identifier and the suffix 'Overview', a ## Purpose section with the static text 'This overview establishes the product direction, scope, and boundaries for {product_id}. It is a candidate directional document and is not normative.', a ## Scope section with the static text 'Overview scope is determined by the accepted decomposition and governing product specifications. This document records the directional boundary for the product.', a numbered placeholder sub-section for each of the six overview chunks (identity-and-purpose, problem-and-outcome, users-principles-boundaries, capabilities-and-success, unresolved-questions, lifecycle-and-handoff) each containing the static text 'Direction material for this section is available at the positional index identified by the chunk document. Content is not synthesized by the initializer.', an ## Open Questions section with the static text 'Unresolved questions are recorded in the unresolved-questions chunk document. No questions are synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate, authority_category: directional, and overview_role: initial.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-010",
+      "composite_key": "product.foundation-seeding::INIT-FSD-010",
+      "requirement_text": "Skeleton generation shall produce exactly six overview chunk files under docs/overview/{product_id}-overview/ with the following filenames and H1 headings: chunk-01-identity-and-purpose.md ('Product Identity and Purpose'), chunk-02-problem-and-outcome.md ('Problem and Outcome'), chunk-03-users-principles-boundaries.md ('Users, Principles, and Boundaries'), chunk-04-capabilities-and-success.md ('Capabilities and Success'), chunk-05-unresolved-questions.md ('Unresolved Questions'), and chunk-06-lifecycle-and-handoff.md ('Lifecycle and Handoff'); each chunk file shall contain only its H1 heading, a single paragraph reading 'Direction material entries with positional indices relevant to this section are projected to product/docs/direction/. This chunk is a mechanically generated skeleton and does not contain synthesized product semantics.', and a front-matter block with lifecycle_status: candidate.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-011",
+      "composite_key": "product.foundation-seeding::INIT-FSD-011",
+      "requirement_text": "Skeleton generation shall produce exactly one decomposition controlling document at docs/decompositions/{product_id}-DECOMPOSITION.md containing an H1 heading with the product identifier and the suffix 'Decomposition', a ## Scope section with static text 'This decomposition identifies product areas and cross-cutting concerns for {product_id}. It is a candidate directional document and is not normative.', a ## Product Areas section listing four empty placeholder sub-sections (invocation-and-authority, product-areas, cross-cutting-concerns, stopping-criteria-and-handoff) each with the static text 'Decomposition area content is not synthesized by the initializer. Direction material for this area may be available in product/docs/direction/.', a ## Cross-cutting Concerns section with the static text 'Cross-cutting concerns are identified in the decomposition chunk documents. No concerns are synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate and authority_category: directional.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-011 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-012",
+      "composite_key": "product.foundation-seeding::INIT-FSD-012",
+      "requirement_text": "Skeleton generation shall produce exactly four decomposition chunk files under docs/decompositions/{product_id}-decomposition/ with the following filenames and H1 headings: chunk-01-invocation-and-authority.md ('Invocation and Authority'), chunk-02-product-areas.md ('Product Areas'), chunk-03-cross-cutting-concerns.md ('Cross-cutting Concerns'), and chunk-04-stopping-criteria-and-handoff.md ('Stopping Criteria and Handoff'); each chunk file shall contain only its H1 heading, a single paragraph reading 'This decomposition chunk is a mechanically generated skeleton. Decomposition content is not synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-012 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-013",
+      "composite_key": "product.foundation-seeding::INIT-FSD-013",
+      "requirement_text": "Skeleton generation shall produce exactly one implementation plan controlling document at docs/plans/{product_id}-IMPLEMENTATION-PLAN.md containing an H1 heading with the product identifier and the suffix 'Implementation Plan', a ## Scope and Preconditions section with static text 'Implementation scope is defined by the governing product specifications and decomposition. This plan is a candidate planning document and is not normative.', a ## Workstreams and Dependencies section with static text 'Workstreams are identified in the implementation plan chunk documents. No workstream content is synthesized by the initializer.', a ## Validation and Completion section with static text 'Validation criteria are defined by the governing product specifications. No validation content is synthesized by the initializer.', a ## Risks and Unresolved Decisions section with static text 'Risks and unresolved decisions are recorded in the implementation plan chunk documents. No risk content is synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate and authority_category: planning.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-013 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-014",
+      "composite_key": "product.foundation-seeding::INIT-FSD-014",
+      "requirement_text": "Skeleton generation shall produce exactly four implementation plan chunk files under docs/plans/{product_id}-implementation-plan/ with the following filenames and H1 headings: chunk-01-scope-and-preconditions.md ('Scope and Preconditions'), chunk-02-workstreams-and-dependencies.md ('Workstreams and Dependencies'), chunk-03-validation-and-completion.md ('Validation and Completion'), and chunk-04-risks-and-unresolved-decisions.md ('Risks and Unresolved Decisions'); each chunk file shall contain only its H1 heading, a single paragraph reading 'This implementation plan chunk is a mechanically generated skeleton. Plan content is not synthesized by the initializer.', and a front-matter block with lifecycle_status: candidate.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-014 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-015",
+      "composite_key": "product.foundation-seeding::INIT-FSD-015",
+      "requirement_text": "Skeleton generation shall produce discoverability README files at docs/overview/README.md, docs/decompositions/README.md, and docs/plans/README.md, each containing an H1 heading with the directory name and a link to the corresponding controlling document using the format 'See the [{title}]({relative_path}) controlling document.', plus a front-matter block with lifecycle_status: candidate.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-015 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-016",
+      "composite_key": "product.foundation-seeding::INIT-FSD-016",
+      "requirement_text": "A skeleton document that references direction material shall never embed, quote, paraphrase, summarize, or transform the content of any direction_material entry; all direction material content exists solely in product/docs/direction/ and is referenced only through the front-matter source metadata and the static placeholder text in the controlling documents.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-016 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-017",
+      "composite_key": "product.foundation-seeding::INIT-FSD-017",
+      "requirement_text": "Empty workspace initialization shall create the Level workspace README.md placeholder files at product/specs/product/level-0/README.md, product/specs/product/level-1/README.md, product/specs/product/level-2/README.md, and product/specs/product/level-3/README.md in the staging workspace to preserve the Level directories in Git. Each Level README shall state its Level identity, that the workspace is activated, that no product specifications currently exist at that Level, that generated content remains candidate and non-normative, and the governed next action for adding specifications to that Level. No specification JSON files shall be created inside these directories, and the component shall not produce candidate specification documents with normative requirement content.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-017 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-018",
+      "composite_key": "product.foundation-seeding::INIT-FSD-018",
+      "requirement_text": "Empty workspace initialization shall create a generated product manifest at product/specs/product/manifest.json containing spec_id 'product.manifest', status 'candidate', schema_version '1', an empty product_specifications array, and a title and purpose drawn from the product identifier; the manifest shall declare a dependency on repo.manifest and repo.product-manifest.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-018 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-019",
+      "composite_key": "product.foundation-seeding::INIT-FSD-019",
+      "requirement_text": "Empty workspace initialization shall produce a discoverability README at product/specs/product/README.md containing an H1 heading with the product identifier and the text 'This directory contains the activated but empty product-specification workspace for {product_id}.' followed by links to the overview, decomposition, and implementation plan controlling documents; the README shall have lifecycle_status candidate.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-019 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-020",
+      "composite_key": "product.foundation-seeding::INIT-FSD-020",
+      "requirement_text": "Foundation seeding shall produce a direction evidence manifest at product/docs/direction/manifest.json containing for each entry the positional index, original source path, source revision (as a canonical Git object identity), source blob object ID (as a canonical Git object identity), projected evidence path, byte length, and optional non-authoritative detected media type; the manifest shall be stored separately from the evidence bytes.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-020 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.foundation-seeding",
+      "spec_path": "product/specs/product/level-2/foundation-seeding.json",
+      "level": 2,
+      "requirement_id": "INIT-FSD-021",
+      "composite_key": "product.foundation-seeding::INIT-FSD-021",
+      "requirement_text": "Foundation seeding shall produce only paths declared in the output inventory (product.initializer-output-inventory-v1) with producer direction-evidence-installation or workspace-seeding; every produced path shall match its inventory entry's operation, type, and mode, and no inventory entry with required true shall be omitted.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:285-293::EstablishFoundationsTests.test_created_artifact_count \u2014 maintained named-test/assertion body excerpt: def test_created_artifact_count(self): result = establish_product_foundations(self.plan, self.staging) num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE) num_controlling = 3 num_manifest = 1 num_level_roots = 4 num_readmes = 4 expected = num_chunks + num_controlling + num_manifest + num_level_roots + num\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:264-272::EstablishFoundationsTests.test_preserves_existing_files \u2014 maintained named-test/assertion body excerpt: def test_preserves_existing_files(self): existing_readme = self.staging / \"docs\" / \"overview\" / \"README.md\" existing_readme.parent.mkdir(parents=True, exist_ok=True) existing_readme.write_text(\"existing readme\") result = establish_product_foundations(self.plan, self.staging) content = existing_readme.read_text() self.assertEqual(content, \"existing readme\")\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.foundation-seeding::INIT-FSD-021 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

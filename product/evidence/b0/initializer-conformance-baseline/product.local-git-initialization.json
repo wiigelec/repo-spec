@@ -1,0 +1,94 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.local-git-initialization",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.local-git-initialization",
+    "spec_path": "product/specs/product/level-2/local-git-initialization.json",
+    "level": 2,
+    "requirement_count": 2
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 2,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.local-git-initialization",
+      "spec_path": "product/specs/product/level-2/local-git-initialization.json",
+      "level": 2,
+      "requirement_id": "INIT-LGI-001",
+      "composite_key": "product.local-git-initialization::INIT-LGI-001",
+      "requirement_text": "The local Git initialization component shall initialize the complete staged content as the deterministic local Git repository defined by `product.local-git-repository` before repository validation begins.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:143-290::git_preflight \u2014 maintained source behavior excerpt: def git_preflight( destination_path: str, promotion_result_status: str | None = None, promotion_committed_destination: str | None = None, ) -> GitPreflight: dest_p = Path(destination_path).resolve() dest_str = str(dest_p) git_path = _find_git() git_available = git_path is not None git_version: str | None = None if git_path is not None: try: ver_result = sub\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:325-339::GitEstablishmentFunctionTests.test_successful_establishment \u2014 maintained named-test/assertion body excerpt: def test_successful_establishment(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"content\") (Path(td) / \"sub\").mkdir() (Path(td) / \"sub\" / \"nested.txt\").write_text(\"nested\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\",\u2026",
+        "product/scripts/initializer/tests/test_git.py:416-429::GitEstablishmentFunctionTests.test_staged_files_match_expected \u2014 maintained named-test/assertion body excerpt: def test_staged_files_match_expected(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"a.txt\").write_text(\"a\") (Path(td) / \"b.txt\").write_text(\"b\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") ls_files = subprocess.run( [\"git\", \"ls-files\"], cwd\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.local-git-initialization::INIT-LGI-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.local-git-initialization",
+      "spec_path": "product/specs/product/level-2/local-git-initialization.json",
+      "level": 2,
+      "requirement_id": "INIT-LGI-002",
+      "composite_key": "product.local-git-initialization::INIT-LGI-002",
+      "requirement_text": "The component shall verify the branch, root commit count, commit tree, identities, timestamps, clean worktree, and absence of remotes, and shall fail without promoting the destination when any required Git state differs.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:143-290::git_preflight \u2014 maintained source behavior excerpt: def git_preflight( destination_path: str, promotion_result_status: str | None = None, promotion_committed_destination: str | None = None, ) -> GitPreflight: dest_p = Path(destination_path).resolve() dest_str = str(dest_p) git_path = _find_git() git_available = git_path is not None git_version: str | None = None if git_path is not None: try: ver_result = sub\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:325-339::GitEstablishmentFunctionTests.test_successful_establishment \u2014 maintained named-test/assertion body excerpt: def test_successful_establishment(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"content\") (Path(td) / \"sub\").mkdir() (Path(td) / \"sub\" / \"nested.txt\").write_text(\"nested\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\",\u2026",
+        "product/scripts/initializer/tests/test_git.py:416-429::GitEstablishmentFunctionTests.test_staged_files_match_expected \u2014 maintained named-test/assertion body excerpt: def test_staged_files_match_expected(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"a.txt\").write_text(\"a\") (Path(td) / \"b.txt\").write_text(\"b\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") ls_files = subprocess.run( [\"git\", \"ls-files\"], cwd\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.local-git-initialization::INIT-LGI-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,592 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.content-equivalence",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.content-equivalence",
+    "spec_path": "product/specs/product/level-1/content-equivalence.json",
+    "level": 1,
+    "requirement_count": 15
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 15,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-001",
+      "composite_key": "product.content-equivalence::INIT-EQV-001",
+      "requirement_text": "The equivalence relation shall be defined in terms of canonical forms: each accepted initialization request, local source revision, generated content entry, handoff manifest, provenance record, and local Git object shall have exactly one canonical representation, and two items shall be equivalent exactly when their canonical representations are identical.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-002",
+      "composite_key": "product.content-equivalence::INIT-EQV-002",
+      "requirement_text": "Canonicalization shall be a normalization onto the canonical representation: it shall retain every authoritative value verbatim, shall apply only declared, deterministic transformations, and shall never trim, coerce, reorder, deduplicate, case-fold, or otherwise alter authoritative content.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-003",
+      "composite_key": "product.content-equivalence::INIT-EQV-003",
+      "requirement_text": "Request canonicalization shall normalize exactly the dimensions declared by the request representation: relative destination and source repository paths resolved against the invoking process working directory, with all other request fields retained verbatim; requests differing only in the lexical spelling of a resolved path shall be equivalent when the resolved canonical forms are identical.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-004",
+      "composite_key": "product.content-equivalence::INIT-EQV-004",
+      "requirement_text": "Request equivalence shall require identical canonical forms of `authority`, `product.id`, `destination`, `source.repository`, and `source.revision`, and shall require `direction_material` arrays to be identical in both membership and declared order; requests differing in any of these dimensions shall not be equivalent.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-005",
+      "composite_key": "product.content-equivalence::INIT-EQV-005",
+      "requirement_text": "Repository file system enumerations, generation traversals, serialization order, and manifest ordering shall be driven by a declared canonical order (repository-relative path sorted deterministically, then content order stable), so that equivalent runs do not differ as a result of filesystem enumeration order.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-006",
+      "composite_key": "product.content-equivalence::INIT-EQV-006",
+      "requirement_text": "Repository content equivalence shall be evaluated as a deterministic tree of entries keyed by canonical repository-relative path, comparing each entry by its type (regular file, directory, or symbolic link), its byte contents for regular files, its target text for symbolic links, and its executable-bit mode for regular files.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-007",
+      "composite_key": "product.content-equivalence::INIT-EQV-007",
+      "requirement_text": "File access and modification timestamps, inode numbers, ownership, and other filesystem metadata shall not be part of repository content equivalence, and the initializer shall not depend on filesystem metadata for determinism.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-008",
+      "composite_key": "product.content-equivalence::INIT-EQV-008",
+      "requirement_text": "Local source revision equivalence shall require the same exact Git object identifier (in the repository's native object format) in the same resolved source repository path, so that equivalent revisions address identical byte sequences and subtree structure.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-009",
+      "composite_key": "product.content-equivalence::INIT-EQV-009",
+      "requirement_text": "The initializer shall ensure content byte equivalence for regular files without line-ending translation, encoding conversion, or Unicode normalization: bytes shall be compared and produced verbatim, and nothing shall treat distinct byte sequences (including differing line endings or Unicode encodings) as equivalent.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-010",
+      "composite_key": "product.content-equivalence::INIT-EQV-010",
+      "requirement_text": "Git topology and bootstrap metadata (initial branch, root commit count, author and committer identities, commit message, and remote configuration) shall be equivalent across Git implementations and versions, independent of Git tool differences; tree and commit object identifiers shall be equivalent when committed variable data (the provenance initialization timestamp) is identical between runs, and may differ when committed variable data differs.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-011",
+      "composite_key": "product.content-equivalence::INIT-EQV-011",
+      "requirement_text": "The variables permitted to differ between equivalent outcomes shall be explicitly declared with their scope, representation, and source: the only declared variable data for the bounded workflow is the initialization timestamp recorded in the provenance record, and no other element may vary between equivalent outcomes.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-011 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-012",
+      "composite_key": "product.content-equivalence::INIT-EQV-012",
+      "requirement_text": "Direction evidence equivalence shall require that every projected evidence file in product/docs/direction/evidence/ be byte-identical to the corresponding source Git blob at the declared source revision, and that the direction evidence manifest entries match the actual evidence files and their source material without omission or mismatch.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-012 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-013",
+      "composite_key": "product.content-equivalence::INIT-EQV-013",
+      "requirement_text": "Duplicate direction_material entries shall each produce their own distinct evidence file with a unique positional index, and the equivalence relation shall treat two direction_material arrays as equivalent only when they have identical membership, order, and duplicate positions.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-013 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-014",
+      "composite_key": "product.content-equivalence::INIT-EQV-014",
+      "requirement_text": "The equivalence relation shall be reflexive, symmetric, and transitive over canonical forms, and shall partition accepted requests, source revisions, and outcomes into stable equivalence classes such that membership is decidable from canonical representations alone.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-014 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.content-equivalence",
+      "spec_path": "product/specs/product/level-1/content-equivalence.json",
+      "level": 1,
+      "requirement_id": "INIT-EQV-015",
+      "composite_key": "product.content-equivalence::INIT-EQV-015",
+      "requirement_text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry (each independently inventoried \u2014 no tree-valued entries), every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:352-381::inventory_to_ordered_dict \u2014 maintained source behavior excerpt: def inventory_to_ordered_dict( classified: ClassifiedInventory, source_selection: SourceSelection | None, ) -> dict[str, Any]: output: dict[str, Any] = { \"source_selection\": None, \"classifications\": {}, } if source_selection is not None: output[\"source_selection\"] = { \"repository\": source_selection.repository, \"revision\": source_selection.revision, } for cl\u2026",
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:300-309::FoundationDeterminismTests.test_equivalent_inputs_equivalent_output \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equivalent_output(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) self.assertEqual(r1, r2) finally: shutil.rmtree(s1, ignore_errors=True) shutil.rmtree(s2, ignore_errors=True)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.content-equivalence::INIT-EQV-015 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

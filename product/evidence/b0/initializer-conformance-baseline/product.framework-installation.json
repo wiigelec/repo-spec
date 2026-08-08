@@ -1,0 +1,326 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.framework-installation",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.framework-installation",
+    "spec_path": "product/specs/product/level-2/framework-installation.json",
+    "level": 2,
+    "requirement_count": 8
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 8,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-001",
+      "composite_key": "product.framework-installation::INIT-FIN-001",
+      "requirement_text": "The framework installation component shall iterate every manifest entry with a role classified as installable framework material, resolve its source_path from the source commit tree, and produce the destination_path in the repository/ directory using the declared operation type.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-002",
+      "composite_key": "product.framework-installation::INIT-FIN-002",
+      "requirement_text": "For entries with operation `copy-verbatim`: the component shall read the Git blob identified by the source commit tree at source_path, write its bytes verbatim to destination_path with the mode declared in the manifest entry (100644 for non-executable, 100755 for executable), and not apply encoding, newline, or timestamp transformations. The component shall reject any copy-verbatim entry whose source_type is tree; every copy-verbatim entry must source from a single Git blob or supported symlink.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-003",
+      "composite_key": "product.framework-installation::INIT-FIN-003",
+      "requirement_text": "For entries with operation `instantiate-template`: the component shall read the template blob from the source commit tree at source_path, apply only the declared substitution fields using the defined escaping rules, serialize the result using canonical encoding, and reject the entry when a required substitution field is missing.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-004",
+      "composite_key": "product.framework-installation::INIT-FIN-004",
+      "requirement_text": "For entries with operation `generate-record`: the component shall assemble the record from declared source fields using canonical field order and canonical JSON serialization, as specified by the governing schema referenced by the manifest entry.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-005",
+      "composite_key": "product.framework-installation::INIT-FIN-005",
+      "requirement_text": "The component shall not use broad recursive directory copying to install any path; every output path shall be produced by exactly one manifest entry, and the component shall report any installation conflict, missing source blob, type mismatch, or operation failure without silently skipping. A manifest entry whose source_type is tree shall be rejected before any installation attempt.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-006",
+      "composite_key": "product.framework-installation::INIT-FIN-006",
+      "requirement_text": "The component shall install each material item in its declared destination_path, shall not modify the normative semantics of reusable framework material beyond the declared operation, and shall ensure that no output path is produced by more than one manifest entry.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-007",
+      "composite_key": "product.framework-installation::INIT-FIN-007",
+      "requirement_text": "The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must have a matching material_index entry, the operation must match, and the mode must match the material-manifest entry. No installed path shall match a fixed worktree file entry or another dynamic family path.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.framework-installation",
+      "spec_path": "product/specs/product/level-2/framework-installation.json",
+      "level": 2,
+      "requirement_id": "INIT-FIN-008",
+      "composite_key": "product.framework-installation::INIT-FIN-008",
+      "requirement_text": "The component shall not interpret any material-manifest entry as a source subtree to be expanded into multiple output paths. Every entry produces exactly one output path from exactly one source blob or supported symlink. Entries with role development-only in the output inventory shall not be installed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:46-49::build_installation_plan \u2014 maintained source behavior excerpt: def build_installation_plan( classified: ClassifiedInventory, ) -> InstallationPlan: return InstallationPlan(classified)",
+        "product/scripts/initializer/staging.py:167-188::copy_entry \u2014 maintained source behavior excerpt: def copy_entry( source_root: Path, entry: InventoryEntry, staging_root: Path, ) -> None: src_path = source_root / entry.path dst_path = staging_root / entry.path dst_path.parent.mkdir(parents=True, exist_ok=True) if src_path.is_symlink(): link_target = os.readlink(str(src_path)) dst_path.symlink_to(link_target) elif src_path.is_file(): shutil.copy2(str(src_\u2026",
+        "product/scripts/initializer/staging.py:216-300::stage_framework \u2014 maintained source behavior excerpt: def stage_framework( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, staging_parent: Path | None = None, ) -> InstallationResult: plan = build_installation_plan(classified) entries = list(plan.entries) installed: list[dict[str, Any]] = [] skipped: list[dict[str, Any]] = [] rejected: list[dict[str, Any]] = [] sta\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:416-423::StageFrameworkTests.test_stages_installable_framework_material \u2014 maintained named-test/assertion body excerpt: def test_stages_installable_framework_material(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) installed_paths = {r[\"path\"] for r in result.installed} self.assertIn(\"repo/specs/repo/\", installed_paths) self.assertIn(\"repo/schemas/\", installed_paths) self.assertIn(\"repo/scripts/validate\", installed_paths)\u2026",
+        "product/scripts/initializer/tests/test_staging.py:434-441::StageFrameworkTests.test_preserves_repository_relative_paths \u2014 maintained named-test/assertion body excerpt: def test_preserves_repository_relative_paths(self): ci = self._make_classified_inventory() result = stage_framework(ci, self.ss, self.source_root) ws = Path(result.staging_workspace) for entry in result.installed: path = entry[\"path\"] staged_path = ws / path self.assertTrue(staged_path.exists(), f\"missing: {path}\")",
+        "product/scripts/initializer/tests/test_staging.py:330-337::CopyEntryTests.test_copy_file \u2014 maintained named-test/assertion body excerpt: def test_copy_file(self): src = self.source_root / \"test.txt\" src.write_text(\"hello world\") entry = _make_entry(\"test.txt\") copy_entry(self.source_root, entry, self.staging_root) dst = self.staging_root / \"test.txt\" self.assertTrue(dst.exists()) self.assertEqual(dst.read_text(), \"hello world\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.framework-installation::INIT-FIN-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

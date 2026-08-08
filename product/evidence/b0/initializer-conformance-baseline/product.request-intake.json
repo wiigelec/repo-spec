@@ -1,0 +1,98 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.request-intake",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.request-intake",
+    "spec_path": "product/specs/product/level-2/request-intake.json",
+    "level": 2,
+    "requirement_count": 2
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 2,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.request-intake",
+      "spec_path": "product/specs/product/level-2/request-intake.json",
+      "level": 2,
+      "requirement_id": "INIT-INT-001",
+      "composite_key": "product.request-intake::INIT-INT-001",
+      "requirement_text": "The request intake component shall parse one explicit JSON object, validate it against the initialization request contract, reject input that fails structural or semantic validation, and produce a validated request model consumed by downstream components.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/cli.py:73-79::_cmd_validate_request \u2014 maintained source behavior excerpt: def _cmd_validate_request(argv: list[str]) -> int: if len(argv) < 4: print(\"error: missing request file path\", file=sys.stderr) print(\"usage: repo-spec-init validate-request <request.json>\", file=sys.stderr) return 1 request_path = Path(argv[3]) return validate_json_request(request_path)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:133-138::SafetyTests.test_failure_does_not_produce_context \u2014 maintained named-test/assertion body excerpt: def test_failure_does_not_produce_context(self) -> None: with self.assertRaises(ValidationError): validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", })",
+        "product/scripts/initializer/tests/test_cli.py:33-36::CliTests.test_validate_rejects_invalid_json \u2014 maintained named-test/assertion body excerpt: def test_validate_rejects_invalid_json(self) -> None: path = FIXTURES / \"invalid-not-json.json\" proc = self._run(\"validate-request\", str(path)) self.assertNotEqual(proc.returncode, 0)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.request-intake::INIT-INT-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.request-intake",
+      "spec_path": "product/specs/product/level-2/request-intake.json",
+      "level": 2,
+      "requirement_id": "INIT-INT-002",
+      "composite_key": "product.request-intake::INIT-INT-002",
+      "requirement_text": "The request intake component shall report distinct rejection reasons for missing required fields, empty authority-bearing values, structurally invalid values, contradictory combinations, and any request for excluded behavior.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/cli.py:73-79::_cmd_validate_request \u2014 maintained source behavior excerpt: def _cmd_validate_request(argv: list[str]) -> int: if len(argv) < 4: print(\"error: missing request file path\", file=sys.stderr) print(\"usage: repo-spec-init validate-request <request.json>\", file=sys.stderr) return 1 request_path = Path(argv[3]) return validate_json_request(request_path)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:133-138::SafetyTests.test_failure_does_not_produce_context \u2014 maintained named-test/assertion body excerpt: def test_failure_does_not_produce_context(self) -> None: with self.assertRaises(ValidationError): validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", })",
+        "product/scripts/initializer/tests/test_cli.py:33-36::CliTests.test_validate_rejects_invalid_json \u2014 maintained named-test/assertion body excerpt: def test_validate_rejects_invalid_json(self) -> None: path = FIXTURES / \"invalid-not-json.json\" proc = self._run(\"validate-request\", str(path)) self.assertNotEqual(proc.returncode, 0)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.request-intake::INIT-INT-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    }
+  ]
+}

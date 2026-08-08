@@ -1,0 +1,484 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.handoff-manifest",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.handoff-manifest",
+    "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+    "level": 1,
+    "requirement_count": 14
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 0,
+    "replace": 0,
+    "implement": 14
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-001",
+      "composite_key": "product.handoff-manifest::INIT-HND-001",
+      "requirement_text": "A handoff manifest shall be an atomic output artifact that describes the prepared repository content assembled before Git initialization, lists the generated, selected, omitted, and deferred material, and names the next governed action for the repository.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-001: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-001: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-001 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-002",
+      "composite_key": "product.handoff-manifest::INIT-HND-002",
+      "requirement_text": "The handoff manifest shall not contain implementation artifacts or successor product behavior; it is a description of what was produced and what may come next.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-002: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-002: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-002 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-003",
+      "composite_key": "product.handoff-manifest::INIT-HND-003",
+      "requirement_text": "The handoff manifest shall be a single UTF-8 encoded JSON object file written to the repository-relative path `repo/initializer/handoff.json` in the staged and promoted repository.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-003: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-003: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-003 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-004",
+      "composite_key": "product.handoff-manifest::INIT-HND-004",
+      "requirement_text": "The handoff representation shall define the following required fields with the given JSON types: `schema_version` as a string, `foundations` as an object, `material` as an object, `provenance` as a string, and `next_action` as a string.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-004: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-004: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-004 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-005",
+      "composite_key": "product.handoff-manifest::INIT-HND-005",
+      "requirement_text": "The handoff `foundations` object shall define `framework` and `product` arrays of repository-relative strings, where `framework` lists paths of installed reusable framework content and `product` lists paths of generated candidate document skeletons and the Level workspace README.md files preserving Level directories; and the `material` object shall define `generated`, `selected`, `omitted`, and `deferred` arrays of repository-relative strings.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-005: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-005: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-005 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-006",
+      "composite_key": "product.handoff-manifest::INIT-HND-006",
+      "requirement_text": "The handoff `provenance` field shall reference the repository-relative path of the provenance record, and `next_action` shall be the constant string 'Develop and accept the product overview and decomposition, then create product specifications. Create an implementation plan only after the controlling specifications are accepted.'; `schema_version` shall be the constant string `2`.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-006: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-006: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-006 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-007",
+      "composite_key": "product.handoff-manifest::INIT-HND-007",
+      "requirement_text": "A handoff manifest shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts or successor product behavior.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-007: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-007: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-007 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-008",
+      "composite_key": "product.handoff-manifest::INIT-HND-008",
+      "requirement_text": "The handoff manifest shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, foundations and material for nested objects), `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-008: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-008: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-008 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-009",
+      "composite_key": "product.handoff-manifest::INIT-HND-009",
+      "requirement_text": "The handoff manifest format shall evolve by incrementing `schema_version`; consumers of `schema_version` `2` shall reject manifests declaring any other version and shall not merge unknown or extra fields silently.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-009: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-009: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-009 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-010",
+      "composite_key": "product.handoff-manifest::INIT-HND-010",
+      "requirement_text": "The six classification arrays (`foundations.framework`, `foundations.product`, `material.generated`, `material.selected`, `material.omitted`, and `material.deferred`) shall be mutually disjoint: no repository-relative path shall appear in more than one array.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-010: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-010: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-010 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-011",
+      "composite_key": "product.handoff-manifest::INIT-HND-011",
+      "requirement_text": "Every regular file present in the prepared repository shall appear in exactly one of `foundations.framework`, `foundations.product`, `material.generated`, or `material.selected`; a path listed in `material.omitted` or `material.deferred` shall not be present as a regular file in the prepared repository; directories shall not appear in any classification array.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-011: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-011: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-011 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-012",
+      "composite_key": "product.handoff-manifest::INIT-HND-012",
+      "requirement_text": "Installed reusable framework files shall be listed only in `foundations.framework`; generated candidate document skeletons and Level workspace README.md files preserving the product specification workspace shall be listed only in `foundations.product`; other generated files, including the product manifest, provenance record, and handoff manifest, shall be listed in `material.generated`; source-derived non-foundation files installed into the prepared repository shall be listed in `material.selected`; paths explicitly excluded by the execution profile or request shall be listed in `material.omitted`; paths deferred by explicit authority shall be listed in `material.deferred`.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-012: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-012: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-012 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-013",
+      "composite_key": "product.handoff-manifest::INIT-HND-013",
+      "requirement_text": "Each classification array (`foundations.framework`, `foundations.product`, `material.generated`, `material.selected`, `material.omitted`, and `material.deferred`) shall be sorted lexicographically by repository-relative path using ASCII ordering; directory entries shall not include a trailing slash; any classification array may be empty when no item of that classification exists, and empty arrays shall be represented as `[]`.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-013: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-013: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-013 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.handoff-manifest",
+      "spec_path": "product/specs/product/level-1/handoff-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-HND-014",
+      "composite_key": "product.handoff-manifest::INIT-HND-014",
+      "requirement_text": "Each classification-array entry shall be a normalized repository-relative file path using forward slashes, shall not begin with `/`, shall not contain `../` or `./` segments, and shall not contain URL-encoded or escaped characters. Entries in `foundations.framework`, `foundations.product`, `material.generated`, and `material.selected` shall identify regular files present in the prepared repository; entries in `material.omitted` and `material.deferred` shall identify authorized file paths that are not present in the prepared repository.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-manifest::INIT-HND-014: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-manifest::INIT-HND-014: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-manifest::INIT-HND-014 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

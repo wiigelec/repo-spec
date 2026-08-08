@@ -1,0 +1,55 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.handoff-assembly",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.handoff-assembly",
+    "spec_path": "product/specs/product/level-2/handoff-assembly.json",
+    "level": 2,
+    "requirement_count": 1
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 0,
+    "replace": 0,
+    "implement": 1
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.handoff-assembly",
+      "spec_path": "product/specs/product/level-2/handoff-assembly.json",
+      "level": 2,
+      "requirement_id": "INIT-HAS-001",
+      "composite_key": "product.handoff-assembly::INIT-HAS-001",
+      "requirement_text": "The handoff assembly component shall write a handoff manifest into staging before Git initialization that identifies installed framework material in `foundations.framework`, generated candidate document skeletons and the empty product-specification workspace in `foundations.product`, omitted and deferred material in the `material` arrays, the provenance record path, and the next governed action as the constant string 'Develop and accept the product overview and decomposition, then create product specifications. Create an implementation plan only after the controlling specifications are accepted.' The handoff manifest shall not claim completed workflow success or observed local Git state.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.handoff-assembly::INIT-HAS-001: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.handoff-assembly::INIT-HAS-001: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.handoff-assembly::INIT-HAS-001 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

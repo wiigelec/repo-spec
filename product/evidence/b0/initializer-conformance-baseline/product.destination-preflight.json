@@ -1,0 +1,98 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.destination-preflight",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.destination-preflight",
+    "spec_path": "product/specs/product/level-2/destination-preflight.json",
+    "level": 2,
+    "requirement_count": 2
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 2,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.destination-preflight",
+      "spec_path": "product/specs/product/level-2/destination-preflight.json",
+      "level": 2,
+      "requirement_id": "INIT-DPF-001",
+      "composite_key": "product.destination-preflight::INIT-DPF-001",
+      "requirement_text": "The destination preflight component shall confirm that the destination does not exist and that its parent filesystem can host both the staging transaction root and the destination itself on the same filesystem.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/destination.py:125-276::destination_preflight \u2014 maintained source behavior excerpt: def destination_preflight( staging_path: str, destination_path: str, ) -> DestinationPreflight: staging_p = Path(staging_path) dest_p = Path(destination_path) if not staging_p.exists(): return DestinationPreflight( staging_path=str(staging_p.resolve()), destination_path=str(dest_p.resolve()), destination_state=DestinationState.inaccessible, same_filesystem=\u2026",
+        "product/scripts/initializer/destination.py:118-122::check_same_filesystem \u2014 maintained source behavior excerpt: def check_same_filesystem(path_a: Path, path_b: Path) -> bool: try: return path_a.stat().st_dev == path_b.stat().st_dev except OSError: return False",
+        "product/scripts/initializer/destination.py:50-74::check_path_conflicts \u2014 maintained source behavior excerpt: def check_path_conflicts( staging_path: Path, destination_path: Path, ) -> tuple[bool, bool, bool]: res_staging = staging_path.resolve() res_dest = destination_path.resolve() aliased = res_staging == res_dest staging_inside_dest = False dest_inside_staging = False if not aliased: try: res_staging.relative_to(res_dest) staging_inside_dest = True except Value\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py:342-347::DestinationPreflightFunctionTests.test_allows_absent_destination \u2014 maintained named-test/assertion body excerpt: def test_allows_absent_destination(self): dest = self.base / \"new_dest\" pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.allowed) self.assertEqual(pf.destination_state, DestinationState.absent) self.assertTrue(pf.same_filesystem)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:380-383::DestinationPreflightFunctionTests.test_rejects_same_path \u2014 maintained named-test/assertion body excerpt: def test_rejects_same_path(self): pf = destination_preflight(str(self.staging), str(self.staging)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"same path\", (pf.rejection_reason or \"\").lower())",
+        "product/scripts/initializer/tests/test_destination_promotion.py:323-328::SameFilesystemTests.test_same_fs \u2014 maintained named-test/assertion body excerpt: def test_same_fs(self): a = self.base / \"a\" b = self.base / \"b\" a.mkdir() b.mkdir() self.assertTrue(check_same_filesystem(a, b))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.destination-preflight::INIT-DPF-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.destination-preflight",
+      "spec_path": "product/specs/product/level-2/destination-preflight.json",
+      "level": 2,
+      "requirement_id": "INIT-DPF-002",
+      "composite_key": "product.destination-preflight::INIT-DPF-002",
+      "requirement_text": "The destination preflight component shall reject an existing destination of any type (including a regular file, empty directory, nonempty directory, symbolic link, or existing repository), a cross-device arrangement where staging and destination cannot share a filesystem, or any inaccessible parent directory, and shall report the conflict without modifying the destination.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/destination.py:125-276::destination_preflight \u2014 maintained source behavior excerpt: def destination_preflight( staging_path: str, destination_path: str, ) -> DestinationPreflight: staging_p = Path(staging_path) dest_p = Path(destination_path) if not staging_p.exists(): return DestinationPreflight( staging_path=str(staging_p.resolve()), destination_path=str(dest_p.resolve()), destination_state=DestinationState.inaccessible, same_filesystem=\u2026",
+        "product/scripts/initializer/destination.py:118-122::check_same_filesystem \u2014 maintained source behavior excerpt: def check_same_filesystem(path_a: Path, path_b: Path) -> bool: try: return path_a.stat().st_dev == path_b.stat().st_dev except OSError: return False",
+        "product/scripts/initializer/destination.py:50-74::check_path_conflicts \u2014 maintained source behavior excerpt: def check_path_conflicts( staging_path: Path, destination_path: Path, ) -> tuple[bool, bool, bool]: res_staging = staging_path.resolve() res_dest = destination_path.resolve() aliased = res_staging == res_dest staging_inside_dest = False dest_inside_staging = False if not aliased: try: res_staging.relative_to(res_dest) staging_inside_dest = True except Value\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py:342-347::DestinationPreflightFunctionTests.test_allows_absent_destination \u2014 maintained named-test/assertion body excerpt: def test_allows_absent_destination(self): dest = self.base / \"new_dest\" pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.allowed) self.assertEqual(pf.destination_state, DestinationState.absent) self.assertTrue(pf.same_filesystem)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:380-383::DestinationPreflightFunctionTests.test_rejects_same_path \u2014 maintained named-test/assertion body excerpt: def test_rejects_same_path(self): pf = destination_preflight(str(self.staging), str(self.staging)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"same path\", (pf.rejection_reason or \"\").lower())",
+        "product/scripts/initializer/tests/test_destination_promotion.py:323-328::SameFilesystemTests.test_same_fs \u2014 maintained named-test/assertion body excerpt: def test_same_fs(self): a = self.base / \"a\" b = self.base / \"b\" a.mkdir() b.mkdir() self.assertTrue(check_same_filesystem(a, b))"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.destination-preflight::INIT-DPF-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    }
+  ]
+}

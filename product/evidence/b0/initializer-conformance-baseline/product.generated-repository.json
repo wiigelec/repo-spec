@@ -1,0 +1,896 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.generated-repository",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.generated-repository",
+    "spec_path": "product/specs/product/level-1/generated-repository.json",
+    "level": 1,
+    "requirement_count": 23
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 23,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-001",
+      "composite_key": "product.generated-repository::INIT-GRL-001",
+      "requirement_text": "The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as framework-support material linked by material_key in the output inventory's material_index, with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-002",
+      "composite_key": "product.generated-repository::INIT-GRL-002",
+      "requirement_text": "The initialized repository shall contain the paths under repo/ as declared by the output inventory's material_index entries with material_key values, each with source resolved from the material manifest (framework-inventory.json) via matching material_key and operation copy-verbatim from the source commit tree. No broad directory copy is permitted; every repo/ path shall have exactly one material_index entry and one corresponding material-manifest entry with the same material_key.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-003",
+      "composite_key": "product.generated-repository::INIT-GRL-003",
+      "requirement_text": "The initialized repository shall contain product/scripts/repo-spec-init and the individual initializer framework files under product/scripts/initializer/ as framework-support entries declared in the output inventory's material_index with individual material_key values (repo-spec-init, product-initializer-init, product-initializer-cli, etc.), with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree. No bulk directory copy is permitted; every file under product/scripts/initializer/ shall have its own material_index entry.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-004",
+      "composite_key": "product.generated-repository::INIT-GRL-004",
+      "requirement_text": "The initialized repository shall contain a generated product manifest at product/specs/product/manifest.json with status candidate, an empty product_specifications array, and dependencies on repo.manifest and repo.product-manifest.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-005",
+      "composite_key": "product.generated-repository::INIT-GRL-005",
+      "requirement_text": "The initialized repository shall contain governed README.md files at product/specs/product/level-0/README.md, product/specs/product/level-1/README.md, product/specs/product/level-2/README.md, and product/specs/product/level-3/README.md to preserve the Level workspace directories in Git. Each Level README shall state its Level identity, that the workspace is activated, that no product specifications currently exist at that Level, that generated content remains candidate and non-normative, and the governed next action for adding specifications to that Level.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-006",
+      "composite_key": "product.generated-repository::INIT-GRL-006",
+      "requirement_text": "The initialized repository shall contain a generated discoverability README at product/specs/product/README.md that links to the overview, decomposition, and implementation plan.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-007",
+      "composite_key": "product.generated-repository::INIT-GRL-007",
+      "requirement_text": "The initialized repository shall contain a generated product overview controlling document at docs/overview/{slug}-OVERVIEW.md, where {slug} is the product identifier, with lifecycle_status candidate, authority_category directional, and overview_role initial.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-008",
+      "composite_key": "product.generated-repository::INIT-GRL-008",
+      "requirement_text": "The initialized repository shall contain six generated overview chunk files under docs/overview/{slug}-overview/ covering product identity and purpose, problem and outcome, users principles and boundaries, capabilities and success, unresolved questions, and lifecycle and handoff.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-009",
+      "composite_key": "product.generated-repository::INIT-GRL-009",
+      "requirement_text": "The initialized repository shall contain a generated product decomposition controlling document at docs/decompositions/{slug}-DECOMPOSITION.md with lifecycle_status candidate and authority_category directional.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-010",
+      "composite_key": "product.generated-repository::INIT-GRL-010",
+      "requirement_text": "The initialized repository shall contain four generated decomposition chunk files under docs/decompositions/{slug}-decomposition/ covering invocation and authority, product areas, cross-cutting concerns, and stopping criteria and handoff.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-011",
+      "composite_key": "product.generated-repository::INIT-GRL-011",
+      "requirement_text": "The initialized repository shall contain a generated implementation plan controlling document at docs/plans/{slug}-IMPLEMENTATION-PLAN.md with lifecycle_status candidate and authority_category planning.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-011 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-012",
+      "composite_key": "product.generated-repository::INIT-GRL-012",
+      "requirement_text": "The initialized repository shall contain four generated implementation plan chunk files under docs/plans/{slug}-implementation-plan/ covering scope and preconditions, workstreams and dependencies, validation and completion, and risks and unresolved decisions.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-012 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-013",
+      "composite_key": "product.generated-repository::INIT-GRL-013",
+      "requirement_text": "The initialized repository shall contain generated discoverability README files at docs/overview/README.md, docs/decompositions/README.md, and docs/plans/README.md that link to their respective controlling documents.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-013 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-014",
+      "composite_key": "product.generated-repository::INIT-GRL-014",
+      "requirement_text": "The initialized repository shall contain direction evidence files under product/docs/direction/evidence/ with one file per direction_material entry, where each file is a byte-identical copy of its source Git blob content and is named using the deterministic pattern {positional_index:03d}-{source_basename}.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-014 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-015",
+      "composite_key": "product.generated-repository::INIT-GRL-015",
+      "requirement_text": "The initialized repository shall contain a direction evidence manifest at product/docs/direction/manifest.json that records the mapping from source direction material to projected evidence paths, stored separately from the evidence bytes.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-015 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-016",
+      "composite_key": "product.generated-repository::INIT-GRL-016",
+      "requirement_text": "Every generated controlling document and chunk shall have lifecycle_status candidate; no generated document shall claim accepted, superseded, or retired status.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-016 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-017",
+      "composite_key": "product.generated-repository::INIT-GRL-017",
+      "requirement_text": "The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, product/tests/, test files, mutation-test files, build artifacts, editor configuration, or other artifacts not required as reusable framework material. No material_index entry with role development-only shall be installed. The output inventory governs every installed path; undeclared source-directory descendants shall not appear in the initialized repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-017 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-018",
+      "composite_key": "product.generated-repository::INIT-GRL-018",
+      "requirement_text": "The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output as declared by the material manifest with operation instantiate-template or generate-record.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-018 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-019",
+      "composite_key": "product.generated-repository::INIT-GRL-019",
+      "requirement_text": "Profile-specific paths (repo/profiles/ and .github/) are not part of the Version 1 bounded local output inventory and shall not appear in the initialized repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-019 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-020",
+      "composite_key": "product.generated-repository::INIT-GRL-020",
+      "requirement_text": "The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-020 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-021",
+      "composite_key": "product.generated-repository::INIT-GRL-021",
+      "requirement_text": "The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-021 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-022",
+      "composite_key": "product.generated-repository::INIT-GRL-022",
+      "requirement_text": "All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record. Git administrative state (.git/) is governed separately by product.local-git-repository and product.git-bootstrap-profile and is not part of the worktree inventory.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-022 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.generated-repository",
+      "spec_path": "product/specs/product/level-1/generated-repository.json",
+      "level": 1,
+      "requirement_id": "INIT-GRL-023",
+      "composite_key": "product.generated-repository::INIT-GRL-023",
+      "requirement_text": "The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every material_index entry shall be present, every dynamic family path shall be present per its expansion rule, every Level workspace README.md placeholder shall be present, no prohibited_path shall appear under its matching rule, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/foundations.py:572-730::establish_product_foundations \u2014 maintained source behavior excerpt: def establish_product_foundations( plan: FoundationPlan, staging_root: Path, ) -> FoundationResult: staging = staging_root.resolve() if not staging.exists(): raise FoundationError(f\"staging workspace does not exist: {staging}\") slug = plan.product_slug product_id = plan.product_id governing_issue_ref = plan.governing_issue direction_material = plan.directio\u2026",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:130-137::EstablishFoundationsTests.test_creates_overview_controlling \u2014 maintained named-test/assertion body excerpt: def test_creates_overview_controlling(self): result = establish_product_foundations(self.plan, self.staging) overview = self.staging / \"docs\" / \"overview\" / \"test-product-OVERVIEW.md\" self.assertTrue(overview.exists()) content = overview.read_text() self.assertIn(\"test-product Overview\", content) created_paths = [c[\"path\"] for c in result.created] self.asse\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:172-179::EstablishFoundationsTests.test_creates_product_manifest \u2014 maintained named-test/assertion body excerpt: def test_creates_product_manifest(self): result = establish_product_foundations(self.plan, self.staging) manifest_path = self.staging / \"product\" / \"specs\" / \"product\" / \"manifest.json\" self.assertTrue(manifest_path.exists()) manifest = json.loads(manifest_path.read_text()) self.assertEqual(manifest[\"spec_id\"], \"product.manifest\") created_paths = [c[\"path\"]\u2026",
+        "product/scripts/initializer/tests/test_foundations.py:311-328::FoundationDeterminismTests.test_equivalent_file_contents \u2014 maintained named-test/assertion body excerpt: def test_equivalent_file_contents(self): s1 = Path(tempfile.mkdtemp()) s2 = Path(tempfile.mkdtemp()) try: r1 = establish_product_foundations(self.plan, s1) r2 = establish_product_foundations(self.plan, s2) for c1, c2 in zip(r1.created, r2.created): p1 = s1 / c1[\"path\"] p2 = s2 / c2[\"path\"] if c1[\"artifact\"].endswith(\"-chunk\") or c1[\"artifact\"].endswith(\"-co\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.generated-repository::INIT-GRL-023 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

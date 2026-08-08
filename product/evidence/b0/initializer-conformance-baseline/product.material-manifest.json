@@ -1,0 +1,440 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.material-manifest",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.material-manifest",
+    "spec_path": "product/specs/product/level-1/material-manifest.json",
+    "level": 1,
+    "requirement_count": 11
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 11,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-001",
+      "composite_key": "product.material-manifest::INIT-MMF-001",
+      "requirement_text": "The maintained material manifest shall be a single UTF-8 encoded JSON file at `product/scripts/initializer/framework-inventory.json` in the source repository, declared with schema_version and an entries array.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-002",
+      "composite_key": "product.material-manifest::INIT-MMF-002",
+      "requirement_text": "Each manifest entry shall be a JSON object defining: `material_key` (a stable unique identifier that links to the output inventory's material_index), `source_path` (repository-relative source path), `role` (one of the material role classifications), `operation` (one of the supported operations), `source_type` (the expected Git object type: blob or symlink; tree is not permitted for the Version 1 bounded local workflow), `mode` (the expected Git mode string such as 100644 or 100755), and optional `profile` and `exclusion_rationale`.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-003",
+      "composite_key": "product.material-manifest::INIT-MMF-003",
+      "requirement_text": "The manifest shall support at least the following operations: `copy-verbatim` (destination bytes equal source Git blob bytes with no encoding or newline changes, source commit and path recorded, mode follows the declared policy, filesystem timestamps do not participate), `instantiate-template` (destination produced from an exact template with only declared substitution fields permitted, defined escaping rules, canonical serialization, and explicit behavior for missing fields), and `generate-record` (destination produced by serializing a governing schema from source fields using canonical field order and canonical JSON encoding).",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-004",
+      "composite_key": "product.material-manifest::INIT-MMF-004",
+      "requirement_text": "The manifest shall not rely on broad recursive directory copying as the authority for any path; every output path shall have exactly one material_index entry in the output inventory, and the material manifest provides the source resolution for that entry via material_key. Overlapping or duplicate material_key values shall be rejected as invalid.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-005",
+      "composite_key": "product.material-manifest::INIT-MMF-005",
+      "requirement_text": "Source paths in the manifest shall be interpreted relative to the root of the source commit tree.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-006",
+      "composite_key": "product.material-manifest::INIT-MMF-006",
+      "requirement_text": "The manifest schema_version shall be the constant string `1` for this version; future versions shall increment schema_version and shall not silently merge unknown entry fields.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-007",
+      "composite_key": "product.material-manifest::INIT-MMF-007",
+      "requirement_text": "Every material manifest entry whose operation is copy-verbatim shall have a material_key that matches exactly one material_index entry in the output inventory (product.initializer-output-inventory-v1). The material manifest shall not independently declare output paths; it resolves source information for output paths already declared by the output inventory.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-008",
+      "composite_key": "product.material-manifest::INIT-MMF-008",
+      "requirement_text": "Every material_key in the material manifest shall have a corresponding material_index entry in the output inventory. Unused material_key values (present in the material manifest but absent from the output inventory) shall be rejected. Every output inventory material_index entry shall have a corresponding material_key in the material manifest. The mapping is one-to-one and bidirectional for copy-verbatim entries.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-009",
+      "composite_key": "product.material-manifest::INIT-MMF-009",
+      "requirement_text": "No material-manifest entry with source_type tree shall be accepted. Every source_path in the material manifest must resolve to a Git blob (regular file) or symlink in the source commit tree. A source_path that resolves to a Git tree object (directory) is invalid because it would make the set of output paths depend on source-directory contents rather than the closed output inventory.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-010",
+      "composite_key": "product.material-manifest::INIT-MMF-010",
+      "requirement_text": "Every material-manifest entry with operation copy-verbatim shall have source_type blob or symlink. An entry with source_type tree and operation copy-verbatim is undefined and shall be rejected before installation.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.material-manifest",
+      "spec_path": "product/specs/product/level-1/material-manifest.json",
+      "level": 1,
+      "requirement_id": "INIT-MMF-011",
+      "composite_key": "product.material-manifest::INIT-MMF-011",
+      "requirement_text": "No material-manifest entry may be interpreted as an installation unit for a source subtree. Every entry declares exactly one source_path that resolves to one Git blob or supported symlink. Undeclared source-directory descendants shall not be installed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:56-65::load_inventory \u2014 maintained source behavior excerpt: def load_inventory(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise InventoryError(f\"invalid JSON in inventory file: {exc.msg}\") from exc except OSError as exc: raise InventoryError(f\"cannot read inventory file: {exc}\") from exc if not isinstance(raw, dict): raise InventoryError(\"inventory must\u2026",
+        "product/scripts/initializer/inventory.py:68-93::validate_inventory \u2014 maintained source behavior excerpt: def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult: result = InventoryValidationResult() _check_inventory_unknown_root_fields(raw, result) _check_inventory_schema_version(raw.get(\"schema_version\"), result) entries = raw.get(\"entries\") if entries is None: result.add(\"missing required field: entries\") return result if not isinstance(entr\u2026",
+        "product/scripts/initializer/inventory.py:317-325::validate_and_load_inventory \u2014 maintained source behavior excerpt: def validate_and_load_inventory( raw: dict[str, Any], source_selection: SourceSelection | None = None, ) -> ClassifiedInventory: result = validate_inventory(raw) result.raise_if_invalid() entries = [InventoryEntry(e) for e in raw[\"entries\"]] return ClassifiedInventory(entries)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:44-45::InventoryValidationTests.test_valid_minimal \u2014 maintained named-test/assertion body excerpt: def test_valid_minimal(self) -> None: self._assert_valid(\"valid-minimal.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:65-66::InventoryValidationTests.test_invalid_missing_path \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_path(self) -> None: self._assert_invalid(\"invalid-missing-path.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:157-169::InventoryDeterminismTests.test_ordering_is_deterministic \u2014 maintained named-test/assertion body excerpt: def test_ordering_is_deterministic(self) -> None: raw = _load_raw(\"valid-minimal.json\") a = validate_and_load_inventory(raw) b = validate_and_load_inventory(raw) a_entries = list(a.entries) b_entries = list(b.entries) self.assertEqual(a_entries, b_entries) for i in range(len(a_entries) - 1): self.assertLessEqual( (a_entries[i].classification, a_entries[i].p\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-manifest::INIT-MMF-011 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    }
+  ]
+}

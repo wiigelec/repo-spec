@@ -1,0 +1,202 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.git-bootstrap-profile",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.git-bootstrap-profile",
+    "spec_path": "product/specs/product/level-1/git-bootstrap-profile.json",
+    "level": 1,
+    "requirement_count": 5
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 5,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.git-bootstrap-profile",
+      "spec_path": "product/specs/product/level-1/git-bootstrap-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-BPF-001",
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-001",
+      "requirement_text": "A git bootstrap profile shall be identified by a profile identifier and schema_version; for the bounded local initialization workflow, the governing bootstrap profile shall be `standard-v1` with schema_version `1`.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:293-296::_build_plan \u2014 maintained source behavior excerpt: def _build_plan(preflight: GitPreflight) -> GitEstablishmentPlan: return GitEstablishmentPlan( destination_path=preflight.destination_path, )",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:381-392::GitEstablishmentFunctionTests.test_initial_branch_is_main \u2014 maintained named-test/assertion body excerpt: def test_initial_branch_is_main(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") branch = subprocess.run( [\"git\", \"rev-parse\", \"--abbrev-ref\", \"HEAD\"], cwd=td, capture_out\u2026",
+        "product/scripts/initializer/tests/test_git.py:355-366::GitEstablishmentFunctionTests.test_has_no_parent \u2014 maintained named-test/assertion body excerpt: def test_has_no_parent(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") parents = subprocess.run( [\"git\", \"rev-list\", \"--parents\", \"--max-parents=0\", \"HEAD\"], cwd=td, capt\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-bootstrap-profile::INIT-BPF-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.git-bootstrap-profile",
+      "spec_path": "product/specs/product/level-1/git-bootstrap-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-BPF-002",
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-002",
+      "requirement_text": "The `standard-v1` bootstrap profile shall define the following constants: `initial_branch` = `main`, `author_name` = `Repo-Spec Initializer`, `author_email` = `initializer@repo-spec.local`, `author_timestamp` = `1234567890 +0000`, `commit_message` = `Initial repository foundation`, and `root_commit_model` = `single`.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:293-296::_build_plan \u2014 maintained source behavior excerpt: def _build_plan(preflight: GitPreflight) -> GitEstablishmentPlan: return GitEstablishmentPlan( destination_path=preflight.destination_path, )",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:381-392::GitEstablishmentFunctionTests.test_initial_branch_is_main \u2014 maintained named-test/assertion body excerpt: def test_initial_branch_is_main(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") branch = subprocess.run( [\"git\", \"rev-parse\", \"--abbrev-ref\", \"HEAD\"], cwd=td, capture_out\u2026",
+        "product/scripts/initializer/tests/test_git.py:355-366::GitEstablishmentFunctionTests.test_has_no_parent \u2014 maintained named-test/assertion body excerpt: def test_has_no_parent(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") parents = subprocess.run( [\"git\", \"rev-list\", \"--parents\", \"--max-parents=0\", \"HEAD\"], cwd=td, capt\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-bootstrap-profile::INIT-BPF-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.git-bootstrap-profile",
+      "spec_path": "product/specs/product/level-1/git-bootstrap-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-BPF-003",
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-003",
+      "requirement_text": "All constants within a bootstrap profile version shall be defined together and changed together; changing any constant shall produce a new profile version with a distinct profile identifier, and no constant from one profile version shall be combined with constants from a different profile version.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:293-296::_build_plan \u2014 maintained source behavior excerpt: def _build_plan(preflight: GitPreflight) -> GitEstablishmentPlan: return GitEstablishmentPlan( destination_path=preflight.destination_path, )",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:381-392::GitEstablishmentFunctionTests.test_initial_branch_is_main \u2014 maintained named-test/assertion body excerpt: def test_initial_branch_is_main(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") branch = subprocess.run( [\"git\", \"rev-parse\", \"--abbrev-ref\", \"HEAD\"], cwd=td, capture_out\u2026",
+        "product/scripts/initializer/tests/test_git.py:355-366::GitEstablishmentFunctionTests.test_has_no_parent \u2014 maintained named-test/assertion body excerpt: def test_has_no_parent(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") parents = subprocess.run( [\"git\", \"rev-list\", \"--parents\", \"--max-parents=0\", \"HEAD\"], cwd=td, capt\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-bootstrap-profile::INIT-BPF-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.git-bootstrap-profile",
+      "spec_path": "product/specs/product/level-1/git-bootstrap-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-BPF-004",
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-004",
+      "requirement_text": "The initializer shall apply the governing bootstrap profile constants exactly as defined, without substitution, interpolation, or default, and shall reject any request that specifies or implies a bootstrap profile that is not recognized.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:293-296::_build_plan \u2014 maintained source behavior excerpt: def _build_plan(preflight: GitPreflight) -> GitEstablishmentPlan: return GitEstablishmentPlan( destination_path=preflight.destination_path, )",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:381-392::GitEstablishmentFunctionTests.test_initial_branch_is_main \u2014 maintained named-test/assertion body excerpt: def test_initial_branch_is_main(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") branch = subprocess.run( [\"git\", \"rev-parse\", \"--abbrev-ref\", \"HEAD\"], cwd=td, capture_out\u2026",
+        "product/scripts/initializer/tests/test_git.py:355-366::GitEstablishmentFunctionTests.test_has_no_parent \u2014 maintained named-test/assertion body excerpt: def test_has_no_parent(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") parents = subprocess.run( [\"git\", \"rev-list\", \"--parents\", \"--max-parents=0\", \"HEAD\"], cwd=td, capt\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-bootstrap-profile::INIT-BPF-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.git-bootstrap-profile",
+      "spec_path": "product/specs/product/level-1/git-bootstrap-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-BPF-005",
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-005",
+      "requirement_text": "A bootstrap profile identifier (for example `standard-v1`) shall be permanently associated with its constants and shall not be reused for a different set of constants after the original profile is superseded or retired.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/git.py:293-296::_build_plan \u2014 maintained source behavior excerpt: def _build_plan(preflight: GitPreflight) -> GitEstablishmentPlan: return GitEstablishmentPlan( destination_path=preflight.destination_path, )",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_git.py:381-392::GitEstablishmentFunctionTests.test_initial_branch_is_main \u2014 maintained named-test/assertion body excerpt: def test_initial_branch_is_main(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") branch = subprocess.run( [\"git\", \"rev-parse\", \"--abbrev-ref\", \"HEAD\"], cwd=td, capture_out\u2026",
+        "product/scripts/initializer/tests/test_git.py:355-366::GitEstablishmentFunctionTests.test_has_no_parent \u2014 maintained named-test/assertion body excerpt: def test_has_no_parent(self) -> None: if not git_available(): self.skipTest(\"git not available\") with tempfile.TemporaryDirectory() as td: (Path(td) / \"f.txt\").write_text(\"data\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") parents = subprocess.run( [\"git\", \"rev-list\", \"--parents\", \"--max-parents=0\", \"HEAD\"], cwd=td, capt\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-bootstrap-profile::INIT-BPF-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

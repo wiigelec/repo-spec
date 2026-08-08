@@ -1,0 +1,392 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.git-object-identity",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.git-object-identity",
+    "spec_path": "product/specs/product/level-1/git-object-identity.json",
+    "level": 1,
+    "requirement_count": 10
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 10,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-001",
+      "composite_key": "product.git-object-identity::INIT-OID-001",
+      "requirement_text": "A Git object identity shall be a structured representation with exactly two fields: object_format and object_id.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-002",
+      "composite_key": "product.git-object-identity::INIT-OID-002",
+      "requirement_text": "The object_format field shall be a string whose value is the constant \"sha1\" for Version 1.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-003",
+      "composite_key": "product.git-object-identity::INIT-OID-003",
+      "requirement_text": "When object_format is \"sha1\", the object_id shall be exactly 40 lowercase hexadecimal characters.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-004",
+      "composite_key": "product.git-object-identity::INIT-OID-004",
+      "requirement_text": "Abbreviated object IDs are forbidden: every object_id shall be the full required length for its declared format.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-005",
+      "composite_key": "product.git-object-identity::INIT-OID-005",
+      "requirement_text": "Named references (branch names, tag names, symbolic refs) are forbidden as object_id values.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-006",
+      "composite_key": "product.git-object-identity::INIT-OID-006",
+      "requirement_text": "Version 1 of the initializer shall restrict Git object identity to SHA-1 only: object_format must be \"sha1\" and object_id must be exactly 40 lowercase hexadecimal characters. Support for SHA-256 is reserved for a future schema version.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-007",
+      "composite_key": "product.git-object-identity::INIT-OID-007",
+      "requirement_text": "A source commit identity shall use the structured representation with object_format \"sha1\" and the object_id shall resolve directly to a commit object in the source repository via `git rev-parse --verify <object_id>^{commit}`.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-008",
+      "composite_key": "product.git-object-identity::INIT-OID-008",
+      "requirement_text": "A source blob identity shall use the structured representation with object_format \"sha1\" and the object_id shall resolve directly to a blob object in the source repository via `git rev-parse --verify <object_id>^{blob}`.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-009",
+      "composite_key": "product.git-object-identity::INIT-OID-009",
+      "requirement_text": "A generated Git tree or commit identity shall use the structured representation with object_format \"sha1\" and the object_id shall be the full-length SHA-1 of the generated Git object in the staged or promoted repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.git-object-identity",
+      "spec_path": "product/specs/product/level-1/git-object-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-OID-010",
+      "composite_key": "product.git-object-identity::INIT-OID-010",
+      "requirement_text": "Every record in the initializer that stores or transmits a Git object identity shall use the canonical structured representation defined by this specification and shall preserve the exact full object_id value.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/git.py:109-134::_build_tree_inventory \u2014 maintained source behavior excerpt: def _build_tree_inventory(destination: Path) -> list[dict[str, object]]: inventory: list[dict[str, object]] = [] if not destination.is_dir(): return inventory for entry in sorted(destination.rglob(\"*\"), key=lambda p: str(p.relative_to(destination))): rel = str(entry.relative_to(destination)) if entry.is_dir(): inventory.append({\"path\": rel, \"type\": \"dir\"})\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.git-object-identity::INIT-OID-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    }
+  ]
+}

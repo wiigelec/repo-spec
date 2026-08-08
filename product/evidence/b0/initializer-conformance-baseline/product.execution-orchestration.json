@@ -1,0 +1,90 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.execution-orchestration",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.execution-orchestration",
+    "spec_path": "product/specs/product/level-2/execution-orchestration.json",
+    "level": 2,
+    "requirement_count": 2
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 2,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.execution-orchestration",
+      "spec_path": "product/specs/product/level-2/execution-orchestration.json",
+      "level": 2,
+      "requirement_id": "INIT-EOR-001",
+      "composite_key": "product.execution-orchestration::INIT-EOR-001",
+      "requirement_text": "The execution orchestrator component shall accept a sequence of stages and an execution profile, execute each stage in order, enforce declared preconditions for each stage, and halt execution when any stage fails or produces an unrecoverable error; on pre-promotion failure, the orchestrator shall record the failure in the staging-state record and write an execution report without authorizing arbitrary resume.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/cli.py:26-70::main \u2014 maintained source behavior excerpt: def main(argv: list[str]) -> int: if len(argv) < 3: print(\"usage: repo-spec-init <command> [<args>]\", file=sys.stderr) print(\"commands:\", file=sys.stderr) print(\" validate-request <request.json> validate a request\", file=sys.stderr) print(\" inspect-source <request.json> validate request, source, and inventory\", file=sys.stderr) print(\" stage-framework <requ\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_cli.py:81-86::CliTests.test_validation_does_not_create_destination \u2014 maintained named-test/assertion body excerpt: def test_validation_does_not_create_destination(self) -> None: path = FIXTURES / \"valid-minimal.json\" proc = self._run(\"validate-request\", str(path)) self.assertEqual(proc.returncode, 0) dest = Path(\"/tmp/test-dest\") self.assertFalse(dest.exists())"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.execution-orchestration::INIT-EOR-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.execution-orchestration",
+      "spec_path": "product/specs/product/level-2/execution-orchestration.json",
+      "level": 2,
+      "requirement_id": "INIT-EOR-002",
+      "composite_key": "product.execution-orchestration::INIT-EOR-002",
+      "requirement_text": "The execution orchestrator component shall respect the execution profile's declared safety gates: orchestration shall not skip declared required stages, bypass preconditions, or silently continue past a failure without explicit authority; success may not be declared before the promotion stage has committed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/cli.py:26-70::main \u2014 maintained source behavior excerpt: def main(argv: list[str]) -> int: if len(argv) < 3: print(\"usage: repo-spec-init <command> [<args>]\", file=sys.stderr) print(\"commands:\", file=sys.stderr) print(\" validate-request <request.json> validate a request\", file=sys.stderr) print(\" inspect-source <request.json> validate request, source, and inventory\", file=sys.stderr) print(\" stage-framework <requ\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_cli.py:81-86::CliTests.test_validation_does_not_create_destination \u2014 maintained named-test/assertion body excerpt: def test_validation_does_not_create_destination(self) -> None: path = FIXTURES / \"valid-minimal.json\" proc = self._run(\"validate-request\", str(path)) self.assertEqual(proc.returncode, 0) dest = Path(\"/tmp/test-dest\") self.assertFalse(dest.exists())"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.execution-orchestration::INIT-EOR-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

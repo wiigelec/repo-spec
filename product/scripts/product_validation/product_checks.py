@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .b0_evidence import check_b0_evidence
 from .product_state import load_product_validation_context
 from .product_policy import (
     check_dependency_directions_phase,
@@ -154,3 +155,5 @@ def validate_product(repo_root: Path) -> None:
     print("ok: product lifecycle authority sequence")
     check_product_generated_freshness(context)
     print("ok: product generated-document freshness")
+    check_b0_evidence(repo_root)
+    print("ok: B0 conformance evidence")

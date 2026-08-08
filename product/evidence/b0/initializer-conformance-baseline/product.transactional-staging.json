@@ -1,0 +1,288 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.transactional-staging",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.transactional-staging",
+    "spec_path": "product/specs/product/level-2/transactional-staging.json",
+    "level": 2,
+    "requirement_count": 7
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 7,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-001",
+      "composite_key": "product.transactional-staging::INIT-TST-001",
+      "requirement_text": "The transactional staging manager shall create an isolated staging transaction root on the destination filesystem, with the structure `<root>/transaction/` (staging-state, execution-report, validation-report) and `<root>/repository/` (the exact directory tree to be promoted), and shall promote only the `repository/` subtree to the absent destination with one atomic same-filesystem rename.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-002",
+      "composite_key": "product.transactional-staging::INIT-TST-002",
+      "requirement_text": "Promotion shall be a single `os.rename()` (or equivalent same-filesystem atomic directory rename) of the complete `repository/` directory to the exact destination path, confirmed absent by a stat or lstat call immediately before the rename; the initializer shall not use recursive copy, cross-device fallback, or any non-atomic move mechanism.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-003",
+      "composite_key": "product.transactional-staging::INIT-TST-003",
+      "requirement_text": "Failure before staging transaction root establishment shall leave the destination unmodified; in this case there is no staging root to preserve and the initializer shall not create a potentially inconsistent diagnostic directory.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-004",
+      "composite_key": "product.transactional-staging::INIT-TST-004",
+      "requirement_text": "Failure after staging transaction root establishment but before promotion shall, when technically feasible, preserve the staging transaction root at its current state for diagnostics; the initializer shall report the staging location and, when preservation is not technically feasible (including filesystem inaccessibility, disk exhaustion, incomplete metadata, corruption, or explicit cleanup requirements), shall explicitly report that preservation could not be completed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-005",
+      "composite_key": "product.transactional-staging::INIT-TST-005",
+      "requirement_text": "Promotion to the declared destination shall occur only after report finalization completes in its ordered write sequence (calculate the proposed overall result; construct and validate the proposed validation report and proposed staging-state representation in memory; write the finalized validation report durably; write the finalized staging-state record durably; re-read or verify that both durable records are mutually consistent), both the finalized validation report and the finalized staging-state record at transaction/staging-state.json are durably written and mutually consistent, and the finalized validation report's overall_status is pass. The staging-state record must validate against the product.staging-state schema, its request_fingerprint must match the canonical request fingerprint, its repository_content_digest must match the expected digest, and its validation_completed and validation_overall_status must agree with the completed validation result. Promotion must not begin when only one of the two records has been durably written. When overall_status is fail (because a required Phase 1 or Phase 2 check has status failed, error, or skipped, or because report finalization including any write or consistency-verification step failed), or when the two durable records cannot be written consistently, promotion shall not occur and the workflow shall fail before promotion, leaving the staging transaction root in its pre-promotion state for diagnostics.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-006",
+      "composite_key": "product.transactional-staging::INIT-TST-006",
+      "requirement_text": "Promotion shall be non-recoverable: the initializer shall not retry promotion after a failed or indeterminate outcome without external diagnosis and manual intervention.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.transactional-staging",
+      "spec_path": "product/specs/product/level-2/transactional-staging.json",
+      "level": 2,
+      "requirement_id": "INIT-TST-007",
+      "composite_key": "product.transactional-staging::INIT-TST-007",
+      "requirement_text": "After successful promotion, the cleanup order shall be: (1) confirm promotion committed via post-rename stat of the destination, (2) record the success outcome in the caller return value, and (3) remove the remaining staging transaction root (transaction/ directory and any other staging artifacts) so the destination is the sole remaining artifact. If step 3 fails, the repository remains successfully promoted; the workflow shall return a promoted-with-finalization-error result; the staging transaction root shall be preserved when accessible; and cleanup failure must not cause the repository to be misreported as unpromoted. An execution report with completion_status promoted-with-finalization-error and promotion_outcome promoted shall be written to transaction/execution-report.json for diagnostics, recording the promoted destination in its expected_destination field, the preserved staging transaction root in its staging_root field, and the request fingerprint in its request_fingerprint field. Under cleanup failure, the staging-state record shall record the canonical cleanup-failure state: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes `promotion` (completed) and does not include `success-finalization` (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string. The execution report and staging-state record shall agree on the request fingerprint, expected destination, promotion outcome (both `promoted`), failed stage, and terminal result; the two records must not disagree about promotion. No automatic rollback or retry of the failed cleanup operation is authorized.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/staging.py:158-164::create_staging_workspace \u2014 maintained source behavior excerpt: def create_staging_workspace( parent_dir: Path | None = None, ) -> Path: if parent_dir is not None: parent_dir.mkdir(parents=True, exist_ok=True) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX, dir=str(parent_dir))) return Path(tempfile.mkdtemp(prefix=STAGING_PREFIX))",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_staging.py:293-297::StagingWorkspaceTests.test_creates_new_workspace \u2014 maintained named-test/assertion body excerpt: def test_creates_new_workspace(self): ws = create_staging_workspace() self.assertTrue(ws.exists()) self.assertTrue(ws.name.startswith(STAGING_PREFIX)) _cleanup_staging(ws)",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:385-393::DestinationPreflightFunctionTests.test_rejects_staging_inside_destination \u2014 maintained named-test/assertion body excerpt: def test_rejects_staging_inside_destination(self): dest = self.base / \"wrapper\" staging_inside = dest / \"staging\" dest.mkdir() staging_inside.mkdir() (staging_inside / \"f.txt\").write_text(\"x\") pf = destination_preflight(str(staging_inside), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"inside the requested destination\",\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.transactional-staging::INIT-TST-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}
