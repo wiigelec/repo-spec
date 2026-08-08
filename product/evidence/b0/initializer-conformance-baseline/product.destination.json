@@ -1,0 +1,136 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.destination",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.destination",
+    "spec_path": "product/specs/product/level-1/destination.json",
+    "level": 1,
+    "requirement_count": 3
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 3,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.destination",
+      "spec_path": "product/specs/product/level-1/destination.json",
+      "level": 1,
+      "requirement_id": "INIT-DST-001",
+      "composite_key": "product.destination::INIT-DST-001",
+      "requirement_text": "A destination representation shall be a local filesystem path whose target does not exist; an existing path of any type (including empty directory) shall be rejected by destination preflight.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/destination.py:77-115::classify_destination \u2014 maintained source behavior excerpt: def classify_destination(destination: Path) -> str: if not destination.exists(): parent = destination.parent if not parent.exists(): return DestinationState.inaccessible try: if not os.access(str(parent), os.R_OK | os.X_OK): return DestinationState.inaccessible except OSError: return DestinationState.inaccessible return DestinationState.absent try: dest_sta\u2026",
+        "product/scripts/initializer/destination.py:125-276::destination_preflight \u2014 maintained source behavior excerpt: def destination_preflight( staging_path: str, destination_path: str, ) -> DestinationPreflight: staging_p = Path(staging_path) dest_p = Path(destination_path) if not staging_p.exists(): return DestinationPreflight( staging_path=str(staging_p.resolve()), destination_path=str(dest_p.resolve()), destination_state=DestinationState.inaccessible, same_filesystem=\u2026",
+        "product/scripts/initializer/promotion.py:88-150::promote \u2014 maintained source behavior excerpt: def promote( staging_path: str, destination_path: str, ) -> PromotionResult: staging_p = Path(staging_path).resolve() dest_p = Path(destination_path).resolve() preflight = destination_preflight(staging_path, destination_path) if preflight.decision != PreflightDecision.allowed: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.prefl\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py:342-347::DestinationPreflightFunctionTests.test_allows_absent_destination \u2014 maintained named-test/assertion body excerpt: def test_allows_absent_destination(self): dest = self.base / \"new_dest\" pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.allowed) self.assertEqual(pf.destination_state, DestinationState.absent) self.assertTrue(pf.same_filesystem)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:364-369::DestinationPreflightFunctionTests.test_rejects_regular_file \u2014 maintained named-test/assertion body excerpt: def test_rejects_regular_file(self): dest = self.base / \"file.txt\" dest.write_text(\"content\") pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"regular file\", (pf.rejection_reason or \"\").lower())",
+        "product/scripts/initializer/tests/test_destination_promotion.py:371-378::DestinationPreflightFunctionTests.test_rejects_symlink \u2014 maintained named-test/assertion body excerpt: def test_rejects_symlink(self): target = self.base / \"sym_target\" target.mkdir() dest = self.base / \"link_to_target\" dest.symlink_to(target) pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"symbolic link\", (pf.rejection_reason or \"\").lower())"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.destination::INIT-DST-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.destination",
+      "spec_path": "product/specs/product/level-1/destination.json",
+      "level": 1,
+      "requirement_id": "INIT-DST-002",
+      "composite_key": "product.destination::INIT-DST-002",
+      "requirement_text": "Destination validation shall occur before generation and shall reject any existing target of any type, including a regular file, empty directory, nonempty directory, symbolic link, or existing repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/destination.py:77-115::classify_destination \u2014 maintained source behavior excerpt: def classify_destination(destination: Path) -> str: if not destination.exists(): parent = destination.parent if not parent.exists(): return DestinationState.inaccessible try: if not os.access(str(parent), os.R_OK | os.X_OK): return DestinationState.inaccessible except OSError: return DestinationState.inaccessible return DestinationState.absent try: dest_sta\u2026",
+        "product/scripts/initializer/destination.py:125-276::destination_preflight \u2014 maintained source behavior excerpt: def destination_preflight( staging_path: str, destination_path: str, ) -> DestinationPreflight: staging_p = Path(staging_path) dest_p = Path(destination_path) if not staging_p.exists(): return DestinationPreflight( staging_path=str(staging_p.resolve()), destination_path=str(dest_p.resolve()), destination_state=DestinationState.inaccessible, same_filesystem=\u2026",
+        "product/scripts/initializer/promotion.py:88-150::promote \u2014 maintained source behavior excerpt: def promote( staging_path: str, destination_path: str, ) -> PromotionResult: staging_p = Path(staging_path).resolve() dest_p = Path(destination_path).resolve() preflight = destination_preflight(staging_path, destination_path) if preflight.decision != PreflightDecision.allowed: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.prefl\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py:342-347::DestinationPreflightFunctionTests.test_allows_absent_destination \u2014 maintained named-test/assertion body excerpt: def test_allows_absent_destination(self): dest = self.base / \"new_dest\" pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.allowed) self.assertEqual(pf.destination_state, DestinationState.absent) self.assertTrue(pf.same_filesystem)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:364-369::DestinationPreflightFunctionTests.test_rejects_regular_file \u2014 maintained named-test/assertion body excerpt: def test_rejects_regular_file(self): dest = self.base / \"file.txt\" dest.write_text(\"content\") pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"regular file\", (pf.rejection_reason or \"\").lower())",
+        "product/scripts/initializer/tests/test_destination_promotion.py:371-378::DestinationPreflightFunctionTests.test_rejects_symlink \u2014 maintained named-test/assertion body excerpt: def test_rejects_symlink(self): target = self.base / \"sym_target\" target.mkdir() dest = self.base / \"link_to_target\" dest.symlink_to(target) pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"symbolic link\", (pf.rejection_reason or \"\").lower())"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.destination::INIT-DST-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.destination",
+      "spec_path": "product/specs/product/level-1/destination.json",
+      "level": 1,
+      "requirement_id": "INIT-DST-003",
+      "composite_key": "product.destination::INIT-DST-003",
+      "requirement_text": "After successful promotion, the destination path shall contain the promoted repository content that was previously staged at the repository/ directory inside the staging transaction root. The destination is no longer absent; its content is the initialized repository with all declared worktree paths, generated records, and Git administrative state.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/destination.py:77-115::classify_destination \u2014 maintained source behavior excerpt: def classify_destination(destination: Path) -> str: if not destination.exists(): parent = destination.parent if not parent.exists(): return DestinationState.inaccessible try: if not os.access(str(parent), os.R_OK | os.X_OK): return DestinationState.inaccessible except OSError: return DestinationState.inaccessible return DestinationState.absent try: dest_sta\u2026",
+        "product/scripts/initializer/destination.py:125-276::destination_preflight \u2014 maintained source behavior excerpt: def destination_preflight( staging_path: str, destination_path: str, ) -> DestinationPreflight: staging_p = Path(staging_path) dest_p = Path(destination_path) if not staging_p.exists(): return DestinationPreflight( staging_path=str(staging_p.resolve()), destination_path=str(dest_p.resolve()), destination_state=DestinationState.inaccessible, same_filesystem=\u2026",
+        "product/scripts/initializer/promotion.py:88-150::promote \u2014 maintained source behavior excerpt: def promote( staging_path: str, destination_path: str, ) -> PromotionResult: staging_p = Path(staging_path).resolve() dest_p = Path(destination_path).resolve() preflight = destination_preflight(staging_path, destination_path) if preflight.decision != PreflightDecision.allowed: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.prefl\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py:342-347::DestinationPreflightFunctionTests.test_allows_absent_destination \u2014 maintained named-test/assertion body excerpt: def test_allows_absent_destination(self): dest = self.base / \"new_dest\" pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.allowed) self.assertEqual(pf.destination_state, DestinationState.absent) self.assertTrue(pf.same_filesystem)",
+        "product/scripts/initializer/tests/test_destination_promotion.py:364-369::DestinationPreflightFunctionTests.test_rejects_regular_file \u2014 maintained named-test/assertion body excerpt: def test_rejects_regular_file(self): dest = self.base / \"file.txt\" dest.write_text(\"content\") pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"regular file\", (pf.rejection_reason or \"\").lower())",
+        "product/scripts/initializer/tests/test_destination_promotion.py:371-378::DestinationPreflightFunctionTests.test_rejects_symlink \u2014 maintained named-test/assertion body excerpt: def test_rejects_symlink(self): target = self.base / \"sym_target\" target.mkdir() dest = self.base / \"link_to_target\" dest.symlink_to(target) pf = destination_preflight(str(self.staging), str(dest)) self.assertEqual(pf.decision, PreflightDecision.rejected) self.assertIn(\"symbolic link\", (pf.rejection_reason or \"\").lower())"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.destination::INIT-DST-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

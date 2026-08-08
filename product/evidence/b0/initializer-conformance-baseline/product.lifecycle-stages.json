@@ -1,0 +1,418 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.lifecycle-stages",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.lifecycle-stages",
+    "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+    "level": 1,
+    "requirement_count": 12
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 0,
+    "replace": 0,
+    "implement": 12
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-001",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-001",
+      "requirement_text": "Every stage identifier defined in the lifecycle stage vocabulary shall be unique, shall use lowercase-kebab-case format, and shall be stable across specification versions.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-001: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-001: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-001 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-002",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-002",
+      "requirement_text": "Workflows, execution reports, provenance records, and orchestration components that reference bounded-initialization stages shall use the canonical stage identifiers defined by this vocabulary and shall not introduce ad-hoc stage names.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-002: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-002: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-002 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-003",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-003",
+      "requirement_text": "Each stage definition shall declare its purpose, whether it is required or optional, whether it may be deferred, its predecessor stage identifiers, and its output.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-003: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-003: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-003 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-004",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-004",
+      "requirement_text": "A stage declared as required must execute in every workflow that includes its stage identifier; a stage declared as optional may be skipped when the execution profile or workflow definition explicitly omits it.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-004: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-004: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-004 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-005",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-005",
+      "requirement_text": "A stage declared as non-recoverable shall not be retried after failure without external diagnosis and manual intervention; every stage in the initial bounded workflow shall be non-recoverable because the workflow rejects arbitrary resume.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-005: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-005: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-005 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-006",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-006",
+      "requirement_text": "Predecessor stage identifiers declared for a stage shall refer only to other stages defined in this vocabulary, and the predecessor relation shall not form a cycle.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-006: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-006: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-006 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-007",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-007",
+      "requirement_text": "No stage may declare success or completed status before promotion has committed; success-finalization shall be the only stage that reports workflow success, and it must follow promotion.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-007: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-007: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-007 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-008",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-008",
+      "requirement_text": "Failure finalization is available from any failed pre-promotion stage and records the failure in the execution report and staging-state record without authorizing arbitrary resume.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-008: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-008: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-008 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-009",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-009",
+      "requirement_text": "Promotion shall not occur unless both the finalized validation report and the finalized staging-state record are durably written and mutually consistent and the finalized validation report's overall_status is pass. The repository-validation stage must execute all required checks, perform report finalization as an ordered write protocol (construct and validate the proposed validation report and proposed staging-state representation in memory, write the finalized validation report durably, write the finalized staging-state record durably, then verify both durable records are mutually consistent), and produce both finalized records before the promotion stage may begin. The promotion stage predecessor relationship (repository-validation before promotion) enforces this gate.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-009: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-009: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-009 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-010",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-010",
+      "requirement_text": "Success is externally observable only after the promotion stage completes with outcome promoted and the success-finalization stage records the success result with the caller. The post-rename stat of the destination that confirms the renamed repository exists is the exact point at which promotion commitment is externally detectable, but the workflow does not report success to its caller until success-finalization has recorded the outcome.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-010: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-010: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-010 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-011",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-011",
+      "requirement_text": "The bounded local workflow has four terminal outcomes: pre-promotion failure (any required stage fails before promotion), promoted success (promotion commits and success-finalization completes), indeterminate promotion (rename outcome cannot be determined), and cleanup failure (promotion committed but post-promotion staging-root removal fails). Each terminal outcome has distinct diagnostic preservation, caller return, and retry-authorization rules defined by the governing workflow specification. The execution report and staging-state record shall record a mutually consistent terminal outcome: they shall agree on the request fingerprint, expected destination, promotion outcome, failed stage, and terminal result. Under cleanup failure, the staging-state record shall have: `current_stage` = `success-finalization`, `failed_stage` = `success-finalization`, `completed_stages` includes promotion (completed) and excludes success-finalization (not completed), `promotion_entered` = `true`, `promotion_outcome` = `promoted`, and `cleanup_failure` = non-empty diagnostic string.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-011: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-011: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-011 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.lifecycle-stages",
+      "spec_path": "product/specs/product/level-1/lifecycle-stages.json",
+      "level": 1,
+      "requirement_id": "INIT-LCS-012",
+      "composite_key": "product.lifecycle-stages::INIT-LCS-012",
+      "requirement_text": "A cleanup failure after successful promotion is distinct from a pre-promotion failure: the repository is successfully promoted and must not be misreported as unpromoted. The workflow returns a promoted-with-finalization-error result. No automatic retry of the failed cleanup operation is authorized without external diagnosis. Under cleanup failure, `promotion_outcome` remains `promoted`; the `cleanup_failure` field records the failure reason. The execution report shall record `promotion_outcome` `promoted` and `completion_status` `promoted-with-finalization-error`, agreeing with the staging-state record so that both records together report the repository as promoted. The staging transaction root is preserved when accessible for diagnostics. The destination remains authoritative and must not be reported as absent or unpromoted.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.lifecycle-stages::INIT-LCS-012: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.lifecycle-stages::INIT-LCS-012: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.lifecycle-stages::INIT-LCS-012 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

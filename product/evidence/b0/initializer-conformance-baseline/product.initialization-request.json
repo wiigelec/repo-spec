@@ -1,0 +1,790 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.initialization-request",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.initialization-request",
+    "spec_path": "product/specs/product/level-1/initialization-request.json",
+    "level": 1,
+    "requirement_count": 16
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 16,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-001",
+      "composite_key": "product.initialization-request::INIT-REQ-001",
+      "requirement_text": "An initialization request shall be one JSON object that explicitly supplies a governing authority identity, a product identifier, an absent destination path, a local source repository path, an exact source revision identifier, and product-direction material.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-002",
+      "composite_key": "product.initialization-request::INIT-REQ-002",
+      "requirement_text": "The governing authority identity, product identifier, destination path, local source repository path, exact source revision identifier, and product-direction material shall be required; the request shall be rejected when any required field is missing, empty, or structurally invalid.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-003",
+      "composite_key": "product.initialization-request::INIT-REQ-003",
+      "requirement_text": "The initialization request representation shall be JSON and shall not infer omitted authority-bearing values from environment state, repository configuration, remote services, or named references.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-004",
+      "composite_key": "product.initialization-request::INIT-REQ-004",
+      "requirement_text": "The request root object shall define exactly the following fields: required `schema_version` as a string, required `destination` as a string, required `authority` as an object, required `source` as an object, required `product` as an object, and optional `profile` as a string; the request shall be rejected when any other root field is present.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-005",
+      "composite_key": "product.initialization-request::INIT-REQ-005",
+      "requirement_text": "The `authority` object shall define required `granted_by` as a non-empty opaque string identifying the governing request authority, optional `type` as a non-empty string naming the authority type (such as `governing-issue`, `review-proposal`, or `local-bootstrap`), and optional `scope` as a non-empty string, and shall be rejected when any other authority field is present.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-006",
+      "composite_key": "product.initialization-request::INIT-REQ-006",
+      "requirement_text": "The `source` object shall define required `repository` as a non-empty string naming the local source repository path and required `revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity with object_format \"sha1\", and shall be rejected when any other source field is present.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-007",
+      "composite_key": "product.initialization-request::INIT-REQ-007",
+      "requirement_text": "The `product` object shall define required `id` as a non-empty string product identifier conforming to the product-identity contract and required `direction_material` as a non-empty array of non-empty strings, and shall be rejected when any other product field is present.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-008",
+      "composite_key": "product.initialization-request::INIT-REQ-008",
+      "requirement_text": "The `direction_material` array shall contain at least one item, shall preserve the supplied order of items, shall preserve duplicate items exactly as supplied without deduplication or reordering, and each item shall be a non-empty repository-relative path within the local source repository that names supplied product-direction material; duplicate source entries shall each receive their own distinct positional index and each occurrence shall produce its own deterministic evidence path, and duplicates shall not be deduplicated, collapsed, or merged.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-009",
+      "composite_key": "product.initialization-request::INIT-REQ-009",
+      "requirement_text": "The `destination` path and `source.repository` path shall be interpreted as local filesystem paths; relative paths shall be resolved against the invoking process working directory at intake, path resolution shall be the only value transformation applied, and the request shall be rejected when a path names a URL, a named reference, or a remote identity.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-010",
+      "composite_key": "product.initialization-request::INIT-REQ-010",
+      "requirement_text": "The `profile` field, when present, shall have the constant value `standard`; the request shall be rejected for any other profile value or profile shape, and `schema_version` shall be the constant string `1` with requests declaring any other schema version rejected.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-010 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-011",
+      "composite_key": "product.initialization-request::INIT-REQ-011",
+      "requirement_text": "Request validation shall reject unknown fields at the root and at every nested object, shall reject empty or whitespace-only authority-bearing strings without trimming or normalizing supplied values, and shall retain every accepted value verbatim.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-011 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-012",
+      "composite_key": "product.initialization-request::INIT-REQ-012",
+      "requirement_text": "The canonical request schema for `schema_version` `1` shall be the representation defined by this specification, and consumers shall not extend, relax, or substitute an alternative schema for the bounded local workflow.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-012 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-013",
+      "composite_key": "product.initialization-request::INIT-REQ-013",
+      "requirement_text": "The governing authority identity supplied as `authority.granted_by` shall be the single source of the governing request identifier for the bounded local workflow, shall be passed unchanged to provenance recording, and shall be recorded as the `request_identifier` of the provenance record so every generated authority artifact in the promoted repository traces to the governing request.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-013 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-014",
+      "composite_key": "product.initialization-request::INIT-REQ-014",
+      "requirement_text": "The request shall not accept, infer, or substitute any other authority identity and shall be rejected when `authority.granted_by` is absent or empty; consistency of `authority.granted_by` with the provenance record request identifier or with the governing issue linkage shall be validated by repository validation as a pre-promotion check, not by request intake.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-014 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-015",
+      "composite_key": "product.initialization-request::INIT-REQ-015",
+      "requirement_text": "Each `direction_material` entry shall be a repository-relative path that resolves to an existing regular file at the specified source revision; the request shall be rejected when any direction_material entry resolves to a nonexistent path, a directory, a symbolic link, a path outside the source repository, or a non-regular file.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-015 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initialization-request",
+      "spec_path": "product/specs/product/level-1/initialization-request.json",
+      "level": 1,
+      "requirement_id": "INIT-REQ-016",
+      "composite_key": "product.initialization-request::INIT-REQ-016",
+      "requirement_text": "Content from each `direction_material` entry shall be copied verbatim from the source repository into the staging workspace during foundation seeding; duplicate entries shall each contribute their content independently. Each direction_material entry is assigned a positional 0-based array index, and evidence paths follow the pattern product/docs/direction/evidence/{index:03d}-{basename} as defined by the output inventory (product.initializer-output-inventory-v1).",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:66-75::load_request \u2014 maintained source behavior excerpt: def load_request(path: Path) -> dict[str, Any]: try: raw = json.loads(path.read_text()) except json.JSONDecodeError as exc: raise ValidationError(f\"invalid JSON in request file: {exc.msg}\") from exc except OSError as exc: raise ValidationError(f\"cannot read request file: {exc}\") from exc if not isinstance(raw, dict): raise ValidationError(\"request must be a\u2026",
+        "product/scripts/initializer/validation.py:78-92::validate_request \u2014 maintained source behavior excerpt: def validate_request(raw: dict[str, Any]) -> ValidationResult: result = ValidationResult() _check_unknown_fields(raw, KNOWN_FIELDS, result, \"request\") _check_required_fields(raw, REQUIRED_FIELDS, result) _check_field_types(raw, result) _check_schema_version(raw.get(\"schema_version\"), result) _check_destination(raw.get(\"destination\"), result) _check_authorit\u2026",
+        "product/scripts/initializer/validation.py:102-110::_check_unknown_fields \u2014 maintained source behavior excerpt: def _check_unknown_fields( data: dict[str, Any], known: set[str], result: ValidationResult, context: str, ) -> None: for key in data: if key not in known: result.add(f\"unknown field in {context}: {key!r}\")",
+        "product/scripts/initializer/validation.py:113-120::_check_required_fields \u2014 maintained source behavior excerpt: def _check_required_fields( data: dict[str, Any], required: set[str], result: ValidationResult, ) -> None: for field in sorted(required): if field not in data: result.add(f\"missing required field: {field!r}\")",
+        "product/scripts/initializer/validation.py:123-139::_check_field_types \u2014 maintained source behavior excerpt: def _check_field_types(raw: dict[str, Any], result: ValidationResult) -> None: if \"schema_version\" in raw and not isinstance(raw[\"schema_version\"], str): result.add(\"schema_version must be a string\") if \"destination\" in raw and not isinstance(raw[\"destination\"], str): result.add(\"destination must be a string\") if \"authority\" in raw and not isinstance(raw[\"a\u2026",
+        "product/scripts/initializer/validation.py:142-148::_check_schema_version \u2014 maintained source behavior excerpt: def _check_schema_version(version: Any, result: ValidationResult) -> None: if version is None: return if not isinstance(version, str): return if version not in SUPPORTED_SCHEMA_VERSIONS: result.add(f\"unsupported schema version: {version!r}\")",
+        "product/scripts/initializer/validation.py:151-157::_check_destination \u2014 maintained source behavior excerpt: def _check_destination(dest: Any, result: ValidationResult) -> None: if dest is None: return if not isinstance(dest, str): return if not dest.strip(): result.add(\"destination must not be empty\")",
+        "product/scripts/initializer/validation.py:160-178::_check_authority \u2014 maintained source behavior excerpt: def _check_authority(auth: Any, result: ValidationResult) -> None: if auth is None: return if not isinstance(auth, dict): return _check_unknown_fields(auth, KNOWN_AUTHORITY_FIELDS, result, \"authority\") granted_by = auth.get(\"granted_by\") if not granted_by: result.add(\"authority.granted_by is required and must be non-empty\") elif not isinstance(granted_by, s\u2026",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:55-57::ValidationTests.test_valid_full \u2014 maintained named-test/assertion body excerpt: def test_valid_full(self) -> None: self._assert_valid(\"valid-full.json\") self._assert_normalizes(\"valid-full.json\")",
+        "product/scripts/initializer/tests/test_validation.py:89-90::ValidationTests.test_invalid_unknown_field \u2014 maintained named-test/assertion body excerpt: def test_invalid_unknown_field(self) -> None: self._assert_invalid(\"invalid-unknown-field.json\")",
+        "product/scripts/initializer/tests/test_validation.py:71-72::ValidationTests.test_invalid_missing_destination \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_destination(self) -> None: self._assert_invalid(\"invalid-missing-destination.json\")",
+        "product/scripts/initializer/tests/test_validation.py:77-78::ValidationTests.test_invalid_missing_authority \u2014 maintained named-test/assertion body excerpt: def test_invalid_missing_authority(self) -> None: self._assert_invalid(\"invalid-missing-authority.json\")",
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initialization-request::INIT-REQ-016 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.execution-profile",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.execution-profile",
+    "spec_path": "product/specs/product/level-1/execution-profile.json",
+    "level": 1,
+    "requirement_count": 4
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 4,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.execution-profile",
+      "spec_path": "product/specs/product/level-1/execution-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-PRF-001",
+      "composite_key": "product.execution-profile::INIT-PRF-001",
+      "requirement_text": "An execution profile shall be an atomic mode selector that governs whether the initializer performs a dry-run validation pass, an actual generation pass with destination mutation, or a recovery pass that resumes from a preserved staging state.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/cli.py:26-70::main \u2014 maintained source behavior excerpt: def main(argv: list[str]) -> int: if len(argv) < 3: print(\"usage: repo-spec-init <command> [<args>]\", file=sys.stderr) print(\"commands:\", file=sys.stderr) print(\" validate-request <request.json> validate a request\", file=sys.stderr) print(\" inspect-source <request.json> validate request, source, and inventory\", file=sys.stderr) print(\" stage-framework <requ\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.execution-profile::INIT-PRF-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.execution-profile",
+      "spec_path": "product/specs/product/level-1/execution-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-PRF-002",
+      "composite_key": "product.execution-profile::INIT-PRF-002",
+      "requirement_text": "The execution profile shall reject execution modes that are not supported for the given combination of request inputs, destination state, and source revision.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/cli.py:26-70::main \u2014 maintained source behavior excerpt: def main(argv: list[str]) -> int: if len(argv) < 3: print(\"usage: repo-spec-init <command> [<args>]\", file=sys.stderr) print(\"commands:\", file=sys.stderr) print(\" validate-request <request.json> validate a request\", file=sys.stderr) print(\" inspect-source <request.json> validate request, source, and inventory\", file=sys.stderr) print(\" stage-framework <requ\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.execution-profile::INIT-PRF-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.execution-profile",
+      "spec_path": "product/specs/product/level-1/execution-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-PRF-003",
+      "composite_key": "product.execution-profile::INIT-PRF-003",
+      "requirement_text": "The execution profile shall map each supported combination of execution mode and request parameters to exactly one Level 3 initialization workflow, and the initializer shall select the corresponding workflow before performing any generation, validation, or destination mutation work.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/cli.py:26-70::main \u2014 maintained source behavior excerpt: def main(argv: list[str]) -> int: if len(argv) < 3: print(\"usage: repo-spec-init <command> [<args>]\", file=sys.stderr) print(\"commands:\", file=sys.stderr) print(\" validate-request <request.json> validate a request\", file=sys.stderr) print(\" inspect-source <request.json> validate request, source, and inventory\", file=sys.stderr) print(\" stage-framework <requ\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.execution-profile::INIT-PRF-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.execution-profile",
+      "spec_path": "product/specs/product/level-1/execution-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-PRF-004",
+      "composite_key": "product.execution-profile::INIT-PRF-004",
+      "requirement_text": "The initializer shall reject any combination of execution profile and request parameters that maps to no supported Level 3 workflow, and shall report the reason for rejection without performing partial initialization.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:207-213::_check_profile \u2014 maintained source behavior excerpt: def _check_profile(profile: Any, result: ValidationResult) -> None: if profile is None: return if not isinstance(profile, str): return if profile not in VALID_PROFILES: result.add(f\"unsupported profile: {profile!r}\")",
+        "product/scripts/initializer/cli.py:26-70::main \u2014 maintained source behavior excerpt: def main(argv: list[str]) -> int: if len(argv) < 3: print(\"usage: repo-spec-init <command> [<args>]\", file=sys.stderr) print(\"commands:\", file=sys.stderr) print(\" validate-request <request.json> validate a request\", file=sys.stderr) print(\" inspect-source <request.json> validate request, source, and inventory\", file=sys.stderr) print(\" stage-framework <requ\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:86-87::ValidationTests.test_invalid_unsupported_profile \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_profile(self) -> None: self._assert_invalid(\"invalid-unsupported-profile.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.execution-profile::INIT-PRF-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

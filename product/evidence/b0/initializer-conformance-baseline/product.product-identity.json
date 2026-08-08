@@ -1,0 +1,274 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.product-identity",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.product-identity",
+    "spec_path": "product/specs/product/level-1/product-identity.json",
+    "level": 1,
+    "requirement_count": 7
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 7,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-001",
+      "composite_key": "product.product-identity::INIT-PID-001",
+      "requirement_text": "A product identifier shall be a stable, non-empty string that uniquely identifies a product in the bounded initialization workflow and shall be supplied as the `product.id` field of the initialization request.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-002",
+      "composite_key": "product.product-identity::INIT-PID-002",
+      "requirement_text": "The product identifier shall match the pattern `^[a-z][a-z0-9]*(-[a-z0-9]+)*$`: it shall start with a lowercase letter, contain only lowercase ASCII letters, ASCII digits, and hyphens, and hyphens shall not appear consecutively or at the end.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-003",
+      "composite_key": "product.product-identity::INIT-PID-003",
+      "requirement_text": "The product identifier shall be case-sensitive and lowercase; uppercase letters, mixed case, or non-ASCII characters shall be rejected.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-004",
+      "composite_key": "product.product-identity::INIT-PID-004",
+      "requirement_text": "The product identifier shall serve as the canonical product directory name in the initialized repository: generated product paths under `product/` shall use the identifier verbatim as the product subdirectory name.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-005",
+      "composite_key": "product.product-identity::INIT-PID-005",
+      "requirement_text": "The product identifier shall be immutable for the initialized repository: once a product is initialized with a given identifier, that identifier shall not change through subsequent initialization operations.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-006",
+      "composite_key": "product.product-identity::INIT-PID-006",
+      "requirement_text": "There shall be no separate display name for the product identifier; the identifier itself is the display name, slug, directory name, and identity \u2014 all derived values shall equal the identifier verbatim.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.product-identity",
+      "spec_path": "product/specs/product/level-1/product-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-PID-007",
+      "composite_key": "product.product-identity::INIT-PID-007",
+      "requirement_text": "Two initialization requests with different product identifiers address distinct products; the initializer shall not equate, alias, or map between different identifiers.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:216-236::_check_product \u2014 maintained source behavior excerpt: def _check_product(product: Any, result: ValidationResult) -> None: if product is None: return if not isinstance(product, dict): return _check_unknown_fields(product, KNOWN_PRODUCT_FIELDS, result, \"product\") pid = product.get(\"id\") if pid is not None and not isinstance(pid, str): result.add(\"product.id must be a string\") elif pid is not None and not pid.str\u2026",
+        "product/scripts/initializer/foundations.py:83-92::build_foundation_plan \u2014 maintained source behavior excerpt: def build_foundation_plan( product_id: str, direction_material: list[str], governing_issue: str, ) -> FoundationPlan: if not product_id or not product_id.strip(): raise FoundationError(\"product_id must be non-empty\") if not direction_material: raise FoundationError(\"direction_material must be non-empty\") return FoundationPlan(product_id, direction_material,\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_foundations.py:37-39::FoundationPlanTests.test_slug_derivation \u2014 maintained named-test/assertion body excerpt: def test_slug_derivation(self): plan = FoundationPlan(\"My Product!\", [\"/doc.md\"], \"#195\") self.assertEqual(plan.product_slug, \"my-product\")",
+        "product/scripts/initializer/tests/test_foundations.py:111-113::BuildFoundationPlanTests.test_build_rejects_empty_product_id \u2014 maintained named-test/assertion body excerpt: def test_build_rejects_empty_product_id(self): with self.assertRaises(FoundationError): build_foundation_plan(\"\", [\"/path/to/dir.md\"], \"#195\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.product-identity::INIT-PID-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    }
+  ]
+}

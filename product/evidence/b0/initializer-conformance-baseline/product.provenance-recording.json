@@ -1,0 +1,55 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.provenance-recording",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.provenance-recording",
+    "spec_path": "product/specs/product/level-2/provenance-recording.json",
+    "level": 2,
+    "requirement_count": 1
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 0,
+    "replace": 0,
+    "implement": 1
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.provenance-recording",
+      "spec_path": "product/specs/product/level-2/provenance-recording.json",
+      "level": 2,
+      "requirement_id": "INIT-PRC-001",
+      "composite_key": "product.provenance-recording::INIT-PRC-001",
+      "requirement_text": "The provenance recording component shall capture the initializer identity and version, product identifier, local source repository identity, exact source revision, request identifier, and initialization timestamp, and shall write the provenance record into the repository/ directory before Git initialization and validation.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.provenance-recording::INIT-PRC-001: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.provenance-recording::INIT-PRC-001: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.provenance-recording::INIT-PRC-001 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

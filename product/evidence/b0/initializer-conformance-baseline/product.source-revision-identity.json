@@ -1,0 +1,334 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.source-revision-identity",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.source-revision-identity",
+    "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+    "level": 1,
+    "requirement_count": 8
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 8,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-001",
+      "composite_key": "product.source-revision-identity::INIT-SRC-001",
+      "requirement_text": "A local source revision identity shall uniquely identify an exact commit object in the explicitly supplied local source Git repository; the source is a local Git repository, and the revision must resolve directly to a commit object via `git rev-parse --verify <revision>^{commit}`.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-002",
+      "composite_key": "product.source-revision-identity::INIT-SRC-002",
+      "requirement_text": "The commit tree of the resolved commit shall be the sole source-content authority for all material selection, installation, and inventory operations; the working tree of the source repository shall be ignored.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-003",
+      "composite_key": "product.source-revision-identity::INIT-SRC-003",
+      "requirement_text": "The revision identity shall use the canonical Git object identity representation defined by product.git-object-identity, with object_format \"sha1\" and the object_id shall be exactly 40 lowercase hexadecimal characters.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-004",
+      "composite_key": "product.source-revision-identity::INIT-SRC-004",
+      "requirement_text": "All required Git objects (commit, tree, and referenced blobs and subtrees) must already exist locally in the source repository; the initializer shall reject a revision whose objects are not fully available without performing a remote fetch, named-reference resolution, or object transfer.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-005",
+      "composite_key": "product.source-revision-identity::INIT-SRC-005",
+      "requirement_text": "The initializer shall reject any source revision whose resolution requires: named-reference resolution (branch, tag, or remote-tracking name), remote fetch or network access, Git replacement-object behavior, Git submodule checkout or initialization, or LFS pointer resolution.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-006",
+      "composite_key": "product.source-revision-identity::INIT-SRC-006",
+      "requirement_text": "Symbolic links in the source commit tree shall be handled according to the declared material-manifest entry: when the manifest entry source_type is `symlink`, the link target text shall be copied as the destination symlink target when the destination filesystem supports symbolic links; when the manifest entry does not declare symlink support or the filesystem does not support symbolic links, the entry shall be rejected.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-007",
+      "composite_key": "product.source-revision-identity::INIT-SRC-007",
+      "requirement_text": "The supported Git object format for Version 1 shall be SHA-1 only; the initializer shall reject any source repository whose native object format is not SHA-1.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.source-revision-identity",
+      "spec_path": "product/specs/product/level-1/source-revision-identity.json",
+      "level": 1,
+      "requirement_id": "INIT-SRC-008",
+      "composite_key": "product.source-revision-identity::INIT-SRC-008",
+      "requirement_text": "The source revision identity shall be explicit and immutable; named-reference resolution, remote lookup, and remote retrieval are outside this contract.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:28-33::is_canonical_object_id \u2014 maintained source behavior excerpt: def is_canonical_object_id(value: str) -> bool: if len(value) == 40: return all(c in \"0123456789abcdef\" for c in value) if len(value) == 64: return all(c in \"0123456789abcdef\" for c in value) return False",
+        "product/scripts/initializer/validation.py:181-204::_check_source \u2014 maintained source behavior excerpt: def _check_source(source: Any, result: ValidationResult) -> None: if source is None: return if not isinstance(source, dict): return _check_unknown_fields(source, KNOWN_SOURCE_FIELDS, result, \"source\") repo = source.get(\"repository\") rev = source.get(\"revision\") if repo is not None and not isinstance(repo, str): result.add(\"source.repository must be a string\u2026",
+        "product/scripts/initializer/staging.py:42-43::resolve_source_root \u2014 maintained source behavior excerpt: def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path: return inventory_repo_root.resolve()",
+        "product/scripts/initializer/inventory.py:343-349::resolve_source_selection_from_request \u2014 maintained source behavior excerpt: def resolve_source_selection_from_request( request_repository: str | None, request_revision: str | None, ) -> SourceSelection: if request_repository is None and request_revision is None: raise InventoryError(\"source selection requires explicit source repository and revision\") return build_source_selection(request_repository, request_revision)"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:47-49::ValidationTests.test_valid_with_source \u2014 maintained named-test/assertion body excerpt: def test_valid_with_source(self) -> None: self._assert_valid(\"valid-with-source.json\") self._assert_normalizes(\"valid-with-source.json\")",
+        "product/scripts/initializer/tests/test_inventory.py:173-178::SourceSelectionTests.test_valid_explicit_source \u2014 maintained named-test/assertion body excerpt: def test_valid_explicit_source(self) -> None: sel = build_source_selection(\"https://github.com/owner/repo\", \"abc123\") self.assertIsNotNone(sel) assert sel is not None self.assertEqual(sel.repository, \"https://github.com/owner/repo\") self.assertEqual(sel.revision, \"abc123\")",
+        "product/scripts/initializer/tests/test_inventory.py:221-223::SourceSelectionTests.test_no_silent_default_branch \u2014 maintained named-test/assertion body excerpt: def test_no_silent_default_branch(self) -> None: with self.assertRaises(InventoryError): resolve_source_selection_from_request(None, None)"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.source-revision-identity::INIT-SRC-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    }
+  ]
+}

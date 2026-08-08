@@ -1,0 +1,373 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.initializer-level-0",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.initializer-level-0",
+    "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+    "level": 0,
+    "requirement_count": 9
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 9,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-001",
+      "composite_key": "product.initializer-level-0::INIT-L0-001",
+      "requirement_text": "The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly declared variable data whose scope, representation, and source shall be declared; the equivalence relation shall be defined by the content-equivalence contract of the governing product specification and shall be evaluated on canonical forms.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-002",
+      "composite_key": "product.initializer-level-0::INIT-L0-002",
+      "requirement_text": "The initializer shall preserve workspace isolation: generation and validation operations shall not modify any destination state outside the declared staging workspace or bounded destination until an explicit promotion gate is passed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-003",
+      "composite_key": "product.initializer-level-0::INIT-L0-003",
+      "requirement_text": "The initializer shall maintain layer separation: reusable repository framework material, project-specific product content, Git-generic repository behavior, and hosting-platform-specific behavior shall remain distinguishable in the initialized repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-004",
+      "composite_key": "product.initializer-level-0::INIT-L0-004",
+      "requirement_text": "The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision, and projected direction evidence shall be byte-identical to its source Git blob.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-004 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-005",
+      "composite_key": "product.initializer-level-0::INIT-L0-005",
+      "requirement_text": "The initializer shall satisfy failure safety: a partial or failed initialization shall not falsely present the destination as a successfully initialized repository.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-005 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-006",
+      "composite_key": "product.initializer-level-0::INIT-L0-006",
+      "requirement_text": "Request authority shall take precedence over default or inferred behavior: the initializer shall not silently expand authority beyond what the explicit initialization request grants.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-006 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": true
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-007",
+      "composite_key": "product.initializer-level-0::INIT-L0-007",
+      "requirement_text": "Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-007 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-008",
+      "composite_key": "product.initializer-level-0::INIT-L0-008",
+      "requirement_text": "The initializer shall have a stable product identity and an explicit version identity.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-008 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.initializer-level-0",
+      "spec_path": "product/specs/product/level-0/initializer-level-0.json",
+      "level": 0,
+      "requirement_id": "INIT-L0-009",
+      "composite_key": "product.initializer-level-0::INIT-L0-009",
+      "requirement_text": "The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",
+        "product/scripts/initializer/staging.py:303-330::stage_framework_and_foundations \u2014 maintained source behavior excerpt: def stage_framework_and_foundations( classified: ClassifiedInventory, source_selection: SourceSelection | None, source_root: Path, foundation_plan: FoundationPlan | None = None, staging_parent: Path | None = None, ) -> tuple[InstallationResult, FoundationResult | None]: staging_result = stage_framework( classified=classified, source_selection=source_selecti\u2026",
+        "product/scripts/initializer/git.py:347-574::establish_git_repository \u2014 maintained source behavior excerpt: def establish_git_repository( destination_path: str, plan: GitEstablishmentPlan | None = None, ) -> GitEstablishmentResult: if plan is None: plan = GitEstablishmentPlan(destination_path=destination_path) dest_p = Path(plan.destination_path).resolve() dest_str = str(dest_p) completed: list[str] = [] if not dest_p.exists(): return GitEstablishmentResult( stat\u2026",
+        "product/scripts/initializer/promotion.py:161-179::promote_with_validation \u2014 maintained source behavior excerpt: def promote_with_validation( staging_path: str, destination_path: str, installed: list[dict[str, object]], rejected: list[dict[str, object]], ) -> PromotionResult: try: validate_staging_result_complete(installed, rejected) except DestinationError as exc: return PromotionResult( status=\"failed\", transaction_state=TransactionPhase.preflight, destination_class\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_validation.py:106-119::DeterminismTests.test_equivalent_inputs_equal_contexts \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_equal_contexts(self) -> None: a = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"granted_by\": \"issue-189\"}, \"source\": {\"repository\": \"https://github.com/owner/repo\", \"revision\": \"abc\"}, }) b = validate_and_normalize({ \"schema_version\": \"1\", \"destination\": \"/tmp/dest\", \"authority\": {\"gran\u2026",
+        "product/scripts/initializer/tests/test_staging.py:491-497::StageFrameworkTests.test_destination_not_modified \u2014 maintained named-test/assertion body excerpt: def test_destination_not_modified(self): dest = Path(\"/tmp/repo-spec-test-dest\") dest_before = dest.exists() ci = self._make_classified_inventory() stage_framework(ci, self.ss, self.source_root) dest_after = dest.exists() self.assertEqual(dest_before, dest_after)",
+        "product/scripts/initializer/tests/test_git.py:453-464::GitDeterminismTests.test_equivalent_inputs_produce_same_commit_tree \u2014 maintained named-test/assertion body excerpt: def test_equivalent_inputs_produce_same_commit_tree(self) -> None: if not git_available(): self.skipTest(\"git not available\") trees: list[str] = [] for _ in range(2): with tempfile.TemporaryDirectory() as td: (Path(td) / \"file.txt\").write_text(\"deterministic content\") result = establish_git_repository(td) self.assertEqual(result.status, \"success\") trees.app\u2026"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.initializer-level-0::INIT-L0-009 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

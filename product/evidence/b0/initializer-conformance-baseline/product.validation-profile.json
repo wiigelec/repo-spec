@@ -1,0 +1,253 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.validation-profile",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.validation-profile",
+    "spec_path": "product/specs/product/level-1/validation-profile.json",
+    "level": 1,
+    "requirement_count": 7
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 0,
+    "replace": 0,
+    "implement": 7
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-001",
+      "composite_key": "product.validation-profile::INIT-VP-001",
+      "requirement_text": "The validation profile shall declare a stable ordered set of checks, each with a unique check_id, classification (required or advisory), deterministic order number, applies_to scope, pass_condition, and an explicit list of failure_codes.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-001: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-001: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-001 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-002",
+      "composite_key": "product.validation-profile::INIT-VP-002",
+      "requirement_text": "A required check that produces a status of failed or error shall cause overall validation to fail and shall block promotion.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-002: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-002: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-002 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-003",
+      "composite_key": "product.validation-profile::INIT-VP-003",
+      "requirement_text": "An advisory check that produces a status of failed or error shall be recorded in the validation report but shall not cause overall validation to fail or block promotion.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-003: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-003: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-003 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-004",
+      "composite_key": "product.validation-profile::INIT-VP-004",
+      "requirement_text": "The validation profile shall be versioned via profile_version. Successor versions may add new checks at new order numbers without renumbering existing checks. No check_id shall be removed from a published profile version; a check may be deprecated but shall remain defined.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-004: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-004: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-004 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-005",
+      "composite_key": "product.validation-profile::INIT-VP-005",
+      "requirement_text": "Every check in the profile must apply to one of the following scopes: request, source, material-manifest, repository-worktree, or git-state. Checks are executed in two phases: Phase 1 (input and source, orders 10-70) and Phase 2 (staged repository and Git state, orders 80-200). Each phase executes checks in ascending order number within that phase. No ordinary check may read or validate content under transaction/; staging-state validation is not an ordinary profile check.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-005: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-005: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-005 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-006",
+      "composite_key": "product.validation-profile::INIT-VP-006",
+      "requirement_text": "After all Phase 1 and Phase 2 checks are complete, report finalization is a deterministic ordered write operation that shall proceed in this exact order: (a) calculate the proposed overall_status (pass when every required Phase 1 and Phase 2 check has status passed, otherwise fail); (b) construct in memory a proposed final validation report carrying the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest from the output.repository-digest-match check; (c) construct in memory a proposed final staging-state representation carrying validation_completed equal to true, validation_overall_status equal to the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest; (d) validate the proposed staging-state representation against the product.staging-state schema in memory without writing it; (e) validate the proposed validation report against the validation-report schema in memory, verifying the request_fingerprint linkage, the repository_content_digest linkage, and check ordering and uniqueness; (f) serialize and write the finalized validation report atomically to transaction/validation-report.json; (g) serialize and write the finalized staging-state record atomically to transaction/staging-state.json; and (h) re-read or otherwise verify that the two durable records are mutually consistent, confirming they share the same request_fingerprint and repository_content_digest and that the staging-state validation_completed and validation_overall_status agree with the completed validation result. These postconditions are not ordinary profile checks; they are validation-component invariants enforced during report finalization before promotion. Any failure in steps (a) through (h) shall prevent promotion.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-006: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-006: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-006 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.validation-profile",
+      "spec_path": "product/specs/product/level-1/validation-profile.json",
+      "level": 1,
+      "requirement_id": "INIT-VP-007",
+      "composite_key": "product.validation-profile::INIT-VP-007",
+      "requirement_text": "Promotion is permitted only when both the finalized validation report and the finalized staging-state record are durably written and verified mutually consistent, the report validates against its schema, every required Phase 1 and Phase 2 check has status passed, and overall_status is pass. Promotion must not begin when only one of the two records has been durably written. Report finalization failure (staging-state schema validation failure, fingerprint mismatch, digest mismatch, validation-status mismatch, report schema validation failure, serialization failure, linkage mismatch, or failure of the final consistency verification) shall prevent promotion and shall be recorded as a pre-promotion failure with the staging transaction root preserved for diagnostics.",
+      "classification": "implement",
+      "source_evidence": [],
+      "test_evidence": [],
+      "absence_evidence": [
+        "source absence for product.validation-profile::INIT-VP-007: Patch 1 identified no maintained initializer source symbol that directly implements this accepted requirement.",
+        "test absence for product.validation-profile::INIT-VP-007: Patch 1 identified no maintained named test that directly protects this accepted requirement."
+      ],
+      "evidence_rationale": "implement \u2014 product.validation-profile::INIT-VP-007 has explicit maintained-source absence in the B0 audit. No maintained initializer implementation evidence satisfies the accepted requirement, so later owning-increment work must implement the behavior and add requirement-level verification.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "implement",
+        "result": "implement",
+        "source_behavior_present": false,
+        "named_test_behavior_present": false,
+        "explicit_source_absence": true,
+        "explicit_test_absence": true,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

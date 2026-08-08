@@ -1,0 +1,133 @@
+{
+  "artifact_id": "initializer-b0-conformance-baseline::product.material-classification",
+  "artifact_class": "initializer-b0-conformance-baseline-chunk",
+  "authority_category": "evidence",
+  "parent_artifact": "product/evidence/b0/initializer-conformance-baseline.json",
+  "schema_version": "1",
+  "specification": {
+    "spec_id": "product.material-classification",
+    "spec_path": "product/specs/product/level-1/material-classification.json",
+    "level": 1,
+    "requirement_count": 3
+  },
+  "classification_counts": {
+    "preserve": 0,
+    "repair": 3,
+    "replace": 0,
+    "implement": 0
+  },
+  "blocker_count": 0,
+  "entries": [
+    {
+      "spec_id": "product.material-classification",
+      "spec_path": "product/specs/product/level-1/material-classification.json",
+      "level": 1,
+      "requirement_id": "INIT-MAT-001",
+      "composite_key": "product.material-classification::INIT-MAT-001",
+      "requirement_text": "Material role classification shall be an atomic taxonomy that distinguishes reusable framework material, project-specific product-direction material, project-specific product-specification material, and generated derived artifacts.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:163-177::_check_entry_classification \u2014 maintained source behavior excerpt: def _check_entry_classification( entry: dict[str, Any], path: str, prefix: str, result: InventoryValidationResult, ) -> None: classification = entry.get(\"classification\") if not classification: result.add(f\"{prefix}: missing required field: classification\") return if not isinstance(classification, str): result.add(f\"{prefix}: classification must be a string\u2026",
+        "product/scripts/initializer/inventory.py:269-288::_check_contradictory_classifications \u2014 maintained source behavior excerpt: def _check_contradictory_classifications( entries: list[Any], result: InventoryValidationResult, ) -> None: installable_set: set[str] = set() uninstallable_set: set[str] = set() for entry in entries: if not isinstance(entry, dict): continue path = entry.get(\"path\", \"\") classification = entry.get(\"classification\", \"\") if classification in INSTALLABLE_CLASSIF\u2026",
+        "product/scripts/initializer/inventory.py:328-340::build_source_selection \u2014 maintained source behavior excerpt: def build_source_selection( repository: str | None, revision: str | None, ) -> SourceSelection | None: if repository is None and revision is None: return None if repository is not None and revision is None: raise InventoryError(\"source revision is required when source repository is supplied\") if revision is not None and repository is None: raise InventoryEr\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:109-122::InventoryLoadTests.test_classifications_are_distinguishable \u2014 maintained named-test/assertion body excerpt: def test_classifications_are_distinguishable(self) -> None: raw = _load_raw(\"valid-framework-vs-derived.json\") classified = validate_and_load_inventory(raw) authoritative = classified.entries_by_classification(\"framework-authoritative\") derived = classified.entries_by_classification(\"derived\") self.assertEqual(len(authoritative), 1) self.assertEqual(authori\u2026",
+        "product/scripts/initializer/tests/test_inventory.py:74-75::InventoryValidationTests.test_invalid_unsupported_classification \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_classification(self) -> None: self._assert_invalid(\"invalid-unsupported-classification.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-classification::INIT-MAT-001 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.material-classification",
+      "spec_path": "product/specs/product/level-1/material-classification.json",
+      "level": 1,
+      "requirement_id": "INIT-MAT-002",
+      "composite_key": "product.material-classification::INIT-MAT-002",
+      "requirement_text": "Every material item in the initialized repository shall carry or be traceable to its role classification, and the classification shall determine whether the initializer may modify the item during generation; the classification for each source path is declared in the material manifest, and the manifest is the authoritative source for role assignments.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:163-177::_check_entry_classification \u2014 maintained source behavior excerpt: def _check_entry_classification( entry: dict[str, Any], path: str, prefix: str, result: InventoryValidationResult, ) -> None: classification = entry.get(\"classification\") if not classification: result.add(f\"{prefix}: missing required field: classification\") return if not isinstance(classification, str): result.add(f\"{prefix}: classification must be a string\u2026",
+        "product/scripts/initializer/inventory.py:269-288::_check_contradictory_classifications \u2014 maintained source behavior excerpt: def _check_contradictory_classifications( entries: list[Any], result: InventoryValidationResult, ) -> None: installable_set: set[str] = set() uninstallable_set: set[str] = set() for entry in entries: if not isinstance(entry, dict): continue path = entry.get(\"path\", \"\") classification = entry.get(\"classification\", \"\") if classification in INSTALLABLE_CLASSIF\u2026",
+        "product/scripts/initializer/inventory.py:328-340::build_source_selection \u2014 maintained source behavior excerpt: def build_source_selection( repository: str | None, revision: str | None, ) -> SourceSelection | None: if repository is None and revision is None: return None if repository is not None and revision is None: raise InventoryError(\"source revision is required when source repository is supplied\") if revision is not None and repository is None: raise InventoryEr\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:109-122::InventoryLoadTests.test_classifications_are_distinguishable \u2014 maintained named-test/assertion body excerpt: def test_classifications_are_distinguishable(self) -> None: raw = _load_raw(\"valid-framework-vs-derived.json\") classified = validate_and_load_inventory(raw) authoritative = classified.entries_by_classification(\"framework-authoritative\") derived = classified.entries_by_classification(\"derived\") self.assertEqual(len(authoritative), 1) self.assertEqual(authori\u2026",
+        "product/scripts/initializer/tests/test_inventory.py:74-75::InventoryValidationTests.test_invalid_unsupported_classification \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_classification(self) -> None: self._assert_invalid(\"invalid-unsupported-classification.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-classification::INIT-MAT-002 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    },
+    {
+      "spec_id": "product.material-classification",
+      "spec_path": "product/specs/product/level-1/material-classification.json",
+      "level": 1,
+      "requirement_id": "INIT-MAT-003",
+      "composite_key": "product.material-classification::INIT-MAT-003",
+      "requirement_text": "Material classified as development-only (test files, build artifacts, editor configuration, or other artifacts not required in every initialized repository) shall not be installed. The output inventory shall not contain entries with role development-only.",
+      "classification": "repair",
+      "source_evidence": [
+        "product/scripts/initializer/inventory.py:163-177::_check_entry_classification \u2014 maintained source behavior excerpt: def _check_entry_classification( entry: dict[str, Any], path: str, prefix: str, result: InventoryValidationResult, ) -> None: classification = entry.get(\"classification\") if not classification: result.add(f\"{prefix}: missing required field: classification\") return if not isinstance(classification, str): result.add(f\"{prefix}: classification must be a string\u2026",
+        "product/scripts/initializer/inventory.py:269-288::_check_contradictory_classifications \u2014 maintained source behavior excerpt: def _check_contradictory_classifications( entries: list[Any], result: InventoryValidationResult, ) -> None: installable_set: set[str] = set() uninstallable_set: set[str] = set() for entry in entries: if not isinstance(entry, dict): continue path = entry.get(\"path\", \"\") classification = entry.get(\"classification\", \"\") if classification in INSTALLABLE_CLASSIF\u2026",
+        "product/scripts/initializer/inventory.py:328-340::build_source_selection \u2014 maintained source behavior excerpt: def build_source_selection( repository: str | None, revision: str | None, ) -> SourceSelection | None: if repository is None and revision is None: return None if repository is not None and revision is None: raise InventoryError(\"source revision is required when source repository is supplied\") if revision is not None and repository is None: raise InventoryEr\u2026"
+      ],
+      "test_evidence": [
+        "product/scripts/initializer/tests/test_inventory.py:109-122::InventoryLoadTests.test_classifications_are_distinguishable \u2014 maintained named-test/assertion body excerpt: def test_classifications_are_distinguishable(self) -> None: raw = _load_raw(\"valid-framework-vs-derived.json\") classified = validate_and_load_inventory(raw) authoritative = classified.entries_by_classification(\"framework-authoritative\") derived = classified.entries_by_classification(\"derived\") self.assertEqual(len(authoritative), 1) self.assertEqual(authori\u2026",
+        "product/scripts/initializer/tests/test_inventory.py:74-75::InventoryValidationTests.test_invalid_unsupported_classification \u2014 maintained named-test/assertion body excerpt: def test_invalid_unsupported_classification(self) -> None: self._assert_invalid(\"invalid-unsupported-classification.json\")"
+      ],
+      "absence_evidence": [],
+      "evidence_rationale": "repair \u2014 product.material-classification::INIT-MAT-003 has concrete maintained source behavior and concrete named-test/assertion bodies, but the B0 audit does not establish that those existing assertions cover every semantic clause of the accepted requirement. The maintained path is therefore relevant and bounded repair/verification is plausible, while `preserve` would overclaim conformance.",
+      "blocker": {
+        "is_blocker": false,
+        "kind": null,
+        "description": null
+      },
+      "classification_audit": {
+        "patch": 2,
+        "previous_classification": "repair",
+        "result": "repair",
+        "source_behavior_present": true,
+        "named_test_behavior_present": true,
+        "explicit_source_absence": false,
+        "explicit_test_absence": false,
+        "preserve_claim_supported": false,
+        "replace_claim_supported": false,
+        "i1_gate_quality_reviewed": false
+      }
+    }
+  ]
+}

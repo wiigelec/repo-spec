@@ -6,6 +6,7 @@ from pathlib import Path
 from .cli_contracts import check_product_validate_cli_contract
 
 from .test_product_acyclicity import run_product_acyclicity_tests
+from .test_b0_evidence import run_b0_evidence_tests
 from .test_product_dependency_directions import (
     run_product_dependency_direction_tests,
 )
@@ -37,6 +38,7 @@ def run_product_mutation_tests(repo_root: Path) -> None:
     run_product_projection_freshness_tests(repo_root)
     run_product_projection_rendering_tests(repo_root)
     run_product_repository_mutations(repo_root)
+    run_b0_evidence_tests(repo_root)
 
     sys.path.insert(0, str(repo_root / "product/scripts"))
     from initializer.tests.run_tests import run_initializer_tests
