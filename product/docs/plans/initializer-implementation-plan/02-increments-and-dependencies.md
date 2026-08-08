@@ -68,15 +68,15 @@ Predecessor: I4. Entry: I1-I4 exits with complete evidence under the accepted pl
 | Destination/preflight (`INIT-DST-001-002`, `INIT-DPF-001-002`) | I1→I2,I4,I5 | Preserve absence/same-filesystem facts; recheck before rename |
 | Isolation and material realization (all I2 keys) | I2→I3-I5 | Keep transaction separate, carry closed-inventory evidence |
 | Traceability and identity (`INIT-L0-004,008`, I3-owned identity keys) | I3→I4,I5 | Validate source/request/product linkages, handoff, and Git state |
-| Repaired provenance/handoff contracts (`INIT-PRC-001`, `INIT-PRO-001-008`, `INIT-HND-001-014`, `INIT-HAS-001`) | I3→I4→I5 | Preserve issue #255 semantics: provenance is origin/identity only; handoff is pre-Git and uses disjoint presence/omission dispositions |
+| Repaired provenance/handoff contracts (`INIT-PRC-001`, `INIT-PRO-001-008`, `INIT-HND-001-014`, `INIT-HAS-001`) | I3→I4→I5 | Preserve issues #255/#257 semantics: provenance is origin/identity only; handoff is pre-Git, uses disjoint presence/omission classifications, and orders all six classification arrays deterministically |
 | Failure safety and transaction (all I4 keys) | I4→I5 | Phase results, record linkage, promotion gate/outcome, diagnostics |
 | Determinism and lifecycle result (`INIT-L0-001,009`, all I5 keys) | I1-I4→I5 | Integrate canonical forms, stage order, vocabulary, equivalence evidence |
 
 ## Specification-repair impact
 
-Issue #255 repaired the prior provenance/handoff authority conflicts. The repair did
-not change requirement identities, ownership assignments, or the B0→I1→I2→I3→I4→I5
-dependency order. This impact review reaffirms those structures against the repaired
+Issues #255 and #257 repaired the prior provenance/handoff authority conflicts and
+classification-ordering gap. Those repairs did not change requirement identities,
+ownership assignments, or the B0→I1→I2→I3→I4→I5 dependency order. This impact review reaffirms those structures against the repaired
 accepted semantics. Implementation remains unauthorized because the plan is still
 candidate and requires separate governed acceptance.
 

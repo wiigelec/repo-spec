@@ -7,9 +7,9 @@ Candidate; non-authorizing.
 This document is non-normative with respect to product semantics. In its
 current candidate state it does not authorize initializer implementation work.
 Implementation authorization and implementation-issue derivation remain blocked because
-this candidate plan has not yet been accepted. Issue #255 repaired the accepted
-provenance/handoff specification conflicts and this plan has received the required
-specification-impact review, but it remains candidate and non-authorizing.
+this candidate plan has not yet been accepted. Issues #255 and #257 repaired the accepted provenance/handoff specification
+conflicts and ordering gap, and issue #259 synchronizes this plan to that repaired
+authority; the plan remains candidate and non-authorizing.
 
 ## Metadata
 
@@ -168,10 +168,9 @@ plan-acceptance decision.
 
 ## Next authorized action
 
-Perform a clean-room post-issue-257 review to confirm that this impact-reviewed
-candidate plan remains complete and consistent with the repaired accepted
-specifications, including deterministic ordering across all six handoff classification arrays. If no material planning gap remains, a separately governed
-plan-acceptance decision may follow.
+Complete the issue #259 clean-room post-patch review against current accepted
+specifications and synchronized planning state. If no material planning gap remains,
+a separately governed plan-acceptance decision may follow.
 
 No product implementation is authorized by this plan.
 

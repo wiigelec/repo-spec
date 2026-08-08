@@ -11,7 +11,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | --- | --- |
 | Every I1-owned key has one baseline classification (preserve/repair/replace/implement) with cited source/test evidence | Machine-readable matrix; counts reconcile to ownership for `product.request-intake`, `product.source-revision-identity`, `product.destination`, `product.product-identity`, `product.material-manifest`, `product.git-object-identity`, `product.destination-preflight`, `product.request-intake`, `product.source-material-resolution` |
 | No I1 key classified by file presence or undifferentiated tests alone | Each entry cites specific behavior/assertion; absence citations explicit |
-| Issue #255 repaired provenance/handoff keys are classified against current accepted text | Matrix cites current accepted specification revision |
+| Issues #255/#257 repaired provenance/handoff keys are classified against current accepted text | Matrix cites current accepted specification revision |
 
 ### I1 -> I2 gate
 | Requirement | Evidence |
@@ -34,7 +34,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 
 | Requirement | Evidence |
 | --- | --- |
-| Issue #255 provenance/handoff repair reflected in B0 and I3 evidence | Current accepted specs plus this impact-review record |
+| Issues #255/#257 provenance/handoff repairs reflected in B0 and I3 evidence | Current accepted specs plus this impact-review record |
 | All I3-owned keys have requirement-level evidence | Composite-key reconciliation to Patch 1 I3 rows |
 | Provenance/handoff/Git consistent with repaired contracts, I2 content, I1 identities | Traceability across request/source/product/material/content/records/Git |
 
