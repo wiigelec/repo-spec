@@ -24,7 +24,7 @@ authority; the plan remains candidate and non-authorizing.
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "candidate",
-  "governing_issue": "#243, #253, #255, #257, #259",
+  "governing_issue": "#243, #253, #255, #257, #259, #261",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -108,7 +108,7 @@ authority; the plan remains candidate and non-authorizing.
       ]
     }
   ],
-  "successor_action": "Complete the issue #259 clean-room post-patch review against current accepted specifications and synchronized planning state. If no material planning gap remains, the candidate plan may proceed to a separately governed acceptance decision. No implementation work is authorized by this candidate plan.",
+  "successor_action": "Complete the separately governed plan-acceptance decision under issue #261 against the current accepted specifications and synchronized planning state. Issue #259 / PR #260 clean-room synchronization and review are completed predecessor evidence. No implementation work is authorized while this plan remains candidate.",
   "schema_version": "1"
 }
 ```
@@ -155,7 +155,7 @@ plan-acceptance decision.
   provenance-conflict planning amendment recorded in issue #253 comment
   `#issuecomment-5222594632`, #255 (accepted provenance/handoff repair and
   plan impact review), #257 (handoff ordering repair and plan impact review),
-  and #259 (plan synchronization clean-room cycle)
+  #259 (plan synchronization clean-room cycle), and #261 (separately governed plan-acceptance cycle)
 - Controlling repository contracts: `repo.development-document-base`,
   `repo.implementation-plan`, `repo.development-workflow`, and applicable
   repository workflow and validation contracts
@@ -168,11 +168,11 @@ plan-acceptance decision.
 
 ## Next authorized action
 
-Complete the issue #259 clean-room post-patch review against current accepted
-specifications and synchronized planning state. If no material planning gap remains,
-a separately governed plan-acceptance decision may follow.
+Issue #259 / PR #260 clean-room synchronization and review are completed
+predecessor evidence. Complete the separately governed plan-acceptance decision under
+issue #261 against current accepted specifications and synchronized planning state.
 
-No product implementation is authorized by this plan.
+No product implementation is authorized while this plan remains candidate.
 
 ## Discoverability
 

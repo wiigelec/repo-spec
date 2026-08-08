@@ -69,7 +69,7 @@ Evidence artifacts: B0 classification matrix, requirement-level test suite, vali
 - Patch 3: requirement-level transition gates; validation strategy (component/cross-component/E2E); terminal outcomes/determinism/rejection evidence; risk/decision register substantive
 
 ### Plan acceptance
-Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 synchronizes the candidate plan to that repaired authority. Plan acceptance remains a separately governed decision and is not authorized by this synchronization cycle.
+Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 / PR #260 completed synchronization of the candidate plan to that repaired authority and the required post-patch clean-room review. Issue #261 governs the separate plan-acceptance decision. Until that decision is completed successfully, the plan remains candidate and non-authorizing.
 
 ### Successor implementation work
 Requires: (1) plan acceptance, (2) B0 requirement-level evidence, and (3) individual governed issues citing accepted plan/specifications/base and predecessor evidence.
@@ -93,4 +93,4 @@ B0 evidence classification and any other pre-implementation evidence work requir
 | Three patches; no fourth functional correction | Verified |
 | No product source/tests/schemas/specs modified | Verified |
 | `./scripts/validate` passes each commit | Verified |
-| Clean-room review: current accepted specs, no invented semantics | In progress under issue #259; final post-patch review required before any acceptance decision |
+| Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260; recorded as predecessor evidence for the separately governed issue #261 acceptance decision |
