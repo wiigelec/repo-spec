@@ -21,7 +21,7 @@
     },
     {
       "id": "INIT-RVA-003",
-      "text": "After all Phase 1 and Phase 2 checks are recorded, the validation component shall perform report finalization as an ordered write operation: (a) calculate the proposed overall_status (pass when every required Phase 1 and Phase 2 check has status passed, otherwise fail); (b) construct and validate in memory a proposed final validation report and a proposed final staging-state representation carrying validation_completed equal to true, validation_overall_status equal to the proposed overall_status, the canonical request_fingerprint, and the expected repository_content_digest; (c) verify request_fingerprint linkage, repository_content_digest linkage, check ordering and uniqueness, and the completed report schema; (d) write the finalized validation report durably; (e) write the finalized staging-state record durably; and (f) verify that both durable records are mutually consistent (shared request_fingerprint and repository_content_digest, and staging-state validation_completed and validation_overall_status agreeing with the completed validation result). Promotion is permitted only when a finalized validation report and a finalized staging-state record both exist, both are durably written and mutually consistent, the report validates against its schema, every required Phase 1 and Phase 2 check has status passed, and overall_status is pass. The validation component shall not proceed to the promotion stage when any required Phase 1 or Phase 2 check has status failed, error, or skipped, or when report finalization (including any write or consistency-verification step) fails."
+      "text": "After all Phase 1 and Phase 2 checks are recorded, the validation component shall perform report finalization as an ordered write operation: (a) calculate the proposed overall_status (pass when every required Phase 1 and Phase 2 check has status passed, otherwise fail); (b) construct and validate in memory a proposed final validation report and a proposed final staging-state representation carrying validation_completed equal to true, validation_overall_status equal to the proposed overall_status, the request fingerprint computed once by request intake under product.initialization-request::INIT-REQ-012 and carried unchanged by the validated request model, and the expected repository_content_digest; (c) verify request_fingerprint linkage, repository_content_digest linkage, check ordering and uniqueness, and the completed report schema; (d) write the finalized validation report durably; (e) write the finalized staging-state record durably; and (f) verify that both durable records are mutually consistent (shared request_fingerprint and repository_content_digest, and staging-state validation_completed and validation_overall_status agreeing with the completed validation result). The validation component shall not reserialize the request or recompute its fingerprint. Promotion is permitted only when a finalized validation report and a finalized staging-state record both exist, both are durably written and mutually consistent, the report validates against its schema, every required Phase 1 and Phase 2 check has status passed, and overall_status is pass. The validation component shall not proceed to the promotion stage when any required Phase 1 or Phase 2 check has status failed, error, or skipped, or when report finalization (including any write or consistency-verification step) fails."
     },
     {
       "id": "INIT-RVA-004",
@@ -40,6 +40,9 @@
       "spec_id": "product.git-object-identity"
     },
     {
+      "spec_id": "product.initialization-request"
+    },
+    {
       "spec_id": "product.validation-profile"
     },
     {
@@ -53,6 +56,10 @@
     {
       "type": "artifact",
       "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
     },
     {
       "type": "artifact",
