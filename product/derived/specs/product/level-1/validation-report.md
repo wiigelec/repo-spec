@@ -63,8 +63,8 @@ Defines the canonical validation report that the repository validation component
 - `INIT-VR-005`: The skipped status is permitted only for checks whose applies_to scope was determined to be absent or inapplicable during validation. A check whose scope is present must not be skipped; it must execute and produce passed, failed, or error.
 - `INIT-VR-006`: The failure_code field shall use one of the check-specific failure codes declared in the validation profile's failure_codes array for that check_id. A failure_code not declared in the profile is invalid.
 - `INIT-VR-007`: The evidence field shall contain check-specific supporting data such as path counts, byte comparisons, object IDs, or file listings. Evidence shall be structured as a JSON object and shall not contain authoritative product specification content.
-- `INIT-VR-008`: The validation report shall define the following top-level fields: schema_version (constant string "1"), report_version (constant string "1"), profile_version (string matching the validation profile version used), request_fingerprint (SHA-256 hex digest of the canonical initialization request JSON), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects).
-- `INIT-VR-009`: The request_fingerprint field shall link the validation report to the specific initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority.
+- `INIT-VR-008`: The validation report shall define the following top-level fields: schema_version (constant string "1"), report_version (constant string "1"), profile_version (string matching the validation profile version used), request_fingerprint (the exactly 64-character lowercase hexadecimal SHA-256 value computed once by request intake from the canonical initialization request byte sequence defined by product.initialization-request::INIT-REQ-012), repository_content_digest (SHA-256 hex digest of the repository/ subtree computed before Git initialization), overall_status (string: pass or fail), and checks (array of check result objects).
+- `INIT-VR-009`: The request_fingerprint field shall link the validation report to the specific validated initialization request that produced the staged repository, enabling audit traceability from validation outcome back to the originating authority. The report shall copy the request fingerprint carried by the validated request model unchanged and shall not reserialize the request, recompute the digest, or derive the fingerprint from a staging-state, execution-report, provenance, or validation-report representation.
 - `INIT-VR-010`: The validation report shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification (root for top-level keys, checks for each check entry), 2-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
 - `INIT-VR-011`: The validation report shall be written at transaction/validation-report.json inside the staging transaction root and shall never be part of the promoted repository content.
 - `INIT-VR-012`: The validation report format shall evolve by incrementing schema_version. Consumers of schema_version 1 shall reject reports declaring any other version and shall not merge unknown or extra fields silently.
@@ -77,12 +77,14 @@ Defines the canonical validation report that the repository validation component
 
 - `product.initializer-level-0`
 - `product.git-object-identity`
+- `product.initialization-request`
 - `product.validation-profile`
 
 ## References
 
 - artifact: `product/specs/product/level-0/initializer-level-0.json`
 - artifact: `product/specs/product/level-1/git-object-identity.json`
+- artifact: `product/specs/product/level-1/initialization-request.json`
 - artifact: `product/specs/product/level-1/validation-profile.json`
 - artifact: `repo/specs/repo/validation.json`
 

@@ -46,7 +46,7 @@
     },
     {
       "id": "INIT-RPT-004a",
-      "text": "The `request_fingerprint` field shall link the execution report to the exact initialization request that produced the workflow run, using the same SHA-256 hex digest of the canonical initialization request used by the validation report and staging-state record. The `staging_root` field shall identify the preserved diagnostic staging transaction root path and may remain the original resolved path even when cleanup partially removed content. The `expected_destination` field shall record the resolved destination path from the request."
+      "text": "The `request_fingerprint` field shall link the execution report to the exact validated initialization request that produced the workflow run. It shall be the exactly 64-character lowercase hexadecimal SHA-256 value computed once by request intake from the canonical initialization request byte sequence defined by product.initialization-request::INIT-REQ-012, copied unchanged from the validated request model, and identical to the value used by the validation report and staging-state record. The execution-report producer shall not reserialize the request, recompute the digest, or derive the fingerprint from another downstream record. The `staging_root` field shall identify the preserved diagnostic staging transaction root path and may remain the original resolved path even when cleanup partially removed content. The `expected_destination` field shall record the same resolved destination path that participates in the canonical request representation."
     },
     {
       "id": "INIT-RPT-004b",
@@ -93,6 +93,9 @@
       "spec_id": "product.git-object-identity"
     },
     {
+      "spec_id": "product.initialization-request"
+    },
+    {
       "spec_id": "product.lifecycle-stages"
     }
   ],
@@ -100,6 +103,10 @@
     {
       "type": "artifact",
       "path": "product/specs/product/level-0/initializer-level-0.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/initialization-request.json"
     },
     {
       "type": "artifact",
