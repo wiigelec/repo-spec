@@ -19,7 +19,8 @@
       "override planning authority",
       "override validation authority",
       "override implementation semantics"
-    ]
+    ],
+    "artifact_class": "user-convenience"
   },
   "operating_model": {
     "cycle": [

@@ -318,6 +318,19 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Source artifacts:
   - `repo.platform-profiles`
 
+### User convenience
+
+- Identifier: `user-convenience`
+- Role: `user convenience`
+- Authority category: `convenience`
+- Authority source: user-facing convenience and session-support context
+- Source of truth rule: Supports user-facing convenience or session continuity only; accepted repository and product authority remain controlling, and this class shall not establish or override repository, product, workflow, planning, validation, or implementation semantics.
+- Mutability: mutable as user-facing convenience material under governed repository boundaries
+- Generation mode: `manual`
+- Validation ownership: `review`
+- Portability category: `framework-generic`
+- Manifest participation: `none`
+
 ## Normative requirements
 
 - `REPO-AT-001`: The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes.
@@ -330,6 +343,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - `REPO-AT-007`: Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.
 - `REPO-AT-008`: The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.
 - `REPO-AT-009`: Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`.
+- `REPO-AT-010`: The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics.
 
 ## Dependencies
 

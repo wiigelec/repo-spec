@@ -113,27 +113,36 @@ DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
-APPROVED_REPOSITORY_ROOT_ENTRIES = {
-    '.github',
-    '.gitignore',
-    'AGENTS.md',
-    'LICENSE',
-    'README.md',
-    'docs',
-    'product',
-    'reference',
-    'repo',
-    'scripts',
-    'user',
-    'validate',
+REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS = {
+    '.github': 'directory',
+    '.gitignore': 'file',
+    'AGENTS.md': 'file',
+    'LICENSE': 'file',
+    'README.md': 'file',
+    'docs': 'directory',
+    'product': 'directory',
+    'reference': 'directory',
+    'repo': 'directory',
+    'scripts': 'directory',
+    'user': 'directory',
 }
-IGNORED_REPOSITORY_ROOT_ENTRIES = {".git", ".pytest_cache"}
+IGNORED_REPOSITORY_ROOT_ENTRIES = {".git"}
 
 
 def check_repository_root_boundary(context: ValidationContext) -> None:
-    actual = {path.name for path in context.repo_root.iterdir() if path.name not in IGNORED_REPOSITORY_ROOT_ENTRIES}
-    unexpected = sorted(actual - APPROVED_REPOSITORY_ROOT_ENTRIES)
+    actual = {path.name: path for path in context.repo_root.iterdir() if path.name not in IGNORED_REPOSITORY_ROOT_ENTRIES}
+    expected = set(REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS)
+    unexpected = sorted(set(actual) - expected)
     expect(not unexpected, "repository root boundary failed: undeclared top-level entries: " + ", ".join(unexpected))
+    missing = sorted(expected - set(actual))
+    expect(not missing, "repository root boundary failed: missing required top-level entries: " + ", ".join(missing))
+    wrong_kind: list[str] = []
+    for name, kind in REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS.items():
+        path = actual[name]
+        matches = path.is_file() if kind == "file" else path.is_dir()
+        if not matches:
+            wrong_kind.append(f"{name} (expected {kind})")
+    expect(not wrong_kind, "repository root boundary failed: wrong-kind top-level entries: " + ", ".join(sorted(wrong_kind)))
 
 
 

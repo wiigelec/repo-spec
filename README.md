@@ -12,7 +12,8 @@ Supported runtime: Python 3.10+
 - [Initializer decomposition](product/docs/decompositions/INITIALIZER-DECOMPOSITION.md)
 - [Initializer reference](product/docs/initializer/README.md)
 - [Repository manifest](repo/specs/repo/manifest.json)
-- [Schemas](schemas/)
+- [Repository schemas](repo/schemas/)
+- [Product schemas](product/schemas/product/)
 - [Derived docs](repo/derived/specs/repo/)
 - [Validation](repo/scripts/validate)
 
