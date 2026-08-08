@@ -1,6 +1,6 @@
 # Validation, gates, and completion
 
-Status: candidate; non-authorizing
+Status: accepted; planning-authoritative; non-normative with respect to product semantics
 
 ## Transition gates
 
@@ -69,13 +69,13 @@ Evidence artifacts: B0 classification matrix, requirement-level test suite, vali
 - Patch 3: requirement-level transition gates; validation strategy (component/cross-component/E2E); terminal outcomes/determinism/rejection evidence; risk/decision register substantive
 
 ### Plan acceptance
-Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 / PR #260 completed synchronization of the candidate plan to that repaired authority and the required post-patch clean-room review. Issue #261 governs the separate plan-acceptance decision. Until that decision is completed successfully, the plan remains candidate and non-authorizing.
+Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 / PR #260 completed synchronization of the candidate plan to that repaired authority and the required post-patch clean-room review. Issue #261 completed the separate clean-room acceptance audit and accepted this plan against the current synchronized authority.
 
 ### Successor implementation work
-Requires: (1) plan acceptance, (2) B0 requirement-level evidence, and (3) individual governed issues citing accepted plan/specifications/base and predecessor evidence.
+B0 is the next eligible governed successor and requires its own governing issue. I1-I5 require: (1) this accepted plan, (2) completed B0 requirement-level evidence, (3) each increment's predecessor exit evidence, and (4) individual governed issues citing the accepted plan, applicable accepted specifications, exact accepted base, and predecessor evidence.
 
 ### Unblocked preparatory work
-B0 evidence classification and any other pre-implementation evidence work require separate governed issues and remain subordinate to accepted specifications and the candidate plan. No implementation work is authorized before plan acceptance.
+B0 evidence classification is now the next authorized governed preparatory work. It remains subordinate to accepted specifications and this accepted plan, requires a separate governing issue, and does not authorize I1 until the B0→I1 gate passes.
 
 ### Completion gate summary
 | Condition | Status |
@@ -93,4 +93,5 @@ B0 evidence classification and any other pre-implementation evidence work requir
 | Three patches; no fourth functional correction | Verified |
 | No product source/tests/schemas/specs modified | Verified |
 | `./scripts/validate` passes each commit | Verified |
-| Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260; recorded as predecessor evidence for the separately governed issue #261 acceptance decision |
+| Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260 and revalidated for acceptance under issue #261 |
+| Governed plan acceptance | Accepted under issue #261 after current-spec, manifest, correspondence/dependency, planning-completeness, and repository validation checks |

@@ -2,14 +2,16 @@
 
 ## Status
 
-Candidate; non-authorizing.
+Accepted; planning-authoritative; non-normative with respect to product semantics.
 
-This document is non-normative with respect to product semantics. In its
-current candidate state it does not authorize initializer implementation work.
-Implementation authorization and implementation-issue derivation remain blocked because
-this candidate plan has not yet been accepted. Issues #255 and #257 repaired the accepted provenance/handoff specification
-conflicts and ordering gap, and issue #259 synchronizes this plan to that repaired
-authority; the plan remains candidate and non-authorizing.
+This document is non-normative with respect to product semantics. Issue #261
+accepted this plan after revalidation against the synchronized accepted specification
+set and repository planning contracts. The accepted plan provides planning authority
+for governed successor work; it does not itself mutate product artifacts. B0 is the
+next eligible governed successor, and I1-I5 remain gated by predecessor evidence and
+separate governing issues. Issues #255 and #257 repaired the accepted provenance/handoff
+specification conflicts and ordering gap, and issue #259 / PR #260 synchronized and
+clean-room reviewed the plan before acceptance.
 
 ## Metadata
 
@@ -23,7 +25,7 @@ authority; the plan remains candidate and non-authorizing.
   "title": "Repo-Spec Initializer Implementation Plan",
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
-  "lifecycle_status": "candidate",
+  "lifecycle_status": "accepted",
   "governing_issue": "#243, #253, #255, #257, #259, #261",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
@@ -108,7 +110,7 @@ authority; the plan remains candidate and non-authorizing.
       ]
     }
   ],
-  "successor_action": "Complete the separately governed plan-acceptance decision under issue #261 against the current accepted specifications and synchronized planning state. Issue #259 / PR #260 clean-room synchronization and review are completed predecessor evidence. No implementation work is authorized while this plan remains candidate.",
+  "successor_action": "Create a separately governed B0 evidence-classification issue against this accepted plan and the current accepted product specifications. B0 must complete before I1 work may be authorized; I1-I5 remain subject to their predecessor gates and separate governing issues.",
   "schema_version": "1"
 }
 ```
@@ -124,7 +126,7 @@ overview and decomposition remain directional context only.
 
 ## Workstreams
 
-The candidate plan defines six bounded increments in a single forward DAG:
+The accepted plan defines six bounded increments in a single forward DAG:
 
 | Rank | Increment | Purpose |
 | --- | --- | --- |
@@ -137,9 +139,9 @@ The candidate plan defines six bounded increments in a single forward DAG:
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
-unchanged. Because this plan remains candidate, no implementation authorization
-or implementation-issue derivation is granted until a separately governed
-plan-acceptance decision.
+unchanged. Plan acceptance makes B0 the next eligible governed successor; it does
+not bypass the B0→I1→I2→I3→I4→I5 gates or the requirement for separate governing
+issues before maintained product-artifact mutation.
 
 ## Chunk index
 
@@ -168,11 +170,12 @@ plan-acceptance decision.
 
 ## Next authorized action
 
-Issue #259 / PR #260 clean-room synchronization and review are completed
-predecessor evidence. Complete the separately governed plan-acceptance decision under
-issue #261 against current accepted specifications and synchronized planning state.
+Issue #261 accepted this implementation plan after clean-room revalidation against
+current accepted specifications and synchronized planning state. The next authorized
+action is a separately governed B0 evidence-classification issue.
 
-No product implementation is authorized while this plan remains candidate.
+B0 must complete before I1 work may be authorized. I1-I5 remain gated by predecessor
+evidence and separate governing issues.
 
 ## Discoverability
 
