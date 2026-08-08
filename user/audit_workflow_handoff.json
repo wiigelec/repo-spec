@@ -1,11 +1,25 @@
 {
   "schema_version": "1.0",
-  "handoff_type": "governed_repository_change_workflow",
-  "title": "Agent Handoff \u2014 Governed Audit \u2192 Issue \u2192 Three Patches \u2192 PR \u2192 Manual Merge \u2192 Audit",
+  "handoff_type": "audit_workflow_handoff",
+  "title": "Agent Handoff — Audit → Issue → Three Patches → PR → Manual Merge → Audit",
   "source": {
     "file": "Pasted markdown(20260807-214635).md",
-    "role": "governing workflow handoff",
-    "note": "Repository/project-specific audit details are supplied separately and combined with repository governing artifacts."
+    "role": "audit workflow session handoff",
+    "note": "Non-normative convenience material for initializing an interactive audit/change session. Repository/project-specific audit details are supplied separately. Accepted repository and product specifications remain controlling authority."
+  },
+  "authority_status": {
+    "classification": "non-normative user convenience",
+    "purpose": "initialize an interactive audit/change workflow session",
+    "controlling_authority": "accepted repository and product specifications",
+    "conflict_rule": "If this handoff conflicts with accepted repository or product authority, the accepted authority controls.",
+    "may_not": [
+      "establish repository authority",
+      "establish product authority",
+      "override workflow specifications",
+      "override planning authority",
+      "override validation authority",
+      "override implementation semantics"
+    ]
   },
   "operating_model": {
     "cycle": [
@@ -30,25 +44,6 @@
     "assistant_must_never_merge_pr": true,
     "user_merges_manually": true,
     "post_merge_action": "return_to_fresh_audit"
-  },
-  "authority_model": {
-    "establish_before_decisions": true,
-    "default_precedence": [
-      "normative_specifications",
-      "repository_and_process_specifications",
-      "implementation_plans",
-      "directional_overviews_and_design_notes",
-      "code_tests_schemas_generated_artifacts_prior_behavior_as_evidence"
-    ],
-    "principles": [
-      "Normative specifications outrank directional documents.",
-      "Repository/process specifications control repository structure and workflow.",
-      "Plans organize implementation but do not invent missing normative semantics.",
-      "Directional documents are non-normative unless explicitly declared normative.",
-      "Existing code, tests, schemas, generated artifacts, prior plans, and prior behavior are evidence rather than authority when conflicting with controlling specifications."
-    ],
-    "on_material_authority_conflict": "stop_mutation_and_report_conflict",
-    "guessing_to_resolve_conflict_forbidden": true
   },
   "phase_gates": {
     "audit": {
@@ -374,29 +369,6 @@
     ],
     "validate_exact_revision_proposed_for_review_when_practical": true
   },
-  "non_negotiable_rules": [
-    "Never mutate during the audit phase.",
-    "Select exactly three functional corrections per governed audit cycle.",
-    "Do not silently add a fourth functional correction.",
-    "Additional narrowly scoped repair commits are allowed.",
-    "Product or domain semantics must come from controlling authority, not guesses.",
-    "Plans cannot invent missing normative semantics.",
-    "Existing code or tests do not override higher authority.",
-    "Stop on material authority conflict.",
-    "Respect explicit architectural directionality and repository boundaries.",
-    "Keep each patch bounded.",
-    "Defer unrelated discoveries.",
-    "Validate each patch before moving to the next.",
-    "Inspect machine-readable script results.",
-    "Stream or heartbeat long-running validation.",
-    "Prefer normal pushes.",
-    "Never expose credentials.",
-    "Never claim validation that did not occur.",
-    "Never merge the PR.",
-    "User merges manually.",
-    "Verify the merge afterward.",
-    "Return to a fresh audit after every completed cycle."
-  ],
   "interaction_style": {
     "style": [
       "concise",
@@ -426,5 +398,47 @@
       "objectives",
       "special_constraints"
     ]
-  }
+  },
+  "authority_guidance": {
+    "establish_before_decisions": true,
+    "default_precedence": [
+      "normative_specifications",
+      "repository_and_process_specifications",
+      "implementation_plans",
+      "directional_overviews_and_design_notes",
+      "code_tests_schemas_generated_artifacts_prior_behavior_as_evidence"
+    ],
+    "principles": [
+      "Normative specifications outrank directional documents.",
+      "Repository/process specifications control repository structure and workflow.",
+      "Plans organize implementation but do not invent missing normative semantics.",
+      "Directional documents are non-normative unless explicitly declared normative.",
+      "Existing code, tests, schemas, generated artifacts, prior plans, and prior behavior are evidence rather than authority when conflicting with controlling specifications."
+    ],
+    "on_material_authority_conflict": "stop_mutation_and_report_conflict",
+    "guessing_to_resolve_conflict_forbidden": true
+  },
+  "session_rules": [
+    "Never mutate during the audit phase.",
+    "Select exactly three functional corrections per governed audit cycle.",
+    "Do not silently add a fourth functional correction.",
+    "Additional narrowly scoped repair commits are allowed.",
+    "Product or domain semantics must come from controlling authority, not guesses.",
+    "Plans cannot invent missing normative semantics.",
+    "Existing code or tests do not override higher authority.",
+    "Stop on material authority conflict.",
+    "Respect explicit architectural directionality and repository boundaries.",
+    "Keep each patch bounded.",
+    "Defer unrelated discoveries.",
+    "Validate each patch before moving to the next.",
+    "Inspect machine-readable script results.",
+    "Stream or heartbeat long-running validation.",
+    "Prefer normal pushes.",
+    "Never expose credentials.",
+    "Never claim validation that did not occur.",
+    "Never merge the PR.",
+    "User merges manually.",
+    "Verify the merge afterward.",
+    "Return to a fresh audit after every completed cycle."
+  ]
 }

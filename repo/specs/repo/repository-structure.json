@@ -43,11 +43,15 @@
     },
     {
       "id": "REPO-STR-010",
-      "text": "The target layout shall keep `README.md`, `AGENTS.md`, `LICENSE`, and `.github/` at the repository root as an approved root boundary, with any additional root exception requiring explicit governed recording."
+      "text": "The target layout shall keep `README.md`, `AGENTS.md`, `LICENSE`, `.github/`, and `user/` at the repository root as the approved root boundary, with any additional root entry requiring explicit governed recording."
     },
     {
       "id": "REPO-STR-011",
       "text": "The `reference/` tree shall remain a separately classified reference boundary and shall not be treated as either the reusable `repo/` tree or the product-owned `product/` tree."
+    },
+    {
+      "id": "REPO-STR-012",
+      "text": "The repository shall reserve `user/` for non-normative user-facing convenience and session-support artifacts; content under `user/` shall remain subordinate to accepted repository and product authority and shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
     }
   ],
   "dependencies": [

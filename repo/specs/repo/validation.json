@@ -156,6 +156,10 @@
     {
       "id": "REPO-VAL-038",
       "text": "The product leaf validation entry point shall enforce that a higher-Level product specification may depend directly on an accepted lower-Level specification without requiring intermediate-Level specifications, consistent with repo.product-levels."
+    },
+    {
+      "id": "REPO-VAL-039",
+      "text": "The repository leaf validation entry point shall enforce the approved repository-root boundary declared by accepted repository structure and related accepted repository-local contracts, shall allow the governed `user/` convenience namespace, and shall reject undeclared top-level files or directories."
     }
   ],
   "dependencies": [
