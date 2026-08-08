@@ -1,10 +1,10 @@
 # Implementation increments and dependencies
 
-Status: candidate; non-authorizing
+Status: accepted; planning-authoritative; non-normative with respect to product semantics
 
 ## Authority boundary
 
-Non-normative with respect to product semantics. Sequences future conformance and implementation work from Patch 1's composite key ownership; does not reinterpret requirements, accept the plan, or authorize implementation. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; listed I1-I5 owner is sole implementation owner from Patch 1.
+Non-normative with respect to product semantics. Sequences governed conformance and implementation work from Patch 1's composite key ownership and does not reinterpret requirements. Issue #261 accepted this plan; execution remains subject to the B0→I1→I2→I3→I4→I5 gates and separate governing issues. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; listed I1-I5 owner is sole implementation owner from Patch 1.
 
 ## Bounded implementation DAG
 
@@ -77,8 +77,9 @@ Predecessor: I4. Entry: I1-I4 exits with complete evidence under the accepted pl
 Issues #255 and #257 repaired the prior provenance/handoff authority conflicts and
 classification-ordering gap. Those repairs did not change requirement identities,
 ownership assignments, or the B0→I1→I2→I3→I4→I5 dependency order. This impact review reaffirms those structures against the repaired
-accepted semantics. Implementation remains unauthorized because the plan is still
-candidate and requires separate governed acceptance.
+accepted semantics. Issue #261 accepted the plan after current-authority revalidation.
+B0 is the next eligible governed successor; I1-I5 remain gated by predecessor evidence
+and separate governing issues.
 
 ## Coverage and DAG checks
 
@@ -90,4 +91,4 @@ candidate and requires separate governed acceptance.
 
 ## Plan-wide exclusions
 
-No product source, tests, schemas, templates, generated output, or specification changes; no implementation or implementation-issue creation; no plan acceptance; no dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device; no conformance claim from existing behavior. Future-extension specs remain candidate and deferred.
+The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no successor governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 work requires separately governed issues and all predecessor gates.

@@ -1,10 +1,10 @@
 # Authority, scope, and specification map
 
-Status: candidate; non-authorizing
+Status: accepted; planning-authoritative; non-normative with respect to product semantics
 
 ## Authority and basis
 
-Maps accepted requirements to planning responsibilities; does not restate, narrow, extend, or replace requirements and does not authorize implementation.
+Maps accepted requirements to planning responsibilities; does not restate, narrow, extend, or replace requirements. Acceptance authorizes only governed successor work under the plan's gates; it does not itself mutate product artifacts.
 
 | Planning fact | Value |
 | --- | --- |
@@ -110,8 +110,9 @@ pre-Git handoff completion-state conflict, handoff disposition conflict, and
 classification-array ordering gap. Requirement identities,
 accepted-spec count (34), and total normative-requirement count (291) are unchanged.
 The existing B0/I1-I5 ownership map therefore remains valid without reassignment.
-Affected I3/I4/I5 descriptions and gates are reaffirmed against the repaired semantics;
-the plan remains candidate and non-authorizing pending separate acceptance.
+Affected I3/I4/I5 descriptions and gates are reaffirmed against the repaired semantics.
+Issue #261 accepted the synchronized plan after current-authority revalidation; future
+material specification changes still invalidate affected mapping until governed impact review.
 
 ## Scope
 
@@ -130,7 +131,7 @@ Six candidate future-extension specs excluded (no implementation authority):
 | 3 | `product.recovery-and-cleanup` | Generalized recovery/cleanup |
 | 3 | `product.resume-from-staging` | Resume from preserved staging |
 
-Also excluded: remote retrieval, named-reference resolution, SHA-256 Git, retry/resume, migration, overwrite, cross-device promotion, product source/test/schema/spec mutation, plan acceptance, implementation issues, implementation itself, release, and any conformance claim without B0 evidence.
+Also excluded from the planned V1 product scope: remote retrieval, named-reference resolution, SHA-256 Git, retry/resume, migration, overwrite, cross-device promotion, release, and any conformance claim without B0 evidence. This accepted plan does not itself perform product source/test/schema/spec mutation or create successor governing issues; each B0/I1-I5 increment proceeds only through its own governed work and predecessor gates.
 
 ## Coverage verification
 
