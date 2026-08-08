@@ -1081,3 +1081,432 @@ def build_i2_exit_state(realization: I2RealizationResult) -> I2ExitState:
     )
 
 # END I2 PATCH 3 DETERMINISTIC EXIT
+
+# I4 PATCH 2: REPORT FINALIZATION
+#
+# Implements staging-state/execution-report contracts and ordered
+# validation-report/staging-state finalization. Promotion remains Patch 3.
+
+import os as _i4_os
+from collections.abc import Callable as _I4Callable
+from dataclasses import dataclass as _i4_dataclass
+
+# Patch 1 validation imports staging, so Patch 2 must not import validation
+# at module initialization time. Validation helpers are resolved lazily below.
+
+_I4_STAGING_STATE_FIELDS = (
+    "schema_version", "request_fingerprint", "source_revision",
+    "source_repository", "initializer_version", "expected_destination",
+    "current_stage", "completed_stages", "failed_stage",
+    "repository_content_digest", "git_created", "validation_completed",
+    "validation_overall_status", "promotion_entered", "promotion_outcome",
+    "cleanup_failure",
+)
+_I4_EXECUTION_REPORT_FIELDS = (
+    "schema_version", "request_fingerprint", "staging_root",
+    "expected_destination", "promotion_outcome", "completion_status", "stages",
+)
+_I4_EXECUTION_STAGE_FIELDS = ("id", "status", "warnings", "errors")
+_I4_STAGE_STATUSES = frozenset({"completed", "skipped", "deferred", "failed"})
+_I4_PROMOTION_OUTCOMES = frozenset({"not-promoted", "promoted", "indeterminate"})
+_I4_COMPLETION_STATUSES = frozenset({"failed", "promoted-with-finalization-error"})
+_I4_CANONICAL_STAGES = (
+    "request-intake", "source-resolution", "destination-preflight",
+    "staging-establishment", "framework-installation",
+    "direction-evidence-installation", "workspace-seeding",
+    "provenance-recording", "handoff-assembly", "git-initialization",
+    "repository-validation", "promotion", "success-finalization",
+)
+
+class ReportFinalizationError(StagingError):
+    def __init__(self, failure_code: str, message: str) -> None:
+        self.failure_code = failure_code
+        super().__init__(message)
+
+@_i4_dataclass(frozen=True)
+class FinalizedValidationPair:
+    validation_report: dict[str, object]
+    staging_state: dict[str, object]
+
+    def promotion_gate_open(self) -> bool:
+        return (
+            self.validation_report.get("overall_status") == "pass"
+            and self.staging_state.get("validation_completed") is True
+            and self.staging_state.get("validation_overall_status") == "pass"
+            and self.staging_state.get("promotion_entered") is False
+            and self.staging_state.get("promotion_outcome") is None
+            and self.validation_report.get("request_fingerprint")
+                == self.staging_state.get("request_fingerprint")
+            and self.validation_report.get("repository_content_digest")
+                == self.staging_state.get("repository_content_digest")
+        )
+
+def _i4_atomic_write(path: Path, payload: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_name(f".{path.name}.tmp")
+    fd = -1
+    try:
+        fd = _i4_os.open(
+            temp,
+            _i4_os.O_WRONLY | _i4_os.O_CREAT | _i4_os.O_EXCL,
+            0o600,
+        )
+        offset = 0
+        while offset < len(payload):
+            count = _i4_os.write(fd, payload[offset:])
+            if count <= 0:
+                raise OSError("short write")
+            offset += count
+        _i4_os.fsync(fd)
+        _i4_os.close(fd)
+        fd = -1
+        _i4_os.replace(temp, path)
+        dir_fd = _i4_os.open(
+            path.parent,
+            _i4_os.O_RDONLY | getattr(_i4_os, "O_DIRECTORY", 0),
+        )
+        try:
+            _i4_os.fsync(dir_fd)
+        finally:
+            _i4_os.close(dir_fd)
+    finally:
+        if fd >= 0:
+            _i4_os.close(fd)
+        try:
+            temp.unlink()
+        except FileNotFoundError:
+            pass
+
+def _i4_json_bytes(value: dict[str, object]) -> bytes:
+    return (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+def _i4_validate_sha256(value: object, context: str) -> None:
+    if (
+        not isinstance(value, str)
+        or len(value) != 64
+        or any(ch not in "0123456789abcdef" for ch in value)
+    ):
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema",
+            f"{context} must be 64 lowercase hex characters",
+        )
+
+def validate_staging_state_v1(state: dict[str, object]) -> None:
+    if tuple(state) != _I4_STAGING_STATE_FIELDS:
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema",
+            "staging-state field closure/order is invalid",
+        )
+    if state["schema_version"] != "1":
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema",
+            "staging-state schema_version must be 1",
+        )
+    _i4_validate_sha256(state["request_fingerprint"], "request_fingerprint")
+    revision = state["source_revision"]
+    if (
+        not isinstance(revision, dict)
+        or tuple(revision) != ("object_format", "object_id")
+        or revision.get("object_format") != "sha1"
+        or not isinstance(revision.get("object_id"), str)
+        or len(revision["object_id"]) != 40
+    ):
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema", "source_revision is invalid"
+        )
+    for key in (
+        "source_repository", "initializer_version", "expected_destination",
+        "current_stage", "repository_content_digest",
+    ):
+        if not isinstance(state[key], str) or not state[key]:
+            raise ReportFinalizationError(
+                "staging-state-invalid-schema", f"{key} must be non-empty"
+            )
+    _i4_validate_sha256(state["repository_content_digest"], "repository_content_digest")
+    if state["current_stage"] not in _I4_CANONICAL_STAGES:
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema", "current_stage is not canonical"
+        )
+    completed = state["completed_stages"]
+    if not isinstance(completed, dict):
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema", "completed_stages must be an object"
+        )
+    for stage, status in completed.items():
+        if stage not in _I4_CANONICAL_STAGES or status != "completed":
+            raise ReportFinalizationError(
+                "staging-state-invalid-schema",
+                "completed_stages contains an invalid entry",
+            )
+    failed = state["failed_stage"]
+    if failed is not None and failed not in _I4_CANONICAL_STAGES:
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema", "failed_stage is invalid"
+        )
+    for key in ("git_created", "validation_completed", "promotion_entered"):
+        if not isinstance(state[key], bool):
+            raise ReportFinalizationError(
+                "staging-state-invalid-schema", f"{key} must be boolean"
+            )
+    if state["validation_overall_status"] not in {None, "pass", "fail"}:
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema",
+            "validation_overall_status is invalid",
+        )
+    if state["promotion_outcome"] not in {
+        None, "not-promoted", "promoted", "indeterminate"
+    }:
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema", "promotion_outcome is invalid"
+        )
+    cleanup = state["cleanup_failure"]
+    if cleanup is not None and (not isinstance(cleanup, str) or not cleanup):
+        raise ReportFinalizationError(
+            "staging-state-invalid-schema", "cleanup_failure is invalid"
+        )
+
+def staging_state_bytes_v1(state: dict[str, object]) -> bytes:
+    validate_staging_state_v1(state)
+    return _i4_json_bytes(state)
+
+def build_validated_staging_state(
+    workspace: StagingWorkspace,
+    validation_run: object,
+    *,
+    initializer_version: str,
+    completed_stages: tuple[str, ...],
+) -> dict[str, object]:
+    completed = {
+        stage: "completed"
+        for stage in _I4_CANONICAL_STAGES
+        if stage in completed_stages
+    }
+    state: dict[str, object] = {
+        "schema_version": "1",
+        "request_fingerprint": workspace.inputs.request.request_fingerprint,
+        "source_revision": workspace.inputs.request.source_revision.to_dict(),
+        "source_repository": workspace.inputs.request.source_repository,
+        "initializer_version": initializer_version,
+        "expected_destination": workspace.inputs.request.destination,
+        "current_stage": "repository-validation",
+        "completed_stages": completed,
+        "failed_stage": None,
+        "repository_content_digest": validation_run.repository_content_digest,
+        "git_created": True,
+        "validation_completed": True,
+        "validation_overall_status": validation_run.overall_status,
+        "promotion_entered": False,
+        "promotion_outcome": None,
+        "cleanup_failure": None,
+    }
+    validate_staging_state_v1(state)
+    if state["request_fingerprint"] != validation_run.request_fingerprint:
+        raise ReportFinalizationError(
+            "staging-state-fingerprint-mismatch",
+            "staging-state/request fingerprint mismatch",
+        )
+    if state["repository_content_digest"] != validation_run.repository_content_digest:
+        raise ReportFinalizationError(
+            "staging-state-digest-mismatch",
+            "staging-state/report digest mismatch",
+        )
+    return state
+
+def _i4_fault(
+    fault_injector: _I4Callable[[str], None] | None,
+    point: str,
+) -> None:
+    if fault_injector is not None:
+        fault_injector(point)
+
+def _i4_validate_report(
+    report: dict[str, object],
+    *,
+    expected_request_fingerprint: str,
+    expected_repository_content_digest: str,
+) -> None:
+    from .validation import (
+        ValidationError as _I4ValidationError,
+        validate_validation_report_v1 as _validate_validation_report_v1,
+    )
+    try:
+        _validate_validation_report_v1(
+            report,
+            expected_request_fingerprint=expected_request_fingerprint,
+            expected_repository_content_digest=expected_repository_content_digest,
+        )
+    except _I4ValidationError as exc:
+        raise ReportFinalizationError(
+            "validation-report-invalid-schema",
+            str(exc),
+        ) from exc
+
+def finalize_validation_records(
+    workspace: StagingWorkspace,
+    validation_run: object,
+    *,
+    initializer_version: str,
+    completed_stages: tuple[str, ...],
+    fault_injector: _I4Callable[[str], None] | None = None,
+) -> FinalizedValidationPair:
+    report = validation_run.report_dict()
+    state = build_validated_staging_state(
+        workspace,
+        validation_run,
+        initializer_version=initializer_version,
+        completed_stages=completed_stages,
+    )
+    _i4_fault(fault_injector, "after-in-memory-construction")
+    validate_staging_state_v1(state)
+    _i4_fault(fault_injector, "after-staging-state-validation")
+    _i4_validate_report(
+        report,
+        expected_request_fingerprint=workspace.inputs.request.request_fingerprint,
+        expected_repository_content_digest=validation_run.repository_content_digest,
+    )
+    _i4_fault(fault_injector, "after-validation-report-validation")
+    _i4_fault(fault_injector, "before-validation-report-write")
+    _i4_atomic_write(workspace.validation_report_path, validation_run.report_bytes())
+    _i4_fault(fault_injector, "after-validation-report-write")
+    _i4_fault(fault_injector, "before-staging-state-write")
+    _i4_atomic_write(workspace.staging_state_path, staging_state_bytes_v1(state))
+    _i4_fault(fault_injector, "after-staging-state-write")
+
+    durable_report = json.loads(
+        workspace.validation_report_path.read_text(encoding="utf-8")
+    )
+    durable_state = json.loads(
+        workspace.staging_state_path.read_text(encoding="utf-8")
+    )
+    _i4_validate_report(
+        durable_report,
+        expected_request_fingerprint=workspace.inputs.request.request_fingerprint,
+        expected_repository_content_digest=validation_run.repository_content_digest,
+    )
+    validate_staging_state_v1(durable_state)
+    if durable_report["request_fingerprint"] != durable_state["request_fingerprint"]:
+        raise ReportFinalizationError(
+            "staging-state-fingerprint-mismatch",
+            "durable records disagree on request fingerprint",
+        )
+    if (
+        durable_report["repository_content_digest"]
+        != durable_state["repository_content_digest"]
+    ):
+        raise ReportFinalizationError(
+            "staging-state-digest-mismatch",
+            "durable records disagree on repository digest",
+        )
+    if (
+        durable_state["validation_completed"] is not True
+        or durable_state["validation_overall_status"]
+        != durable_report["overall_status"]
+    ):
+        raise ReportFinalizationError(
+            "staging-state-validation-status-mismatch",
+            "durable records disagree on validation result",
+        )
+    _i4_fault(fault_injector, "after-durable-consistency-verification")
+    return FinalizedValidationPair(durable_report, durable_state)
+
+def build_execution_report_v1(
+    workspace: StagingWorkspace,
+    *,
+    promotion_outcome: str,
+    completion_status: str,
+    stage_status: dict[str, str],
+    stage_errors: dict[str, list[str]] | None = None,
+    stage_warnings: dict[str, list[str]] | None = None,
+) -> dict[str, object]:
+    if promotion_outcome not in _I4_PROMOTION_OUTCOMES:
+        raise StagingError("invalid execution-report promotion_outcome")
+    if completion_status not in _I4_COMPLETION_STATUSES:
+        raise StagingError("invalid execution-report completion_status")
+    if promotion_outcome == "promoted" and completion_status != "promoted-with-finalization-error":
+        raise StagingError("promoted failure report requires promoted-with-finalization-error")
+    if promotion_outcome in {"not-promoted", "indeterminate"} and completion_status != "failed":
+        raise StagingError("non-promoted/indeterminate report requires failed completion_status")
+
+    errors = stage_errors or {}
+    warnings = stage_warnings or {}
+    stages: list[dict[str, object]] = []
+    for stage_id in _I4_CANONICAL_STAGES:
+        if stage_id not in stage_status:
+            continue
+        status = stage_status[stage_id]
+        if status not in _I4_STAGE_STATUSES:
+            raise StagingError(f"invalid stage status for {stage_id}")
+        stage_errors_value = list(errors.get(stage_id, []))
+        if status == "failed" and not stage_errors_value:
+            raise StagingError(f"failed stage {stage_id} requires an error")
+        stages.append({
+            "id": stage_id,
+            "status": status,
+            "warnings": list(warnings.get(stage_id, [])),
+            "errors": stage_errors_value,
+        })
+    report: dict[str, object] = {
+        "schema_version": "1",
+        "request_fingerprint": workspace.inputs.request.request_fingerprint,
+        "staging_root": str(workspace.root),
+        "expected_destination": workspace.inputs.request.destination,
+        "promotion_outcome": promotion_outcome,
+        "completion_status": completion_status,
+        "stages": stages,
+    }
+    validate_execution_report_v1(report)
+    return report
+
+def validate_execution_report_v1(report: dict[str, object]) -> None:
+    if tuple(report) != _I4_EXECUTION_REPORT_FIELDS:
+        raise StagingError("execution-report field closure/order is invalid")
+    if report["schema_version"] != "1":
+        raise StagingError("execution-report schema_version must be 1")
+    _i4_validate_sha256(
+        report["request_fingerprint"], "execution-report request_fingerprint"
+    )
+    if not isinstance(report["staging_root"], str) or not report["staging_root"]:
+        raise StagingError("execution-report staging_root must be non-empty")
+    if (
+        not isinstance(report["expected_destination"], str)
+        or not report["expected_destination"]
+    ):
+        raise StagingError("execution-report expected_destination must be non-empty")
+    if report["promotion_outcome"] not in _I4_PROMOTION_OUTCOMES:
+        raise StagingError("execution-report promotion_outcome is invalid")
+    if report["completion_status"] not in _I4_COMPLETION_STATUSES:
+        raise StagingError("execution-report completion_status is invalid")
+    stages = report["stages"]
+    if not isinstance(stages, list):
+        raise StagingError("execution-report stages must be an array")
+    seen: set[str] = set()
+    last_index = -1
+    for entry in stages:
+        if not isinstance(entry, dict) or tuple(entry) != _I4_EXECUTION_STAGE_FIELDS:
+            raise StagingError("execution-report stage field closure/order is invalid")
+        stage_id = entry["id"]
+        if stage_id not in _I4_CANONICAL_STAGES or stage_id in seen:
+            raise StagingError("execution-report stage id is invalid or duplicate")
+        idx = _I4_CANONICAL_STAGES.index(stage_id)
+        if idx <= last_index:
+            raise StagingError("execution-report stages are not canonical-order")
+        last_index = idx
+        seen.add(stage_id)
+        if entry["status"] not in _I4_STAGE_STATUSES:
+            raise StagingError("execution-report stage status is invalid")
+        if (
+            not isinstance(entry["warnings"], list)
+            or any(not isinstance(v, str) for v in entry["warnings"])
+        ):
+            raise StagingError("execution-report warnings must be strings")
+        if (
+            not isinstance(entry["errors"], list)
+            or any(not isinstance(v, str) for v in entry["errors"])
+        ):
+            raise StagingError("execution-report errors must be strings")
+        if entry["status"] == "failed" and not entry["errors"]:
+            raise StagingError("failed execution-report stage requires an error")
+
+def execution_report_bytes_v1(report: dict[str, object]) -> bytes:
+    validate_execution_report_v1(report)
+    return _i4_json_bytes(report)
