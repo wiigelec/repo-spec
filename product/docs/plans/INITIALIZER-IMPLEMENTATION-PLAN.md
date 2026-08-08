@@ -7,9 +7,9 @@ Candidate; non-authorizing.
 This document is non-normative with respect to product semantics. In its
 current candidate state it does not authorize initializer implementation work.
 Implementation authorization and implementation-issue derivation remain blocked because
-this candidate plan has not yet been accepted. Issue #255 repaired the accepted
-provenance/handoff specification conflicts and this plan has received the required
-specification-impact review, but it remains candidate and non-authorizing.
+this candidate plan has not yet been accepted. Issues #255 and #257 repaired the accepted provenance/handoff specification
+conflicts and ordering gap, and issue #259 synchronizes this plan to that repaired
+authority; the plan remains candidate and non-authorizing.
 
 ## Metadata
 
@@ -24,7 +24,7 @@ specification-impact review, but it remains candidate and non-authorizing.
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "candidate",
-  "governing_issue": "#243, #253, #255",
+  "governing_issue": "#243, #253, #255, #257, #259",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -108,7 +108,7 @@ specification-impact review, but it remains candidate and non-authorizing.
       ]
     }
   ],
-  "successor_action": "Perform a clean-room post-patch review of this completed three-patch candidate plan. If no material planning gap prevents safe derivation of bounded implementation issues, the candidate plan may proceed to a governed acceptance decision after a clean-room review confirms this impact-reviewed plan remains complete under the repaired accepted specifications. No implementation work is authorized by this candidate plan.",
+  "successor_action": "Complete the issue #259 clean-room post-patch review against current accepted specifications and synchronized planning state. If no material planning gap remains, the candidate plan may proceed to a separately governed acceptance decision. No implementation work is authorized by this candidate plan.",
   "schema_version": "1"
 }
 ```
@@ -151,9 +151,11 @@ plan-acceptance decision.
 ## Relationships
 
 - Governing issues: #243 (scaffold creation), #253 (specification mapping,
-  increment definition, validation gates, risk register), and the accepted
+  increment definition, validation gates, risk register), the accepted
   provenance-conflict planning amendment recorded in issue #253 comment
-  `#issuecomment-5222594632`
+  `#issuecomment-5222594632`, #255 (accepted provenance/handoff repair and
+  plan impact review), #257 (handoff ordering repair and plan impact review),
+  and #259 (plan synchronization clean-room cycle)
 - Controlling repository contracts: `repo.development-document-base`,
   `repo.implementation-plan`, `repo.development-workflow`, and applicable
   repository workflow and validation contracts
@@ -166,10 +168,9 @@ plan-acceptance decision.
 
 ## Next authorized action
 
-Perform a clean-room post-issue-257 review to confirm that this impact-reviewed
-candidate plan remains complete and consistent with the repaired accepted
-specifications, including deterministic ordering across all six handoff classification arrays. If no material planning gap remains, a separately governed
-plan-acceptance decision may follow.
+Complete the issue #259 clean-room post-patch review against current accepted
+specifications and synchronized planning state. If no material planning gap remains,
+a separately governed plan-acceptance decision may follow.
 
 No product implementation is authorized by this plan.
 

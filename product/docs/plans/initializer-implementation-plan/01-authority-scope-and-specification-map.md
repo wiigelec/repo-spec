@@ -9,7 +9,7 @@ Maps accepted requirements to planning responsibilities; does not restate, narro
 | Planning fact | Value |
 | --- | --- |
 | Planning basis | `d3cf252dd6022aa19bd52ee335b1ef114ccfae1b` |
-| Governing issue | #253 planning cycle plus #255 accepted specification repair and plan impact review |
+| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization |
 | Normative authority | Accepted `initial-bounded-workflow` specs registered in `product/specs/product/manifest.json` |
 | Repository planning authority | `repo.implementation-plan`, `repo.development-workflow` |
 
@@ -76,10 +76,10 @@ Ranges are inclusive within the named spec. Non-contiguous/suffixed IDs listed e
 | 2 | `product.destination-preflight` | `INIT-DPF-001-002` | I1 | Staging placement + promotion |
 | 2 | `product.execution-orchestration` | `INIT-EOR-001-002` | I5 | All required stages + failure boundaries |
 | 2 | `product.foundation-seeding` | `INIT-FSD-001-021` | I2 | Identity, inventory, evidence, output |
-| 2 | `product.framework-installation` | `INIT-FIN-001-008` | I2 | Source, inventory, provenance, validation |
-| 2 | `product.handoff-assembly` | `INIT-HAS-001` | I3 | Material, provenance, Git state |
+| 2 | `product.framework-installation` | `INIT-FIN-001-008` | I2 | Source resolution, closed-inventory installation, byte/mode fidelity, validation |
+| 2 | `product.handoff-assembly` | `INIT-HAS-001` | I3 | Pre-Git handoff classification, provenance path, next governed action |
 | 2 | `product.local-git-initialization` | `INIT-LGI-001-002` | I3 | Staged content + repository validation |
-| 2 | `product.provenance-recording` | `INIT-PRC-001` | I3 | Request/source/material/stage capture |
+| 2 | `product.provenance-recording` | `INIT-PRC-001` | I3 | Initializer/product/source/request identity and initialization timestamp capture |
 | 2 | `product.repository-validation` | `INIT-RVA-001-005` | I4 | Producers, report finalization, promotion |
 | 2 | `product.request-intake` | `INIT-INT-001-002` | I1 | Rejection + downstream models |
 | 2 | `product.source-material-resolution` | `INIT-SMR-001-006` | I1 | I2 install + I4 source/material checks |
@@ -105,8 +105,9 @@ No composite key is classified here. Lack of correspondence records and a requir
 
 ## Specification-impact review
 
-Issue #255 repaired the accepted provenance producer/record conflict, pre-Git handoff
-completion-state conflict, and handoff disposition conflict. Requirement identities,
+Issues #255 and #257 repaired the accepted provenance producer/record conflict,
+pre-Git handoff completion-state conflict, handoff disposition conflict, and
+classification-array ordering gap. Requirement identities,
 accepted-spec count (34), and total normative-requirement count (291) are unchanged.
 The existing B0/I1-I5 ownership map therefore remains valid without reassignment.
 Affected I3/I4/I5 descriptions and gates are reaffirmed against the repaired semantics;

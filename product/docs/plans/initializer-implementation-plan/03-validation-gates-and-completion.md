@@ -11,7 +11,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | --- | --- |
 | Every I1-owned key has one baseline classification (preserve/repair/replace/implement) with cited source/test evidence | Machine-readable matrix; counts reconcile to ownership for `product.request-intake`, `product.source-revision-identity`, `product.destination`, `product.product-identity`, `product.material-manifest`, `product.git-object-identity`, `product.destination-preflight`, `product.request-intake`, `product.source-material-resolution` |
 | No I1 key classified by file presence or undifferentiated tests alone | Each entry cites specific behavior/assertion; absence citations explicit |
-| Issue #255 repaired provenance/handoff keys are classified against current accepted text | Matrix cites current accepted specification revision |
+| Issues #255/#257 repaired provenance/handoff keys are classified against current accepted text | Matrix cites current accepted specification revision |
 
 ### I1 -> I2 gate
 | Requirement | Evidence |
@@ -34,7 +34,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 
 | Requirement | Evidence |
 | --- | --- |
-| Issue #255 provenance/handoff repair reflected in B0 and I3 evidence | Current accepted specs plus this impact-review record |
+| Issues #255/#257 provenance/handoff repairs reflected in B0 and I3 evidence | Current accepted specs plus this impact-review record |
 | All I3-owned keys have requirement-level evidence | Composite-key reconciliation to Patch 1 I3 rows |
 | Provenance/handoff/Git consistent with repaired contracts, I2 content, I1 identities | Traceability across request/source/product/material/content/records/Git |
 
@@ -64,18 +64,18 @@ Evidence artifacts: B0 classification matrix, requirement-level test suite, vali
 ## Completion and successor work
 
 ### Candidate plan completion
-- Patch 1: 34/34 accepted specs and 291/291 requirements mapped by composite key; provenance conflict recorded; 6/6 future-extension specs excluded
-- Patch 2: acyclic B0→I1→I2→I3→I4→I5 DAG; each increment has controlling specs, requirements, predecessors, entry/exit conditions, exclusions; provenance blocker propagated
+- Patch 1: 34/34 accepted specs and 291/291 requirements mapped by composite key; 6/6 future-extension specs excluded
+- Patch 2: acyclic B0→I1→I2→I3→I4→I5 DAG; each increment has controlling specs, requirements, predecessors, entry/exit conditions, and exclusions
 - Patch 3: requirement-level transition gates; validation strategy (component/cross-component/E2E); terminal outcomes/determinism/rejection evidence; risk/decision register substantive
 
 ### Plan acceptance
-Issue #255 completed the required specification repair and plan impact review. Plan acceptance remains a separately governed decision and is not authorized by issue #255.
+Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 synchronizes the candidate plan to that repaired authority. Plan acceptance remains a separately governed decision and is not authorized by this synchronization cycle.
 
 ### Successor implementation work
 Requires: (1) plan acceptance, (2) B0 requirement-level evidence, and (3) individual governed issues citing accepted plan/specifications/base and predecessor evidence.
 
 ### Unblocked preparatory work
-B0 evidence classification, I1 evidence for non-conflicting keys (controlled experimental context), provenance spec repair — each requires separate governed issue.
+B0 evidence classification and any other pre-implementation evidence work require separate governed issues and remain subordinate to accepted specifications and the candidate plan. No implementation work is authorized before plan acceptance.
 
 ### Completion gate summary
 | Condition | Status |
@@ -88,9 +88,9 @@ B0 evidence classification, I1 evidence for non-conflicting keys (controlled exp
 | Validation strategy (component/cross-component/E2E) defined | Patch 3 |
 | Terminal outcomes, determinism, rejection evidence defined | Patch 3 |
 | Risk/decision register substantive | Patch 3 |
-| Issue #255 specification repair reflected at every affected boundary | Impact review complete |
+| Issues #255 and #257 accepted specification repairs reflected at every affected boundary | Impact review complete |
 | Future-extension specs excluded | Patches 1-3 |
 | Three patches; no fourth functional correction | Verified |
 | No product source/tests/schemas/specs modified | Verified |
 | `./scripts/validate` passes each commit | Verified |
-| Clean-room review: current accepted specs, no invented semantics | Pending post-issue-255 |
+| Clean-room review: current accepted specs, no invented semantics | In progress under issue #259; final post-patch review required before any acceptance decision |
