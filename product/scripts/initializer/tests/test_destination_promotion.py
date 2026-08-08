@@ -21,11 +21,17 @@ class I1DestinationPreflightTests(unittest.TestCase):
         before = set(self.base.iterdir())
         result = i1_destination_preflight(str(destination))
         after = set(self.base.iterdir())
-        self.assertEqual(result["decision"], "allowed")
-        self.assertEqual(result["destination_state"], "absent")
-        self.assertTrue(result["same_filesystem"])
+        self.assertEqual(result.decision, "allowed")
+        self.assertEqual(result.destination_state, "absent")
+        self.assertTrue(result.same_filesystem)
+        self.assertEqual(result.destination, str(destination))
+        self.assertEqual(result.destination_parent, str(self.base))
+        self.assertEqual(result.filesystem_device, self.base.stat().st_dev)
+        self.assertEqual(result.to_dict()["destination"], str(destination))
         self.assertEqual(before, after)
         self.assertFalse(destination.exists())
+        with self.assertRaises(AttributeError):
+            result.decision = "rejected"
 
     def test_rejects_every_existing_destination_type(self) -> None:
         regular = self.base / "regular"

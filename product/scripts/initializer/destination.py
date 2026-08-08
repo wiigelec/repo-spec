@@ -10,6 +10,7 @@ from .models import (
     PreflightDecision,
     PromotionPlan,
     InitializerError,
+    I1DestinationPreflight,
 )
 
 
@@ -305,7 +306,7 @@ def validate_staging_result_complete(
         )
 
 
-def i1_destination_preflight(destination_path: str) -> dict[str, object]:
+def i1_destination_preflight(destination_path: str) -> I1DestinationPreflight:
     destination = Path(destination_path)
     if not destination.is_absolute():
         raise DestinationError("destination must be the intake-resolved absolute path")
@@ -326,11 +327,11 @@ def i1_destination_preflight(destination_path: str) -> dict[str, object]:
         raise DestinationError("destination parent is not a directory")
     if not os.access(parent, os.R_OK | os.W_OK | os.X_OK):
         raise DestinationError("destination parent is inaccessible")
-    return {
-        "destination": str(destination),
-        "destination_state": "absent",
-        "destination_parent": str(parent),
-        "filesystem_device": st.st_dev,
-        "same_filesystem": True,
-        "decision": "allowed",
-    }
+    return I1DestinationPreflight(
+        destination=str(destination),
+        destination_state="absent",
+        destination_parent=str(parent),
+        filesystem_device=st.st_dev,
+        same_filesystem=True,
+        decision="allowed",
+    )

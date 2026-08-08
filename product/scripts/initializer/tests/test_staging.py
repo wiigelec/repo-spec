@@ -13,7 +13,11 @@ from initializer.models import (
     InstallationPlan,
     InstallationResult,
     SourceSelection,
+    I1DestinationPreflight,
 )
+from initializer.destination import i1_destination_preflight
+from initializer.inventory import MaterialEntry, ResolvedSourceMaterial
+from initializer.validation import validate_and_normalize
 from initializer.staging import (
     StagingError,
     STAGING_PREFIX,
@@ -29,6 +33,10 @@ from initializer.staging import (
     stage_framework,
     _cleanup_staging,
     SUPPORTED_ENTRY_TYPES,
+    I2StagingInputs,
+    StagingWorkspace,
+    establish_staging_workspace,
+    validate_staging_workspace,
 )
 
 
@@ -548,3 +556,167 @@ class PreexistingWorkspaceTests(unittest.TestCase):
         ws = Path(tempfile.mkdtemp())
         check_preexisting_workspace(ws)
         shutil.rmtree(ws, ignore_errors=True)
+
+
+class I2StagingTopologyTests(unittest.TestCase):
+    OBJECT_ID = "0123456789abcdef0123456789abcdef01234567"
+
+    def setUp(self) -> None:
+        self.td = tempfile.TemporaryDirectory()
+        self.base = Path(self.td.name)
+        self.destination = self.base / "destination"
+        raw = {
+            "schema_version": "1",
+            "destination": str(self.destination),
+            "authority": {"granted_by": "issue-279"},
+            "source": {
+                "repository": str(self.base / "source"),
+                "revision": {"object_format": "sha1", "object_id": self.OBJECT_ID},
+            },
+            "product": {
+                "id": "sample-product",
+                "direction_material": ["docs/a.md", "docs/a.md"],
+            },
+        }
+        self.request = validate_and_normalize(raw, str(self.base)).request
+        self.source = ResolvedSourceMaterial(
+            repository=self.request.source_repository,
+            commit_id=self.OBJECT_ID,
+            manifest=(MaterialEntry(
+                material_key="root-readme",
+                source_path="README.md",
+                role="runtime-framework",
+                operation="copy-verbatim",
+                source_type="blob",
+                mode="100644",
+            ),),
+            direction_material=self.request.product_direction_material,
+        )
+        self.preflight = i1_destination_preflight(self.request.destination)
+        self.inputs = I2StagingInputs(self.request, self.source, self.preflight)
+        self.workspaces: list[StagingWorkspace] = []
+
+    def tearDown(self) -> None:
+        for workspace in self.workspaces:
+            _cleanup_staging(workspace.root)
+        self.td.cleanup()
+
+    def establish(self) -> StagingWorkspace:
+        workspace = establish_staging_workspace(self.inputs)
+        self.workspaces.append(workspace)
+        return workspace
+
+    def test_establishes_exact_isolated_same_filesystem_topology(self) -> None:
+        before = set(self.base.iterdir())
+        workspace = self.establish()
+
+        self.assertEqual(workspace.root.parent, self.base)
+        self.assertEqual(
+            {path.name for path in workspace.root.iterdir()},
+            {"transaction", "repository"},
+        )
+        self.assertEqual(list(workspace.transaction_path.iterdir()), [])
+        self.assertEqual(list(workspace.repository_path.iterdir()), [])
+        self.assertEqual(workspace.root.stat().st_dev, self.base.stat().st_dev)
+        self.assertFalse(self.destination.exists())
+        self.assertEqual(set(self.base.iterdir()) - before, {workspace.root})
+        validate_staging_workspace(workspace)
+
+    def test_exposes_reserved_record_and_future_repository_boundaries(self) -> None:
+        workspace = self.establish()
+
+        self.assertEqual(workspace.staging_state_path, workspace.transaction_path / "staging-state.json")
+        self.assertEqual(workspace.execution_report_path, workspace.transaction_path / "execution-report.json")
+        self.assertEqual(workspace.validation_report_path, workspace.transaction_path / "validation-report.json")
+        self.assertFalse(workspace.staging_state_path.exists())
+        self.assertFalse(workspace.execution_report_path.exists())
+        self.assertFalse(workspace.validation_report_path.exists())
+        self.assertNotEqual(workspace.repository_path, workspace.root)
+        self.assertNotEqual(workspace.repository_path, workspace.transaction_path)
+
+    def test_carries_exact_i1_facts_without_reconstruction(self) -> None:
+        workspace = self.establish()
+
+        self.assertIs(workspace.inputs.request, self.request)
+        self.assertIs(workspace.inputs.source, self.source)
+        self.assertIs(workspace.inputs.destination, self.preflight)
+        self.assertEqual(workspace.inputs.request.product_direction_material, ("docs/a.md", "docs/a.md"))
+        output = workspace.to_dict()
+        self.assertEqual(output["request_fingerprint"], self.request.request_fingerprint)
+        self.assertEqual(output["source_revision"], self.OBJECT_ID)
+
+    def test_rejects_mismatched_source_before_mutation(self) -> None:
+        mismatched = ResolvedSourceMaterial(
+            repository=self.source.repository,
+            commit_id="0" * 40,
+            manifest=self.source.manifest,
+            direction_material=self.source.direction_material,
+        )
+        before = set(self.base.iterdir())
+
+        with self.assertRaisesRegex(StagingError, "source revision"):
+            establish_staging_workspace(I2StagingInputs(self.request, mismatched, self.preflight))
+
+        self.assertEqual(set(self.base.iterdir()), before)
+
+    def test_rejects_changed_filesystem_fact_before_mutation(self) -> None:
+        stale = I1DestinationPreflight(
+            destination=self.preflight.destination,
+            destination_state=self.preflight.destination_state,
+            destination_parent=self.preflight.destination_parent,
+            filesystem_device=self.preflight.filesystem_device + 1,
+            same_filesystem=True,
+            decision="allowed",
+        )
+        before = set(self.base.iterdir())
+
+        with self.assertRaisesRegex(StagingError, "filesystem changed"):
+            establish_staging_workspace(I2StagingInputs(self.request, self.source, stale))
+
+        self.assertEqual(set(self.base.iterdir()), before)
+
+    def test_rejects_destination_that_appeared_after_preflight(self) -> None:
+        self.destination.mkdir()
+
+        with self.assertRaisesRegex(StagingError, "no longer absent"):
+            establish_staging_workspace(self.inputs)
+
+        self.assertFalse(any(path.name.startswith(STAGING_PREFIX) for path in self.base.iterdir()))
+
+    def test_rejects_extra_root_or_transaction_content(self) -> None:
+        workspace = self.establish()
+        extra = workspace.root / "extra"
+        extra.mkdir()
+        with self.assertRaisesRegex(StagingError, "exactly transaction"):
+            validate_staging_workspace(workspace)
+        extra.rmdir()
+        (workspace.transaction_path / "undeclared.json").write_text("{}")
+        with self.assertRaisesRegex(StagingError, "undeclared content"):
+            validate_staging_workspace(workspace)
+
+    def test_rejects_swapped_topology_interfaces(self) -> None:
+        workspace = self.establish()
+        swapped = StagingWorkspace(
+            root=workspace.root,
+            root_inode=workspace.root_inode,
+            transaction_path=workspace.repository_path,
+            repository_path=workspace.transaction_path,
+            staging_state_path=workspace.repository_path / "staging-state.json",
+            execution_report_path=workspace.repository_path / "execution-report.json",
+            validation_report_path=workspace.repository_path / "validation-report.json",
+            inputs=workspace.inputs,
+        )
+
+        with self.assertRaisesRegex(StagingError, "canonical layout"):
+            validate_staging_workspace(swapped)
+
+    def test_rejects_replaced_staging_root_identity(self) -> None:
+        workspace = self.establish()
+        original = workspace.root.with_name(workspace.root.name + "-original")
+        workspace.root.rename(original)
+        workspace.root.mkdir()
+        (workspace.root / "transaction").mkdir()
+        (workspace.root / "repository").mkdir()
+
+        with self.assertRaisesRegex(StagingError, "identity changed"):
+            validate_staging_workspace(workspace)

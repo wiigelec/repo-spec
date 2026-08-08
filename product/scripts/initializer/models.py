@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 
@@ -383,6 +384,26 @@ class ExecutionContext:
 
     def __hash__(self) -> int:
         return hash(self._request)
+
+
+@dataclass(frozen=True)
+class I1DestinationPreflight:
+    destination: str
+    destination_state: str
+    destination_parent: str
+    filesystem_device: int
+    same_filesystem: bool
+    decision: str
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "destination": self.destination,
+            "destination_state": self.destination_state,
+            "destination_parent": self.destination_parent,
+            "filesystem_device": self.filesystem_device,
+            "same_filesystem": self.same_filesystem,
+            "decision": self.decision,
+        }
 
 
 class InstallationEntryStatus:

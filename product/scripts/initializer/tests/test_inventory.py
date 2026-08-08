@@ -6,7 +6,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from initializer.inventory import InventoryError, resolve_source_material, validate_material_manifest
+from initializer.inventory import (
+    MATERIAL_ROLES,
+    InventoryError,
+    resolve_source_material,
+    validate_material_manifest,
+)
 
 
 def git(repo: Path, *args: str) -> str:
@@ -21,6 +26,23 @@ def git(repo: Path, *args: str) -> str:
 
 
 class SourceMaterialTests(unittest.TestCase):
+    def manifest_pair(self, role: str) -> tuple[dict, dict]:
+        output = {"material_index": [{
+            "material_key": "a",
+            "operation": "copy-verbatim",
+            "mode": "100644",
+            "role": role,
+        }]}
+        manifest = {"schema_version": "1", "entries": [{
+            "material_key": "a",
+            "source_path": "README.md",
+            "role": role,
+            "operation": "copy-verbatim",
+            "source_type": "blob",
+            "mode": "100644",
+        }]}
+        return manifest, output
+
     def make_repo(self) -> tuple[tempfile.TemporaryDirectory, Path, str]:
         td = tempfile.TemporaryDirectory()
         repo = Path(td.name)
@@ -103,6 +125,33 @@ class SourceMaterialTests(unittest.TestCase):
                 resolve_source_material(str(repo), oid, ("missing.md",))
             with self.assertRaises(InventoryError):
                 resolve_source_material(str(repo), oid, ("docs",))
+
+    def test_accepts_each_declared_framework_output_role(self) -> None:
+        for role in MATERIAL_ROLES:
+            with self.subTest(role=role):
+                manifest, output = self.manifest_pair(role)
+                self.assertEqual(validate_material_manifest(manifest, output)[0].role, role)
+
+    def test_rejects_unknown_and_development_only_output_roles(self) -> None:
+        for role in ("unknown-role", "development-only"):
+            with self.subTest(role=role):
+                manifest, output = self.manifest_pair(role)
+                with self.assertRaises(InventoryError):
+                    validate_material_manifest(manifest, output)
+
+    def test_rejects_unknown_and_development_only_manifest_roles(self) -> None:
+        for role in ("unknown-role", "development-only"):
+            with self.subTest(role=role):
+                manifest, output = self.manifest_pair("runtime-framework")
+                manifest["entries"][0]["role"] = role
+                with self.assertRaises(InventoryError):
+                    validate_material_manifest(manifest, output)
+
+    def test_rejects_role_disagreement(self) -> None:
+        manifest, output = self.manifest_pair("runtime-framework")
+        manifest["entries"][0]["role"] = "validation-utility"
+        with self.assertRaisesRegex(InventoryError, "disagrees.*role"):
+            validate_material_manifest(manifest, output)
 
 
 if __name__ == "__main__":

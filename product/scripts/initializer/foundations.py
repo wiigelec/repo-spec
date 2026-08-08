@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -728,3 +729,371 @@ def establish_product_foundations(
         deferred=deferred,
         rejected=rejected,
     )
+
+# BEGIN I2 PATCH 2 GOVERNED FOUNDATION REALIZATION
+
+def _i2_front_matter(**fields: str) -> str:
+    lines = ["---"]
+    lines.extend(f"{key}: {value}" for key, value in fields.items())
+    lines.extend(["---", ""])
+    return "\n".join(lines)
+
+
+def _i2_git_blob(
+    repository: str,
+    revision: str,
+    source_path: str,
+) -> tuple[str, bytes]:
+    if len(revision) != 40 or any(c not in "0123456789abcdef" for c in revision):
+        raise FoundationError("I2 foundation source revision must be a full SHA-1 object id")
+    parts = source_path.replace("\\", "/").split("/")
+    if (
+        not source_path
+        or source_path.startswith("/")
+        or "\x00" in source_path
+        or ".." in parts
+    ):
+        raise FoundationError(f"invalid direction_material source path: {source_path!r}")
+
+    env = dict(os.environ)
+    env["GIT_NO_REPLACE_OBJECTS"] = "1"
+    env["GIT_NO_LAZY_FETCH"] = "1"
+    env["GIT_TERMINAL_PROMPT"] = "0"
+    tree = subprocess.run(
+        ["git", "-C", repository, "ls-tree", "-z", revision, "--", source_path],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        check=False,
+    )
+    if tree.returncode:
+        raise FoundationError(
+            f"cannot inspect direction material {source_path}: "
+            f"{tree.stderr.decode('utf-8', 'replace').strip()}"
+        )
+    records = [r for r in tree.stdout.split(b"\x00") if r]
+    if len(records) != 1:
+        raise FoundationError(
+            f"direction material does not resolve to exactly one source entry: {source_path}"
+        )
+    meta, sep, found = records[0].partition(b"\t")
+    if not sep or found.decode("utf-8", "strict") != source_path:
+        raise FoundationError(f"direction material source resolution mismatch: {source_path}")
+    mode, obj_type, oid = meta.decode("ascii").split(" ", 2)
+    if obj_type != "blob" or mode == "120000":
+        raise FoundationError(f"direction material must be a regular Git blob: {source_path}")
+
+    blob = subprocess.run(
+        ["git", "-C", repository, "cat-file", "blob", oid],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        check=False,
+    )
+    if blob.returncode:
+        raise FoundationError(f"direction material blob is unavailable: {source_path}")
+    return oid, blob.stdout
+
+
+def _i2_json_bytes(value: dict[str, Any]) -> bytes:
+    return (json.dumps(value, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+
+
+def _i2_overview(product_id: str) -> bytes:
+    placeholder = (
+        "Direction material for this section is available at the positional index "
+        "identified by the chunk document. Content is not synthesized by the initializer."
+    )
+    headings = (
+        "1. Identity and Purpose",
+        "2. Problem and Outcome",
+        "3. Users, Principles, and Boundaries",
+        "4. Capabilities and Success",
+        "5. Unresolved Questions",
+        "6. Lifecycle and Handoff",
+    )
+    lines = [
+        _i2_front_matter(
+            lifecycle_status="candidate",
+            authority_category="directional",
+            overview_role="initial",
+        ).rstrip(),
+        f"# {product_id} Overview",
+        "",
+        "## Purpose",
+        "",
+        f"This overview establishes the product direction, scope, and boundaries for {product_id}. It is a candidate directional document and is not normative.",
+        "",
+        "## Scope",
+        "",
+        "Overview scope is determined by the accepted decomposition and governing product specifications. This document records the directional boundary for the product.",
+        "",
+    ]
+    for heading in headings:
+        lines.extend([f"### {heading}", "", placeholder, ""])
+    lines.extend([
+        "## Open Questions",
+        "",
+        "Unresolved questions are recorded in the unresolved-questions chunk document. No questions are synthesized by the initializer.",
+        "",
+    ])
+    return "\n".join(lines).encode("utf-8")
+
+
+def _i2_chunk(title: str, paragraph: str) -> bytes:
+    return (
+        _i2_front_matter(lifecycle_status="candidate")
+        + f"# {title}\n\n{paragraph}\n"
+    ).encode("utf-8")
+
+
+def _i2_decomposition(product_id: str) -> bytes:
+    placeholder = (
+        "Decomposition area content is not synthesized by the initializer. "
+        "Direction material for this area may be available in product/docs/direction/."
+    )
+    lines = [
+        _i2_front_matter(
+            lifecycle_status="candidate",
+            authority_category="directional",
+        ).rstrip(),
+        f"# {product_id} Decomposition",
+        "",
+        "## Scope",
+        "",
+        f"This decomposition identifies product areas and cross-cutting concerns for {product_id}. It is a candidate directional document and is not normative.",
+        "",
+        "## Product Areas",
+        "",
+    ]
+    for heading in (
+        "invocation-and-authority",
+        "product-areas",
+        "cross-cutting-concerns",
+        "stopping-criteria-and-handoff",
+    ):
+        lines.extend([f"### {heading}", "", placeholder, ""])
+    lines.extend([
+        "## Cross-cutting Concerns",
+        "",
+        "Cross-cutting concerns are identified in the decomposition chunk documents. No concerns are synthesized by the initializer.",
+        "",
+    ])
+    return "\n".join(lines).encode("utf-8")
+
+
+def _i2_plan(product_id: str) -> bytes:
+    lines = [
+        _i2_front_matter(
+            lifecycle_status="candidate",
+            authority_category="planning",
+        ).rstrip(),
+        f"# {product_id} Implementation Plan",
+        "",
+        "## Scope and Preconditions",
+        "",
+        "Implementation scope is defined by the governing product specifications and decomposition. This plan is a candidate planning document and is not normative.",
+        "",
+        "## Workstreams and Dependencies",
+        "",
+        "Workstreams are identified in the implementation plan chunk documents. No workstream content is synthesized by the initializer.",
+        "",
+        "## Validation and Completion",
+        "",
+        "Validation criteria are defined by the governing product specifications. No validation content is synthesized by the initializer.",
+        "",
+        "## Risks and Unresolved Decisions",
+        "",
+        "Risks and unresolved decisions are recorded in the implementation plan chunk documents. No risk content is synthesized by the initializer.",
+        "",
+    ]
+    return "\n".join(lines).encode("utf-8")
+
+
+def _i2_discoverability_readme(
+    heading: str,
+    title: str,
+    relative_path: str,
+) -> bytes:
+    return (
+        _i2_front_matter(lifecycle_status="candidate")
+        + f"# {heading}\n\n"
+        + f"See the [{title}]({relative_path}) controlling document.\n"
+    ).encode("utf-8")
+
+
+def _i2_level_readme(level: int) -> bytes:
+    return (
+        _i2_front_matter(lifecycle_status="candidate")
+        + f"# Level {level}\n\n"
+        + f"The Level {level} product-specification workspace is activated.\n\n"
+        + f"No product specifications currently exist at Level {level}.\n\n"
+        + "Generated content remains candidate and non-normative.\n\n"
+        + f"The governed next action is to add Level {level} specifications only through separately authorized specification work.\n"
+    ).encode("utf-8")
+
+
+def _i2_product_readme(product_id: str) -> bytes:
+    return (
+        _i2_front_matter(lifecycle_status="candidate")
+        + f"# {product_id}\n\n"
+        + f"This directory contains the activated but empty product-specification workspace for {product_id}.\n\n"
+        + f"- [Overview](../../../docs/overview/{product_id}-OVERVIEW.md)\n"
+        + f"- [Decomposition](../../../docs/decompositions/{product_id}-DECOMPOSITION.md)\n"
+        + f"- [Implementation Plan](../../../docs/plans/{product_id}-IMPLEMENTATION-PLAN.md)\n"
+    ).encode("utf-8")
+
+
+def build_i2_foundation_files(
+    plan: FoundationPlan,
+    source_repository: str,
+    source_revision: str,
+) -> dict[str, bytes]:
+    product_id = plan.product_id
+    if (
+        not product_id
+        or product_id in {".", ".."}
+        or "/" in product_id
+        or "\\" in product_id
+        or "\x00" in product_id
+    ):
+        raise FoundationError("product_id is not safe for governed foundation paths")
+
+    files: dict[str, bytes] = {}
+
+    def add(path: str, content: bytes) -> None:
+        if path in files:
+            raise FoundationError(f"foundation output path collision: {path}")
+        files[path] = content
+
+    manifest_entries: list[dict[str, Any]] = []
+    for index, source_path in enumerate(plan.direction_material):
+        oid, raw = _i2_git_blob(source_repository, source_revision, source_path)
+        projected = (
+            f"product/docs/direction/evidence/{index:03d}-{Path(source_path).name}"
+        )
+        add(projected, raw)
+        manifest_entries.append({
+            "positional_index": index,
+            "original_source_path": source_path,
+            "source_revision": {
+                "object_format": "sha1",
+                "object_id": source_revision,
+            },
+            "source_blob_object_id": {
+                "object_format": "sha1",
+                "object_id": oid,
+            },
+            "projected_evidence_path": projected,
+            "byte_length": len(raw),
+        })
+
+    add(
+        "product/docs/direction/manifest.json",
+        _i2_json_bytes({"entries": manifest_entries}),
+    )
+
+    overview_chunks = (
+        ("chunk-01-identity-and-purpose.md", "Product Identity and Purpose"),
+        ("chunk-02-problem-and-outcome.md", "Problem and Outcome"),
+        ("chunk-03-users-principles-boundaries.md", "Users, Principles, and Boundaries"),
+        ("chunk-04-capabilities-and-success.md", "Capabilities and Success"),
+        ("chunk-05-unresolved-questions.md", "Unresolved Questions"),
+        ("chunk-06-lifecycle-and-handoff.md", "Lifecycle and Handoff"),
+    )
+    overview_paragraph = (
+        "Direction material entries with positional indices relevant to this section "
+        "are projected to product/docs/direction/. This chunk is a mechanically "
+        "generated skeleton and does not contain synthesized product semantics."
+    )
+    add(f"docs/overview/{product_id}-OVERVIEW.md", _i2_overview(product_id))
+    for filename, title in overview_chunks:
+        add(
+            f"docs/overview/{product_id}-overview/{filename}",
+            _i2_chunk(title, overview_paragraph),
+        )
+
+    decomposition_chunks = (
+        ("chunk-01-invocation-and-authority.md", "Invocation and Authority"),
+        ("chunk-02-product-areas.md", "Product Areas"),
+        ("chunk-03-cross-cutting-concerns.md", "Cross-cutting Concerns"),
+        ("chunk-04-stopping-criteria-and-handoff.md", "Stopping Criteria and Handoff"),
+    )
+    decomposition_paragraph = (
+        "This decomposition chunk is a mechanically generated skeleton. "
+        "Decomposition content is not synthesized by the initializer."
+    )
+    add(
+        f"docs/decompositions/{product_id}-DECOMPOSITION.md",
+        _i2_decomposition(product_id),
+    )
+    for filename, title in decomposition_chunks:
+        add(
+            f"docs/decompositions/{product_id}-decomposition/{filename}",
+            _i2_chunk(title, decomposition_paragraph),
+        )
+
+    plan_chunks = (
+        ("chunk-01-scope-and-preconditions.md", "Scope and Preconditions"),
+        ("chunk-02-workstreams-and-dependencies.md", "Workstreams and Dependencies"),
+        ("chunk-03-validation-and-completion.md", "Validation and Completion"),
+        ("chunk-04-risks-and-unresolved-decisions.md", "Risks and Unresolved Decisions"),
+    )
+    plan_paragraph = (
+        "This implementation plan chunk is a mechanically generated skeleton. "
+        "Plan content is not synthesized by the initializer."
+    )
+    add(
+        f"docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
+        _i2_plan(product_id),
+    )
+    for filename, title in plan_chunks:
+        add(
+            f"docs/plans/{product_id}-implementation-plan/{filename}",
+            _i2_chunk(title, plan_paragraph),
+        )
+
+    add(
+        "docs/overview/README.md",
+        _i2_discoverability_readme(
+            "Overview", f"{product_id} Overview", f"./{product_id}-OVERVIEW.md"
+        ),
+    )
+    add(
+        "docs/decompositions/README.md",
+        _i2_discoverability_readme(
+            "Decompositions",
+            f"{product_id} Decomposition",
+            f"./{product_id}-DECOMPOSITION.md",
+        ),
+    )
+    add(
+        "docs/plans/README.md",
+        _i2_discoverability_readme(
+            "Plans",
+            f"{product_id} Implementation Plan",
+            f"./{product_id}-IMPLEMENTATION-PLAN.md",
+        ),
+    )
+    for level in range(4):
+        add(f"product/specs/product/level-{level}/README.md", _i2_level_readme(level))
+
+    add(
+        "product/specs/product/manifest.json",
+        _i2_json_bytes({
+            "spec_id": "product.manifest",
+            "title": f"{product_id} Product Specification Manifest",
+            "purpose": f"Registers the product specifications for {product_id}.",
+            "status": "candidate",
+            "schema_version": "1",
+            "product_specifications": [],
+            "dependencies": [
+                {"spec_id": "repo.manifest"},
+                {"spec_id": "repo.product-manifest"},
+            ],
+        }),
+    )
+    add("product/specs/product/README.md", _i2_product_readme(product_id))
+    return files
+
+# END I2 PATCH 2 GOVERNED FOUNDATION REALIZATION

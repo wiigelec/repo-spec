@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import json
 import os
+import secrets
 import shutil
 import sys
 import tempfile
+import stat as stat_module
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -23,7 +26,10 @@ from .models import (
     InstallationPlan,
     InstallationResult,
     InstallationEntryStatus,
+    ImmutableRequest,
+    I1DestinationPreflight,
 )
+from .inventory import ResolvedSourceMaterial
 
 
 class StagingError(InitializerError):
@@ -35,8 +41,234 @@ class StagingError(InitializerError):
 
 
 STAGING_PREFIX = "repo-spec-stage-"
+TRANSACTION_RECORD_NAMES = frozenset({
+    "staging-state.json",
+    "execution-report.json",
+    "validation-report.json",
+})
 
 SUPPORTED_ENTRY_TYPES = {"file", "directory", "symlink"}
+
+
+@dataclass(frozen=True)
+class I2StagingInputs:
+    request: ImmutableRequest
+    source: ResolvedSourceMaterial
+    destination: I1DestinationPreflight
+
+
+@dataclass(frozen=True)
+class StagingWorkspace:
+    root: Path
+    root_inode: int
+    transaction_path: Path
+    repository_path: Path
+    staging_state_path: Path
+    execution_report_path: Path
+    validation_report_path: Path
+    inputs: I2StagingInputs
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "i2-staging-established",
+            "root": str(self.root),
+            "root_inode": self.root_inode,
+            "transaction_path": str(self.transaction_path),
+            "repository_path": str(self.repository_path),
+            "staging_state_path": str(self.staging_state_path),
+            "execution_report_path": str(self.execution_report_path),
+            "validation_report_path": str(self.validation_report_path),
+            "request_fingerprint": self.inputs.request.request_fingerprint,
+            "source_repository": self.inputs.source.repository,
+            "source_revision": self.inputs.source.commit_id,
+            "destination": self.inputs.destination.to_dict(),
+        }
+
+
+def validate_i2_staging_inputs(inputs: I2StagingInputs) -> None:
+    request = inputs.request
+    source = inputs.source
+    destination = inputs.destination
+    if destination.decision != "allowed":
+        raise StagingError("I1 destination preflight was not allowed")
+    if destination.destination_state != "absent":
+        raise StagingError("I2 requires an absent destination")
+    if not destination.same_filesystem:
+        raise StagingError("I1 destination preflight did not establish same-filesystem staging")
+    if destination.destination != request.destination:
+        raise StagingError("I1 destination fact does not match the canonical request")
+    if destination.destination_parent != str(Path(request.destination).parent):
+        raise StagingError("I1 destination parent does not match the canonical request")
+    if source.repository != request.source_repository:
+        raise StagingError("resolved source repository does not match the canonical request")
+    if source.commit_id != request.source_revision.object_id:
+        raise StagingError("resolved source revision does not match the canonical request")
+    if source.direction_material != request.product_direction_material:
+        raise StagingError("resolved direction material does not match the canonical request")
+
+
+def _require_absent_destination(destination: Path) -> None:
+    try:
+        destination.lstat()
+    except FileNotFoundError:
+        return
+    except OSError as exc:
+        raise StagingError(f"destination cannot be rechecked: {exc}") from exc
+    raise StagingError("destination no longer absent")
+
+
+def validate_staging_workspace(workspace: StagingWorkspace) -> None:
+    root = workspace.root
+    try:
+        root_stat = root.lstat()
+    except OSError as exc:
+        raise StagingError(f"staging root cannot be inspected: {exc}") from exc
+    if not stat_module.S_ISDIR(root_stat.st_mode):
+        raise StagingError("staging root is not a directory")
+    if root_stat.st_ino != workspace.root_inode:
+        raise StagingError("staging root identity changed")
+    if root_stat.st_dev != workspace.inputs.destination.filesystem_device:
+        raise StagingError("staging root is not on the destination filesystem")
+    if root.parent != Path(workspace.inputs.destination.destination_parent):
+        raise StagingError("staging root is not under the canonical destination parent")
+    canonical_transaction = root / "transaction"
+    canonical_repository = root / "repository"
+    if (
+        workspace.transaction_path != canonical_transaction
+        or workspace.repository_path != canonical_repository
+    ):
+        raise StagingError("staging topology paths do not match the canonical layout")
+    expected = {canonical_transaction, canonical_repository}
+    if set(root.iterdir()) != expected:
+        raise StagingError("staging root must contain exactly transaction/ and repository/")
+    root_resolved = root.resolve()
+    for name, path in (
+        ("transaction", workspace.transaction_path),
+        ("repository", workspace.repository_path),
+    ):
+        if path.is_symlink() or not path.is_dir() or path.resolve().parent != root_resolved:
+            raise StagingError(f"{name}/ is not a contained staging directory")
+    if workspace.transaction_path.resolve() == workspace.repository_path.resolve():
+        raise StagingError("transaction/ and repository/ must not alias")
+    transaction_entries = list(workspace.transaction_path.iterdir())
+    if any(
+        path.name not in TRANSACTION_RECORD_NAMES
+        or path.is_symlink()
+        or not path.is_file()
+        for path in transaction_entries
+    ):
+        raise StagingError("transaction/ contains undeclared content")
+    reserved = {
+        workspace.staging_state_path,
+        workspace.execution_report_path,
+        workspace.validation_report_path,
+    }
+    if reserved != {workspace.transaction_path / name for name in TRANSACTION_RECORD_NAMES}:
+        raise StagingError("transaction record paths do not match the canonical layout")
+    _require_absent_destination(Path(workspace.inputs.destination.destination))
+
+
+def establish_staging_workspace(inputs: I2StagingInputs) -> StagingWorkspace:
+    validate_i2_staging_inputs(inputs)
+    destination = Path(inputs.destination.destination)
+    parent = Path(inputs.destination.destination_parent)
+    _require_absent_destination(destination)
+    try:
+        parent_stat = parent.stat()
+    except OSError as exc:
+        raise StagingError(f"destination parent cannot be inspected: {exc}") from exc
+    if not stat_module.S_ISDIR(parent_stat.st_mode):
+        raise StagingError("destination parent is not a directory")
+    if parent_stat.st_dev != inputs.destination.filesystem_device:
+        raise StagingError("destination parent filesystem changed after I1 preflight")
+
+    open_flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    try:
+        parent_fd = os.open(parent, open_flags)
+    except OSError as exc:
+        raise StagingError(f"destination parent cannot be opened: {exc}") from exc
+    root_fd = -1
+    root_name = ""
+    root_identity_valid = False
+    try:
+        opened_parent_stat = os.fstat(parent_fd)
+        if (
+            opened_parent_stat.st_dev != parent_stat.st_dev
+            or opened_parent_stat.st_ino != parent_stat.st_ino
+        ):
+            raise StagingError("destination parent identity changed after inspection")
+        for _attempt in range(100):
+            candidate = f"{STAGING_PREFIX}{secrets.token_hex(8)}"
+            try:
+                os.mkdir(candidate, mode=0o700, dir_fd=parent_fd)
+            except FileExistsError:
+                continue
+            root_name = candidate
+            break
+        else:
+            raise StagingError("unable to allocate a unique staging root")
+        root = parent / root_name
+        created_root_stat = os.stat(
+            root_name,
+            dir_fd=parent_fd,
+            follow_symlinks=False,
+        )
+        root_fd = os.open(
+            root_name,
+            open_flags | getattr(os, "O_NOFOLLOW", 0),
+            dir_fd=parent_fd,
+        )
+        root_stat = os.fstat(root_fd)
+        if (
+            root_stat.st_dev != created_root_stat.st_dev
+            or root_stat.st_ino != created_root_stat.st_ino
+        ):
+            raise StagingError("staging root identity changed during creation")
+        root_identity_valid = True
+        if root_stat.st_dev != inputs.destination.filesystem_device:
+            raise StagingError("staging root is not on the destination filesystem")
+        if os.listdir(root_fd):
+            raise StagingError("new staging root was not empty")
+        transaction_path = root / "transaction"
+        repository_path = root / "repository"
+        os.mkdir("transaction", dir_fd=root_fd)
+        os.mkdir("repository", dir_fd=root_fd)
+        if set(os.listdir(root_fd)) != {"transaction", "repository"}:
+            raise StagingError("staging root topology changed during establishment")
+        current_parent_stat = parent.stat()
+        if (
+            current_parent_stat.st_dev != opened_parent_stat.st_dev
+            or current_parent_stat.st_ino != opened_parent_stat.st_ino
+        ):
+            raise StagingError("destination parent identity changed during establishment")
+        workspace = StagingWorkspace(
+            root=root,
+            root_inode=root_stat.st_ino,
+            transaction_path=transaction_path,
+            repository_path=repository_path,
+            staging_state_path=transaction_path / "staging-state.json",
+            execution_report_path=transaction_path / "execution-report.json",
+            validation_report_path=transaction_path / "validation-report.json",
+            inputs=inputs,
+        )
+        validate_staging_workspace(workspace)
+        return workspace
+    except BaseException:
+        if root_identity_valid:
+            for child in ("transaction", "repository"):
+                try:
+                    os.rmdir(child, dir_fd=root_fd)
+                except OSError:
+                    pass
+            try:
+                os.rmdir(root_name, dir_fd=parent_fd)
+            except OSError:
+                pass
+        raise
+    finally:
+        if root_fd >= 0:
+            os.close(root_fd)
+        os.close(parent_fd)
 
 
 def resolve_source_root(source_revision: str, inventory_repo_root: Path) -> Path:
@@ -336,3 +568,516 @@ def _cleanup_staging(staging_root: Path) -> None:
             shutil.rmtree(staging_root)
     except OSError:
         pass
+
+# BEGIN I2 PATCH 2 GOVERNED MATERIAL REALIZATION
+
+@dataclass(frozen=True)
+class I2RealizationResult:
+    workspace: StagingWorkspace
+    framework_paths: tuple[str, ...]
+    foundation_paths: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "i2-material-realization-complete",
+            "workspace": self.workspace.to_dict(),
+            "framework_paths": list(self.framework_paths),
+            "foundation_paths": list(self.foundation_paths),
+        }
+
+
+def _i2_validate_repo_relative_output(path: str) -> None:
+    if not path or path.startswith("/") or "\x00" in path:
+        raise StagingError(f"invalid output path: {path!r}")
+    parts = path.replace("\\", "/").split("/")
+    if any(part in {"", ".", ".."} for part in parts):
+        raise StagingError(f"non-canonical output path: {path!r}")
+    if parts[0] == ".git":
+        raise StagingError("Git administrative state is not authorized in I2")
+
+
+def _i2_matches_prohibited(path: str, rules: list[dict[str, object]]) -> bool:
+    normalized = path.rstrip("/")
+    for rule in rules:
+        kind = rule.get("rule")
+        raw = rule.get("path")
+        if not isinstance(raw, str):
+            raise StagingError("invalid prohibited_path rule")
+        target = raw.rstrip("/")
+        if kind == "exact" and normalized == target:
+            return True
+        if kind == "prefix" and (
+            normalized == target or normalized.startswith(target + "/")
+        ):
+            return True
+        if kind not in {"exact", "prefix"}:
+            raise StagingError(f"unknown prohibited_path rule: {kind!r}")
+    return False
+
+
+def _i2_source_blob(
+    source: ResolvedSourceMaterial,
+    entry: MaterialEntry,
+) -> bytes:
+    from .inventory import _read_commit_blob, _tree_entry
+
+    mode, object_type = _tree_entry(
+        source.repository,
+        source.commit_id,
+        entry.source_path,
+    )
+    if object_type != "blob":
+        raise StagingError(
+            f"material source must resolve to one Git blob: {entry.material_key}"
+        )
+    if entry.source_type == "blob":
+        if mode not in {"100644", "100755"} or mode != entry.mode:
+            raise StagingError(f"material source mode mismatch: {entry.material_key}")
+    elif entry.source_type == "symlink":
+        if mode != "120000" or entry.mode != "120000":
+            raise StagingError(f"symlink mode mismatch: {entry.material_key}")
+    else:
+        raise StagingError(
+            f"unsupported material source_type {entry.source_type!r}: {entry.material_key}"
+        )
+    return _read_commit_blob(
+        source.repository,
+        source.commit_id,
+        entry.source_path,
+    )
+
+
+def _i2_prepare_framework_outputs(
+    source: ResolvedSourceMaterial,
+    output_inventory: dict[str, Any],
+) -> list[tuple[str, MaterialEntry, bytes]]:
+    material_index = output_inventory.get("material_index")
+    prohibited = output_inventory.get("prohibited_paths")
+    if not isinstance(material_index, list) or not material_index:
+        raise StagingError("output inventory material_index must be a non-empty array")
+    if not isinstance(prohibited, list):
+        raise StagingError("output inventory prohibited_paths must be an array")
+
+    manifest_by_key = {entry.material_key: entry for entry in source.manifest}
+    if len(manifest_by_key) != len(source.manifest):
+        raise StagingError("material manifest contains duplicate material_key values")
+
+    index_by_key: dict[str, dict[str, Any]] = {}
+    destinations: set[str] = set()
+    for raw in material_index:
+        if not isinstance(raw, dict):
+            raise StagingError("invalid material_index entry")
+        key = raw.get("material_key")
+        destination = raw.get("destination_path")
+        if not isinstance(key, str) or not isinstance(destination, str):
+            raise StagingError("material_index key/path must be strings")
+        if key in index_by_key:
+            raise StagingError(f"duplicate output material_key: {key}")
+        if destination in destinations:
+            raise StagingError(f"duplicate framework destination_path: {destination}")
+        index_by_key[key] = raw
+        destinations.add(destination)
+
+    if set(index_by_key) != set(manifest_by_key):
+        raise StagingError("closed material inventory does not reconcile")
+
+    prepared: list[tuple[str, MaterialEntry, bytes]] = []
+    for entry in source.manifest:
+        raw = index_by_key[entry.material_key]
+        if raw.get("producer") != "framework-installation":
+            raise StagingError(f"producer mismatch: {entry.material_key}")
+        if raw.get("required") is not True:
+            raise StagingError(f"V1 material must be required: {entry.material_key}")
+        if raw.get("role") == "development-only":
+            raise StagingError("development-only material is not installable")
+        if raw.get("role") != entry.role:
+            raise StagingError(f"role mismatch: {entry.material_key}")
+        if raw.get("operation") != entry.operation:
+            raise StagingError(f"operation mismatch: {entry.material_key}")
+        if raw.get("mode") != entry.mode:
+            raise StagingError(f"mode mismatch: {entry.material_key}")
+        if entry.operation != "copy-verbatim":
+            raise StagingError(
+                f"accepted V1 closed framework inventory operation is unsupported: "
+                f"{entry.operation!r}"
+            )
+        if entry.source_type == "tree":
+            raise StagingError(
+                f"tree-valued framework material is prohibited: {entry.material_key}"
+            )
+
+        destination = raw["destination_path"]
+        _i2_validate_repo_relative_output(destination)
+        if _i2_matches_prohibited(destination, prohibited):
+            raise StagingError(f"framework output is prohibited: {destination}")
+        prepared.append((destination, entry, _i2_source_blob(source, entry)))
+    return prepared
+
+
+def _i2_expected_foundation_paths(plan: FoundationPlan) -> set[str]:
+    product_id = plan.product_id
+    paths = {
+        "product/docs/direction/manifest.json",
+        f"docs/overview/{product_id}-OVERVIEW.md",
+        f"docs/decompositions/{product_id}-DECOMPOSITION.md",
+        f"docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
+        "docs/overview/README.md",
+        "docs/decompositions/README.md",
+        "docs/plans/README.md",
+        "product/specs/product/README.md",
+        "product/specs/product/manifest.json",
+        "product/specs/product/level-0/README.md",
+        "product/specs/product/level-1/README.md",
+        "product/specs/product/level-2/README.md",
+        "product/specs/product/level-3/README.md",
+    }
+    for index, source_path in enumerate(plan.direction_material):
+        paths.add(
+            f"product/docs/direction/evidence/{index:03d}-{Path(source_path).name}"
+        )
+    for filename in (
+        "chunk-01-identity-and-purpose.md",
+        "chunk-02-problem-and-outcome.md",
+        "chunk-03-users-principles-boundaries.md",
+        "chunk-04-capabilities-and-success.md",
+        "chunk-05-unresolved-questions.md",
+        "chunk-06-lifecycle-and-handoff.md",
+    ):
+        paths.add(f"docs/overview/{product_id}-overview/{filename}")
+    for filename in (
+        "chunk-01-invocation-and-authority.md",
+        "chunk-02-product-areas.md",
+        "chunk-03-cross-cutting-concerns.md",
+        "chunk-04-stopping-criteria-and-handoff.md",
+    ):
+        paths.add(f"docs/decompositions/{product_id}-decomposition/{filename}")
+    for filename in (
+        "chunk-01-scope-and-preconditions.md",
+        "chunk-02-workstreams-and-dependencies.md",
+        "chunk-03-validation-and-completion.md",
+        "chunk-04-risks-and-unresolved-decisions.md",
+    ):
+        paths.add(f"docs/plans/{product_id}-implementation-plan/{filename}")
+    return paths
+
+
+def _i2_validate_foundation_inventory(
+    plan: FoundationPlan,
+    files: dict[str, bytes],
+    output_inventory: dict[str, Any],
+) -> None:
+    expected = _i2_expected_foundation_paths(plan)
+    if set(files) != expected:
+        raise StagingError("foundation deterministic path set mismatch")
+
+    prohibited = output_inventory.get("prohibited_paths")
+    fixed = output_inventory.get("fixed_worktree_files")
+    families = output_inventory.get("dynamic_path_families")
+    if not isinstance(prohibited, list):
+        raise StagingError("output inventory prohibited_paths must be an array")
+    if not isinstance(fixed, list):
+        raise StagingError("output inventory fixed_worktree_files must be an array")
+    if not isinstance(families, list):
+        raise StagingError("output inventory dynamic_path_families must be an array")
+
+    producers = {"direction-evidence-installation", "workspace-seeding"}
+    required_fixed = {
+        item.get("destination_path")
+        for item in fixed
+        if isinstance(item, dict)
+        and item.get("producer") in producers
+        and item.get("required") is True
+    }
+    if {path for path in expected if path in required_fixed} != required_fixed:
+        raise StagingError("required fixed foundation outputs do not reconcile")
+
+    family_producers = [
+        item.get("producer")
+        for item in families
+        if isinstance(item, dict)
+        and item.get("required") is True
+        and item.get("governing_spec") == "product.foundation-seeding"
+    ]
+    if family_producers.count("direction-evidence-installation") != 1:
+        raise StagingError("direction-evidence dynamic family is not unique")
+    if family_producers.count("workspace-seeding") != 4:
+        raise StagingError("workspace-seeding dynamic families do not reconcile")
+
+    for path in expected:
+        _i2_validate_repo_relative_output(path)
+        if _i2_matches_prohibited(path, prohibited):
+            raise StagingError(f"foundation output is prohibited: {path}")
+
+
+def _i2_clear_repository_contents(repository: Path) -> None:
+    if not repository.is_dir() or repository.is_symlink():
+        return
+    for child in list(repository.iterdir()):
+        if child.is_symlink() or child.is_file():
+            child.unlink(missing_ok=True)
+        else:
+            shutil.rmtree(child)
+
+
+def realize_i2_materials(
+    workspace: StagingWorkspace,
+    foundation_plan: FoundationPlan,
+) -> I2RealizationResult:
+    validate_staging_workspace(workspace)
+    repository = workspace.repository_path
+    if any(repository.iterdir()):
+        raise StagingError("Patch 2 requires an empty repository/ workspace")
+
+    source = workspace.inputs.source
+    from .inventory import _load_json_blob, OUTPUT_INVENTORY_SPEC_PATH
+    from .foundations import build_i2_foundation_files
+
+    output_inventory = _load_json_blob(
+        source.repository,
+        source.commit_id,
+        OUTPUT_INVENTORY_SPEC_PATH,
+    )
+    prepared = _i2_prepare_framework_outputs(source, output_inventory)
+    foundation_files = build_i2_foundation_files(
+        foundation_plan,
+        source.repository,
+        source.commit_id,
+    )
+    _i2_validate_foundation_inventory(
+        foundation_plan,
+        foundation_files,
+        output_inventory,
+    )
+
+    framework_paths = [path for path, _entry, _data in prepared]
+    if set(framework_paths) & set(foundation_files):
+        raise StagingError("framework and foundation output paths overlap")
+    all_paths = framework_paths + list(foundation_files)
+    if len(all_paths) != len(set(all_paths)):
+        raise StagingError("candidate repository output path collision")
+
+    try:
+        for destination, entry, data in prepared:
+            target = repository / destination
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if entry.source_type == "symlink":
+                try:
+                    link_target = data.decode("utf-8")
+                except UnicodeDecodeError as exc:
+                    raise StagingError(
+                        f"symlink target is not UTF-8: {entry.material_key}"
+                    ) from exc
+                if (
+                    not link_target
+                    or "\x00" in link_target
+                    or Path(link_target).is_absolute()
+                ):
+                    raise StagingError(f"unsafe symlink target: {entry.material_key}")
+                candidate = (target.parent / link_target).resolve(strict=False)
+                try:
+                    candidate.relative_to(repository.resolve())
+                except ValueError as exc:
+                    raise StagingError(
+                        f"symlink target escapes repository/: {entry.material_key}"
+                    ) from exc
+                target.symlink_to(link_target)
+            else:
+                target.write_bytes(data)
+                os.chmod(target, 0o755 if entry.mode == "100755" else 0o644)
+
+        for destination, data in foundation_files.items():
+            target = repository / destination
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+            os.chmod(target, 0o644)
+
+        if (repository / ".git").exists():
+            raise StagingError("I3 Git state appeared during I2 realization")
+        validate_staging_workspace(workspace)
+    except BaseException:
+        _i2_clear_repository_contents(repository)
+        raise
+
+    return I2RealizationResult(
+        workspace=workspace,
+        framework_paths=tuple(framework_paths),
+        foundation_paths=tuple(foundation_files),
+    )
+
+# END I2 PATCH 2 GOVERNED MATERIAL REALIZATION
+
+# BEGIN I2 PATCH 3 DETERMINISTIC EXIT
+
+@dataclass(frozen=True)
+class I2RepositoryEntry:
+    path: str
+    entry_type: str
+    executable: bool | None
+    byte_length: int | None
+    content_sha256: str | None
+    symlink_target: str | None
+
+    def to_dict(self) -> dict[str, object]:
+        value: dict[str, object] = {"path": self.path, "type": self.entry_type}
+        if self.executable is not None:
+            value["executable"] = self.executable
+        if self.byte_length is not None:
+            value["byte_length"] = self.byte_length
+        if self.content_sha256 is not None:
+            value["content_sha256"] = self.content_sha256
+        if self.symlink_target is not None:
+            value["symlink_target"] = self.symlink_target
+        return value
+
+
+@dataclass(frozen=True)
+class I2RepositoryDigest:
+    algorithm: str
+    digest: str
+    entry_count: int
+    canonical_input_byte_length: int
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "algorithm": self.algorithm,
+            "digest": self.digest,
+            "entry_count": self.entry_count,
+            "canonical_input_byte_length": self.canonical_input_byte_length,
+        }
+
+
+@dataclass(frozen=True)
+class I2ExitState:
+    realization: I2RealizationResult
+    repository_entries: tuple[I2RepositoryEntry, ...]
+    repository_digest: I2RepositoryDigest
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "i2-exit-ready",
+            "realization": self.realization.to_dict(),
+            "repository_entries": [e.to_dict() for e in self.repository_entries],
+            "repository_digest": self.repository_digest.to_dict(),
+            "successor_increment": "I3",
+            "successor_authorized": False,
+        }
+
+
+def _i2_frame_part(value: bytes) -> bytes:
+    return len(value).to_bytes(8, "big") + value
+
+
+def enumerate_i2_repository(repository: Path) -> tuple[I2RepositoryEntry, ...]:
+    import hashlib
+
+    root = repository.resolve()
+    if not root.is_dir() or repository.is_symlink():
+        raise StagingError("candidate repository/ is not a real directory")
+
+    entries: list[I2RepositoryEntry] = []
+    for path in sorted(
+        repository.rglob("*"),
+        key=lambda item: item.relative_to(repository).as_posix(),
+    ):
+        relative = path.relative_to(repository).as_posix()
+        _i2_validate_repo_relative_output(relative)
+        if relative == ".git" or relative.startswith(".git/"):
+            raise StagingError("Git administrative state is not part of I2 repository content")
+        try:
+            st = path.lstat()
+        except OSError as exc:
+            raise StagingError(
+                f"cannot stat candidate repository path {relative}: {exc}"
+            ) from exc
+
+        if stat_module.S_ISLNK(st.st_mode):
+            target = os.readlink(path)
+            target_bytes = target.encode("utf-8", "strict")
+            entries.append(I2RepositoryEntry(
+                path=relative,
+                entry_type="symlink",
+                executable=None,
+                byte_length=len(target_bytes),
+                content_sha256=hashlib.sha256(target_bytes).hexdigest(),
+                symlink_target=target,
+            ))
+        elif stat_module.S_ISDIR(st.st_mode):
+            entries.append(I2RepositoryEntry(
+                path=relative + "/",
+                entry_type="directory",
+                executable=None,
+                byte_length=None,
+                content_sha256=None,
+                symlink_target=None,
+            ))
+        elif stat_module.S_ISREG(st.st_mode):
+            raw = path.read_bytes()
+            entries.append(I2RepositoryEntry(
+                path=relative,
+                entry_type="regular-file",
+                executable=bool(st.st_mode & 0o111),
+                byte_length=len(raw),
+                content_sha256=hashlib.sha256(raw).hexdigest(),
+                symlink_target=None,
+            ))
+        else:
+            raise StagingError(
+                f"unsupported filesystem object in candidate repository: {relative}"
+            )
+    return tuple(entries)
+
+
+def i2_repository_digest_input(
+    repository: Path,
+) -> tuple[bytes, tuple[I2RepositoryEntry, ...]]:
+    entries = enumerate_i2_repository(repository)
+    framed = bytearray(b"repo-spec-i2-repository-content-v1\\0")
+    for entry in entries:
+        framed.extend(_i2_frame_part(entry.path.encode("utf-8", "strict")))
+        framed.extend(_i2_frame_part(entry.entry_type.encode("ascii")))
+        actual = repository / entry.path.rstrip("/")
+        if entry.entry_type == "directory":
+            framed.extend(_i2_frame_part(b""))
+            framed.extend(_i2_frame_part(b""))
+        elif entry.entry_type == "symlink":
+            target = os.readlink(actual).encode("utf-8", "strict")
+            framed.extend(_i2_frame_part(b""))
+            framed.extend(_i2_frame_part(target))
+        else:
+            mode = b"x" if entry.executable else b"-"
+            framed.extend(_i2_frame_part(mode))
+            framed.extend(_i2_frame_part(actual.read_bytes()))
+    return bytes(framed), entries
+
+
+def build_i2_exit_state(realization: I2RealizationResult) -> I2ExitState:
+    import hashlib
+
+    workspace = realization.workspace
+    validate_staging_workspace(workspace)
+    repository = workspace.repository_path
+    digest_input, entries = i2_repository_digest_input(repository)
+
+    observed_leaf_paths = {
+        entry.path for entry in entries if entry.entry_type != "directory"
+    }
+    expected_leaf_paths = set(realization.framework_paths) | set(realization.foundation_paths)
+    if observed_leaf_paths != expected_leaf_paths:
+        missing = sorted(expected_leaf_paths - observed_leaf_paths)
+        undeclared = sorted(observed_leaf_paths - expected_leaf_paths)
+        raise StagingError(
+            f"candidate repository inventory mismatch: missing={missing}, undeclared={undeclared}"
+        )
+
+    return I2ExitState(
+        realization=realization,
+        repository_entries=entries,
+        repository_digest=I2RepositoryDigest(
+            algorithm="sha256",
+            digest=hashlib.sha256(digest_input).hexdigest(),
+            entry_count=len(entries),
+            canonical_input_byte_length=len(digest_input),
+        ),
+    )
+
+# END I2 PATCH 3 DETERMINISTIC EXIT
