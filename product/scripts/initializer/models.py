@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 from typing import Any
 
 
@@ -207,6 +206,42 @@ class ClassifiedInventory:
         return hash(self._entries)
 
 
+class GitObjectIdentity:
+    __slots__ = ("_object_format", "_object_id", "_frozen")
+
+    def __init__(self, object_format: str, object_id: str) -> None:
+        self._object_format = object_format
+        self._object_id = object_id
+        self._frozen = True
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if getattr(self, "_frozen", False):
+            raise AttributeError("GitObjectIdentity is immutable")
+        object.__setattr__(self, name, value)
+
+    @property
+    def object_format(self) -> str:
+        return self._object_format
+
+    @property
+    def object_id(self) -> str:
+        return self._object_id
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "object_format": self._object_format,
+            "object_id": self._object_id,
+        }
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, GitObjectIdentity):
+            return NotImplemented
+        return self.to_dict() == other.to_dict()
+
+    def __hash__(self) -> int:
+        return hash((self._object_format, self._object_id))
+
+
 class ImmutableRequest:
     __slots__ = (
         "_schema_version",
@@ -217,38 +252,38 @@ class ImmutableRequest:
         "_profile",
         "_product_id",
         "_product_direction_material",
-        "_deferred",
-        "_metadata",
+        "_canonical_request_bytes",
+        "_request_fingerprint",
         "_frozen",
     )
 
-    def __init__(self, raw: dict[str, Any]) -> None:
-        self._schema_version = raw.get("schema_version", "")
-        self._destination = raw.get("destination", "")
-        authority = raw.get("authority", {})
-        self._authority = dict(authority) if isinstance(authority, dict) else {}
-        source = raw.get("source", {})
-        if isinstance(source, dict):
-            self._source_repository = source.get("repository")
-            self._source_revision = source.get("revision")
-        else:
-            self._source_repository = None
-            self._source_revision = None
+    def __init__(
+        self,
+        raw: dict[str, Any],
+        canonical_request_bytes: bytes,
+        request_fingerprint: str,
+    ) -> None:
+        self._schema_version = raw["schema_version"]
+        self._destination = raw["destination"]
+        self._authority = dict(raw["authority"])
+        source = raw["source"]
+        self._source_repository = source["repository"]
+        revision = source["revision"]
+        self._source_revision = GitObjectIdentity(
+            revision["object_format"], revision["object_id"]
+        )
         self._profile = raw.get("profile")
-        product = raw.get("product", {})
-        if isinstance(product, dict):
-            self._product_id = product.get("id")
-            dm = product.get("direction_material")
-            if dm is not None and isinstance(dm, list):
-                self._product_direction_material = list(dm)
-            else:
-                self._product_direction_material = dm if dm is not None else None
-        else:
-            self._product_id = None
-            self._product_direction_material = None
-        self._deferred = list(raw["deferred"]) if "deferred" in raw else None
-        self._metadata = copy.deepcopy(raw.get("metadata")) if "metadata" in raw else None
+        product = raw["product"]
+        self._product_id = product["id"]
+        self._product_direction_material = tuple(product["direction_material"])
+        self._canonical_request_bytes = canonical_request_bytes
+        self._request_fingerprint = request_fingerprint
         self._frozen = True
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if getattr(self, "_frozen", False):
+            raise AttributeError("ImmutableRequest is immutable")
+        object.__setattr__(self, name, value)
 
     @property
     def schema_version(self) -> str:
@@ -263,11 +298,11 @@ class ImmutableRequest:
         return dict(self._authority)
 
     @property
-    def source_repository(self) -> str | None:
+    def source_repository(self) -> str:
         return self._source_repository
 
     @property
-    def source_revision(self) -> str | None:
+    def source_revision(self) -> GitObjectIdentity:
         return self._source_revision
 
     @property
@@ -275,26 +310,20 @@ class ImmutableRequest:
         return self._profile
 
     @property
-    def product_id(self) -> str | None:
+    def product_id(self) -> str:
         return self._product_id
 
     @property
-    def product_direction_material(self) -> list[Any] | None:
-        if self._product_direction_material is not None:
-            return list(self._product_direction_material)
-        return None
+    def product_direction_material(self) -> tuple[str, ...]:
+        return self._product_direction_material
 
     @property
-    def deferred(self) -> list[str] | None:
-        if self._deferred is not None:
-            return list(self._deferred)
-        return None
+    def canonical_request_bytes(self) -> bytes:
+        return self._canonical_request_bytes
 
     @property
-    def metadata(self) -> Any | None:
-        if self._metadata is not None:
-            return copy.deepcopy(self._metadata)
-        return None
+    def request_fingerprint(self) -> str:
+        return self._request_fingerprint
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, ImmutableRequest):
@@ -308,8 +337,8 @@ class ImmutableRequest:
             and self._profile == other._profile
             and self._product_id == other._product_id
             and self._product_direction_material == other._product_direction_material
-            and self._deferred == other._deferred
-            and self._metadata == other._metadata
+            and self._canonical_request_bytes == other._canonical_request_bytes
+            and self._request_fingerprint == other._request_fingerprint
         )
 
     def __ne__(self, other: object) -> bool:
@@ -327,9 +356,9 @@ class ImmutableRequest:
             self._source_revision,
             self._profile,
             self._product_id,
-            tuple(self._product_direction_material) if self._product_direction_material is not None else None,
-            tuple(self._deferred) if self._deferred is not None else None,
-            str(self._metadata) if self._metadata is not None else None,
+            self._product_direction_material,
+            self._canonical_request_bytes,
+            self._request_fingerprint,
         ))
 
 
