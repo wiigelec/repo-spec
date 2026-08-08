@@ -108,9 +108,17 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
     return tuple(dict.fromkeys(required_paths))
 
 
+REQUIRED_FIXTURE_ROOT_FILES = (".gitignore", "AGENTS.md", "LICENSE", "README.md")
+REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "docs", "product", "reference", "repo", "scripts", "user")
+
+
 def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:
     fixture_root = temp_root / f"fixture-{fixture_index}"
     fixture_root.mkdir(parents=True, exist_ok=True)
+    for name in REQUIRED_FIXTURE_ROOT_DIRECTORIES:
+        (fixture_root / name).mkdir(parents=True, exist_ok=True)
+    for name in REQUIRED_FIXTURE_ROOT_FILES:
+        shutil.copy2(repo_root / name, fixture_root / name)
     if required_paths is None:
         required_paths = declared_repo_fixture_paths(repo_root)
     for relative_path in required_paths:
