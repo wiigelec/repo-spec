@@ -1,0 +1,563 @@
+{
+  "schema_version": "1",
+  "increment": "I1",
+  "governing_issue": 273,
+  "accepted_base": "6cf248b1d19bf28fd5c6fd48817e0c5a6fb5ac47",
+  "patch_heads": {
+    "patch_1": "a5adb1579f554e0ad451104bb1daad07c67ed239",
+    "patch_2": "be3cf2f88e6cdf681bfd87f1e62d165f42324c06",
+    "patch_3": "current-commit"
+  },
+  "owned_key_count": 60,
+  "represented_key_count": 60,
+  "blockers": [],
+  "successor_authorized": false,
+  "successor_gate": {
+    "evaluated": false,
+    "reason": "I1 merge, post-merge validation, and fresh I1->I2 audit are still required."
+  },
+  "entries": [
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-006",
+      "spec_id": "product.initializer-level-0",
+      "requirement_id": "INIT-L0-006",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_cli.py::I1IntegratedPreflightTests.test_preflight_request_is_bounded_i1_path"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-001",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-002",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-003",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-003",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-004",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-004",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-005",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-005",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-006",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-006",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-007",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-007",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-008",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-008",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-009",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-009",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-010",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-010",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-011",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-011",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-012",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-012",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-013",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-013",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-014",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-014",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-015",
+      "spec_id": "product.initialization-request",
+      "requirement_id": "INIT-REQ-015",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-001",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-002",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-003",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-003",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-004",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-004",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-005",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-005",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-007",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-007",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-008",
+      "spec_id": "product.source-revision-identity",
+      "requirement_id": "INIT-SRC-008",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.destination::INIT-DST-001",
+      "spec_id": "product.destination",
+      "requirement_id": "INIT-DST-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py::I1DestinationPreflightTests"
+      ]
+    },
+    {
+      "composite_key": "product.destination::INIT-DST-002",
+      "spec_id": "product.destination",
+      "requirement_id": "INIT-DST-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py::I1DestinationPreflightTests"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-001",
+      "spec_id": "product.product-identity",
+      "requirement_id": "INIT-PID-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_product_id_pattern_is_exact"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-002",
+      "spec_id": "product.product-identity",
+      "requirement_id": "INIT-PID-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_product_id_pattern_is_exact"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-003",
+      "spec_id": "product.product-identity",
+      "requirement_id": "INIT-PID-003",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_product_id_pattern_is_exact"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-005",
+      "spec_id": "product.product-identity",
+      "requirement_id": "INIT-PID-005",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_product_id_pattern_is_exact"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-006",
+      "spec_id": "product.product-identity",
+      "requirement_id": "INIT-PID-006",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_product_id_pattern_is_exact"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-007",
+      "spec_id": "product.product-identity",
+      "requirement_id": "INIT-PID-007",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_product_id_pattern_is_exact"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-001",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-002",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-004",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-004",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-005",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-005",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-006",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-006",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-007",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-007",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-008",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-008",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-009",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-009",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-010",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-010",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-011",
+      "spec_id": "product.material-manifest",
+      "requirement_id": "INIT-MMF-011",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-001",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-002",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-003",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-003",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-004",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-004",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-005",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-005",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-006",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-006",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-007",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-007",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-008",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-008",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-010",
+      "spec_id": "product.git-object-identity",
+      "requirement_id": "INIT-OID-010",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests.test_git_identity_rejects_abbreviated_uppercase_named_and_sha256"
+      ]
+    },
+    {
+      "composite_key": "product.destination-preflight::INIT-DPF-001",
+      "spec_id": "product.destination-preflight",
+      "requirement_id": "INIT-DPF-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py::I1DestinationPreflightTests"
+      ]
+    },
+    {
+      "composite_key": "product.destination-preflight::INIT-DPF-002",
+      "spec_id": "product.destination-preflight",
+      "requirement_id": "INIT-DPF-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_destination_promotion.py::I1DestinationPreflightTests"
+      ]
+    },
+    {
+      "composite_key": "product.request-intake::INIT-INT-001",
+      "spec_id": "product.request-intake",
+      "requirement_id": "INIT-INT-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests",
+        "product/scripts/initializer/tests/test_cli.py::I1IntegratedPreflightTests.test_preflight_request_is_bounded_i1_path"
+      ]
+    },
+    {
+      "composite_key": "product.request-intake::INIT-INT-002",
+      "spec_id": "product.request-intake",
+      "requirement_id": "INIT-INT-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_validation.py::ValidationTests",
+        "product/scripts/initializer/tests/test_cli.py::I1IntegratedPreflightTests.test_preflight_request_is_bounded_i1_path"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-001",
+      "spec_id": "product.source-material-resolution",
+      "requirement_id": "INIT-SMR-001",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-002",
+      "spec_id": "product.source-material-resolution",
+      "requirement_id": "INIT-SMR-002",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-003",
+      "spec_id": "product.source-material-resolution",
+      "requirement_id": "INIT-SMR-003",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-004",
+      "spec_id": "product.source-material-resolution",
+      "requirement_id": "INIT-SMR-004",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-005",
+      "spec_id": "product.source-material-resolution",
+      "requirement_id": "INIT-SMR-005",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-006",
+      "spec_id": "product.source-material-resolution",
+      "requirement_id": "INIT-SMR-006",
+      "status": "implemented-and-covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py::SourceMaterialTests"
+      ]
+    }
+  ]
+}

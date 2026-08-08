@@ -1,20 +1,15 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
-from initializer.inventory import (
-    resolve_inventory_path,
-    load_inventory,
-    validate_and_load_inventory,
-    resolve_source_selection_from_request,
-    inventory_to_ordered_dict,
-    InventoryError,
-)
+from initializer.inventory import InventoryError
 from initializer.foundations import FoundationPlan, FoundationError
 from initializer.models import SourceSelection
 from initializer.validation import (
+    ValidationError,
     validate_json_request,
     load_request,
     validate_request,
@@ -46,24 +41,29 @@ def main(argv: list[str]) -> int:
         return _cmd_validate_request(argv)
     elif command == "inspect-source":
         return _cmd_inspect_source(argv)
-    elif command == "stage-framework":
-        return _cmd_stage_framework(argv)
-    elif command == "stage-framework-and-foundations":
-        return _cmd_stage_framework_and_foundations(argv)
+    elif command in {
+        "stage-framework",
+        "stage-framework-and-foundations",
+        "promote-staging",
+        "stage-and-promote",
+        "stage-promote-and-git",
+    }:
+        print(
+            f"error: {command} is unavailable before governed source resolution and staging",
+            file=sys.stderr,
+        )
+        return 1
+    elif command == "preflight-request":
+        return _cmd_preflight_request(argv)
     elif command == "preflight-destination":
-        return _cmd_preflight_destination(argv)
+        print("error: preflight-destination is superseded by governed preflight-request", file=sys.stderr)
+        return 1
     elif command == "promote":
         return _cmd_promote(argv)
-    elif command == "promote-staging":
-        return _cmd_promote_staging(argv)
-    elif command == "stage-and-promote":
-        return _cmd_stage_and_promote(argv)
     elif command == "git-preflight":
         return _cmd_git_preflight(argv)
     elif command == "git-establish":
         return _cmd_git_establish(argv)
-    elif command == "stage-promote-and-git":
-        return _cmd_stage_promote_and_git(argv)
     else:
         print(f"unknown command: {command}", file=sys.stderr)
         print("commands: validate-request, inspect-source, stage-framework, stage-framework-and-foundations, preflight-destination, promote, promote-staging, stage-and-promote, git-preflight, git-establish, stage-promote-and-git", file=sys.stderr)
@@ -76,7 +76,7 @@ def _cmd_validate_request(argv: list[str]) -> int:
         print("usage: repo-spec-init validate-request <request.json>", file=sys.stderr)
         return 1
     request_path = Path(argv[3])
-    return validate_json_request(request_path)
+    return validate_json_request(request_path, os.getcwd())
 
 
 def _cmd_inspect_source(argv: list[str]) -> int:
@@ -89,19 +89,39 @@ def _cmd_inspect_source(argv: list[str]) -> int:
 
     try:
         raw = load_request(request_path)
-    except InventoryError as exc:
+    except (InventoryError, ValidationError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    result = validate_request(raw)
+    result = validate_request(raw, os.getcwd())
     if not result.is_valid:
         for err in result.errors:
             print(f"validation error: {err}", file=sys.stderr)
         return 1
 
     from initializer.validation import validate_and_normalize
-    ctx = validate_and_normalize(raw)
+    ctx = validate_and_normalize(raw, os.getcwd())
     request = ctx.request
+    from initializer.inventory import resolve_source_material
+    try:
+        resolved = resolve_source_material(
+            request.source_repository,
+            request.source_revision.object_id,
+            request.product_direction_material,
+        )
+    except InventoryError as exc:
+        print(f"source selection error: {exc}", file=sys.stderr)
+        return 1
+
+    print(json.dumps({
+        "status": "resolved",
+        "repository": resolved.repository,
+        "revision": resolved.commit_id,
+        "request_fingerprint": request.request_fingerprint,
+        "manifest_entries": len(resolved.manifest),
+        "direction_material": list(resolved.direction_material),
+    }, indent=2, ensure_ascii=False))
+    return 0
 
     repo_root = Path(argv[1]).resolve()
     inventory_path = resolve_inventory_path(repo_root)
@@ -115,7 +135,7 @@ def _cmd_inspect_source(argv: list[str]) -> int:
     if request.source_repository is not None or request.source_revision is not None:
         try:
             source_sel = resolve_source_selection_from_request(
-                request.source_repository, request.source_revision,
+                request.source_repository, request.source_revision.object_id,
             )
         except InventoryError as exc:
             print(f"source selection error: {exc}", file=sys.stderr)
@@ -132,6 +152,38 @@ def _cmd_inspect_source(argv: list[str]) -> int:
     print(json.dumps(output, indent=2))
     return 0
 
+
+
+def _cmd_preflight_request(argv: list[str]) -> int:
+    if len(argv) < 4:
+        print("error: missing request file path", file=sys.stderr)
+        return 1
+    request_path = Path(argv[3])
+    try:
+        raw = load_request(request_path)
+        from initializer.validation import validate_and_normalize
+        request = validate_and_normalize(raw, os.getcwd()).request
+        from initializer.inventory import resolve_source_material
+        source = resolve_source_material(
+            request.source_repository,
+            request.source_revision.object_id,
+            request.product_direction_material,
+        )
+        from initializer.destination import i1_destination_preflight
+        destination = i1_destination_preflight(request.destination)
+    except Exception as exc:
+        print(f"preflight error: {exc}", file=sys.stderr)
+        return 1
+    print(json.dumps({
+        "status": "i1-preflight-passed",
+        "request_fingerprint": request.request_fingerprint,
+        "source_repository": source.repository,
+        "source_revision": source.commit_id,
+        "manifest_entries": len(source.manifest),
+        "direction_material": list(source.direction_material),
+        "destination": destination,
+    }, indent=2, ensure_ascii=False))
+    return 0
 
 def _cmd_stage_framework(argv: list[str]) -> int:
     if len(argv) < 4:
@@ -151,14 +203,14 @@ def _cmd_stage_framework(argv: list[str]) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    result = validate_request(raw)
+    result = validate_request(raw, os.getcwd())
     if not result.is_valid:
         for err in result.errors:
             print(f"validation error: {err}", file=sys.stderr)
         return 1
 
     from initializer.validation import validate_and_normalize
-    ctx = validate_and_normalize(raw)
+    ctx = validate_and_normalize(raw, os.getcwd())
     request = ctx.request
 
     repo_root = Path(argv[1]).resolve()
@@ -173,7 +225,7 @@ def _cmd_stage_framework(argv: list[str]) -> int:
     if request.source_repository is not None or request.source_revision is not None:
         try:
             source_sel = resolve_source_selection_from_request(
-                request.source_repository, request.source_revision,
+                request.source_repository, request.source_revision.object_id,
             )
         except InventoryError as exc:
             print(f"source selection error: {exc}", file=sys.stderr)
@@ -228,14 +280,14 @@ def _cmd_stage_framework_and_foundations(argv: list[str]) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    result = validate_request(raw)
+    result = validate_request(raw, os.getcwd())
     if not result.is_valid:
         for err in result.errors:
             print(f"validation error: {err}", file=sys.stderr)
         return 1
 
     from initializer.validation import validate_and_normalize
-    ctx = validate_and_normalize(raw)
+    ctx = validate_and_normalize(raw, os.getcwd())
     request = ctx.request
 
     # Validate product-foundation prerequisites
@@ -258,7 +310,7 @@ def _cmd_stage_framework_and_foundations(argv: list[str]) -> int:
     if request.source_repository is not None or request.source_revision is not None:
         try:
             source_sel = resolve_source_selection_from_request(
-                request.source_repository, request.source_revision,
+                request.source_repository, request.source_revision.object_id,
             )
         except InventoryError as exc:
             print(f"source selection error: {exc}", file=sys.stderr)
@@ -280,7 +332,7 @@ def _cmd_stage_framework_and_foundations(argv: list[str]) -> int:
 
     product_id = request.product_id or ""
     direction_material = request.product_direction_material or []
-    governing_issue = request.authority.get("granted_by", "issue-195")
+    governing_issue = request.authority["granted_by"]
 
     try:
         fplan = FoundationPlan(
@@ -375,14 +427,14 @@ def _cmd_promote_staging(argv: list[str]) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    result = validate_request(raw)
+    result = validate_request(raw, os.getcwd())
     if not result.is_valid:
         for err in result.errors:
             print(f"validation error: {err}", file=sys.stderr)
         return 1
 
     from initializer.validation import validate_and_normalize
-    ctx = validate_and_normalize(raw)
+    ctx = validate_and_normalize(raw, os.getcwd())
 
     from initializer.models import ImmutableRequest
     request = ctx.request
@@ -423,14 +475,14 @@ def _cmd_stage_and_promote(argv: list[str]) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    result = validate_request(raw)
+    result = validate_request(raw, os.getcwd())
     if not result.is_valid:
         for err in result.errors:
             print(f"validation error: {err}", file=sys.stderr)
         return 1
 
     from initializer.validation import validate_and_normalize
-    ctx = validate_and_normalize(raw)
+    ctx = validate_and_normalize(raw, os.getcwd())
     request = ctx.request
 
     validate_product_foundation_prerequisites(raw, result)
@@ -451,7 +503,7 @@ def _cmd_stage_and_promote(argv: list[str]) -> int:
     if request.source_repository is not None or request.source_revision is not None:
         try:
             source_sel = resolve_source_selection_from_request(
-                request.source_repository, request.source_revision,
+                request.source_repository, request.source_revision.object_id,
             )
         except InventoryError as exc:
             print(f"source selection error: {exc}", file=sys.stderr)
@@ -475,7 +527,7 @@ def _cmd_stage_and_promote(argv: list[str]) -> int:
     if has_product:
         product_id = request.product_id or ""
         direction_material = request.product_direction_material or []
-        governing_issue = request.authority.get("granted_by", "issue-197")
+        governing_issue = request.authority["granted_by"]
         try:
             fplan = FoundationPlan(
                 product_id=product_id,
@@ -574,14 +626,14 @@ def _cmd_stage_promote_and_git(argv: list[str]) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    result = validate_request(raw)
+    result = validate_request(raw, os.getcwd())
     if not result.is_valid:
         for err in result.errors:
             print(f"validation error: {err}", file=sys.stderr)
         return 1
 
     from initializer.validation import validate_and_normalize
-    ctx = validate_and_normalize(raw)
+    ctx = validate_and_normalize(raw, os.getcwd())
     request = ctx.request
 
     validate_product_foundation_prerequisites(raw, result)
@@ -602,7 +654,7 @@ def _cmd_stage_promote_and_git(argv: list[str]) -> int:
     if request.source_repository is not None or request.source_revision is not None:
         try:
             source_sel = resolve_source_selection_from_request(
-                request.source_repository, request.source_revision,
+                request.source_repository, request.source_revision.object_id,
             )
         except InventoryError as exc:
             print(f"source selection error: {exc}", file=sys.stderr)
@@ -626,7 +678,7 @@ def _cmd_stage_promote_and_git(argv: list[str]) -> int:
     if has_product:
         product_id = request.product_id or ""
         direction_material = request.product_direction_material or []
-        governing_issue = request.authority.get("granted_by", "issue-199")
+        governing_issue = request.authority["granted_by"]
         try:
             fplan = FoundationPlan(
                 product_id=product_id,
