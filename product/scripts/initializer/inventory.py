@@ -1,381 +1,273 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .models import (
-    VALID_CLASSIFICATIONS,
-    VALID_INVENTORY_FIELDS,
-    INSTALLABLE_CLASSIFICATIONS,
-    UNINSTALLABLE_CLASSIFICATIONS,
-    InitializerError,
-    InventoryEntry,
-    ClassifiedInventory,
-    SourceSelection,
+from .models import InitializerError, SourceSelection
+
+MANIFEST_PATH = "product/scripts/initializer/framework-inventory.json"
+OUTPUT_INVENTORY_SPEC_PATH = "product/specs/product/level-1/initializer-output-inventory-v1.json"
+ROOT_FIELDS = frozenset({"schema_version", "entries"})
+ENTRY_FIELDS = frozenset({
+    "material_key", "source_path", "role", "operation", "source_type", "mode",
+    "profile", "exclusion_rationale",
+})
+REQUIRED_ENTRY_FIELDS = (
+    "material_key", "source_path", "role", "operation", "source_type", "mode"
 )
-
-
-KNOWN_ROOT_FIELDS = {"schema_version", "inventory_scope", "entries"}
-
-RECOGNIZED_PROFILES = {"github"}
+OPERATIONS = frozenset({"copy-verbatim", "instantiate-template", "generate-record"})
+SOURCE_TYPES = frozenset({"blob", "symlink"})
 
 
 class InventoryError(InitializerError):
-    def __init__(self, message: str) -> None:
-        self.message = message
-
-    def __str__(self) -> str:
-        return self.message
+    pass
 
 
-class InventoryValidationResult:
-    def __init__(self) -> None:
-        self._errors: list[str] = []
-
-    def add(self, message: str) -> None:
-        self._errors.append(message)
-
-    @property
-    def errors(self) -> list[str]:
-        return list(self._errors)
-
-    @property
-    def is_valid(self) -> bool:
-        return len(self._errors) == 0
-
-    def raise_if_invalid(self) -> None:
-        if self._errors:
-            raise InventoryError(self._errors[0])
+@dataclass(frozen=True)
+class MaterialEntry:
+    material_key: str
+    source_path: str
+    role: str
+    operation: str
+    source_type: str
+    mode: str
+    profile: str | None = None
+    exclusion_rationale: str | None = None
 
 
-def resolve_inventory_path(repo_root: Path) -> Path:
-    return repo_root / "product" / "scripts" / "initializer" / "framework-inventory.json"
+@dataclass(frozen=True)
+class ResolvedSourceMaterial:
+    repository: str
+    commit_id: str
+    manifest: tuple[MaterialEntry, ...]
+    direction_material: tuple[str, ...]
 
 
-def load_inventory(path: Path) -> dict[str, Any]:
-    try:
-        raw = json.loads(path.read_text())
-    except json.JSONDecodeError as exc:
-        raise InventoryError(f"invalid JSON in inventory file: {exc.msg}") from exc
-    except OSError as exc:
-        raise InventoryError(f"cannot read inventory file: {exc}") from exc
-    if not isinstance(raw, dict):
-        raise InventoryError("inventory must be a JSON object")
-    return raw
+def _git(repo: str, *args: str) -> subprocess.CompletedProcess[bytes]:
+    env = os.environ.copy()
+    env["GIT_NO_REPLACE_OBJECTS"] = "1"
+    env["GIT_NO_LAZY_FETCH"] = "1"
+    env["GIT_TERMINAL_PROMPT"] = "0"
+    return subprocess.run(
+        ["git", "-C", repo, *args],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        check=False,
+    )
 
 
-def validate_inventory(raw: dict[str, Any]) -> InventoryValidationResult:
-    result = InventoryValidationResult()
-
-    _check_inventory_unknown_root_fields(raw, result)
-    _check_inventory_schema_version(raw.get("schema_version"), result)
-
-    entries = raw.get("entries")
-    if entries is None:
-        result.add("missing required field: entries")
-        return result
-    if not isinstance(entries, list):
-        result.add("entries must be a list")
-        return result
-
-    if not entries:
-        result.add("inventory must contain at least one entry")
-        return result
-
-    seen_paths: dict[str, int] = {}
-    for i, entry in enumerate(entries):
-        _check_single_entry(entry, i, result, seen_paths)
-
-    _check_contradictory_classifications(entries, result)
-    _check_path_overlap_conflicts(entries, result)
-
-    return result
+def _git_text(repo: str, *args: str) -> str:
+    p = _git(repo, *args)
+    if p.returncode:
+        raise InventoryError(
+            f"git {' '.join(args)} failed: {p.stderr.decode('utf-8', 'replace').strip()}"
+        )
+    return p.stdout.decode("utf-8")
 
 
-def _check_inventory_unknown_root_fields(
-    raw: dict[str, Any],
-    result: InventoryValidationResult,
-) -> None:
-    for key in raw:
-        if key not in KNOWN_ROOT_FIELDS:
-            result.add(f"unknown root field: {key!r}")
-
-
-def _check_inventory_schema_version(version: Any, result: InventoryValidationResult) -> None:
-    if version is None:
-        result.add("missing required field: schema_version")
-        return
-    if not isinstance(version, str):
-        result.add("schema_version must be a string")
-        return
-    if version != "1":
-        result.add(f"unsupported schema version: {version!r}")
-
-
-def _check_single_entry(
-    entry: Any,
-    index: int,
-    result: InventoryValidationResult,
-    seen_paths: dict[str, int],
-) -> None:
-    prefix = f"entries[{index}]"
-
-    if not isinstance(entry, dict):
-        result.add(f"{prefix} must be an object")
-        return
-
-    for key in entry:
-        if key not in VALID_INVENTORY_FIELDS:
-            result.add(f"{prefix}: unknown field {key!r}")
-
-    path = entry.get("path")
-    if not path:
-        result.add(f"{prefix}: missing required field: path")
-        return
-    if not isinstance(path, str):
-        result.add(f"{prefix}: path must be a string")
-        return
-    if not path.strip():
-        result.add(f"{prefix}: path must not be empty")
-        return
-    if path.startswith("/"):
-        result.add(f"{prefix}: absolute path not allowed: {path!r}")
-        return
-    if ".." in path.split("/"):
-        result.add(f"{prefix}: parent-directory traversal not allowed: {path!r}")
-        return
-
-    if path in seen_paths:
-        prev = seen_paths[path]
-        result.add(f"{prefix}: duplicate path {path!r} (also at entries[{prev}])")
-    else:
-        seen_paths[path] = index
-
-    _check_entry_classification(entry, path, prefix, result)
-    _check_entry_authoritative(entry, path, prefix, result)
-    _check_entry_installable(entry, path, prefix, result)
-    _check_entry_profile(entry, path, prefix, result)
-    _check_entry_exclusion_rationale(entry, path, prefix, result)
-    _check_entry_derived_from(entry, path, prefix, result)
-
-
-def _check_entry_classification(
-    entry: dict[str, Any],
-    path: str,
-    prefix: str,
-    result: InventoryValidationResult,
-) -> None:
-    classification = entry.get("classification")
-    if not classification:
-        result.add(f"{prefix}: missing required field: classification")
-        return
-    if not isinstance(classification, str):
-        result.add(f"{prefix}: classification must be a string")
-        return
-    if classification not in VALID_CLASSIFICATIONS:
-        result.add(f"{prefix}: unsupported classification {classification!r}")
-
-
-def _check_entry_authoritative(
-    entry: dict[str, Any],
-    path: str,
-    prefix: str,
-    result: InventoryValidationResult,
-) -> None:
-    auth = entry.get("authoritative")
-    if auth is not None and not isinstance(auth, bool):
-        result.add(f"{prefix}: authoritative must be a boolean")
-
-
-def _check_entry_installable(
-    entry: dict[str, Any],
-    path: str,
-    prefix: str,
-    result: InventoryValidationResult,
-) -> None:
-    installable = entry.get("installable")
-    if installable is not None and not isinstance(installable, bool):
-        result.add(f"{prefix}: installable must be a boolean")
-        return
-
-    classification = entry.get("classification", "")
-    if installable is True and classification in UNINSTALLABLE_CLASSIFICATIONS:
-        result.add(f"{prefix}: entry marked installable but classification {classification!r} is not installable")
-    if installable is False and classification in INSTALLABLE_CLASSIFICATIONS:
-        result.add(f"{prefix}: entry marked not installable but classification {classification!r} requires installable")
-
-
-def _check_entry_profile(
-    entry: dict[str, Any],
-    path: str,
-    prefix: str,
-    result: InventoryValidationResult,
-) -> None:
-    profile = entry.get("profile")
-    if profile is not None:
-        if not isinstance(profile, str):
-            result.add(f"{prefix}: profile must be a string")
-            return
-        if profile not in RECOGNIZED_PROFILES:
-            result.add(f"{prefix}: unrecognized profile identifier {profile!r}")
-        classification = entry.get("classification", "")
-        if classification not in ("profile-source", "installed-adapter"):
-            result.add(f"{prefix}: profile field set on non-profile classification {classification!r}")
-
-
-def _check_entry_exclusion_rationale(
-    entry: dict[str, Any],
-    path: str,
-    prefix: str,
-    result: InventoryValidationResult,
-) -> None:
-    rationale = entry.get("exclusion_rationale")
-    classification = entry.get("classification", "")
-
-    if classification in UNINSTALLABLE_CLASSIFICATIONS or classification == "excluded":
-        if not rationale:
-            result.add(f"{prefix}: exclusion_rationale required for uninstallable or excluded classification")
-    if rationale is not None and not isinstance(rationale, str):
-        result.add(f"{prefix}: exclusion_rationale must be a string")
-    if rationale is not None and classification in INSTALLABLE_CLASSIFICATIONS:
-        result.add(f"{prefix}: exclusion_rationale set on installable classification {classification!r}")
-
-
-def _check_entry_derived_from(
-    entry: dict[str, Any],
-    path: str,
-    prefix: str,
-    result: InventoryValidationResult,
-) -> None:
-    df = entry.get("derived_from")
-    classification = entry.get("classification", "")
-
-    if df is not None:
-        if not isinstance(df, list):
-            result.add(f"{prefix}: derived_from must be a list")
-            return
-        if classification != "derived":
-            result.add(f"{prefix}: derived_from set on non-derived classification {classification!r}")
-            return
-        if not df:
-            result.add(f"{prefix}: derived_from must list at least one authoritative path")
-            return
-        for item in df:
-            if not isinstance(item, str) or not item.strip():
-                result.add(f"{prefix}: derived_from items must be non-empty strings")
-
-
-def _check_contradictory_classifications(
-    entries: list[Any],
-    result: InventoryValidationResult,
-) -> None:
-    installable_set: set[str] = set()
-    uninstallable_set: set[str] = set()
-
-    for entry in entries:
-        if not isinstance(entry, dict):
+def _validate_repo_relative(path: str, context: str) -> None:
+    if not path or path.startswith("/") or "\x00" in path:
+        raise InventoryError(f"{context} must be a non-empty repository-relative path")
+    depth = 0
+    for part in path.split("/"):
+        if not part or part == ".":
             continue
-        path = entry.get("path", "")
-        classification = entry.get("classification", "")
-        if classification in INSTALLABLE_CLASSIFICATIONS:
-            installable_set.add(path)
-        elif classification in UNINSTALLABLE_CLASSIFICATIONS:
-            uninstallable_set.add(path)
-
-    conflicting = installable_set & uninstallable_set
-    for path in sorted(conflicting):
-        result.add(f"contradictory classification for {path!r}: appears in both installable and uninstallable groups")
+        if part == "..":
+            if depth == 0:
+                raise InventoryError(f"{context} escapes the repository root")
+            depth -= 1
+        else:
+            depth += 1
 
 
-def _check_path_overlap_conflicts(
-    entries: list[Any],
-    result: InventoryValidationResult,
-) -> None:
-    entries_with_class = []
-    for entry in entries:
-        if isinstance(entry, dict) and "path" in entry and "classification" in entry:
-            entries_with_class.append((entry["path"], entry["classification"]))
-
-    sorted_entries = sorted(entries_with_class, key=lambda x: x[0])
-    by_prefix: list[tuple[str, str]] = []
-    for path, cls in sorted_entries:
-        normalized = path.rstrip("/")
-        for existing_path, existing_cls in by_prefix:
-            if normalized.startswith(existing_path + "/") or existing_path.startswith(normalized + "/"):
-                if cls != existing_cls:
-                    parent = path if len(path) < len(existing_path) else existing_path
-                    child = existing_path if len(path) < len(existing_path) else path
-                    result.add(
-                        f"overlapping entries with contradictory classifications: "
-                        f"{parent!r} ({cls if path == parent else existing_cls}) "
-                        f"and {child!r} ({existing_cls if path == parent else cls})"
-                    )
-        by_prefix.append((normalized, cls))
+def _read_commit_blob(repository: str, commit_id: str, path: str) -> bytes:
+    _validate_repo_relative(path, "commit path")
+    p = _git(repository, "cat-file", "blob", f"{commit_id}:{path}")
+    if p.returncode:
+        raise InventoryError(f"required source blob is unavailable: {path}")
+    return p.stdout
 
 
-def validate_and_load_inventory(
+def _tree_entry(repository: str, commit_id: str, path: str) -> tuple[str, str]:
+    _validate_repo_relative(path, "source path")
+    p = _git(repository, "ls-tree", "-z", commit_id, "--", path)
+    if p.returncode:
+        raise InventoryError(f"cannot inspect source path: {path}")
+    records = [r for r in p.stdout.split(b"\x00") if r]
+    if len(records) != 1:
+        raise InventoryError(f"source path does not resolve to exactly one commit-tree entry: {path}")
+    meta, _, found = records[0].partition(b"\t")
+    if found.decode("utf-8", "strict") != path:
+        raise InventoryError(f"source path resolution mismatch: {path}")
+    mode, obj_type, _oid = meta.decode("ascii").split(" ", 2)
+    return mode, obj_type
+
+
+def _load_json_blob(repository: str, commit_id: str, path: str) -> dict[str, Any]:
+    raw = _read_commit_blob(repository, commit_id, path)
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise InventoryError(f"{path} is not UTF-8") from exc
+    try:
+        value = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise InventoryError(f"invalid JSON in {path}: {exc.msg}") from exc
+    if not isinstance(value, dict):
+        raise InventoryError(f"{path} must contain one JSON object")
+    return value
+
+
+def validate_material_manifest(
     raw: dict[str, Any],
-    source_selection: SourceSelection | None = None,
-) -> ClassifiedInventory:
-    result = validate_inventory(raw)
-    result.raise_if_invalid()
+    output_inventory: dict[str, Any],
+) -> tuple[MaterialEntry, ...]:
+    unknown_root = set(raw) - ROOT_FIELDS
+    if unknown_root:
+        raise InventoryError(f"unknown material-manifest root field(s): {sorted(unknown_root)}")
+    if raw.get("schema_version") != "1":
+        raise InventoryError("material manifest schema_version must be '1'")
+    entries = raw.get("entries")
+    if not isinstance(entries, list) or not entries:
+        raise InventoryError("material manifest entries must be a non-empty array")
 
-    entries = [InventoryEntry(e) for e in raw["entries"]]
-    return ClassifiedInventory(entries)
+    output_entries = output_inventory.get("material_index")
+    if not isinstance(output_entries, list):
+        raise InventoryError("output inventory material_index must be an array")
+    by_key = {}
+    for item in output_entries:
+        if not isinstance(item, dict) or not isinstance(item.get("material_key"), str):
+            raise InventoryError("invalid output inventory material_index entry")
+        key = item["material_key"]
+        if key in by_key:
+            raise InventoryError(f"duplicate output material_key: {key}")
+        by_key[key] = item
+
+    parsed: list[MaterialEntry] = []
+    seen = set()
+    for index, item in enumerate(entries):
+        if not isinstance(item, dict):
+            raise InventoryError(f"entries[{index}] must be an object")
+        unknown = set(item) - ENTRY_FIELDS
+        if unknown:
+            raise InventoryError(f"entries[{index}] unknown field(s): {sorted(unknown)}")
+        missing = [field for field in REQUIRED_ENTRY_FIELDS if field not in item]
+        if missing:
+            raise InventoryError(f"entries[{index}] missing required field(s): {missing}")
+        for field in REQUIRED_ENTRY_FIELDS:
+            if not isinstance(item[field], str) or not item[field]:
+                raise InventoryError(f"entries[{index}].{field} must be a non-empty string")
+        key = item["material_key"]
+        if key in seen:
+            raise InventoryError(f"duplicate material_key: {key}")
+        seen.add(key)
+        _validate_repo_relative(item["source_path"], f"entries[{index}].source_path")
+        if item["operation"] not in OPERATIONS:
+            raise InventoryError(f"unknown operation: {item['operation']}")
+        if item["source_type"] not in SOURCE_TYPES:
+            raise InventoryError(f"unsupported source_type: {item['source_type']}")
+        if item["source_type"] == "symlink" and item["mode"] != "120000":
+            raise InventoryError("symlink source_type requires mode 120000")
+        if item["source_type"] == "blob" and item["mode"] not in {"100644", "100755"}:
+            raise InventoryError("blob source_type requires mode 100644 or 100755")
+        target = by_key.get(key)
+        if target is None:
+            raise InventoryError(f"unused material_key absent from output inventory: {key}")
+        for field in ("operation", "mode", "role"):
+            if target.get(field) != item[field]:
+                raise InventoryError(f"material_key {key!r} disagrees with output inventory field {field}")
+        parsed.append(MaterialEntry(
+            material_key=key,
+            source_path=item["source_path"],
+            role=item["role"],
+            operation=item["operation"],
+            source_type=item["source_type"],
+            mode=item["mode"],
+            profile=item.get("profile"),
+            exclusion_rationale=item.get("exclusion_rationale"),
+        ))
+
+    if seen != set(by_key):
+        missing = sorted(set(by_key) - seen)
+        raise InventoryError(f"output material_index key(s) missing from material manifest: {missing}")
+    return tuple(parsed)
 
 
-def build_source_selection(
-    repository: str | None,
-    revision: str | None,
-) -> SourceSelection | None:
-    if repository is None and revision is None:
-        return None
-    if repository is not None and revision is None:
-        raise InventoryError("source revision is required when source repository is supplied")
-    if revision is not None and repository is None:
-        raise InventoryError("contradictory source: revision supplied without repository identity")
-    if repository is not None and revision is not None:
-        return SourceSelection(repository, revision)
-    return None
+def resolve_source_material(
+    repository: str,
+    revision_object_id: str,
+    direction_material: tuple[str, ...] | list[str],
+) -> ResolvedSourceMaterial:
+    if not Path(repository).is_absolute():
+        raise InventoryError("source repository must be the intake-resolved absolute path")
+    if len(revision_object_id) != 40 or any(c not in "0123456789abcdef" for c in revision_object_id):
+        raise InventoryError("source revision must be an exact lowercase SHA-1 object ID")
+
+    if _git(repository, "rev-parse", "--git-dir").returncode:
+        raise InventoryError("source repository is not a local Git repository")
+    object_format = _git_text(repository, "rev-parse", "--show-object-format").strip()
+    if object_format != "sha1":
+        raise InventoryError(f"unsupported source repository object format: {object_format}")
+
+    resolved = _git_text(
+        repository, "rev-parse", "--verify", f"{revision_object_id}^{{commit}}"
+    ).strip()
+    if resolved != revision_object_id:
+        raise InventoryError("source revision did not resolve directly to the exact commit object")
+
+    p = _git(repository, "fsck", "--connectivity-only", "--no-dangling", revision_object_id)
+    if p.returncode:
+        raise InventoryError("source commit tree is not fully available locally")
+
+    manifest_raw = _load_json_blob(repository, revision_object_id, MANIFEST_PATH)
+    output_raw = _load_json_blob(repository, revision_object_id, OUTPUT_INVENTORY_SPEC_PATH)
+    manifest = validate_material_manifest(manifest_raw, output_raw)
+
+    for entry in manifest:
+        mode, obj_type = _tree_entry(repository, revision_object_id, entry.source_path)
+        if obj_type != "blob":
+            raise InventoryError(f"source_path resolves to a Git tree/non-blob object: {entry.source_path}")
+        actual_type = "symlink" if mode == "120000" else "blob"
+        if actual_type != entry.source_type:
+            raise InventoryError(
+                f"source_type mismatch for {entry.source_path}: expected {entry.source_type}, observed {actual_type}"
+            )
+        if mode != entry.mode:
+            raise InventoryError(
+                f"mode mismatch for {entry.source_path}: expected {entry.mode}, observed {mode}"
+            )
+
+    validated_direction: list[str] = []
+    for item in direction_material:
+        _validate_repo_relative(item, "direction_material")
+        mode, obj_type = _tree_entry(repository, revision_object_id, item)
+        if obj_type != "blob" or mode == "120000":
+            raise InventoryError(f"direction_material must resolve to an existing regular file: {item}")
+        validated_direction.append(item)
+
+    return ResolvedSourceMaterial(
+        repository=repository,
+        commit_id=revision_object_id,
+        manifest=manifest,
+        direction_material=tuple(validated_direction),
+    )
 
 
 def resolve_source_selection_from_request(
     request_repository: str | None,
     request_revision: str | None,
 ) -> SourceSelection:
-    if request_repository is None and request_revision is None:
+    if request_repository is None or request_revision is None:
         raise InventoryError("source selection requires explicit source repository and revision")
-    return build_source_selection(request_repository, request_revision)
+    return SourceSelection(request_repository, request_revision)
 
 
-def inventory_to_ordered_dict(
-    classified: ClassifiedInventory,
-    source_selection: SourceSelection | None,
-) -> dict[str, Any]:
-    output: dict[str, Any] = {
-        "source_selection": None,
-        "classifications": {},
-    }
-
-    if source_selection is not None:
-        output["source_selection"] = {
-            "repository": source_selection.repository,
-            "revision": source_selection.revision,
-        }
-
-    for cls in sorted(classified.classifications):
-        entries = classified.entries_by_classification(cls)
-        output["classifications"][cls] = [
-            {
-                "path": e.path,
-                "authoritative": e.authoritative,
-                "installable": e.installable,
-                "profile": e.profile,
-                "exclusion_rationale": e.exclusion_rationale,
-                "derived_from": e.derived_from,
-            }
-            for e in entries
-        ]
-
-    return output
+def build_source_selection(repository: str | None, revision: str | None) -> SourceSelection | None:
+    if repository is None and revision is None:
+        return None
+    return resolve_source_selection_from_request(repository, revision)

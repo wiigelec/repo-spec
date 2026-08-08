@@ -106,11 +106,26 @@ def _cmd_inspect_source(argv: list[str]) -> int:
     from initializer.validation import validate_and_normalize
     ctx = validate_and_normalize(raw, os.getcwd())
     request = ctx.request
-    print(
-        "error: inspect-source requires governed source-material resolution",
-        file=sys.stderr,
-    )
-    return 1
+    from initializer.inventory import resolve_source_material
+    try:
+        resolved = resolve_source_material(
+            request.source_repository,
+            request.source_revision.object_id,
+            request.product_direction_material,
+        )
+    except InventoryError as exc:
+        print(f"source selection error: {exc}", file=sys.stderr)
+        return 1
+
+    print(json.dumps({
+        "status": "resolved",
+        "repository": resolved.repository,
+        "revision": resolved.commit_id,
+        "request_fingerprint": request.request_fingerprint,
+        "manifest_entries": len(resolved.manifest),
+        "direction_material": list(resolved.direction_material),
+    }, indent=2, ensure_ascii=False))
+    return 0
 
     repo_root = Path(argv[1]).resolve()
     inventory_path = resolve_inventory_path(repo_root)

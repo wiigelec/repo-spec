@@ -1,201 +1,493 @@
 {
   "schema_version": "1",
-  "inventory_scope": "repository-framework",
   "entries": [
     {
-      "path": "repo/specs/repo/",
-      "classification": "framework-authoritative",
-      "authoritative": true,
-      "installable": true
+      "material_key": "root-readme",
+      "source_path": "README.md",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/schemas/",
-      "classification": "framework-authoritative",
-      "authoritative": true,
-      "installable": true
+      "material_key": "root-agents",
+      "source_path": "AGENTS.md",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "AGENTS.md",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "root-license",
+      "source_path": "LICENSE",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "README.md",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-spec-init",
+      "source_path": "product/scripts/repo-spec-init",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
     },
     {
-      "path": "LICENSE",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-manifest",
+      "source_path": "repo/specs/repo/manifest.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "product/scripts/repo-spec-init",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-governing-issue",
+      "source_path": "repo/specs/repo/governing-issue.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/validate",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-review-proposal",
+      "source_path": "repo/specs/repo/review-proposal.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/validate_impl.py",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-repository-structure",
+      "source_path": "repo/specs/repo/repository-structure.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/repo_model.py",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-artifact-taxonomy",
+      "source_path": "repo/specs/repo/artifact-taxonomy.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/docgen.py",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-platform-profiles",
+      "source_path": "repo/specs/repo/platform-profiles.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/generate-docs",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-development-workflow",
+      "source_path": "repo/specs/repo/development-workflow.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/github_profile.py",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-validation",
+      "source_path": "repo/specs/repo/validation.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/validation/",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-product-manifest",
+      "source_path": "repo/specs/repo/product-manifest.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "product/scripts/initializer/",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-development-document-base",
+      "source_path": "repo/specs/repo/development-document-base.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/github-field-policy",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-product-overview",
+      "source_path": "repo/specs/repo/product-overview.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/github_field_policy.py",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-product-decomposition",
+      "source_path": "repo/specs/repo/product-decomposition.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/scripts/github_field_policy_mutation_test.py",
-      "classification": "framework-support",
-      "authoritative": false,
-      "installable": true
+      "material_key": "repo-implementation-plan",
+      "source_path": "repo/specs/repo/implementation-plan.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/derived/",
-      "classification": "derived",
-      "authoritative": false,
-      "installable": true,
-      "derived_from": ["repo/specs/repo/"]
+      "material_key": "repo-product-spec-base",
+      "source_path": "repo/specs/repo/product-spec-base.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "repo/profiles/",
-      "classification": "profile-source",
-      "authoritative": false,
-      "installable": false,
-      "profile": "github",
-      "exclusion_rationale": "profile source material selected only during platform-profile execution"
+      "material_key": "repo-product-correspondence",
+      "source_path": "repo/specs/repo/product-correspondence.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": ".github/",
-      "classification": "installed-adapter",
-      "authoritative": false,
-      "installable": false,
-      "profile": "github",
-      "exclusion_rationale": "installed hosting adapter; regenerated from profile source"
+      "material_key": "repo-product-levels",
+      "source_path": "repo/specs/repo/product-levels.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "docs/overview/",
-      "classification": "product-instance",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repo-spec-specific product overview; not reusable framework"
+      "material_key": "repo-validate-script",
+      "source_path": "repo/scripts/validate",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
     },
     {
-      "path": "docs/decompositions/",
-      "classification": "product-instance",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repo-spec-specific product decomposition; not reusable framework"
+      "material_key": "repo-validate-impl",
+      "source_path": "repo/scripts/validate_impl.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "docs/plans/",
-      "classification": "product-instance",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repo-spec-specific implementation plans; not reusable framework"
+      "material_key": "repo-repo-model",
+      "source_path": "repo/scripts/repo_model.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "product/docs/initializer/",
-      "classification": "product-instance",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repo-spec-specific initializer documentation; not reusable framework"
+      "material_key": "repo-docgen",
+      "source_path": "repo/scripts/docgen.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "product/specs/product/",
-      "classification": "product-instance",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repo-spec-specific product specifications; not reusable framework"
+      "material_key": "repo-generate-docs",
+      "source_path": "repo/scripts/generate-docs",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
     },
     {
-      "path": "product/tests/",
-      "classification": "product-instance",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repo-spec-specific product test placeholders; not reusable framework"
+      "material_key": "repo-github-profile",
+      "source_path": "repo/scripts/github_profile.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": ".gitignore",
-      "classification": "development-state",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "repository-local development state; not reusable framework"
+      "material_key": "repo-validation-init",
+      "source_path": "repo/scripts/validation/__init__.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "reference/",
-      "classification": "excluded",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "reference material not intended for initializer installation"
+      "material_key": "repo-validation-cli-contracts",
+      "source_path": "repo/scripts/validation/cli_contracts.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "validate/",
-      "classification": "excluded",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "validation workspace not intended for initializer installation"
+      "material_key": "repo-validation-errors",
+      "source_path": "repo/scripts/validation/errors.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     },
     {
-      "path": "product/src/",
-      "classification": "excluded",
-      "authoritative": false,
-      "installable": false,
-      "exclusion_rationale": "source tree placeholders not intended for initializer installation"
+      "material_key": "repo-validation-generated-outputs",
+      "source_path": "repo/scripts/validation/generated_outputs.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-validation-repo-checks",
+      "source_path": "repo/scripts/validation/repository_checks.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-validation-schema-subset",
+      "source_path": "repo/scripts/validation/schema_subset.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-github-field-policy",
+      "source_path": "repo/scripts/github-field-policy",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "repo-github-field-policy-py",
+      "source_path": "repo/scripts/github_field_policy.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-artifact-taxonomy",
+      "source_path": "repo/derived/specs/repo/artifact-taxonomy.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-development-document-base",
+      "source_path": "repo/derived/specs/repo/development-document-base.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-development-workflow",
+      "source_path": "repo/derived/specs/repo/development-workflow.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-governing-issue",
+      "source_path": "repo/derived/specs/repo/governing-issue.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-implementation-plan",
+      "source_path": "repo/derived/specs/repo/implementation-plan.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-manifest",
+      "source_path": "repo/derived/specs/repo/manifest.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-platform-profiles",
+      "source_path": "repo/derived/specs/repo/platform-profiles.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-product-correspondence",
+      "source_path": "repo/derived/specs/repo/product-correspondence.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-product-decomposition",
+      "source_path": "repo/derived/specs/repo/product-decomposition.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-product-levels",
+      "source_path": "repo/derived/specs/repo/product-levels.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-product-manifest",
+      "source_path": "repo/derived/specs/repo/product-manifest.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-product-overview",
+      "source_path": "repo/derived/specs/repo/product-overview.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-product-spec-base",
+      "source_path": "repo/derived/specs/repo/product-spec-base.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-repository-structure",
+      "source_path": "repo/derived/specs/repo/repository-structure.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-review-proposal",
+      "source_path": "repo/derived/specs/repo/review-proposal.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "derived-validation",
+      "source_path": "repo/derived/specs/repo/validation.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-init",
+      "source_path": "product/scripts/initializer/__init__.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-cli",
+      "source_path": "product/scripts/initializer/cli.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-destination",
+      "source_path": "product/scripts/initializer/destination.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-foundations",
+      "source_path": "product/scripts/initializer/foundations.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-framework-inventory",
+      "source_path": "product/scripts/initializer/framework-inventory.json",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-git",
+      "source_path": "product/scripts/initializer/git.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-inventory",
+      "source_path": "product/scripts/initializer/inventory.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-models",
+      "source_path": "product/scripts/initializer/models.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-promotion",
+      "source_path": "product/scripts/initializer/promotion.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-staging",
+      "source_path": "product/scripts/initializer/staging.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-initializer-validation",
+      "source_path": "product/scripts/initializer/validation.py",
+      "role": "initializer-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     }
   ]
 }
