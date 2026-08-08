@@ -16,7 +16,7 @@ Edges: B0→I1 (keyed evidence bounds all work), I1→I2 (validated request/reso
 
 Purpose: requirement-by-requirement evidence baseline across all 291 composite keys before maintained artifact changes. Outcome: one supported classification per key plus explicit blocked finding.
 
-Controlling requirements: all 34 accepted specs and all 291 composite keys from Patch 1. Sole planning owner of `product.initializer-level-0::INIT-L0-007`. Entry: planning basis remains `d3cf252`, all specs accepted and traceable, provenance conflict recorded as blocker. Exit: machine-reviewable matrix with one classification per key (preserve/repair/replace/implement), cited evidence, aggregate counts to 34/291, three conflicting provenance keys flagged blocked. Exclusions: no implementation/test/schema/spec mutation, no inferred conformance, no provenance-field choice.
+Controlling requirements: all 34 accepted specs and all 291 composite keys from Patch 1. Sole planning owner of `product.initializer-level-0::INIT-L0-007`. Entry: current accepted initial-bounded-workflow specifications are accepted and traceable under the governing plan revision. Exit: machine-reviewable matrix with one classification per key (preserve/repair/replace/implement), cited evidence, and aggregate counts reconciled to 34/291. Exclusions: no implementation/test/schema/spec mutation, no inferred conformance, and no reinterpretation of accepted product semantics.
 
 ## I1 - Request and preflight
 
@@ -40,7 +40,7 @@ Purpose: staged repository identity records and deterministic Git state (provena
 
 Controlling requirements (I3-owned): `product.initializer-level-0::INIT-L0-004,008`, `product.local-git-repository::INIT-GIT-001-005`, `product.provenance-record::INIT-PRO-001-008`, `product.handoff-manifest::INIT-HND-001-014`, `product.git-bootstrap-profile::INIT-BPF-001-005`, `product.git-object-identity::INIT-OID-009`, `product.generated-repository::INIT-GRL-020-021`, `product.handoff-assembly::INIT-HAS-001`, `product.local-git-initialization::INIT-LGI-001-002`, `product.provenance-recording::INIT-PRC-001`.
 
-Predecessor: I2. Entry: I2 exit evidence, accepted repaired provenance/handoff contracts from issue #255, B0 classifications, accepted plan, governed I3 issue. Exit (after repair): evidence for repaired provenance contract, handoff/provenance/inventory traceability, closed field sets, deterministic serialization, complete Git state on `main` with full SHA-1 objects, clean worktree. Exclusions: no guessed provenance fields, no I4/I5 work, no extra commits/tags/remotes/SHA-256, no plan acceptance from unaffected I3 preparation.
+Predecessor: I2. Entry: I2 exit evidence, current accepted provenance/handoff contracts, B0 classifications, accepted plan, governed I3 issue. Exit: evidence for conforming provenance origin/identity fields, pre-Git handoff classification and traceability, closed field sets, deterministic serialization, complete Git state on `main` with full SHA-1 objects, and clean worktree. Exclusions: no invented provenance/handoff fields, no I4/I5 work, no extra commits/tags/remotes/SHA-256, and no implementation work before plan acceptance.
 
 ## I4 - Validation and promotion
 
@@ -48,7 +48,7 @@ Purpose: ordered Phase 1/Phase 2 validation, deterministic report/state finaliza
 
 Controlling requirements (I4-owned): `product.initializer-level-0::INIT-L0-005`, `product.staging-state::INIT-STA-001-013`, `product.destination::INIT-DST-003`, `product.staging-workspace::INIT-STG-005`, `product.execution-report::INIT-RPT-001-004,004a,004b,005-012`, `product.validation-profile::INIT-VP-001-007`, `product.validation-report::INIT-VR-001-016`, `product.repository-validation::INIT-RVA-001-005`, `product.transactional-staging::INIT-TST-001-007`.
 
-Predecessor: I3. Entry: I3 complete with conforming staged content/Git/provenance. Exit: ordered validation checks with status/failure codes, fault-injection at every report-finalization boundary (no partial pair permits promotion), promotion evidence for immediate absence recheck + single rename + post-rename stat, terminal-boundary evidence for pre-promotion failure/promoted success/indeterminate promotion/promoted-with-finalization-error. Exclusions: no provenance interpretation, no bypass of blocked predecessor, no copy/fallback/retry, no I5 completion or plan acceptance while blocked.
+Predecessor: I3. Entry: I3 complete with conforming staged content/Git/provenance/handoff evidence under the accepted plan. Exit: ordered validation checks with status/failure codes, fault-injection at every report-finalization boundary (no partial pair permits promotion), promotion evidence for immediate absence recheck + single rename + post-rename stat, terminal-boundary evidence for pre-promotion failure/promoted success/indeterminate promotion/promoted-with-finalization-error. Exclusions: no reinterpretation of accepted provenance/handoff semantics, no copy/fallback/retry, and no I5 completion before I4 exit.
 
 ## I5 - End-to-end orchestration
 
@@ -56,7 +56,7 @@ Purpose: compose standard bounded workflow in canonical lifecycle order, enforce
 
 Controlling requirements (I5-owned): `product.initializer-level-0::INIT-L0-001,009`, `product.execution-profile::INIT-PRF-001-004`, `product.content-equivalence::INIT-EQV-001-015`, `product.lifecycle-stages::INIT-LCS-001-012`, `product.execution-orchestration::INIT-EOR-001-002`, `product.full-initialization::INIT-FIN-001-011`.
 
-Predecessor: I4. Entry: I1-I4 exits with complete evidence. Exit: E2E evidence for 13 accepted stages in order, each precondition enforced; terminal-outcome evidence for promoted success, pre-promotion failure, indeterminate promotion, promoted-with-finalization-error; equivalent inputs produce equivalent output (provenance timestamp excepted); negative E2E for unsupported profile/refs/remote/destination/platform/resume/migration/cross-device; final composite-key coverage report reconciles all 291 keys. Exclusions: no dry-run/platform/recovery/resume/remote/SHA-256/migration/overwrite, no plan acceptance or implementation issue creation while any blocker open.
+Predecessor: I4. Entry: I1-I4 exits with complete evidence under the accepted plan. Exit: E2E evidence for 13 accepted stages in order, each precondition enforced; terminal-outcome evidence for promoted success, pre-promotion failure, indeterminate promotion, promoted-with-finalization-error; equivalent inputs produce equivalent output (provenance timestamp excepted); negative E2E for unsupported profile/refs/remote/destination/platform/resume/migration/cross-device; final composite-key coverage report reconciles all 291 keys. Exclusions: no dry-run/platform/recovery/resume/remote/SHA-256/migration/overwrite.
 
 ## Cross-increment carriage
 
@@ -67,7 +67,7 @@ Predecessor: I4. Entry: I1-I4 exits with complete evidence. Exit: E2E evidence f
 | Source/object/material identity (`INIT-SRC-001-005,007-008`, `INIT-OID-001-008,010`, `INIT-MMF-001-002,004-011`, `INIT-SMR-001-006`) | I1→I2-I5 | Consume only exact local SHA-1 commit tree and validated mapping |
 | Destination/preflight (`INIT-DST-001-002`, `INIT-DPF-001-002`) | I1→I2,I4,I5 | Preserve absence/same-filesystem facts; recheck before rename |
 | Isolation and material realization (all I2 keys) | I2→I3-I5 | Keep transaction separate, carry closed-inventory evidence |
-| Traceability and identity (`INIT-L0-004,008`, non-conflicting I3 keys) | I3→I4,I5 | Validate source/request/product linkages, handoff, Git state |
+| Traceability and identity (`INIT-L0-004,008`, I3-owned identity keys) | I3→I4,I5 | Validate source/request/product linkages, handoff, and Git state |
 | Repaired provenance/handoff contracts (`INIT-PRC-001`, `INIT-PRO-001-008`, `INIT-HND-001-014`, `INIT-HAS-001`) | I3→I4→I5 | Preserve issue #255 semantics: provenance is origin/identity only; handoff is pre-Git and uses disjoint presence/omission dispositions |
 | Failure safety and transaction (all I4 keys) | I4→I5 | Phase results, record linkage, promotion gate/outcome, diagnostics |
 | Determinism and lifecycle result (`INIT-L0-001,009`, all I5 keys) | I1-I4→I5 | Integrate canonical forms, stage order, vocabulary, equivalence evidence |
@@ -84,7 +84,7 @@ candidate and requires separate governed acceptance.
 
 - B0 covers all 34 accepted specs and 291 unique composite keys
 - Sole ownership unchanged from Patch 1: B0 owns `INIT-L0-007`; I1-I5 contain the remaining 290 keys; no key reassigned
-- Every sole-owner set carried to consumers; provenance conflict carried through I3/I4/I5
+- Every sole-owner set carried to consumers; repaired provenance/handoff semantics carried through I3/I4/I5 without blocker state
 - Edges: B0→I1→I2→I3→I4→I5; every edge increases rank → acyclic
 - Six candidate future-extension specs excluded: `product.platform-profile-interface`, `product.platform-profile-execution`, `product.dry-run-validation`, `product.platform-integrated-initialization`, `product.recovery-and-cleanup`, `product.resume-from-staging`
 
