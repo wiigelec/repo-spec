@@ -43,7 +43,7 @@
     },
     {
       "id": "REPO-STR-010",
-      "text": "The target layout shall keep `README.md`, `AGENTS.md`, `LICENSE`, `.github/`, and `user/` at the repository root as the approved root boundary, with any additional root entry requiring explicit governed recording."
+      "text": "The maintained repository root shall contain exactly the following governed entries: directories `.github/`, `docs/`, `product/`, `reference/`, `repo/`, `scripts/`, and `user/`; files `.gitignore`, `AGENTS.md`, `LICENSE`, and `README.md`. No other maintained root entry is permitted without governed revision of this specification."
     },
     {
       "id": "REPO-STR-011",
