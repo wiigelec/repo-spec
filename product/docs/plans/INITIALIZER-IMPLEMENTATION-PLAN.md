@@ -24,7 +24,7 @@ specification-impact review, but it remains candidate and non-authorizing.
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "candidate",
-  "governing_issue": "#243, #253, #255",
+  "governing_issue": "#243, #253, #255, #257, #259",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -151,9 +151,11 @@ plan-acceptance decision.
 ## Relationships
 
 - Governing issues: #243 (scaffold creation), #253 (specification mapping,
-  increment definition, validation gates, risk register), and the accepted
+  increment definition, validation gates, risk register), the accepted
   provenance-conflict planning amendment recorded in issue #253 comment
-  `#issuecomment-5222594632`
+  `#issuecomment-5222594632`, #255 (accepted provenance/handoff repair and
+  plan impact review), #257 (handoff ordering repair and plan impact review),
+  and #259 (plan synchronization clean-room cycle)
 - Controlling repository contracts: `repo.development-document-base`,
   `repo.implementation-plan`, `repo.development-workflow`, and applicable
   repository workflow and validation contracts
