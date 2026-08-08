@@ -108,7 +108,7 @@ specification-impact review, but it remains candidate and non-authorizing.
       ]
     }
   ],
-  "successor_action": "Perform a clean-room post-patch review of this completed three-patch candidate plan. If no material planning gap prevents safe derivation of bounded implementation issues, the candidate plan may proceed to a governed acceptance decision after a clean-room review confirms this impact-reviewed plan remains complete under the repaired accepted specifications. No implementation work is authorized by this candidate plan.",
+  "successor_action": "Complete the issue #259 clean-room post-patch review against current accepted specifications and synchronized planning state. If no material planning gap remains, the candidate plan may proceed to a separately governed acceptance decision. No implementation work is authorized by this candidate plan.",
   "schema_version": "1"
 }
 ```
