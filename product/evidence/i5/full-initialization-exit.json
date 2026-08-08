@@ -1,0 +1,2788 @@
+{
+  "schema_version": "1.0",
+  "increment": "I5",
+  "governing_issue": 287,
+  "accepted_base": "6afa7107b2441ce7bada78ce929fe0900574220a",
+  "patches": {
+    "patch_1": "7149ba84fd26485e514d103d6c64e1be9950a469",
+    "patch_2": "4a5a8bb27bdb69dae473d7071465ab86e6545059",
+    "patch_3": "pending"
+  },
+  "owned_key_count": 46,
+  "represented_i5_key_count": 46,
+  "whole_workflow_key_count": 291,
+  "b0_classification_counts": {
+    "preserve": 0,
+    "repair": 34,
+    "replace": 0,
+    "implement": 12
+  },
+  "terminal_outcomes": [
+    "pre-promotion-failure",
+    "promoted-success",
+    "indeterminate-promotion",
+    "promoted-with-finalization-error"
+  ],
+  "canonical_stage_count": 13,
+  "blockers": [],
+  "successor_authorized": false,
+  "requirements": [
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-001",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-002",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-003",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-004",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-005",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-006",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-007",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-008",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-009",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-010",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-011",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-012",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-013",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-014",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.content-equivalence::INIT-EQV-015",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.destination-preflight::INIT-DPF-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.destination-preflight::INIT-DPF-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.destination::INIT-DST-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.destination::INIT-DST-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.destination::INIT-DST-003",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-orchestration::INIT-EOR-001",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-orchestration::INIT-EOR-002",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-profile::INIT-PRF-001",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-profile::INIT-PRF-002",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-profile::INIT-PRF-003",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-profile::INIT-PRF-004",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-001",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-002",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-003",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-004",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-004a",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-004b",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-005",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-006",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-007",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-008",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-009",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-010",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-011",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.execution-report::INIT-RPT-012",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-001",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-004",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-005",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-006",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-007",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-008",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-009",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-010",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-011",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-012",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-013",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-014",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-015",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-016",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-017",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-018",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-019",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-020",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-021",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-001",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-004",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-005",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-006",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-007",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-008",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-001",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-002",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-003",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-004",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-005",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-006",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-007",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-008",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-009",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-010",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.full-initialization::INIT-FIN-011",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-001",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-004",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-005",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-006",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-007",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-008",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-009",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-010",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-011",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-012",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-013",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-014",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-015",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-016",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-017",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-018",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-019",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-020",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-021",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-022",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-023",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-001",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-002",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-003",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-004",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-005",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-003",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-004",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-005",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-006",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-007",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-008",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-009",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-010",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-assembly::INIT-HAS-001",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-001",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-002",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-003",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-004",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-005",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-006",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-007",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-008",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-009",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-010",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-011",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-012",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-013",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-014",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-003",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-004",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-005",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-006",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-007",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-008",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-009",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-010",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-011",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-012",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-013",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-014",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-015",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-016",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-001",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-004",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-005",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-006",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-007",
+      "owner": "B0",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/b0"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-008",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-009",
+      "owner": "I5",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-001",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-004",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-005",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-006",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-007",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-008",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-009",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-010",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-011",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-012",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-013",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-014",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-015",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-001",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-002",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-003",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-004",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-005",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-006",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-007",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-008",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-009",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-010",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-011",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.lifecycle-stages::INIT-LCS-012",
+      "owner": "I5",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/orchestration.py",
+        "product/scripts/initializer/tests/test_i5_orchestration_entry.py",
+        "product/scripts/initializer/tests/test_i5_lifecycle_orchestration.py",
+        "product/scripts/initializer/tests/test_i5_full_initialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-initialization::INIT-LGI-001",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-initialization::INIT-LGI-002",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-001",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-002",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-003",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-004",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-005",
+      "owner": "I3",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.material-classification::INIT-MAT-001",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.material-classification::INIT-MAT-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.material-classification::INIT-MAT-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-004",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-005",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-006",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-007",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-008",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-009",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-010",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-011",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-003",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-004",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-005",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-006",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-007",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-001",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-002",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-003",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-004",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-005",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-006",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-007",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-008",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-recording::INIT-PRC-001",
+      "owner": "I3",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i3/local-git-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-001",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-002",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-003",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-004",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.repository-validation::INIT-RVA-005",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.request-intake::INIT-INT-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.request-intake::INIT-INT-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-003",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-004",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-005",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-material-resolution::INIT-SMR-006",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-001",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-002",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-003",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-004",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-005",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-006",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-007",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-008",
+      "owner": "I1",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i1"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-001",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-002",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-003",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-004",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-005",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-006",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-007",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-008",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-009",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-010",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-011",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-012",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-state::INIT-STA-013",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-001",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-002",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-003",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-004",
+      "owner": "I2",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i2"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-005",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-001",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-002",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-003",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-004",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-005",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-006",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.transactional-staging::INIT-TST-007",
+      "owner": "I4",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-001",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-002",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-003",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-004",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-005",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-006",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-profile::INIT-VP-007",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-001",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-002",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-003",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-004",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-005",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-006",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-007",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-008",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-009",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-010",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-011",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-012",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-013",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-014",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-015",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    },
+    {
+      "composite_key": "product.validation-report::INIT-VR-016",
+      "owner": "I4",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/evidence/i4/transactional-validation-promotion-exit.json"
+      ]
+    }
+  ]
+}

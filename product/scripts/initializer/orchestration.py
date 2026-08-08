@@ -275,3 +275,96 @@ def execute_standard_lifecycle(steps: tuple[StageStep, ...]) -> LifecycleResult:
         "invalid-terminal-transition",
         "canonical workflow exhausted without success-finalization result",
     )
+
+
+@dataclass(frozen=True)
+class FullInitializationActions:
+    request_intake: Any
+    source_resolution: Any
+    destination_preflight: Any
+    staging_establishment: Any
+    framework_installation: Any
+    direction_evidence_installation: Any
+    workspace_seeding: Any
+    provenance_recording: Any
+    handoff_assembly: Any
+    git_initialization: Any
+    repository_validation: Any
+    promotion: Any
+    success_finalization: Any
+
+
+@dataclass(frozen=True)
+class FullInitializationResult:
+    entry: StandardWorkflowEntry
+    lifecycle: LifecycleResult
+
+    @property
+    def terminal_result(self) -> str:
+        return self.lifecycle.terminal_result
+
+    @property
+    def succeeded(self) -> bool:
+        return self.lifecycle.succeeded
+
+
+def _full_initialization_steps(
+    entry: StandardWorkflowEntry,
+    actions: FullInitializationActions,
+) -> tuple[StageStep, ...]:
+    carried: dict[str, Any] = {"entry": entry}
+
+    def stage(name: str, action: Any, predecessor_keys: tuple[str, ...] = ()) -> StageStep:
+        def precondition(_completed: tuple[str, ...]) -> bool:
+            return all(key in carried for key in predecessor_keys)
+
+        def invoke():
+            value = action(carried)
+            carried[name] = value
+            if name == PROMOTION_STAGE:
+                return value
+            if name == SUCCESS_FINALIZATION_STAGE:
+                return value
+            return STAGE_COMPLETED
+
+        return StageStep(name, invoke, precondition)
+
+    return (
+        stage("request-intake", actions.request_intake),
+        stage("source-resolution", actions.source_resolution, ("request-intake",)),
+        stage("destination-preflight", actions.destination_preflight, ("request-intake",)),
+        stage("staging-establishment", actions.staging_establishment, ("destination-preflight",)),
+        stage("framework-installation", actions.framework_installation, ("staging-establishment",)),
+        stage(
+            "direction-evidence-installation",
+            actions.direction_evidence_installation,
+            ("framework-installation",),
+        ),
+        stage("workspace-seeding", actions.workspace_seeding, ("direction-evidence-installation",)),
+        stage("provenance-recording", actions.provenance_recording, ("workspace-seeding",)),
+        stage("handoff-assembly", actions.handoff_assembly, ("workspace-seeding",)),
+        stage(
+            "git-initialization",
+            actions.git_initialization,
+            ("provenance-recording", "handoff-assembly"),
+        ),
+        stage("repository-validation", actions.repository_validation, ("git-initialization",)),
+        stage("promotion", actions.promotion, ("repository-validation",)),
+        stage("success-finalization", actions.success_finalization, ("promotion",)),
+    )
+
+
+def execute_full_initialization(
+    raw_request: dict[str, Any],
+    cwd: str,
+    actions: FullInitializationActions,
+) -> FullInitializationResult:
+    """Execute the complete accepted standard bounded workflow.
+
+    Request validation/profile selection occurs before any stage action. The
+    action bundle adapts maintained I1-I4 stage implementations into the I5
+    canonical lifecycle without reinterpreting their owned semantics.
+    """
+    entry = prepare_standard_workflow(raw_request, cwd)
+    lifecycle = execute_standard_lifecycle(_full_initialization_steps(entry, actions))
+    return FullInitializationResult(entry=entry, lifecycle=lifecycle)
