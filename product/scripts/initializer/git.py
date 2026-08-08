@@ -637,3 +637,252 @@ def check_git_available_with_version() -> tuple[bool, str]:
     except (OSError, subprocess.TimeoutExpired):
         pass
     return True, ""
+
+
+# BEGIN I3 PATCH 3 DETERMINISTIC LOCAL GIT BOOTSTRAP
+
+from dataclasses import dataclass as _i3_dataclass
+import tempfile as _i3_tempfile
+
+
+I3_BOOTSTRAP_PROFILE_ID = "standard-v1"
+I3_BOOTSTRAP_SCHEMA_VERSION = "1"
+I3_INITIAL_BRANCH = "main"
+I3_AUTHOR_NAME = "Repo-Spec Initializer"
+I3_AUTHOR_EMAIL = "initializer@repo-spec.local"
+I3_AUTHOR_TIMESTAMP = "1234567890 +0000"
+I3_COMMIT_MESSAGE = "Initial repository foundation"
+
+
+@_i3_dataclass(frozen=True)
+class I3GitObjectIdentity:
+    object_format: str
+    object_id: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "object_format": self.object_format,
+            "object_id": self.object_id,
+        }
+
+
+@_i3_dataclass(frozen=True)
+class I3GitResult:
+    repository_path: Path
+    profile_id: str
+    branch: str
+    commit: I3GitObjectIdentity
+    tree: I3GitObjectIdentity
+    commit_count: int
+    worktree_clean: bool
+    remote_count: int
+    tag_count: int
+    refs: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "repository_path": str(self.repository_path),
+            "profile_id": self.profile_id,
+            "branch": self.branch,
+            "commit": self.commit.to_dict(),
+            "tree": self.tree.to_dict(),
+            "commit_count": self.commit_count,
+            "worktree_clean": self.worktree_clean,
+            "remote_count": self.remote_count,
+            "tag_count": self.tag_count,
+            "refs": list(self.refs),
+        }
+
+
+def _i3_git_env() -> dict[str, str]:
+    env = dict(os.environ)
+    for key in SANITIZE_ENV_REMOVE:
+        env.pop(key, None)
+    env.update({
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "GIT_CONFIG_GLOBAL": os.devnull,
+        "GIT_TERMINAL_PROMPT": "0",
+        "GIT_AUTHOR_NAME": I3_AUTHOR_NAME,
+        "GIT_AUTHOR_EMAIL": I3_AUTHOR_EMAIL,
+        "GIT_COMMITTER_NAME": I3_AUTHOR_NAME,
+        "GIT_COMMITTER_EMAIL": I3_AUTHOR_EMAIL,
+        "GIT_AUTHOR_DATE": I3_AUTHOR_TIMESTAMP,
+        "GIT_COMMITTER_DATE": I3_AUTHOR_TIMESTAMP,
+        "LC_ALL": "C",
+        "LANG": "C",
+    })
+    return env
+
+
+def _i3_run_git(repository: Path, *args: str) -> str:
+    git_path = _find_git()
+    if git_path is None:
+        raise GitError("git executable not found or below minimum version")
+    proc = subprocess.run(
+        [git_path, "-C", str(repository), *args],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        env=_i3_git_env(),
+        check=False,
+        timeout=120,
+    )
+    if proc.returncode:
+        raise GitError(
+            f"git {' '.join(args)} failed: {proc.stderr.strip() or proc.stdout.strip()}"
+        )
+    return proc.stdout
+
+
+def _i3_identity(object_id: str, label: str) -> I3GitObjectIdentity:
+    if len(object_id) != 40 or any(c not in "0123456789abcdef" for c in object_id):
+        raise GitError(f"{label} is not a full lowercase SHA-1 object id")
+    return I3GitObjectIdentity("sha1", object_id)
+
+
+def verify_i3_git_repository(repository_path: str | Path) -> I3GitResult:
+    repository = Path(repository_path).resolve()
+    if not repository.is_dir() or repository.is_symlink():
+        raise GitError("I3 Git repository path must be a real directory")
+    dot_git = repository / ".git"
+    if not dot_git.is_dir() or dot_git.is_symlink():
+        raise GitError("I3 repository must contain one .git directory")
+
+    object_format = _i3_run_git(repository, "rev-parse", "--show-object-format").strip()
+    if object_format != "sha1":
+        raise GitError(f"I3 repository object format must be sha1, observed {object_format}")
+
+    branch = _i3_run_git(repository, "symbolic-ref", "--short", "HEAD").strip()
+    if branch != I3_INITIAL_BRANCH:
+        raise GitError(f"I3 branch mismatch: {branch}")
+
+    commit_id = _i3_run_git(repository, "rev-parse", "HEAD").strip()
+    tree_id = _i3_run_git(repository, "rev-parse", "HEAD^{tree}").strip()
+    commit = _i3_identity(commit_id, "generated commit")
+    tree = _i3_identity(tree_id, "generated tree")
+
+    commit_count_text = _i3_run_git(repository, "rev-list", "--count", "HEAD").strip()
+    if commit_count_text != "1":
+        raise GitError(f"I3 repository must contain exactly one commit: {commit_count_text}")
+
+    parents = _i3_run_git(repository, "rev-list", "--parents", "-n", "1", "HEAD").strip().split()
+    if parents != [commit_id]:
+        raise GitError("I3 root commit must have no parent")
+
+    message = _i3_run_git(repository, "log", "-1", "--format=%s", "HEAD").rstrip("\n")
+    if message != I3_COMMIT_MESSAGE:
+        raise GitError(f"I3 commit message mismatch: {message!r}")
+
+    author = _i3_run_git(
+        repository, "log", "-1", "--format=%an%n%ae%n%at%n%aI", "HEAD"
+    ).splitlines()
+    committer = _i3_run_git(
+        repository, "log", "-1", "--format=%cn%n%ce%n%ct%n%cI", "HEAD"
+    ).splitlines()
+    expected_epoch = "1234567890"
+    if author[:3] != [I3_AUTHOR_NAME, I3_AUTHOR_EMAIL, expected_epoch]:
+        raise GitError(f"I3 author identity/timestamp mismatch: {author[:3]}")
+    if committer[:3] != [I3_AUTHOR_NAME, I3_AUTHOR_EMAIL, expected_epoch]:
+        raise GitError(f"I3 committer identity/timestamp mismatch: {committer[:3]}")
+
+    status = _i3_run_git(
+        repository, "status", "--porcelain=v1", "--untracked-files=all"
+    )
+    if status:
+        raise GitError("I3 repository worktree is not clean")
+
+    remotes = [line for line in _i3_run_git(repository, "remote").splitlines() if line]
+    if remotes:
+        raise GitError(f"I3 repository must have no remotes: {remotes}")
+
+    tags = [line for line in _i3_run_git(repository, "tag", "--list").splitlines() if line]
+    if tags:
+        raise GitError(f"I3 repository must have no tags: {tags}")
+
+    refs = tuple(
+        line for line in _i3_run_git(
+            repository, "for-each-ref", "--format=%(refname)"
+        ).splitlines() if line
+    )
+    if refs != ("refs/heads/main",):
+        raise GitError(f"I3 repository contains unexpected refs: {refs}")
+
+    committed_tree = _i3_run_git(repository, "write-tree").strip()
+    if committed_tree != tree_id:
+        raise GitError("I3 index tree does not match root commit tree")
+
+    return I3GitResult(
+        repository_path=repository,
+        profile_id=I3_BOOTSTRAP_PROFILE_ID,
+        branch=branch,
+        commit=commit,
+        tree=tree,
+        commit_count=1,
+        worktree_clean=True,
+        remote_count=0,
+        tag_count=0,
+        refs=refs,
+    )
+
+
+def initialize_i3_git_repository(repository_path: str | Path) -> I3GitResult:
+    repository = Path(repository_path).resolve()
+    if not repository.is_dir() or repository.is_symlink():
+        raise GitError("I3 Git initialization requires a real repository directory")
+    dot_git = repository / ".git"
+    if dot_git.exists() or dot_git.is_symlink():
+        raise GitError("I3 Git initialization requires absent .git state")
+
+    git_path = _find_git()
+    if git_path is None:
+        raise GitError("git executable not found or below minimum version")
+
+    try:
+        with _i3_tempfile.TemporaryDirectory(prefix="repo-spec-i3-git-template-") as template:
+            init = subprocess.run(
+                [
+                    git_path,
+                    "-C",
+                    str(repository),
+                    "init",
+                    "--object-format=sha1",
+                    "--initial-branch=main",
+                    f"--template={template}",
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                env=_i3_git_env(),
+                check=False,
+                timeout=120,
+            )
+            if init.returncode:
+                raise GitError(
+                    f"git init failed: {init.stderr.strip() or init.stdout.strip()}"
+                )
+
+        _i3_run_git(repository, "config", "--local", "core.autocrlf", "false")
+        _i3_run_git(repository, "config", "--local", "core.safecrlf", "false")
+        _i3_run_git(repository, "config", "--local", "commit.gpgSign", "false")
+        _i3_run_git(repository, "add", "-A")
+
+        staged = _i3_run_git(repository, "diff", "--cached", "--name-only")
+        if not staged.strip():
+            raise GitError("I3 root commit may not be empty")
+
+        _i3_run_git(
+            repository,
+            "commit",
+            "--no-gpg-sign",
+            "--no-verify",
+            "-m",
+            I3_COMMIT_MESSAGE,
+        )
+        return verify_i3_git_repository(repository)
+    except BaseException:
+        if dot_git.exists() and not dot_git.is_symlink():
+            shutil.rmtree(dot_git, ignore_errors=True)
+        raise
+
+
+# END I3 PATCH 3 DETERMINISTIC LOCAL GIT BOOTSTRAP

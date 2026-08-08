@@ -1,0 +1,377 @@
+{
+  "schema_version": "1.0",
+  "increment": "I3",
+  "governing_issue": 281,
+  "accepted_base": "7bf2d082b2e10a0d79288b6187844f8a2f8081e4",
+  "patches": {
+    "patch_1": "3fbf00411520c7ef4886f8edb4ae79f5e5f61e9f",
+    "patch_2": "c7418c5c491081cf74da3be6dfc540040e35c40e",
+    "patch_3": "current-commit"
+  },
+  "owned_key_count": 41,
+  "represented_key_count": 41,
+  "b0_classification_counts": {
+    "preserve": 0,
+    "repair": 17,
+    "replace": 0,
+    "implement": 24
+  },
+  "blockers": [],
+  "successor_authorized": false,
+  "git_contract": {
+    "profile_id": "standard-v1",
+    "schema_version": "1",
+    "object_format": "sha1",
+    "initial_branch": "main",
+    "author_name": "Repo-Spec Initializer",
+    "author_email": "initializer@repo-spec.local",
+    "author_timestamp": "1234567890 +0000",
+    "committer_matches_author": true,
+    "commit_message": "Initial repository foundation",
+    "root_commit_model": "single",
+    "remotes": 0,
+    "tags": 0,
+    "allowed_refs": [
+      "refs/heads/main"
+    ],
+    "tree_identity": "full canonical sha1 generated object identity",
+    "commit_identity": "full canonical sha1 generated object identity"
+  },
+  "lifecycle_boundaries": {
+    "provenance_before_handoff": true,
+    "handoff_before_git_initialization": true,
+    "repository_validation_not_executed_by_i3": true,
+    "promotion_not_executed_by_i3": true,
+    "workflow_completion_not_claimed": true
+  },
+  "requirements": [
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-008",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-repository::INIT-GIT-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-002",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-003",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-004",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-005",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-006",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-007",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-record::INIT-PRO-008",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-002",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-003",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-004",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-005",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-006",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-007",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-008",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-009",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-010",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-011",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-012",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-013",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-manifest::INIT-HND-014",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.git-bootstrap-profile::INIT-BPF-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.git-object-identity::INIT-OID-009",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-020",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-021",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.handoff-assembly::INIT-HAS-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/handoff.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-initialization::INIT-LGI-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.local-git-initialization::INIT-LGI-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/git.py"
+      ]
+    },
+    {
+      "composite_key": "product.provenance-recording::INIT-PRC-001",
+      "b0_classification": "implement",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/provenance.py"
+      ]
+    }
+  ]
+}
