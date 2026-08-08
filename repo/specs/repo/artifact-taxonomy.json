@@ -302,6 +302,19 @@
       "source_artifacts": [
         "repo.platform-profiles"
       ]
+    },
+    {
+      "identifier": "user-convenience",
+      "label": "User convenience",
+      "role": "user convenience",
+      "authority_category": "convenience",
+      "authority_source": "user-facing convenience and session-support context",
+      "source_of_truth_rule": "Supports user-facing convenience or session continuity only; accepted repository and product authority remain controlling, and this class shall not establish or override repository, product, workflow, planning, validation, or implementation semantics.",
+      "mutability": "mutable as user-facing convenience material under governed repository boundaries",
+      "generation_mode": "manual",
+      "validation_ownership": "review",
+      "portability_category": "framework-generic",
+      "manifest_participation": "none"
     }
   ],
   "normative_requirements": [
@@ -344,6 +357,10 @@
     {
       "id": "REPO-AT-009",
       "text": "Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
+    },
+    {
+      "id": "REPO-AT-010",
+      "text": "The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
     }
   ],
   "dependencies": [
