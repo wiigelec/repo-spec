@@ -21,6 +21,14 @@ REQUIRED_ENTRY_FIELDS = (
 )
 OPERATIONS = frozenset({"copy-verbatim", "instantiate-template", "generate-record"})
 SOURCE_TYPES = frozenset({"blob", "symlink"})
+MATERIAL_ROLES = frozenset({
+    "runtime-framework",
+    "governing-specification",
+    "validation-utility",
+    "documentation-support",
+    "generated-reference",
+    "initializer-framework",
+})
 
 
 class InventoryError(InitializerError):
@@ -143,6 +151,11 @@ def validate_material_manifest(
     for item in output_entries:
         if not isinstance(item, dict) or not isinstance(item.get("material_key"), str):
             raise InventoryError("invalid output inventory material_index entry")
+        role = item.get("role")
+        if role == "development-only":
+            raise InventoryError("output inventory must not contain development-only material")
+        if role not in MATERIAL_ROLES:
+            raise InventoryError(f"unknown output inventory material role: {role!r}")
         key = item["material_key"]
         if key in by_key:
             raise InventoryError(f"duplicate output material_key: {key}")
@@ -169,6 +182,10 @@ def validate_material_manifest(
         _validate_repo_relative(item["source_path"], f"entries[{index}].source_path")
         if item["operation"] not in OPERATIONS:
             raise InventoryError(f"unknown operation: {item['operation']}")
+        if item["role"] == "development-only":
+            raise InventoryError("material manifest must not contain development-only material")
+        if item["role"] not in MATERIAL_ROLES:
+            raise InventoryError(f"unknown material role: {item['role']!r}")
         if item["source_type"] not in SOURCE_TYPES:
             raise InventoryError(f"unsupported source_type: {item['source_type']}")
         if item["source_type"] == "symlink" and item["mode"] != "120000":

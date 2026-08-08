@@ -4,6 +4,7 @@ import inspect
 import initializer.cli as cli
 
 import json
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -31,6 +32,48 @@ def request() -> dict[str, object]:
 
 
 class CliTests(unittest.TestCase):
+    def make_source_repo(self, root: Path) -> tuple[Path, str]:
+        source = root / "source"
+        source.mkdir()
+        subprocess.run(["git", "-C", str(source), "init", "-q"], check=True)
+        subprocess.run(["git", "-C", str(source), "config", "user.email", "test@example.invalid"], check=True)
+        subprocess.run(["git", "-C", str(source), "config", "user.name", "Test"], check=True)
+        (source / "product/scripts/initializer").mkdir(parents=True)
+        (source / "product/specs/product/level-1").mkdir(parents=True)
+        (source / "README.md").write_text("source\n")
+        output = {"material_index": [{
+            "material_key": "root-readme",
+            "destination_path": "README.md",
+            "producer": "framework-installation",
+            "operation": "copy-verbatim",
+            "mode": "100644",
+            "required": True,
+            "role": "runtime-framework",
+        }]}
+        manifest = {"schema_version": "1", "entries": [{
+            "material_key": "root-readme",
+            "source_path": "README.md",
+            "role": "runtime-framework",
+            "operation": "copy-verbatim",
+            "source_type": "blob",
+            "mode": "100644",
+        }]}
+        (source / "product/specs/product/level-1/initializer-output-inventory-v1.json").write_text(
+            json.dumps(output) + "\n"
+        )
+        (source / "product/scripts/initializer/framework-inventory.json").write_text(
+            json.dumps(manifest) + "\n"
+        )
+        subprocess.run(["git", "-C", str(source), "add", "."], check=True)
+        subprocess.run(["git", "-C", str(source), "commit", "-qm", "source"], check=True)
+        revision = subprocess.run(
+            ["git", "-C", str(source), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        return source, revision
+
     def run_command(
         self, command: str, request_path: Path
     ) -> subprocess.CompletedProcess[str]:
@@ -157,6 +200,54 @@ class CliTests(unittest.TestCase):
                     self.assertNotEqual(proc.returncode, 0)
                     self.assertIn("unavailable", proc.stderr)
             self.assertEqual([entry.name for entry in cwd.iterdir()], ["request.json"])
+
+    def test_establish_staging_composes_only_i1_and_patch_1_topology(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            source_repo, revision = self.make_source_repo(cwd)
+            destination = cwd / "destination"
+            raw = {
+                "schema_version": "1",
+                "destination": str(destination),
+                "authority": {"granted_by": "issue-279"},
+                "source": {
+                    "repository": str(source_repo),
+                    "revision": {"object_format": "sha1", "object_id": revision},
+                },
+                "product": {
+                    "id": "sample-product",
+                    "direction_material": ["README.md", "README.md"],
+                },
+            }
+            request_path = cwd / "request.json"
+            request_path.write_text(json.dumps(raw), encoding="utf-8")
+
+            proc = self.run_command("establish-staging", request_path)
+
+            self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+            output = json.loads(proc.stdout)
+            root = Path(output["root"])
+            try:
+                self.assertEqual(output["status"], "i2-staging-established")
+                self.assertEqual({path.name for path in root.iterdir()}, {"transaction", "repository"})
+                self.assertEqual(list(Path(output["transaction_path"]).iterdir()), [])
+                self.assertEqual(list(Path(output["repository_path"]).iterdir()), [])
+                self.assertFalse(destination.exists())
+                self.assertFalse((Path(output["repository_path"]) / ".git").exists())
+            finally:
+                shutil.rmtree(root, ignore_errors=True)
+
+    def test_establish_staging_fails_before_mutation_for_invalid_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path(directory)
+            request_path = cwd / "request.json"
+            request_path.write_text(json.dumps(request()), encoding="utf-8")
+
+            proc = self.run_command("establish-staging", request_path)
+
+            self.assertNotEqual(proc.returncode, 0)
+            self.assertIn("source repository is not a local Git repository", proc.stderr)
+            self.assertEqual([path.name for path in cwd.iterdir()], ["request.json"])
 
 
 if __name__ == "__main__":
