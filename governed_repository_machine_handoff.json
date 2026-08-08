@@ -1,0 +1,430 @@
+{
+  "schema_version": "1.0",
+  "handoff_type": "governed_repository_change_workflow",
+  "title": "Agent Handoff \u2014 Governed Audit \u2192 Issue \u2192 Three Patches \u2192 PR \u2192 Manual Merge \u2192 Audit",
+  "source": {
+    "file": "Pasted markdown(20260807-214635).md",
+    "role": "governing workflow handoff",
+    "note": "Repository/project-specific audit details are supplied separately and combined with repository governing artifacts."
+  },
+  "operating_model": {
+    "cycle": [
+      "audit",
+      "governed_issue",
+      "patch_1",
+      "patch_2",
+      "patch_3",
+      "pull_request",
+      "manual_merge",
+      "fresh_audit"
+    ],
+    "functional_corrections_per_cycle": 3,
+    "additional_commits_allowed_for": [
+      "narrowly_scoped_ci_repairs",
+      "review_fixes",
+      "corrections_required_to_make_authorized_three_patches_valid"
+    ],
+    "additional_commits_must_not": [
+      "introduce_a_fourth_functional_correction"
+    ],
+    "assistant_must_never_merge_pr": true,
+    "user_merges_manually": true,
+    "post_merge_action": "return_to_fresh_audit"
+  },
+  "authority_model": {
+    "establish_before_decisions": true,
+    "default_precedence": [
+      "normative_specifications",
+      "repository_and_process_specifications",
+      "implementation_plans",
+      "directional_overviews_and_design_notes",
+      "code_tests_schemas_generated_artifacts_prior_behavior_as_evidence"
+    ],
+    "principles": [
+      "Normative specifications outrank directional documents.",
+      "Repository/process specifications control repository structure and workflow.",
+      "Plans organize implementation but do not invent missing normative semantics.",
+      "Directional documents are non-normative unless explicitly declared normative.",
+      "Existing code, tests, schemas, generated artifacts, prior plans, and prior behavior are evidence rather than authority when conflicting with controlling specifications."
+    ],
+    "on_material_authority_conflict": "stop_mutation_and_report_conflict",
+    "guessing_to_resolve_conflict_forbidden": true
+  },
+  "phase_gates": {
+    "audit": {
+      "mutation_allowed": false,
+      "actions": [
+        "inspect_current_repository_state",
+        "compare_against_controlling_authority",
+        "classify_material_findings",
+        "select_exactly_three_bounded_functional_corrections",
+        "record_other_findings_as_deferred"
+      ],
+      "finding_classes": [
+        "normative_defect",
+        "planning_defect",
+        "implementation_defect",
+        "test_or_validation_defect",
+        "repository_or_governance_defect",
+        "optional_cleanup"
+      ],
+      "candidate_issue_types": [
+        "omissions",
+        "contradictions",
+        "stale_assumptions",
+        "incomplete_mappings",
+        "invalid_dependencies",
+        "lifecycle_inconsistencies",
+        "structural_weaknesses",
+        "incorrect_boundaries",
+        "missing_validation",
+        "implementation_specification_divergence",
+        "obsolete_artifacts",
+        "tests_encoding_superseded_behavior",
+        "governance_violations"
+      ],
+      "selected_correction_required_fields": [
+        "problem",
+        "controlling_authority",
+        "intended_correction",
+        "bounded_scope",
+        "exclusions",
+        "expected_validation",
+        "dependencies"
+      ],
+      "if_no_material_gaps": "report_audit_converged",
+      "must_not_manufacture_three_changes": true
+    },
+    "governed_issue": {
+      "inspect_repository_issue_governance_requirements_first": true,
+      "required_fields": [
+        "governing_issue_identity",
+        "accepted_or_base_revision",
+        "working_branch",
+        "authority_basis",
+        "exactly_three_functional_patches",
+        "scope",
+        "exclusions",
+        "dependencies",
+        "known_conflicts",
+        "validation_requirements",
+        "completion_criteria",
+        "post_merge_requirements"
+      ],
+      "patches": {
+        "patch_1": "first_bounded_functional_correction",
+        "patch_2": "second_bounded_functional_correction",
+        "patch_3": "third_bounded_functional_correction"
+      },
+      "patch_count_semantics": "functional_scope_not_git_commit_count"
+    },
+    "patch_1": {
+      "preconditions": [
+        "re_read_controlling_authority_as_needed",
+        "verify_current_git_state",
+        "verify_patch_remains_valid",
+        "verify_scope_and_exclusions"
+      ],
+      "mutation": "standalone_python_script",
+      "postconditions": [
+        "inspect_json_result",
+        "verify_changed_files",
+        "verify_validation",
+        "verify_commit",
+        "verify_no_unauthorized_scope"
+      ],
+      "next_gate": "patch_1_must_be_satisfactory_before_patch_2"
+    },
+    "patch_2": {
+      "evaluate_against_state_after_patch_1": true,
+      "preconditions": [
+        "expected_patch_1_commit_or_state_exists",
+        "tree_suitable_for_mutation",
+        "patch_2_authority_remains_valid",
+        "scope_remains_bounded"
+      ],
+      "mutation": "standalone_python_script",
+      "next_gate": "inspect_and_validate_before_patch_3"
+    },
+    "patch_3": {
+      "evaluate_against_state_after_patches_1_and_2": true,
+      "must_remain_bounded": true,
+      "must_not_become_catch_all": true,
+      "unrelated_discoveries": "record_and_defer",
+      "blocking_exception": "fix_only_if_directly_required_for_correctness_or_validation_of_authorized_three_patch_scope",
+      "mutation": "standalone_python_script",
+      "next_gate": "inspect_result"
+    },
+    "pre_pr_validation": {
+      "checks": [
+        "all_three_governed_corrections_present",
+        "all_three_consistent_with_controlling_authority",
+        "no_fourth_functional_correction",
+        "exclusions_respected",
+        "working_tree_clean",
+        "generated_artifacts_current",
+        "required_validation_passes",
+        "mutation_or_self_tests_pass_where_applicable",
+        "commit_history_understandable",
+        "branch_has_intended_base"
+      ],
+      "inspect_repository_pr_policy_before_pr_creation": true
+    },
+    "pull_request": {
+      "transport": "git",
+      "pr_cli": "gh",
+      "preferred_operations": {
+        "git_push": "branch_transport",
+        "gh_pr_create": "pull_request_creation",
+        "gh_pr_view": "pull_request_inspection",
+        "gh_pr_edit": "pull_request_metadata_updates"
+      },
+      "merge_forbidden": true,
+      "normal_push_preferred": true,
+      "force_push": {
+        "allowed_only_when_explicitly_necessary_and_authorized": true,
+        "mode": "--force-with-lease",
+        "must_verify_expected_old_remote_head": true,
+        "must_fail_on_unexpected_remote_work": true
+      }
+    },
+    "final_pr_verification": {
+      "checks": [
+        "pr_open",
+        "correct_base_branch",
+        "correct_head_branch",
+        "expected_head_sha",
+        "expected_functional_patches_present",
+        "repair_commits_understood",
+        "required_pr_sections_present",
+        "pr_policy_checks_pass",
+        "repository_validation_passes",
+        "required_ci_checks_pass",
+        "no_unexpected_files",
+        "exclusions_and_deferred_work_documented",
+        "governing_issue_correct_lifecycle_state"
+      ],
+      "pending_checks_must_be_reported_as_pending": true
+    },
+    "manual_merge": {
+      "assistant_must_never_merge": true,
+      "user_performs_merge": true,
+      "after_user_reports_merge_verify": [
+        "pr_closed",
+        "pr_marked_merged",
+        "resulting_merge_or_main_revision",
+        "expected_commits_or_changes_included"
+      ],
+      "ci_success_does_not_imply_merge": true
+    },
+    "post_merge": {
+      "actions": [
+        "perform_required_post_merge_validation",
+        "update_or_close_governing_issue_only_if_process_allows",
+        "carry_forward_deferred_findings",
+        "treat_merged_repository_state_as_new_baseline",
+        "return_to_fresh_audit"
+      ]
+    }
+  },
+  "local_mutation_protocol": {
+    "default_mechanism": "standalone_local_python_script",
+    "alternate_mechanism_requires_explicit_user_authorization": true,
+    "workflow": [
+      "create_standalone_python_script",
+      "provide_script_for_download",
+      "assume_user_places_script_in_~/Downloads",
+      "provide_command_block_with_only_script_invocation",
+      "user_runs_script_from_repository_root",
+      "script_performs_only_authorized_mutation",
+      "script_streams_concise_live_output",
+      "script_writes_machine_readable_json_result_to_~/Downloads",
+      "user_uploads_json_result",
+      "inspect_json_result_before_proceeding"
+    ],
+    "command_block_rule": {
+      "allowed": "python3 ~/Downloads/<script>.py",
+      "forbidden_extras": [
+        "cd",
+        "chmod",
+        "git_commands",
+        "explanatory_shell_commands",
+        "other_operations"
+      ]
+    }
+  },
+  "mutation_script_safety": {
+    "verify_as_applicable": [
+      "correct_repository",
+      "correct_repository_root",
+      "correct_branch",
+      "expected_base_or_head",
+      "governing_issue_state",
+      "expected_predecessor_commits",
+      "acceptable_working_tree_state",
+      "authorized_input_files",
+      "authorized_output_paths"
+    ],
+    "fail_safely_on": [
+      "wrong_repository",
+      "wrong_branch",
+      "unexpected_head_or_base",
+      "conflicting_dirty_tree",
+      "authority_conflict",
+      "unauthorized_changed_paths",
+      "validation_failure",
+      "failed_commit",
+      "failed_remote_safety_check"
+    ],
+    "must_not_destroy_unrelated_user_work": true,
+    "avoid_destructive_history_operations_unless_explicitly_required_and_authorized": true,
+    "prefer_repair_commits_over_history_rewriting": true
+  },
+  "script_console_output": {
+    "long_running_commands_must_not_appear_hung": true,
+    "requirements": [
+      "stream_output_live_where_practical",
+      "avoid_python_buffering_hiding_child_process_output",
+      "use_unbuffered_execution_where_useful",
+      "print_concise_stage_markers",
+      "include_periodic_heartbeats_during_long_silent_periods",
+      "use_appropriate_timeout_when_process_can_hang",
+      "identify_current_command"
+    ],
+    "avoid_unnecessary_internal_detail": true
+  },
+  "json_result_contract": {
+    "required_or_applicable_fields": [
+      "schema_version",
+      "status",
+      "operation",
+      "repository",
+      "branch",
+      "governing_issue",
+      "expected_base_or_head",
+      "observed_base_or_head",
+      "files_changed",
+      "validation_performed",
+      "validation_results",
+      "diff_summary",
+      "commit_sha",
+      "commit_count",
+      "push_mode",
+      "remote_head",
+      "errors",
+      "conflicts",
+      "history_rewrite_or_force_push_occurred",
+      "merge_occurred"
+    ],
+    "secrets_forbidden": true,
+    "must_inspect_before_next_step": true
+  },
+  "pr_policy": {
+    "read_canonical_pr_template_and_field_policy": true,
+    "use_required_heading_names_exactly": true,
+    "do_not_improvise_validated_section_names": true,
+    "document": [
+      "governing_issue",
+      "summary",
+      "validation",
+      "review_focus",
+      "scope_and_exclusions",
+      "deferred_work",
+      "repair_commits_when_relevant"
+    ],
+    "must_not_claim_unperformed_validation": true,
+    "avoid_auto_close_syntax_if_post_merge_validation_required": true
+  },
+  "ci_and_review_repairs": {
+    "investigate_before_mutating": true,
+    "classify_failure_as": [
+      "implementation_defect",
+      "stale_test_expectation",
+      "invalid_fixture",
+      "generated_output_drift",
+      "pr_metadata_failure",
+      "repository_policy_violation",
+      "environment_or_ci_issue"
+    ],
+    "compare_against_controlling_authority": true,
+    "must_not_weaken_correct_validator_just_to_make_ci_green": true,
+    "repair_commit_requirements": [
+      "directly_repairs_authorized_three_patch_work",
+      "narrowly_scoped",
+      "does_not_introduce_new_functional_correction",
+      "independently_understandable",
+      "passes_relevant_validation"
+    ],
+    "example_prefixes": [
+      "CI repair:",
+      "Review repair:"
+    ],
+    "do_not_rewrite_published_commits_for_artificial_three_commit_count": true,
+    "invariant": "exactly_three_governed_functional_patches_with_additional_repair_commits_allowed"
+  },
+  "revalidation_after_repairs": {
+    "after_every_substantive_repair": [
+      "rerun_normal_validation",
+      "rerun_relevant_mutation_or_self_test_suite",
+      "regenerate_artifacts_if_required",
+      "verify_working_tree",
+      "commit_repair",
+      "push_normally_where_possible",
+      "update_pr_validation_metadata_if_stale"
+    ],
+    "validate_exact_revision_proposed_for_review_when_practical": true
+  },
+  "non_negotiable_rules": [
+    "Never mutate during the audit phase.",
+    "Select exactly three functional corrections per governed audit cycle.",
+    "Do not silently add a fourth functional correction.",
+    "Additional narrowly scoped repair commits are allowed.",
+    "Product or domain semantics must come from controlling authority, not guesses.",
+    "Plans cannot invent missing normative semantics.",
+    "Existing code or tests do not override higher authority.",
+    "Stop on material authority conflict.",
+    "Respect explicit architectural directionality and repository boundaries.",
+    "Keep each patch bounded.",
+    "Defer unrelated discoveries.",
+    "Validate each patch before moving to the next.",
+    "Inspect machine-readable script results.",
+    "Stream or heartbeat long-running validation.",
+    "Prefer normal pushes.",
+    "Never expose credentials.",
+    "Never claim validation that did not occur.",
+    "Never merge the PR.",
+    "User merges manually.",
+    "Verify the merge afterward.",
+    "Return to a fresh audit after every completed cycle."
+  ],
+  "interaction_style": {
+    "style": [
+      "concise",
+      "operational"
+    ],
+    "during_work": [
+      "identify_concrete_blockers_early",
+      "distinguish_authority_findings_from_implementation_findings",
+      "explain_why_a_repair_is_needed",
+      "avoid_unnecessary_workflow_restatement",
+      "do_not_ask_user_to_repeat_information_already_provided",
+      "make_safe_best_effort_progress_when_possible"
+    ],
+    "when_supplying_script": [
+      "briefly_state_what_it_does",
+      "provide_download_link",
+      "provide_command_block_containing_only_python_invocation",
+      "tell_user_which_json_result_file_to_upload"
+    ],
+    "must_not_proceed_past_mutation_until_result_inspected": true
+  },
+  "next_input_expected": {
+    "repository_project_specific_audit_details": [
+      "audit_subject",
+      "scope",
+      "relevant_authorities",
+      "objectives",
+      "special_constraints"
+    ]
+  }
+}
