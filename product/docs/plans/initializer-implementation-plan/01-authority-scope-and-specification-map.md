@@ -9,7 +9,7 @@ Maps accepted requirements to planning responsibilities; does not restate, narro
 | Planning fact | Value |
 | --- | --- |
 | Planning basis | `d3cf252dd6022aa19bd52ee335b1ef114ccfae1b` |
-| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization |
+| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization; #261 plan acceptance |
 | Normative authority | Accepted `initial-bounded-workflow` specs registered in `product/specs/product/manifest.json` |
 | Repository planning authority | `repo.implementation-plan`, `repo.development-workflow` |
 
@@ -27,7 +27,7 @@ All 34 accepted specs and 291 normative requirements are mapped below by composi
 | `I5` | End-to-end lifecycle orchestration, terminal outcomes, whole-workflow conformance |
 | `X` | Cross-increment carriage: re-verify at each consumer boundary (supplements sole owner) |
 
-Patch 2 preserves every composite assignment; spec dependencies are entry constraints, not optional sequencing.
+The accepted requirement-to-responsibility map preserves every composite assignment; spec dependencies are entry constraints, not optional sequencing.
 
 ## Requirement-to-responsibility map
 
