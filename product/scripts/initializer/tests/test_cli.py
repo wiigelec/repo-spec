@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import inspect
+import initializer.cli as cli
+
 import json
 import subprocess
 import tempfile
@@ -134,7 +137,7 @@ class CliTests(unittest.TestCase):
             self.assertFalse((cwd / "missing-output").exists())
 
         self.assertNotEqual(proc.returncode, 0)
-        self.assertIn("source-material resolution", proc.stderr)
+        self.assertIn("source repository is not a local Git repository", proc.stderr)
 
     def test_request_driven_staging_commands_are_unavailable(self) -> None:
         commands = (
@@ -158,3 +161,14 @@ class CliTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class I1IntegratedPreflightTests(unittest.TestCase):
+    def test_preflight_request_is_bounded_i1_path(self):
+        source = inspect.getsource(cli._cmd_preflight_request)
+        self.assertIn("validate_and_normalize", source)
+        self.assertIn("resolve_source_material", source)
+        self.assertIn("i1_destination_preflight", source)
+        self.assertNotIn("stage_framework", source)
+        self.assertNotIn("promote", source)
+        self.assertNotIn("git_establish", source)

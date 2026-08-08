@@ -5,14 +5,7 @@ import os
 import sys
 from pathlib import Path
 
-from initializer.inventory import (
-    resolve_inventory_path,
-    load_inventory,
-    validate_and_load_inventory,
-    resolve_source_selection_from_request,
-    inventory_to_ordered_dict,
-    InventoryError,
-)
+from initializer.inventory import InventoryError
 from initializer.foundations import FoundationPlan, FoundationError
 from initializer.models import SourceSelection
 from initializer.validation import (
@@ -60,8 +53,11 @@ def main(argv: list[str]) -> int:
             file=sys.stderr,
         )
         return 1
+    elif command == "preflight-request":
+        return _cmd_preflight_request(argv)
     elif command == "preflight-destination":
-        return _cmd_preflight_destination(argv)
+        print("error: preflight-destination is superseded by governed preflight-request", file=sys.stderr)
+        return 1
     elif command == "promote":
         return _cmd_promote(argv)
     elif command == "git-preflight":
@@ -156,6 +152,38 @@ def _cmd_inspect_source(argv: list[str]) -> int:
     print(json.dumps(output, indent=2))
     return 0
 
+
+
+def _cmd_preflight_request(argv: list[str]) -> int:
+    if len(argv) < 4:
+        print("error: missing request file path", file=sys.stderr)
+        return 1
+    request_path = Path(argv[3])
+    try:
+        raw = load_request(request_path)
+        from initializer.validation import validate_and_normalize
+        request = validate_and_normalize(raw, os.getcwd()).request
+        from initializer.inventory import resolve_source_material
+        source = resolve_source_material(
+            request.source_repository,
+            request.source_revision.object_id,
+            request.product_direction_material,
+        )
+        from initializer.destination import i1_destination_preflight
+        destination = i1_destination_preflight(request.destination)
+    except Exception as exc:
+        print(f"preflight error: {exc}", file=sys.stderr)
+        return 1
+    print(json.dumps({
+        "status": "i1-preflight-passed",
+        "request_fingerprint": request.request_fingerprint,
+        "source_repository": source.repository,
+        "source_revision": source.commit_id,
+        "manifest_entries": len(source.manifest),
+        "direction_material": list(source.direction_material),
+        "destination": destination,
+    }, indent=2, ensure_ascii=False))
+    return 0
 
 def _cmd_stage_framework(argv: list[str]) -> int:
     if len(argv) < 4:
