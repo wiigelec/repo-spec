@@ -1,0 +1,715 @@
+{
+  "schema_version": "1",
+  "increment": "I2",
+  "governing_issue": 279,
+  "accepted_base": "5332cecdaa5233482ef3d6b17ffcad5517816df0",
+  "patch_heads": {
+    "patch_1": "b6452031b61cf955a9598e44d6a26d571afc349c",
+    "patch_2": "a1c5957b3899479a90b448a73f573e5f0ab8558b",
+    "patch_3": "current-commit"
+  },
+  "owned_key_count": 78,
+  "represented_key_count": 78,
+  "b0_classification_counts": {
+    "preserve": 0,
+    "repair": 78,
+    "replace": 0,
+    "implement": 0
+  },
+  "blockers": [],
+  "requirements": [
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_staging.py",
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-level-0::INIT-L0-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_staging.py",
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initialization-request::INIT-REQ-016",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_cli.py"
+      ]
+    },
+    {
+      "composite_key": "product.source-revision-identity::INIT-SRC-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py"
+      ]
+    },
+    {
+      "composite_key": "product.material-classification::INIT-MAT-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py",
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.material-classification::INIT-MAT-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py",
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.material-classification::INIT-MAT-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py",
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_staging.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_staging.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_staging.py"
+      ]
+    },
+    {
+      "composite_key": "product.staging-workspace::INIT-STG-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_staging.py"
+      ]
+    },
+    {
+      "composite_key": "product.product-identity::INIT-PID-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.material-manifest::INIT-MMF-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_inventory.py",
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-007",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-008",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-009",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-010",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-011",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-012",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-013",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-014",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-015",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-016",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-017",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-018",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-019",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-022",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.generated-repository::INIT-GRL-023",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-007",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-008",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-009",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-010",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-011",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-012",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-013",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-014",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.initializer-output-inventory-v1::INV-V1-015",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py",
+        "product/scripts/initializer/tests/test_i2_exit.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-007",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-008",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-009",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-010",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-011",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-012",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-013",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-014",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-015",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-016",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-017",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-018",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-019",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-020",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.foundation-seeding::INIT-FSD-021",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-001",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-002",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-003",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-004",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-005",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-006",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-007",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    },
+    {
+      "composite_key": "product.framework-installation::INIT-FIN-008",
+      "b0_classification": "repair",
+      "status": "covered",
+      "evidence": [
+        "product/scripts/initializer/tests/test_i2_materialization.py"
+      ]
+    }
+  ],
+  "repository_digest_contract": {
+    "producer": "initializer.staging.build_i2_exit_state",
+    "canonical_order": "repository-relative path ascending",
+    "entry_dimensions": [
+      "path",
+      "entry type",
+      "regular-file raw bytes",
+      "regular-file executable bit",
+      "symlink target text"
+    ],
+    "excluded_metadata": [
+      "timestamps",
+      "inode",
+      "ownership",
+      "other filesystem metadata",
+      ".git administrative state"
+    ],
+    "algorithm": "sha256",
+    "scope": "repository/ only"
+  },
+  "successor_authorized": false,
+  "successor_gate": {
+    "evaluated": false,
+    "reason": "I2 Patch 3 commit, PR review/merge, post-merge validation, and a fresh I2->I3 gate audit are still required."
+  }
+}

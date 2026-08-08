@@ -905,3 +905,179 @@ def realize_i2_materials(
     )
 
 # END I2 PATCH 2 GOVERNED MATERIAL REALIZATION
+
+# BEGIN I2 PATCH 3 DETERMINISTIC EXIT
+
+@dataclass(frozen=True)
+class I2RepositoryEntry:
+    path: str
+    entry_type: str
+    executable: bool | None
+    byte_length: int | None
+    content_sha256: str | None
+    symlink_target: str | None
+
+    def to_dict(self) -> dict[str, object]:
+        value: dict[str, object] = {"path": self.path, "type": self.entry_type}
+        if self.executable is not None:
+            value["executable"] = self.executable
+        if self.byte_length is not None:
+            value["byte_length"] = self.byte_length
+        if self.content_sha256 is not None:
+            value["content_sha256"] = self.content_sha256
+        if self.symlink_target is not None:
+            value["symlink_target"] = self.symlink_target
+        return value
+
+
+@dataclass(frozen=True)
+class I2RepositoryDigest:
+    algorithm: str
+    digest: str
+    entry_count: int
+    canonical_input_byte_length: int
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "algorithm": self.algorithm,
+            "digest": self.digest,
+            "entry_count": self.entry_count,
+            "canonical_input_byte_length": self.canonical_input_byte_length,
+        }
+
+
+@dataclass(frozen=True)
+class I2ExitState:
+    realization: I2RealizationResult
+    repository_entries: tuple[I2RepositoryEntry, ...]
+    repository_digest: I2RepositoryDigest
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "status": "i2-exit-ready",
+            "realization": self.realization.to_dict(),
+            "repository_entries": [e.to_dict() for e in self.repository_entries],
+            "repository_digest": self.repository_digest.to_dict(),
+            "successor_increment": "I3",
+            "successor_authorized": False,
+        }
+
+
+def _i2_frame_part(value: bytes) -> bytes:
+    return len(value).to_bytes(8, "big") + value
+
+
+def enumerate_i2_repository(repository: Path) -> tuple[I2RepositoryEntry, ...]:
+    import hashlib
+
+    root = repository.resolve()
+    if not root.is_dir() or repository.is_symlink():
+        raise StagingError("candidate repository/ is not a real directory")
+
+    entries: list[I2RepositoryEntry] = []
+    for path in sorted(
+        repository.rglob("*"),
+        key=lambda item: item.relative_to(repository).as_posix(),
+    ):
+        relative = path.relative_to(repository).as_posix()
+        _i2_validate_repo_relative_output(relative)
+        if relative == ".git" or relative.startswith(".git/"):
+            raise StagingError("Git administrative state is not part of I2 repository content")
+        try:
+            st = path.lstat()
+        except OSError as exc:
+            raise StagingError(
+                f"cannot stat candidate repository path {relative}: {exc}"
+            ) from exc
+
+        if stat_module.S_ISLNK(st.st_mode):
+            target = os.readlink(path)
+            target_bytes = target.encode("utf-8", "strict")
+            entries.append(I2RepositoryEntry(
+                path=relative,
+                entry_type="symlink",
+                executable=None,
+                byte_length=len(target_bytes),
+                content_sha256=hashlib.sha256(target_bytes).hexdigest(),
+                symlink_target=target,
+            ))
+        elif stat_module.S_ISDIR(st.st_mode):
+            entries.append(I2RepositoryEntry(
+                path=relative + "/",
+                entry_type="directory",
+                executable=None,
+                byte_length=None,
+                content_sha256=None,
+                symlink_target=None,
+            ))
+        elif stat_module.S_ISREG(st.st_mode):
+            raw = path.read_bytes()
+            entries.append(I2RepositoryEntry(
+                path=relative,
+                entry_type="regular-file",
+                executable=bool(st.st_mode & 0o111),
+                byte_length=len(raw),
+                content_sha256=hashlib.sha256(raw).hexdigest(),
+                symlink_target=None,
+            ))
+        else:
+            raise StagingError(
+                f"unsupported filesystem object in candidate repository: {relative}"
+            )
+    return tuple(entries)
+
+
+def i2_repository_digest_input(
+    repository: Path,
+) -> tuple[bytes, tuple[I2RepositoryEntry, ...]]:
+    entries = enumerate_i2_repository(repository)
+    framed = bytearray(b"repo-spec-i2-repository-content-v1\\0")
+    for entry in entries:
+        framed.extend(_i2_frame_part(entry.path.encode("utf-8", "strict")))
+        framed.extend(_i2_frame_part(entry.entry_type.encode("ascii")))
+        actual = repository / entry.path.rstrip("/")
+        if entry.entry_type == "directory":
+            framed.extend(_i2_frame_part(b""))
+            framed.extend(_i2_frame_part(b""))
+        elif entry.entry_type == "symlink":
+            target = os.readlink(actual).encode("utf-8", "strict")
+            framed.extend(_i2_frame_part(b""))
+            framed.extend(_i2_frame_part(target))
+        else:
+            mode = b"x" if entry.executable else b"-"
+            framed.extend(_i2_frame_part(mode))
+            framed.extend(_i2_frame_part(actual.read_bytes()))
+    return bytes(framed), entries
+
+
+def build_i2_exit_state(realization: I2RealizationResult) -> I2ExitState:
+    import hashlib
+
+    workspace = realization.workspace
+    validate_staging_workspace(workspace)
+    repository = workspace.repository_path
+    digest_input, entries = i2_repository_digest_input(repository)
+
+    observed_leaf_paths = {
+        entry.path for entry in entries if entry.entry_type != "directory"
+    }
+    expected_leaf_paths = set(realization.framework_paths) | set(realization.foundation_paths)
+    if observed_leaf_paths != expected_leaf_paths:
+        missing = sorted(expected_leaf_paths - observed_leaf_paths)
+        undeclared = sorted(observed_leaf_paths - expected_leaf_paths)
+        raise StagingError(
+            f"candidate repository inventory mismatch: missing={missing}, undeclared={undeclared}"
+        )
+
+    return I2ExitState(
+        realization=realization,
+        repository_entries=entries,
+        repository_digest=I2RepositoryDigest(
+            algorithm="sha256",
+            digest=hashlib.sha256(digest_input).hexdigest(),
+            entry_count=len(entries),
+            canonical_input_byte_length=len(digest_input),
+        ),
+    )
+
+# END I2 PATCH 3 DETERMINISTIC EXIT

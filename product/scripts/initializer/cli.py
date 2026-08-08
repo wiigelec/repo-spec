@@ -27,6 +27,7 @@ def main(argv: list[str]) -> int:
         print("  preflight-request                 <request.json>                        validate the complete I1 boundary", file=sys.stderr)
         print("  establish-staging                 <request.json>                        establish the isolated I2 topology", file=sys.stderr)
         print("  realize-materials                 <request.json>                        realize closed I2 framework/foundations", file=sys.stderr)
+        print("  complete-i2                       <request.json>                        realize and summarize deterministic I2 exit", file=sys.stderr)
         print("  stage-framework                   <request.json> [--staging-parent <d>] stage reusable framework material", file=sys.stderr)
         print("  stage-framework-and-foundations   <request.json> [--staging-parent <d>] stage framework and establish product foundations", file=sys.stderr)
         print("  preflight-destination             <staging-path> <dest-path>            run destination preflight check", file=sys.stderr)
@@ -48,6 +49,8 @@ def main(argv: list[str]) -> int:
         return _cmd_establish_staging(argv)
     elif command == "realize-materials":
         return _cmd_realize_materials(argv)
+    elif command == "complete-i2":
+        return _cmd_complete_i2(argv)
     elif command in {
         "stage-framework",
         "stage-framework-and-foundations",
@@ -73,7 +76,7 @@ def main(argv: list[str]) -> int:
         return _cmd_git_establish(argv)
     else:
         print(f"unknown command: {command}", file=sys.stderr)
-        print("commands: validate-request, inspect-source, preflight-request, establish-staging, realize-materials, stage-framework, stage-framework-and-foundations, preflight-destination, promote, promote-staging, stage-and-promote, git-preflight, git-establish, stage-promote-and-git", file=sys.stderr)
+        print("commands: validate-request, inspect-source, preflight-request, establish-staging, realize-materials, complete-i2, stage-framework, stage-framework-and-foundations, preflight-destination, promote, promote-staging, stage-and-promote, git-preflight, git-establish, stage-promote-and-git", file=sys.stderr)
         return 1
 
 
@@ -265,6 +268,54 @@ def _cmd_realize_materials(argv: list[str]) -> int:
         return 1
 
     print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_complete_i2(argv: list[str]) -> int:
+    if len(argv) < 4:
+        print("error: missing request file path", file=sys.stderr)
+        print("usage: repo-spec-init complete-i2 <request.json>", file=sys.stderr)
+        return 1
+
+    workspace = None
+    try:
+        raw = load_request(Path(argv[3]))
+        from initializer.validation import validate_and_normalize
+        request = validate_and_normalize(raw, os.getcwd()).request
+        from initializer.inventory import resolve_source_material
+        source = resolve_source_material(
+            request.source_repository,
+            request.source_revision.object_id,
+            request.product_direction_material,
+        )
+        from initializer.destination import i1_destination_preflight
+        destination = i1_destination_preflight(request.destination)
+        from initializer.staging import (
+            I2StagingInputs,
+            establish_staging_workspace,
+            realize_i2_materials,
+            build_i2_exit_state,
+            _cleanup_staging,
+        )
+        workspace = establish_staging_workspace(I2StagingInputs(request, source, destination))
+        from initializer.foundations import build_foundation_plan
+        foundation_plan = build_foundation_plan(
+            request.product_id,
+            list(source.direction_material),
+            request.authority["granted_by"],
+        )
+        realization = realize_i2_materials(workspace, foundation_plan)
+        exit_state = build_i2_exit_state(realization)
+    except Exception as exc:
+        if workspace is not None:
+            try:
+                _cleanup_staging(workspace.root)
+            except Exception:
+                pass
+        print(f"I2 completion error: {exc}", file=sys.stderr)
+        return 1
+
+    print(json.dumps(exit_state.to_dict(), indent=2, ensure_ascii=False))
     return 0
 
 
