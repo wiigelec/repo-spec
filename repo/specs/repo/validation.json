@@ -111,7 +111,7 @@
     },
     {
       "id": "REPO-VAL-027",
-      "text": "The applicable leaf validation entry point shall enforce that an implementation plan may only be marked as planning-complete or ready for acceptance when every required controlling product specification referenced by the plan is accepted, structurally valid, registered in the product manifest, and not mutually contradictory with other referenced specifications."
+      "text": "The applicable leaf validation entry point shall enforce that an accepted implementation plan exposes canonical machine-readable workstream or stage authority entries with stable unique identifiers and non-empty unique controlling product-specification sets, and that every referenced controlling product specification is accepted, structurally valid, registered in the product manifest, and not mutually contradictory with other referenced specifications."
     },
     {
       "id": "REPO-VAL-028",

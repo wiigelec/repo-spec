@@ -239,13 +239,24 @@ def check_product_artifact_evidence_validation() -> None:
                 "`product.initialization-request::INIT-REQ-001-015`",
             )
         )
+        body_path.write_text(body)
+        result = run_policy("issue", fixture_root, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"issue policy depended on incidental implementation-plan Markdown: {result.stderr.strip()}")
+
+        plan_path = fixture_root / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(
+            plan_path.read_text().replace(
+                '"product.execution-profile",\n        "product.full-initialization",',
+                '"product.execution-profile",\n        "product.initialization-request",',
+            )
+        )
         mutated_plan_body = body.replace("product.full-initialization", "product.initialization-request")
         body_path.write_text(mutated_plan_body)
         result = run_policy("issue", fixture_root, body_path)
         if result.returncode != 0:
-            raise SystemExit(f"issue policy did not follow the mutated implementation-plan controlling set: {result.stderr.strip()}")
+            raise SystemExit(f"issue policy did not follow canonical implementation-plan authority: {result.stderr.strip()}")
 
-        plan_path = fixture_root / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_path.write_text(
             plan_path.read_text().replace(
                 '"lifecycle_status": "accepted"',

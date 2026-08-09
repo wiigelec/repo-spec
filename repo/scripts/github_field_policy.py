@@ -21,8 +21,7 @@ SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
 IMPLEMENTATION_PLAN_RE = re.compile(r"\b(?:repo|product)/docs/plans/[A-Za-z0-9._/-]+-IMPLEMENTATION-PLAN\.md\b")
 PRODUCT_ARTIFACT_IMPLEMENTATION_RE = re.compile(r"\bproduct-artifact implementation\b", re.I)
-PLAN_SPEC_ROW_RE = re.compile(r"^\|\s*\d+\s*\|\s*`(product\.[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)*)`\s*\|", re.M)
-WORKSTREAM_SECTION_RE = re.compile(r"^## (?:B0|I[1-9][0-9]*)\b[^\n]*\n(.*?)(?=^##\s|\Z)", re.M | re.S)
+WORKSTREAM_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
 
 SUPPORTED_VALIDATION_KINDS = {
     "meaningful",
@@ -172,50 +171,34 @@ def load_document_metadata(text: str, relative_path: str) -> dict:
     return metadata
 
 
-def markdown_section(text: str, heading: str) -> str:
-    match = re.search(rf"^## {re.escape(heading)}\s*$\n(.*?)(?=^##\s|\Z)", text, re.M | re.S)
-    return match.group(1) if match else ""
-
-
-def load_plan_controlling_spec_sets(repo_root: Path, plan_path: str) -> set[frozenset[str]]:
+def load_plan_controlling_spec_sets(
+    repo_root: Path,
+    plan_path: str,
+    accepted_specs: set[str],
+) -> set[frozenset[str]]:
     plan_text = read_repo_text(repo_root, plan_path)
     metadata = load_document_metadata(plan_text, plan_path)
     if metadata.get("artifact_type") != "implementation-plan" or metadata.get("lifecycle_status") != "accepted":
         raise PolicyError(f"cited implementation plan is not accepted: {plan_path}")
 
-    content_areas = metadata.get("required_content_areas")
-    authority_paths = content_areas.get("authority_and_basis") if isinstance(content_areas, dict) else None
-    workstream_paths = content_areas.get("workstreams_and_dependencies") if isinstance(content_areas, dict) else None
-    if not isinstance(authority_paths, list) or not authority_paths or not all(isinstance(path, str) for path in authority_paths):
-        raise PolicyError(f"cited implementation plan lacks canonical authority content: {plan_path}")
-    if not isinstance(workstream_paths, list) or not workstream_paths or not all(isinstance(path, str) for path in workstream_paths):
-        raise PolicyError(f"cited implementation plan lacks canonical workstream content: {plan_path}")
-
-    plan_specs: set[str] = set()
-    for authority_path in authority_paths:
-        authority_text = read_repo_text(repo_root, authority_path)
-        specification_map = markdown_section(authority_text, "Requirement-to-responsibility map")
-        plan_specs.update(PLAN_SPEC_ROW_RE.findall(specification_map))
-    if not plan_specs:
-        raise PolicyError(f"cited implementation plan lacks controlling product specifications: {plan_path}")
-
+    entries = metadata.get("workstream_authority")
+    if not isinstance(entries, list) or not entries:
+        raise PolicyError(f"cited implementation plan lacks canonical workstream authority: {plan_path}")
+    seen_ids: set[str] = set()
     controlling_sets: set[frozenset[str]] = set()
-    for workstream_path in workstream_paths:
-        workstream_text = read_repo_text(repo_root, workstream_path)
-        for section in WORKSTREAM_SECTION_RE.findall(workstream_text):
-            requirements = re.search(r"^Controlling requirements[^:]*:\s*(.*)$", section, re.M)
-            if requirements is None:
-                continue
-            value = requirements.group(1)
-            workstream_specs = plan_specs if re.search(r"\ball \d+ accepted specs\b", value) else {
-                spec_id for spec_id in SPEC_RE.findall(value) if spec_id.startswith("product.")
-            }
-            if workstream_specs:
-                if not workstream_specs.issubset(plan_specs):
-                    raise PolicyError(f"cited implementation plan has workstream specifications outside its authority map: {plan_path}")
-                controlling_sets.add(frozenset(workstream_specs))
-    if not controlling_sets:
-        raise PolicyError(f"cited implementation plan lacks controlling workstream specification sets: {plan_path}")
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {"id", "controlling_product_specifications"}:
+            raise PolicyError(f"cited implementation plan has invalid workstream authority: {plan_path}")
+        workstream_id = entry["id"]
+        specs = entry["controlling_product_specifications"]
+        if not isinstance(workstream_id, str) or WORKSTREAM_ID_RE.fullmatch(workstream_id) is None or workstream_id in seen_ids:
+            raise PolicyError(f"cited implementation plan has invalid workstream authority identifier: {plan_path}")
+        if not isinstance(specs, list) or not specs or not all(isinstance(spec_id, str) for spec_id in specs) or len(specs) != len(set(specs)):
+            raise PolicyError(f"cited implementation plan has invalid controlling product specifications: {plan_path}")
+        if not set(specs).issubset(accepted_specs):
+            raise PolicyError(f"cited implementation plan has non-accepted controlling product specifications: {plan_path}")
+        seen_ids.add(workstream_id)
+        controlling_sets.add(frozenset(specs))
     return controlling_sets
 
 
@@ -239,7 +222,7 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path)
     accepted_specs = load_accepted_product_specs(repo_root)
     if not cited_specs or not cited_specs.issubset(accepted_specs):
         raise PolicyError("missing manifest-listed accepted product specification in Governing specifications")
-    controlling_sets = load_plan_controlling_spec_sets(repo_root, plan_paths[0])
+    controlling_sets = load_plan_controlling_spec_sets(repo_root, plan_paths[0], accepted_specs)
     if frozenset(cited_specs) not in controlling_sets:
         raise PolicyError("cited product specifications do not match a controlling set in cited implementation plan")
 
