@@ -82,7 +82,7 @@ def check_product_specification_root_phase(context: ValidationContext) -> None:
             if ref["type"] == "specification":
                 target_spec = context.product.specs.get(ref["spec_id"])
                 expect(target_spec is not None, f"product references failed: unresolved spec {spec_id} -> {ref['spec_id']}")
-                kind = ref.get("kind", "normative")
+                kind = ref["kind"]
                 if kind == "historical":
                     expect(target_spec["status"] in {"superseded", "retired"}, f"product references failed: {spec_id} -> {ref['spec_id']}")
                 else:

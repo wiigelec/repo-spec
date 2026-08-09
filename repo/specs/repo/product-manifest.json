@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-PM-002",
-      "text": "The product manifest shall be authoritative for the governed product-specification registry and for declaration-driven product-derived projections under `product/specs/product/`, and shall not claim repository-workflow authority."
+      "text": "The product manifest shall be authoritative for the governed product-specification registry under `product/specs/product/` and shall not claim repository-workflow authority. Declaration-driven product-derived projections are owned and declared by their source product specifications and shall reside under `product/derived/specs/product/` as defined by this contract and `repo.product-spec-base`."
     },
     {
       "id": "REPO-PM-003",
