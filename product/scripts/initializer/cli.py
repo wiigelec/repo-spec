@@ -8,6 +8,8 @@ from pathlib import Path
 from initializer.inventory import InventoryError
 from initializer.foundations import FoundationPlan, FoundationError
 from initializer.models import SourceSelection
+from initializer.full_initialization_actions import build_full_initialization_actions
+from initializer.orchestration import execute_full_initialization
 from initializer.validation import (
     ValidationError,
     validate_json_request,
@@ -19,65 +21,72 @@ from initializer.validation import (
 
 
 def main(argv: list[str]) -> int:
+    if len(argv) >= 4 and argv[2] == "--request":
+        return _cmd_initialize(argv)
+
     if len(argv) < 3:
-        print("usage: repo-spec-init <command> [<args>]", file=sys.stderr)
-        print("commands:", file=sys.stderr)
-        print("  validate-request                  <request.json>                        validate a request", file=sys.stderr)
-        print("  inspect-source                    <request.json>                        validate request, source, and inventory", file=sys.stderr)
-        print("  preflight-request                 <request.json>                        validate the complete I1 boundary", file=sys.stderr)
-        print("  establish-staging                 <request.json>                        establish the isolated I2 topology", file=sys.stderr)
-        print("  realize-materials                 <request.json>                        realize closed I2 framework/foundations", file=sys.stderr)
-        print("  complete-i2                       <request.json>                        realize and summarize deterministic I2 exit", file=sys.stderr)
-        print("  stage-framework                   <request.json> [--staging-parent <d>] stage reusable framework material", file=sys.stderr)
-        print("  stage-framework-and-foundations   <request.json> [--staging-parent <d>] stage framework and establish product foundations", file=sys.stderr)
-        print("  preflight-destination             <staging-path> <dest-path>            run destination preflight check", file=sys.stderr)
-        print("  promote                           <staging-path> <dest-path>            promote staging result to destination", file=sys.stderr)
-        print("  promote-staging                   <request.json>                        promote completed staging result to destination", file=sys.stderr)
-        print("  stage-and-promote                 <request.json> [--staging-parent <d>] stage, establish foundations, and promote", file=sys.stderr)
-        print("  git-preflight                     <dest-path>                           run Git preflight for a promoted destination", file=sys.stderr)
-        print("  git-establish                     <dest-path>                           initialize Git in a promoted destination", file=sys.stderr)
-        print("  stage-promote-and-git             <request.json> [--staging-parent <d>] stage, promote, and initialize Git", file=sys.stderr)
+        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
+        print("diagnostic commands:", file=sys.stderr)
+        print("  validate-request    <request.json>", file=sys.stderr)
+        print("  inspect-source      <request.json>", file=sys.stderr)
+        print("  preflight-request   <request.json>", file=sys.stderr)
+        print("  establish-staging   <request.json>", file=sys.stderr)
+        print("  realize-materials   <request.json>", file=sys.stderr)
+        print("  complete-i2         <request.json>", file=sys.stderr)
+        print("  promote             <staging-path> <dest-path>", file=sys.stderr)
+        print("  git-preflight       <dest-path>", file=sys.stderr)
+        print("  git-establish       <dest-path>", file=sys.stderr)
         return 1
 
     command = argv[2]
-
-    if command == "validate-request":
-        return _cmd_validate_request(argv)
-    elif command == "inspect-source":
-        return _cmd_inspect_source(argv)
-    elif command == "establish-staging":
-        return _cmd_establish_staging(argv)
-    elif command == "realize-materials":
-        return _cmd_realize_materials(argv)
-    elif command == "complete-i2":
-        return _cmd_complete_i2(argv)
-    elif command in {
+    dispatch = {
+        "validate-request": _cmd_validate_request,
+        "inspect-source": _cmd_inspect_source,
+        "preflight-request": _cmd_preflight_request,
+        "establish-staging": _cmd_establish_staging,
+        "realize-materials": _cmd_realize_materials,
+        "complete-i2": _cmd_complete_i2,
+        "promote": _cmd_promote,
+        "git-preflight": _cmd_git_preflight,
+        "git-establish": _cmd_git_establish,
+    }
+    if command in {
         "stage-framework",
         "stage-framework-and-foundations",
         "promote-staging",
         "stage-and-promote",
         "stage-promote-and-git",
     }:
-        print(
-            f"error: {command} is unavailable before governed source resolution and staging",
-            file=sys.stderr,
-        )
+        print(f"command unavailable: {command}", file=sys.stderr)
         return 1
-    elif command == "preflight-request":
-        return _cmd_preflight_request(argv)
-    elif command == "preflight-destination":
-        print("error: preflight-destination is superseded by governed preflight-request", file=sys.stderr)
-        return 1
-    elif command == "promote":
-        return _cmd_promote(argv)
-    elif command == "git-preflight":
-        return _cmd_git_preflight(argv)
-    elif command == "git-establish":
-        return _cmd_git_establish(argv)
-    else:
+
+    handler = dispatch.get(command)
+    if handler is None:
         print(f"unknown command: {command}", file=sys.stderr)
-        print("commands: validate-request, inspect-source, preflight-request, establish-staging, realize-materials, complete-i2, stage-framework, stage-framework-and-foundations, preflight-destination, promote, promote-staging, stage-and-promote, git-preflight, git-establish, stage-promote-and-git", file=sys.stderr)
+        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
         return 1
+    return handler(argv)
+
+
+def _cmd_initialize(argv: list[str]) -> int:
+    if len(argv) != 4 or argv[2] != "--request":
+        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
+        return 1
+    try:
+        raw = load_request(Path(argv[3]))
+        result = execute_full_initialization(
+            raw,
+            os.getcwd(),
+            build_full_initialization_actions(),
+        )
+    except Exception as exc:
+        print(f"initialization error: {exc}", file=sys.stderr)
+        return 1
+    print(json.dumps({
+        "terminal_result": result.terminal_result,
+        "destination": raw.get("destination"),
+    }, indent=2, ensure_ascii=False))
+    return 0 if result.succeeded else 1
 
 
 def _cmd_validate_request(argv: list[str]) -> int:
@@ -132,36 +141,6 @@ def _cmd_inspect_source(argv: list[str]) -> int:
         "direction_material": list(resolved.direction_material),
     }, indent=2, ensure_ascii=False))
     return 0
-
-    repo_root = Path(argv[1]).resolve()
-    inventory_path = resolve_inventory_path(repo_root)
-    try:
-        inv_raw = load_inventory(inventory_path)
-    except InventoryError as exc:
-        print(f"inventory error: {exc}", file=sys.stderr)
-        return 1
-
-    source_sel = None
-    if request.source_repository is not None or request.source_revision is not None:
-        try:
-            source_sel = resolve_source_selection_from_request(
-                request.source_repository, request.source_revision.object_id,
-            )
-        except InventoryError as exc:
-            print(f"source selection error: {exc}", file=sys.stderr)
-            return 1
-
-    try:
-        classified = validate_and_load_inventory(inv_raw, source_sel)
-    except InventoryError as exc:
-        print(f"inventory validation error: {exc}", file=sys.stderr)
-        return 1
-
-    output = inventory_to_ordered_dict(classified, source_sel)
-    output["status"] = "inspection_complete"
-    print(json.dumps(output, indent=2))
-    return 0
-
 
 
 def _cmd_preflight_request(argv: list[str]) -> int:
