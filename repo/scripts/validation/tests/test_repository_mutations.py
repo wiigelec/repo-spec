@@ -54,6 +54,11 @@ def run_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
+        (temp_repo / "docs").mkdir()
+        expect_failure("legacy root docs reintroduction", lambda: validate_repo(temp_repo), "repository root boundary failed: undeclared top-level entries: docs")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
         (temp_repo / "README.md").unlink()
         expect_failure("missing required root", lambda: validate_repo(temp_repo), "repository root boundary failed: missing required top-level entries: README.md")
 

@@ -109,7 +109,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
 
 
 REQUIRED_FIXTURE_ROOT_FILES = (".gitignore", "AGENTS.md", "LICENSE", "README.md")
-REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "docs", "product", "reference", "repo", "scripts", "user")
+REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "product", "reference", "repo", "scripts", "user")
 
 
 def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:

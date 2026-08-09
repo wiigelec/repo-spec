@@ -93,13 +93,6 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
     },
 }
 
-for repository_root, legacy_root in (
-    ("repo/docs/overview/", "repo/docs/overview/"),
-    ("repo/docs/decompositions/", "repo/docs/decompositions/"),
-    ("repo/docs/plans/", "repo/docs/plans/"),
-):
-    DEVELOPMENT_DOCUMENT_ROOTS[repository_root] = DEVELOPMENT_DOCUMENT_ROOTS[legacy_root]
-
 for product_root, framework_root in (
     ("product/docs/overview/", "repo/docs/overview/"),
     ("product/docs/decompositions/", "repo/docs/decompositions/"),
@@ -107,10 +100,10 @@ for product_root, framework_root in (
 ):
     DEVELOPMENT_DOCUMENT_ROOTS[product_root] = DEVELOPMENT_DOCUMENT_ROOTS[framework_root]
 
-OVERVIEW_AND_PLAN_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "repo/docs/overview/", "repo/docs/plans/", "product/docs/overview/", "product/docs/plans/"}
-DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "repo/docs/decompositions/", "product/docs/decompositions/"}
+OVERVIEW_AND_PLAN_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "product/docs/overview/", "product/docs/plans/"}
+DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "product/docs/decompositions/"}
 
-DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATHS = ("repo/docs/development-document-compatibility.json", "repo/docs/development-document-compatibility.json")
+DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
 DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
     "repo/docs/overview/product-overview/": "repo/docs/overview/PRODUCT-OVERVIEW.md",
     "product/docs/decompositions/initializer-decomposition/": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md",
@@ -126,7 +119,6 @@ REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS = {
     'AGENTS.md': 'file',
     'LICENSE': 'file',
     'README.md': 'file',
-    'docs': 'directory',
     'product': 'directory',
     'reference': 'directory',
     'repo': 'directory',
@@ -142,12 +134,8 @@ def check_repository_root_boundary(context: ValidationContext) -> None:
     unexpected = sorted(set(actual) - expected)
     expect(not unexpected, "repository root boundary failed: undeclared top-level entries: " + ", ".join(unexpected))
     missing = sorted(expected - set(actual))
-    if "docs" in missing and (context.repo_root / "repo/docs").exists():
-        missing.remove("docs")
     expect(not missing, "repository root boundary failed: missing required top-level entries: " + ", ".join(missing))
     wrong_kind: list[str] = []
-    if "docs" not in actual and (context.repo_root / "repo/docs").exists():
-        actual["docs"] = context.repo_root / "repo/docs"
     for name, kind in REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS.items():
         path = actual[name]
         matches = path.is_file() if kind == "file" else path.is_dir()
@@ -219,8 +207,11 @@ def load_development_document_compatibility_registry(
 ) -> dict[str, dict[str, Any]]:
     if development_roots is None:
         development_roots = DEVELOPMENT_DOCUMENT_ROOTS
-    registry_path = next((repo_root / rel for rel in DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATHS if (repo_root / rel).exists()), None)
-    expect(registry_path is not None, "development document classification failed: missing compatibility registry " + " or ".join(DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATHS))
+    registry_path = repo_root / DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH
+    expect(
+        registry_path.exists(),
+        f"development document classification failed: missing compatibility registry {DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH}",
+    )
     try:
         data = json.loads(registry_path.read_text())
     except json.JSONDecodeError as exc:
@@ -811,8 +802,6 @@ def check_development_documents_phase(
 
     for root_rel, info in development_roots.items():
         root = context.repo_root / root_rel
-        if root_rel.startswith("repo/docs/") and not root.exists():
-            continue
         expect(root.exists(), f"development document root failed: missing root {root_rel}")
         readme = root / "README.md"
         expect(readme.exists(), f"development document discovery failed: missing {root_rel}README.md")
