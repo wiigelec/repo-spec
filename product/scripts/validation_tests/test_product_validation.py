@@ -7,7 +7,7 @@ from pathlib import Path
 from validation.generated_outputs import check_generated_document_write_behavior
 from product_validation.product_checks import validate_product
 
-from validation.tests.mutation_support import create_repo_fixture, expect_failure, mutate_json
+from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
@@ -64,6 +64,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-empty.json", "product/specs/product/manifest.json")
+        deactivate_product_plans(temp_repo)
         validate_product(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -72,6 +73,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
 
@@ -91,6 +93,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/manifest.json",
             lambda manifest: manifest["product_specifications"][2].__setitem__("status", "candidate") or manifest,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure(
             "accepted product depends on candidate",
             lambda: validate_product(temp_repo),
@@ -105,6 +108,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
 
@@ -113,6 +117,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        deactivate_product_plans(temp_repo)
         expect_failure(
             "accepted higher level without accepted level 0",
             lambda: validate_product(temp_repo),
@@ -130,6 +135,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec.__setitem__("dependencies", []) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure(
             "accepted higher level disconnected from unrelated accepted Level 0",
             lambda: validate_product(temp_repo),
@@ -148,6 +154,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-3/orchestration.json",
             lambda spec: spec.__setitem__("dependencies", [{"spec_id": "product.kernel"}]) or spec,
         )
+        deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
 
@@ -166,6 +173,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 }
             ) or manifest,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("repository file in product manifest", lambda: validate_product(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -197,6 +205,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 }
             ) or manifest,
         )
+        deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
 
@@ -210,6 +219,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: spec["dependencies"].append({"spec_id": "product.primitive"}) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("upward dependency", lambda: validate_product(temp_repo), "product dependency direction failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -245,6 +255,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 }
             ) or manifest,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("same-level dependency cycle", lambda: validate_product(temp_repo), "acyclic dependencies failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -280,6 +291,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 }
             ) or manifest,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("retired dependency target", lambda: validate_product(temp_repo), "product dependencies failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -290,6 +302,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("missing registered file", lambda: validate_product(temp_repo), "product manifest completeness failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -298,18 +311,21 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         install_fixture(temp_repo, "rogue.json", "product/specs/product/level-2/rogue.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("unregistered product file", lambda: validate_product(temp_repo), "product manifest completeness failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-duplicate-id.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("duplicate product id", lambda: validate_product(temp_repo), "duplicate product specification id")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-duplicate-path.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("duplicate product path", lambda: validate_product(temp_repo), "duplicate product specification path")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -318,6 +334,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         expect_failure("identity mismatch", lambda: validate_product(temp_repo), "product manifest correspondence failed: spec_id mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -326,6 +343,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate-level1.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         expect_failure("level mismatch", lambda: validate_product(temp_repo), "product manifest correspondence failed: level mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -333,6 +351,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "manifest-lifecycle-mismatch.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("lifecycle mismatch", lambda: validate_product(temp_repo), "product manifest correspondence failed: lifecycle mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -341,6 +360,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate-missing-title.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         expect_failure("base schema conformance", lambda: validate_product(temp_repo), "missing required property title")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -349,6 +369,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted-missing-ref.json", "product/specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         expect_failure("unresolved reference", lambda: validate_product(temp_repo), "product references failed: unresolved spec")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -361,18 +382,21 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["references"].append({"type": "specification", "spec_id": "repo.validation"}) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("repository reference in product specification", lambda: validate_product(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-lineage-missing.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-lineage-missing.json", "product/specs/product/level-0/kernel.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("unresolved lineage", lambda: validate_product(temp_repo), "product lineage failed: unresolved spec")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-lineage-self.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-lineage-self.json", "product/specs/product/level-0/kernel.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("lineage self reference", lambda: validate_product(temp_repo), "product lineage failed: self reference")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -383,6 +407,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
 
@@ -399,6 +424,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 [{"type": "markdown", "path": "product/derived/specs/product/kernel.md"}],
             ) or manifest,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("manifest repeats derived artifacts", lambda: validate_product(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -411,12 +437,14 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: spec.__setitem__("derived_artifacts", [{"type": "markdown", "path": "product/derived/specs/product/primitive.md"}]) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("duplicate derived path", lambda: validate_product(temp_repo), "duplicate product derived artifact paths failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-wrong-level-root.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-2/kernel.json")
+        deactivate_product_plans(temp_repo)
         expect_failure("wrong level root", lambda: validate_product(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -442,6 +470,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 spec,
             )[-1],
         )
+        deactivate_product_plans(temp_repo)
         expect_failure(
             "candidate unreachable correspondence mappings",
             lambda: validate_product(temp_repo),
@@ -458,6 +487,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec.__setitem__("correspondence", {"implementations": [], "tests": [], "conformance": []}) or spec,
         )
+        deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
 
@@ -471,6 +501,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["conformance"].append(spec["correspondence"]["conformance"][0].copy()) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("duplicate conformance record", lambda: validate_product(temp_repo), "duplicate conformance")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -483,6 +514,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["conformance"][0]["implementation_ids"].clear() or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("covered requirement without implementation mapping", lambda: validate_product(temp_repo), "requires at least one implementation mapping")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -495,6 +527,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["conformance"][0]["test_ids"].clear() or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("covered requirement without test mapping", lambda: validate_product(temp_repo), "requires at least one test mapping")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -513,6 +546,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 spec,
             )[-1],
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("not-applicable without rationale", lambda: validate_product(temp_repo), "requires rationale")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -529,6 +563,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 spec,
             )[-1],
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("not-applicable with implementation mapping", lambda: validate_product(temp_repo), "must not reference implementation mappings")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -546,6 +581,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
                 spec,
             )[-1],
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("not-applicable with test mapping", lambda: validate_product(temp_repo), "must not reference test mappings")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -558,6 +594,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["conformance"][0].__setitem__("status", "verified") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("invalid correspondence status", lambda: validate_product(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -570,6 +607,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: (spec["correspondence"]["implementations"][0].pop("id"), spec)[1],
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("missing implementation mapping id", lambda: validate_product(temp_repo), "missing required property id")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -582,6 +620,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "/product/tests/test_primitive.py") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("absolute correspondence path", lambda: validate_product(temp_repo), "pattern mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -594,6 +633,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: (spec["correspondence"]["tests"][0].pop("requirements"), spec)[1],
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("missing test mapping requirements", lambda: validate_product(temp_repo), "missing required property requirements")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -606,6 +646,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["conformance"][0].__setitem__("status", "not-applicable") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("malformed not-applicable correspondence", lambda: validate_product(temp_repo), "oneOf mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -618,6 +659,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/schemas/product/product-level-1.schema.json",
             lambda schema: schema["allOf"][1]["properties"].__setitem__("correspondence", {"type": "string"}) or schema,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("correspondence field redefined by level schema", lambda: validate_product(temp_repo), "must be a string")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -630,6 +672,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["implementations"][0]["paths"].__setitem__(0, "product/src/missing.py") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("missing implementation file", lambda: validate_product(temp_repo), "missing path")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -642,6 +685,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "/product/tests/test_primitive.py") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("absolute test path", lambda: validate_product(temp_repo), "pattern mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -654,6 +698,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "../product/tests/test_primitive.py") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("path traversal", lambda: validate_product(temp_repo), "pattern mismatch")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -667,6 +712,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["tests"][0]["paths"].__setitem__(0, "product/src/dir") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("directory instead of file", lambda: validate_product(temp_repo), "must be a file")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -679,6 +725,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["implementations"].append({"id": "impl.duplicate", "paths": ["product/src/primitive.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("duplicate implementation path", lambda: validate_product(temp_repo), "duplicate correspondence path")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -691,6 +738,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["conformance"][0].__setitem__("requirement_id", "KERNEL-001") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("unknown conformance requirement", lambda: validate_product(temp_repo), "unknown requirement")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -703,6 +751,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["implementations"][0]["requirements"].__setitem__(0, "KERNEL-001") or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("unknown requirement id", lambda: validate_product(temp_repo), "unknown requirement")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -717,6 +766,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["implementations"].append({"id": "impl.unused", "paths": ["product/src/unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("unused implementation mapping", lambda: validate_product(temp_repo), "unreachable implementation mappings")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -731,6 +781,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-1/primitive.json",
             lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/tests/test_unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
         )
+        deactivate_product_plans(temp_repo)
         expect_failure("unused test mapping", lambda: validate_product(temp_repo), "unreachable test mappings")
 
     print("ok: product validation tests")

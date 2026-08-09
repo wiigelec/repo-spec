@@ -31,14 +31,6 @@ def check_product_lifecycle_readiness(context: ValidationContext) -> None:
 
         authority_entries = metadata.get("workstream_authority", [])
         expect(authority_entries, f"lifecycle plan failed: plan {plan_path} lacks workstream authority")
-        authority_spec_ids = {
-            spec_id
-            for authority in authority_entries
-            for spec_id in authority["controlling_product_specifications"]
-        }
-        # No overlap means this plan belongs to a different product-specification registry.
-        if authority_spec_ids.isdisjoint(product_specs):
-            continue
         seen_ids: set[str] = set()
         for authority in authority_entries:
             workstream_id = authority["id"]

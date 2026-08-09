@@ -8,6 +8,7 @@ from docgen import write_all
 from product_validation.product_checks import validate_product
 from validation.tests.mutation_support import (
     create_repo_fixture,
+    deactivate_product_plans,
     expect_failure,
     mutate_json,
 )
@@ -94,6 +95,7 @@ def build_product_repo(repo_root: Path, temp_root: Path, index: int) -> Path:
         "product/specs/product/level-3/orchestration.json",
     )
     accept_kernel(temp_repo)
+    deactivate_product_plans(temp_repo)
     return temp_repo
 
 

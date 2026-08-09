@@ -7,7 +7,7 @@ from pathlib import Path
 from validation.generated_outputs import check_generated_document_write_behavior
 from product_validation.product_checks import validate_product
 
-from validation.tests.mutation_support import create_repo_fixture, expect_failure, mutate_json
+from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
@@ -69,6 +69,7 @@ def build_case(temp_repo: Path, source: dict[str, object], target: dict[str, obj
             {"spec_id": target["spec_id"], "path": target["path"], "status": target["status"], "level": target["level"]},
         ],
     )
+    deactivate_product_plans(temp_repo)
     check_generated_document_write_behavior(temp_repo)
 
 

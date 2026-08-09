@@ -7,7 +7,7 @@ from pathlib import Path
 from docgen import render_all, write_all, check_generated_outputs
 from product_validation.product_checks import validate_product
 
-from validation.tests.mutation_support import create_repo_fixture, mutate_json
+from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
@@ -73,6 +73,7 @@ def run_product_generation_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
         accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
 
         render_paths = [path for path in render_all(temp_repo) if path.startswith("product/derived/specs/product/")]
         assert render_paths == [

@@ -8,6 +8,20 @@ from pathlib import Path
 from validation.errors import ValidationFailure, fail
 
 
+def deactivate_product_plans(repo_root: Path) -> None:
+    """Make copied product plans non-active for fixtures that replace the product registry."""
+    plans_root = repo_root / "product/docs/plans"
+    if not plans_root.is_dir():
+        return
+    for plan_path in sorted(plans_root.glob("*.md")):
+        text = plan_path.read_text()
+        accepted = '"lifecycle_status": "accepted"'
+        if accepted in text:
+            plan_path.write_text(
+                text.replace(accepted, '"lifecycle_status": "candidate"', 1)
+            )
+
+
 def expect_failure(description: str, func, fragment: str) -> None:
     try:
         func()
