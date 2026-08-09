@@ -6,13 +6,14 @@ Read, in order:
 - `README.md`
 - `repo/specs/repo/manifest.json`
 - `repo/specs/repo/development-workflow.json`
-- the governing issue for the current bounded change
+- discover an existing governing issue for the current bounded change, or create one only when the accepted development workflow explicitly authorizes that no-existing-issue bootstrap
+- the resulting governing issue
 - only the relevant overview, decomposition, plan, specification, and predecessor records
 - the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state
 
 Report the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and any unresolved authority conflicts, along with the inspected branch, open PR, working-tree, remote, and hosting-platform state.
 
-If authority is missing or conflicts, stop and ask.
+If controlling authority is missing or conflicts, stop and ask, except that absence of a governing issue shall follow the explicit discovery-or-create procedure in `REPO-WF-003`.
 
 Before any mutation that creates or modifies maintained product artifacts, verify that applicable accepted product specifications exist for the planned implementation scope. Stop before source mutation when applicable product specifications are missing or their acceptance status conflicts with the planned work.
 

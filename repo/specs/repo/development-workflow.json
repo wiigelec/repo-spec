@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-WF-002",
-      "text": "Before any repository mutation, the chatbot shall initialize by reading README.md, discovering the authoritative manifest, reading the accepted development-workflow specification, identifying and reading the governing issue, loading only relevant overview, plan, specification, and predecessor records, inspecting the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state, reporting the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and unresolved authority conflicts, stopping when authority is missing or conflicting, and withholding mutation until initialization is complete."
+      "text": "Before any repository mutation, the chatbot shall initialize by reading README.md, discovering the authoritative manifest, reading the accepted development-workflow specification, discovering an existing governing issue or creating one when authorized by REPO-WF-003, then identifying and reading the resulting governing issue, loading only relevant overview, decomposition, plan, specification, and predecessor records, inspecting the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state, reporting the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and unresolved authority conflicts, stopping when controlling authority is missing or conflicting except that absence of a governing issue shall follow the explicit discovery-or-create procedure in REPO-WF-003, and withholding mutation until initialization is complete."
     },
     {
       "id": "REPO-WF-003",
@@ -31,7 +31,7 @@
     },
     {
       "id": "REPO-WF-007",
-      "text": "The normative development lifecycle for product development shall be: accepted overview, accepted decomposition, accepted product specifications (Level 0–3 in dependency order), accepted implementation plan, governed implementation issues, and product artifacts. Each stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
+      "text": "The normative development lifecycle for product development shall be: accepted overview, accepted decomposition, accepted product specifications (Level 0\u20133 in dependency order), accepted implementation plan, governed implementation issues, and product artifacts. Each stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
     },
     {
       "id": "REPO-WF-008",
