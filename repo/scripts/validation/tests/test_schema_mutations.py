@@ -208,6 +208,19 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
+    bootstrap_entry = next(
+        item
+        for item in profile_spec["profiles"][0]["artifact_inventory"]
+        if item["classification"] == "bootstrap-infrastructure"
+    )
+    bootstrap_entry["authority_category"] = "bootstrap"
+    expect_failure(
+        "bootstrap infrastructure authority",
+        lambda: validate_instance(profile_spec, schemas["repo.platform-profiles"], "repo/specs/repo/platform-profiles.json", schemas["repo.platform-profiles"]),
+        "enum mismatch",
+    )
+
+    profile_spec = copy.deepcopy(specs["repo.platform-profiles"])
     profile_spec["profiles"][0]["authority_boundary"] = "adapter-authoritative"
     expect_failure(
         "profile authority boundary",

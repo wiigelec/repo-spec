@@ -268,7 +268,7 @@ def run_repository_mutations(repo_root: Path) -> None:
             temp_repo / "repo/specs/repo/platform-profiles.json",
             lambda spec: (
                 spec["profiles"][0]["artifact_inventory"][0].__setitem__("classification", "bootstrap-infrastructure"),
-                spec["profiles"][0]["artifact_inventory"][0].__setitem__("authority_category", "bootstrap"),
+                spec["profiles"][0]["artifact_inventory"][0].__setitem__("authority_category", "implementation"),
                 spec,
             )[-1],
         )

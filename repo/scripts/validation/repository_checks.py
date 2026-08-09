@@ -496,9 +496,9 @@ EXPECTED_GITHUB_ARTIFACT_INVENTORY = {
     ".github/PULL_REQUEST_TEMPLATE.md": ("installed-adapter", "profile-specific"),
     ".github/workflows/github-field-policy.yml": ("installed-adapter", "profile-specific"),
     ".github/workflows/validation.yml": ("installed-adapter", "profile-specific"),
-    "repo/scripts/github-field-policy": ("bootstrap-infrastructure", "bootstrap"),
-    "repo/scripts/github_field_policy.py": ("bootstrap-infrastructure", "bootstrap"),
-    "repo/scripts/github_field_policy_mutation_test.py": ("bootstrap-infrastructure", "bootstrap"),
+    "repo/scripts/github-field-policy": ("bootstrap-infrastructure", "implementation"),
+    "repo/scripts/github_field_policy.py": ("bootstrap-infrastructure", "implementation"),
+    "repo/scripts/github_field_policy_mutation_test.py": ("bootstrap-infrastructure", "implementation"),
 }
 
 EXPECTED_GITHUB_REMOTE_STATE_KINDS = {
@@ -710,7 +710,7 @@ def check_github_bootstrap_conformance(profile: dict[str, Any]) -> None:
         expect(expected is not None, f"platform profile boundary failed: unexpected artifact inventory path {path}")
         expect(item.get("profile_id") == "github", f"platform profile boundary failed: missing GitHub profile identity for {path}")
         expect(item.get("classification") == expected[0], f"platform profile boundary failed: artifact classification mismatch for {path}")
-        expect(item.get("authority_category") == expected[1], f"platform profile boundary failed: installed adapter claims independent authority for {path}")
+        expect(item.get("authority_category") == expected[1], f"platform profile boundary failed: artifact authority category mismatch for {path}")
         if item.get("classification") == "installed-adapter":
             expect(path.startswith(".github/"), f"platform profile boundary failed: installed adapter path mismatch for {path}")
         else:

@@ -33,9 +33,9 @@ Defines the normative boundary between Git-generic framework behavior and hostin
   - `.github/PULL_REQUEST_TEMPLATE.md` -> `installed-adapter` / `profile-specific` / `github`
   - `.github/workflows/github-field-policy.yml` -> `installed-adapter` / `profile-specific` / `github`
   - `.github/workflows/validation.yml` -> `installed-adapter` / `profile-specific` / `github`
-  - `repo/scripts/github-field-policy` -> `bootstrap-infrastructure` / `bootstrap` / `github`
-  - `repo/scripts/github_field_policy.py` -> `bootstrap-infrastructure` / `bootstrap` / `github`
-  - `repo/scripts/github_field_policy_mutation_test.py` -> `bootstrap-infrastructure` / `bootstrap` / `github`
+  - `repo/scripts/github-field-policy` -> `bootstrap-infrastructure` / `implementation` / `github`
+  - `repo/scripts/github_field_policy.py` -> `bootstrap-infrastructure` / `implementation` / `github`
+  - `repo/scripts/github_field_policy_mutation_test.py` -> `bootstrap-infrastructure` / `implementation` / `github`
 
 - Remote state kinds:
   - branch protection
