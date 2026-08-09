@@ -130,6 +130,9 @@ def check_default_branch_base_validation() -> None:
 
         valid_base = f"release/v2 at {sha}"
         for invalid_base in (
+            f"release/v2 at {sha[:-1]}",
+            f"release/v2 at {sha}0",
+            f"release/v2 at {sha[:-1]}g",
             f"release..v2 at {sha}",
             f"release/v2 {sha}",
             f"release/v2 at {sha} extra",

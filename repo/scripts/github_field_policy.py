@@ -130,7 +130,7 @@ def is_valid_branch_name(branch: str) -> bool:
 
 
 def require_default_branch_base(name: str, value: str) -> None:
-    match = re.fullmatch(r"([^\s]+) at ([0-9a-fA-F]{7,40})", normalize(value))
+    match = re.fullmatch(r"([^\s]+) at ([0-9a-fA-F]{40})", normalize(value))
     if match is None or not is_valid_branch_name(match.group(1)):
         raise PolicyError(f"invalid default-branch base in {name}")
 
