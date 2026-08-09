@@ -86,15 +86,14 @@ Validation metadata:
 - Required: yes
 - Input type: `input`
 
-Exact accepted default-branch revision or reference.
+Actual repository default branch name and exact accepted revision.
 
 Placeholder:
-> main at <commit>
+> <default-branch> at <commit>
 
 Validation metadata:
 
 - Kind: `default-branch-base`
-- Branch: `main`
 
 ### In-scope behavior and paths
 

@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 POLICY_SCRIPT = REPO_ROOT / "repo/scripts/github_field_policy.py"
 SYNTHETIC_FIELD = {
     "id": "synthetic_required_field",
@@ -53,7 +53,7 @@ def render_value(field: dict, sha: str) -> str:
     if kind == "checklist":
         return "\n".join(f"- [ ] {item}" for item in validation["items"])
     if kind == "default-branch-base":
-        return f"{validation.get('branch', 'main')} at {sha}"
+        return f"release/v2 at {sha}"
     if validation.get("allow_none"):
         return "None."
     return f"Substantive response for {field['label']}."
@@ -106,7 +106,34 @@ def mutate_and_expect_failure(mode: str, spec_path: str, collection_key: str) ->
             )
 
 
+def check_default_branch_base_validation() -> None:
+    sha = head_sha()
+    spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
+    valid_body = render_body(spec, "issue_fields", sha)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        body_path = Path(tmpdir) / "issue.md"
+        body_path.write_text(valid_body)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"issue policy rejected an alternate default branch: {result.stderr.strip()}")
+
+        valid_base = f"release/v2 at {sha}"
+        for invalid_base in (
+            f"release..v2 at {sha}",
+            f"release/v2 {sha}",
+            f"release/v2 at {sha} extra",
+            f"-release at {sha}",
+            f"HEAD at {sha}",
+        ):
+            body_path.write_text(valid_body.replace(valid_base, invalid_base))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if result.returncode == 0:
+                raise SystemExit(f"issue policy accepted invalid default-branch base: {invalid_base}")
+
+
 def main() -> int:
+    check_default_branch_base_validation()
     mutate_and_expect_failure("issue", "repo/specs/repo/governing-issue.json", "issue_fields")
     mutate_and_expect_failure("pr", "repo/specs/repo/review-proposal.json", "review_fields")
     return 0

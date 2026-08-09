@@ -115,8 +115,19 @@ def require_checklist(name: str, value: str, items: list[str]) -> None:
         raise PolicyError(f"missing checklist items in {name}: {', '.join(missing)}")
 
 
-def require_default_branch_base(name: str, value: str, branch: str) -> None:
-    if not re.fullmatch(rf"{re.escape(branch)} at [0-9a-f]{{7,40}}", normalize(value).lower()):
+def is_valid_branch_name(branch: str) -> bool:
+    if branch in {"", "@", "HEAD"} or branch.startswith(("-", "/")) or branch.endswith(("/", ".")):
+        return False
+    if ".." in branch or "//" in branch or "@{" in branch:
+        return False
+    if any(ord(char) < 32 or ord(char) == 127 or char in " ~^:?*[\\" for char in branch):
+        return False
+    return all(part and not part.startswith(".") and not part.endswith(".lock") for part in branch.split("/"))
+
+
+def require_default_branch_base(name: str, value: str) -> None:
+    match = re.fullmatch(r"([^\s]+) at ([0-9a-fA-F]{7,40})", normalize(value))
+    if match is None or not is_valid_branch_name(match.group(1)):
         raise PolicyError(f"invalid default-branch base in {name}")
 
 
@@ -135,10 +146,6 @@ def validate_field_definition(field: dict, spec_path: str) -> None:
         items = validation.get("items")
         if not isinstance(items, list) or not items or not all(isinstance(item, str) and item for item in items):
             raise PolicyError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
-    if kind == "default-branch-base":
-        branch = validation.get("branch", "main")
-        if not isinstance(branch, str) or not branch:
-            raise PolicyError(f"invalid default-branch branch in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
 
 
 def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
@@ -173,7 +180,7 @@ def validate_field_value(field: dict, value: str) -> None:
     elif kind == "checklist":
         require_checklist(field["label"], value, validation["items"])
     elif kind == "default-branch-base":
-        require_default_branch_base(field["label"], value, validation.get("branch", "main"))
+        require_default_branch_base(field["label"], value)
     else:
         raise PolicyError(f"unsupported validation kind for {field['label']}: {kind}")
 

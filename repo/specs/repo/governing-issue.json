@@ -54,11 +54,10 @@
       "label": "Accepted default-branch base",
       "required": true,
       "input_type": "input",
-      "description": "Exact accepted default-branch revision or reference.",
-      "placeholder": "main at <commit>",
+      "description": "Actual repository default branch name and exact accepted revision.",
+      "placeholder": "<default-branch> at <commit>",
       "validation": {
-        "kind": "default-branch-base",
-        "branch": "main"
+        "kind": "default-branch-base"
       }
     },
     {

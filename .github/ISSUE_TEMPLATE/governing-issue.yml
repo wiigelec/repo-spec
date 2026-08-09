@@ -44,8 +44,8 @@ body:
     id: accepted_default_branch_base
     attributes:
       label: "Accepted default-branch base"
-      description: "Exact accepted default-branch revision or reference."
-      placeholder: "main at <commit>"
+      description: "Actual repository default branch name and exact accepted revision."
+      placeholder: "<default-branch> at <commit>"
     validations:
       required: true
   - type: textarea
