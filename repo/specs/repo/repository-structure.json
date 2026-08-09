@@ -23,11 +23,11 @@
     },
     {
       "id": "REPO-STR-005",
-      "text": "The repository manifest shall govern discovery of repository specifications only, and the repository shall reserve `docs/overview/`, `docs/decompositions/`, and `docs/plans/` as the canonical roots for governed directional and planning documents without allowing those documents to become repository-workflow authority."
+      "text": "The repository manifest shall govern discovery of repository specifications only. Repository/framework governed directional and planning documents shall use `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/` as their canonical destination roots; during the governed root-document relocation migration, equivalent documents may remain under legacy root `docs/overview/`, `docs/decompositions/`, and `docs/plans/` until relocation completes. Product-owned development documents shall remain under `product/docs/`. None of these documents becomes repository-workflow authority."
     },
     {
       "id": "REPO-STR-006",
-      "text": "The repository shall reserve `repo/profiles/github/` as future reusable GitHub profile source material, `.github/` as the current installed GitHub adapter location, and the canonical development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications."
+      "text": "The repository shall reserve `repo/profiles/github/` as future reusable GitHub profile source material, `.github/` as the current installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications."
     },
     {
       "id": "REPO-STR-007",
@@ -43,7 +43,7 @@
     },
     {
       "id": "REPO-STR-010",
-      "text": "The maintained repository root shall contain exactly the following governed entries: directories `.github/`, `docs/`, `product/`, `reference/`, `repo/`, `scripts/`, and `user/`; files `.gitignore`, `AGENTS.md`, `LICENSE`, and `README.md`. No other maintained root entry is permitted without governed revision of this specification."
+      "text": "During the governed root-document relocation migration, the maintained repository root shall contain exactly the following governed entries: directories `.github/`, `docs/`, `product/`, `reference/`, `repo/`, `scripts/`, and `user/`; files `.gitignore`, `AGENTS.md`, `LICENSE`, and `README.md`. The legacy root `docs/` entry is migration-compatible only and is to be removed by the completion patch after its maintained content is relocated to `repo/docs/`. No other maintained root entry is permitted without governed revision of this specification."
     },
     {
       "id": "REPO-STR-011",
