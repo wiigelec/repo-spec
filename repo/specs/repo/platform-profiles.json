@@ -161,7 +161,7 @@
     },
     {
       "id": "REPO-PP-008",
-      "text": "For GitHub, the `artifact_inventory` listed under the profile entry shall function as the managed adapter inventory for the current migration-free stage: it enumerates the repository-local GitHub-managed artifacts that are in scope for this contract, including installed adapters and bootstrap infrastructure, and no unlisted GitHub artifact shall be treated as managed by this profile contract by default."
+      "text": "For GitHub, the `artifact_inventory` listed under the profile entry shall function as the managed profile artifact inventory for the current migration-free stage: it enumerates the repository-local GitHub-managed artifacts that are in scope for this contract, including installed adapters and bootstrap infrastructure, and no unlisted GitHub artifact shall be treated as managed by this profile contract by default. This inventory is distinct from `repo/profiles/github/manifest.json::managed_adapters`, which shall contain only source-to-installed adapter pairs."
     },
     {
       "id": "REPO-PP-009",
@@ -177,7 +177,7 @@
     },
     {
       "id": "REPO-PP-012",
-      "text": "Files not listed in the managed adapter inventory shall be treated as unmanaged by this contract, shall retain their existing ownership or bootstrap handling, and shall not be migrated, regenerated, or reclassified by this issue."
+      "text": "Files not listed in the managed profile artifact inventory shall be treated as unmanaged by this contract, shall retain their existing ownership or bootstrap handling, and shall not be migrated, regenerated, or reclassified by this issue."
     },
     {
       "id": "REPO-PP-013",
