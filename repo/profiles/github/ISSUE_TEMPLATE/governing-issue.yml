@@ -12,8 +12,8 @@ body:
     id: change_type
     attributes:
       label: "Change type"
-      description: "What kind of bounded governed change is this?"
-      placeholder: "Standardization, feature, maintenance, documentation, migration, or other bounded change."
+      description: "What kind of bounded governed change is this? Use Product-artifact implementation when the change creates or modifies maintained product artifacts."
+      placeholder: "Product-artifact implementation, standardization, feature, maintenance, documentation, migration, or other bounded change."
     validations:
       required: true
   - type: textarea

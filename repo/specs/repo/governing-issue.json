@@ -10,8 +10,8 @@
       "label": "Change type",
       "required": true,
       "input_type": "textarea",
-      "description": "What kind of bounded governed change is this?",
-      "placeholder": "Standardization, feature, maintenance, documentation, migration, or other bounded change.",
+      "description": "What kind of bounded governed change is this? Use Product-artifact implementation when the change creates or modifies maintained product artifacts.",
+      "placeholder": "Product-artifact implementation, standardization, feature, maintenance, documentation, migration, or other bounded change.",
       "validation": {
         "kind": "meaningful"
       }
@@ -218,6 +218,10 @@
     {
       "id": "REPO-GI-011",
       "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure and its structured field definitions."
+    },
+    {
+      "id": "REPO-GI-012",
+      "text": "A governing issue that creates or modifies maintained product artifacts shall identify its change type as Product-artifact implementation so the issue-body field-policy boundary can enforce the required implementation-plan, accepted product-specification, accepted-base, and predecessor-evidence citations."
     }
   ],
   "dependencies": [
