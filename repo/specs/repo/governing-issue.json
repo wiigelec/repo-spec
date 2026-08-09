@@ -9,11 +9,20 @@
       "id": "change_type",
       "label": "Change type",
       "required": true,
-      "input_type": "textarea",
-      "description": "What kind of bounded governed change is this? Use Product-artifact implementation when the change creates or modifies maintained product artifacts.",
-      "placeholder": "Product-artifact implementation, standardization, feature, maintenance, documentation, migration, or other bounded change.",
+      "input_type": "input",
+      "description": "Use one canonical bounded change classification. Product-artifact implementation is reserved for changes that create or modify maintained product artifacts.",
+      "placeholder": "Maintenance",
       "validation": {
-        "kind": "meaningful"
+        "kind": "change-type",
+        "values": [
+          "Maintenance",
+          "Product-artifact implementation",
+          "Standardization",
+          "Feature",
+          "Documentation",
+          "Migration",
+          "Other bounded change"
+        ]
       }
     },
     {
@@ -233,7 +242,7 @@
     },
     {
       "id": "REPO-GI-012",
-      "text": "A governing issue that creates or modifies maintained product artifacts shall identify its change type as Product-artifact implementation so the issue-body field-policy boundary can enforce the required implementation-plan, accepted product-specification, accepted-base, and predecessor-evidence citations."
+      "text": "The canonical Change type field shall use a constrained repository-owned classification. Product-artifact implementation is the exact classification for governing issues that create or modify maintained product artifacts and shall activate the stricter product-artifact evidence gate; descriptive prose shall not activate that gate."
     },
     {
       "id": "REPO-GI-013",

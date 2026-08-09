@@ -20,7 +20,6 @@ ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
 SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*\b")
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
 IMPLEMENTATION_PLAN_RE = re.compile(r"\b(?:repo|product)/docs/plans/[A-Za-z0-9._/-]+-IMPLEMENTATION-PLAN\.md\b")
-PRODUCT_ARTIFACT_IMPLEMENTATION_RE = re.compile(r"\bproduct-artifact implementation\b", re.I)
 WORKSTREAM_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
 
 SUPPORTED_VALIDATION_KINDS = {
@@ -32,6 +31,7 @@ SUPPORTED_VALIDATION_KINDS = {
     "numbered-steps",
     "checklist",
     "default-branch-base",
+    "change-type",
 }
 
 
@@ -126,6 +126,29 @@ def is_valid_branch_name(branch: str) -> bool:
     if any(ord(char) < 32 or ord(char) == 127 or char in " ~^:?*[\\" for char in branch):
         return False
     return all(part and not part.startswith(".") and not part.endswith(".lock") for part in branch.split("/"))
+
+
+def parse_change_type(name: str, value: str, values: list[str]) -> str:
+    normalized = normalize(value)
+    if normalized in values:
+        return normalized
+
+    # Compatibility for pre-structured non-product governing issues. A
+    # recognized leading non-product classification may retain descriptive
+    # text. Product-artifact implementation has no fuzzy compatibility path.
+    for candidate in values:
+        if candidate == "Product-artifact implementation":
+            continue
+        if normalized.startswith(candidate + " "):
+            return candidate
+        if normalized.startswith(candidate + ":") or normalized.startswith(candidate + " -"):
+            return candidate
+
+    raise PolicyError(f"invalid change type in {name}")
+
+
+def require_change_type(name: str, value: str, values: list[str]) -> None:
+    parse_change_type(name, value, values)
 
 
 def require_default_branch_base(name: str, value: str) -> None:
@@ -230,9 +253,20 @@ def parse_selected_workstream_ids(value: str) -> list[str]:
     return selected
 
 
-def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path) -> None:
-    change_type = sections.get("Change type", "")
-    if not PRODUCT_ARTIFACT_IMPLEMENTATION_RE.search(change_type):
+def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
+    change_type_field = next(
+        (field for field in fields if field.get("id") == "change_type"),
+        None,
+    )
+    if change_type_field is None:
+        raise PolicyError("canonical governing issue lacks change_type field")
+    change_type = require_section(sections, change_type_field["label"])
+    classification = parse_change_type(
+        change_type_field["label"],
+        change_type,
+        change_type_field["validation"]["values"],
+    )
+    if classification != "Product-artifact implementation":
         return
 
     governing = require_section(sections, "Governing specifications")
@@ -291,6 +325,17 @@ def validate_field_definition(field: dict, spec_path: str) -> None:
         items = validation.get("items")
         if not isinstance(items, list) or not items or not all(isinstance(item, str) and item for item in items):
             raise PolicyError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+    if kind == "change-type":
+        values = validation.get("values")
+        if (
+            not isinstance(values, list)
+            or not values
+            or not all(isinstance(value, str) and value for value in values)
+            or len(values) != len(set(values))
+            or "Product-artifact implementation" not in values
+        ):
+            raise PolicyError(f"invalid change-type values in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+
 
 
 def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
@@ -326,8 +371,11 @@ def validate_field_value(field: dict, value: str) -> None:
         require_checklist(field["label"], value, validation["items"])
     elif kind == "default-branch-base":
         require_default_branch_base(field["label"], value)
+    elif kind == "change-type":
+        require_change_type(field["label"], value, validation["values"])
     else:
         raise PolicyError(f"unsupported validation kind for {field['label']}: {kind}")
+
 
 
 def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
@@ -337,7 +385,7 @@ def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
             continue
         value = require_section(sections, field["label"])
         validate_field_value(field, value)
-    require_product_artifact_evidence(sections, repo_root)
+    require_product_artifact_evidence(sections, repo_root, fields)
 
 
 def check_pr(body: str, fields: list[dict]) -> None:

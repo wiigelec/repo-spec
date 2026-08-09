@@ -55,6 +55,8 @@ def render_value(field: dict, sha: str) -> str:
         return "\n".join(f"- [ ] {item}" for item in validation["items"])
     if kind == "default-branch-base":
         return f"release/v2 at {sha}"
+    if kind == "change-type":
+        return validation["values"][0]
     if validation.get("allow_none"):
         return "None."
     return f"Substantive response for {field['label']}."
@@ -162,7 +164,7 @@ def check_product_artifact_evidence_validation() -> None:
         )
     )
     replacements = {
-        "Substantive response for Change type.": "Product-artifact implementation.",
+        "Maintenance": "Product-artifact implementation",
         "repo.manifest": (
             "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md\n\n"
             f"{cited_specs}"
@@ -317,8 +319,9 @@ def check_multi_workstream_product_artifact_evidence() -> None:
     specs_text = "\n".join(f"- {spec_id}" for spec_id in union_specs)
 
     body = body.replace(
-        "Substantive response for Change type.",
-        "Product-artifact implementation.",
+        "Maintenance",
+        "Product-artifact implementation",
+        1,
     )
     body = body.replace(
         "repo.manifest",
@@ -353,12 +356,75 @@ def check_multi_workstream_product_artifact_evidence() -> None:
                 raise SystemExit(f"union subset was not rejected correctly: {result.stderr.strip()}")
 
 
+
+def check_change_type_validation() -> None:
+    sha = head_sha()
+    spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
+    body = render_body(spec, "issue_fields", sha)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        body_path = Path(tmpdir) / "issue.md"
+        values = next(
+            field["validation"]["values"]
+            for field in spec["issue_fields"]
+            if field["id"] == "change_type"
+        )
+
+        for value in values:
+            body_path.write_text(body.replace("Maintenance", value, 1))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if value == "Product-artifact implementation":
+                if result.returncode == 0 or "missing canonical implementation-plan citation" not in result.stderr:
+                    raise SystemExit(
+                        f"product-artifact classification did not activate the stricter gate: {result.stderr.strip()}"
+                    )
+            elif result.returncode != 0:
+                raise SystemExit(f"canonical change type was rejected: {value}: {result.stderr.strip()}")
+
+        legacy = body.replace(
+            "Maintenance",
+            "Maintenance and specification consistency correction following a prior audit.",
+            1,
+        )
+        body_path.write_text(legacy)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"legacy recognized maintenance classification was rejected: {result.stderr.strip()}")
+
+        descriptive = body.replace(
+            "Maintenance",
+            "Maintenance discussing Product-artifact implementation policy semantics.",
+            1,
+        )
+        body_path.write_text(descriptive)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"descriptive prose accidentally activated product-artifact policy: {result.stderr.strip()}")
+
+        fuzzy_product = body.replace(
+            "Maintenance",
+            "Product-artifact implementation and some descriptive prose.",
+            1,
+        )
+        body_path.write_text(fuzzy_product)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "invalid change type in Change type" not in result.stderr:
+            raise SystemExit(f"fuzzy product classification was not rejected exactly: {result.stderr.strip()}")
+
+        for invalid in ("Unknown", "maintenance", "Product artifact implementation", "Featurette"):
+            body_path.write_text(body.replace("Maintenance", invalid, 1))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if result.returncode == 0 or "invalid change type in Change type" not in result.stderr:
+                raise SystemExit(f"invalid change type was not rejected: {invalid}: {result.stderr.strip()}")
+
+
 def main() -> int:
     check_default_branch_base_validation()
     check_product_artifact_evidence_validation()
     mutate_and_expect_failure("issue", "repo/specs/repo/governing-issue.json", "issue_fields")
     mutate_and_expect_failure("pr", "repo/specs/repo/review-proposal.json", "review_fields")
     check_multi_workstream_product_artifact_evidence()
+    check_change_type_validation()
     return 0
 
 
