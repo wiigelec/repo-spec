@@ -9,6 +9,7 @@ from initializer.inventory import InventoryError
 from initializer.foundations import FoundationPlan, FoundationError
 from initializer.models import SourceSelection
 from initializer.full_initialization_actions import build_full_initialization_actions
+from initializer.human_presentation import present_terminal_result, with_human_progress
 from initializer.orchestration import execute_full_initialization
 from initializer.validation import (
     ValidationError,
@@ -74,18 +75,23 @@ def _cmd_initialize(argv: list[str]) -> int:
         return 1
     try:
         raw = load_request(Path(argv[3]))
+        destination = raw.get("destination")
+        print("Initialization started.", file=sys.stderr)
+        actions = with_human_progress(
+            build_full_initialization_actions(),
+            sys.stderr,
+        )
         result = execute_full_initialization(
             raw,
             os.getcwd(),
-            build_full_initialization_actions(),
+            actions,
         )
     except Exception as exc:
-        print(f"initialization error: {exc}", file=sys.stderr)
+        print(f"Initialization failed before workflow completion: {exc}", file=sys.stderr)
+        print("Destination was not promoted by a completed workflow.", file=sys.stderr)
         return 1
-    print(json.dumps({
-        "terminal_result": result.terminal_result,
-        "destination": raw.get("destination"),
-    }, indent=2, ensure_ascii=False))
+
+    present_terminal_result(result, str(destination), sys.stderr)
     return 0 if result.succeeded else 1
 
 
