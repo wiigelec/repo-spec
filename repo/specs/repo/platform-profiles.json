@@ -177,7 +177,7 @@
     },
     {
       "id": "REPO-PP-012",
-      "text": "Files not listed in the managed profile artifact inventory shall be treated as unmanaged by this contract, shall retain their existing ownership or bootstrap handling, and shall not be migrated, regenerated, or reclassified by this issue."
+      "text": "Files not listed in the managed profile artifact inventory shall remain outside this profile contract, shall retain their existing ownership or bootstrap handling, and shall require separate governing authority before they are migrated, regenerated, or reclassified."
     },
     {
       "id": "REPO-PP-013",
