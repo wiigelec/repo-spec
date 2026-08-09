@@ -49,6 +49,15 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | Terminal boundaries: pre-promotion failure, promoted success, indeterminate promotion, promoted-with-finalization-error | Outcome-class evidence; consistent caller result/destination/staging/report/diagnostics |
 | I3-carried provenance/handoff/Git validated as owned input | Validation-profile check results after I3 exit |
 
+### I5 -> H1 gate
+
+| Requirement | Evidence |
+| --- | --- |
+| Completed I5 whole-workflow evidence remains valid under current accepted specifications | Maintained I5 exit evidence and current accepted H1 authority mapping |
+| H1 governing issue selects the stable H1 workstream and cites its exact controlling accepted product-specification set | Product-artifact implementation issue body satisfies repository workflow policy |
+| Canonical JSON request remains the initializer input boundary | No H1 plan or implementation authority introduces interactive request synthesis or implicit authority-bearing defaults |
+| H1 implementation is presentation/orchestration only | Scope excludes product-specification semantic changes, lifecycle reordering, status, dry-run, platform, recovery/resume, and other future-extension behavior |
+
 ## Validation strategy
 
 Every composite key in the accepted requirement-to-responsibility map produces observable positive/negative evidence. B0 classifies; I1-I5 produce focused evidence.
@@ -60,6 +69,13 @@ Component validation per increment: request intake, source resolution, material 
 Cross-component validation: request values preserved through consumers, source/material identities consistent from resolution through Git record, staging-state transitions match execution-report outcomes, provenance/handoff paths match generated layout, Git objects match pre-Git digest.
 
 End-to-end (I5): promoted success, pre-promotion failure (including report-finalization partial-write), indeterminate promotion, promoted-with-finalization-error, deterministic equivalent-input behavior, rejection of unsupported V1 (named refs, remotes, existing destination, platform, resume, migration, cross-device, undeclared output).
+
+Human-facing initialization (H1): public help/dispatch agreement; one supported
+`init --request <file>` path over full initialization; canonical JSON request preserved
+without CLI synthesis; human-readable terminal presentation consistent with accepted
+terminal outcomes; README/getting-started examples instruct an AI agent to construct and
+show the canonical request for human review before invocation; negative coverage proves
+excluded status/dry-run/platform/interactive behaviors are not introduced.
 
 Evidence artifacts: B0 classification matrix, requirement-level test suite, validation report, staging state, execution report, provenance record, handoff manifest, Git repository, E2E outcome evidence.
 
@@ -74,9 +90,19 @@ Evidence artifacts: B0 classification matrix, requirement-level test suite, vali
 Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 / PR #260 completed synchronization of the candidate plan to that repaired authority and the required post-patch clean-room review. Issue #261 completed the separate clean-room acceptance audit and accepted this plan against the current synchronized authority.
 
 ### Successor implementation work
-The bounded B0→I1→I2→I3→I4→I5 workflow is complete. Maintained I5 exit evidence records 46/46 I5-owned keys, 291 whole-workflow keys, all four terminal outcomes, 13 canonical stages, zero blockers, and `successor_authorized=false`. No current successor implementation work is authorized by this plan.
+The bounded B0→I1→I2→I3→I4→I5 workflow is complete. Maintained I5 exit evidence records 46/46 I5-owned keys, 291 whole-workflow keys, all four terminal outcomes, 13 canonical stages, and zero blockers.
 
-The B0/I1-I5 definitions and transition gates above remain historical planning and evidence structure; they do not direct recreation of completed increments. Future-extension specifications remain candidate/deferred and do not become implementation-authorized through completion of I5. Any new successor capability or roadmap requires separate accepted authority and governance.
+Issue #311 adds H1 as the sole bounded successor planning scope: human-facing
+initialization using the existing canonical JSON request and accepted full-initialization
+workflow. H1 owns no new normative requirement keys and does not authorize product
+semantic changes. After this planning amendment is accepted, H1 implementation requires
+a separate Product-artifact implementation issue selecting H1 and citing its exact
+controlling accepted product-specification set.
+
+The B0/I1-I5 definitions and transition gates above remain historical planning and
+evidence structure; they do not direct recreation of completed increments.
+Future-extension specifications remain candidate/deferred and do not become
+implementation-authorized through H1.
 
 ### Completion gate summary
 | Condition | Status |
@@ -96,3 +122,4 @@ The B0/I1-I5 definitions and transition gates above remain historical planning a
 | `./scripts/validate` passes each commit | Verified |
 | Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260 and revalidated for acceptance under issue #261 |
 | Governed plan acceptance | Accepted under issue #261 after current-spec, manifest, correspondence/dependency, planning-completeness, and repository validation checks |
+| H1 bounded successor authority | Issue #311 planning amendment; H1 maps an exact accepted-spec set, preserves canonical JSON/full-init semantics, and requires a later Product-artifact implementation issue |
