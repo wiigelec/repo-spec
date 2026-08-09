@@ -81,6 +81,16 @@ def run_policy(mode: str, repo_root: Path, body_path: Path) -> subprocess.Comple
     )
 
 
+def create_policy_fixture(temp_root: Path) -> Path:
+    repo_root = temp_root / "repo-root"
+    shutil.copytree(REPO_ROOT / "repo/specs/repo", repo_root / "repo/specs/repo")
+    product_spec_root = repo_root / "product/specs/product"
+    product_spec_root.mkdir(parents=True)
+    shutil.copy2(REPO_ROOT / "product/specs/product/manifest.json", product_spec_root / "manifest.json")
+    shutil.copytree(REPO_ROOT / "product/docs/plans", repo_root / "product/docs/plans")
+    return repo_root
+
+
 def mutate_and_expect_failure(mode: str, spec_path: str, collection_key: str) -> None:
     sha = head_sha()
     source_spec = load_json(REPO_ROOT / spec_path)
@@ -120,6 +130,9 @@ def check_default_branch_base_validation() -> None:
 
         valid_base = f"release/v2 at {sha}"
         for invalid_base in (
+            f"release/v2 at {sha[:-1]}",
+            f"release/v2 at {sha}0",
+            f"release/v2 at {sha[:-1]}g",
             f"release..v2 at {sha}",
             f"release/v2 {sha}",
             f"release/v2 at {sha} extra",
@@ -136,11 +149,22 @@ def check_product_artifact_evidence_validation() -> None:
     sha = head_sha()
     spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
     body = render_body(spec, "issue_fields", sha)
+    cited_specs = "\n".join(
+        f"- {spec_id}"
+        for spec_id in (
+            "product.initializer-level-0",
+            "product.execution-profile",
+            "product.content-equivalence",
+            "product.lifecycle-stages",
+            "product.execution-orchestration",
+            "product.full-initialization",
+        )
+    )
     replacements = {
         "Substantive response for Change type.": "Product-artifact implementation.",
         "repo.manifest": (
             "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md\n\n"
-            "- product.initializer-level-0"
+            f"{cited_specs}"
         ),
         "Substantive response for Dependencies and predecessor evidence.": f"Issue #273 at {sha}.",
     }
@@ -156,15 +180,27 @@ def check_product_artifact_evidence_validation() -> None:
         ),
         (
             "missing accepted product specification",
-            "product.initializer-level-0",
+            cited_specs,
             "repo.manifest",
             "missing manifest-listed accepted product specification",
         ),
         (
             "candidate product specification",
-            "product.initializer-level-0",
+            "product.full-initialization",
             "product.platform-profile-interface",
             "missing manifest-listed accepted product specification",
+        ),
+        (
+            "absent product specification",
+            "product.full-initialization",
+            "product.not-registered",
+            "missing manifest-listed accepted product specification",
+        ),
+        (
+            "unrelated accepted product specification",
+            "product.full-initialization",
+            "product.initialization-request",
+            "cited product specifications do not match a controlling set in cited implementation plan",
         ),
         (
             "missing predecessor issue",
@@ -194,6 +230,34 @@ def check_product_artifact_evidence_validation() -> None:
                 raise SystemExit(f"issue policy accepted {name}")
             if expected_error not in result.stderr:
                 raise SystemExit(f"issue policy rejected {name} for the wrong reason: {result.stderr.strip()}")
+
+        fixture_root = create_policy_fixture(Path(tmpdir))
+        workstream_path = fixture_root / "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md"
+        workstream_path.write_text(
+            workstream_path.read_text().replace(
+                "`product.full-initialization::INIT-FIN-001-011`",
+                "`product.initialization-request::INIT-REQ-001-015`",
+            )
+        )
+        mutated_plan_body = body.replace("product.full-initialization", "product.initialization-request")
+        body_path.write_text(mutated_plan_body)
+        result = run_policy("issue", fixture_root, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"issue policy did not follow the mutated implementation-plan controlling set: {result.stderr.strip()}")
+
+        plan_path = fixture_root / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(
+            plan_path.read_text().replace(
+                '"lifecycle_status": "accepted"',
+                '"lifecycle_status": "candidate"',
+            )
+        )
+        body_path.write_text(body)
+        result = run_policy("issue", fixture_root, body_path)
+        if result.returncode == 0:
+            raise SystemExit("issue policy accepted a candidate implementation plan")
+        if "cited implementation plan is not accepted" not in result.stderr:
+            raise SystemExit(f"issue policy rejected a candidate plan for the wrong reason: {result.stderr.strip()}")
 
 
 def main() -> int:
