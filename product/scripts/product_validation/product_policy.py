@@ -28,12 +28,31 @@ def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:
 
 
 def check_product_completeness(specs: dict[str, dict[str, Any]]) -> None:
-    accepted_level0_exists = any(spec["status"] == "accepted" and spec["level"] == 0 for spec in specs.values())
-    accepted_higher_level_exists = any(spec["status"] == "accepted" and spec["level"] in {1, 2, 3} for spec in specs.values())
-    if accepted_higher_level_exists:
+    def has_accepted_level0_in_closure(spec_id: str) -> bool:
+        pending = [dep["spec_id"] for dep in specs[spec_id].get("dependencies", [])]
+        visited: set[str] = set()
+
+        while pending:
+            target_spec_id = pending.pop()
+            if target_spec_id in visited:
+                continue
+            visited.add(target_spec_id)
+
+            target_spec = specs.get(target_spec_id)
+            if target_spec is None:
+                continue
+            if target_spec["status"] == "accepted" and target_spec["level"] == 0:
+                return True
+            pending.extend(dep["spec_id"] for dep in target_spec.get("dependencies", []))
+
+        return False
+
+    for spec_id, spec in specs.items():
+        if spec["status"] != "accepted" or spec["level"] not in {1, 2, 3}:
+            continue
         expect(
-            accepted_level0_exists,
-            "product completeness failed: accepted Level 1-3 specifications require at least one accepted Level 0 specification",
+            has_accepted_level0_in_closure(spec_id),
+            f"product completeness failed: accepted spec {spec_id} has no accepted Level 0 specification in its transitive dependency closure",
         )
 
 

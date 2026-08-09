@@ -119,6 +119,38 @@ def run_product_validation_tests(repo_root: Path) -> None:
             "accepted spec product.primitive -> candidate target product.kernel",
         )
 
+        # Patch 3: an unrelated accepted Level 0 does not satisfy this spec's closure.
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "product/specs/product/level-1/primitive.json",
+            lambda spec: spec.__setitem__("dependencies", []) or spec,
+        )
+        expect_failure(
+            "accepted higher level disconnected from unrelated accepted Level 0",
+            lambda: validate_product(temp_repo),
+            "product completeness failed: accepted spec product.primitive has no accepted Level 0 specification in its transitive dependency closure",
+        )
+
+        # Patch 3: intermediate Levels are optional; Level 3 may reach Level 0 directly.
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
+        install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
+        mutate_json(
+            temp_repo / "product/specs/product/level-3/orchestration.json",
+            lambda spec: spec.__setitem__("dependencies", [{"spec_id": "product.kernel"}]) or spec,
+        )
+        check_generated_document_write_behavior(temp_repo)
+        validate_product(temp_repo)
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")

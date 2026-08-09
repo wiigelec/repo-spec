@@ -100,7 +100,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
         install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
         configure_spec(temp_repo, "product/specs/product/level-1/a.json", spec_id="product.a", title="A", purpose="A product specification.", dependency_ids=["product.b"])
-        configure_spec(temp_repo, "product/specs/product/level-1/b.json", spec_id="product.b", title="B", purpose="B product specification.", dependency_ids=["product.a"])
+        configure_spec(temp_repo, "product/specs/product/level-1/b.json", spec_id="product.b", title="B", purpose="B product specification.", dependency_ids=["product.a", "product.kernel"])
         mutate_json(
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
@@ -148,7 +148,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
         configure_spec(temp_repo, "product/specs/product/level-2/a.json", spec_id="product.a", title="A", purpose="A product specification.", dependency_ids=["product.b"])
         configure_spec(temp_repo, "product/specs/product/level-2/b.json", spec_id="product.b", title="B", purpose="B product specification.", dependency_ids=["product.c"])
-        configure_spec(temp_repo, "product/specs/product/level-2/c.json", spec_id="product.c", title="C", purpose="C product specification.", dependency_ids=["product.a"])
+        configure_spec(temp_repo, "product/specs/product/level-2/c.json", spec_id="product.c", title="C", purpose="C product specification.", dependency_ids=["product.a", "product.kernel"])
         mutate_json(
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
@@ -199,7 +199,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         configure_spec(temp_repo, "product/specs/product/level-3/a.json", spec_id="product.a", title="A", purpose="A product specification.", dependency_ids=["product.b"])
         configure_spec(temp_repo, "product/specs/product/level-3/b.json", spec_id="product.b", title="B", purpose="B product specification.", dependency_ids=["product.c"])
         configure_spec(temp_repo, "product/specs/product/level-3/c.json", spec_id="product.c", title="C", purpose="C product specification.", dependency_ids=["product.d"])
-        configure_spec(temp_repo, "product/specs/product/level-3/d.json", spec_id="product.d", title="D", purpose="D product specification.", dependency_ids=["product.b"])
+        configure_spec(temp_repo, "product/specs/product/level-3/d.json", spec_id="product.d", title="D", purpose="D product specification.", dependency_ids=["product.b", "product.kernel"])
         mutate_json(
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
