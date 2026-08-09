@@ -334,7 +334,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 ## Normative requirements
 
 - `REPO-AT-001`: The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes.
-- `REPO-AT-002`: The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, and profile-specific authority categories.
+- `REPO-AT-002`: The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, profile-specific, and convenience authority categories.
 - `REPO-AT-003`: The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation.
 - `REPO-AT-003A`: An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance.
 - `REPO-AT-004`: An overview, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative specification authority.
