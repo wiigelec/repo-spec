@@ -15,11 +15,13 @@ Supported runtime: Python 3.10+
 - [Repository schemas](repo/schemas/)
 - [Product schemas](product/schemas/product/)
 - [Derived docs](repo/derived/specs/repo/)
-- [Validation](repo/scripts/validate)
+- [Repository-wide validation](scripts/validate)
 
 ## Quick commands
 
-- `repo/scripts/validate`
+- `scripts/validate` — run repository-wide validation, including both validation domains and their mutation/self-test suites
+- `repo/scripts/validate` — run the focused repository-owned leaf validator
+- `product/scripts/validate` — run the focused product-owned leaf validator
 - `repo/scripts/generate-docs`
 
 - [Initializer implementation plan](product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md)

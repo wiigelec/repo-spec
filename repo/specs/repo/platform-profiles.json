@@ -137,15 +137,15 @@
     },
     {
       "id": "REPO-PP-002",
-      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall keep GitHub adapters and bootstrap scripts as bootstrap-owned installed adapters or bootstrap infrastructure until reusable profile source material is introduced, and the reserved future profile-source model shall remain subordinate to accepted repository specifications."
+      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall use populated reusable GitHub profile source under `repo/profiles/github/` as the source for managed installed adapters under `.github/`, while GitHub bootstrap scripts remain implementation infrastructure subordinate to accepted repository specifications."
     },
     {
       "id": "REPO-PP-003",
-      "text": "The repository shall reserve `repo/profiles/github/` for future reusable GitHub profile source material and `.github/` for current installed GitHub adapters."
+      "text": "The repository shall use `repo/profiles/github/` for reusable GitHub profile source material and `.github/` for installed GitHub adapters."
     },
     {
       "id": "REPO-PP-004",
-      "text": "Current installed adapters and bootstrap infrastructure may be maintained directly until profile source material exists; future profile source material may then generate installed adapters, but installed adapters shall not claim authority over the profile source."
+      "text": "Managed installed adapters shall be generated deterministically from the populated GitHub profile source. Bootstrap infrastructure may be maintained directly as implementation support, but installed adapters shall not claim authority over profile source."
     },
     {
       "id": "REPO-PP-005",
@@ -157,7 +157,7 @@
     },
     {
       "id": "REPO-PP-007",
-      "text": "The current GitHub-specific repository artifacts shall be classifiable as installed adapters or bootstrap infrastructure under a single GitHub profile identity, with current operational ownership retained at the bootstrap layer rather than at a populated profile-source layer."
+      "text": "The current GitHub-specific repository artifacts shall be classifiable under one GitHub profile identity as profile-source material, installed adapters, or bootstrap infrastructure according to their role; bootstrap infrastructure shall use implementation authority classification and shall not supersede accepted profile-source authority."
     },
     {
       "id": "REPO-PP-008",
@@ -165,15 +165,15 @@
     },
     {
       "id": "REPO-PP-009",
-      "text": "The GitHub profile source root and installed adapter root shall define a deterministic one-way source-to-adapter mapping: accepted source material under `repo/profiles/github/` may project to repository-local installed adapters under `.github/` with the same relative subpath unless the profile contract explicitly declares a different mapping, and the adapter root shall never become the source of normative authority over the profile source."
+      "text": "The populated GitHub profile source root and installed adapter root shall define a deterministic one-way source-to-adapter mapping: accepted source material under `repo/profiles/github/` projects to repository-local installed adapters under `.github/` with the same relative subpath unless the profile contract explicitly declares a different mapping, and the adapter root shall never become the source of normative authority over the profile source."
     },
     {
       "id": "REPO-PP-010",
-      "text": "During migration, current installed adapters and bootstrap infrastructure may continue to be maintained directly, but that direct maintenance shall be treated as transitional authority over installed repository-local files only and shall not supersede the accepted profile-source contract once profile source material exists."
+      "text": "Bootstrap infrastructure may continue to be maintained directly as implementation support, while managed installed adapters shall remain source-derived from the populated GitHub profile source and shall not supersede that source."
     },
     {
       "id": "REPO-PP-011",
-      "text": "Deterministic output shall mean that a given accepted GitHub profile source revision produces the same installed-adapter content, file set, and ordering each time the source-to-adapter projection is run, and freshness shall mean that the installed adapter tree matches the current accepted source-derived result for the same revision."
+      "text": "For the active GitHub source-to-adapter model, deterministic output shall mean that a given accepted GitHub profile source revision produces the same installed-adapter content, file set, and ordering each time the projection is run, and freshness shall mean that the installed adapter tree matches the current accepted source-derived result for the same revision."
     },
     {
       "id": "REPO-PP-012",
