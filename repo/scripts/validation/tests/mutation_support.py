@@ -6,6 +6,7 @@ import shutil
 from pathlib import Path
 
 from validation.errors import ValidationFailure, fail
+from validation.repository_checks import extract_document_metadata
 
 
 def deactivate_product_plans(repo_root: Path) -> None:
@@ -105,10 +106,11 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
             if path.suffix != ".md":
                 continue
             document_text = path.read_text()
-            if "## Metadata" not in document_text or "```json" not in document_text:
+            if "## Metadata" not in document_text:
                 continue
-            document_metadata = json.loads(
-                document_text.split("```json")[1].split("```")[0].strip()
+            document_metadata = extract_document_metadata(
+                document_text,
+                path.relative_to(repo_root).as_posix(),
             )
             required_paths.extend(document_metadata.get("evidence", []))
 
