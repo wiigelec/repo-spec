@@ -139,10 +139,10 @@ Defines the normative boundary between Git-generic framework behavior and hostin
 - artifact: `repo/scripts/github-field-policy`
 - artifact: `repo/scripts/github_field_policy.py`
 - artifact: `repo/scripts/github_field_policy_mutation_test.py`
-- artifact: `docs/overview/product-overview/04-git-and-change-workflow.md`
-- artifact: `docs/overview/product-overview/05-human-ai-continuity.md`
-- artifact: `docs/overview/product-overview/06-governance-and-evolution.md`
-- artifact: `docs/plans/01-framework-architecture-plan.md`
+- artifact: `repo/docs/overview/product-overview/04-git-and-change-workflow.md`
+- artifact: `repo/docs/overview/product-overview/05-human-ai-continuity.md`
+- artifact: `repo/docs/overview/product-overview/06-governance-and-evolution.md`
+- artifact: `repo/docs/plans/01-framework-architecture-plan.md`
 
 ## Derived artifacts
 

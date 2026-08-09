@@ -21,7 +21,7 @@
         },
         "root_path": {
           "type": "string",
-          "enum": ["docs/overview/", "product/docs/overview/"]
+          "enum": ["repo/docs/overview/", "product/docs/overview/"]
         },
         "required_content_areas": {
           "type": "object",

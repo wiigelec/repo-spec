@@ -20,7 +20,7 @@
         },
         "root_path": {
           "type": "string",
-          "enum": ["docs/plans/", "product/docs/plans/"]
+          "enum": ["repo/docs/plans/", "product/docs/plans/"]
         },
         "required_content_areas": {
           "type": "object",

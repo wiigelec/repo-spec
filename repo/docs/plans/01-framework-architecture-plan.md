@@ -42,13 +42,13 @@ It does not define normative product behavior, replace accepted specifications, 
 
 This plan is based on:
 
-- `docs/overview/PRODUCT-OVERVIEW.md`
-- `docs/overview/product-overview/01-product-direction.md`
-- `docs/overview/product-overview/02-decomposition-model.md`
-- `docs/overview/product-overview/03-development-and-specifications.md`
-- `docs/overview/product-overview/04-git-and-change-workflow.md`
-- `docs/overview/product-overview/05-human-ai-continuity.md`
-- `docs/overview/product-overview/06-governance-and-evolution.md`
+- `repo/docs/overview/PRODUCT-OVERVIEW.md`
+- `repo/docs/overview/product-overview/01-product-direction.md`
+- `repo/docs/overview/product-overview/02-decomposition-model.md`
+- `repo/docs/overview/product-overview/03-development-and-specifications.md`
+- `repo/docs/overview/product-overview/04-git-and-change-workflow.md`
+- `repo/docs/overview/product-overview/05-human-ai-continuity.md`
+- `repo/docs/overview/product-overview/06-governance-and-evolution.md`
 
 Accepted repository baseline at plan creation:
 
@@ -347,8 +347,8 @@ The reusable framework template should always provide:
 ```text
 README.md
 AGENTS.md
-docs/overview/
-docs/plans/
+repo/docs/overview/
+repo/docs/plans/
 repo/specs/repo/
 repo/schemas/repo/
 repo/derived/specs/repo/
@@ -1127,7 +1127,7 @@ It should not yet implement complete Level 0–3 product semantics, corresponden
 Expected bounded output:
 
 ```text
-docs/plans/01-framework-architecture-plan.md
+repo/docs/plans/01-framework-architecture-plan.md
 ```
 
 ### Issue 2 — Define artifact taxonomy

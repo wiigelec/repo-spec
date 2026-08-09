@@ -20,7 +20,7 @@ Defines the directional, non-normative contract for product decomposition docume
 
 ## Normative requirements
 
-- `REPO-PDC-001`: A product decomposition shall be stored under `docs/decompositions/` and shall use the canonical top-level `*-DECOMPOSITION.md` controlling document plus subordinate chunks.
+- `REPO-PDC-001`: A product decomposition shall be stored under `repo/docs/decompositions/` and shall use the canonical top-level `*-DECOMPOSITION.md` controlling document plus subordinate chunks.
 - `REPO-PDC-002`: A product decomposition shall record the controlling product overview, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action.
 - `REPO-PDC-003`: A product decomposition shall remain directional and non-normative and shall not define exact product behavior, select implementation architecture without later authority, accept product specifications, or conceal unresolved semantic decisions.
 - `REPO-PDC-004`: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the decomposition composite document.

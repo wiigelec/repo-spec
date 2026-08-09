@@ -7,7 +7,7 @@ Supported runtime: Python 3.10+
 ## Start here
 
 - [Repository chatbot initialization](AGENTS.md)
-- [Product overview](docs/overview/PRODUCT-OVERVIEW.md)
+- [Product overview](repo/docs/overview/PRODUCT-OVERVIEW.md)
 - [Initializer overview](product/docs/overview/INITIALIZER-OVERVIEW.md)
 - [Initializer decomposition](product/docs/decompositions/INITIALIZER-DECOMPOSITION.md)
 - [Initializer reference](product/docs/initializer/README.md)

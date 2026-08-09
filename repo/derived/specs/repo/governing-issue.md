@@ -275,9 +275,9 @@ Validation metadata:
 - specification: `repo.repository-structure`
 - specification: `repo.development-workflow`
 - artifact: `AGENTS.md`
-- artifact: `docs/overview/product-overview/04-git-and-change-workflow.md`
-- artifact: `docs/overview/product-overview/05-human-ai-continuity.md`
-- artifact: `docs/overview/product-overview/06-governance-and-evolution.md`
+- artifact: `repo/docs/overview/product-overview/04-git-and-change-workflow.md`
+- artifact: `repo/docs/overview/product-overview/05-human-ai-continuity.md`
+- artifact: `repo/docs/overview/product-overview/06-governance-and-evolution.md`
 - artifact: `.github/ISSUE_TEMPLATE/governing-issue.yml`
 
 ## Derived artifacts

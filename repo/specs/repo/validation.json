@@ -223,7 +223,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/development-document-compatibility.json"
+      "path": "repo/docs/development-document-compatibility.json"
     }
   ],
   "derived_artifacts": [

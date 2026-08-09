@@ -22,16 +22,16 @@ This document is the controlling entry point for the initializer overview compos
   "overview_role": "initial",
   "governing_issue": "#175",
   "controlling_documents": [
-    "docs/overview/PRODUCT-OVERVIEW.md"
+    "repo/docs/overview/PRODUCT-OVERVIEW.md"
   ],
   "predecessor_documents": [],
   "evidence": [
-    "docs/overview/product-overview/01-product-direction.md",
-    "docs/overview/product-overview/02-decomposition-model.md",
-    "docs/overview/product-overview/03-development-and-specifications.md",
-    "docs/overview/product-overview/04-git-and-change-workflow.md",
-    "docs/overview/product-overview/05-human-ai-continuity.md",
-    "docs/overview/product-overview/06-governance-and-evolution.md"
+    "repo/docs/overview/product-overview/01-product-direction.md",
+    "repo/docs/overview/product-overview/02-decomposition-model.md",
+    "repo/docs/overview/product-overview/03-development-and-specifications.md",
+    "repo/docs/overview/product-overview/04-git-and-change-workflow.md",
+    "repo/docs/overview/product-overview/05-human-ai-continuity.md",
+    "repo/docs/overview/product-overview/06-governance-and-evolution.md"
   ],
   "required_content_areas": {
     "product_identity": ["product/docs/overview/initializer-overview/01-product-identity-and-purpose.md"],
@@ -76,7 +76,7 @@ Bootstrap authority is recorded in metadata through `governing_issue` and `evide
 
 ## Next authorized action
 
-The next authorized action is initializer decomposition under `docs/decompositions/`.
+The next authorized action is initializer decomposition under `repo/docs/decompositions/`.
 
 ## Discoverability
 

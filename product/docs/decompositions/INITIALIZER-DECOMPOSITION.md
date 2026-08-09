@@ -27,12 +27,12 @@ This document is the controlling entry point for the initializer decomposition c
     "product/docs/overview/INITIALIZER-OVERVIEW.md"
   ],
   "evidence": [
-    "docs/overview/PRODUCT-OVERVIEW.md",
-    "docs/overview/product-overview/02-decomposition-model.md",
-    "docs/overview/product-overview/03-development-and-specifications.md",
-    "docs/overview/product-overview/04-git-and-change-workflow.md",
-    "docs/overview/product-overview/05-human-ai-continuity.md",
-    "docs/overview/product-overview/06-governance-and-evolution.md"
+    "repo/docs/overview/PRODUCT-OVERVIEW.md",
+    "repo/docs/overview/product-overview/02-decomposition-model.md",
+    "repo/docs/overview/product-overview/03-development-and-specifications.md",
+    "repo/docs/overview/product-overview/04-git-and-change-workflow.md",
+    "repo/docs/overview/product-overview/05-human-ai-continuity.md",
+    "repo/docs/overview/product-overview/06-governance-and-evolution.md"
   ],
   "required_content_areas": {
     "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],
@@ -75,7 +75,7 @@ The basis records show the controlling overview and predecessor evidence. The de
 
 ## Next authorized action
 
-The next authorized action is an initializer implementation plan under `docs/plans/`.
+The next authorized action is an initializer implementation plan under `repo/docs/plans/`.
 
 ## Discoverability
 

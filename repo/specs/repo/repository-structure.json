@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-STR-005",
-      "text": "The repository manifest shall govern discovery of repository specifications only. Repository/framework governed directional and planning documents shall use `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/` as their canonical destination roots; during the governed root-document relocation migration, equivalent documents may remain under legacy root `docs/overview/`, `docs/decompositions/`, and `docs/plans/` until relocation completes. Product-owned development documents shall remain under `product/docs/`. None of these documents becomes repository-workflow authority."
+      "text": "The repository manifest shall govern discovery of repository specifications only. Repository/framework governed directional and planning documents shall use `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/` as their canonical destination roots; during the governed root-document relocation migration, equivalent documents may remain under legacy root `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/` until relocation completes. Product-owned development documents shall remain under `product/docs/`. None of these documents becomes repository-workflow authority."
     },
     {
       "id": "REPO-STR-006",

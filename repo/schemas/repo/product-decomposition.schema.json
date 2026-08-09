@@ -20,7 +20,7 @@
         },
         "root_path": {
           "type": "string",
-          "enum": ["docs/decompositions/", "product/docs/decompositions/"]
+          "enum": ["repo/docs/decompositions/", "product/docs/decompositions/"]
         },
         "required_content_areas": {
           "type": "object",

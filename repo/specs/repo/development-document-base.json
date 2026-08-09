@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-DDB-002",
-      "text": "The canonical repository/framework roots for governed development documents shall be `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`, while product-owned development documents shall use `product/docs/overview/`, `product/docs/decompositions/`, and `product/docs/plans/`. During the governed root-document relocation migration only, legacy repository/framework documents may remain under `docs/overview/`, `docs/decompositions/`, and `docs/plans/`. Each artifact type shall remain confined to the applicable root for its owner."
+      "text": "The canonical repository/framework roots for governed development documents shall be `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`, while product-owned development documents shall use `product/docs/overview/`, `product/docs/decompositions/`, and `product/docs/plans/`. During the governed root-document relocation migration only, legacy repository/framework documents may remain under `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`. Each artifact type shall remain confined to the applicable root for its owner."
     },
     {
       "id": "REPO-DDB-003",
@@ -79,7 +79,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/PRODUCT-OVERVIEW.md"
+      "path": "repo/docs/overview/PRODUCT-OVERVIEW.md"
     },
     {
       "type": "artifact",
