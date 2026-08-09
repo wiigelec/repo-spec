@@ -78,7 +78,7 @@ controlling product specifications remain accepted and manifest-registered; no m
 specification change has invalidated the H1 mapping.
 
 Implementation scope: reconcile the public initializer command surface with supported
-behavior; provide one public `init --request <file>` entry point over the accepted
+behavior; provide one public `repo-spec-init --request <file>` entry point over the accepted
 full-initialization workflow; provide human-readable progress and terminal
 success/failure presentation that does not replace or reinterpret canonical machine
 records; rewrite root README/getting-started material around AI-assisted construction

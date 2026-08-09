@@ -133,7 +133,7 @@ material specification changes still invalidate affected mapping until governed 
 
 Single standard bounded local initialization workflow: JSON request intake; exact SHA-1 commit in already-local source; absent destination preflight; same-filesystem isolated staging; closed-inventory framework/foundation realization; provenance/handoff assembly; deterministic local Git; ordered validation and report finalization; atomic promotion; terminal outcomes. Includes requirement-level baseline, increment/gate/validation planning for every composite key.
 
-H1 adds only a human-facing `init --request <file>` access path, public CLI
+H1 adds only a human-facing `repo-spec-init --request <file>` access path, public CLI
 reconciliation, terminal presentation faithful to accepted outcomes, and
 human+AI-agent request-authoring/getting-started documentation.
 

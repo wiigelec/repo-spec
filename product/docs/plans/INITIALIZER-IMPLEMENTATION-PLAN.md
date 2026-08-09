@@ -267,7 +267,7 @@ The accepted plan records six completed historical increments and one bounded hu
 | 3 | I3 | Provenance, handoff, Git initialization, and repository-state assembly |
 | 4 | I4 | Two-phase validation, report finalization, atomic promotion, and cleanup |
 | 5 | I5 | End-to-end lifecycle orchestration, terminal outcomes, and whole-workflow conformance |
-| 6 | H1 | Human-facing `init --request <file>` entry point, CLI surface reconciliation, terminal presentation, and AI-assisted request-creation documentation |
+| 6 | H1 | Human-facing `repo-spec-init --request <file>` entry point, CLI surface reconciliation, terminal presentation, and AI-assisted request-creation documentation |
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
