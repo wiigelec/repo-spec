@@ -165,7 +165,7 @@ Validation metadata:
 How will the change be validated?
 
 Placeholder:
-> repo/scripts/validate, focused checks, evidence capture.
+> scripts/validate for repository-wide validation; add focused leaf checks and evidence capture as needed.
 
 Validation metadata:
 
