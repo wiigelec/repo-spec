@@ -71,7 +71,7 @@ Cross-component validation: request values preserved through consumers, source/m
 End-to-end (I5): promoted success, pre-promotion failure (including report-finalization partial-write), indeterminate promotion, promoted-with-finalization-error, deterministic equivalent-input behavior, rejection of unsupported V1 (named refs, remotes, existing destination, platform, resume, migration, cross-device, undeclared output).
 
 Human-facing initialization (H1): public help/dispatch agreement; one supported
-`init --request <file>` path over full initialization; canonical JSON request preserved
+`repo-spec-init --request <file>` path over full initialization; canonical JSON request preserved
 without CLI synthesis; human-readable terminal presentation consistent with accepted
 terminal outcomes; README/getting-started examples instruct an AI agent to construct and
 show the canonical request for human review before invocation; negative coverage proves
