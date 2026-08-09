@@ -1,5 +1,47 @@
 # Repo-Spec Initializer
 
+## Normal human workflow
+
+The supported normal-user initialization command is:
+
+```text
+product/scripts/repo-spec-init --request request.json
+```
+
+It consumes the canonical JSON initialization request and runs the accepted full initialization lifecycle. JSON remains the input boundary: conversational text or AI-generated prose is not an initializer input mode.
+
+### Recommended human + AI-agent workflow
+
+An AI coding agent can inspect the current checkout, read the current request contract, and assemble JSON from facts you supply. That assistance does not grant initialization authority.
+
+1. Open the repo-spec checkout that will supply the initializer.
+2. Ask the agent to inspect the current checkout, this reference, and the current initialization-request contract.
+3. Supply explicit facts for destination, product identity, product direction material, source repository and exact revision when used, execution profile, and initialization authority.
+4. Ask the agent to construct `request.json` without inferring, synthesizing, or silently defaulting authority-bearing values.
+5. Have the agent show the complete JSON and explain its choices.
+6. Review the request yourself; correct it or supply missing facts before execution.
+7. Run `product/scripts/repo-spec-init --request request.json`.
+8. Read the human terminal outcome and inspect the resulting repository and canonical records.
+
+A useful agent instruction is:
+
+> Inspect the current repo-spec checkout and its accepted initializer request contract. Construct a canonical `request.json` using only facts I explicitly provide. Do not infer or choose authority-bearing values for me, including destination, product ID, direction material, source repository, exact source revision, execution profile, or initialization authority. Identify missing required facts instead of filling them in. Show the complete request and explain it before execution. Do not run the initializer. I will review the file and then run `product/scripts/repo-spec-init --request request.json`.
+
+The durable initializer authority is the reviewed canonical request and its explicit authority data, not the preceding conversation and not an unreviewed AI draft.
+
+### What the normal workflow creates
+
+On successful full initialization, the initializer prepares and validates the repository in staging, promotes it to the requested destination, and establishes the accepted initial Git state. The initialized repository includes reusable repo-spec framework material plus product foundations derived from the explicit request, including the product overview, decomposition, implementation plan, product specification roots, and provenance/handoff records.
+
+After success, review those generated foundations before treating later product direction or specification content as accepted successor authority.
+
+### What the normal workflow does not do
+
+The normal initializer does not provide interactive request prompts, infer a product ID, select a source or revision for you, accept a branch name in place of required revision identity, provide dry-run or status behavior, resume a failed initialization, overwrite or migrate an existing nonempty repository, or perform remote/cloud/platform-integrated initialization.
+
+The lower-level commands documented below are intentional diagnostic or development interfaces. They are not the recommended first-use path. Commands retained only as explicit unavailable/fail-closed compatibility surfaces are not supported normal-user operations.
+
+
 ## Request intake
 
 The initializer accepts initialization requests as local JSON documents.
