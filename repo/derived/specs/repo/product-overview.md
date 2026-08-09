@@ -20,7 +20,7 @@ Defines the directional, non-normative contract for product overview documents.
 
 ## Normative requirements
 
-- `REPO-POV-001`: A product overview shall be stored under `docs/overview/` and shall use the canonical top-level `*-OVERVIEW.md` controlling document plus subordinate chunks.
+- `REPO-POV-001`: A product overview shall be stored under `repo/docs/overview/` and shall use the canonical top-level `*-OVERVIEW.md` controlling document plus subordinate chunks.
 - `REPO-POV-002`: A product overview shall record product identity, problem or opportunity, intended users or stakeholders, desired outcomes, scope, non-goals, product boundaries, durable principles, major capabilities, success conditions, unresolved product direction, controlling documents or bootstrap authority, predecessor documents, evidence, and readiness for decomposition, with semantic coverage separated from subordinate chunk layout. Evidence may come from discovery records, interviews, proposals, issues, statements, README files, or other non-governed sources.
 - `REPO-POV-003`: A product overview shall remain directional and non-normative and shall not define exact product behavior, accepted interfaces, accepted schemas, or release readiness.
 - `REPO-POV-004`: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the overview composite document.
@@ -39,7 +39,7 @@ Defines the directional, non-normative contract for product overview documents.
 - specification: `repo.development-document-base`
 - specification: `repo.repository-structure`
 - specification: `repo.validation`
-- artifact: `docs/overview/PRODUCT-OVERVIEW.md`
+- artifact: `repo/docs/overview/PRODUCT-OVERVIEW.md`
 - artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
 
 ## Derived artifacts

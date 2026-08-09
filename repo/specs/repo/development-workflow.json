@@ -105,7 +105,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/04-git-and-change-workflow.md"
+      "path": "repo/docs/overview/product-overview/04-git-and-change-workflow.md"
     }
   ],
   "derived_artifacts": [

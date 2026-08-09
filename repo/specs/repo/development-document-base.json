@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-DDB-002",
-      "text": "The canonical roots for governed development documents shall be `docs/overview/`, `docs/decompositions/`, and `docs/plans/`, and each artifact type shall remain confined to its own root."
+      "text": "The canonical source-repository roots for repository/framework governed development documents shall be `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`, while product-owned development documents maintained by this source repository shall use `product/docs/overview/`, `product/docs/decompositions/`, and `product/docs/plans/`. Initialized-repository product development-document outputs are governed separately by the accepted initializer output contracts. Each artifact type shall remain confined to the applicable root for its owner."
     },
     {
       "id": "REPO-DDB-003",
@@ -79,7 +79,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/PRODUCT-OVERVIEW.md"
+      "path": "repo/docs/overview/PRODUCT-OVERVIEW.md"
     },
     {
       "type": "artifact",

@@ -41,7 +41,7 @@
     },
     "root_path": {
       "type": "string",
-      "enum": ["docs/overview/", "docs/decompositions/", "docs/plans/", "product/docs/overview/", "product/docs/decompositions/", "product/docs/plans/"]
+      "enum": ["repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/", "product/docs/overview/", "product/docs/decompositions/", "product/docs/plans/"]
     },
     "title": {
       "type": "string",

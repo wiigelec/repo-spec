@@ -19,7 +19,7 @@
   "references": [
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/03-development-and-specifications.md"
+      "path": "repo/docs/overview/product-overview/03-development-and-specifications.md"
     }
   ],
   "supersedes": [],
@@ -34,27 +34,42 @@
     "implementations": [
       {
         "id": "impl.primitive",
-        "paths": ["product/src/primitive.py"],
-        "requirements": ["PRIMITIVE-001"]
+        "paths": [
+          "product/src/primitive.py"
+        ],
+        "requirements": [
+          "PRIMITIVE-001"
+        ]
       }
     ],
     "tests": [
       {
         "id": "test.primitive",
-        "paths": ["product/tests/test_primitive.py"],
-        "requirements": ["PRIMITIVE-001"]
+        "paths": [
+          "product/tests/test_primitive.py"
+        ],
+        "requirements": [
+          "PRIMITIVE-001"
+        ]
       }
     ],
     "conformance": [
       {
         "requirement_id": "PRIMITIVE-001",
-        "implementation_ids": ["impl.primitive"],
-        "test_ids": ["test.primitive"],
+        "implementation_ids": [
+          "impl.primitive"
+        ],
+        "test_ids": [
+          "test.primitive"
+        ],
         "status": "covered"
       }
     ]
   },
   "primitives": {
-    "concepts": ["entity", "value"]
+    "concepts": [
+      "entity",
+      "value"
+    ]
   }
 }

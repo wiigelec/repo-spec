@@ -65,7 +65,7 @@ class DevelopmentDocumentRecord:
 
 
 DEVELOPMENT_DOCUMENT_ROOTS = {
-    "docs/overview/": {
+    "repo/docs/overview/": {
         "artifact_type": "product-overview",
         "schema_key": "repo.product-overview",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
@@ -73,7 +73,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "filename_suffix": "-OVERVIEW.md",
         "chunk_dir_suffix": "/",
     },
-    "docs/decompositions/": {
+    "repo/docs/decompositions/": {
         "artifact_type": "product-decomposition",
         "schema_key": "repo.product-decomposition",
         "required_headings": ["Status", "Metadata", "Decomposition basis", "Bounded areas", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
@@ -83,7 +83,7 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "filename_suffix": "-DECOMPOSITION.md",
         "chunk_dir_suffix": "/",
     },
-    "docs/plans/": {
+    "repo/docs/plans/": {
         "artifact_type": "implementation-plan",
         "schema_key": "repo.implementation-plan",
         "required_headings": ["Status", "Metadata", "Planning basis", "Workstreams", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
@@ -94,18 +94,18 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
 }
 
 for product_root, framework_root in (
-    ("product/docs/overview/", "docs/overview/"),
-    ("product/docs/decompositions/", "docs/decompositions/"),
-    ("product/docs/plans/", "docs/plans/"),
+    ("product/docs/overview/", "repo/docs/overview/"),
+    ("product/docs/decompositions/", "repo/docs/decompositions/"),
+    ("product/docs/plans/", "repo/docs/plans/"),
 ):
     DEVELOPMENT_DOCUMENT_ROOTS[product_root] = DEVELOPMENT_DOCUMENT_ROOTS[framework_root]
 
-OVERVIEW_AND_PLAN_ROOTS = {"docs/overview/", "docs/plans/", "product/docs/overview/", "product/docs/plans/"}
-DECOMPOSITION_ROOTS = {"docs/decompositions/", "product/docs/decompositions/"}
+OVERVIEW_AND_PLAN_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "product/docs/overview/", "product/docs/plans/"}
+DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "product/docs/decompositions/"}
 
-DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "docs/development-document-compatibility.json"
+DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
 DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
-    "docs/overview/product-overview/": "docs/overview/PRODUCT-OVERVIEW.md",
+    "repo/docs/overview/product-overview/": "repo/docs/overview/PRODUCT-OVERVIEW.md",
     "product/docs/decompositions/initializer-decomposition/": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md",
     "product/docs/plans/initializer-implementation-plan/": "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
 }
@@ -119,7 +119,6 @@ REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS = {
     'AGENTS.md': 'file',
     'LICENSE': 'file',
     'README.md': 'file',
-    'docs': 'directory',
     'product': 'directory',
     'reference': 'directory',
     'repo': 'directory',
@@ -209,7 +208,10 @@ def load_development_document_compatibility_registry(
     if development_roots is None:
         development_roots = DEVELOPMENT_DOCUMENT_ROOTS
     registry_path = repo_root / DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH
-    expect(registry_path.exists(), f"development document classification failed: missing compatibility registry {DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH}")
+    expect(
+        registry_path.exists(),
+        f"development document classification failed: missing compatibility registry {DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH}",
+    )
     try:
         data = json.loads(registry_path.read_text())
     except json.JSONDecodeError as exc:
@@ -337,7 +339,7 @@ def check_development_document_relationships(
 
             expect(resolved_path == target_path or resolved_path in compatibility_registry, f"development document relationship failed: controlling document must reference a governed document {path} -> {target_path}")
             if resolved_record is None:
-                if resolved_path == "docs/overview/PRODUCT-OVERVIEW.md":
+                if resolved_path == "repo/docs/overview/PRODUCT-OVERVIEW.md":
                     saw_overview = True
                 continue
 
@@ -363,7 +365,7 @@ def check_development_document_relationships(
 
             expect(resolved_path == target_path, f"development document relationship failed: predecessor document must reference a governing document {path} -> {target_path}")
             if resolved_record is None:
-                if resolved_path == "docs/overview/PRODUCT-OVERVIEW.md":
+                if resolved_path == "repo/docs/overview/PRODUCT-OVERVIEW.md":
                     saw_overview = True
                 continue
 

@@ -1054,13 +1054,13 @@ def build_i2_foundation_files(
         )
 
     add(
-        "docs/overview/README.md",
+        "repo/docs/overview/README.md",
         _i2_discoverability_readme(
             "Overview", f"{product_id} Overview", f"./{product_id}-OVERVIEW.md"
         ),
     )
     add(
-        "docs/decompositions/README.md",
+        "repo/docs/decompositions/README.md",
         _i2_discoverability_readme(
             "Decompositions",
             f"{product_id} Decomposition",
@@ -1068,7 +1068,7 @@ def build_i2_foundation_files(
         ),
     )
     add(
-        "docs/plans/README.md",
+        "repo/docs/plans/README.md",
         _i2_discoverability_readme(
             "Plans",
             f"{product_id} Implementation Plan",

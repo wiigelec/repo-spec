@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-PDC-001",
-      "text": "A product decomposition shall be stored under `docs/decompositions/` and shall use the canonical top-level `*-DECOMPOSITION.md` controlling document plus subordinate chunks."
+      "text": "A product decomposition shall be stored under `repo/docs/decompositions/` and shall use the canonical top-level `*-DECOMPOSITION.md` controlling document plus subordinate chunks."
     },
     {
       "id": "REPO-PDC-002",

@@ -19,7 +19,7 @@
   "references": [
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
+      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
     }
   ],
   "supersedes": [],
@@ -34,27 +34,41 @@
     "implementations": [
       {
         "id": "impl.orchestration",
-        "paths": ["product/src/orchestration.py"],
-        "requirements": ["ORCH-001"]
+        "paths": [
+          "product/src/orchestration.py"
+        ],
+        "requirements": [
+          "ORCH-001"
+        ]
       }
     ],
     "tests": [
       {
         "id": "test.orchestration",
-        "paths": ["product/tests/test_orchestration.py"],
-        "requirements": ["ORCH-001"]
+        "paths": [
+          "product/tests/test_orchestration.py"
+        ],
+        "requirements": [
+          "ORCH-001"
+        ]
       }
     ],
     "conformance": [
       {
         "requirement_id": "ORCH-001",
-        "implementation_ids": ["impl.orchestration"],
-        "test_ids": ["test.orchestration"],
+        "implementation_ids": [
+          "impl.orchestration"
+        ],
+        "test_ids": [
+          "test.orchestration"
+        ],
         "status": "covered"
       }
     ]
   },
   "orchestrations": {
-    "workflows": ["end-to-end use case"]
+    "workflows": [
+      "end-to-end use case"
+    ]
   }
 }

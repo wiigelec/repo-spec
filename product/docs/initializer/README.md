@@ -139,7 +139,7 @@ Each entry reports:
 | `derived` | Generated or projected content | Yes | `derived/` |
 | `profile-source` | Reusable source selected only by explicit platform profile | No | `repo/profiles/github/` |
 | `installed-adapter` | Current repository adapter content | No | `.github/` |
-| `product-instance` | Product-specific direction, planning, or specification content | No | `docs/overview/`, `docs/plans/` |
+| `product-instance` | Product-specific direction, planning, or specification content | No | `repo/docs/overview/`, `repo/docs/plans/` |
 | `development-state` | Non-source workflow state | No | `.gitignore` |
 | `excluded` | Content unavailable to initializer installation | No | `reference/`, `product/src/` |
 
@@ -265,15 +265,15 @@ This command combines framework staging and product-foundation establishment in 
 
 The command creates the following structure in the staging workspace:
 
-* `docs/overview/<slug>-OVERVIEW.md` — product overview controlling document (candidate lifecycle)
-* `docs/overview/<slug>-overview/` — overview subordinate chunk directory with 6 placeholder chunks
-* `docs/decompositions/<slug>-DECOMPOSITION.md` — product decomposition controlling document (candidate)
-* `docs/decompositions/<slug>-decomposition/` — decomposition subordinate chunk directory with 4 placeholder chunks
-* `docs/plans/<slug>-IMPLEMENTATION-PLAN.md` — implementation plan controlling document (candidate)
-* `docs/plans/<slug>-implementation-plan/` — plan subordinate chunk directory with 4 placeholder chunks
+* `repo/docs/overview/<slug>-OVERVIEW.md` — product overview controlling document (candidate lifecycle)
+* `repo/docs/overview/<slug>-overview/` — overview subordinate chunk directory with 6 placeholder chunks
+* `repo/docs/decompositions/<slug>-DECOMPOSITION.md` — product decomposition controlling document (candidate)
+* `repo/docs/decompositions/<slug>-decomposition/` — decomposition subordinate chunk directory with 4 placeholder chunks
+* `repo/docs/plans/<slug>-IMPLEMENTATION-PLAN.md` — implementation plan controlling document (candidate)
+* `repo/docs/plans/<slug>-implementation-plan/` — plan subordinate chunk directory with 4 placeholder chunks
 * `product/specs/product/manifest.json` — product manifest (candidate, empty specification registry)
 * `product/specs/product/level-0/` through `product/specs/product/level-3/` — product-specification level roots
-* Root `README.md` discoverability links under `docs/overview/`, `docs/decompositions/`, `docs/plans/`
+* Root `README.md` discoverability links under `repo/docs/overview/`, `repo/docs/decompositions/`, `repo/docs/plans/`
 
 where `<slug>` is derived from the product ID (lowercased with non-alphanumeric characters replaced by hyphens).
 

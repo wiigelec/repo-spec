@@ -45,7 +45,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "product/schemas/product/product-level-2.schema.json",
         "product/schemas/product/product-level-3.schema.json",
     ]
-    for root_rel in ("docs/overview/", "docs/decompositions/", "docs/plans/"):
+    for root_rel in ("repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/"):
         root = repo_root / root_rel
         for path in sorted(root.glob("*.md")):
             required_paths.append(path.relative_to(repo_root).as_posix())
@@ -109,7 +109,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
 
 
 REQUIRED_FIXTURE_ROOT_FILES = (".gitignore", "AGENTS.md", "LICENSE", "README.md")
-REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "docs", "product", "reference", "repo", "scripts", "user")
+REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "product", "reference", "repo", "scripts", "user")
 
 
 def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:

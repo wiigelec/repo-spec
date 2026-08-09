@@ -86,7 +86,7 @@ class I3HandoffTests(unittest.TestCase):
             "product/specs/product/level-3/README.md",
             "product/docs/direction/evidence/000-one.md",
             "product/docs/direction/manifest.json",
-            "docs/overview/README.md",
+            "repo/docs/overview/README.md",
             "product/specs/product/README.md",
             "product/specs/product/manifest.json",
         )

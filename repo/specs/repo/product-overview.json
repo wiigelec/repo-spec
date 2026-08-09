@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-POV-001",
-      "text": "A product overview shall be stored under `docs/overview/` and shall use the canonical top-level `*-OVERVIEW.md` controlling document plus subordinate chunks."
+      "text": "A product overview shall be stored under `repo/docs/overview/` and shall use the canonical top-level `*-OVERVIEW.md` controlling document plus subordinate chunks."
     },
     {
       "id": "REPO-POV-002",
@@ -60,7 +60,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/PRODUCT-OVERVIEW.md"
+      "path": "repo/docs/overview/PRODUCT-OVERVIEW.md"
     },
     {
       "type": "artifact",

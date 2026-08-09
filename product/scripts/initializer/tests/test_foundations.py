@@ -269,7 +269,7 @@ class EstablishFoundationsTests(unittest.TestCase):
         content = existing_readme.read_text()
         self.assertEqual(content, "existing readme")
         created_paths = [c["path"] for c in result.created]
-        self.assertNotIn("docs/overview/README.md", created_paths)
+        self.assertNotIn("repo/docs/overview/README.md", created_paths)
 
     def test_specs_product_not_under_specs_repo(self):
         result = establish_product_foundations(self.plan, self.staging)

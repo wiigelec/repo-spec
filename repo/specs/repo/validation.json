@@ -79,7 +79,7 @@
     },
     {
       "id": "REPO-VAL-019",
-      "text": "Each leaf validation entry point shall enforce, for governed development-document roots within its owned tree, the canonical roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering."
+      "text": "Each leaf validation entry point shall enforce, for governed development-document roots within its owned tree, the owner-appropriate canonical roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering."
     },
     {
       "id": "REPO-VAL-020",
@@ -159,7 +159,7 @@
     },
     {
       "id": "REPO-VAL-039",
-      "text": "The repository leaf validation entry point shall enforce the approved repository-root boundary declared by accepted repository structure and related accepted repository-local contracts, shall allow the governed `user/` convenience namespace, and shall reject undeclared top-level files or directories."
+      "text": "The repository leaf validation entry point shall enforce the approved maintained source-repository root boundary declared by accepted repository structure and related accepted repository-local contracts, shall allow the governed `user/` convenience namespace, shall reject root `docs/`, and shall reject any other undeclared top-level file or directory."
     }
   ],
   "dependencies": [
@@ -223,7 +223,7 @@
     },
     {
       "type": "artifact",
-      "path": "docs/development-document-compatibility.json"
+      "path": "repo/docs/development-document-compatibility.json"
     }
   ],
   "derived_artifacts": [

@@ -172,11 +172,11 @@
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/04-git-and-change-workflow.md"
+      "path": "repo/docs/overview/product-overview/04-git-and-change-workflow.md"
     },
     {
       "type": "artifact",
-      "path": "docs/overview/product-overview/06-governance-and-evolution.md"
+      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
     },
     {
       "type": "artifact",

@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-IPL-001",
-      "text": "An implementation plan shall be stored under `docs/plans/` and shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks."
+      "text": "An implementation plan shall be stored under `repo/docs/plans/` and shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks."
     },
     {
       "id": "REPO-IPL-002",

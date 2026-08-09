@@ -170,9 +170,9 @@ class I2MaterializationTests(unittest.TestCase):
                 }
                 for path, producer in (
                     ("product/docs/direction/manifest.json", "direction-evidence-installation"),
-                    ("docs/overview/README.md", "workspace-seeding"),
-                    ("docs/decompositions/README.md", "workspace-seeding"),
-                    ("docs/plans/README.md", "workspace-seeding"),
+                    ("repo/docs/overview/README.md", "workspace-seeding"),
+                    ("repo/docs/decompositions/README.md", "workspace-seeding"),
+                    ("repo/docs/plans/README.md", "workspace-seeding"),
                     ("product/specs/product/README.md", "workspace-seeding"),
                     ("product/specs/product/manifest.json", "workspace-seeding"),
                     ("product/specs/product/level-0/README.md", "workspace-seeding"),
