@@ -50,6 +50,18 @@
       }
     },
     {
+      "id": "implementation_plan_workstreams",
+      "label": "Implementation-plan workstreams/stages",
+      "required": false,
+      "input_type": "textarea",
+      "description": "For Product-artifact implementation, list one or more stable workstream/stage IDs from the cited accepted implementation plan, one per line.",
+      "placeholder": "I1\nI2",
+      "validation": {
+        "kind": "meaningful",
+        "allow_none": true
+      }
+    },
+    {
       "id": "accepted_default_branch_base",
       "label": "Accepted default-branch base",
       "required": true,
@@ -222,6 +234,10 @@
     {
       "id": "REPO-GI-012",
       "text": "A governing issue that creates or modifies maintained product artifacts shall identify its change type as Product-artifact implementation so the issue-body field-policy boundary can enforce the required implementation-plan, accepted product-specification, accepted-base, and predecessor-evidence citations."
+    },
+    {
+      "id": "REPO-GI-013",
+      "text": "A governing issue declared as Product-artifact implementation shall identify one or more stable workstream or stage identifiers from its cited accepted implementation plan; those selected identifiers define the bounded plan scope whose controlling accepted product specifications are enforced by issue-body field policy."
     }
   ],
   "dependencies": [

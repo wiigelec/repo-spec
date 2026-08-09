@@ -175,7 +175,7 @@ def load_plan_controlling_spec_sets(
     repo_root: Path,
     plan_path: str,
     accepted_specs: set[str],
-) -> set[frozenset[str]]:
+) -> dict[str, frozenset[str]]:
     plan_text = read_repo_text(repo_root, plan_path)
     metadata = load_document_metadata(plan_text, plan_path)
     if metadata.get("artifact_type") != "implementation-plan" or metadata.get("lifecycle_status") != "accepted":
@@ -184,22 +184,50 @@ def load_plan_controlling_spec_sets(
     entries = metadata.get("workstream_authority")
     if not isinstance(entries, list) or not entries:
         raise PolicyError(f"cited implementation plan lacks canonical workstream authority: {plan_path}")
-    seen_ids: set[str] = set()
-    controlling_sets: set[frozenset[str]] = set()
+
+    authority: dict[str, frozenset[str]] = {}
     for entry in entries:
         if not isinstance(entry, dict) or set(entry) != {"id", "controlling_product_specifications"}:
             raise PolicyError(f"cited implementation plan has invalid workstream authority: {plan_path}")
         workstream_id = entry["id"]
         specs = entry["controlling_product_specifications"]
-        if not isinstance(workstream_id, str) or WORKSTREAM_ID_RE.fullmatch(workstream_id) is None or workstream_id in seen_ids:
+        if (
+            not isinstance(workstream_id, str)
+            or WORKSTREAM_ID_RE.fullmatch(workstream_id) is None
+            or workstream_id in authority
+        ):
             raise PolicyError(f"cited implementation plan has invalid workstream authority identifier: {plan_path}")
-        if not isinstance(specs, list) or not specs or not all(isinstance(spec_id, str) for spec_id in specs) or len(specs) != len(set(specs)):
+        if (
+            not isinstance(specs, list)
+            or not specs
+            or not all(isinstance(spec_id, str) for spec_id in specs)
+            or len(specs) != len(set(specs))
+        ):
             raise PolicyError(f"cited implementation plan has invalid controlling product specifications: {plan_path}")
         if not set(specs).issubset(accepted_specs):
             raise PolicyError(f"cited implementation plan has non-accepted controlling product specifications: {plan_path}")
-        seen_ids.add(workstream_id)
-        controlling_sets.add(frozenset(specs))
-    return controlling_sets
+        authority[workstream_id] = frozenset(specs)
+    return authority
+
+
+
+def parse_selected_workstream_ids(value: str) -> list[str]:
+    selected: list[str] = []
+    for raw_line in value.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        line = re.sub(r"^\s*[-*]\s+", "", line).strip()
+        if line.startswith("`") and line.endswith("`") and len(line) >= 2:
+            line = line[1:-1].strip()
+        if WORKSTREAM_ID_RE.fullmatch(line) is None:
+            raise PolicyError(f"invalid implementation-plan workstream/stage identifier: {raw_line.strip()}")
+        selected.append(line)
+    if not selected:
+        raise PolicyError("missing implementation-plan workstream/stage identifiers")
+    if len(selected) != len(set(selected)):
+        raise PolicyError("duplicate implementation-plan workstream/stage identifier")
+    return selected
 
 
 def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path) -> None:
@@ -214,6 +242,10 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path)
     if len(set(plan_paths)) != 1:
         raise PolicyError("expected exactly one canonical implementation-plan citation in Governing specifications")
 
+    selected_ids = parse_selected_workstream_ids(
+        require_section(sections, "Implementation-plan workstreams/stages")
+    )
+
     cited_specs = {
         spec_id
         for spec_id in SPEC_RE.findall(governing)
@@ -222,13 +254,26 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path)
     accepted_specs = load_accepted_product_specs(repo_root)
     if not cited_specs or not cited_specs.issubset(accepted_specs):
         raise PolicyError("missing manifest-listed accepted product specification in Governing specifications")
-    controlling_sets = load_plan_controlling_spec_sets(repo_root, plan_paths[0], accepted_specs)
-    if frozenset(cited_specs) not in controlling_sets:
-        raise PolicyError("cited product specifications do not match a controlling set in cited implementation plan")
+
+    authority = load_plan_controlling_spec_sets(repo_root, plan_paths[0], accepted_specs)
+    unknown = [workstream_id for workstream_id in selected_ids if workstream_id not in authority]
+    if unknown:
+        raise PolicyError(
+            "unknown implementation-plan workstream/stage identifier: " + ", ".join(unknown)
+        )
+
+    expected_specs: set[str] = set()
+    for workstream_id in selected_ids:
+        expected_specs.update(authority[workstream_id])
+    if cited_specs != expected_specs:
+        raise PolicyError(
+            "cited product specifications do not equal the union of selected implementation-plan workstreams/stages"
+        )
 
     predecessor = require_section(sections, "Dependencies and predecessor evidence")
     if not ISSUE_RE.search(predecessor) or not SHA_RE.search(predecessor.lower()):
         raise PolicyError("missing predecessor implementation issue and revision evidence")
+
 
 
 def validate_field_definition(field: dict, spec_path: str) -> None:

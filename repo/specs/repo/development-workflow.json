@@ -67,7 +67,7 @@
     },
     {
       "id": "REPO-WF-016",
-      "text": "A product-artifact governing issue that creates or modifies maintained product artifacts shall cite the accepted implementation plan, the applicable accepted product specifications, the exact accepted default-branch base, and predecessor implementation evidence."
+      "text": "A product-artifact governing issue that creates or modifies maintained product artifacts shall cite the accepted implementation plan, identify one or more stable workstream or stage identifiers from that plan for its bounded implementation scope, cite the applicable accepted product specifications equal to the union of the selected workstreams' or stages' controlling sets, cite the exact accepted default-branch base, and cite predecessor implementation evidence."
     }
   ],
   "dependencies": [

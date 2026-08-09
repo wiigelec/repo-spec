@@ -147,7 +147,7 @@
     },
     {
       "id": "REPO-VAL-036",
-      "text": "The hosting-platform issue-body field-policy boundary, rather than either repository-tree leaf validation entry point, shall reject a governing issue declared as product-artifact implementation when the issue does not cite one canonical accepted implementation-plan path, a product-specification set that is manifest-listed and accepted and exactly matches the controlling accepted product-specification set declared for one workstream or stage by that cited plan, the exact accepted default-branch base, and predecessor implementation issue and revision evidence. Repository and product leaf validation shall remain repository-local and shall not inspect remote issue bodies."
+      "text": "The hosting-platform issue-body field-policy boundary, rather than either repository-tree leaf validation entry point, shall reject a governing issue declared as product-artifact implementation when the issue does not cite one canonical accepted implementation-plan path, identify one or more stable workstream or stage identifiers from that plan, cite a product-specification set that is manifest-listed and accepted and exactly equals the deterministic union of the controlling accepted product-specification sets declared for the selected workstreams or stages, cite the exact accepted default-branch base, and cite predecessor implementation issue and revision evidence. Repository and product leaf validation shall remain repository-local and shall not inspect remote issue bodies."
     },
     {
       "id": "REPO-VAL-037",

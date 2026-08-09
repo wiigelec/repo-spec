@@ -40,6 +40,14 @@ body:
       placeholder: "repo.manifest, repo.development-workflow, and any other governing specs."
     validations:
       required: true
+  - type: textarea
+    id: implementation_plan_workstreams
+    attributes:
+      label: "Implementation-plan workstreams/stages"
+      description: "For Product-artifact implementation, list one or more stable workstream/stage IDs from the cited accepted implementation plan, one per line."
+      placeholder: "I1\nI2"
+    validations:
+      required: false
   - type: input
     id: accepted_default_branch_base
     attributes:
