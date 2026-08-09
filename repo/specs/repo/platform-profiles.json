@@ -40,19 +40,19 @@
         {
           "path": "repo/scripts/github-field-policy",
           "classification": "bootstrap-infrastructure",
-          "authority_category": "bootstrap",
+          "authority_category": "implementation",
           "profile_id": "github"
         },
         {
           "path": "repo/scripts/github_field_policy.py",
           "classification": "bootstrap-infrastructure",
-          "authority_category": "bootstrap",
+          "authority_category": "implementation",
           "profile_id": "github"
         },
         {
           "path": "repo/scripts/github_field_policy_mutation_test.py",
           "classification": "bootstrap-infrastructure",
-          "authority_category": "bootstrap",
+          "authority_category": "implementation",
           "profile_id": "github"
         }
       ],

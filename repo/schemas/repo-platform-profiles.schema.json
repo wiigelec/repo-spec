@@ -31,7 +31,12 @@
     },
     "status": {
       "type": "string",
-      "enum": ["candidate", "accepted", "superseded", "retired"]
+      "enum": [
+        "candidate",
+        "accepted",
+        "superseded",
+        "retired"
+      ]
     },
     "schema_version": {
       "type": "string",
@@ -39,23 +44,33 @@
     },
     "profiles": {
       "type": "array",
-      "items": { "$ref": "#/$defs/profile" }
+      "items": {
+        "$ref": "#/$defs/profile"
+      }
     },
     "normative_requirements": {
       "type": "array",
-      "items": { "$ref": "#/$defs/requirement" }
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
     },
     "dependencies": {
       "type": "array",
-      "items": { "$ref": "#/$defs/dependency" }
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
     },
     "references": {
       "type": "array",
-      "items": { "$ref": "#/$defs/reference" }
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
     },
     "derived_artifacts": {
       "type": "array",
-      "items": { "$ref": "#/$defs/derivedArtifact" }
+      "items": {
+        "$ref": "#/$defs/derivedArtifact"
+      }
     }
   },
   "$defs": {
@@ -93,15 +108,21 @@
         },
         "authority_boundary": {
           "type": "string",
-          "enum": ["profile-source-authoritative"]
+          "enum": [
+            "profile-source-authoritative"
+          ]
         },
         "adapter_generation_policy": {
           "type": "string",
-          "enum": ["source-to-adapter"]
+          "enum": [
+            "source-to-adapter"
+          ]
         },
         "artifact_inventory": {
           "type": "array",
-          "items": { "$ref": "#/$defs/artifactInventoryItem" }
+          "items": {
+            "$ref": "#/$defs/artifactInventoryItem"
+          }
         },
         "deployment_state": {
           "$ref": "#/$defs/deploymentState"
@@ -132,7 +153,12 @@
     "artifactInventoryItem": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "classification", "authority_category", "profile_id"],
+      "required": [
+        "path",
+        "classification",
+        "authority_category",
+        "profile_id"
+      ],
       "properties": {
         "path": {
           "type": "string",
@@ -140,11 +166,17 @@
         },
         "classification": {
           "type": "string",
-          "enum": ["installed-adapter", "bootstrap-infrastructure"]
+          "enum": [
+            "installed-adapter",
+            "bootstrap-infrastructure"
+          ]
         },
         "authority_category": {
           "type": "string",
-          "enum": ["profile-specific", "bootstrap"]
+          "enum": [
+            "profile-specific",
+            "implementation"
+          ]
         },
         "profile_id": {
           "type": "string",
@@ -179,7 +211,7 @@
           "then": {
             "properties": {
               "authority_category": {
-                "const": "bootstrap"
+                "const": "implementation"
               }
             }
           }
@@ -221,7 +253,9 @@
     "desiredStateFormat": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["required_fields"],
+      "required": [
+        "required_fields"
+      ],
       "properties": {
         "required_fields": {
           "$ref": "#/$defs/stringList"
@@ -238,7 +272,10 @@
     "requirement": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "text"],
+      "required": [
+        "id",
+        "text"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -253,7 +290,9 @@
     "dependency": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["spec_id"],
+      "required": [
+        "spec_id"
+      ],
       "properties": {
         "spec_id": {
           "type": "string",
@@ -266,7 +305,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "spec_id"],
+          "required": [
+            "type",
+            "spec_id"
+          ],
           "properties": {
             "type": {
               "type": "string",
@@ -274,7 +316,10 @@
             },
             "kind": {
               "type": "string",
-              "enum": ["normative", "historical"]
+              "enum": [
+                "normative",
+                "historical"
+              ]
             },
             "spec_id": {
               "type": "string",
@@ -285,7 +330,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "path"],
+          "required": [
+            "type",
+            "path"
+          ],
           "properties": {
             "type": {
               "type": "string",
@@ -303,11 +351,16 @@
     "derivedArtifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "path"],
+      "required": [
+        "type",
+        "path"
+      ],
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["markdown"]
+          "enum": [
+            "markdown"
+          ]
         },
         "path": {
           "type": "string",

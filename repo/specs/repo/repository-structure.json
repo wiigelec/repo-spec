@@ -27,7 +27,7 @@
     },
     {
       "id": "REPO-STR-006",
-      "text": "The repository shall reserve `repo/profiles/github/` as future reusable GitHub profile source material, `.github/` as the current installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications."
+      "text": "The repository shall use `repo/profiles/github/` as the populated reusable GitHub profile source location, `.github/` as the installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications."
     },
     {
       "id": "REPO-STR-007",

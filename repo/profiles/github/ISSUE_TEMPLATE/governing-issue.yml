@@ -85,7 +85,7 @@ body:
     attributes:
       label: "Validation plan"
       description: "How will the change be validated?"
-      placeholder: "repo/scripts/validate, focused checks, evidence capture."
+      placeholder: "scripts/validate for repository-wide validation; add focused leaf checks and evidence capture as needed."
     validations:
       required: true
   - type: textarea
