@@ -69,7 +69,10 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
             text = path.read_text()
             if "## Metadata" not in text:
                 continue
-            metadata = json.loads(text.split("```json")[1].split("```")[0].strip())
+            metadata = extract_document_metadata(
+                text,
+                path.relative_to(repo_root).as_posix(),
+            )
             for ref_paths in metadata.get("required_content_areas", {}).values():
                 for ref_path in ref_paths:
                     required_paths.append(ref_path)
