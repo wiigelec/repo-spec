@@ -129,9 +129,8 @@ def is_valid_branch_name(branch: str) -> bool:
 
 
 def parse_change_type(name: str, value: str, values: list[str]) -> str:
-    normalized = normalize(value)
-    if normalized in values:
-        return normalized
+    if value in values:
+        return value
     raise PolicyError(f"invalid change type in {name}")
 
 

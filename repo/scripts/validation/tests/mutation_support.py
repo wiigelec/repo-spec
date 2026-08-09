@@ -95,11 +95,22 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
 
     product_docs_root = repo_root / "product/docs"
     if product_docs_root.exists():
+        product_doc_paths = [
+            path for path in product_docs_root.rglob("*") if path.is_file()
+        ]
         required_paths.extend(
-            path.relative_to(repo_root).as_posix()
-            for path in product_docs_root.rglob("*")
-            if path.is_file()
+            path.relative_to(repo_root).as_posix() for path in product_doc_paths
         )
+        for path in product_doc_paths:
+            if path.suffix != ".md":
+                continue
+            document_text = path.read_text()
+            if "## Metadata" not in document_text or "```json" not in document_text:
+                continue
+            document_metadata = json.loads(
+                document_text.split("```json")[1].split("```")[0].strip()
+            )
+            required_paths.extend(document_metadata.get("evidence", []))
 
     for root_name in ("repo/profiles", ".github"):
         root = repo_root / root_name
