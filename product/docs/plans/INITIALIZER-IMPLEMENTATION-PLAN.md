@@ -8,9 +8,10 @@ This document is non-normative with respect to product semantics. Issue #261
 accepted this plan after revalidation against the synchronized accepted specification
 set and repository planning contracts. The accepted plan provided planning authority for the bounded B0→I1→I2→I3→I4→I5
 workflow; it does not itself mutate product artifacts. That bounded workflow is now
-complete through I5. Maintained I5 exit evidence records no blockers and does not
-authorize a successor capability. No current successor implementation work is
-authorized by this plan. Issues #255 and #257 repaired the accepted provenance/handoff
+complete through I5. Maintained I5 exit evidence records no blockers. Issue #311
+authorizes this bounded planning amendment to add H1, a human-facing initialization
+successor that reuses the accepted JSON-request and full-initialization semantics
+without introducing a new initializer input mode or new product capability. Issues #255 and #257 repaired the accepted provenance/handoff
 specification conflicts and ordering gap, and issue #259 / PR #260 synchronized and
 clean-room reviewed the plan before acceptance. Issue #301 encoded the existing
 B0/I1-I5 authority sets in canonical metadata without reassigning accepted authority.
@@ -28,7 +29,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -159,6 +160,21 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
         "product.initializer-level-0",
         "product.lifecycle-stages"
       ]
+    },
+    {
+      "id": "H1",
+      "controlling_product_specifications": [
+        "product.initializer-level-0",
+        "product.initialization-request",
+        "product.source-revision-identity",
+        "product.execution-profile",
+        "product.product-identity",
+        "product.execution-report",
+        "product.lifecycle-stages",
+        "product.execution-orchestration",
+        "product.request-intake",
+        "product.full-initialization"
+      ]
     }
   ],
   "required_content_areas": {
@@ -225,7 +241,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "No current successor implementation work is authorized. B0 through I5 are completed historical increments; maintained I5 exit evidence records no blockers and successor_authorized=false. Any new successor capability or roadmap requires separate accepted authority and governance.",
+  "successor_action": "H1 is the only currently planned successor implementation scope. After this planning amendment is accepted, H1 implementation requires a separate Product-artifact implementation governing issue citing H1 and its controlling accepted product specifications. H1 is limited to human-facing initialization using the existing canonical JSON request and accepted full-initialization workflow; no other successor capability is authorized.",
   "schema_version": "1"
 }
 ```
@@ -241,7 +257,7 @@ overview and decomposition remain directional context only.
 
 ## Workstreams
 
-The accepted plan defines six bounded increments in a single forward DAG:
+The accepted plan records six completed historical increments and one bounded human-facing successor:
 
 | Rank | Increment | Purpose |
 | --- | --- | --- |
@@ -251,13 +267,15 @@ The accepted plan defines six bounded increments in a single forward DAG:
 | 3 | I3 | Provenance, handoff, Git initialization, and repository-state assembly |
 | 4 | I4 | Two-phase validation, report finalization, atomic promotion, and cleanup |
 | 5 | I5 | End-to-end lifecycle orchestration, terminal outcomes, and whole-workflow conformance |
+| 6 | H1 | Human-facing `init --request <file>` entry point, CLI surface reconciliation, terminal presentation, and AI-assisted request-creation documentation |
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
-unchanged. The B0→I1→I2→I3→I4→I5 dependency order remains the historical execution
-structure of the accepted plan. B0 through I5 have completed under their separately
-governed issues and maintained evidence. The plan now authorizes no current successor
-implementation work.
+unchanged as the historical execution structure of the accepted V1 workflow. B0 through
+I5 have completed under their separately governed issues and maintained evidence. H1 is
+a successor presentation/orchestration workstream after completed I5 evidence; it does
+not reassign any of the 291 historical requirement owners and does not change accepted
+product semantics.
 
 ## Chunk index
 
@@ -274,8 +292,9 @@ implementation work.
   `#issuecomment-5222594632`, #255 (accepted provenance/handoff repair and
   plan impact review), #257 (handoff ordering repair and plan impact review),
   #259 (plan synchronization clean-room cycle), #261 (separately governed
-  plan-acceptance cycle), and #301 (machine-readable encoding of the existing
-  accepted B0/I1-I5 authority sets without reassignment)
+  plan-acceptance cycle), #301 (machine-readable encoding of the existing
+  accepted B0/I1-I5 authority sets without reassignment), and #311 (bounded H1
+  human-facing initializer successor planning amendment)
 - Controlling repository contracts: `repo.development-document-base`,
   `repo.implementation-plan`, `repo.development-workflow`, and applicable
   repository workflow and validation contracts
@@ -289,11 +308,13 @@ implementation work.
 ## Next authorized action
 
 Issue #261 accepted this implementation plan after clean-room revalidation against
-current accepted specifications and synchronized planning state. The next authorized
-action is a separately governed B0 evidence-classification issue.
+current accepted specifications and synchronized planning state. B0 through I5 are now
+completed historical work. Issue #311 authorizes this bounded H1 planning amendment.
 
-B0 must complete before I1 work may be authorized. I1-I5 remain gated by predecessor
-evidence and separate governing issues.
+After this amended plan is accepted on the default branch, the next authorized action is
+a separate Product-artifact implementation governing issue selecting H1. That issue may
+implement only the H1 scope and must cite the exact H1 controlling accepted product
+specifications recorded in this plan.
 
 ## Discoverability
 

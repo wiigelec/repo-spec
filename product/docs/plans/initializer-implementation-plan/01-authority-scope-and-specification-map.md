@@ -9,7 +9,7 @@ Maps accepted requirements to planning responsibilities; does not restate, narro
 | Planning fact | Value |
 | --- | --- |
 | Planning basis | `d3cf252dd6022aa19bd52ee335b1ef114ccfae1b` |
-| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization; #261 plan acceptance |
+| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization; #261 plan acceptance; #311 H1 successor planning amendment |
 | Normative authority | Accepted `initial-bounded-workflow` specs registered in `product/specs/product/manifest.json` |
 | Repository planning authority | `repo.implementation-plan`, `repo.development-workflow` |
 
@@ -25,6 +25,7 @@ All 34 accepted specs and 291 normative requirements are mapped below by composi
 | `I3` | Provenance, handoff, deterministic local Git identity, repository-state assembly |
 | `I4` | Validation phases/reports, promotion gating, atomic promotion, diagnostic preservation, post-promotion finalization |
 | `I5` | End-to-end lifecycle orchestration, terminal outcomes, whole-workflow conformance |
+| `H1` | Human-facing initialization surface over accepted JSON request and full-initialization behavior; consumes existing authority and owns no new normative requirement keys |
 | `X` | Cross-increment carriage: re-verify at each consumer boundary (supplements sole owner) |
 
 The accepted requirement-to-responsibility map preserves every composite assignment; spec dependencies are entry constraints, not optional sequencing.
@@ -88,6 +89,20 @@ Ranges are inclusive within the named spec. Non-contiguous/suffixed IDs listed e
 
 `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct composite-key sets despite shared bare prefix.
 
+## H1 successor authority
+
+H1 owns no new normative requirement keys and does not reassign B0/I1-I5 ownership.
+Its exact accepted-spec authority set is `product.initializer-level-0`,
+`product.initialization-request`, `product.source-revision-identity`,
+`product.execution-profile`, `product.product-identity`, `product.execution-report`,
+`product.lifecycle-stages`, `product.execution-orchestration`,
+`product.request-intake`, and `product.full-initialization`.
+
+H1 preserves canonical JSON request intake and accepted full-initialization semantics.
+AI-assisted request construction remains external authoring assistance. Interactive
+request synthesis/defaulting, status, dry-run, platform/remote integration, and
+recovery/resume remain excluded.
+
 ## Existing implementation and test evidence
 
 Accepted specifications are authority. Source, tests, schemas, templates, generated output, and prior behavior are evidence only and cannot fill a missing requirement or change its meaning. Evidence includes `product/scripts/repo-spec-init`, modules under `product/scripts/initializer/`, and suites under `product/scripts/initializer/tests/`.
@@ -118,6 +133,10 @@ material specification changes still invalidate affected mapping until governed 
 
 Single standard bounded local initialization workflow: JSON request intake; exact SHA-1 commit in already-local source; absent destination preflight; same-filesystem isolated staging; closed-inventory framework/foundation realization; provenance/handoff assembly; deterministic local Git; ordered validation and report finalization; atomic promotion; terminal outcomes. Includes requirement-level baseline, increment/gate/validation planning for every composite key.
 
+H1 adds only a human-facing `init --request <file>` access path, public CLI
+reconciliation, terminal presentation faithful to accepted outcomes, and
+human+AI-agent request-authoring/getting-started documentation.
+
 ## Exclusions
 
 Six candidate future-extension specs excluded (no implementation authority):
@@ -131,7 +150,7 @@ Six candidate future-extension specs excluded (no implementation authority):
 | 3 | `product.recovery-and-cleanup` | Generalized recovery/cleanup |
 | 3 | `product.resume-from-staging` | Resume from preserved staging |
 
-Also excluded from the planned V1 product scope: remote retrieval, named-reference resolution, SHA-256 Git, retry/resume, migration, overwrite, cross-device promotion, release, and any conformance claim without B0 evidence. This accepted plan does not itself perform product source/test/schema/spec mutation or create successor governing issues; each B0/I1-I5 increment proceeds only through its own governed work and predecessor gates.
+Also excluded from the planned V1/H1 product scope: remote retrieval, named-reference resolution, SHA-256 Git, retry/resume, migration, overwrite, cross-device promotion, release, interactive request construction, CLI synthesis of authority-bearing request fields, status, dry-run, and any conformance claim not grounded in accepted evidence. This accepted plan does not itself perform product source/test/schema/spec mutation. B0/I1-I5 remain completed historical increments; H1 implementation proceeds only through a separate Product-artifact implementation governing issue after this planning amendment is accepted.
 
 ## Coverage verification
 

@@ -4,13 +4,13 @@ Status: accepted; planning-authoritative; non-normative with respect to product 
 
 ## Authority boundary
 
-Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan. The B0→I1→I2→I3→I4→I5 gates remain the historical execution structure; all six bounded increments have since completed under separate governing issues and maintained evidence. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
+Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan. The B0→I1→I2→I3→I4→I5 gates remain the historical execution structure; all six bounded increments have since completed under separate governing issues and maintained evidence. Issue #311 adds H1 as a bounded successor consumer/presentation workstream without reassigning historical requirement ownership. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
 
 ## Bounded implementation DAG
 
-`B0 -> I1 -> I2 -> I3 -> I4 -> I5`
+`B0 -> I1 -> I2 -> I3 -> I4 -> I5 -> H1`
 
-Edges: B0→I1 (keyed evidence bounds all work), I1→I2 (validated request/resolved source/preflight needed before staging), I2→I3 (staged content needed before provenance/handoff/Git), I3→I4 (conforming identity/handoff/Git state required before validation), I4→I5 (validated promotion/finalization behavior required before E2E orchestration). Spec dependencies are authority entry constraints. Ranks 0-5 assigned; every edge increases rank so the graph is acyclic.
+Edges: B0→I1 (keyed evidence bounds all work), I1→I2 (validated request/resolved source/preflight needed before staging), I2→I3 (staged content needed before provenance/handoff/Git), I3→I4 (conforming identity/handoff/Git state required before validation), I4→I5 (validated promotion/finalization behavior required before E2E orchestration), I5→H1 (completed whole-workflow evidence is the predecessor for a human-facing entry point that must not alter semantics). Spec dependencies are authority entry constraints. Ranks 0-6 assigned; every edge increases rank so the graph is acyclic.
 
 ## B0 - Existing-implementation conformance baseline
 
@@ -58,6 +58,45 @@ Controlling requirements (I5-owned): `product.initializer-level-0::INIT-L0-001,0
 
 Predecessor: I4. Entry: I1-I4 exits with complete evidence under the accepted plan. Exit: E2E evidence for 13 accepted stages in order, each precondition enforced; terminal-outcome evidence for promoted success, pre-promotion failure, indeterminate promotion, promoted-with-finalization-error; equivalent inputs produce equivalent output (provenance timestamp excepted); negative E2E for unsupported profile/refs/remote/destination/platform/resume/migration/cross-device; final composite-key coverage report reconciles all 291 keys. Exclusions: no dry-run/platform/recovery/resume/remote/SHA-256/migration/overwrite.
 
+## H1 - Human-facing initialization workflow
+
+Purpose: make the accepted bounded local initializer usable through one obvious public
+entry point while preserving the canonical JSON request and all accepted workflow
+semantics. The normal user model is human + AI agent: the agent helps author and review
+`request.json`; the initializer consumes that reviewed JSON unchanged through canonical
+request intake.
+
+Controlling accepted product specifications: `product.initializer-level-0`,
+`product.initialization-request`, `product.source-revision-identity`,
+`product.execution-profile`, `product.product-identity`, `product.execution-report`,
+`product.lifecycle-stages`, `product.execution-orchestration`,
+`product.request-intake`, `product.full-initialization`.
+
+Predecessor: completed I5 evidence and accepted H1 planning amendment. Entry: H1 is
+selected by a separate Product-artifact implementation governing issue; all listed
+controlling product specifications remain accepted and manifest-registered; no material
+specification change has invalidated the H1 mapping.
+
+Implementation scope: reconcile the public initializer command surface with supported
+behavior; provide one public `init --request <file>` entry point over the accepted
+full-initialization workflow; provide human-readable progress and terminal
+success/failure presentation that does not replace or reinterpret canonical machine
+records; rewrite root README/getting-started material around AI-assisted construction
+and human review of the canonical JSON request; add directly relevant regression
+coverage.
+
+Exit: public help advertises only supported normal-user operations; `init --request
+<file>` invokes the accepted full workflow without lifecycle reordering or request
+synthesis; terminal presentation agrees with accepted terminal outcomes; documentation
+shows the human + AI-agent request-authoring/review boundary accurately; relevant tests
+and repository/product/aggregate validation pass.
+
+Exclusions: no interactive prompting; no CLI synthesis or defaulting of authority-bearing
+request fields; no automatic source/revision or product-ID inference; no `status`; no
+dry-run; no remote/platform integration; no recovery/resume; no new capability; no
+product-specification semantic change; no reassignment of the 291 B0/I1-I5 requirement
+owners.
+
 ## Cross-increment carriage
 
 | Concern | Producer→consumers | Required carriage |
@@ -71,6 +110,7 @@ Predecessor: I4. Entry: I1-I4 exits with complete evidence under the accepted pl
 | Repaired provenance/handoff contracts (`INIT-PRC-001`, `INIT-PRO-001-008`, `INIT-HND-001-014`, `INIT-HAS-001`) | I3→I4→I5 | Preserve issues #255/#257 semantics: provenance is origin/identity only; handoff is pre-Git, uses disjoint presence/omission classifications, and orders all six classification arrays deterministically |
 | Failure safety and transaction (all I4 keys) | I4→I5 | Phase results, record linkage, promotion gate/outcome, diagnostics |
 | Determinism and lifecycle result (`INIT-L0-001,009`, all I5 keys) | I1-I4→I5 | Integrate canonical forms, stage order, vocabulary, equivalence evidence |
+| Human-facing init presentation | I1-I5→H1 | Re-present the accepted JSON request, standard local workflow, and terminal outcomes without new defaults, lifecycle semantics, or machine-record authority |
 
 ## Specification-repair impact
 
@@ -79,17 +119,18 @@ classification-ordering gap. Those repairs did not change requirement identities
 ownership assignments, or the B0→I1→I2→I3→I4→I5 dependency order. This impact review reaffirms those structures against the repaired
 accepted semantics. Issue #261 accepted the plan after current-authority revalidation.
 B0 through I5 are completed historical increments. Maintained I5 exit evidence records
-zero blockers and `successor_authorized=false`; this plan therefore authorizes no current
-successor implementation work.
+zero blockers. Issue #311 authorizes the H1 planning amendment as the sole bounded
+successor scope; H1 consumes existing accepted authority and does not alter the completed
+B0/I1-I5 requirement ownership or evidence.
 
 ## Coverage and DAG checks
 
 - B0 covers all 34 accepted specs and 291 unique composite keys
 - Sole ownership recorded by the accepted requirement-to-responsibility map: B0 owns `INIT-L0-007`; I1-I5 contain the remaining 290 keys; no key reassigned
 - Every sole-owner set carried to consumers; repaired provenance/handoff semantics carried through I3/I4/I5 without blocker state
-- Edges: B0→I1→I2→I3→I4→I5; every edge increases rank → acyclic
+- Edges: B0→I1→I2→I3→I4→I5→H1; every edge increases rank → acyclic
 - Six candidate future-extension specs excluded: `product.platform-profile-interface`, `product.platform-profile-execution`, `product.dry-run-validation`, `product.platform-integrated-initialization`, `product.recovery-and-cleanup`, `product.resume-from-staging`
 
 ## Plan-wide exclusions
 
-The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no successor governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 are completed historical work; any new implementation work requires separately accepted authority and governance and is not authorized by this plan.
+The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no implementation governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 are completed historical work. H1 is the only bounded successor authorized by this planning amendment, and its implementation still requires a separate Product-artifact implementation governing issue.
