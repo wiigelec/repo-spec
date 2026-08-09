@@ -26,10 +26,10 @@ Defines the canonical repository-generic governing issue structure and its subor
 - Required: yes
 - Input type: `textarea`
 
-What kind of bounded governed change is this?
+What kind of bounded governed change is this? Use Product-artifact implementation when the change creates or modifies maintained product artifacts.
 
 Placeholder:
-> Standardization, feature, maintenance, documentation, migration, or other bounded change.
+> Product-artifact implementation, standardization, feature, maintenance, documentation, migration, or other bounded change.
 
 Validation metadata:
 
@@ -86,15 +86,14 @@ Validation metadata:
 - Required: yes
 - Input type: `input`
 
-Exact accepted default-branch revision or reference.
+Actual repository default branch name and exact accepted revision.
 
 Placeholder:
-> main at <commit>
+> <default-branch> at <commit>
 
 Validation metadata:
 
 - Kind: `default-branch-base`
-- Branch: `main`
 
 ### In-scope behavior and paths
 
@@ -262,6 +261,7 @@ Validation metadata:
 - `REPO-GI-009`: The Markdown projection and GitHub issue form shall be adapters subordinate to the canonical repository specification.
 - `REPO-GI-010`: The GitHub issue form shall represent every required canonical field.
 - `REPO-GI-011`: The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure and its structured field definitions.
+- `REPO-GI-012`: A governing issue that creates or modifies maintained product artifacts shall identify its change type as Product-artifact implementation so the issue-body field-policy boundary can enforce the required implementation-plan, accepted product-specification, accepted-base, and predecessor-evidence citations.
 
 ## Dependencies
 

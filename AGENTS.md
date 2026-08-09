@@ -11,7 +11,7 @@ Read, in order:
 - only the relevant overview, decomposition, plan, specification, and predecessor records
 - the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state
 
-Report the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and any unresolved authority conflicts, along with the inspected branch, open PR, working-tree, remote, and hosting-platform state.
+Verify that the branch recorded in the accepted default-branch base is the repository's actual current default branch. Report the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and any unresolved authority conflicts, along with the inspected branch, open PR, working-tree, remote, and hosting-platform state.
 
 If controlling authority is missing or conflicts, stop and ask, except that absence of a governing issue shall follow the explicit discovery-or-create procedure in `REPO-WF-003`.
 

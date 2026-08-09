@@ -19,6 +19,8 @@ SHA_RE = re.compile(r"(?<![0-9a-f])[0-9a-f]{7,40}(?![0-9a-f])")
 ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
 SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*\b")
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
+IMPLEMENTATION_PLAN_RE = re.compile(r"\b(?:repo|product)/docs/plans/[A-Za-z0-9._/-]+-IMPLEMENTATION-PLAN\.md\b")
+PRODUCT_ARTIFACT_IMPLEMENTATION_RE = re.compile(r"\bproduct-artifact implementation\b", re.I)
 
 SUPPORTED_VALIDATION_KINDS = {
     "meaningful",
@@ -115,9 +117,52 @@ def require_checklist(name: str, value: str, items: list[str]) -> None:
         raise PolicyError(f"missing checklist items in {name}: {', '.join(missing)}")
 
 
-def require_default_branch_base(name: str, value: str, branch: str) -> None:
-    if not re.fullmatch(rf"{re.escape(branch)} at [0-9a-f]{{7,40}}", normalize(value).lower()):
+def is_valid_branch_name(branch: str) -> bool:
+    if branch in {"", "@", "HEAD"} or branch.startswith(("-", "/")) or branch.endswith(("/", ".")):
+        return False
+    if ".." in branch or "//" in branch or "@{" in branch:
+        return False
+    if any(ord(char) < 32 or ord(char) == 127 or char in " ~^:?*[\\" for char in branch):
+        return False
+    return all(part and not part.startswith(".") and not part.endswith(".lock") for part in branch.split("/"))
+
+
+def require_default_branch_base(name: str, value: str) -> None:
+    match = re.fullmatch(r"([^\s]+) at ([0-9a-fA-F]{7,40})", normalize(value))
+    if match is None or not is_valid_branch_name(match.group(1)):
         raise PolicyError(f"invalid default-branch base in {name}")
+
+
+def load_accepted_product_specs(repo_root: Path) -> set[str]:
+    manifest_path = repo_root / "product/specs/product/manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text())
+        entries = manifest["product_specifications"]
+    except (OSError, json.JSONDecodeError, KeyError) as exc:
+        raise PolicyError(f"invalid policy source: {manifest_path.relative_to(repo_root)}") from exc
+    return {
+        entry["spec_id"]
+        for entry in entries
+        if isinstance(entry, dict) and entry.get("status") == "accepted" and isinstance(entry.get("spec_id"), str)
+    }
+
+
+def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path) -> None:
+    change_type = sections.get("Change type", "")
+    if not PRODUCT_ARTIFACT_IMPLEMENTATION_RE.search(change_type):
+        return
+
+    governing = require_section(sections, "Governing specifications")
+    if not IMPLEMENTATION_PLAN_RE.search(governing):
+        raise PolicyError("missing canonical implementation-plan citation in Governing specifications")
+
+    cited_specs = {spec_id for spec_id in SPEC_RE.findall(governing) if spec_id.startswith("product.")}
+    if not cited_specs.intersection(load_accepted_product_specs(repo_root)):
+        raise PolicyError("missing manifest-listed accepted product specification in Governing specifications")
+
+    predecessor = require_section(sections, "Dependencies and predecessor evidence")
+    if not ISSUE_RE.search(predecessor) or not SHA_RE.search(predecessor.lower()):
+        raise PolicyError("missing predecessor implementation issue and revision evidence")
 
 
 def validate_field_definition(field: dict, spec_path: str) -> None:
@@ -135,10 +180,6 @@ def validate_field_definition(field: dict, spec_path: str) -> None:
         items = validation.get("items")
         if not isinstance(items, list) or not items or not all(isinstance(item, str) and item for item in items):
             raise PolicyError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
-    if kind == "default-branch-base":
-        branch = validation.get("branch", "main")
-        if not isinstance(branch, str) or not branch:
-            raise PolicyError(f"invalid default-branch branch in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
 
 
 def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
@@ -173,18 +214,19 @@ def validate_field_value(field: dict, value: str) -> None:
     elif kind == "checklist":
         require_checklist(field["label"], value, validation["items"])
     elif kind == "default-branch-base":
-        require_default_branch_base(field["label"], value, validation.get("branch", "main"))
+        require_default_branch_base(field["label"], value)
     else:
         raise PolicyError(f"unsupported validation kind for {field['label']}: {kind}")
 
 
-def check_issue(body: str, fields: list[dict]) -> None:
+def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
     sections = parse_sections(body)
     for field in fields:
         if field.get("required") is not True:
             continue
         value = require_section(sections, field["label"])
         validate_field_value(field, value)
+    require_product_artifact_evidence(sections, repo_root)
 
 
 def check_pr(body: str, fields: list[dict]) -> None:
@@ -231,7 +273,7 @@ def main(argv: list[str]) -> int:
             body = load_body_from_event(event_path, args.mode)
 
         if args.mode == "issue":
-            check_issue(body, issue_fields)
+            check_issue(body, issue_fields, repo_root)
         else:
             check_pr(body, pr_fields)
         return 0
