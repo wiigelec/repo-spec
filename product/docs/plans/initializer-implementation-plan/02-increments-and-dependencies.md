@@ -85,8 +85,7 @@ records; rewrite root README/getting-started material around AI-assisted constru
 and human review of the canonical JSON request; add directly relevant regression
 coverage.
 
-Exit: public help advertises only supported normal-user operations; `init --request
-<file>` invokes the accepted full workflow without lifecycle reordering or request
+Exit: public help advertises only supported normal-user operations; `repo-spec-init --request <file>` invokes the accepted full workflow without lifecycle reordering or request
 synthesis; terminal presentation agrees with accepted terminal outcomes; documentation
 shows the human + AI-agent request-authoring/review boundary accurately; relevant tests
 and repository/product/aggregate validation pass.
