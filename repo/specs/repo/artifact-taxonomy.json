@@ -245,7 +245,7 @@
       "role": "profile source",
       "authority_category": "profile-specific",
       "authority_source": "accepted hosting-profile source material",
-      "source_of_truth_rule": "Defines reusable hosting-platform profile source material under `repo/profiles/` for future profile-source generation and may project installed adapters without granting them independent authority.",
+      "source_of_truth_rule": "Defines reusable hosting-platform profile source material under `repo/profiles/`; when populated for a supported profile, it may project installed adapters without granting those adapters independent authority.",
       "mutability": "mutable through governed profile revision",
       "generation_mode": "manual",
       "validation_ownership": "validation",

@@ -260,7 +260,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Role: `profile source`
 - Authority category: `profile-specific`
 - Authority source: accepted hosting-profile source material
-- Source of truth rule: Defines reusable hosting-platform profile source material under `repo/profiles/` for future profile-source generation and may project installed adapters without granting them independent authority.
+- Source of truth rule: Defines reusable hosting-platform profile source material under `repo/profiles/`; when populated for a supported profile, it may project installed adapters without granting those adapters independent authority.
 - Mutability: mutable through governed profile revision
 - Generation mode: `manual`
 - Validation ownership: `validation`
