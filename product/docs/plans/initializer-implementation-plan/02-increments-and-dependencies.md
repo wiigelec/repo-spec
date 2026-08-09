@@ -4,7 +4,7 @@ Status: accepted; planning-authoritative; non-normative with respect to product 
 
 ## Authority boundary
 
-Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan; execution remains subject to the B0→I1→I2→I3→I4→I5 gates and separate governing issues. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
+Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan. The B0→I1→I2→I3→I4→I5 gates remain the historical execution structure; all six bounded increments have since completed under separate governing issues and maintained evidence. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
 
 ## Bounded implementation DAG
 
@@ -78,8 +78,9 @@ Issues #255 and #257 repaired the prior provenance/handoff authority conflicts a
 classification-ordering gap. Those repairs did not change requirement identities,
 ownership assignments, or the B0→I1→I2→I3→I4→I5 dependency order. This impact review reaffirms those structures against the repaired
 accepted semantics. Issue #261 accepted the plan after current-authority revalidation.
-B0 is the next eligible governed successor; I1-I5 remain gated by predecessor evidence
-and separate governing issues.
+B0 through I5 are completed historical increments. Maintained I5 exit evidence records
+zero blockers and `successor_authorized=false`; this plan therefore authorizes no current
+successor implementation work.
 
 ## Coverage and DAG checks
 
@@ -91,4 +92,4 @@ and separate governing issues.
 
 ## Plan-wide exclusions
 
-The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no successor governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 work requires separately governed issues and all predecessor gates.
+The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no successor governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 are completed historical work; any new implementation work requires separately accepted authority and governance and is not authorized by this plan.

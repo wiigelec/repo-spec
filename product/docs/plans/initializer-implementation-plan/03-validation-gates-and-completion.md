@@ -74,10 +74,9 @@ Evidence artifacts: B0 classification matrix, requirement-level test suite, vali
 Issues #255 and #257 completed the accepted provenance/handoff specification repairs and required plan impact reviews. Issue #259 / PR #260 completed synchronization of the candidate plan to that repaired authority and the required post-patch clean-room review. Issue #261 completed the separate clean-room acceptance audit and accepted this plan against the current synchronized authority.
 
 ### Successor implementation work
-B0 is the next eligible governed successor and requires its own governing issue. I1-I5 require: (1) this accepted plan, (2) completed B0 requirement-level evidence, (3) each increment's predecessor exit evidence, and (4) individual governed issues citing the accepted plan, applicable accepted specifications, exact accepted base, and predecessor evidence.
+The bounded B0→I1→I2→I3→I4→I5 workflow is complete. Maintained I5 exit evidence records 46/46 I5-owned keys, 291 whole-workflow keys, all four terminal outcomes, 13 canonical stages, zero blockers, and `successor_authorized=false`. No current successor implementation work is authorized by this plan.
 
-### Unblocked preparatory work
-B0 evidence classification is now the next authorized governed preparatory work. It remains subordinate to accepted specifications and this accepted plan, requires a separate governing issue, and does not authorize I1 until the B0→I1 gate passes.
+The B0/I1-I5 definitions and transition gates above remain historical planning and evidence structure; they do not direct recreation of completed increments. Future-extension specifications remain candidate/deferred and do not become implementation-authorized through completion of I5. Any new successor capability or roadmap requires separate accepted authority and governance.
 
 ### Completion gate summary
 | Condition | Status |
