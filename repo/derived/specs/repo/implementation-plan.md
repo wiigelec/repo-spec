@@ -20,7 +20,7 @@ Defines the planning-authority contract for implementation plan documents.
 
 ## Normative requirements
 
-- `REPO-IPL-001`: An implementation plan shall be stored under `repo/docs/plans/` and shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks.
+- `REPO-IPL-001`: An implementation plan shall be stored under the owner-specific plan root defined by `repo.development-document-base`: repository/framework-owned plans under `repo/docs/plans/` and product-owned plans under `product/docs/plans/`. It shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks.
 - `REPO-IPL-002`: An implementation plan shall record the controlling overview and decomposition, controlling documents, predecessor documents, evidence, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work, with semantic coverage separated from subordinate chunk layout. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree.
 - `REPO-IPL-003`: An implementation plan has planning authority but is non-normative with respect to product semantics, and it shall not redefine accepted overview direction or accepted specifications.
 - `REPO-IPL-004`: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the plan composite document.

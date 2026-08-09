@@ -51,7 +51,7 @@
     },
     {
       "id": "REPO-PSB-012",
-      "text": "Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, Level, and declared derived-artifact ownership between the manifest entry and the product file, while product workflow authority shall remain outside the product specification contract."
+      "text": "Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, and Level between the manifest entry and the product file. Declared derived-artifact ownership shall remain in the source product specification's `derived_artifacts` collection and shall not be duplicated into the manifest entry, while product workflow authority shall remain outside the product specification contract."
     },
     {
       "id": "REPO-PSB-013",

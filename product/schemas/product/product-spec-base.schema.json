@@ -33,7 +33,12 @@
     },
     "status": {
       "type": "string",
-      "enum": ["candidate", "accepted", "superseded", "retired"]
+      "enum": [
+        "candidate",
+        "accepted",
+        "superseded",
+        "retired"
+      ]
     },
     "schema_version": {
       "type": "string",
@@ -41,7 +46,12 @@
     },
     "level": {
       "type": "integer",
-      "enum": [0, 1, 2, 3]
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ]
     },
     "normative_requirements": {
       "type": "array",
@@ -87,7 +97,10 @@
     "requirement": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "text"],
+      "required": [
+        "id",
+        "text"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -102,7 +115,9 @@
     "dependency": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["spec_id"],
+      "required": [
+        "spec_id"
+      ],
       "properties": {
         "spec_id": {
           "type": "string",
@@ -115,7 +130,11 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "spec_id"],
+          "required": [
+            "type",
+            "kind",
+            "spec_id"
+          ],
           "properties": {
             "type": {
               "type": "string",
@@ -123,7 +142,10 @@
             },
             "kind": {
               "type": "string",
-              "enum": ["normative", "historical"]
+              "enum": [
+                "normative",
+                "historical"
+              ]
             },
             "spec_id": {
               "type": "string",
@@ -134,7 +156,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "path"],
+          "required": [
+            "type",
+            "path"
+          ],
           "properties": {
             "type": {
               "type": "string",
@@ -152,11 +177,16 @@
     "derivedArtifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "path"],
+      "required": [
+        "type",
+        "path"
+      ],
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["markdown"]
+          "enum": [
+            "markdown"
+          ]
         },
         "path": {
           "type": "string",
@@ -184,7 +214,11 @@
     "implementationMapping": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "paths", "requirements"],
+      "required": [
+        "id",
+        "paths",
+        "requirements"
+      ],
       "properties": {
         "id": {
           "$ref": "#/$defs/implementationId"
@@ -206,7 +240,11 @@
     "testMapping": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "paths", "requirements"],
+      "required": [
+        "id",
+        "paths",
+        "requirements"
+      ],
       "properties": {
         "id": {
           "$ref": "#/$defs/testId"
@@ -230,7 +268,12 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["requirement_id", "implementation_ids", "test_ids", "status"],
+          "required": [
+            "requirement_id",
+            "implementation_ids",
+            "test_ids",
+            "status"
+          ],
           "properties": {
             "requirement_id": {
               "$ref": "#/$defs/requirementId"
@@ -256,7 +299,13 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["requirement_id", "implementation_ids", "test_ids", "status", "rationale"],
+          "required": [
+            "requirement_id",
+            "implementation_ids",
+            "test_ids",
+            "status",
+            "rationale"
+          ],
           "properties": {
             "requirement_id": {
               "$ref": "#/$defs/requirementId"
@@ -288,7 +337,11 @@
     "correspondence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["implementations", "tests", "conformance"],
+      "required": [
+        "implementations",
+        "tests",
+        "conformance"
+      ],
       "properties": {
         "implementations": {
           "type": "array",

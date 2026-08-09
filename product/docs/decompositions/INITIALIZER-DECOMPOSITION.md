@@ -75,7 +75,7 @@ The basis records show the controlling overview and predecessor evidence. The de
 
 ## Next authorized action
 
-The next authorized action is an initializer implementation plan under `repo/docs/plans/`.
+The next authorized action is an initializer implementation plan under `product/docs/plans/`.
 
 ## Discoverability
 

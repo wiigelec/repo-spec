@@ -27,7 +27,12 @@
     },
     "status": {
       "type": "string",
-      "enum": ["candidate", "accepted", "superseded", "retired"]
+      "enum": [
+        "candidate",
+        "accepted",
+        "superseded",
+        "retired"
+      ]
     },
     "schema_version": {
       "type": "string",
@@ -46,7 +51,12 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level"],
+          "required": [
+            "spec_id",
+            "path",
+            "status",
+            "level"
+          ],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -58,7 +68,12 @@
             },
             "status": {
               "type": "string",
-              "enum": ["candidate", "accepted", "superseded", "retired"]
+              "enum": [
+                "candidate",
+                "accepted",
+                "superseded",
+                "retired"
+              ]
             },
             "level": {
               "type": "integer",
@@ -66,14 +81,22 @@
             },
             "capability_group": {
               "type": "string",
-              "enum": ["initial-bounded-workflow", "future-extension"]
+              "enum": [
+                "initial-bounded-workflow",
+                "future-extension"
+              ]
             }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level"],
+          "required": [
+            "spec_id",
+            "path",
+            "status",
+            "level"
+          ],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -85,7 +108,12 @@
             },
             "status": {
               "type": "string",
-              "enum": ["candidate", "accepted", "superseded", "retired"]
+              "enum": [
+                "candidate",
+                "accepted",
+                "superseded",
+                "retired"
+              ]
             },
             "level": {
               "type": "integer",
@@ -93,14 +121,22 @@
             },
             "capability_group": {
               "type": "string",
-              "enum": ["initial-bounded-workflow", "future-extension"]
+              "enum": [
+                "initial-bounded-workflow",
+                "future-extension"
+              ]
             }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level"],
+          "required": [
+            "spec_id",
+            "path",
+            "status",
+            "level"
+          ],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -112,7 +148,12 @@
             },
             "status": {
               "type": "string",
-              "enum": ["candidate", "accepted", "superseded", "retired"]
+              "enum": [
+                "candidate",
+                "accepted",
+                "superseded",
+                "retired"
+              ]
             },
             "level": {
               "type": "integer",
@@ -120,14 +161,22 @@
             },
             "capability_group": {
               "type": "string",
-              "enum": ["initial-bounded-workflow", "future-extension"]
+              "enum": [
+                "initial-bounded-workflow",
+                "future-extension"
+              ]
             }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["spec_id", "path", "status", "level"],
+          "required": [
+            "spec_id",
+            "path",
+            "status",
+            "level"
+          ],
           "properties": {
             "spec_id": {
               "type": "string",
@@ -139,7 +188,12 @@
             },
             "status": {
               "type": "string",
-              "enum": ["candidate", "accepted", "superseded", "retired"]
+              "enum": [
+                "candidate",
+                "accepted",
+                "superseded",
+                "retired"
+              ]
             },
             "level": {
               "type": "integer",
@@ -147,26 +201,14 @@
             },
             "capability_group": {
               "type": "string",
-              "enum": ["initial-bounded-workflow", "future-extension"]
+              "enum": [
+                "initial-bounded-workflow",
+                "future-extension"
+              ]
             }
           }
         }
       ]
-    },
-    "derivedArtifact": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["type", "path"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["markdown"]
-        },
-        "path": {
-          "type": "string",
-          "pattern": "^product/derived/specs/product/(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-        }
-      }
     }
   }
 }

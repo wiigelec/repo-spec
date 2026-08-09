@@ -21,7 +21,7 @@ Defines the normative contract for the product-specification manifest.
 ## Normative requirements
 
 - `REPO-PM-001`: The repository shall define `product/specs/product/manifest.json` as the canonical product-manifest path and shall keep it distinct from `repo/specs/repo/manifest.json`.
-- `REPO-PM-002`: The product manifest shall be authoritative for the governed product-specification registry and for declaration-driven product-derived projections under `product/specs/product/`, and shall not claim repository-workflow authority.
+- `REPO-PM-002`: The product manifest shall be authoritative for the governed product-specification registry under `product/specs/product/` and shall not claim repository-workflow authority. Declaration-driven product-derived projections are owned and declared by their source product specifications and shall reside under `product/derived/specs/product/` as defined by this contract and `repo.product-spec-base`.
 - `REPO-PM-003`: The product manifest shall identify itself with the stable manifest identity `product.manifest` and shall use the same repository-spec lifecycle statuses as repository specifications.
 - `REPO-PM-004`: The presence of `product/specs/product/manifest.json` shall express activation of the product-specification system.
 - `REPO-PM-005`: A product manifest may be empty.
