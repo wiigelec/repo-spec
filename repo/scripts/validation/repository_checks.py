@@ -825,6 +825,20 @@ def check_development_documents_phase(
             schemas = development_document_schemas(context)
             validate_instance(metadata, schemas[schema_key], rel_path, schemas[schema_key])
 
+            if metadata["artifact_type"] != "implementation-plan":
+                expect(
+                    "workstream_authority" not in metadata,
+                    f"development document authority failed: workstream authority outside implementation plan in {rel_path}",
+                )
+            elif metadata.get("lifecycle_status") == "accepted":
+                authority_ids = [entry["id"] for entry in metadata["workstream_authority"]]
+                duplicate_authority_ids = sorted({authority_id for authority_id in authority_ids if authority_ids.count(authority_id) > 1})
+                expect(
+                    not duplicate_authority_ids,
+                    f"development document authority failed: duplicate workstream authority identifier "
+                    f"{', '.join(duplicate_authority_ids)} in {rel_path}",
+                )
+
             expect(metadata["artifact_type"] == info["artifact_type"], f"development document metadata failed: artifact type mismatch in {rel_path}")
             expect(metadata["root_path"] == root_rel, f"development document metadata failed: root path mismatch in {rel_path}")
             expect(path.parent == root, f"development document path failed: top-level document must live directly under {root_rel}: {rel_path}")

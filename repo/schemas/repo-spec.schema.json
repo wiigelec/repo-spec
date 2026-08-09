@@ -30,7 +30,12 @@
     },
     "status": {
       "type": "string",
-      "enum": ["candidate", "accepted", "superseded", "retired"]
+      "enum": [
+        "candidate",
+        "accepted",
+        "superseded",
+        "retired"
+      ]
     },
     "schema_version": {
       "type": "string",
@@ -38,42 +43,61 @@
     },
     "issue_fields": {
       "type": "array",
-      "items": { "$ref": "#/$defs/field" }
+      "items": {
+        "$ref": "#/$defs/field"
+      }
     },
     "review_fields": {
       "type": "array",
-      "items": { "$ref": "#/$defs/field" }
+      "items": {
+        "$ref": "#/$defs/field"
+      }
     },
     "supersedes": {
       "type": "array",
-      "items": { "$ref": "#/$defs/specId" }
+      "items": {
+        "$ref": "#/$defs/specId"
+      }
     },
     "superseded_by": {
       "type": "array",
-      "items": { "$ref": "#/$defs/specId" }
+      "items": {
+        "$ref": "#/$defs/specId"
+      }
     },
     "normative_requirements": {
       "type": "array",
-      "items": { "$ref": "#/$defs/requirement" }
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
     },
     "dependencies": {
       "type": "array",
-      "items": { "$ref": "#/$defs/dependency" }
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
     },
     "references": {
       "type": "array",
-      "items": { "$ref": "#/$defs/reference" }
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
     },
     "derived_artifacts": {
       "type": "array",
-      "items": { "$ref": "#/$defs/derivedArtifact" }
+      "items": {
+        "$ref": "#/$defs/derivedArtifact"
+      }
     }
   },
   "$defs": {
     "requirement": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "text"],
+      "required": [
+        "id",
+        "text"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -88,7 +112,9 @@
     "dependency": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["spec_id"],
+      "required": [
+        "spec_id"
+      ],
       "properties": {
         "spec_id": {
           "type": "string",
@@ -101,7 +127,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "spec_id"],
+          "required": [
+            "type",
+            "spec_id"
+          ],
           "properties": {
             "type": {
               "type": "string",
@@ -109,7 +138,10 @@
             },
             "kind": {
               "type": "string",
-              "enum": ["normative", "historical"]
+              "enum": [
+                "normative",
+                "historical"
+              ]
             },
             "spec_id": {
               "type": "string",
@@ -120,7 +152,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "path"],
+          "required": [
+            "type",
+            "path"
+          ],
           "properties": {
             "type": {
               "type": "string",
@@ -138,11 +173,17 @@
     "derivedArtifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "path"],
+      "required": [
+        "type",
+        "path"
+      ],
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["markdown", "yaml"]
+          "enum": [
+            "markdown",
+            "yaml"
+          ]
         },
         "path": {
           "type": "string",
@@ -158,7 +199,14 @@
     "field": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "required", "input_type", "description", "placeholder"],
+      "required": [
+        "id",
+        "label",
+        "required",
+        "input_type",
+        "description",
+        "placeholder"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -173,7 +221,10 @@
         },
         "input_type": {
           "type": "string",
-          "enum": ["input", "textarea"]
+          "enum": [
+            "input",
+            "textarea"
+          ]
         },
         "description": {
           "type": "string",
@@ -191,11 +242,23 @@
     "validation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "properties": {
         "kind": {
           "type": "string",
-          "enum": ["meaningful", "issue-link", "commit-sha", "spec-reference", "path-list", "numbered-steps", "checklist", "default-branch-base"]
+          "enum": [
+            "meaningful",
+            "issue-link",
+            "commit-sha",
+            "spec-reference",
+            "path-list",
+            "numbered-steps",
+            "checklist",
+            "default-branch-base",
+            "change-type"
+          ]
         },
         "allow_none": {
           "type": "boolean"
@@ -209,6 +272,15 @@
         },
         "items": {
           "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "minLength": 1

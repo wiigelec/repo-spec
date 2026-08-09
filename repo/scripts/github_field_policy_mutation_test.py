@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+import re
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -54,6 +55,8 @@ def render_value(field: dict, sha: str) -> str:
         return "\n".join(f"- [ ] {item}" for item in validation["items"])
     if kind == "default-branch-base":
         return f"release/v2 at {sha}"
+    if kind == "change-type":
+        return validation["values"][0]
     if validation.get("allow_none"):
         return "None."
     return f"Substantive response for {field['label']}."
@@ -161,7 +164,7 @@ def check_product_artifact_evidence_validation() -> None:
         )
     )
     replacements = {
-        "Substantive response for Change type.": "Product-artifact implementation.",
+        "Maintenance": "Product-artifact implementation",
         "repo.manifest": (
             "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md\n\n"
             f"{cited_specs}"
@@ -200,7 +203,7 @@ def check_product_artifact_evidence_validation() -> None:
             "unrelated accepted product specification",
             "product.full-initialization",
             "product.initialization-request",
-            "cited product specifications do not match a controlling set in cited implementation plan",
+            "cited product specifications do not equal the union of selected implementation-plan workstreams/stages",
         ),
         (
             "missing predecessor issue",
@@ -215,6 +218,24 @@ def check_product_artifact_evidence_validation() -> None:
             "missing predecessor implementation issue and revision evidence",
         ),
     )
+
+    # patch2 fixture: bind existing valid spec set to canonical workstream id
+    import importlib.util
+    policy_spec = importlib.util.spec_from_file_location("field_policy_fixture", POLICY_SCRIPT)
+    if policy_spec is None or policy_spec.loader is None:
+        raise SystemExit("cannot load field policy for product-artifact fixture")
+    policy_module = importlib.util.module_from_spec(policy_spec)
+    policy_spec.loader.exec_module(policy_module)
+    governing_match = re.search(r"^## Governing specifications\s*$\n(.*?)(?=^##\s|\Z)", body, re.M | re.S)
+    if governing_match is None:
+        raise SystemExit("product-artifact fixture lacks Governing specifications")
+    cited_specs = {s for s in policy_module.SPEC_RE.findall(governing_match.group(1)) if s.startswith("product.") and s != "product.manifest"}
+    accepted_specs = policy_module.load_accepted_product_specs(REPO_ROOT)
+    authority = policy_module.load_plan_controlling_spec_sets(REPO_ROOT, "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md", accepted_specs)
+    matching_ids = sorted(k for k,v in authority.items() if set(v) == cited_specs)
+    if not matching_ids:
+        raise SystemExit("product-artifact fixture spec set does not match canonical workstream authority")
+    body = body.rstrip() + "\n\n## Implementation-plan workstreams/stages\n\n" + matching_ids[0] + "\n"
 
     with tempfile.TemporaryDirectory() as tmpdir:
         body_path = Path(tmpdir) / "issue.md"
@@ -239,13 +260,24 @@ def check_product_artifact_evidence_validation() -> None:
                 "`product.initialization-request::INIT-REQ-001-015`",
             )
         )
+        body_path.write_text(body)
+        result = run_policy("issue", fixture_root, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"issue policy depended on incidental implementation-plan Markdown: {result.stderr.strip()}")
+
+        plan_path = fixture_root / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(
+            plan_path.read_text().replace(
+                '"product.execution-profile",\n        "product.full-initialization",',
+                '"product.execution-profile",\n        "product.initialization-request",',
+            )
+        )
         mutated_plan_body = body.replace("product.full-initialization", "product.initialization-request")
         body_path.write_text(mutated_plan_body)
         result = run_policy("issue", fixture_root, body_path)
         if result.returncode != 0:
-            raise SystemExit(f"issue policy did not follow the mutated implementation-plan controlling set: {result.stderr.strip()}")
+            raise SystemExit(f"issue policy did not follow canonical implementation-plan authority: {result.stderr.strip()}")
 
-        plan_path = fixture_root / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_path.write_text(
             plan_path.read_text().replace(
                 '"lifecycle_status": "accepted"',
@@ -260,11 +292,139 @@ def check_product_artifact_evidence_validation() -> None:
             raise SystemExit(f"issue policy rejected a candidate plan for the wrong reason: {result.stderr.strip()}")
 
 
+def check_multi_workstream_product_artifact_evidence() -> None:
+    sha = head_sha()
+    spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
+    body = render_body(spec, "issue_fields", sha)
+
+    import importlib.util
+    policy_spec = importlib.util.spec_from_file_location("field_policy_multi", POLICY_SCRIPT)
+    if policy_spec is None or policy_spec.loader is None:
+        raise SystemExit("cannot load field policy for multi-workstream test")
+    module = importlib.util.module_from_spec(policy_spec)
+    policy_spec.loader.exec_module(module)
+
+    accepted_specs = module.load_accepted_product_specs(REPO_ROOT)
+    authority = module.load_plan_controlling_spec_sets(
+        REPO_ROOT,
+        "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
+        accepted_specs,
+    )
+    ids = sorted(authority)
+    if len(ids) < 2:
+        raise SystemExit("multi-workstream fixture requires at least two canonical IDs")
+
+    first, second = ids[0], ids[1]
+    union_specs = sorted(set(authority[first]) | set(authority[second]))
+    specs_text = "\n".join(f"- {spec_id}" for spec_id in union_specs)
+
+    body = body.replace(
+        "Maintenance",
+        "Product-artifact implementation",
+        1,
+    )
+    body = body.replace(
+        "repo.manifest",
+        "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md\n\n" + specs_text,
+    )
+    body = body.replace(
+        "Substantive response for Dependencies and predecessor evidence.",
+        f"Issue #299 at {sha}.",
+    )
+    body = body.rstrip() + (
+        "\n\n## Implementation-plan workstreams/stages\n\n"
+        f"{first}\n{second}\n"
+    )
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        body_path = Path(tmpdir) / "issue.md"
+        body_path.write_text(body)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"multi-workstream union was rejected: {result.stderr.strip()}")
+
+        body_path.write_text(body.replace(f"{first}\n{second}", f"{first}\nUNKNOWN_STAGE"))
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "unknown implementation-plan workstream/stage identifier" not in result.stderr:
+            raise SystemExit(f"unknown workstream ID was not rejected correctly: {result.stderr.strip()}")
+
+        if len(union_specs) > 1:
+            subset_text = "\n".join(f"- {spec_id}" for spec_id in union_specs[:-1])
+            body_path.write_text(body.replace(specs_text, subset_text))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if result.returncode == 0 or "do not equal the union" not in result.stderr:
+                raise SystemExit(f"union subset was not rejected correctly: {result.stderr.strip()}")
+
+
+
+def check_change_type_validation() -> None:
+    sha = head_sha()
+    spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
+    body = render_body(spec, "issue_fields", sha)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        body_path = Path(tmpdir) / "issue.md"
+        values = next(
+            field["validation"]["values"]
+            for field in spec["issue_fields"]
+            if field["id"] == "change_type"
+        )
+
+        for value in values:
+            body_path.write_text(body.replace("Maintenance", value, 1))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if value == "Product-artifact implementation":
+                if result.returncode == 0 or "missing canonical implementation-plan citation" not in result.stderr:
+                    raise SystemExit(
+                        f"product-artifact classification did not activate the stricter gate: {result.stderr.strip()}"
+                    )
+            elif result.returncode != 0:
+                raise SystemExit(f"canonical change type was rejected: {value}: {result.stderr.strip()}")
+
+        legacy = body.replace(
+            "Maintenance",
+            "Maintenance and specification consistency correction following a prior audit.",
+            1,
+        )
+        body_path.write_text(legacy)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"legacy recognized maintenance classification was rejected: {result.stderr.strip()}")
+
+        descriptive = body.replace(
+            "Maintenance",
+            "Maintenance discussing Product-artifact implementation policy semantics.",
+            1,
+        )
+        body_path.write_text(descriptive)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"descriptive prose accidentally activated product-artifact policy: {result.stderr.strip()}")
+
+        fuzzy_product = body.replace(
+            "Maintenance",
+            "Product-artifact implementation and some descriptive prose.",
+            1,
+        )
+        body_path.write_text(fuzzy_product)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "invalid change type in Change type" not in result.stderr:
+            raise SystemExit(f"fuzzy product classification was not rejected exactly: {result.stderr.strip()}")
+
+        for invalid in ("Unknown", "maintenance", "Product artifact implementation", "Featurette"):
+            body_path.write_text(body.replace("Maintenance", invalid, 1))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if result.returncode == 0 or "invalid change type in Change type" not in result.stderr:
+                raise SystemExit(f"invalid change type was not rejected: {invalid}: {result.stderr.strip()}")
+
+
 def main() -> int:
     check_default_branch_base_validation()
     check_product_artifact_evidence_validation()
     mutate_and_expect_failure("issue", "repo/specs/repo/governing-issue.json", "issue_fields")
     mutate_and_expect_failure("pr", "repo/specs/repo/review-proposal.json", "review_fields")
+    check_multi_workstream_product_artifact_evidence()
+    check_change_type_validation()
     return 0
 
 

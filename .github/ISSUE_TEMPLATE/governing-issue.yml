@@ -8,12 +8,12 @@ body:
     attributes:
       value: |
         Use this form to create the canonical governing issue. Required fields must be filled with substantive content; placeholders do not count as complete.
-  - type: textarea
+  - type: input
     id: change_type
     attributes:
       label: "Change type"
-      description: "What kind of bounded governed change is this? Use Product-artifact implementation when the change creates or modifies maintained product artifacts."
-      placeholder: "Product-artifact implementation, standardization, feature, maintenance, documentation, migration, or other bounded change."
+      description: "Use one canonical bounded change classification. Product-artifact implementation is reserved for changes that create or modify maintained product artifacts."
+      placeholder: "Maintenance"
     validations:
       required: true
   - type: textarea
@@ -40,6 +40,14 @@ body:
       placeholder: "repo.manifest, repo.development-workflow, and any other governing specs."
     validations:
       required: true
+  - type: textarea
+    id: implementation_plan_workstreams
+    attributes:
+      label: "Implementation-plan workstreams/stages"
+      description: "For Product-artifact implementation, list one or more stable workstream/stage IDs from the cited accepted implementation plan, one per line."
+      placeholder: "I1\nI2"
+    validations:
+      required: false
   - type: input
     id: accepted_default_branch_base
     attributes:

@@ -11,7 +11,8 @@ for governed successor work; it does not itself mutate product artifacts. B0 is 
 next eligible governed successor, and I1-I5 remain gated by predecessor evidence and
 separate governing issues. Issues #255 and #257 repaired the accepted provenance/handoff
 specification conflicts and ordering gap, and issue #259 / PR #260 synchronized and
-clean-room reviewed the plan before acceptance.
+clean-room reviewed the plan before acceptance. Issue #301 encoded the existing
+B0/I1-I5 authority sets in canonical metadata without reassigning accepted authority.
 
 ## Metadata
 
@@ -26,7 +27,7 @@ clean-room reviewed the plan before acceptance.
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -45,6 +46,118 @@ clean-room reviewed the plan before acceptance.
     "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md",
     "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md",
     "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"
+  ],
+  "workstream_authority": [
+    {
+      "id": "B0",
+      "controlling_product_specifications": [
+        "product.content-equivalence",
+        "product.destination",
+        "product.destination-preflight",
+        "product.execution-orchestration",
+        "product.execution-profile",
+        "product.execution-report",
+        "product.foundation-seeding",
+        "product.framework-installation",
+        "product.full-initialization",
+        "product.generated-repository",
+        "product.git-bootstrap-profile",
+        "product.git-object-identity",
+        "product.handoff-assembly",
+        "product.handoff-manifest",
+        "product.initialization-request",
+        "product.initializer-level-0",
+        "product.initializer-output-inventory-v1",
+        "product.lifecycle-stages",
+        "product.local-git-initialization",
+        "product.local-git-repository",
+        "product.material-classification",
+        "product.material-manifest",
+        "product.product-identity",
+        "product.provenance-record",
+        "product.provenance-recording",
+        "product.repository-validation",
+        "product.request-intake",
+        "product.source-material-resolution",
+        "product.source-revision-identity",
+        "product.staging-state",
+        "product.staging-workspace",
+        "product.transactional-staging",
+        "product.validation-profile",
+        "product.validation-report"
+      ]
+    },
+    {
+      "id": "I1",
+      "controlling_product_specifications": [
+        "product.destination",
+        "product.destination-preflight",
+        "product.git-object-identity",
+        "product.initialization-request",
+        "product.initializer-level-0",
+        "product.material-manifest",
+        "product.product-identity",
+        "product.request-intake",
+        "product.source-material-resolution",
+        "product.source-revision-identity"
+      ]
+    },
+    {
+      "id": "I2",
+      "controlling_product_specifications": [
+        "product.foundation-seeding",
+        "product.framework-installation",
+        "product.generated-repository",
+        "product.initialization-request",
+        "product.initializer-level-0",
+        "product.initializer-output-inventory-v1",
+        "product.material-classification",
+        "product.material-manifest",
+        "product.product-identity",
+        "product.source-revision-identity",
+        "product.staging-workspace"
+      ]
+    },
+    {
+      "id": "I3",
+      "controlling_product_specifications": [
+        "product.generated-repository",
+        "product.git-bootstrap-profile",
+        "product.git-object-identity",
+        "product.handoff-assembly",
+        "product.handoff-manifest",
+        "product.initializer-level-0",
+        "product.local-git-initialization",
+        "product.local-git-repository",
+        "product.provenance-record",
+        "product.provenance-recording"
+      ]
+    },
+    {
+      "id": "I4",
+      "controlling_product_specifications": [
+        "product.destination",
+        "product.execution-report",
+        "product.initializer-level-0",
+        "product.repository-validation",
+        "product.staging-state",
+        "product.staging-workspace",
+        "product.transactional-staging",
+        "product.validation-profile",
+        "product.validation-report"
+      ]
+    },
+    {
+      "id": "I5",
+      "controlling_product_specifications": [
+        "product.content-equivalence",
+        "product.execution-orchestration",
+        "product.execution-profile",
+        "product.full-initialization",
+        "product.initializer-level-0",
+        "product.lifecycle-stages"
+      ]
+    }
   ],
   "required_content_areas": {
     "authority_and_basis": [
@@ -157,7 +270,9 @@ issues before maintained product-artifact mutation.
   provenance-conflict planning amendment recorded in issue #253 comment
   `#issuecomment-5222594632`, #255 (accepted provenance/handoff repair and
   plan impact review), #257 (handoff ordering repair and plan impact review),
-  #259 (plan synchronization clean-room cycle), and #261 (separately governed plan-acceptance cycle)
+  #259 (plan synchronization clean-room cycle), #261 (separately governed
+  plan-acceptance cycle), and #301 (machine-readable encoding of the existing
+  accepted B0/I1-I5 authority sets without reassignment)
 - Controlling repository contracts: `repo.development-document-base`,
   `repo.implementation-plan`, `repo.development-workflow`, and applicable
   repository workflow and validation contracts

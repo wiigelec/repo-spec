@@ -24,16 +24,16 @@ Defines the canonical repository-generic governing issue structure and its subor
 
 - Field ID: `change_type`
 - Required: yes
-- Input type: `textarea`
+- Input type: `input`
 
-What kind of bounded governed change is this? Use Product-artifact implementation when the change creates or modifies maintained product artifacts.
+Use one canonical bounded change classification. Product-artifact implementation is reserved for changes that create or modify maintained product artifacts.
 
 Placeholder:
-> Product-artifact implementation, standardization, feature, maintenance, documentation, migration, or other bounded change.
+> Maintenance
 
 Validation metadata:
 
-- Kind: `meaningful`
+- Kind: `change-type`
 
 ### Problem statement
 
@@ -79,6 +79,23 @@ Placeholder:
 Validation metadata:
 
 - Kind: `spec-reference`
+
+### Implementation-plan workstreams/stages
+
+- Field ID: `implementation_plan_workstreams`
+- Required: no
+- Input type: `textarea`
+
+For Product-artifact implementation, list one or more stable workstream/stage IDs from the cited accepted implementation plan, one per line.
+
+Placeholder:
+> I1
+> I2
+
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
 
 ### Accepted default-branch base
 
@@ -261,7 +278,8 @@ Validation metadata:
 - `REPO-GI-009`: The Markdown projection and GitHub issue form shall be adapters subordinate to the canonical repository specification.
 - `REPO-GI-010`: The GitHub issue form shall represent every required canonical field.
 - `REPO-GI-011`: The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure and its structured field definitions.
-- `REPO-GI-012`: A governing issue that creates or modifies maintained product artifacts shall identify its change type as Product-artifact implementation so the issue-body field-policy boundary can enforce the required implementation-plan, accepted product-specification, accepted-base, and predecessor-evidence citations.
+- `REPO-GI-012`: The canonical Change type field shall use a constrained repository-owned classification. Product-artifact implementation is the exact classification for governing issues that create or modify maintained product artifacts and shall activate the stricter product-artifact evidence gate; descriptive prose shall not activate that gate.
+- `REPO-GI-013`: A governing issue declared as Product-artifact implementation shall identify one or more stable workstream or stage identifiers from its cited accepted implementation plan; those selected identifiers define the bounded plan scope whose controlling accepted product specifications are enforced by issue-body field policy.
 
 ## Dependencies
 

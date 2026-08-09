@@ -20,9 +20,7 @@ ISSUE_RE = re.compile(r"(?:https://github\.com/[^\s]+/issues/\d+|#\d+)")
 SPEC_RE = re.compile(r"\b(?:repo|product)\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*\b")
 PATH_RE = re.compile(r"\b(?:[A-Za-z0-9._-]+/)+[A-Za-z0-9._-]+\b")
 IMPLEMENTATION_PLAN_RE = re.compile(r"\b(?:repo|product)/docs/plans/[A-Za-z0-9._/-]+-IMPLEMENTATION-PLAN\.md\b")
-PRODUCT_ARTIFACT_IMPLEMENTATION_RE = re.compile(r"\bproduct-artifact implementation\b", re.I)
-PLAN_SPEC_ROW_RE = re.compile(r"^\|\s*\d+\s*\|\s*`(product\.[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)*)`\s*\|", re.M)
-WORKSTREAM_SECTION_RE = re.compile(r"^## (?:B0|I[1-9][0-9]*)\b[^\n]*\n(.*?)(?=^##\s|\Z)", re.M | re.S)
+WORKSTREAM_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]*$")
 
 SUPPORTED_VALIDATION_KINDS = {
     "meaningful",
@@ -33,6 +31,7 @@ SUPPORTED_VALIDATION_KINDS = {
     "numbered-steps",
     "checklist",
     "default-branch-base",
+    "change-type",
 }
 
 
@@ -129,6 +128,29 @@ def is_valid_branch_name(branch: str) -> bool:
     return all(part and not part.startswith(".") and not part.endswith(".lock") for part in branch.split("/"))
 
 
+def parse_change_type(name: str, value: str, values: list[str]) -> str:
+    normalized = normalize(value)
+    if normalized in values:
+        return normalized
+
+    # Compatibility for pre-structured non-product governing issues. A
+    # recognized leading non-product classification may retain descriptive
+    # text. Product-artifact implementation has no fuzzy compatibility path.
+    for candidate in values:
+        if candidate == "Product-artifact implementation":
+            continue
+        if normalized.startswith(candidate + " "):
+            return candidate
+        if normalized.startswith(candidate + ":") or normalized.startswith(candidate + " -"):
+            return candidate
+
+    raise PolicyError(f"invalid change type in {name}")
+
+
+def require_change_type(name: str, value: str, values: list[str]) -> None:
+    parse_change_type(name, value, values)
+
+
 def require_default_branch_base(name: str, value: str) -> None:
     match = re.fullmatch(r"([^\s]+) at ([0-9a-fA-F]{40})", normalize(value))
     if match is None or not is_valid_branch_name(match.group(1)):
@@ -172,56 +194,79 @@ def load_document_metadata(text: str, relative_path: str) -> dict:
     return metadata
 
 
-def markdown_section(text: str, heading: str) -> str:
-    match = re.search(rf"^## {re.escape(heading)}\s*$\n(.*?)(?=^##\s|\Z)", text, re.M | re.S)
-    return match.group(1) if match else ""
-
-
-def load_plan_controlling_spec_sets(repo_root: Path, plan_path: str) -> set[frozenset[str]]:
+def load_plan_controlling_spec_sets(
+    repo_root: Path,
+    plan_path: str,
+    accepted_specs: set[str],
+) -> dict[str, frozenset[str]]:
     plan_text = read_repo_text(repo_root, plan_path)
     metadata = load_document_metadata(plan_text, plan_path)
     if metadata.get("artifact_type") != "implementation-plan" or metadata.get("lifecycle_status") != "accepted":
         raise PolicyError(f"cited implementation plan is not accepted: {plan_path}")
 
-    content_areas = metadata.get("required_content_areas")
-    authority_paths = content_areas.get("authority_and_basis") if isinstance(content_areas, dict) else None
-    workstream_paths = content_areas.get("workstreams_and_dependencies") if isinstance(content_areas, dict) else None
-    if not isinstance(authority_paths, list) or not authority_paths or not all(isinstance(path, str) for path in authority_paths):
-        raise PolicyError(f"cited implementation plan lacks canonical authority content: {plan_path}")
-    if not isinstance(workstream_paths, list) or not workstream_paths or not all(isinstance(path, str) for path in workstream_paths):
-        raise PolicyError(f"cited implementation plan lacks canonical workstream content: {plan_path}")
+    entries = metadata.get("workstream_authority")
+    if not isinstance(entries, list) or not entries:
+        raise PolicyError(f"cited implementation plan lacks canonical workstream authority: {plan_path}")
 
-    plan_specs: set[str] = set()
-    for authority_path in authority_paths:
-        authority_text = read_repo_text(repo_root, authority_path)
-        specification_map = markdown_section(authority_text, "Requirement-to-responsibility map")
-        plan_specs.update(PLAN_SPEC_ROW_RE.findall(specification_map))
-    if not plan_specs:
-        raise PolicyError(f"cited implementation plan lacks controlling product specifications: {plan_path}")
-
-    controlling_sets: set[frozenset[str]] = set()
-    for workstream_path in workstream_paths:
-        workstream_text = read_repo_text(repo_root, workstream_path)
-        for section in WORKSTREAM_SECTION_RE.findall(workstream_text):
-            requirements = re.search(r"^Controlling requirements[^:]*:\s*(.*)$", section, re.M)
-            if requirements is None:
-                continue
-            value = requirements.group(1)
-            workstream_specs = plan_specs if re.search(r"\ball \d+ accepted specs\b", value) else {
-                spec_id for spec_id in SPEC_RE.findall(value) if spec_id.startswith("product.")
-            }
-            if workstream_specs:
-                if not workstream_specs.issubset(plan_specs):
-                    raise PolicyError(f"cited implementation plan has workstream specifications outside its authority map: {plan_path}")
-                controlling_sets.add(frozenset(workstream_specs))
-    if not controlling_sets:
-        raise PolicyError(f"cited implementation plan lacks controlling workstream specification sets: {plan_path}")
-    return controlling_sets
+    authority: dict[str, frozenset[str]] = {}
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {"id", "controlling_product_specifications"}:
+            raise PolicyError(f"cited implementation plan has invalid workstream authority: {plan_path}")
+        workstream_id = entry["id"]
+        specs = entry["controlling_product_specifications"]
+        if (
+            not isinstance(workstream_id, str)
+            or WORKSTREAM_ID_RE.fullmatch(workstream_id) is None
+            or workstream_id in authority
+        ):
+            raise PolicyError(f"cited implementation plan has invalid workstream authority identifier: {plan_path}")
+        if (
+            not isinstance(specs, list)
+            or not specs
+            or not all(isinstance(spec_id, str) for spec_id in specs)
+            or len(specs) != len(set(specs))
+        ):
+            raise PolicyError(f"cited implementation plan has invalid controlling product specifications: {plan_path}")
+        if not set(specs).issubset(accepted_specs):
+            raise PolicyError(f"cited implementation plan has non-accepted controlling product specifications: {plan_path}")
+        authority[workstream_id] = frozenset(specs)
+    return authority
 
 
-def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path) -> None:
-    change_type = sections.get("Change type", "")
-    if not PRODUCT_ARTIFACT_IMPLEMENTATION_RE.search(change_type):
+
+def parse_selected_workstream_ids(value: str) -> list[str]:
+    selected: list[str] = []
+    for raw_line in value.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        line = re.sub(r"^\s*[-*]\s+", "", line).strip()
+        if line.startswith("`") and line.endswith("`") and len(line) >= 2:
+            line = line[1:-1].strip()
+        if WORKSTREAM_ID_RE.fullmatch(line) is None:
+            raise PolicyError(f"invalid implementation-plan workstream/stage identifier: {raw_line.strip()}")
+        selected.append(line)
+    if not selected:
+        raise PolicyError("missing implementation-plan workstream/stage identifiers")
+    if len(selected) != len(set(selected)):
+        raise PolicyError("duplicate implementation-plan workstream/stage identifier")
+    return selected
+
+
+def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
+    change_type_field = next(
+        (field for field in fields if field.get("id") == "change_type"),
+        None,
+    )
+    if change_type_field is None:
+        raise PolicyError("canonical governing issue lacks change_type field")
+    change_type = require_section(sections, change_type_field["label"])
+    classification = parse_change_type(
+        change_type_field["label"],
+        change_type,
+        change_type_field["validation"]["values"],
+    )
+    if classification != "Product-artifact implementation":
         return
 
     governing = require_section(sections, "Governing specifications")
@@ -231,6 +276,10 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path)
     if len(set(plan_paths)) != 1:
         raise PolicyError("expected exactly one canonical implementation-plan citation in Governing specifications")
 
+    selected_ids = parse_selected_workstream_ids(
+        require_section(sections, "Implementation-plan workstreams/stages")
+    )
+
     cited_specs = {
         spec_id
         for spec_id in SPEC_RE.findall(governing)
@@ -239,13 +288,26 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path)
     accepted_specs = load_accepted_product_specs(repo_root)
     if not cited_specs or not cited_specs.issubset(accepted_specs):
         raise PolicyError("missing manifest-listed accepted product specification in Governing specifications")
-    controlling_sets = load_plan_controlling_spec_sets(repo_root, plan_paths[0])
-    if frozenset(cited_specs) not in controlling_sets:
-        raise PolicyError("cited product specifications do not match a controlling set in cited implementation plan")
+
+    authority = load_plan_controlling_spec_sets(repo_root, plan_paths[0], accepted_specs)
+    unknown = [workstream_id for workstream_id in selected_ids if workstream_id not in authority]
+    if unknown:
+        raise PolicyError(
+            "unknown implementation-plan workstream/stage identifier: " + ", ".join(unknown)
+        )
+
+    expected_specs: set[str] = set()
+    for workstream_id in selected_ids:
+        expected_specs.update(authority[workstream_id])
+    if cited_specs != expected_specs:
+        raise PolicyError(
+            "cited product specifications do not equal the union of selected implementation-plan workstreams/stages"
+        )
 
     predecessor = require_section(sections, "Dependencies and predecessor evidence")
     if not ISSUE_RE.search(predecessor) or not SHA_RE.search(predecessor.lower()):
         raise PolicyError("missing predecessor implementation issue and revision evidence")
+
 
 
 def validate_field_definition(field: dict, spec_path: str) -> None:
@@ -263,6 +325,17 @@ def validate_field_definition(field: dict, spec_path: str) -> None:
         items = validation.get("items")
         if not isinstance(items, list) or not items or not all(isinstance(item, str) and item for item in items):
             raise PolicyError(f"invalid checklist items in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+    if kind == "change-type":
+        values = validation.get("values")
+        if (
+            not isinstance(values, list)
+            or not values
+            or not all(isinstance(value, str) and value for value in values)
+            or len(values) != len(set(values))
+            or "Product-artifact implementation" not in values
+        ):
+            raise PolicyError(f"invalid change-type values in {spec_path}: {field.get('label', field.get('id', '<unknown>'))}")
+
 
 
 def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
@@ -298,8 +371,11 @@ def validate_field_value(field: dict, value: str) -> None:
         require_checklist(field["label"], value, validation["items"])
     elif kind == "default-branch-base":
         require_default_branch_base(field["label"], value)
+    elif kind == "change-type":
+        require_change_type(field["label"], value, validation["values"])
     else:
         raise PolicyError(f"unsupported validation kind for {field['label']}: {kind}")
+
 
 
 def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
@@ -309,7 +385,7 @@ def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
             continue
         value = require_section(sections, field["label"])
         validate_field_value(field, value)
-    require_product_artifact_evidence(sections, repo_root)
+    require_product_artifact_evidence(sections, repo_root, fields)
 
 
 def check_pr(body: str, fields: list[dict]) -> None:

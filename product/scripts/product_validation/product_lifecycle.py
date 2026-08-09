@@ -7,7 +7,6 @@ from validation.repository_checks import (
     ValidationContext,
     expect,
     get_development_document_records,
-    repository_reference_specs,
 )
 
 from .product_development_documents import _product_development_roots
@@ -16,7 +15,6 @@ from .product_development_documents import _product_development_roots
 def check_product_lifecycle_readiness(context: ValidationContext) -> None:
     product_specs = context.product.specs if context.product is not None else {}
     product_entries = context.product.entries if context.product is not None else []
-    repository_specs = repository_reference_specs(context)
     records = get_development_document_records(
         context,
         development_roots=_product_development_roots(),
@@ -28,16 +26,33 @@ def check_product_lifecycle_readiness(context: ValidationContext) -> None:
             continue
         if metadata.get("lifecycle_status") not in {"accepted", "planning-complete"}:
             continue
-
-        required_specs = metadata.get("applicable_accepted_specifications", [])
-        if not required_specs:
+        if context.product is None:
             continue
 
-        for spec_ref in required_specs:
-            target_spec_id = (
-                spec_ref.get("spec_id") if isinstance(spec_ref, dict) else spec_ref
+        authority_entries = metadata.get("workstream_authority", [])
+        expect(authority_entries, f"lifecycle plan failed: plan {plan_path} lacks workstream authority")
+        authority_spec_ids = {
+            spec_id
+            for authority in authority_entries
+            for spec_id in authority["controlling_product_specifications"]
+        }
+        # No overlap means this plan belongs to a different product-specification registry.
+        if authority_spec_ids.isdisjoint(product_specs):
+            continue
+        seen_ids: set[str] = set()
+        for authority in authority_entries:
+            workstream_id = authority["id"]
+            expect(
+                workstream_id not in seen_ids,
+                f"lifecycle plan failed: plan {plan_path} has duplicate workstream authority identifier {workstream_id}",
             )
-            if target_spec_id in product_specs:
+            seen_ids.add(workstream_id)
+            for target_spec_id in authority["controlling_product_specifications"]:
+                if target_spec_id not in product_specs:
+                    fail(
+                        f"lifecycle plan failed: plan {plan_path} references "
+                        f"unknown specification {target_spec_id}"
+                    )
                 target_spec = product_specs[target_spec_id]
                 expect(
                     target_spec["status"] == "accepted",
@@ -46,30 +61,13 @@ def check_product_lifecycle_readiness(context: ValidationContext) -> None:
                     f"(status: {target_spec['status']})",
                 )
                 manifest_entry = next(
-                    (
-                        entry
-                        for entry in product_entries
-                        if entry["spec_id"] == target_spec_id
-                    ),
+                    (entry for entry in product_entries if entry["spec_id"] == target_spec_id),
                     None,
                 )
                 expect(
-                    manifest_entry is not None,
+                    manifest_entry is not None and manifest_entry.get("status") == "accepted",
                     f"lifecycle plan failed: plan {plan_path} references "
-                    f"specification {target_spec_id} absent from product manifest",
-                )
-            elif target_spec_id in repository_specs:
-                target_spec = repository_specs[target_spec_id]
-                expect(
-                    target_spec["status"] == "accepted",
-                    f"lifecycle plan failed: plan {plan_path} references "
-                    f"non-accepted repository specification {target_spec_id} "
-                    f"(status: {target_spec['status']})",
-                )
-            else:
-                fail(
-                    f"lifecycle plan failed: plan {plan_path} references "
-                    f"unknown specification {target_spec_id}"
+                    f"specification {target_spec_id} without accepted product-manifest registration",
                 )
 
     for decomp_path, record in records.items():

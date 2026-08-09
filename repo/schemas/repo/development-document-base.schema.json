@@ -92,6 +92,9 @@
       "type": "string",
       "enum": ["initial", "revision", "replacement", "branch"]
     },
+    "workstream_authority": {
+      "type": "array"
+    },
     "subordinate_chunks": {
       "type": "array",
       "minItems": 1,

@@ -31,7 +31,7 @@
     },
     {
       "id": "REPO-IPL-007",
-      "text": "An implementation plan shall identify the exact controlling accepted product specifications for every planned workstream or stage. The plan shall distinguish specification-complete scope, specification work still required, implementation-authorized scope, deferred implementation, unresolved semantic decisions, and non-product exploratory work."
+      "text": "An implementation plan shall identify every planned workstream or stage through canonical machine-readable authority data containing a stable unique identifier and the exact non-empty set of controlling accepted product specifications. The plan shall distinguish specification-complete scope, specification work still required, implementation-authorized scope, deferred implementation, unresolved semantic decisions, and non-product exploratory work."
     },
     {
       "id": "REPO-IPL-008",

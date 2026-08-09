@@ -10,13 +10,21 @@ from validation.errors import fail
 from validation.repository_checks import DevelopmentDocumentRecord, check_development_document_relationships, resolve_repo_path
 from product_validation.product_checks import validate_product
 
-from validation.tests.mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
+from validation.tests.mutation_support import add_lifecycle_spec, create_repo_fixture, declared_repo_fixture_paths, expect_failure, mutate_json
 
 
 def run_product_repository_mutations(repo_root: Path) -> None:
     repository_validation_spec = json.loads(
         (repo_root / "repo/specs/repo/validation.json").read_text()
     )
+    product_manifest = json.loads((repo_root / "product/specs/product/manifest.json").read_text())
+    active_product_paths = list(declared_repo_fixture_paths(repo_root))
+    active_product_paths.append("product/specs/product/manifest.json")
+    for entry in product_manifest["product_specifications"]:
+        active_product_paths.append(entry["path"])
+        product_spec = json.loads((repo_root / entry["path"]).read_text())
+        active_product_paths.extend(artifact["path"] for artifact in product_spec.get("derived_artifacts", []))
+    active_product_paths = list(dict.fromkeys(active_product_paths))
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
         clone_index = 0
@@ -332,8 +340,8 @@ def run_product_repository_mutations(repo_root: Path) -> None:
             1,
         )
         plan_text = plan_text.replace(
-            '      ]\n    }\n  ],\n',
-            '      ]\n    },\n    {\n      "order": 5,\n      "path": "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md",\n      "title": "Validation addendum",\n      "coverage": [\n        "workstreams_and_dependencies"\n      ]\n    }\n  ],\n',
+            '      "title": "Risks and unresolved decisions",\n      "coverage": [\n        "risks_and_unresolved_decisions"\n      ]\n    }\n  ],\n  "successor_action":',
+            '      "title": "Risks and unresolved decisions",\n      "coverage": [\n        "risks_and_unresolved_decisions"\n      ]\n    },\n    {\n      "order": 5,\n      "path": "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md",\n      "title": "Validation addendum",\n      "coverage": [\n        "workstreams_and_dependencies"\n      ]\n    }\n  ],\n  "successor_action":',
             1,
         )
         plan_text = plan_text.replace(
@@ -355,6 +363,42 @@ def run_product_repository_mutations(repo_root: Path) -> None:
         )
         plan_path.write_text(plan_text)
         expect_failure("plan chunk without coverage", lambda: validate_product(temp_repo), "required coverage must be an array")
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(plan_path.read_text().replace('"id": "I1"', '"id": "B0"', 1))
+        expect_failure(
+            "duplicate plan workstream authority identifier",
+            lambda: validate_product(temp_repo),
+            "duplicate workstream authority identifier B0",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
+        clone_index += 1
+        plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(
+            plan_path.read_text().replace(
+                '"product.execution-profile",\n        "product.full-initialization",',
+                '"product.execution-profile",\n        "product.platform-integrated-initialization",',
+                1,
+            )
+        )
+        expect_failure(
+            "candidate plan workstream authority specification",
+            lambda: validate_product(temp_repo),
+            "non-accepted specification product.platform-integrated-initialization",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_path.write_text(plan_path.read_text().replace('"workstream_authority":', '"missing_workstream_authority":', 1))
+        expect_failure(
+            "accepted plan without canonical workstream authority",
+            lambda: validate_product(temp_repo),
+            "additionalProperties disallowed: missing_workstream_authority",
+        )
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1

@@ -22,6 +22,33 @@
           "type": "string",
           "enum": ["repo/docs/plans/", "product/docs/plans/"]
         },
+        "workstream_authority": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "controlling_product_specifications"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9._-]*$"
+              },
+              "controlling_product_specifications": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+                }
+              }
+            }
+          }
+        },
         "required_content_areas": {
           "type": "object",
           "additionalProperties": false,
@@ -102,7 +129,22 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "lifecycle_status": {
+                "const": "accepted"
+              }
+            },
+            "required": ["lifecycle_status"]
+          },
+          "then": {
+            "required": ["workstream_authority"]
+          }
+        }
+      ]
     }
   ],
   "unevaluatedProperties": false
