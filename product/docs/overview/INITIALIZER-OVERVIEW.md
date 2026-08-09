@@ -76,7 +76,7 @@ Bootstrap authority is recorded in metadata through `governing_issue` and `evide
 
 ## Next authorized action
 
-The next authorized action is initializer decomposition under `repo/docs/decompositions/`.
+The next authorized action is initializer decomposition under `product/docs/decompositions/`.
 
 ## Discoverability
 
