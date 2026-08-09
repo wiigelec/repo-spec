@@ -7,7 +7,7 @@ from pathlib import Path
 from validation.generated_outputs import check_generated_document_write_behavior
 from product_validation.product_checks import validate_product
 
-from validation.tests.mutation_support import create_repo_fixture, expect_failure, mutate_json
+from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
@@ -46,6 +46,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         temp_root = Path(temp_root_name)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 0)
+        deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
@@ -55,6 +56,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         validate_product(temp_repo)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 1)
+        deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
@@ -68,6 +70,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("self dependency", lambda: validate_product(temp_repo), "product acyclic dependencies failed: product.kernel -> product.kernel")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 2)
+        deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/a.json")
@@ -92,6 +95,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("two-node level 0 cycle", lambda: validate_product(temp_repo), "product acyclic dependencies failed: product.a -> product.b -> product.a")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 3)
+        deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
@@ -138,6 +142,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("two-node level 1 cycle", lambda: validate_product(temp_repo), "product acyclic dependencies failed: product.a -> product.b -> product.a")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 4)
+        deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
@@ -187,6 +192,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("three-node level 2 cycle", lambda: validate_product(temp_repo), "product acyclic dependencies failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 5)
+        deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")

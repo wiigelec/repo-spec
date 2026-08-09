@@ -132,18 +132,6 @@ def parse_change_type(name: str, value: str, values: list[str]) -> str:
     normalized = normalize(value)
     if normalized in values:
         return normalized
-
-    # Compatibility for pre-structured non-product governing issues. A
-    # recognized leading non-product classification may retain descriptive
-    # text. Product-artifact implementation has no fuzzy compatibility path.
-    for candidate in values:
-        if candidate == "Product-artifact implementation":
-            continue
-        if normalized.startswith(candidate + " "):
-            return candidate
-        if normalized.startswith(candidate + ":") or normalized.startswith(candidate + " -"):
-            return candidate
-
     raise PolicyError(f"invalid change type in {name}")
 
 

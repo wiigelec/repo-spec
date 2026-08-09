@@ -6,10 +6,11 @@ Accepted; planning-authoritative; non-normative with respect to product semantic
 
 This document is non-normative with respect to product semantics. Issue #261
 accepted this plan after revalidation against the synchronized accepted specification
-set and repository planning contracts. The accepted plan provides planning authority
-for governed successor work; it does not itself mutate product artifacts. B0 is the
-next eligible governed successor, and I1-I5 remain gated by predecessor evidence and
-separate governing issues. Issues #255 and #257 repaired the accepted provenance/handoff
+set and repository planning contracts. The accepted plan provided planning authority for the bounded B0→I1→I2→I3→I4→I5
+workflow; it does not itself mutate product artifacts. That bounded workflow is now
+complete through I5. Maintained I5 exit evidence records no blockers and does not
+authorize a successor capability. No current successor implementation work is
+authorized by this plan. Issues #255 and #257 repaired the accepted provenance/handoff
 specification conflicts and ordering gap, and issue #259 / PR #260 synchronized and
 clean-room reviewed the plan before acceptance. Issue #301 encoded the existing
 B0/I1-I5 authority sets in canonical metadata without reassigning accepted authority.
@@ -223,7 +224,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "Create a separately governed B0 evidence-classification issue against this accepted plan and the current accepted product specifications. B0 must complete before I1 work may be authorized; I1-I5 remain subject to their predecessor gates and separate governing issues.",
+  "successor_action": "No current successor implementation work is authorized. B0 through I5 are completed historical increments; maintained I5 exit evidence records no blockers and successor_authorized=false. Any new successor capability or roadmap requires separate accepted authority and governance.",
   "schema_version": "1"
 }
 ```
@@ -252,9 +253,10 @@ The accepted plan defines six bounded increments in a single forward DAG:
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
-unchanged. Plan acceptance makes B0 the next eligible governed successor; it does
-not bypass the B0→I1→I2→I3→I4→I5 gates or the requirement for separate governing
-issues before maintained product-artifact mutation.
+unchanged. The B0→I1→I2→I3→I4→I5 dependency order remains the historical execution
+structure of the accepted plan. B0 through I5 have completed under their separately
+governed issues and maintained evidence. The plan now authorizes no current successor
+implementation work.
 
 ## Chunk index
 

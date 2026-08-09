@@ -400,6 +400,45 @@ def run_product_repository_mutations(repo_root: Path) -> None:
             "additionalProperties disallowed: missing_workstream_authority",
         )
 
+        # Issue #303 Patch 1: product-owned implementation plans remain bound to
+        # the active product registry even when every authority reference is unknown.
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
+        clone_index += 1
+        plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_text = plan_path.read_text()
+        prefix, metadata_and_rest = plan_text.split("```json\n", 1)
+        metadata_text, suffix = metadata_and_rest.split("\n```", 1)
+        metadata = json.loads(metadata_text)
+        for index, authority in enumerate(metadata["workstream_authority"]):
+            authority["controlling_product_specifications"] = [f"product.audit-unknown-{index}"]
+        plan_path.write_text(prefix + "```json\n" + json.dumps(metadata, indent=2) + "\n```" + suffix)
+        expect_failure(
+            "all-unknown plan workstream authority specifications",
+            lambda: validate_product(temp_repo),
+            "unknown specification product.audit-unknown-0",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
+        clone_index += 1
+        plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
+        plan_text = plan_path.read_text()
+        prefix, metadata_and_rest = plan_text.split("```json\n", 1)
+        metadata_text, suffix = metadata_and_rest.split("\n```", 1)
+        metadata = json.loads(metadata_text)
+        metadata["workstream_authority"][0]["controlling_product_specifications"].append(
+            "product.audit-unknown-mixed"
+        )
+        plan_path.write_text(prefix + "```json\n" + json.dumps(metadata, indent=2) + "\n```" + suffix)
+        expect_failure(
+            "mixed known and unknown plan workstream authority specifications",
+            lambda: validate_product(temp_repo),
+            "unknown specification product.audit-unknown-mixed",
+        )
+
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
+        clone_index += 1
+        validate_product(temp_repo)
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         product_root = temp_repo / "product/specs/product"
