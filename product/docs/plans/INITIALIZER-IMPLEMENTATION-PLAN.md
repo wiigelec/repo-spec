@@ -9,9 +9,10 @@ accepted this plan after revalidation against the synchronized accepted specific
 set and repository planning contracts. The accepted plan provided planning authority for the bounded B0→I1→I2→I3→I4→I5
 workflow; it does not itself mutate product artifacts. That bounded workflow is now
 complete through I5. Maintained I5 exit evidence records no blockers. Issue #311
-authorizes this bounded planning amendment to add H1, a human-facing initialization
-successor that reuses the accepted JSON-request and full-initialization semantics
-without introducing a new initializer input mode or new product capability. Issues #255 and #257 repaired the accepted provenance/handoff
+authorized the bounded H1 planning amendment. Issue #313 implemented H1 under that
+accepted authority, and PR #317 merged the completed human-facing initialization
+workflow. Issue #318 subsequently completed bounded post-H1 conformance corrections
+without changing the accepted H1 authority mapping or product semantics. Issues #255 and #257 repaired the accepted provenance/handoff
 specification conflicts and ordering gap, and issue #259 / PR #260 synchronized and
 clean-room reviewed the plan before acceptance. Issue #301 encoded the existing
 B0/I1-I5 authority sets in canonical metadata without reassigning accepted authority.
@@ -29,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -241,7 +242,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "H1 is the only currently planned successor implementation scope. After this planning amendment is accepted, H1 implementation requires a separate Product-artifact implementation governing issue citing H1 and its controlling accepted product specifications. H1 is limited to human-facing initialization using the existing canonical JSON request and accepted full-initialization workflow; no other successor capability is authorized.",
+  "successor_action": "H1 is completed historical implementation work under issue #313 and merged PR #317, with bounded post-H1 conformance correction under issue #318. No new successor implementation scope is authorized by this completed H1 work; any future successor requires separate accepted planning authority.",
   "schema_version": "1"
 }
 ```
@@ -308,13 +309,14 @@ product semantics.
 ## Next authorized action
 
 Issue #261 accepted this implementation plan after clean-room revalidation against
-current accepted specifications and synchronized planning state. B0 through I5 are now
-completed historical work. Issue #311 authorizes this bounded H1 planning amendment.
+current accepted specifications and synchronized planning state. B0 through I5 and H1 are
+now completed historical work. Issue #311 authorized the bounded H1 planning amendment;
+issue #313 completed its separately governed Product-artifact implementation, merged by
+PR #317, and issue #318 completed bounded post-H1 conformance correction.
 
-After this amended plan is accepted on the default branch, the next authorized action is
-a separate Product-artifact implementation governing issue selecting H1. That issue may
-implement only the H1 scope and must cite the exact H1 controlling accepted product
-specifications recorded in this plan.
+No new successor implementation scope is authorized by H1 completion. Any future
+successor requires separate accepted planning authority and a separately governed
+implementation issue under that authority.
 
 ## Discoverability
 

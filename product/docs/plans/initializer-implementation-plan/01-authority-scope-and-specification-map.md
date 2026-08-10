@@ -9,7 +9,7 @@ Maps accepted requirements to planning responsibilities; does not restate, narro
 | Planning fact | Value |
 | --- | --- |
 | Planning basis | `d3cf252dd6022aa19bd52ee335b1ef114ccfae1b` |
-| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization; #261 plan acceptance; #311 H1 successor planning amendment |
+| Governing issue | #253 planning cycle; #255 and #257 accepted specification repairs with plan impact review; #259 plan synchronization; #261 plan acceptance; #311 H1 successor planning amendment; #313 completed H1 implementation; #318 bounded post-H1 conformance correction |
 | Normative authority | Accepted `initial-bounded-workflow` specs registered in `product/specs/product/manifest.json` |
 | Repository planning authority | `repo.implementation-plan`, `repo.development-workflow` |
 
@@ -150,7 +150,7 @@ Six candidate future-extension specs excluded (no implementation authority):
 | 3 | `product.recovery-and-cleanup` | Generalized recovery/cleanup |
 | 3 | `product.resume-from-staging` | Resume from preserved staging |
 
-Also excluded from the planned V1/H1 product scope: remote retrieval, named-reference resolution, SHA-256 Git, retry/resume, migration, overwrite, cross-device promotion, release, interactive request construction, CLI synthesis of authority-bearing request fields, status, dry-run, and any conformance claim not grounded in accepted evidence. This accepted plan does not itself perform product source/test/schema/spec mutation. B0/I1-I5 remain completed historical increments; H1 implementation proceeds only through a separate Product-artifact implementation governing issue after this planning amendment is accepted.
+Also excluded from the planned V1/H1 product scope: remote retrieval, named-reference resolution, SHA-256 Git, retry/resume, migration, overwrite, cross-device promotion, release, interactive request construction, CLI synthesis of authority-bearing request fields, status, dry-run, and any conformance claim not grounded in accepted evidence. This accepted plan does not itself perform product source/test/schema/spec mutation. B0/I1-I5 and H1 remain completed historical increments. H1 implementation completed under issue #313 and merged PR #317; issue #318 completed bounded post-H1 conformance correction. No new successor implementation scope is authorized by that completion.
 
 ## Coverage verification
 

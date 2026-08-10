@@ -4,7 +4,7 @@ Status: accepted; planning-authoritative; non-normative with respect to product 
 
 ## Authority boundary
 
-Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan. The B0→I1→I2→I3→I4→I5 gates remain the historical execution structure; all six bounded increments have since completed under separate governing issues and maintained evidence. Issue #311 adds H1 as a bounded successor consumer/presentation workstream without reassigning historical requirement ownership. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
+Non-normative with respect to product semantics. Sequences governed conformance and implementation work from the accepted requirement-to-responsibility map and does not reinterpret requirements. Issue #261 accepted this plan. The B0→I1→I2→I3→I4→I5 gates remain the historical execution structure; all six bounded increments have since completed under separate governing issues and maintained evidence. Issue #311 added H1 as a bounded successor consumer/presentation workstream without reassigning historical requirement ownership; issue #313 completed that implementation and issue #318 completed bounded post-H1 conformance correction. Composite keys use `<spec_id>::<requirement_id>`. `product.framework-installation::INIT-FIN-001-008` and `product.full-initialization::INIT-FIN-001-011` are distinct sets. Every set below is also assigned to B0; the listed I1-I5 owner is the sole implementation owner recorded by the accepted requirement-to-responsibility map.
 
 ## Bounded implementation DAG
 
@@ -118,8 +118,8 @@ classification-ordering gap. Those repairs did not change requirement identities
 ownership assignments, or the B0→I1→I2→I3→I4→I5 dependency order. This impact review reaffirms those structures against the repaired
 accepted semantics. Issue #261 accepted the plan after current-authority revalidation.
 B0 through I5 are completed historical increments. Maintained I5 exit evidence records
-zero blockers. Issue #311 authorizes the H1 planning amendment as the sole bounded
-successor scope; H1 consumes existing accepted authority and does not alter the completed
+zero blockers. Issue #311 authorized the H1 planning amendment as the sole bounded
+successor scope; issue #313 completed H1 under that authority, and issue #318 completed bounded post-H1 correction. H1 consumes existing accepted authority and does not alter the completed
 B0/I1-I5 requirement ownership or evidence.
 
 ## Coverage and DAG checks
@@ -132,4 +132,4 @@ B0/I1-I5 requirement ownership or evidence.
 
 ## Plan-wide exclusions
 
-The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no implementation governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 are completed historical work. H1 is the only bounded successor authorized by this planning amendment, and its implementation still requires a separate Product-artifact implementation governing issue.
+The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no implementation governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 and H1 are completed historical work. H1 was the only bounded successor authorized by the #311 planning amendment and was implemented under issue #313; no new successor implementation scope is authorized by H1 completion.
