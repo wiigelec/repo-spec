@@ -714,9 +714,19 @@ def _i4_match_dynamic(path: str, output_inventory: dict[str, Any]) -> bool:
             prefix = family.get(key)
             if isinstance(prefix, str) and prefix and path.startswith(prefix.rstrip("/") + "/"):
                 return True
+        templates: list[str] = []
         template = family.get("path_template") or family.get("template")
         if isinstance(template, str) and template:
-            pattern = re.escape(template)
+            templates.append(template)
+        expansion_pattern = family.get("expansion_pattern")
+        if isinstance(expansion_pattern, str) and expansion_pattern:
+            templates.extend(
+                item.strip()
+                for item in expansion_pattern.split(",")
+                if item.strip()
+            )
+        for template_value in templates:
+            pattern = re.escape(template_value)
             pattern = re.sub(r"\\\{[^{}]+\\\}", r"[^/]+", pattern)
             if re.fullmatch(pattern, path):
                 return True
