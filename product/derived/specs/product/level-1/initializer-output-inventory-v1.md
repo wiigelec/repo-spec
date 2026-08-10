@@ -387,7 +387,7 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Role: `validation-utility`
 - Destination Path: `repo/scripts/github_field_policy.py`
 - Material Key: `repo-github-field-policy-py`
-- Mode: `100644`
+- Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
