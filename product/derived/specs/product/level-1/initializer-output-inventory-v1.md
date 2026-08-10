@@ -581,6 +581,34 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `initializer-framework`
+- Destination Path: `repo/schemas/repo/development-document-base.schema.json`
+- Material Key: `repo-schema-development-document-base`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/schemas/repo/product-overview.schema.json`
+- Material Key: `repo-schema-product-overview`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/schemas/repo/product-decomposition.schema.json`
+- Material Key: `repo-schema-product-decomposition`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/schemas/repo/implementation-plan.schema.json`
+- Material Key: `repo-schema-implementation-plan`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 
 ## Primitives
 

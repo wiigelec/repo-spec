@@ -488,6 +488,38 @@
       "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100644"
+    },
+    {
+      "material_key": "repo-schema-development-document-base",
+      "source_path": "repo/schemas/repo/development-document-base.schema.json",
+      "source_type": "blob",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-schema-product-overview",
+      "source_path": "repo/schemas/repo/product-overview.schema.json",
+      "source_type": "blob",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-schema-product-decomposition",
+      "source_path": "repo/schemas/repo/product-decomposition.schema.json",
+      "source_type": "blob",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-schema-implementation-plan",
+      "source_path": "repo/schemas/repo/implementation-plan.schema.json",
+      "source_type": "blob",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "role": "validation-utility"
     }
   ]
 }
