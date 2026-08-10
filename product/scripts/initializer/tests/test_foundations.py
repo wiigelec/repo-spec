@@ -113,6 +113,21 @@ class BuildFoundationPlanTests(unittest.TestCase):
             build_foundation_plan("", ["/path/to/dir.md"], "#195")
 
 
+class Issue337CanonicalFoundationNamesTests(unittest.TestCase):
+    def test_overview_chunk_names_match_accepted_i2_contract(self):
+        self.assertEqual(
+            [item[0] for item in OVERVIEW_CHUNK_COVERAGE],
+            [
+                "01-identity-and-purpose.md",
+                "02-problem-and-outcome.md",
+                "03-users-principles-and-boundaries.md",
+                "04-capabilities-and-success.md",
+                "05-unresolved-questions.md",
+                "06-lifecycle-and-handoff.md",
+            ],
+        )
+
+
 class EstablishFoundationsTests(unittest.TestCase):
     def setUp(self):
         self.staging = Path(tempfile.mkdtemp())
@@ -237,7 +252,7 @@ class EstablishFoundationsTests(unittest.TestCase):
 
     def test_chunks_have_placeholder_content(self):
         result = establish_product_foundations(self.plan, self.staging)
-        chunk = self.staging / "product" / "docs" / "overview" / "test-product-overview" / "01-product-identity-and-purpose.md"
+        chunk = self.staging / "product" / "docs" / "overview" / "test-product-overview" / "01-identity-and-purpose.md"
         content = chunk.read_text()
         self.assertIn("placeholder", content)
 
@@ -245,7 +260,7 @@ class EstablishFoundationsTests(unittest.TestCase):
         result = establish_product_foundations(self.plan, self.staging)
         overview = self.staging / "product" / "docs" / "overview" / "test-product-OVERVIEW.md"
         content = overview.read_text()
-        self.assertIn("01-product-identity-and-purpose.md", content)
+        self.assertIn("01-identity-and-purpose.md", content)
         self.assertIn("06-lifecycle-and-handoff.md", content)
 
     def test_decomposition_controlling_references_overview(self):
