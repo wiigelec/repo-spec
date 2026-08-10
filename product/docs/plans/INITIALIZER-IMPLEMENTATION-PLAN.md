@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-OVERVIEW.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -163,6 +163,23 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     },
     {
+      "id": "H2",
+      "controlling_product_specifications": [
+        "product.initializer-level-0",
+        "product.initialization-request",
+        "product.foundation-seeding",
+        "product.framework-installation",
+        "product.generated-repository",
+        "product.provenance-record",
+        "product.provenance-recording",
+        "product.request-intake",
+        "product.source-material-resolution",
+        "product.execution-orchestration",
+        "product.lifecycle-stages",
+        "product.full-initialization"
+      ]
+    },
+    {
       "id": "H1",
       "controlling_product_specifications": [
         "product.initializer-level-0",
@@ -242,7 +259,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "H1 is completed historical implementation work under issue #313 and merged PR #317, with bounded post-H1 conformance correction under issue #318. No new successor implementation scope is authorized by this completed H1 work; any future successor requires separate accepted planning authority.",
+  "successor_action": "H1 remains completed historical work: No new successor implementation scope is authorized by the completed H1 work itself. Separately, issue #342 authorizes H2 as the bounded successor workstream to simplify local repository bootstrap so the normal user supplies only a destination, the executing local repo-spec instance resolves exact framework provenance, and product definition is deferred to governed successor work after bootstrap. No unrelated initializer capability is authorized.",
   "schema_version": "1"
 }
 ```
@@ -322,3 +339,21 @@ implementation issue under that authority.
 
 This is the canonical initializer implementation-plan entry point. Its
 subordinate chunks are listed above.
+
+
+## H2 — Repository bootstrap UX simplification
+
+Issue #342 records the required impact review for the accepted initializer authority.
+The prior H1 workflow assumed a reviewed user-authored request containing source revision,
+product identity, direction material, profile, and initialization authority. That assumption
+does not fit the normal web-chat-assisted local workflow.
+
+H2 changes the bounded bootstrap contract so repository initialization establishes only the
+governed repository framework at an explicitly requested destination. Repository name is a
+mechanical property of that destination. The executing local repo-spec instance is responsible
+for resolving and recording its exact framework provenance. Product identity, overview,
+direction, decomposition, specifications, and implementation planning remain successor governed
+work after bootstrap.
+
+H2 does not authorize hosted repository creation, migration/overwrite, resume/dry-run/status
+features, unrelated convenience flags, or product semantics.
