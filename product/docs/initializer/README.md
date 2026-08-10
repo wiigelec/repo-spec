@@ -63,78 +63,70 @@ product/scripts/repo-spec-init validate-request <request.json>
 
 ### Request schema (version 1)
 
+The bounded full-initialization request has a closed root shape.
+
 #### Required fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `schema_version` | string | Request schema version. Must be `"1"`. |
-| `destination` | string | Filesystem path for the initialized repository. Must be non-empty. |
-| `authority` | object | Granted initialization authority. Must contain `granted_by` (non-empty string). |
+| `destination` | string | Filesystem path for the initialized repository. |
+| `authority` | object | Initialization authority. Requires non-empty `granted_by`; optional `type` and `scope` are permitted. |
+| `source` | object | Explicit local source identity. Requires `repository` and structured `revision`. |
+| `product` | object | Explicit product identity. Requires `id` and nonempty `direction_material`. |
 
 #### Optional fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `source` | object | Source repository identity. May contain `repository` (string) and `revision` (string). If `revision` is supplied, `repository` is required. |
-| `profile` | string | Execution or platform profile identifier. Supported: `"standard"`. |
-| `product` | object | Product identity hints. May contain `id` (string) and `direction_material` (list of strings). |
-| `deferred` | array of strings | Field names explicitly deferred. Items must be optional field names. Required fields cannot be deferred. |
-| `metadata` | object | Arbitrary metadata preserved for diagnostics or provenance handoff. |
+| `profile` | string | Execution profile. When supplied, must be `"standard"`. |
 
-#### Unknown fields
+No other root fields are accepted.
 
-Unknown fields are rejected.
+`source.repository` is a local filesystem path. `source.revision` is an exact Git object identity object with `object_format: "sha1"` and a 40-character lowercase hexadecimal `object_id`. Branch names, named refs, remote URLs, and inferred source identities are not accepted.
 
-#### Examples
+Each `product.direction_material` item is a non-empty repository-relative path. During source-material resolution each item must name an existing regular file in the exact source revision.
 
-Minimal valid request:
+#### Complete valid request
 
 ```json
 {
   "schema_version": "1",
-  "destination": "/path/to/new-repo",
+  "destination": "/tmp/new-repo",
   "authority": {
-    "granted_by": "issue-189"
-  }
-}
-```
-
-Full request:
-
-```json
-{
-  "schema_version": "1",
-  "destination": "/path/to/new-repo",
-  "authority": {
-    "granted_by": "issue-189"
+    "granted_by": "issue-332"
   },
   "source": {
-    "repository": "https://github.com/wiigelec/repo-spec",
-    "revision": "4cde78952bb854d0c8893f80c13f0dc8ed895791"
+    "repository": "/work/repo-spec",
+    "revision": {
+      "object_format": "sha1",
+      "object_id": "0123456789abcdef0123456789abcdef01234567"
+    }
   },
-  "profile": "standard",
   "product": {
     "id": "my-product",
-    "direction_material": ["/path/to/overview.md"]
+    "direction_material": [
+      "README.md"
+    ]
   },
-  "metadata": {
-    "requestor": "automation"
-  }
+  "profile": "standard"
 }
 ```
+
+The example demonstrates the accepted request representation. For an actual run, replace the destination, local source path, exact commit object ID, authority, product ID, and direction material with reviewed values from the source repository being initialized.
 
 ### Validation behavior
 
-* Required fields must be present and have valid types.
-* Unknown fields are rejected.
-* Contradictory authority or source information is rejected.
+* Every required root field must be present and structurally valid.
+* Unknown root and nested fields are rejected.
+* `authority.granted_by`, `product.id`, and each direction-material entry must be non-empty.
+* `source.repository` must identify a local filesystem path, not a URL or remote identity.
+* `source.revision` must use the structured SHA-1 object identity.
+* `product.direction_material` must be nonempty and preserves supplied order and duplicates.
 * Unsupported profile values are rejected.
-* Required fields cannot be deferred.
-* Deferred fields must be recognized optional field names.
-* Product direction material items must be non-empty strings.
 * Schema version must be `"1"`.
 * Diagnostics are deterministic.
-* No destination mutation occurs during validation.
+* No destination mutation occurs during request validation.
 
 ## Framework inventory and source inspection
 
@@ -216,140 +208,38 @@ Each entry contains:
 
 ## Framework staging
 
-The initializer can materialize inventory-selected reusable framework material into an isolated staging workspace without modifying the requested destination.
-
-### Command
+The maintained normal workflow performs framework installation inside:
 
 ```text
-product/scripts/repo-spec-init stage-framework <request.json> [--staging-parent <dir>]
+product/scripts/repo-spec-init --request request.json
 ```
 
-`stage-framework` performs request parsing and validation, validates source identity and revision, loads and validates the framework inventory, selects only installable reusable framework entries, creates a new isolated staging workspace, copies authorized material into it, and emits deterministic installation output. It performs no destination mutation, Git mutation, network access, or hosting-platform operation.
+The historical `stage-framework` and `stage-framework-and-foundations` command names are retained only as explicit unavailable/fail-closed compatibility surfaces. They are not supported executable initializer operations.
 
-### Exit status
-
-| Status | Meaning |
-|--------|---------|
-| 0      | Staging completed successfully with machine-readable output to stdout. |
-| 1      | Invalid request, missing source, invalid inventory, staging error, or I/O error. |
-
-### Staging behavior
-
-* A new staging workspace is created under a temporary directory (or under `--staging-parent` if supplied).
-* The workspace name begins with `repo-spec-stage-`.
-* Only entries classified as `framework-authoritative`, `framework-support`, or `derived` and marked `installable: true` in the maintained framework inventory are selected.
-* Repository-relative paths are preserved in the staging workspace.
-* Regular files and directories are copied using deterministic traversal.
-* Symbolic links are preserved only when their targets remain within the source root.
-* The requested destination is not created or modified.
-
-### Source path safety
-
-The following conditions cause the specific entry to be rejected (not staged) while other entries continue:
-
-* Source path does not exist in the source tree.
-* Source path is absolute (`/absolute/path`).
-* Source path performs parent-directory traversal (`../outside`).
-* Source path resolves outside the source root.
-* Source path is an unsupported filesystem entry type.
-* Symbolic link target is absolute (`/etc/passwd`).
-* Symbolic link target resolves outside the source root.
-* Preexisting nonempty staging workspace is rejected with an error.
-
-### Staging output
-
-Output is a JSON object with:
-
-* `status` — `"staging_complete"` on success.
-* `source_selection` — object with `repository` and `revision`.
-* `staging_workspace` — absolute path to the created staging workspace.
-* `installed` — array of staged entries, each with `path`, `classification`, and `type`.
-* `skipped` — array of entries skipped during staging (with `path` and `reason`).
-* `rejected` — array of entries rejected during staging (with `path`, `classification`, and `reason`).
-
-### Failure semantics
-
-* If staging fails before any entries are copied, the incomplete workspace is cleaned up.
-* If an entry copy fails, the entry is reported in `rejected` and other entries continue.
-* A preexisting nonempty staging workspace causes an immediate error without modification.
+Maintained diagnostic/development commands exposed by the current CLI include `inspect-source`, `preflight-request`, `establish-staging`, `realize-materials`, and `complete-i2`. They are subordinate diagnostic interfaces, not the normal user workflow.
 
 ## Product foundations
 
-The initializer can establish project-specific product-direction, planning, and specification foundations in the staging workspace alongside reusable framework material.
+The normal full-initialization workflow establishes product foundations from the explicit `product.id`, `product.direction_material`, source identity, and governing authority in the reviewed request. Product semantics are not inferred.
 
-### Prerequisites
-
-Product-foundation establishment requires:
-
-* A nonempty explicit `product.id` in the request.
-* A nonempty `product.direction_material` array of source references.
-* An explicit source selection (the same source used for framework staging).
-* A completed framework staging workspace.
-
-The supplied direction material is preserved without semantic expansion. Product semantics are not invented.
-
-### Command
-
-```text
-product/scripts/repo-spec-init stage-framework-and-foundations <request.json> [--staging-parent <dir>]
-```
-
-This command combines framework staging and product-foundation establishment in one bounded operation. It performs request validation, product-foundation prerequisite validation, source and inventory validation, framework staging, and foundation generation, then emits deterministic combined output.
-
-### Exit status
-
-| Status | Meaning |
-|--------|---------|
-| 0      | Staging and foundations completed successfully with machine-readable output to stdout. |
-| 1      | Invalid request, missing prerequisites, source or inventory error, staging error, or foundation generation error. |
+The historical `stage-framework-and-foundations` command is unavailable and must not be used as an operational interface.
 
 ### Generated foundations
 
-The command creates the following structure in the staging workspace:
+For product slug `<slug>`, the initialized repository includes product-owned foundation documents under `product/docs/`:
 
-* `repo/docs/overview/<slug>-OVERVIEW.md` — product overview controlling document (candidate lifecycle)
-* `repo/docs/overview/<slug>-overview/` — overview subordinate chunk directory with 6 placeholder chunks
-* `repo/docs/decompositions/<slug>-DECOMPOSITION.md` — product decomposition controlling document (candidate)
-* `repo/docs/decompositions/<slug>-decomposition/` — decomposition subordinate chunk directory with 4 placeholder chunks
-* `repo/docs/plans/<slug>-IMPLEMENTATION-PLAN.md` — implementation plan controlling document (candidate)
-* `repo/docs/plans/<slug>-implementation-plan/` — plan subordinate chunk directory with 4 placeholder chunks
-* `product/specs/product/manifest.json` — product manifest (candidate, empty specification registry)
+* `product/docs/direction/evidence/` — verbatim positional copies of supplied direction material
+* `product/docs/direction/manifest.json` — direction-evidence manifest
+* `product/docs/overview/<slug>-OVERVIEW.md` — product overview controlling document
+* `product/docs/overview/<slug>-overview/` — overview subordinate chunks
+* `product/docs/decompositions/<slug>-DECOMPOSITION.md` — product decomposition controlling document
+* `product/docs/decompositions/<slug>-decomposition/` — decomposition subordinate chunks
+* `product/docs/plans/<slug>-IMPLEMENTATION-PLAN.md` — implementation-plan controlling document
+* `product/docs/plans/<slug>-implementation-plan/` — plan subordinate chunks
+* `product/specs/product/manifest.json` — product specification manifest
 * `product/specs/product/level-0/` through `product/specs/product/level-3/` — product-specification level roots
-* Root `README.md` discoverability links under `repo/docs/overview/`, `repo/docs/decompositions/`, `repo/docs/plans/`
 
-where `<slug>` is derived from the product ID (lowercased with non-alphanumeric characters replaced by hyphens).
-
-### Product identity and lifecycle
-
-* Generated controlling documents use `lifecycle_status: "candidate"` because substantive successor content is not yet reviewed or accepted.
-* The product overview uses `overview_role: "initial"` with bootstrap authority recorded in its metadata.
-* Supplied `direction_material` paths appear in the overview metadata `evidence` field.
-* The governing issue reference from the request authority is recorded in generated metadata.
-* Chunks contain placeholder content indicating that governed successor work is required.
-
-### Foundation output
-
-The combined command output is a JSON object with:
-
-* `status` — `"stage_and_foundations_complete"` on success.
-* `installation` — the framework staging result (see staging output above).
-* `foundations` — the foundation result object with:
-  * `status` — `"foundations_complete"`
-  * `product_id` — the explicit product identifier
-  * `product_slug` — the derived slug
-  * `created` — array of created foundation paths with artifact type
-  * `preserved` — array of preexisting paths left unchanged
-  * `omitted` — array of intentionally omitted foundation paths
-  * `deferred` — array of deferred foundation paths
-  * `rejected` — array of foundation paths that could not be created
-
-### Failure semantics
-
-* Missing or empty `product.id` fails explicitly before any staging or generation.
-* Missing or empty `product.direction_material` fails explicitly.
-* If framework staging fails, no foundation generation is attempted.
-* If a foundation artifact already exists in staging, it is reported in `rejected` and not overwritten.
-* Pre-existing staging workspace failures follow the same rules as framework staging.
+The generated controlling documents and chunks are bootstrap foundations for governed successor work. Supplied direction material is installed as evidence without semantic expansion.
 
 ## Destination preflight and promotion
 
