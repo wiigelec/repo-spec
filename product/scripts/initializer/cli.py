@@ -28,7 +28,8 @@ def main(argv: list[str]) -> int:
         return _cmd_initialize(argv)
 
     if len(argv) < 3:
-        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
+        print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         print("diagnostic commands:", file=sys.stderr)
         print("  validate-request    <request.json>", file=sys.stderr)
         print("  inspect-source      <request.json>", file=sys.stderr)
@@ -66,7 +67,8 @@ def main(argv: list[str]) -> int:
     handler = dispatch.get(command)
     if handler is None:
         print(f"unknown command: {command}", file=sys.stderr)
-        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
+        print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         return 1
     return handler(argv)
 

@@ -33,6 +33,10 @@ class Issue342Patch3AlignmentTests(unittest.TestCase):
         self.assertIn("shall not generate a product manifest", text)
         self.assertIn("Product-definition paths may be absent after bootstrap", text)
 
+    def test_wrapper_no_argument_help_uses_canonical_command(self) -> None:
+        cli = (ROOT / "product/scripts/initializer/cli.py").read_text()
+        self.assertIn('usage: repo-spec init --repo <destination>', cli)
+
     def test_normal_docs_use_repo_spec_init(self) -> None:
         for path in ("README.md", "product/docs/initializer/README.md"):
             text = (ROOT / path).read_text()
