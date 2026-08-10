@@ -131,16 +131,12 @@ def classify_handoff(
         list(realization.foundation_paths),
         "I2 foundation paths",
     )
-    product_id = workspace.inputs.request.product_id
-
     product: list[str] = []
     selected: list[str] = []
     generated: list[str] = []
 
     for path in foundation_paths:
-        if _is_product_foundation(path, product_id):
-            product.append(path)
-        elif path.startswith("product/docs/direction/evidence/"):
+        if path.startswith("product/docs/direction/evidence/"):
             selected.append(path)
         else:
             generated.append(path)

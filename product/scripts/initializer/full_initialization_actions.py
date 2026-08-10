@@ -4,10 +4,9 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .destination import i1_destination_preflight, promote_finalized_repository
-from .foundations import build_foundation_plan
 from .git import initialize_i3_git_repository
 from .handoff import write_handoff_manifest
-from .inventory import resolve_source_material
+from .inventory import resolve_executing_framework_material
 from .orchestration import (
     CANONICAL_STANDARD_STAGES,
     FINALIZATION_CLEANUP_FAILURE,
@@ -36,6 +35,7 @@ def _utc_timestamp() -> str:
 
 
 def build_full_initialization_actions(
+    framework_root: str,
     *,
     initialization_timestamp: str | None = None,
 ) -> FullInitializationActions:
@@ -45,12 +45,7 @@ def build_full_initialization_actions(
         return carried["entry"].request
 
     def source_resolution(carried: dict[str, Any]):
-        request = carried["request-intake"]
-        return resolve_source_material(
-            request.source_repository,
-            request.source_revision.object_id,
-            request.product_direction_material,
-        )
+        return resolve_executing_framework_material(framework_root)
 
     def destination_preflight(carried: dict[str, Any]):
         return i1_destination_preflight(carried["request-intake"].destination)
@@ -63,13 +58,7 @@ def build_full_initialization_actions(
         ))
 
     def framework_installation(carried: dict[str, Any]):
-        request = carried["request-intake"]
-        plan = build_foundation_plan(
-            request.product_id,
-            list(carried["source-resolution"].direction_material),
-            request.authority["granted_by"],
-        )
-        return realize_i2_materials(carried["staging-establishment"], plan)
+        return realize_i2_materials(carried["staging-establishment"])
 
     def direction_evidence_installation(carried: dict[str, Any]):
         return carried["framework-installation"]

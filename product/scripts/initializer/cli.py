@@ -22,6 +22,8 @@ from initializer.validation import (
 
 
 def main(argv: list[str]) -> int:
+    if len(argv) == 5 and argv[2] == "init" and argv[3] == "--repo":
+        return _cmd_init_repo(argv)
     if len(argv) >= 4 and argv[2] == "--request":
         return _cmd_initialize(argv)
 
@@ -69,6 +71,24 @@ def main(argv: list[str]) -> int:
     return handler(argv)
 
 
+def _cmd_init_repo(argv: list[str]) -> int:
+    destination = argv[4]
+    raw = {"schema_version": "2", "destination": destination}
+    try:
+        print("Repository bootstrap started.", file=sys.stderr)
+        actions = with_human_progress(
+            build_full_initialization_actions(argv[1]),
+            sys.stderr,
+        )
+        result = execute_full_initialization(raw, os.getcwd(), actions)
+    except Exception as exc:
+        print(f"Repository bootstrap failed before workflow completion: {exc}", file=sys.stderr)
+        print("Destination was not promoted by a completed workflow.", file=sys.stderr)
+        return 1
+    present_terminal_result(result, destination, sys.stderr)
+    return 0 if result.succeeded else 1
+
+
 def _cmd_initialize(argv: list[str]) -> int:
     if len(argv) != 4 or argv[2] != "--request":
         print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
@@ -78,7 +98,7 @@ def _cmd_initialize(argv: list[str]) -> int:
         destination = raw.get("destination")
         print("Initialization started.", file=sys.stderr)
         actions = with_human_progress(
-            build_full_initialization_actions(),
+            build_full_initialization_actions(argv[1]),
             sys.stderr,
         )
         result = execute_full_initialization(

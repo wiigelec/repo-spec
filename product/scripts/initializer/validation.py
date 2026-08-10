@@ -21,8 +21,8 @@ INVALID_STRUCTURE = "invalid-structure"
 CONTRADICTORY_COMBINATION = "contradictory-combination"
 EXCLUDED_BEHAVIOR = "excluded-behavior"
 
-ROOT_FIELDS = ("schema_version", "destination", "authority", "source", "product")
-KNOWN_ROOT_FIELDS = frozenset((*ROOT_FIELDS, "profile"))
+ROOT_FIELDS = ("schema_version", "destination")
+KNOWN_ROOT_FIELDS = frozenset(ROOT_FIELDS)
 KNOWN_AUTHORITY_FIELDS = frozenset(("granted_by", "type", "scope"))
 KNOWN_SOURCE_FIELDS = frozenset(("repository", "revision"))
 KNOWN_REVISION_FIELDS = frozenset(("object_format", "object_id"))
@@ -98,46 +98,23 @@ def _validate_and_build(
 
     schema_version = _required_string(raw, "schema_version", result)
     destination = _required_string(raw, "destination", result)
-    authority = _required_object(raw, "authority", result)
-    source = _required_object(raw, "source", result)
-    product = _required_object(raw, "product", result)
 
-    if schema_version is not None and schema_version != "1":
+    if schema_version is not None and schema_version != "2":
         result.add(EXCLUDED_BEHAVIOR, f"unsupported schema version: {schema_version!r}")
 
     resolved_destination = _resolve_v1_path(destination, cwd, result, "destination")
-    canonical_authority = _validate_authority(authority, result)
-    canonical_source = _validate_source(source, cwd, result)
-    canonical_product = _validate_product(product, result)
-
-    profile: str | None = None
-    if "profile" in raw:
-        value = raw["profile"]
-        if not isinstance(value, str):
-            result.add(INVALID_STRUCTURE, "profile must be a string")
-        elif value != "standard":
-            result.add(EXCLUDED_BEHAVIOR, f"unsupported profile: {value!r}")
-        else:
-            profile = value
+    if resolved_destination == "/":
+        result.add(INVALID_STRUCTURE, "destination must have a repository-name basename")
 
     if not result.is_valid:
         return result, None
 
     assert schema_version is not None
     assert resolved_destination is not None
-    assert canonical_authority is not None
-    assert canonical_source is not None
-    assert canonical_product is not None
-    canonical: dict[str, Any] = {
+    return result, {
         "schema_version": schema_version,
         "destination": resolved_destination,
-        "authority": canonical_authority,
-        "source": canonical_source,
-        "product": canonical_product,
     }
-    if profile is not None:
-        canonical["profile"] = profile
-    return result, canonical
 
 
 def _check_unicode_scalars(value: Any, result: ValidationResult, context: str) -> None:
