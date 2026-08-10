@@ -595,6 +595,96 @@
       "required": true,
       "producer": "framework-installation",
       "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-repo-manifest",
+      "destination_path": "repo/schemas/repo-manifest.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-repo-artifact-taxonomy",
+      "destination_path": "repo/schemas/repo-artifact-taxonomy.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-repo-platform-profiles",
+      "destination_path": "repo/schemas/repo-platform-profiles.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-repo-spec",
+      "destination_path": "repo/schemas/repo-spec.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-product-manifest",
+      "destination_path": "product/schemas/product/product-manifest.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-product-spec-base",
+      "destination_path": "product/schemas/product/product-spec-base.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-product-level-0",
+      "destination_path": "product/schemas/product/product-level-0.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-product-level-1",
+      "destination_path": "product/schemas/product/product-level-1.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-product-level-2",
+      "destination_path": "product/schemas/product/product-level-2.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-product-level-3",
+      "destination_path": "product/schemas/product/product-level-3.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
     }
   ],
   "dynamic_path_families": [

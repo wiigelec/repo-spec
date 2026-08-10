@@ -609,6 +609,76 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `repo/schemas/repo-manifest.schema.json`
+- Material Key: `validator-schema-repo-manifest`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/schemas/repo-artifact-taxonomy.schema.json`
+- Material Key: `validator-schema-repo-artifact-taxonomy`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/schemas/repo-platform-profiles.schema.json`
+- Material Key: `validator-schema-repo-platform-profiles`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/schemas/repo-spec.schema.json`
+- Material Key: `validator-schema-repo-spec`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/schemas/product/product-manifest.schema.json`
+- Material Key: `validator-schema-product-manifest`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/schemas/product/product-spec-base.schema.json`
+- Material Key: `validator-schema-product-spec-base`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/schemas/product/product-level-0.schema.json`
+- Material Key: `validator-schema-product-level-0`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/schemas/product/product-level-1.schema.json`
+- Material Key: `validator-schema-product-level-1`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/schemas/product/product-level-2.schema.json`
+- Material Key: `validator-schema-product-level-2`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/schemas/product/product-level-3.schema.json`
+- Material Key: `validator-schema-product-level-3`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 
 ## Primitives
 

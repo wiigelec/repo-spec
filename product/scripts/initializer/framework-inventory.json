@@ -520,6 +520,86 @@
       "operation": "copy-verbatim",
       "mode": "100644",
       "role": "validation-utility"
+    },
+    {
+      "material_key": "validator-schema-repo-manifest",
+      "source_path": "repo/schemas/repo-manifest.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-repo-artifact-taxonomy",
+      "source_path": "repo/schemas/repo-artifact-taxonomy.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-repo-platform-profiles",
+      "source_path": "repo/schemas/repo-platform-profiles.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-repo-spec",
+      "source_path": "repo/schemas/repo-spec.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-product-manifest",
+      "source_path": "product/schemas/product/product-manifest.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-product-spec-base",
+      "source_path": "product/schemas/product/product-spec-base.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-product-level-0",
+      "source_path": "product/schemas/product/product-level-0.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-product-level-1",
+      "source_path": "product/schemas/product/product-level-1.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-product-level-2",
+      "source_path": "product/schemas/product/product-level-2.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "validator-schema-product-level-3",
+      "source_path": "product/schemas/product/product-level-3.schema.json",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     }
   ]
 }
