@@ -1,7 +1,7 @@
 {
   "spec_id": "product.initializer-output-inventory-v1",
-  "title": "Initializer Version 1 Output Inventory",
-  "purpose": "Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, material_index entries, and dynamic path families with separately governed Git administrative state.",
+  "title": "Repository Bootstrap Output Inventory",
+  "purpose": "Complete closed inventory of repository-framework paths produced by local bootstrap, plus generated bootstrap provenance/handoff records and separately governed Git state.",
   "status": "accepted",
   "schema_version": "1",
   "level": 1,
@@ -35,6 +35,15 @@
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
+      "required": true,
+      "role": "runtime-framework"
+    },
+    {
+      "material_key": "repo-spec",
+      "destination_path": "product/scripts/repo-spec",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
       "required": true,
       "role": "runtime-framework"
     },
@@ -687,102 +696,8 @@
       "role": "validation-utility"
     }
   ],
-  "dynamic_path_families": [
-    {
-      "producer": "direction-evidence-installation",
-      "rule": "Each direction_material entry produces one file at product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path.",
-      "expansion_pattern": "product/docs/direction/evidence/{index:03d}-{basename}",
-      "operation": "copy-verbatim",
-      "governing_spec": "product.foundation-seeding",
-      "type": "regular-file",
-      "required": true
-    },
-    {
-      "producer": "workspace-seeding",
-      "rule": "One controlling document per product identifier at product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, and product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.",
-      "expansion_pattern": "product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "type": "regular-file",
-      "required": true
-    },
-    {
-      "producer": "workspace-seeding",
-      "rule": "Six overview chunk files under product/docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.",
-      "expansion_pattern": "product/docs/overview/{slug}-overview/chunk-{NN}-{topic}.md",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "type": "regular-file",
-      "required": true
-    },
-    {
-      "producer": "workspace-seeding",
-      "rule": "Four decomposition chunk files under product/docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.",
-      "expansion_pattern": "product/docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "type": "regular-file",
-      "required": true
-    },
-    {
-      "producer": "workspace-seeding",
-      "rule": "Four implementation plan chunk files under product/docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.",
-      "expansion_pattern": "product/docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "type": "regular-file",
-      "required": true
-    }
-  ],
+  "dynamic_path_families": [],
   "fixed_worktree_files": [
-    {
-      "destination_path": "product/docs/direction/manifest.json",
-      "producer": "direction-evidence-installation",
-      "operation": "generate-record",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "repo/docs/overview/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "repo/docs/decompositions/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "repo/docs/plans/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "product/specs/product/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "product/specs/product/manifest.json",
-      "producer": "workspace-seeding",
-      "operation": "generate-record",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
     {
       "destination_path": "repo/initializer/provenance.json",
       "producer": "provenance-recording",
@@ -796,38 +711,6 @@
       "producer": "handoff-assembly",
       "operation": "generate-record",
       "governing_spec": "product.handoff-manifest",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "product/specs/product/level-0/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "product/specs/product/level-1/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "product/specs/product/level-2/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
-      "mode": "100644",
-      "required": true
-    },
-    {
-      "destination_path": "product/specs/product/level-3/README.md",
-      "producer": "workspace-seeding",
-      "operation": "instantiate-template",
-      "governing_spec": "product.foundation-seeding",
       "mode": "100644",
       "required": true
     }
