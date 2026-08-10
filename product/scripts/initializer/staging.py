@@ -99,12 +99,10 @@ def validate_i2_staging_inputs(inputs: I2StagingInputs) -> None:
         raise StagingError("I1 destination fact does not match the canonical request")
     if destination.destination_parent != str(Path(request.destination).parent):
         raise StagingError("I1 destination parent does not match the canonical request")
-    if source.repository != request.source_repository:
-        raise StagingError("resolved source repository does not match the canonical request")
-    if source.commit_id != request.source_revision.object_id:
-        raise StagingError("resolved source revision does not match the canonical request")
-    if source.direction_material != request.product_direction_material:
-        raise StagingError("resolved direction material does not match the canonical request")
+    if not source.repository or not source.commit_id:
+        raise StagingError("resolved executing-framework provenance is incomplete")
+    if source.direction_material:
+        raise StagingError("repository bootstrap must not carry product direction material")
 
 
 def _require_absent_destination(destination: Path) -> None:
@@ -821,16 +819,17 @@ def _i2_clear_repository_contents(repository: Path) -> None:
 
 def realize_i2_materials(
     workspace: StagingWorkspace,
-    foundation_plan: FoundationPlan,
+    foundation_plan: FoundationPlan | None = None,
 ) -> I2RealizationResult:
     validate_staging_workspace(workspace)
     repository = workspace.repository_path
     if any(repository.iterdir()):
-        raise StagingError("Patch 2 requires an empty repository/ workspace")
+        raise StagingError("framework realization requires an empty repository/ workspace")
+    if foundation_plan is not None:
+        raise StagingError("repository bootstrap does not accept a product foundation plan")
 
     source = workspace.inputs.source
     from .inventory import _load_json_blob, OUTPUT_INVENTORY_SPEC_PATH
-    from .foundations import build_i2_foundation_files
 
     output_inventory = _load_json_blob(
         source.repository,
@@ -838,40 +837,15 @@ def realize_i2_materials(
         OUTPUT_INVENTORY_SPEC_PATH,
     )
     prepared = _i2_prepare_framework_outputs(source, output_inventory)
-    foundation_files = build_i2_foundation_files(
-        foundation_plan,
-        source.repository,
-        source.commit_id,
-    )
-    _i2_validate_foundation_inventory(
-        foundation_plan,
-        foundation_files,
-        output_inventory,
-    )
-
     framework_paths = [path for path, _entry, _data in prepared]
-    if set(framework_paths) & set(foundation_files):
-        raise StagingError("framework and foundation output paths overlap")
-    all_paths = framework_paths + list(foundation_files)
-    if len(all_paths) != len(set(all_paths)):
-        raise StagingError("candidate repository output path collision")
 
     try:
         for destination, entry, data in prepared:
             target = repository / destination
             target.parent.mkdir(parents=True, exist_ok=True)
             if entry.source_type == "symlink":
-                try:
-                    link_target = data.decode("utf-8")
-                except UnicodeDecodeError as exc:
-                    raise StagingError(
-                        f"symlink target is not UTF-8: {entry.material_key}"
-                    ) from exc
-                if (
-                    not link_target
-                    or "\x00" in link_target
-                    or Path(link_target).is_absolute()
-                ):
+                link_target = data.decode("utf-8")
+                if not link_target or "\x00" in link_target or Path(link_target).is_absolute():
                     raise StagingError(f"unsafe symlink target: {entry.material_key}")
                 candidate = (target.parent / link_target).resolve(strict=False)
                 try:
@@ -885,14 +859,8 @@ def realize_i2_materials(
                 target.write_bytes(data)
                 os.chmod(target, 0o755 if entry.mode == "100755" else 0o644)
 
-        for destination, data in foundation_files.items():
-            target = repository / destination
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
-            os.chmod(target, 0o644)
-
         if (repository / ".git").exists():
-            raise StagingError("I3 Git state appeared during I2 realization")
+            raise StagingError("Git state appeared during framework realization")
         validate_staging_workspace(workspace)
     except BaseException:
         _i2_clear_repository_contents(repository)
@@ -901,9 +869,10 @@ def realize_i2_materials(
     return I2RealizationResult(
         workspace=workspace,
         framework_paths=tuple(framework_paths),
-        foundation_paths=tuple(foundation_files),
+        foundation_paths=(),
     )
 
+# END I2 PATCH 2 GOVERNED MATERIAL REALIZATION
 # END I2 PATCH 2 GOVERNED MATERIAL REALIZATION
 
 # BEGIN I2 PATCH 3 DETERMINISTIC EXIT
@@ -1284,8 +1253,8 @@ def build_validated_staging_state(
     state: dict[str, object] = {
         "schema_version": "1",
         "request_fingerprint": workspace.inputs.request.request_fingerprint,
-        "source_revision": workspace.inputs.request.source_revision.to_dict(),
-        "source_repository": workspace.inputs.request.source_repository,
+        "source_revision": {"object_format": "sha1", "object_id": workspace.inputs.source.commit_id},
+        "source_repository": workspace.inputs.source.repository,
         "initializer_version": initializer_version,
         "expected_destination": workspace.inputs.request.destination,
         "current_stage": "repository-validation",
@@ -1510,3 +1479,45 @@ def validate_execution_report_v1(report: dict[str, object]) -> None:
 def execution_report_bytes_v1(report: dict[str, object]) -> bytes:
     validate_execution_report_v1(report)
     return _i4_json_bytes(report)
+
+
+
+def cleanup_failed_staging_for_destination(
+    destination: str,
+    stage_names_before: tuple[str, ...],
+) -> tuple[str, ...]:
+    dest = Path(destination).expanduser().resolve()
+    parent = dest.parent
+    if not parent.exists() or not parent.is_dir():
+        return ()
+
+    before = set(stage_names_before)
+    removed: list[str] = []
+    for candidate in parent.iterdir():
+        if candidate.name in before or not candidate.name.startswith("repo-spec-stage-"):
+            continue
+        if candidate.is_symlink() or not candidate.is_dir():
+            continue
+
+        transaction = candidate / "transaction"
+        repository = candidate / "repository"
+        state_path = transaction / "staging-state.json"
+        if not transaction.is_dir() or not repository.is_dir() or not state_path.is_file():
+            continue
+
+        try:
+            raw = json.loads(state_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+
+        recorded_destination = raw.get("destination")
+        if not isinstance(recorded_destination, str):
+            continue
+        if Path(recorded_destination).expanduser().resolve() != dest:
+            continue
+
+        shutil.rmtree(candidate)
+        removed.append(candidate.name)
+
+    return tuple(sorted(removed))
+

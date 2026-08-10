@@ -5,39 +5,43 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-SPEC = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json"
+INVENTORY = (
+    ROOT
+    / "product/specs/product/level-1/initializer-output-inventory-v1.json"
+)
 
-EXPECTED = {
-    "repo/docs/overview/README.md",
-    "repo/docs/decompositions/README.md",
-    "repo/docs/plans/README.md",
-}
-STALE = {
-    "docs/overview/README.md",
-    "docs/decompositions/README.md",
-    "docs/plans/README.md",
-}
 
 class Issue319OutputInventoryPathTests(unittest.TestCase):
-    def test_workspace_readme_destinations_use_repo_docs(self):
-        data = json.loads(SPEC.read_text())
-        fixed = data["fixed_worktree_files"]
+    def test_bootstrap_inventory_does_not_seed_product_workspace_readmes(self):
+        inventory = json.loads(INVENTORY.read_text())
+        destinations = {
+            item["destination_path"]
+            for item in (
+                inventory["material_index"]
+                + inventory["fixed_worktree_files"]
+            )
+        }
+        for path in (
+            "repo/docs/overview/README.md",
+            "repo/docs/decompositions/README.md",
+            "repo/docs/plans/README.md",
+            "product/specs/product/manifest.json",
+        ):
+            self.assertNotIn(path, destinations)
 
-        selected = [
-            item for item in fixed
-            if isinstance(item, dict)
-            and item.get("producer") == "workspace-seeding"
-            and item.get("operation") == "instantiate-template"
-            and item.get("destination_path") in EXPECTED | STALE
-        ]
+    def test_bootstrap_fixed_outputs_are_only_initializer_records(self):
+        inventory = json.loads(INVENTORY.read_text())
+        self.assertEqual(
+            {
+                item["destination_path"]
+                for item in inventory["fixed_worktree_files"]
+            },
+            {
+                "repo/initializer/provenance.json",
+                "repo/initializer/handoff.json",
+            },
+        )
 
-        destinations = {item["destination_path"] for item in selected}
-        self.assertEqual(destinations, EXPECTED)
-        self.assertTrue(STALE.isdisjoint(destinations))
-
-        for item in selected:
-            self.assertEqual(item.get("mode"), "100644")
-            self.assertIs(item.get("required"), True)
 
 if __name__ == "__main__":
     unittest.main()

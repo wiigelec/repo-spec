@@ -26,6 +26,14 @@
       "mode": "100644"
     },
     {
+      "material_key": "repo-spec",
+      "source_path": "product/scripts/repo-spec",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
       "material_key": "repo-spec-init",
       "source_path": "product/scripts/repo-spec-init",
       "role": "runtime-framework",

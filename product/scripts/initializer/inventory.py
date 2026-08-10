@@ -275,6 +275,27 @@ def resolve_source_material(
     )
 
 
+
+def resolve_executing_framework_material(repository: str) -> ResolvedSourceMaterial:
+    root = Path(repository).resolve()
+    if _git(str(root), "rev-parse", "--git-dir").returncode:
+        raise InventoryError("executing framework is not a local Git repository")
+    observed_root = _git_text(str(root), "rev-parse", "--show-toplevel").strip()
+    if Path(observed_root).resolve() != root:
+        raise InventoryError("executing framework root does not match its Git repository root")
+    if _git_text(str(root), "rev-parse", "--show-object-format").strip() != "sha1":
+        raise InventoryError("executing framework repository must use SHA-1 object format")
+    dirty = _git_text(str(root), "status", "--porcelain=v1", "--untracked-files=all")
+    if dirty:
+        raise InventoryError(
+            "executing framework working tree is not clean; exact framework provenance cannot be guaranteed"
+        )
+    revision = _git_text(str(root), "rev-parse", "--verify", "HEAD^{commit}").strip()
+    if len(revision) != 40 or any(c not in "0123456789abcdef" for c in revision):
+        raise InventoryError("executing framework HEAD is not an exact lowercase SHA-1 commit ID")
+    return resolve_source_material(str(root), revision, ())
+
+
 def resolve_source_selection_from_request(
     request_repository: str | None,
     request_revision: str | None,

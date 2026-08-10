@@ -22,11 +22,14 @@ from initializer.validation import (
 
 
 def main(argv: list[str]) -> int:
+    if len(argv) == 5 and argv[2] == "init" and argv[3] == "--repo":
+        return _cmd_init_repo(argv)
     if len(argv) >= 4 and argv[2] == "--request":
         return _cmd_initialize(argv)
 
     if len(argv) < 3:
-        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
+        print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         print("diagnostic commands:", file=sys.stderr)
         print("  validate-request    <request.json>", file=sys.stderr)
         print("  inspect-source      <request.json>", file=sys.stderr)
@@ -64,9 +67,41 @@ def main(argv: list[str]) -> int:
     handler = dispatch.get(command)
     if handler is None:
         print(f"unknown command: {command}", file=sys.stderr)
-        print("usage: repo-spec-init --request <request.json>", file=sys.stderr)
+        print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         return 1
     return handler(argv)
+
+
+def _cmd_init_repo(argv: list[str]) -> int:
+    destination = argv[4]
+    stage_parent = Path(destination).expanduser().resolve().parent
+    stage_names_before = tuple(sorted(
+        p.name for p in stage_parent.iterdir()
+        if p.name.startswith("repo-spec-stage-")
+    )) if stage_parent.is_dir() else ()
+    raw = {"schema_version": "2", "destination": destination}
+    try:
+        print("Repository bootstrap started.", file=sys.stderr)
+        actions = with_human_progress(
+            build_full_initialization_actions(argv[1]),
+            sys.stderr,
+        )
+        result = execute_full_initialization(raw, os.getcwd(), actions)
+    except Exception as exc:
+        print(f"Repository bootstrap failed before workflow completion: {exc}", file=sys.stderr)
+        print("Destination was not promoted by a completed workflow.", file=sys.stderr)
+        return 1
+    present_terminal_result(result, destination, sys.stderr)
+    if not result.succeeded and result.lifecycle.terminal_result == "pre-promotion-failure":
+        try:
+            from initializer.staging import cleanup_failed_staging_for_destination
+            removed = cleanup_failed_staging_for_destination(destination, stage_names_before)
+            if removed:
+                print("Cleaned failed bootstrap staging: " + ", ".join(removed), file=sys.stderr)
+        except Exception as exc:
+            print(f"Warning: failed bootstrap staging cleanup did not complete: {exc}", file=sys.stderr)
+    return 0 if result.succeeded else 1
 
 
 def _cmd_initialize(argv: list[str]) -> int:
@@ -78,7 +113,7 @@ def _cmd_initialize(argv: list[str]) -> int:
         destination = raw.get("destination")
         print("Initialization started.", file=sys.stderr)
         actions = with_human_progress(
-            build_full_initialization_actions(),
+            build_full_initialization_actions(argv[1]),
             sys.stderr,
         )
         result = execute_full_initialization(

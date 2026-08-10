@@ -19,7 +19,7 @@
   "normative_requirements": [
     {
       "id": "INIT-L0-001",
-      "text": "The initializer shall be deterministic: equivalent accepted initialization requests and equivalent source revisions shall produce equivalent repository content, except for explicitly declared variable data whose scope, representation, and source shall be declared; the equivalence relation shall be defined by the content-equivalence contract of the governing product specification and shall be evaluated on canonical forms."
+      "text": "The initializer shall be deterministic: equivalent accepted repository-bootstrap requests and equivalent resolved framework source revisions shall produce equivalent repository content, except for explicitly declared variable data whose scope, representation, and source shall be declared; the equivalence relation shall be defined by the content-equivalence contract of the governing product specification and shall be evaluated on canonical forms."
     },
     {
       "id": "INIT-L0-002",
@@ -31,7 +31,7 @@
     },
     {
       "id": "INIT-L0-004",
-      "text": "The initializer shall enforce traceability: every generated authority artifact, product specification, and product-direction document in the initialized repository shall remain traceable to its source material and exact source revision, and projected direction evidence shall be byte-identical to its source Git blob."
+      "text": "The initializer shall enforce framework provenance traceability: the initialized repository shall record the exact repo-spec framework source and revision actually used for bootstrap. Repository initialization shall not create product-direction evidence or generated product authority artifacts merely to satisfy bootstrap provenance."
     },
     {
       "id": "INIT-L0-005",
@@ -39,7 +39,7 @@
     },
     {
       "id": "INIT-L0-006",
-      "text": "Request authority shall take precedence over default or inferred behavior: the initializer shall not silently expand authority beyond what the explicit initialization request grants."
+      "text": "Explicit user bootstrap intent shall take precedence over inferred product semantics: the initializer may mechanically derive repository identity from the explicitly requested destination and may resolve its own executing framework provenance locally, but shall not infer product identity, product direction, product specifications, implementation-plan authority, or other successor product semantics."
     },
     {
       "id": "INIT-L0-007",
@@ -52,6 +52,10 @@
     {
       "id": "INIT-L0-009",
       "text": "The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed."
+    },
+    {
+      "id": "INIT-L0-010",
+      "text": "Repository initialization shall establish the governed repository framework before product definition. Product overview, product direction, product decomposition, product specifications, and product implementation planning are successor governed lifecycle work and shall not be established or accepted by repository bootstrap."
     }
   ],
   "dependencies": [],

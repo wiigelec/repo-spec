@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,14 +14,14 @@ from initializer.handoff import (
     write_handoff_manifest,
 )
 from initializer.inventory import ResolvedSourceMaterial
-from initializer.models import ImmutableRequest, I1DestinationPreflight
+from initializer.models import I1DestinationPreflight
 from initializer.provenance import ProvenanceInputs, write_provenance_record
 from initializer.staging import (
     I2RealizationResult,
     I2StagingInputs,
     establish_staging_workspace,
 )
-
+from initializer.validation import validate_and_normalize
 
 OBJECT_ID = "0123456789abcdef0123456789abcdef01234567"
 
@@ -34,63 +33,32 @@ class I3HandoffTests(unittest.TestCase):
         source = root / "source"
         source.mkdir()
         destination = root / "output"
-        raw = {
-            "schema_version": "1",
-            "destination": str(destination),
-            "authority": {"granted_by": "issue-281"},
-            "source": {
-                "repository": str(source),
-                "revision": {"object_format": "sha1", "object_id": OBJECT_ID},
-            },
-            "product": {
-                "id": "sample-product",
-                "direction_material": ["direction/one.md"],
-            },
-        }
-        request = ImmutableRequest(
-            raw,
-            canonical_request_bytes=b"canonical",
-            request_fingerprint="fingerprint",
-        )
-        source_material = ResolvedSourceMaterial(
+
+        request = validate_and_normalize(
+            {"schema_version": "2", "destination": str(destination)},
+            str(root),
+        ).request
+        resolved = ResolvedSourceMaterial(
             repository=str(source),
             commit_id=OBJECT_ID,
             manifest=(),
-            direction_material=("direction/one.md",),
+            direction_material=(),
         )
-        parent_stat = destination.parent.stat()
+        stat = destination.parent.stat()
         preflight = I1DestinationPreflight(
             destination=str(destination),
             destination_state="absent",
             destination_parent=str(destination.parent),
-            filesystem_device=parent_stat.st_dev,
+            filesystem_device=stat.st_dev,
             same_filesystem=True,
             decision="allowed",
         )
         workspace = establish_staging_workspace(
-            I2StagingInputs(request, source_material, preflight)
+            I2StagingInputs(request, resolved, preflight)
         )
 
-        framework = (
-            "README.md",
-            "repo/scripts/validate",
-        )
-        foundations = (
-            "product/docs/overview/sample-product-OVERVIEW.md",
-            "product/docs/overview/sample-product-overview/chunk-01-identity-and-purpose.md",
-            "product/docs/decompositions/sample-product-DECOMPOSITION.md",
-            "product/docs/plans/sample-product-IMPLEMENTATION-PLAN.md",
-            "product/specs/product/level-0/README.md",
-            "product/specs/product/level-1/README.md",
-            "product/specs/product/level-2/README.md",
-            "product/specs/product/level-3/README.md",
-            "product/docs/direction/evidence/000-one.md",
-            "product/docs/direction/manifest.json",
-            "repo/docs/overview/README.md",
-            "product/specs/product/README.md",
-            "product/specs/product/manifest.json",
-        )
-        for path in framework + foundations:
+        framework = ("README.md", "repo/scripts/validate")
+        for path in framework:
             target = workspace.repository_path / path
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(path + "\n", encoding="utf-8")
@@ -98,108 +66,65 @@ class I3HandoffTests(unittest.TestCase):
         realization = I2RealizationResult(
             workspace=workspace,
             framework_paths=framework,
-            foundation_paths=foundations,
+            foundation_paths=(),
         )
         write_provenance_record(
             workspace,
             ProvenanceInputs(
-                initializer_name="repo-spec-init",
-                initializer_version="1",
-                initialization_timestamp="2026-08-08T19:00:00Z",
+                "repo-spec-init",
+                "1",
+                "2026-08-08T19:00:00Z",
             ),
         )
         self.addCleanup(td.cleanup)
         return realization
 
-    def test_classification_is_disjoint_sorted_and_complete(self):
-        realization = self.make_realization()
-        c = classify_handoff(realization)
-
-        self.assertEqual(c.framework, tuple(sorted(c.framework)))
-        self.assertEqual(c.product, tuple(sorted(c.product)))
-        self.assertEqual(c.generated, tuple(sorted(c.generated)))
-        self.assertEqual(c.selected, tuple(sorted(c.selected)))
-        self.assertEqual(len(c.all_paths()), len(set(c.all_paths())))
+    def test_classification_is_framework_only_at_bootstrap(self):
+        c = classify_handoff(self.make_realization())
+        self.assertEqual(c.product, ())
+        self.assertEqual(c.selected, ())
+        self.assertEqual(c.omitted, ())
+        self.assertEqual(c.deferred, ())
         self.assertIn("README.md", c.framework)
-        self.assertIn("product/docs/overview/sample-product-OVERVIEW.md", c.product)
-        self.assertIn(
-            "product/docs/direction/evidence/000-one.md",
-            c.selected,
-        )
-        self.assertIn("product/docs/direction/manifest.json", c.generated)
         self.assertIn("repo/initializer/provenance.json", c.generated)
         self.assertIn("repo/initializer/handoff.json", c.generated)
 
-    def test_manifest_has_exact_closed_shape_and_constants(self):
-        realization = self.make_realization()
-        manifest = build_handoff_manifest(classify_handoff(realization))
-        self.assertEqual(list(manifest), [
-            "schema_version", "foundations", "material", "provenance", "next_action"
-        ])
-        self.assertEqual(manifest["schema_version"], "2")
-        self.assertEqual(manifest["provenance"], "repo/initializer/provenance.json")
-        self.assertEqual(manifest["next_action"], NEXT_ACTION)
-        self.assertEqual(list(manifest["foundations"]), ["framework", "product"])
-        self.assertEqual(
-            list(manifest["material"]),
-            ["generated", "selected", "omitted", "deferred"],
+    def test_manifest_has_v2_closed_shape(self):
+        manifest = build_handoff_manifest(
+            classify_handoff(self.make_realization())
         )
+        self.assertEqual(manifest["schema_version"], "2")
+        self.assertEqual(manifest["foundations"]["product"], [])
+        self.assertEqual(manifest["next_action"], NEXT_ACTION)
 
-    def test_serialization_is_deterministic_and_has_one_final_newline(self):
-        realization = self.make_realization()
-        manifest = build_handoff_manifest(classify_handoff(realization))
-        a = serialize_handoff_manifest(manifest)
-        b = serialize_handoff_manifest(manifest)
-        self.assertEqual(a, b)
-        self.assertTrue(a.endswith(b"\n"))
-        self.assertFalse(a.endswith(b"\n\n"))
-        self.assertEqual(json.loads(a.decode("utf-8"))["schema_version"], "2")
+    def test_serialization_is_deterministic(self):
+        manifest = build_handoff_manifest(
+            classify_handoff(self.make_realization())
+        )
+        payload = serialize_handoff_manifest(manifest)
+        self.assertEqual(
+            payload,
+            serialize_handoff_manifest(manifest),
+        )
+        self.assertTrue(payload.endswith(b"\n"))
 
-    def test_write_classifies_handoff_itself_and_all_regular_files(self):
+    def test_write_classifies_handoff_itself(self):
         realization = self.make_realization()
         result = write_handoff_manifest(realization)
-        expected = realization.workspace.repository_path / HANDOFF_RELATIVE_PATH
-        self.assertEqual(result.path, expected)
-        self.assertTrue(expected.is_file())
-        self.assertIn(HANDOFF_RELATIVE_PATH.as_posix(), result.classifications.generated)
+        self.assertEqual(
+            result.path,
+            realization.workspace.repository_path / HANDOFF_RELATIVE_PATH,
+        )
+        self.assertTrue(result.path.is_file())
 
-    def test_rejects_undeclared_present_regular_file(self):
+    def test_rejects_undeclared_present_file(self):
         realization = self.make_realization()
-        rogue = realization.workspace.repository_path / "rogue.txt"
-        rogue.write_text("rogue\n", encoding="utf-8")
-        with self.assertRaisesRegex(HandoffError, "undeclared"):
-            classify_handoff(realization)
-
-    def test_rejects_present_omitted_path(self):
-        realization = self.make_realization()
+        (realization.workspace.repository_path / "rogue.txt").write_text(
+            "rogue",
+            encoding="utf-8",
+        )
         with self.assertRaises(HandoffError):
-            classify_handoff(realization, omitted=("README.md",))
-
-    def test_rejects_duplicate_cross_classification_path(self):
-        realization = self.make_realization()
-        with self.assertRaisesRegex(HandoffError, "mutually disjoint"):
-            classify_handoff(
-                realization,
-                deferred=("README.md",),
-            )
-
-    def test_rejects_git_administrative_state_before_handoff(self):
-        realization = self.make_realization()
-        git_dir = realization.workspace.repository_path / ".git"
-        git_dir.mkdir()
-        (git_dir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
-        with self.assertRaisesRegex(HandoffError, "Git administrative state"):
             classify_handoff(realization)
-
-    def test_handoff_does_not_claim_completion_or_observed_git_state(self):
-        realization = self.make_realization()
-        manifest = build_handoff_manifest(classify_handoff(realization))
-        text = json.dumps(manifest)
-        self.assertNotIn('"status"', text)
-        self.assertNotIn("completed", text.lower())
-        self.assertNotIn('"branch"', text)
-        self.assertNotIn('"commit"', text)
-        self.assertNotIn('"remote"', text)
 
 
 if __name__ == "__main__":

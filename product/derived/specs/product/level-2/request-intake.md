@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines intake and validation of the explicit JSON initialization request.
+Defines intake and validation of the minimal repository-bootstrap JSON request.
 
 ## Correspondence
 
@@ -39,8 +39,9 @@ Defines intake and validation of the explicit JSON initialization request.
 
 ## Normative requirements
 
-- `INIT-INT-001`: The request intake component shall parse one explicit JSON object, perform every structural and semantic validation that does not require reading source-revision content, reject input that fails that intake-local validation, resolve the destination and source-repository paths exactly as required by product.initialization-request, and produce the validated intake model consumed by source-material resolution. Immediately after successful intake-local validation and path resolution, and before source resolution, destination preflight, staging, or any other downstream operation, intake shall construct the canonical request byte sequence defined by product.initialization-request, compute its SHA-256 request fingerprint as exactly 64 lowercase hexadecimal characters, and attach that single value to the validated intake model. Source-material resolution shall then perform the source-dependent direction-material validation required by product.initialization-request::INIT-REQ-015; only after it succeeds shall the model and fingerprint represent an accepted request for destination preflight, staging, and later success-path components. If source-dependent validation fails, the rejected model and fingerprint shall not authorize those components; use of the unchanged fingerprint solely to identify a governed failure diagnostic remains controlled by the applicable lifecycle and record specifications. The request model, canonical request bytes, and request fingerprint shall not be recomputed from a later representation or modified by downstream components.
-- `INIT-INT-002`: The request intake component shall report distinct rejection reasons for missing required fields, empty authority-bearing values, structurally invalid values, contradictory combinations, and any request for excluded behavior.
+- `INIT-INT-001`: Request intake shall parse one explicit JSON object, validate it against product.initialization-request schema version 2, normalize only the destination path, derive repository name mechanically from the normalized destination basename, construct the canonical request bytes, compute the SHA-256 request fingerprint, and attach those immutable values to the validated request model before downstream work.
+- `INIT-INT-002`: Request intake shall reject missing destination or schema version, unknown fields, invalid destination syntax, unsupported schema versions, and attempts to supply authority, source, revision, product, direction-material, or execution-profile fields.
+- `INIT-INT-003`: Request intake shall not inspect or select the repo-spec framework revision; framework source and exact revision resolution belong to source-material resolution using the executing local initializer instance.
 
 ## Dependencies
 

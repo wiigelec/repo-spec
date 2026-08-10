@@ -41,16 +41,10 @@ class StandardWorkflowEntry:
 
 
 def select_standard_workflow(request: ImmutableRequest) -> WorkflowSelection:
-    profile = request.profile if request.profile is not None else STANDARD_PROFILE
-    if profile != STANDARD_PROFILE:
+    if request.schema_version != "2":
         raise OrchestrationError(
             "unsupported-execution-profile",
-            f"execution profile {profile!r} maps to no supported Level 3 workflow",
-        )
-    if request.schema_version != "1":
-        raise OrchestrationError(
-            "unsupported-execution-profile",
-            f"schema version {request.schema_version!r} maps to no supported Level 3 workflow",
+            f"schema version {request.schema_version!r} maps to no supported bootstrap workflow",
         )
     return WorkflowSelection(
         profile=STANDARD_PROFILE,
@@ -68,23 +62,6 @@ def canonical_requests_equivalent(left: ImmutableRequest, right: ImmutableReques
     return left.canonical_request_bytes == right.canonical_request_bytes
 
 
-def canonical_source_identity(request: ImmutableRequest) -> tuple[str, str, str]:
-    revision: GitObjectIdentity = request.source_revision
-    return (
-        request.source_repository,
-        revision.object_format,
-        revision.object_id,
-    )
-
-
-def canonical_sources_equivalent(left: ImmutableRequest, right: ImmutableRequest) -> bool:
-    return canonical_source_identity(left) == canonical_source_identity(right)
-
-
-def canonical_direction_material(request: ImmutableRequest) -> tuple[str, ...]:
-    return request.product_direction_material
-
-
 def canonical_outcome_inputs_equivalent(
     left: StandardWorkflowEntry,
     right: StandardWorkflowEntry,
@@ -92,9 +69,6 @@ def canonical_outcome_inputs_equivalent(
     return (
         left.selection == right.selection
         and canonical_requests_equivalent(left.request, right.request)
-        and canonical_sources_equivalent(left.request, right.request)
-        and canonical_direction_material(left.request)
-        == canonical_direction_material(right.request)
     )
 
 

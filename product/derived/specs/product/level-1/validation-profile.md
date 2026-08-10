@@ -43,7 +43,7 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `missing-field`
   - `unknown-field`
 - Order: `10`
-- Pass Condition: `The initialization request is valid JSON whose structure and field types match the initialization-request contract (product.initialization-request) for schema_version 1.`
+- Pass Condition: `The canonical bootstrap request is schema_version 2 and contains exactly schema_version and destination.`
 - Applies To: `request`
 - Check Id: `request.canonicalization`
 - Classification: `required`
@@ -51,15 +51,14 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `canonicalization-error`
   - `unresolvable-path`
 - Order: `20`
-- Pass Condition: `The request canonicalizes without error: relative paths resolve, the authority and product fields are present, and no transformation alters authoritative content.`
+- Pass Condition: `The destination is canonical absolute local-path input and the carried canonical bytes/fingerprint are unchanged.`
 - Applies To: `request`
 - Check Id: `request.authority-propagation`
 - Classification: `required`
 - Failure Codes:
-  - `missing-authority`
-  - `empty-authority`
+  - `legacy-authority-field`
 - Order: `25`
-- Pass Condition: `The authority.granted_by value is a non-empty string. The initializer does not authenticate the governing issue or consult an external authority source; it records the value verbatim and propagates it to the provenance record. Consistency between the request authority and the provenance record request_identifier is verified by the provenance.consistent check.`
+- Pass Condition: `The bootstrap request contains no legacy authority, source, product, profile, or direction-material fields.`
 - Applies To: `source`
 - Check Id: `source.repository-local`
 - Classification: `required`
@@ -144,13 +143,13 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Pass Condition: `Every observed worktree path in the staged repository matches exactly one output-inventory entry (fixed file, material_index entry, or resolved dynamic family path) and no prohibited path exists under its matching rule. No installed path claims membership as a descendant of a directory-valued material_index entry because tree-valued entries are not permitted.`
 - Applies To: `repository-worktree`
 - Check Id: `output.level-readmes`
-- Classification: `required`
+- Classification: `advisory`
 - Failure Codes:
   - `missing-readme`
   - `content-mismatch`
   - `mode-mismatch`
 - Order: `95`
-- Pass Condition: `Every Level workspace README.md (product/specs/product/level-{N}/README.md) declared in the output inventory is present in the staged repository and contains the correct Level identity, activated-workspace status, and governed next action per product.generated-repository.`
+- Pass Condition: `Product Level workspace README files are not required during repository bootstrap.`
 - Applies To: `repository-worktree`
 - Check Id: `output.copied-bytes-match`
 - Classification: `required`
@@ -162,14 +161,14 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Pass Condition: `Every file produced by copy-verbatim (material_index entries with operation copy-verbatim) has byte content identical to its corresponding source Git blob, resolved by matching material_key between the output inventory and the material manifest at the declared source revision.`
 - Applies To: `repository-worktree`
 - Check Id: `output.direction-evidence-match`
-- Classification: `required`
+- Classification: `advisory`
 - Failure Codes:
   - `byte-mismatch`
   - `evidence-missing`
   - `manifest-entry-mismatch`
   - `orphan-evidence`
 - Order: `110`
-- Pass Condition: `Every direction evidence file under product/docs/direction/evidence/ is byte-identical to its declared source Git blob and every manifest entry in product/docs/direction/manifest.json matches an existing evidence file with correct metadata.`
+- Pass Condition: `No product direction evidence is required during repository bootstrap.`
 - Applies To: `repository-worktree`
 - Check Id: `output.generated-records-valid`
 - Classification: `required`
@@ -178,16 +177,16 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
   - `missing-field`
   - `invalid-value`
 - Order: `120`
-- Pass Condition: `Every promoted generated record (product manifest, provenance record, handoff manifest, direction evidence manifest) validates against its governing schema and has correct required fields. Staging-state and validation-report are transaction records not in the repository worktree and are not validated by this check.`
+- Pass Condition: `The bootstrap-generated provenance and handoff records are present and valid JSON objects.`
 - Applies To: `repository-worktree`
 - Check Id: `output.generated-templates-match`
-- Classification: `required`
+- Classification: `advisory`
 - Failure Codes:
   - `template-mismatch`
   - `missing-lifecycle-status`
   - `incorrect-status`
 - Order: `125`
-- Pass Condition: `Every generated template document (controlling documents, chunk documents, discoverability READMEs) matches its governing template structure and has lifecycle_status candidate.`
+- Pass Condition: `No product template documents are generated during repository bootstrap.`
 - Applies To: `repository-worktree`
 - Check Id: `output.repository-digest-match`
 - Classification: `required`
@@ -201,10 +200,9 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Classification: `required`
 - Failure Codes:
   - `provenance-mismatch`
-  - `authority-propagation-failure`
   - `source-revision-mismatch`
 - Order: `140`
-- Pass Condition: `The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request, confirming exact authority propagation.`
+- Pass Condition: `The provenance record uses schema version 2 and matches the resolved framework repository/revision and bootstrap request fingerprint.`
 - Applies To: `repository-worktree`
 - Check Id: `handoff.consistent`
 - Classification: `required`

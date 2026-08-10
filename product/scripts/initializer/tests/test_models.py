@@ -1,84 +1,53 @@
 from __future__ import annotations
 
+import json
 import unittest
 
-from initializer.models import GitObjectIdentity
 from initializer.validation import validate_and_normalize
 
 
-OBJECT_ID = "0123456789abcdef0123456789abcdef01234567"
-
-
-def request() -> dict[str, object]:
+def request(destination: str = "output") -> dict[str, object]:
     return {
-        "schema_version": "1",
-        "destination": "output",
-        "authority": {
-            "granted_by": "issue-273",
-            "type": "governing-issue",
-            "scope": "Patch 1",
-        },
-        "source": {
-            "repository": "source",
-            "revision": {"object_format": "sha1", "object_id": OBJECT_ID},
-        },
-        "product": {
-            "id": "sample-product",
-            "direction_material": ["docs/OVERVIEW.md", "docs/OVERVIEW.md"],
-        },
-        "profile": "standard",
+        "schema_version": "2",
+        "destination": destination,
     }
 
 
 class ImmutableRequestTests(unittest.TestCase):
-    def test_validated_model_preserves_authority_identity_and_duplicates(self) -> None:
+    def test_validated_model_is_minimal_v2(self) -> None:
         model = validate_and_normalize(request(), "/work").request
-
+        self.assertEqual(model.schema_version, "2")
         self.assertEqual(model.destination, "/work/output")
-        self.assertEqual(model.source_repository, "/work/source")
-        self.assertEqual(
-            model.authority,
-            {
-                "granted_by": "issue-273",
-                "type": "governing-issue",
-                "scope": "Patch 1",
-            },
-        )
-        self.assertEqual(model.product_id, "sample-product")
-        self.assertEqual(
-            model.product_direction_material,
-            ("docs/OVERVIEW.md", "docs/OVERVIEW.md"),
-        )
+        self.assertEqual(model.repository_name, "output")
 
-    def test_source_revision_is_structured_sha1_identity(self) -> None:
-        revision = validate_and_normalize(request(), "/work").request.source_revision
+    def test_repository_name_is_derived_not_authoritative_input(self) -> None:
+        model = validate_and_normalize(request("/work/repos/example"), "/work").request
+        self.assertEqual(model.repository_name, "example")
+        canonical = json.loads(model.canonical_request_bytes.decode("utf-8"))
+        self.assertNotIn("repository_name", canonical)
 
-        self.assertIsInstance(revision, GitObjectIdentity)
-        self.assertEqual(revision.object_format, "sha1")
-        self.assertEqual(revision.object_id, OBJECT_ID)
-        self.assertEqual(
-            revision.to_dict(), {"object_format": "sha1", "object_id": OBJECT_ID}
-        )
+    def test_canonical_bytes_are_deterministic(self) -> None:
+        left = validate_and_normalize(request("./out"), "/work").request
+        right = validate_and_normalize(request("/work/out"), "/work").request
+        self.assertEqual(left.canonical_request_bytes, right.canonical_request_bytes)
+        self.assertEqual(left.request_fingerprint, right.request_fingerprint)
 
-    def test_model_is_immutable_and_returns_authority_copy(self) -> None:
+    def test_model_is_immutable(self) -> None:
         model = validate_and_normalize(request(), "/work").request
-        authority = model.authority
-        authority["granted_by"] = "other"
-
-        self.assertEqual(model.authority["granted_by"], "issue-273")
         with self.assertRaises(AttributeError):
             model._destination = "/other"
-        with self.assertRaises(AttributeError):
-            model.source_revision._object_id = "0" * 40
 
-    def test_fingerprint_and_canonical_bytes_are_stable_model_values(self) -> None:
-        first = validate_and_normalize(request(), "/work").request
-        second = validate_and_normalize(request(), "/work").request
-
-        self.assertEqual(first, second)
-        self.assertEqual(hash(first), hash(second))
-        self.assertIsInstance(first.canonical_request_bytes, bytes)
-        self.assertRegex(first.request_fingerprint, r"^[0-9a-f]{64}$")
+    def test_removed_v1_fields_are_absent(self) -> None:
+        model = validate_and_normalize(request(), "/work").request
+        for name in (
+            "authority",
+            "source_repository",
+            "source_revision",
+            "product_id",
+            "product_direction_material",
+            "profile",
+        ):
+            self.assertFalse(hasattr(model, name), name)
 
 
 if __name__ == "__main__":

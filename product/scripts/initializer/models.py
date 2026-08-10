@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 
@@ -247,12 +248,7 @@ class ImmutableRequest:
     __slots__ = (
         "_schema_version",
         "_destination",
-        "_authority",
-        "_source_repository",
-        "_source_revision",
-        "_profile",
-        "_product_id",
-        "_product_direction_material",
+        "_repository_name",
         "_canonical_request_bytes",
         "_request_fingerprint",
         "_frozen",
@@ -266,17 +262,7 @@ class ImmutableRequest:
     ) -> None:
         self._schema_version = raw["schema_version"]
         self._destination = raw["destination"]
-        self._authority = dict(raw["authority"])
-        source = raw["source"]
-        self._source_repository = source["repository"]
-        revision = source["revision"]
-        self._source_revision = GitObjectIdentity(
-            revision["object_format"], revision["object_id"]
-        )
-        self._profile = raw.get("profile")
-        product = raw["product"]
-        self._product_id = product["id"]
-        self._product_direction_material = tuple(product["direction_material"])
+        self._repository_name = Path(raw["destination"]).name
         self._canonical_request_bytes = canonical_request_bytes
         self._request_fingerprint = request_fingerprint
         self._frozen = True
@@ -295,28 +281,8 @@ class ImmutableRequest:
         return self._destination
 
     @property
-    def authority(self) -> dict[str, Any]:
-        return dict(self._authority)
-
-    @property
-    def source_repository(self) -> str:
-        return self._source_repository
-
-    @property
-    def source_revision(self) -> GitObjectIdentity:
-        return self._source_revision
-
-    @property
-    def profile(self) -> str | None:
-        return self._profile
-
-    @property
-    def product_id(self) -> str:
-        return self._product_id
-
-    @property
-    def product_direction_material(self) -> tuple[str, ...]:
-        return self._product_direction_material
+    def repository_name(self) -> str:
+        return self._repository_name
 
     @property
     def canonical_request_bytes(self) -> bytes:
@@ -332,32 +298,16 @@ class ImmutableRequest:
         return (
             self._schema_version == other._schema_version
             and self._destination == other._destination
-            and self._authority == other._authority
-            and self._source_repository == other._source_repository
-            and self._source_revision == other._source_revision
-            and self._profile == other._profile
-            and self._product_id == other._product_id
-            and self._product_direction_material == other._product_direction_material
+            and self._repository_name == other._repository_name
             and self._canonical_request_bytes == other._canonical_request_bytes
             and self._request_fingerprint == other._request_fingerprint
         )
-
-    def __ne__(self, other: object) -> bool:
-        result = self.__eq__(other)
-        if result is NotImplemented:
-            return NotImplemented
-        return not result
 
     def __hash__(self) -> int:
         return hash((
             self._schema_version,
             self._destination,
-            frozenset(self._authority.items()) if self._authority else None,
-            self._source_repository,
-            self._source_revision,
-            self._profile,
-            self._product_id,
-            self._product_direction_material,
+            self._repository_name,
             self._canonical_request_bytes,
             self._request_fingerprint,
         ))

@@ -21,8 +21,8 @@ INVALID_STRUCTURE = "invalid-structure"
 CONTRADICTORY_COMBINATION = "contradictory-combination"
 EXCLUDED_BEHAVIOR = "excluded-behavior"
 
-ROOT_FIELDS = ("schema_version", "destination", "authority", "source", "product")
-KNOWN_ROOT_FIELDS = frozenset((*ROOT_FIELDS, "profile"))
+ROOT_FIELDS = ("schema_version", "destination")
+KNOWN_ROOT_FIELDS = frozenset(ROOT_FIELDS)
 KNOWN_AUTHORITY_FIELDS = frozenset(("granted_by", "type", "scope"))
 KNOWN_SOURCE_FIELDS = frozenset(("repository", "revision"))
 KNOWN_REVISION_FIELDS = frozenset(("object_format", "object_id"))
@@ -98,46 +98,23 @@ def _validate_and_build(
 
     schema_version = _required_string(raw, "schema_version", result)
     destination = _required_string(raw, "destination", result)
-    authority = _required_object(raw, "authority", result)
-    source = _required_object(raw, "source", result)
-    product = _required_object(raw, "product", result)
 
-    if schema_version is not None and schema_version != "1":
+    if schema_version is not None and schema_version != "2":
         result.add(EXCLUDED_BEHAVIOR, f"unsupported schema version: {schema_version!r}")
 
     resolved_destination = _resolve_v1_path(destination, cwd, result, "destination")
-    canonical_authority = _validate_authority(authority, result)
-    canonical_source = _validate_source(source, cwd, result)
-    canonical_product = _validate_product(product, result)
-
-    profile: str | None = None
-    if "profile" in raw:
-        value = raw["profile"]
-        if not isinstance(value, str):
-            result.add(INVALID_STRUCTURE, "profile must be a string")
-        elif value != "standard":
-            result.add(EXCLUDED_BEHAVIOR, f"unsupported profile: {value!r}")
-        else:
-            profile = value
+    if resolved_destination == "/":
+        result.add(INVALID_STRUCTURE, "destination must have a repository-name basename")
 
     if not result.is_valid:
         return result, None
 
     assert schema_version is not None
     assert resolved_destination is not None
-    assert canonical_authority is not None
-    assert canonical_source is not None
-    assert canonical_product is not None
-    canonical: dict[str, Any] = {
+    return result, {
         "schema_version": schema_version,
         "destination": resolved_destination,
-        "authority": canonical_authority,
-        "source": canonical_source,
-        "product": canonical_product,
     }
-    if profile is not None:
-        canonical["profile"] = profile
-    return result, canonical
 
 
 def _check_unicode_scalars(value: Any, result: ValidationResult, context: str) -> None:
@@ -466,7 +443,6 @@ def validate_json_request(path: Path, cwd: str) -> int:
         "status": "valid",
         "schema_version": request.schema_version,
         "destination": request.destination,
-        "authority_granted_by": request.authority["granted_by"],
         "request_fingerprint": request.request_fingerprint,
     }, indent=2, ensure_ascii=False))
     return 0
@@ -789,18 +765,19 @@ def _i4_repository_digest(repository_root: Path) -> str:
     return hashlib.sha256(b"".join(records)).hexdigest()
 
 
+
 def _i4_check_request_schema(check, inputs):
     try:
         raw = json.loads(inputs.request.canonical_request_bytes.decode("utf-8"))
     except Exception as exc:
         return _i4_fail(check, "invalid-json", f"canonical request is not valid JSON: {exc}")
-    if not isinstance(raw, dict) or raw.get("schema_version") != "1":
+    if not isinstance(raw, dict) or raw.get("schema_version") != "2":
         return _i4_fail(check, "schema-mismatch", "canonical request schema mismatch")
-    required = {"schema_version", "destination", "authority", "source", "product"}
+    required = {"schema_version", "destination"}
     missing = sorted(required - set(raw))
     if missing:
         return _i4_fail(check, "missing-field", "canonical request missing fields", missing=missing)
-    unknown = sorted(set(raw) - (required | {"profile"}))
+    unknown = sorted(set(raw) - required)
     if unknown:
         return _i4_fail(check, "unknown-field", "canonical request unknown fields", unknown=unknown)
     return _i4_pass(check, field_count=len(raw))
@@ -808,8 +785,8 @@ def _i4_check_request_schema(check, inputs):
 
 def _i4_check_request_canonicalization(check, inputs):
     request = inputs.request
-    if not request.destination.startswith("/") or not request.source_repository.startswith("/"):
-        return _i4_fail(check, "canonicalization-error", "canonical paths are not absolute")
+    if not request.destination.startswith("/"):
+        return _i4_fail(check, "canonicalization-error", "canonical destination path is not absolute")
     canonical = canonical_request_bytes(json.loads(request.canonical_request_bytes.decode("utf-8")))
     if canonical != request.canonical_request_bytes:
         return _i4_fail(check, "canonicalization-error", "carried request bytes are not canonical")
@@ -817,13 +794,16 @@ def _i4_check_request_canonicalization(check, inputs):
 
 
 def _i4_check_request_authority(check, inputs):
-    granted_by = inputs.request.authority.get("granted_by")
-    if granted_by is None:
-        return _i4_fail(check, "missing-authority", "authority.granted_by is absent")
-    if not isinstance(granted_by, str) or not granted_by.strip():
-        return _i4_fail(check, "empty-authority", "authority.granted_by is empty")
-    return _i4_pass(check, granted_by=granted_by)
-
+    raw = json.loads(inputs.request.canonical_request_bytes.decode("utf-8"))
+    forbidden = sorted(set(raw) & {"authority", "source", "product", "profile", "direction_material"})
+    if forbidden:
+        return _i4_fail(
+            check,
+            "legacy-authority-field",
+            "bootstrap request contains deprecated authority-bearing fields",
+            fields=forbidden,
+        )
+    return _i4_pass(check, bootstrap_boundary="destination-only")
 
 def _i4_check_source_repository(check, inputs):
     source = Path(inputs.source_repository)
@@ -995,12 +975,11 @@ def _i4_check_direction_evidence(check, inputs):
     return _i4_pass(check, evidence_files=len(observed))
 
 
+
 def _i4_check_generated_records(check, inputs):
     paths = (
-        "product/specs/product/manifest.json",
         "repo/initializer/provenance.json",
         "repo/initializer/handoff.json",
-        "product/docs/direction/manifest.json",
     )
     for rel in paths:
         path = inputs.repository_root / rel
@@ -1013,7 +992,6 @@ def _i4_check_generated_records(check, inputs):
         if not isinstance(raw, dict):
             return _i4_fail(check, "invalid-value", f"generated record is not an object: {rel}")
     return _i4_pass(check, generated_records=list(paths))
-
 
 def _i4_check_generated_templates(check, inputs):
     inspected = 0
@@ -1038,19 +1016,28 @@ def _i4_check_digest(check, inputs):
     return _i4_pass(check, repository_content_digest=actual)
 
 
+
 def _i4_check_provenance(check, inputs):
     path = inputs.repository_root / "repo/initializer/provenance.json"
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
         return _i4_fail(check, "provenance-mismatch", f"cannot read provenance: {exc}")
-    granted_by = inputs.request.authority.get("granted_by")
-    if raw.get("request_identifier") != granted_by:
-        return _i4_fail(check, "authority-propagation-failure", "provenance authority mismatch")
-    if inputs.source_revision not in json.dumps(raw, sort_keys=True):
-        return _i4_fail(check, "source-revision-mismatch", "provenance source revision mismatch")
-    return _i4_pass(check, request_identifier=granted_by)
-
+    if raw.get("schema_version") != "2":
+        return _i4_fail(check, "provenance-mismatch", "provenance schema version mismatch")
+    if raw.get("framework_repository") != inputs.source_repository:
+        return _i4_fail(check, "provenance-mismatch", "framework repository provenance mismatch")
+    revision = raw.get("framework_revision")
+    if not isinstance(revision, dict) or revision.get("object_id") != inputs.source_revision:
+        return _i4_fail(check, "source-revision-mismatch", "framework revision provenance mismatch")
+    if raw.get("request_fingerprint") != inputs.request.request_fingerprint:
+        return _i4_fail(check, "provenance-mismatch", "request fingerprint provenance mismatch")
+    return _i4_pass(
+        check,
+        framework_repository=inputs.source_repository,
+        framework_revision=inputs.source_revision,
+        request_fingerprint=inputs.request.request_fingerprint,
+    )
 
 def _i4_check_handoff(check, inputs):
     path = inputs.repository_root / "repo/initializer/handoff.json"
