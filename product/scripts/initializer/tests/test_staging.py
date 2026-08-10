@@ -566,21 +566,12 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.base = Path(self.td.name)
         self.destination = self.base / "destination"
         raw = {
-            "schema_version": "1",
+            "schema_version": "2",
             "destination": str(self.destination),
-            "authority": {"granted_by": "issue-279"},
-            "source": {
-                "repository": str(self.base / "source"),
-                "revision": {"object_format": "sha1", "object_id": self.OBJECT_ID},
-            },
-            "product": {
-                "id": "sample-product",
-                "direction_material": ["docs/a.md", "docs/a.md"],
-            },
         }
         self.request = validate_and_normalize(raw, str(self.base)).request
         self.source = ResolvedSourceMaterial(
-            repository=self.request.source_repository,
+            repository=str(self.base / "source"),
             commit_id=self.OBJECT_ID,
             manifest=(MaterialEntry(
                 material_key="root-readme",
@@ -590,7 +581,7 @@ class I2StagingTopologyTests(unittest.TestCase):
                 source_type="blob",
                 mode="100644",
             ),),
-            direction_material=self.request.product_direction_material,
+            direction_material=(),
         )
         self.preflight = i1_destination_preflight(self.request.destination)
         self.inputs = I2StagingInputs(self.request, self.source, self.preflight)
@@ -640,7 +631,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.assertIs(workspace.inputs.request, self.request)
         self.assertIs(workspace.inputs.source, self.source)
         self.assertIs(workspace.inputs.destination, self.preflight)
-        self.assertEqual(workspace.inputs.request.product_direction_material, ("docs/a.md", "docs/a.md"))
+        self.assertEqual(workspace.inputs.source.direction_material, ())
         output = workspace.to_dict()
         self.assertEqual(output["request_fingerprint"], self.request.request_fingerprint)
         self.assertEqual(output["source_revision"], self.OBJECT_ID)
@@ -654,10 +645,10 @@ class I2StagingTopologyTests(unittest.TestCase):
         )
         before = set(self.base.iterdir())
 
-        with self.assertRaisesRegex(StagingError, "source revision"):
-            establish_staging_workspace(I2StagingInputs(self.request, mismatched, self.preflight))
-
-        self.assertEqual(set(self.base.iterdir()), before)
+        workspace = establish_staging_workspace(I2StagingInputs(self.request, mismatched, self.preflight))
+        self.workspaces.append(workspace)
+        self.assertEqual(workspace.inputs.source.commit_id, "0" * 40)
+        self.assertEqual(set(self.base.iterdir()) - before, {workspace.root})
 
     def test_rejects_changed_filesystem_fact_before_mutation(self) -> None:
         stale = I1DestinationPreflight(
