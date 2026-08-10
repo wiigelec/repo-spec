@@ -313,7 +313,7 @@
       "destination_path": "repo/scripts/github_field_policy.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
-      "mode": "100644",
+      "mode": "100755",
       "required": true,
       "role": "validation-utility"
     },

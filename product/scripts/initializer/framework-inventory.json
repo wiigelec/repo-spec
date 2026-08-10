@@ -271,7 +271,7 @@
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
-      "mode": "100644"
+      "mode": "100755"
     },
     {
       "material_key": "derived-artifact-taxonomy",
