@@ -17,7 +17,7 @@
       "classification": "required",
       "order": 10,
       "applies_to": "request",
-      "pass_condition": "The initialization request is valid JSON whose structure and field types match the initialization-request contract (product.initialization-request) for schema_version 1.",
+      "pass_condition": "The canonical bootstrap request is schema_version 2 and contains exactly schema_version and destination.",
       "failure_codes": [
         "invalid-json",
         "schema-mismatch",
@@ -30,7 +30,7 @@
       "classification": "required",
       "order": 20,
       "applies_to": "request",
-      "pass_condition": "The request canonicalizes without error: relative paths resolve, the authority and product fields are present, and no transformation alters authoritative content.",
+      "pass_condition": "The destination is canonical absolute local-path input and the carried canonical bytes/fingerprint are unchanged.",
       "failure_codes": [
         "canonicalization-error",
         "unresolvable-path"
@@ -41,10 +41,9 @@
       "classification": "required",
       "order": 25,
       "applies_to": "request",
-      "pass_condition": "The authority.granted_by value is a non-empty string. The initializer does not authenticate the governing issue or consult an external authority source; it records the value verbatim and propagates it to the provenance record. Consistency between the request authority and the provenance record request_identifier is verified by the provenance.consistent check.",
+      "pass_condition": "The bootstrap request contains no legacy authority, source, product, profile, or direction-material fields.",
       "failure_codes": [
-        "missing-authority",
-        "empty-authority"
+        "legacy-authority-field"
       ]
     },
     {
@@ -158,10 +157,10 @@
     },
     {
       "check_id": "output.level-readmes",
-      "classification": "required",
+      "classification": "advisory",
       "order": 95,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every Level workspace README.md (product/specs/product/level-{N}/README.md) declared in the output inventory is present in the staged repository and contains the correct Level identity, activated-workspace status, and governed next action per product.generated-repository.",
+      "pass_condition": "Product Level workspace README files are not required during repository bootstrap.",
       "failure_codes": [
         "missing-readme",
         "content-mismatch",
@@ -182,10 +181,10 @@
     },
     {
       "check_id": "output.direction-evidence-match",
-      "classification": "required",
+      "classification": "advisory",
       "order": 110,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every direction evidence file under product/docs/direction/evidence/ is byte-identical to its declared source Git blob and every manifest entry in product/docs/direction/manifest.json matches an existing evidence file with correct metadata.",
+      "pass_condition": "No product direction evidence is required during repository bootstrap.",
       "failure_codes": [
         "byte-mismatch",
         "evidence-missing",
@@ -198,7 +197,7 @@
       "classification": "required",
       "order": 120,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every promoted generated record (product manifest, provenance record, handoff manifest, direction evidence manifest) validates against its governing schema and has correct required fields. Staging-state and validation-report are transaction records not in the repository worktree and are not validated by this check.",
+      "pass_condition": "The bootstrap-generated provenance and handoff records are present and valid JSON objects.",
       "failure_codes": [
         "schema-mismatch",
         "missing-field",
@@ -207,10 +206,10 @@
     },
     {
       "check_id": "output.generated-templates-match",
-      "classification": "required",
+      "classification": "advisory",
       "order": 125,
       "applies_to": "repository-worktree",
-      "pass_condition": "Every generated template document (controlling documents, chunk documents, discoverability READMEs) matches its governing template structure and has lifecycle_status candidate.",
+      "pass_condition": "No product template documents are generated during repository bootstrap.",
       "failure_codes": [
         "template-mismatch",
         "missing-lifecycle-status",
@@ -233,10 +232,9 @@
       "classification": "required",
       "order": 140,
       "applies_to": "repository-worktree",
-      "pass_condition": "The provenance record at repo/initializer/provenance.json matches the initialization request identity, source revision, and initializer version, and its request_identifier equals the authority.granted_by value from the request, confirming exact authority propagation.",
+      "pass_condition": "The provenance record uses schema version 2 and matches the resolved framework repository/revision and bootstrap request fingerprint.",
       "failure_codes": [
         "provenance-mismatch",
-        "authority-propagation-failure",
         "source-revision-mismatch"
       ]
     },

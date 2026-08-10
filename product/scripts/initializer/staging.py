@@ -1253,8 +1253,8 @@ def build_validated_staging_state(
     state: dict[str, object] = {
         "schema_version": "1",
         "request_fingerprint": workspace.inputs.request.request_fingerprint,
-        "source_revision": workspace.inputs.request.source_revision.to_dict(),
-        "source_repository": workspace.inputs.request.source_repository,
+        "source_revision": {"object_format": "sha1", "object_id": workspace.inputs.source.commit_id},
+        "source_repository": workspace.inputs.source.repository,
         "initializer_version": initializer_version,
         "expected_destination": workspace.inputs.request.destination,
         "current_stage": "repository-validation",
@@ -1479,3 +1479,45 @@ def validate_execution_report_v1(report: dict[str, object]) -> None:
 def execution_report_bytes_v1(report: dict[str, object]) -> bytes:
     validate_execution_report_v1(report)
     return _i4_json_bytes(report)
+
+
+
+def cleanup_failed_staging_for_destination(
+    destination: str,
+    stage_names_before: tuple[str, ...],
+) -> tuple[str, ...]:
+    dest = Path(destination).expanduser().resolve()
+    parent = dest.parent
+    if not parent.exists() or not parent.is_dir():
+        return ()
+
+    before = set(stage_names_before)
+    removed: list[str] = []
+    for candidate in parent.iterdir():
+        if candidate.name in before or not candidate.name.startswith("repo-spec-stage-"):
+            continue
+        if candidate.is_symlink() or not candidate.is_dir():
+            continue
+
+        transaction = candidate / "transaction"
+        repository = candidate / "repository"
+        state_path = transaction / "staging-state.json"
+        if not transaction.is_dir() or not repository.is_dir() or not state_path.is_file():
+            continue
+
+        try:
+            raw = json.loads(state_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+
+        recorded_destination = raw.get("destination")
+        if not isinstance(recorded_destination, str):
+            continue
+        if Path(recorded_destination).expanduser().resolve() != dest:
+            continue
+
+        shutil.rmtree(candidate)
+        removed.append(candidate.name)
+
+    return tuple(sorted(removed))
+

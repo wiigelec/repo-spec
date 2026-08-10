@@ -75,6 +75,11 @@ def main(argv: list[str]) -> int:
 
 def _cmd_init_repo(argv: list[str]) -> int:
     destination = argv[4]
+    stage_parent = Path(destination).expanduser().resolve().parent
+    stage_names_before = tuple(sorted(
+        p.name for p in stage_parent.iterdir()
+        if p.name.startswith("repo-spec-stage-")
+    )) if stage_parent.is_dir() else ()
     raw = {"schema_version": "2", "destination": destination}
     try:
         print("Repository bootstrap started.", file=sys.stderr)
@@ -88,6 +93,14 @@ def _cmd_init_repo(argv: list[str]) -> int:
         print("Destination was not promoted by a completed workflow.", file=sys.stderr)
         return 1
     present_terminal_result(result, destination, sys.stderr)
+    if not result.succeeded and result.lifecycle.terminal_result == "pre-promotion-failure":
+        try:
+            from initializer.staging import cleanup_failed_staging_for_destination
+            removed = cleanup_failed_staging_for_destination(destination, stage_names_before)
+            if removed:
+                print("Cleaned failed bootstrap staging: " + ", ".join(removed), file=sys.stderr)
+        except Exception as exc:
+            print(f"Warning: failed bootstrap staging cleanup did not complete: {exc}", file=sys.stderr)
     return 0 if result.succeeded else 1
 
 
