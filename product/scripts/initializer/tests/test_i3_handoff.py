@@ -76,10 +76,10 @@ class I3HandoffTests(unittest.TestCase):
             "repo/scripts/validate",
         )
         foundations = (
-            "docs/overview/sample-product-OVERVIEW.md",
-            "docs/overview/sample-product-overview/chunk-01-identity-and-purpose.md",
-            "docs/decompositions/sample-product-DECOMPOSITION.md",
-            "docs/plans/sample-product-IMPLEMENTATION-PLAN.md",
+            "product/docs/overview/sample-product-OVERVIEW.md",
+            "product/docs/overview/sample-product-overview/chunk-01-identity-and-purpose.md",
+            "product/docs/decompositions/sample-product-DECOMPOSITION.md",
+            "product/docs/plans/sample-product-IMPLEMENTATION-PLAN.md",
             "product/specs/product/level-0/README.md",
             "product/specs/product/level-1/README.md",
             "product/specs/product/level-2/README.md",
@@ -121,7 +121,7 @@ class I3HandoffTests(unittest.TestCase):
         self.assertEqual(c.selected, tuple(sorted(c.selected)))
         self.assertEqual(len(c.all_paths()), len(set(c.all_paths())))
         self.assertIn("README.md", c.framework)
-        self.assertIn("docs/overview/sample-product-OVERVIEW.md", c.product)
+        self.assertIn("product/docs/overview/sample-product-OVERVIEW.md", c.product)
         self.assertIn(
             "product/docs/direction/evidence/000-one.md",
             c.selected,

@@ -699,8 +699,8 @@
     },
     {
       "producer": "workspace-seeding",
-      "rule": "One controlling document per product identifier at docs/overview/{slug}-OVERVIEW.md, docs/decompositions/{slug}-DECOMPOSITION.md, and docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.",
-      "expansion_pattern": "docs/overview/{slug}-OVERVIEW.md, docs/decompositions/{slug}-DECOMPOSITION.md, docs/plans/{slug}-IMPLEMENTATION-PLAN.md",
+      "rule": "One controlling document per product identifier at product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, and product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.",
+      "expansion_pattern": "product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",
       "type": "regular-file",
@@ -708,8 +708,8 @@
     },
     {
       "producer": "workspace-seeding",
-      "rule": "Six overview chunk files under docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.",
-      "expansion_pattern": "docs/overview/{slug}-overview/chunk-{NN}-{topic}.md",
+      "rule": "Six overview chunk files under product/docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.",
+      "expansion_pattern": "product/docs/overview/{slug}-overview/chunk-{NN}-{topic}.md",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",
       "type": "regular-file",
@@ -717,8 +717,8 @@
     },
     {
       "producer": "workspace-seeding",
-      "rule": "Four decomposition chunk files under docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.",
-      "expansion_pattern": "docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md",
+      "rule": "Four decomposition chunk files under product/docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.",
+      "expansion_pattern": "product/docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",
       "type": "regular-file",
@@ -726,8 +726,8 @@
     },
     {
       "producer": "workspace-seeding",
-      "rule": "Four implementation plan chunk files under docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.",
-      "expansion_pattern": "docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md",
+      "rule": "Four implementation plan chunk files under product/docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.",
+      "expansion_pattern": "product/docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",
       "type": "regular-file",
