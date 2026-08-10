@@ -120,11 +120,18 @@ class Issue337CanonicalFoundationNamesTests(unittest.TestCase):
             [
                 "01-identity-and-purpose.md",
                 "02-problem-and-outcome.md",
-                "03-users-principles-and-boundaries.md",
+                "03-users-principles-boundaries.md",
                 "04-capabilities-and-success.md",
                 "05-unresolved-questions.md",
                 "06-lifecycle-and-handoff.md",
             ],
+        )
+
+
+    def test_legacy_chunk03_basename_is_not_present(self):
+        self.assertNotIn(
+            "03-users-principles-and-boundaries.md",
+            [item[0] for item in OVERVIEW_CHUNK_COVERAGE],
         )
 
 
