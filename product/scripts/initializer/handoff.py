@@ -101,9 +101,9 @@ def _regular_files(repository: Path) -> frozenset[str]:
 
 def _is_product_foundation(path: str, product_id: str) -> bool:
     if path in {
-        f"docs/overview/{product_id}-OVERVIEW.md",
-        f"docs/decompositions/{product_id}-DECOMPOSITION.md",
-        f"docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
+        f"product/docs/overview/{product_id}-OVERVIEW.md",
+        f"product/docs/decompositions/{product_id}-DECOMPOSITION.md",
+        f"product/docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
         "product/specs/product/level-0/README.md",
         "product/specs/product/level-1/README.md",
         "product/specs/product/level-2/README.md",
@@ -111,9 +111,9 @@ def _is_product_foundation(path: str, product_id: str) -> bool:
     }:
         return True
     return (
-        path.startswith(f"docs/overview/{product_id}-overview/")
-        or path.startswith(f"docs/decompositions/{product_id}-decomposition/")
-        or path.startswith(f"docs/plans/{product_id}-implementation-plan/")
+        path.startswith(f"product/docs/overview/{product_id}-overview/")
+        or path.startswith(f"product/docs/decompositions/{product_id}-decomposition/")
+        or path.startswith(f"product/docs/plans/{product_id}-implementation-plan/")
     )
 
 

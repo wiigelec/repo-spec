@@ -234,7 +234,7 @@ class I2MaterializationTests(unittest.TestCase):
         self.assertTrue(
             (
                 repository
-                / "docs/overview/sample-overview/chunk-01-identity-and-purpose.md"
+                / "product/docs/overview/sample-overview/chunk-01-identity-and-purpose.md"
             ).is_file()
         )
         self.assertTrue(
@@ -285,7 +285,7 @@ class I2MaterializationTests(unittest.TestCase):
         realize_i2_materials(self.workspace, self.plan)
         overview = (
             self.workspace.repository_path
-            / "docs/overview/sample-OVERVIEW.md"
+            / "product/docs/overview/sample-OVERVIEW.md"
         ).read_bytes()
         self.assertNotIn(b"first", overview)
         self.assertNotIn(b"second", overview)

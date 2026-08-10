@@ -41,33 +41,33 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Required: `True`
 - Rule: `Each direction_material entry produces one file at product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path.`
 - Type: `regular-file`
-- Expansion Pattern: `docs/overview/{slug}-OVERVIEW.md, docs/decompositions/{slug}-DECOMPOSITION.md, docs/plans/{slug}-IMPLEMENTATION-PLAN.md`
+- Expansion Pattern: `product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md`
 - Governing Spec: `product.foundation-seeding`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Rule: `One controlling document per product identifier at docs/overview/{slug}-OVERVIEW.md, docs/decompositions/{slug}-DECOMPOSITION.md, and docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.`
+- Rule: `One controlling document per product identifier at product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, and product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.`
 - Type: `regular-file`
-- Expansion Pattern: `docs/overview/{slug}-overview/chunk-{NN}-{topic}.md`
+- Expansion Pattern: `product/docs/overview/{slug}-overview/chunk-{NN}-{topic}.md`
 - Governing Spec: `product.foundation-seeding`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Rule: `Six overview chunk files under docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.`
+- Rule: `Six overview chunk files under product/docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.`
 - Type: `regular-file`
-- Expansion Pattern: `docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md`
+- Expansion Pattern: `product/docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md`
 - Governing Spec: `product.foundation-seeding`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Rule: `Four decomposition chunk files under docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.`
+- Rule: `Four decomposition chunk files under product/docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.`
 - Type: `regular-file`
-- Expansion Pattern: `docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md`
+- Expansion Pattern: `product/docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md`
 - Governing Spec: `product.foundation-seeding`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Rule: `Four implementation plan chunk files under docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.`
+- Rule: `Four implementation plan chunk files under product/docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.`
 - Type: `regular-file`
 
 ## Fixed Worktree Files

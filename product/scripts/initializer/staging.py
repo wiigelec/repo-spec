@@ -718,9 +718,9 @@ def _i2_expected_foundation_paths(plan: FoundationPlan) -> set[str]:
     product_id = plan.product_id
     paths = {
         "product/docs/direction/manifest.json",
-        f"docs/overview/{product_id}-OVERVIEW.md",
-        f"docs/decompositions/{product_id}-DECOMPOSITION.md",
-        f"docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
+        f"product/docs/overview/{product_id}-OVERVIEW.md",
+        f"product/docs/decompositions/{product_id}-DECOMPOSITION.md",
+        f"product/docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
         "repo/docs/overview/README.md",
         "repo/docs/decompositions/README.md",
         "repo/docs/plans/README.md",
@@ -743,21 +743,21 @@ def _i2_expected_foundation_paths(plan: FoundationPlan) -> set[str]:
         "chunk-05-unresolved-questions.md",
         "chunk-06-lifecycle-and-handoff.md",
     ):
-        paths.add(f"docs/overview/{product_id}-overview/{filename}")
+        paths.add(f"product/docs/overview/{product_id}-overview/{filename}")
     for filename in (
         "chunk-01-invocation-and-authority.md",
         "chunk-02-product-areas.md",
         "chunk-03-cross-cutting-concerns.md",
         "chunk-04-stopping-criteria-and-handoff.md",
     ):
-        paths.add(f"docs/decompositions/{product_id}-decomposition/{filename}")
+        paths.add(f"product/docs/decompositions/{product_id}-decomposition/{filename}")
     for filename in (
         "chunk-01-scope-and-preconditions.md",
         "chunk-02-workstreams-and-dependencies.md",
         "chunk-03-validation-and-completion.md",
         "chunk-04-risks-and-unresolved-decisions.md",
     ):
-        paths.add(f"docs/plans/{product_id}-implementation-plan/{filename}")
+        paths.add(f"product/docs/plans/{product_id}-implementation-plan/{filename}")
     return paths
 
 
