@@ -1,4 +1,4 @@
-# Local Source Material Selection
+# Executing Framework Source Resolution
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines selection and inventory of framework material from an explicit commit in a local source repository, validated against the material manifest.
+Defines deterministic local resolution and inventory of framework material from the repo-spec instance executing initialization.
 
 ## Correspondence
 
@@ -39,20 +39,20 @@ Defines selection and inventory of framework material from an explicit commit in
 
 ## Normative requirements
 
-- `INIT-SMR-001`: The local source material component shall verify that the explicit revision resolves to a commit object in the supplied local source Git repository using `git rev-parse --verify <revision>^{commit}`; the revision shall conform to the canonical Git object identity representation defined by product.git-object-identity with object_format "sha1", and abbreviated object IDs, named references, and unsupported object formats shall be rejected.
-- `INIT-SMR-002`: The component shall read material only from the commit tree of the resolved revision, ignoring the working tree, and shall reject an unavailable exact revision without resolving a named reference, contacting a remote source, calling `git fetch`, following Git replacement-object references, or retrieving additional source material.
-- `INIT-SMR-003`: The component shall load the material manifest from the source commit at `product/scripts/initializer/framework-inventory.json`, validate its structure against the material-manifest contract schema, and classify each manifest entry by its declared role.
-- `INIT-SMR-004`: The component shall reject the source revision when the material manifest is absent from the commit tree, fails structural validation, contains unknown operation types, or has overlapping or duplicate destination paths.
-- `INIT-SMR-005`: The component shall verify that every source_path declared in the manifest exists at the expected source_type (blob or symlink) in the source commit tree, and shall reject the source revision when any declared path is missing or has an unexpected type. A source_type of tree is not permitted for the Version 1 bounded local workflow; any manifest entry declaring source_type tree shall cause the source revision to be rejected.
-- `INIT-SMR-006`: No source_path may resolve to a Git tree object (directory). Every source_path shall resolve to exactly one Git blob (regular file) or Git symlink. Undeclared descendants of any source directory in the source commit tree shall have no effect on initialized output; the output inventory, not the source tree, determines every output path.
+- `INIT-SMR-001`: Source-material resolution shall identify the local repo-spec Git repository containing the executing initializer and resolve its current `HEAD` directly to an exact commit object with Git object format `sha1`; no source repository or revision value is supplied by the bootstrap request.
+- `INIT-SMR-002`: The component shall fail closed when the executing framework repository cannot be identified unambiguously, is not a local Git repository, uses an unsupported object format, has no exact local HEAD commit, or contains tracked or untracked working-tree changes that could make the executed framework differ from the recorded commit provenance.
+- `INIT-SMR-003`: After resolving the exact framework commit, the component shall read installable material only from that commit tree, ignoring branch names and remote state and performing no fetch, remote retrieval, replacement-object resolution, or named-reference substitution for material reads.
+- `INIT-SMR-004`: The component shall load `product/scripts/initializer/framework-inventory.json` and the governing output inventory from the resolved framework commit and validate the closed material inventory before staging.
+- `INIT-SMR-005`: Every declared framework source_path shall exist at the expected blob or symlink type and mode in the resolved framework commit; unavailable, mismatched, tree-valued, or undeclared material shall fail resolution.
+- `INIT-SMR-006`: The resolved framework repository path and exact commit identity shall be carried separately from the immutable bootstrap request and shall become the framework provenance recorded before promotion.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.git-object-identity`
-- `product.source-revision-identity`
 - `product.material-classification`
 - `product.material-manifest`
+- `product.initialization-request`
 
 ## References
 

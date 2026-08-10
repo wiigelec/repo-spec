@@ -39,13 +39,15 @@ Defines the provenance recording component that captures and writes provenance d
 
 ## Normative requirements
 
-- `INIT-PRC-001`: The provenance recording component shall capture the initializer identity and version, product identifier, local source repository identity, exact source revision, request identifier, and initialization timestamp, and shall write the provenance record into the repository/ directory before Git initialization and validation.
+- `INIT-PRC-001`: The provenance recording component shall capture initializer identity/version, the resolved local repo-spec framework repository and exact framework revision actually used for material installation, the immutable bootstrap request fingerprint, and initialization timestamp, and shall write that provenance record into the staged repository before Git initialization and validation.
+- `INIT-PRC-002`: Provenance recording shall not require or emit product identity, direction material, or a separately supplied initialization-authority identifier.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.provenance-record`
-- `product.source-revision-identity`
+- `product.git-object-identity`
+- `product.initialization-request`
 
 ## References
 

@@ -44,15 +44,15 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Validated and normalized request`
 - Predecessors:
   - None
-- Purpose: `Validate and normalize the JSON initialization request and extract all authority-bearing fields.`
+- Purpose: `Validate and normalize the minimal repository-bootstrap request and compute its canonical fingerprint.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `source-resolution`
-- Output: `Resolved source material inventory`
+- Output: `Resolved framework source material inventory and exact framework provenance`
 - Predecessors:
   - `request-intake`
-- Purpose: `Resolve the exact local source revision and inventory its material for selection.`
+- Purpose: `Resolve the executing local repo-spec framework repository and exact commit revision, then inventory framework material from that commit tree.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
@@ -76,23 +76,23 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Installed framework material`
 - Predecessors:
   - `staging-establishment`
-- Purpose: `Select and install reusable repository framework material from the source revision into the repository/ directory inside the staging transaction root.`
+- Purpose: `Install reusable repository framework material from the resolved executing repo-spec commit into the staged repository.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `direction-evidence-installation`
-- Output: `Preserved direction material as source evidence`
+- Output: `Confirmed absence of bootstrap product-direction installation`
 - Predecessors:
   - `framework-installation`
-- Purpose: `Copy direction_material entries as byte-identical source evidence into the repository/ directory under a deterministic path, preserving the supplied order and content without transformation beyond front-matter addition.`
+- Purpose: `Enforce the bootstrap boundary that no product direction evidence is installed during repository initialization.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
 - Id: `workspace-seeding`
-- Output: `Generated candidate document skeletons and activated empty product-specification workspace`
+- Output: `Confirmed deferral of product-definition work`
 - Predecessors:
   - `direction-evidence-installation`
-- Purpose: `Generate candidate document skeletons from fixed templates and activate an empty product-specification workspace with empty Level roots and an empty product manifest in the repository/ directory.`
+- Purpose: `Enforce the bootstrap boundary that no product overview, decomposition, product specifications, or implementation-plan authority is seeded during repository initialization.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`
@@ -100,7 +100,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Immutable origin provenance record`
 - Predecessors:
   - `workspace-seeding`
-- Purpose: `Assemble the immutable origin provenance record and write it into the repository/ directory inside the staging transaction root.`
+- Purpose: `Write exact executing-framework provenance and the bootstrap request fingerprint into the staged repository.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`

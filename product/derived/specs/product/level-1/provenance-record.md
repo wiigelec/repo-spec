@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the atomic provenance record output artifact format for the initializer.
+Defines the atomic framework-provenance record output artifact format for repository bootstrap.
 
 ## Correspondence
 
@@ -38,11 +38,10 @@ Defines the atomic provenance record output artifact format for the initializer.
   - `schema_version`
   - `initializer_name`
   - `initializer_version`
-  - `product_identifier`
-  - `source_repository`
-  - `source_revision`
+  - `framework_repository`
+  - `framework_revision`
   - `initialization_timestamp`
-  - `request_identifier`
+  - `request_fingerprint`
 
 ## Primitives
 
@@ -51,20 +50,20 @@ Defines the atomic provenance record output artifact format for the initializer.
 
 ## Normative requirements
 
-- `INIT-PRO-001`: A provenance record shall be an atomic output artifact that records the initializer identity and version, product identifier, local source repository identity, exact source revision used, initialization timestamp, and governing request identifier.
-- `INIT-PRO-002`: The provenance record shall be a single UTF-8 encoded JSON object file written to the repository-relative path `repo/initializer/provenance.json` in the staged and promoted repository.
-- `INIT-PRO-003`: The provenance representation shall define the following required fields with the given JSON types: `initializer_name` and `initializer_version` as strings, `product_identifier` and `source_repository` as strings, `source_revision` as an object conforming to the canonical Git object identity representation defined by product.git-object-identity, `initialization_timestamp` as a string, and `request_identifier` as a string.
-- `INIT-PRO-004`: The provenance record shall set `schema_version` to the constant string `1`, shall write `initialization_timestamp` in ISO 8601 UTC format (a `YYYY-MM-DDTHH:MM:SSZ` timestamp without offset), and shall write `source_revision` as the full canonical Git object identity representation as defined by product.git-object-identity.
-- `INIT-PRO-005`: The provenance `request_identifier` shall be a non-empty string that identifies the governing initialization request authority and shall equal the `authority.granted_by` value supplied by the governing initialization request.
-- `INIT-PRO-006`: A provenance record shall reject unknown fields, shall treat every field of this specification as required with no optional fields, and shall not embed implementation artifacts, execution report content, or successor product behavior.
-- `INIT-PRO-007`: The provenance record shall be deterministically serialized as JSON with object keys in the order defined by the field_order property of this specification, `2`-space indentation, no trailing whitespace except a single final newline, and shall not reorder, reformat, or reserialize captured values.
-- `INIT-PRO-008`: The provenance record format shall evolve by incrementing `schema_version`; consumers of `schema_version` `1` shall reject records declaring any other version and shall not merge unknown or extra fields silently.
+- `INIT-PRO-001`: A bootstrap provenance record shall record the initializer identity and version, the local repo-spec framework repository actually used, the exact framework revision actually used, the initialization timestamp, and the canonical bootstrap request fingerprint.
+- `INIT-PRO-002`: The provenance record shall be a single UTF-8 encoded JSON object file written to `repo/initializer/provenance.json` in the staged and promoted repository.
+- `INIT-PRO-003`: The provenance representation shall define required fields `schema_version`, `initializer_name`, `initializer_version`, `framework_repository`, `framework_revision`, `initialization_timestamp`, and `request_fingerprint`; `framework_revision` shall conform to product.git-object-identity.
+- `INIT-PRO-004`: The provenance record shall set `schema_version` to the constant string `2`, write `initialization_timestamp` in ISO 8601 UTC `YYYY-MM-DDTHH:MM:SSZ` format, and write the exact locally resolved framework revision as a canonical Git object identity.
+- `INIT-PRO-005`: The provenance `request_fingerprint` shall equal the SHA-256 fingerprint of the immutable canonical repository-bootstrap request and shall not be replaced by a separately supplied authority identifier.
+- `INIT-PRO-006`: The provenance record shall reject unknown fields, shall treat every declared field as required, and shall not contain a product identifier, product direction, or successor product authority.
+- `INIT-PRO-007`: The provenance record shall be deterministically serialized with keys in the declared field order, two-space indentation, and exactly one final newline.
+- `INIT-PRO-008`: The framework repository and revision recorded in provenance shall identify the exact local repo-spec commit tree from which installed framework material was read; inaccurate or ambiguous provenance shall fail closed before promotion.
 
 ## Dependencies
 
 - `product.initializer-level-0`
-- `product.source-revision-identity`
 - `product.git-object-identity`
+- `product.initialization-request`
 
 ## References
 
