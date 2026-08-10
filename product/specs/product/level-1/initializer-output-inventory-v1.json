@@ -559,6 +559,42 @@
       "mode": "100644",
       "required": true,
       "role": "initializer-framework"
+    },
+    {
+      "material_key": "repo-schema-development-document-base",
+      "destination_path": "repo/schemas/repo/development-document-base.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "producer": "framework-installation",
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-schema-product-overview",
+      "destination_path": "repo/schemas/repo/product-overview.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "producer": "framework-installation",
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-schema-product-decomposition",
+      "destination_path": "repo/schemas/repo/product-decomposition.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "producer": "framework-installation",
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-schema-implementation-plan",
+      "destination_path": "repo/schemas/repo/implementation-plan.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "producer": "framework-installation",
+      "role": "validation-utility"
     }
   ],
   "dynamic_path_families": [
