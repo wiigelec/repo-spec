@@ -25,7 +25,7 @@ class FoundationError(InitializerError):
 
 
 OVERVIEW_CHUNK_COVERAGE = [
-    ("01-product-identity-and-purpose.md", "Product identity and purpose", ["product_identity"]),
+    ("01-identity-and-purpose.md", "Product identity and purpose", ["product_identity"]),
     ("02-problem-and-outcome.md", "Problem and outcome", ["problem_and_outcome"]),
     ("03-users-principles-and-boundaries.md", "Users, principles, and boundaries", ["intended_users_and_stakeholders", "scope_and_non_goals", "product_boundaries", "durable_principles"]),
     ("04-capabilities-and-success.md", "Capabilities and success", ["capabilities_and_success"]),
