@@ -45,6 +45,7 @@ class I2MaterializationTests(unittest.TestCase):
         _git(self.source_repo, "init", "-q")
         _git(self.source_repo, "config", "user.name", "test")
         _git(self.source_repo, "config", "user.email", "test@example.invalid")
+        _git(self.source_repo, "config", "core.autocrlf", "false")
 
         self.product_id = "sample"
         self.direction = [
