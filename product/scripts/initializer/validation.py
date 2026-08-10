@@ -785,7 +785,7 @@ def _i4_check_request_schema(check, inputs):
 
 def _i4_check_request_canonicalization(check, inputs):
     request = inputs.request
-    if not request.destination.startswith("/") or not request.source_repository.startswith("/"):
+    if not request.destination.startswith("/") or not workspace.inputs.source.repository.startswith("/"):
         return _i4_fail(check, "canonicalization-error", "canonical paths are not absolute")
     canonical = canonical_request_bytes(json.loads(request.canonical_request_bytes.decode("utf-8")))
     if canonical != request.canonical_request_bytes:
