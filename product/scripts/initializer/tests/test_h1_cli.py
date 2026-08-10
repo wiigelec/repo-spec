@@ -12,7 +12,7 @@ from initializer.orchestration import FullInitializationActions
 
 class H1CliTests(unittest.TestCase):
     def test_human_entry_point_accepts_request_path_without_json_arguments(self):
-        raw = {"schema_version": "1", "destination": "/tmp/out"}
+        raw = {"schema_version": "2", "destination": "/tmp/out"}
         result = SimpleNamespace(
             terminal_result="promoted-success",
             succeeded=True,

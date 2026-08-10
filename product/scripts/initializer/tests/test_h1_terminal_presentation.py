@@ -89,7 +89,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("promoted successfully", text)
 
     def test_cli_announces_start_and_success_destination(self):
-        raw = {"schema_version": "1", "destination": "/tmp/created"}
+        raw = {"schema_version": "2", "destination": "/tmp/created"}
         result = fake_full_result(
             TERMINAL_PROMOTED_SUCCESS,
             promotion_outcome=PROMOTION_PROMOTED,

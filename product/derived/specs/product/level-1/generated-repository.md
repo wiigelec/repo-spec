@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the complete output tree of the initialized repository: every required path, its content origin (copied, generated, or created), lifecycle status, and classification.
+Defines the complete repository-framework output tree produced by local bootstrap before product definition begins.
 
 ## Correspondence
 
@@ -39,35 +39,23 @@ Defines the complete output tree of the initialized repository: every required p
 
 ## Normative requirements
 
-- `INIT-GRL-001`: The initialized repository shall contain exactly the root-level files README.md, AGENTS.md, and LICENSE as framework-support material linked by material_key in the output inventory's material_index, with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree.
-- `INIT-GRL-002`: The initialized repository shall contain the paths under repo/ as declared by the output inventory's material_index entries with material_key values, each with source resolved from the material manifest (framework-inventory.json) via matching material_key and operation copy-verbatim from the source commit tree. No broad directory copy is permitted; every repo/ path shall have exactly one material_index entry and one corresponding material-manifest entry with the same material_key.
-- `INIT-GRL-003`: The initialized repository shall contain product/scripts/repo-spec-init and the individual initializer framework files under product/scripts/initializer/ as framework-support entries declared in the output inventory's material_index with individual material_key values (repo-spec-init, product-initializer-init, product-initializer-cli, etc.), with source resolved from the material manifest via matching material_key and operation copy-verbatim from the source commit tree. No bulk directory copy is permitted; every file under product/scripts/initializer/ shall have its own material_index entry.
-- `INIT-GRL-004`: The initialized repository shall contain a generated product manifest at product/specs/product/manifest.json with status candidate, an empty product_specifications array, and dependencies on repo.manifest and repo.product-manifest.
-- `INIT-GRL-005`: The initialized repository shall contain governed README.md files at product/specs/product/level-0/README.md, product/specs/product/level-1/README.md, product/specs/product/level-2/README.md, and product/specs/product/level-3/README.md to preserve the Level workspace directories in Git. Each Level README shall state its Level identity, that the workspace is activated, that no product specifications currently exist at that Level, that generated content remains candidate and non-normative, and the governed next action for adding specifications to that Level.
-- `INIT-GRL-006`: The initialized repository shall contain a generated discoverability README at product/specs/product/README.md that links to the overview, decomposition, and implementation plan.
-- `INIT-GRL-007`: The initialized repository shall contain a generated product overview controlling document at docs/overview/{slug}-OVERVIEW.md, where {slug} is the product identifier, with lifecycle_status candidate, authority_category directional, and overview_role initial.
-- `INIT-GRL-008`: The initialized repository shall contain six generated overview chunk files under docs/overview/{slug}-overview/ covering product identity and purpose, problem and outcome, users principles and boundaries, capabilities and success, unresolved questions, and lifecycle and handoff.
-- `INIT-GRL-009`: The initialized repository shall contain a generated product decomposition controlling document at docs/decompositions/{slug}-DECOMPOSITION.md with lifecycle_status candidate and authority_category directional.
-- `INIT-GRL-010`: The initialized repository shall contain four generated decomposition chunk files under docs/decompositions/{slug}-decomposition/ covering invocation and authority, product areas, cross-cutting concerns, and stopping criteria and handoff.
-- `INIT-GRL-011`: The initialized repository shall contain a generated implementation plan controlling document at docs/plans/{slug}-IMPLEMENTATION-PLAN.md with lifecycle_status candidate and authority_category planning.
-- `INIT-GRL-012`: The initialized repository shall contain four generated implementation plan chunk files under docs/plans/{slug}-implementation-plan/ covering scope and preconditions, workstreams and dependencies, validation and completion, and risks and unresolved decisions.
-- `INIT-GRL-013`: The initialized repository shall contain generated discoverability README files at docs/overview/README.md, docs/decompositions/README.md, and docs/plans/README.md that link to their respective controlling documents.
-- `INIT-GRL-014`: The initialized repository shall contain direction evidence files under product/docs/direction/evidence/ with one file per direction_material entry, where each file is a byte-identical copy of its source Git blob content and is named using the deterministic pattern {positional_index:03d}-{source_basename}.
-- `INIT-GRL-015`: The initialized repository shall contain a direction evidence manifest at product/docs/direction/manifest.json that records the mapping from source direction material to projected evidence paths, stored separately from the evidence bytes.
-- `INIT-GRL-016`: Every generated controlling document and chunk shall have lifecycle_status candidate; no generated document shall claim accepted, superseded, or retired status.
-- `INIT-GRL-017`: The initialized repository shall not contain development-only content: .gitignore, reference/, product/src/, validate/, product/tests/, test files, mutation-test files, build artifacts, editor configuration, or other artifacts not required as reusable framework material. No material_index entry with role development-only shall be installed. The output inventory governs every installed path; undeclared source-directory descendants shall not appear in the initialized repository.
-- `INIT-GRL-018`: The initialized repository shall not contain product-instance material from the source repository: docs/overview/, docs/decompositions/, docs/plans/, product/docs/, and product/specs/product/ content from the source shall be excluded and replaced by the generated output as declared by the material manifest with operation instantiate-template or generate-record.
-- `INIT-GRL-019`: Profile-specific paths (repo/profiles/ and .github/) are not part of the Version 1 bounded local output inventory and shall not appear in the initialized repository.
-- `INIT-GRL-020`: The initialized repository shall contain a generated provenance record at repo/initializer/provenance.json recording origin and identity facts.
-- `INIT-GRL-021`: The initialized repository shall contain a generated handoff manifest at repo/initializer/handoff.json describing the repository state, confirming workflow completion, and naming the next governed action.
-- `INIT-GRL-022`: All generated controlling documents and chunk documents shall be deterministically produced: identical product identifier, identical direction material, and identical source revision shall produce identical output content, except for the explicitly declared variable data in the provenance record. Git administrative state (.git/) is governed separately by product.local-git-repository and product.git-bootstrap-profile and is not part of the worktree inventory.
-- `INIT-GRL-023`: The generated repository layout shall conform to the output inventory (product.initializer-output-inventory-v1): every fixed worktree file with required true shall be present, every material_index entry shall be present, every dynamic family path shall be present per its expansion rule, every Level workspace README.md placeholder shall be present, no prohibited_path shall appear under its matching rule, and Git administrative state shall satisfy the separately governed requirements in product.local-git-repository and product.git-bootstrap-profile.
+- `INIT-GRL-001`: The initialized repository shall contain exactly the reusable framework files declared by the closed output inventory material_index, copied from the resolved executing repo-spec commit tree by matching material_key entries in the framework material manifest.
+- `INIT-GRL-002`: The initialized repository shall contain both `product/scripts/repo-spec` and the subordinate/developer `product/scripts/repo-spec-init` launcher surfaces as required runtime-framework material.
+- `INIT-GRL-003`: Every installed framework path shall have exactly one material_index entry and one corresponding framework-inventory entry with the same material_key; broad undeclared directory copying is prohibited.
+- `INIT-GRL-004`: The initialized repository shall contain `repo/initializer/provenance.json` recording exact executing-framework provenance and canonical bootstrap request fingerprint.
+- `INIT-GRL-005`: The initialized repository shall contain `repo/initializer/handoff.json` describing installed framework material and the next governed product-definition action.
+- `INIT-GRL-006`: Repository bootstrap shall not generate a product manifest, product overview, direction evidence, product decomposition, product specifications, implementation plan, or any other product-semantic authority artifact.
+- `INIT-GRL-007`: Product-definition paths may be absent after bootstrap. Their absence is the expected bootstrap state and shall not be treated as incomplete initialization.
+- `INIT-GRL-008`: Development-only source content, tests, build artifacts, current repo-spec product-instance material, and hosting-platform adapters not declared in the closed output inventory shall not appear in the initialized repository.
+- `INIT-GRL-009`: The generated repository shall conform exactly to product.initializer-output-inventory-v1 for required framework material and generated bootstrap records; undeclared regular files shall cause validation failure.
+- `INIT-GRL-010`: Equivalent canonical destination requests executed from equivalent clean framework revisions shall produce equivalent worktree content except for explicitly variable bootstrap provenance timestamp data and downstream Git object identifiers affected by that timestamp.
+- `INIT-GRL-011`: Git administrative state is governed separately by product.local-git-repository and product.git-bootstrap-profile and is not part of the worktree output inventory.
+- `INIT-GRL-012`: The initialized repository shall be ready for governed successor product-definition work but bootstrap itself shall not pre-authorize, accept, or synthesize that work.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.initializer-output-inventory-v1`
-- `product.product-identity`
 - `product.material-classification`
 
 ## References

@@ -1,4 +1,4 @@
-# Initializer Version 1 Output Inventory
+# Repository Bootstrap Output Inventory
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Complete closed inventory of every path the initializer produces in the initialized repository, organised as fixed worktree files, material_index entries, and dynamic path families with separately governed Git administrative state.
+Complete closed inventory of repository-framework paths produced by local bootstrap, plus generated bootstrap provenance/handoff records and separately governed Git state.
 
 ## Correspondence
 
@@ -34,80 +34,10 @@ Complete closed inventory of every path the initializer produces in the initiali
 
 ## Dynamic Path Families
 
-- Expansion Pattern: `product/docs/direction/evidence/{index:03d}-{basename}`
-- Governing Spec: `product.foundation-seeding`
-- Operation: `copy-verbatim`
-- Producer: `direction-evidence-installation`
-- Required: `True`
-- Rule: `Each direction_material entry produces one file at product/docs/direction/evidence/{index:03d}-{basename}, where index is the 0-based position in the direction_material array and basename is the exact filename portion of the entry's source path.`
-- Type: `regular-file`
-- Expansion Pattern: `product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md`
-- Governing Spec: `product.foundation-seeding`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Rule: `One controlling document per product identifier at product/docs/overview/{slug}-OVERVIEW.md, product/docs/decompositions/{slug}-DECOMPOSITION.md, and product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md, where slug is the product identifier.`
-- Type: `regular-file`
-- Expansion Pattern: `product/docs/overview/{slug}-overview/chunk-{NN}-{topic}.md`
-- Governing Spec: `product.foundation-seeding`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Rule: `Six overview chunk files under product/docs/overview/{slug}-overview/ with fixed basenames chunk-01-identity-and-purpose.md through chunk-06-lifecycle-and-handoff.md.`
-- Type: `regular-file`
-- Expansion Pattern: `product/docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md`
-- Governing Spec: `product.foundation-seeding`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Rule: `Four decomposition chunk files under product/docs/decompositions/{slug}-decomposition/ with fixed basenames chunk-01-invocation-and-authority.md through chunk-04-stopping-criteria-and-handoff.md.`
-- Type: `regular-file`
-- Expansion Pattern: `product/docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md`
-- Governing Spec: `product.foundation-seeding`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Rule: `Four implementation plan chunk files under product/docs/plans/{slug}-implementation-plan/ with fixed basenames chunk-01-scope-and-preconditions.md through chunk-04-risks-and-unresolved-decisions.md.`
-- Type: `regular-file`
+- None
 
 ## Fixed Worktree Files
 
-- Destination Path: `product/docs/direction/manifest.json`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `generate-record`
-- Producer: `direction-evidence-installation`
-- Required: `True`
-- Destination Path: `repo/docs/overview/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `repo/docs/decompositions/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `repo/docs/plans/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/manifest.json`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `generate-record`
-- Producer: `workspace-seeding`
-- Required: `True`
 - Destination Path: `repo/initializer/provenance.json`
 - Governing Spec: `product.provenance-record`
 - Mode: `100644`
@@ -119,30 +49,6 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Mode: `100644`
 - Operation: `generate-record`
 - Producer: `handoff-assembly`
-- Required: `True`
-- Destination Path: `product/specs/product/level-0/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/level-1/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/level-2/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
-- Required: `True`
-- Destination Path: `product/specs/product/level-3/README.md`
-- Governing Spec: `product.foundation-seeding`
-- Mode: `100644`
-- Operation: `instantiate-template`
-- Producer: `workspace-seeding`
 - Required: `True`
 
 ## Git State
@@ -171,6 +77,13 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Destination Path: `LICENSE`
 - Material Key: `root-license`
 - Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `product/scripts/repo-spec`
+- Material Key: `repo-spec`
+- Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
