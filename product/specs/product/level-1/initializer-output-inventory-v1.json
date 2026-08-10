@@ -618,7 +618,7 @@
       "required": true
     },
     {
-      "destination_path": "docs/overview/README.md",
+      "destination_path": "repo/docs/overview/README.md",
       "producer": "workspace-seeding",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",
@@ -626,7 +626,7 @@
       "required": true
     },
     {
-      "destination_path": "docs/decompositions/README.md",
+      "destination_path": "repo/docs/decompositions/README.md",
       "producer": "workspace-seeding",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",
@@ -634,7 +634,7 @@
       "required": true
     },
     {
-      "destination_path": "docs/plans/README.md",
+      "destination_path": "repo/docs/plans/README.md",
       "producer": "workspace-seeding",
       "operation": "instantiate-template",
       "governing_spec": "product.foundation-seeding",

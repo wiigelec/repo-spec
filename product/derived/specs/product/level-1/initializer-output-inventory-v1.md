@@ -78,19 +78,19 @@ Complete closed inventory of every path the initializer produces in the initiali
 - Operation: `generate-record`
 - Producer: `direction-evidence-installation`
 - Required: `True`
-- Destination Path: `docs/overview/README.md`
+- Destination Path: `repo/docs/overview/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Destination Path: `docs/decompositions/README.md`
+- Destination Path: `repo/docs/decompositions/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
 - Producer: `workspace-seeding`
 - Required: `True`
-- Destination Path: `docs/plans/README.md`
+- Destination Path: `repo/docs/plans/README.md`
 - Governing Spec: `product.foundation-seeding`
 - Mode: `100644`
 - Operation: `instantiate-template`
