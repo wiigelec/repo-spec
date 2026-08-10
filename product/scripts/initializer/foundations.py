@@ -103,7 +103,7 @@ def _overview_controlling_content(
     for i, (filename, title, coverage) in enumerate(OVERVIEW_CHUNK_COVERAGE, 1):
         chunks.append({
             "order": i,
-            "path": f"docs/overview/{slug}-overview/{filename}",
+            "path": f"product/docs/overview/{slug}-overview/{filename}",
             "title": title,
             "coverage": coverage,
         })
@@ -113,7 +113,7 @@ def _overview_controlling_content(
         area_paths = []
         for chunk_file, chunk_title, chunk_coverage in OVERVIEW_CHUNK_COVERAGE:
             if area_key in chunk_coverage:
-                area_paths.append(f"docs/overview/{slug}-overview/{chunk_file}")
+                area_paths.append(f"product/docs/overview/{slug}-overview/{chunk_file}")
         content_areas[area_key] = area_paths
 
     metadata = {
@@ -121,7 +121,7 @@ def _overview_controlling_content(
         "artifact_type": "product-overview",
         "document_slug": f"{slug}-overview",
         "filename_stem": f"{slug}-overview",
-        "root_path": "docs/overview/",
+        "root_path": "product/docs/overview/",
         "title": f"{plan.product_id} Overview",
         "product_id": plan.product_id,
         "authority_category": "directional",
@@ -137,8 +137,8 @@ def _overview_controlling_content(
         "schema_version": "1",
     }
 
-    overview_path = f"docs/overview/{slug}-OVERVIEW.md"
-    chunk_dir_rel = f"docs/overview/{slug}-overview/"
+    overview_path = f"product/docs/overview/{slug}-OVERVIEW.md"
+    chunk_dir_rel = f"product/docs/overview/{slug}-overview/"
 
     lines = [
         f"# {plan.product_id} Overview",
@@ -172,7 +172,7 @@ def _overview_controlling_content(
         "",
         "## Next authorized action",
         "",
-        "The next authorized action is product decomposition under docs/decompositions/.",
+        "The next authorized action is product decomposition under product/docs/decompositions/.",
         "",
         "## Discoverability",
         "",
@@ -228,7 +228,7 @@ def _decomposition_controlling_content(plan: FoundationPlan, slug: str, governin
     for i, (filename, title, role, area_id, doc_coverage) in enumerate(DECOMPOSITION_CHUNK_COVERAGE, 1):
         chunks.append({
             "order": i,
-            "path": f"docs/decompositions/{slug}-decomposition/{filename}",
+            "path": f"product/docs/decompositions/{slug}-decomposition/{filename}",
             "title": title,
             "role": role,
             "area_id": area_id,
@@ -241,25 +241,25 @@ def _decomposition_controlling_content(plan: FoundationPlan, slug: str, governin
         area_paths = []
         for chunk_file, chunk_title, chunk_role, chunk_area_id, chunk_doc_coverage in DECOMPOSITION_CHUNK_COVERAGE:
             if area_key in chunk_doc_coverage:
-                area_paths.append(f"docs/decompositions/{slug}-decomposition/{chunk_file}")
+                area_paths.append(f"product/docs/decompositions/{slug}-decomposition/{chunk_file}")
         if area_paths:
             content_areas[area_key] = area_paths
 
-    evidence = [f"docs/overview/{slug}-OVERVIEW.md"] + [f"docs/overview/{slug}-overview/{f}" for f, _, _ in OVERVIEW_CHUNK_COVERAGE]
+    evidence = [f"product/docs/overview/{slug}-OVERVIEW.md"] + [f"product/docs/overview/{slug}-overview/{f}" for f, _, _ in OVERVIEW_CHUNK_COVERAGE]
 
     metadata = {
         "artifact_id": f"{slug}-decomposition",
         "artifact_type": "product-decomposition",
         "document_slug": f"{slug}-decomposition",
         "filename_stem": f"{slug}-decomposition",
-        "root_path": "docs/decompositions/",
+        "root_path": "product/docs/decompositions/",
         "title": f"{plan.product_id} Decomposition",
         "product_id": plan.product_id,
         "authority_category": "directional",
         "lifecycle_status": "candidate",
         "governing_issue": governing_issue,
-        "controlling_documents": [f"docs/overview/{slug}-OVERVIEW.md"],
-        "predecessor_documents": [f"docs/overview/{slug}-OVERVIEW.md"],
+        "controlling_documents": [f"product/docs/overview/{slug}-OVERVIEW.md"],
+        "predecessor_documents": [f"product/docs/overview/{slug}-OVERVIEW.md"],
         "evidence": evidence,
         "required_content_areas": content_areas,
         "subordinate_chunks": chunks,
@@ -267,7 +267,7 @@ def _decomposition_controlling_content(plan: FoundationPlan, slug: str, governin
         "schema_version": "1",
     }
 
-    chunk_dir_rel = f"docs/decompositions/{slug}-decomposition/"
+    chunk_dir_rel = f"product/docs/decompositions/{slug}-decomposition/"
 
     lines = [
         f"# {plan.product_id} Decomposition",
@@ -305,7 +305,7 @@ def _decomposition_controlling_content(plan: FoundationPlan, slug: str, governin
         "",
         "## Next authorized action",
         "",
-        "The next authorized action is an implementation plan under docs/plans/.",
+        "The next authorized action is an implementation plan under product/docs/plans/.",
         "",
         "## Discoverability",
         "",
@@ -342,7 +342,7 @@ def _plan_controlling_content(plan: FoundationPlan, slug: str, governing_issue: 
     for i, (filename, title, coverage) in enumerate(PLAN_CHUNK_COVERAGE, 1):
         chunks.append({
             "order": i,
-            "path": f"docs/plans/{slug}-implementation-plan/{filename}",
+            "path": f"product/docs/plans/{slug}-implementation-plan/{filename}",
             "title": title,
             "coverage": coverage,
         })
@@ -352,13 +352,13 @@ def _plan_controlling_content(plan: FoundationPlan, slug: str, governing_issue: 
         area_paths = []
         for chunk_file, chunk_title, chunk_coverage in PLAN_CHUNK_COVERAGE:
             if area_key in chunk_coverage:
-                area_paths.append(f"docs/plans/{slug}-implementation-plan/{chunk_file}")
+                area_paths.append(f"product/docs/plans/{slug}-implementation-plan/{chunk_file}")
         if area_paths:
             content_areas[area_key] = area_paths
 
     evidence = [
-        f"docs/overview/{slug}-OVERVIEW.md",
-        f"docs/decompositions/{slug}-DECOMPOSITION.md",
+        f"product/docs/overview/{slug}-OVERVIEW.md",
+        f"product/docs/decompositions/{slug}-DECOMPOSITION.md",
     ]
 
     metadata = {
@@ -366,17 +366,17 @@ def _plan_controlling_content(plan: FoundationPlan, slug: str, governing_issue: 
         "artifact_type": "implementation-plan",
         "document_slug": f"{slug}-implementation-plan",
         "filename_stem": f"{slug}-implementation-plan",
-        "root_path": "docs/plans/",
+        "root_path": "product/docs/plans/",
         "title": f"{plan.product_id} Implementation Plan",
         "product_id": plan.product_id,
         "authority_category": "planning",
         "lifecycle_status": "candidate",
         "governing_issue": governing_issue,
         "controlling_documents": [
-            f"docs/overview/{slug}-OVERVIEW.md",
-            f"docs/decompositions/{slug}-DECOMPOSITION.md",
+            f"product/docs/overview/{slug}-OVERVIEW.md",
+            f"product/docs/decompositions/{slug}-DECOMPOSITION.md",
         ],
-        "predecessor_documents": [f"docs/decompositions/{slug}-DECOMPOSITION.md"],
+        "predecessor_documents": [f"product/docs/decompositions/{slug}-DECOMPOSITION.md"],
         "evidence": evidence,
         "required_content_areas": content_areas,
         "subordinate_chunks": chunks,
@@ -384,7 +384,7 @@ def _plan_controlling_content(plan: FoundationPlan, slug: str, governing_issue: 
         "schema_version": "1",
     }
 
-    chunk_dir_rel = f"docs/plans/{slug}-implementation-plan/"
+    chunk_dir_rel = f"product/docs/plans/{slug}-implementation-plan/"
 
     lines = [
         f"# {plan.product_id} Implementation Plan",
@@ -482,9 +482,9 @@ def _readme_discoverability_content(slug: str, product_id: str) -> str:
         "",
         "## Start here",
         "",
-        f"- [Product overview](docs/overview/{slug}-OVERVIEW.md)",
-        f"- [Product decomposition](docs/decompositions/{slug}-DECOMPOSITION.md)",
-        f"- [Implementation plan](docs/plans/{slug}-IMPLEMENTATION-PLAN.md)",
+        f"- [Product overview](product/docs/overview/{slug}-OVERVIEW.md)",
+        f"- [Product decomposition](product/docs/decompositions/{slug}-DECOMPOSITION.md)",
+        f"- [Implementation plan](product/docs/plans/{slug}-IMPLEMENTATION-PLAN.md)",
         f"- [Product manifest](product/specs/product/manifest.json)",
         "",
     ])
@@ -603,7 +603,7 @@ def establish_product_foundations(
         created.append({"path": str(path.relative_to(staging)), "artifact": artifact_label})
 
     # Product overview controlling document
-    overview_path = staging / "docs" / "overview" / f"{slug}-OVERVIEW.md"
+    overview_path = staging / "product" / "docs" / "overview" / f"{slug}-OVERVIEW.md"
     _safe_write(
         overview_path,
         _overview_controlling_content(plan, slug, governing_issue_ref, direction_material),
@@ -612,7 +612,7 @@ def establish_product_foundations(
 
     # Product overview chunks
     for filename, title, coverage in OVERVIEW_CHUNK_COVERAGE:
-        chunk_path = staging / "docs" / "overview" / f"{slug}-overview" / filename
+        chunk_path = staging / "product" / "docs" / "overview" / f"{slug}-overview" / filename
         _safe_write(
             chunk_path,
             _overview_chunk_content(title, coverage, plan),
@@ -620,7 +620,7 @@ def establish_product_foundations(
         )
 
     # Product decomposition controlling document
-    decomp_path = staging / "docs" / "decompositions" / f"{slug}-DECOMPOSITION.md"
+    decomp_path = staging / "product" / "docs" / "decompositions" / f"{slug}-DECOMPOSITION.md"
     _safe_write(
         decomp_path,
         _decomposition_controlling_content(plan, slug, governing_issue_ref),
@@ -629,7 +629,7 @@ def establish_product_foundations(
 
     # Product decomposition chunks
     for filename, title, role, area_id, doc_coverage in DECOMPOSITION_CHUNK_COVERAGE:
-        chunk_path = staging / "docs" / "decompositions" / f"{slug}-decomposition" / filename
+        chunk_path = staging / "product" / "docs" / "decompositions" / f"{slug}-decomposition" / filename
         _safe_write(
             chunk_path,
             _decomposition_chunk_content(title, role, area_id, plan),
@@ -637,7 +637,7 @@ def establish_product_foundations(
         )
 
     # Implementation plan controlling document
-    plan_path = staging / "docs" / "plans" / f"{slug}-IMPLEMENTATION-PLAN.md"
+    plan_path = staging / "product" / "docs" / "plans" / f"{slug}-IMPLEMENTATION-PLAN.md"
     _safe_write(
         plan_path,
         _plan_controlling_content(plan, slug, governing_issue_ref),
@@ -646,7 +646,7 @@ def establish_product_foundations(
 
     # Implementation plan chunks
     for filename, title, coverage in PLAN_CHUNK_COVERAGE:
-        chunk_path = staging / "docs" / "plans" / f"{slug}-implementation-plan" / filename
+        chunk_path = staging / "product" / "docs" / "plans" / f"{slug}-implementation-plan" / filename
         _safe_write(
             chunk_path,
             _plan_chunk_content(title, coverage, plan),
@@ -677,7 +677,7 @@ def establish_product_foundations(
             preserved.append({"path": lr, "artifact": "product-level-root"})
 
     # Discoverability README updates
-    overview_readme = staging / "docs" / "overview" / "README.md"
+    overview_readme = staging / "product" / "docs" / "overview" / "README.md"
     if not overview_readme.exists():
         _safe_write(
             overview_readme,
@@ -685,7 +685,7 @@ def establish_product_foundations(
             "root-index-overview",
         )
 
-    decompositions_readme = staging / "docs" / "decompositions" / "README.md"
+    decompositions_readme = staging / "product" / "docs" / "decompositions" / "README.md"
     if not decompositions_readme.exists():
         _safe_write(
             decompositions_readme,
@@ -693,7 +693,7 @@ def establish_product_foundations(
             "root-index-decompositions",
         )
 
-    plans_readme = staging / "docs" / "plans" / "README.md"
+    plans_readme = staging / "product" / "docs" / "plans" / "README.md"
     if not plans_readme.exists():
         _safe_write(
             plans_readme,
@@ -1006,10 +1006,10 @@ def build_i2_foundation_files(
         "are projected to product/docs/direction/. This chunk is a mechanically "
         "generated skeleton and does not contain synthesized product semantics."
     )
-    add(f"docs/overview/{product_id}-OVERVIEW.md", _i2_overview(product_id))
+    add(f"product/docs/overview/{product_id}-OVERVIEW.md", _i2_overview(product_id))
     for filename, title in overview_chunks:
         add(
-            f"docs/overview/{product_id}-overview/{filename}",
+            f"product/docs/overview/{product_id}-overview/{filename}",
             _i2_chunk(title, overview_paragraph),
         )
 
@@ -1024,12 +1024,12 @@ def build_i2_foundation_files(
         "Decomposition content is not synthesized by the initializer."
     )
     add(
-        f"docs/decompositions/{product_id}-DECOMPOSITION.md",
+        f"product/docs/decompositions/{product_id}-DECOMPOSITION.md",
         _i2_decomposition(product_id),
     )
     for filename, title in decomposition_chunks:
         add(
-            f"docs/decompositions/{product_id}-decomposition/{filename}",
+            f"product/docs/decompositions/{product_id}-decomposition/{filename}",
             _i2_chunk(title, decomposition_paragraph),
         )
 
@@ -1044,12 +1044,12 @@ def build_i2_foundation_files(
         "Plan content is not synthesized by the initializer."
     )
     add(
-        f"docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
+        f"product/docs/plans/{product_id}-IMPLEMENTATION-PLAN.md",
         _i2_plan(product_id),
     )
     for filename, title in plan_chunks:
         add(
-            f"docs/plans/{product_id}-implementation-plan/{filename}",
+            f"product/docs/plans/{product_id}-implementation-plan/{filename}",
             _i2_chunk(title, plan_paragraph),
         )
 
