@@ -92,11 +92,10 @@ Issues #255 and #257 completed the accepted provenance/handoff specification rep
 ### Successor implementation work
 The bounded B0→I1→I2→I3→I4→I5 workflow is complete. Maintained I5 exit evidence records 46/46 I5-owned keys, 291 whole-workflow keys, all four terminal outcomes, 13 canonical stages, and zero blockers.
 
-Issue #311 adds H1 as the sole bounded successor planning scope: human-facing
+Issue #311 added H1 as the sole bounded successor planning scope: human-facing
 initialization using the existing canonical JSON request and accepted full-initialization
 workflow. H1 owns no new normative requirement keys and does not authorize product
-semantic changes. After this planning amendment is accepted, H1 implementation requires
-a separate Product-artifact implementation issue selecting H1 and citing its exact
+semantic changes. Issue #313 completed the separate Product-artifact implementation selected by the accepted H1 plan and cited its exact
 controlling accepted product-specification set.
 
 The B0/I1-I5 definitions and transition gates above remain historical planning and
@@ -122,4 +121,4 @@ implementation-authorized through H1.
 | `./scripts/validate` passes each commit | Verified |
 | Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260 and revalidated for acceptance under issue #261 |
 | Governed plan acceptance | Accepted under issue #261 after current-spec, manifest, correspondence/dependency, planning-completeness, and repository validation checks |
-| H1 bounded successor authority | Issue #311 planning amendment; H1 maps an exact accepted-spec set, preserves canonical JSON/full-init semantics, and requires a later Product-artifact implementation issue |
+| H1 bounded successor authority | Issue #311 planning amendment; H1 maps an exact accepted-spec set and preserves canonical JSON/full-init semantics. Issue #313 completed H1 implementation; issue #318 completed bounded post-H1 correction. No new successor is authorized by H1 completion. |
