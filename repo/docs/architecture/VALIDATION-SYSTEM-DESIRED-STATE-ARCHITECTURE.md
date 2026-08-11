@@ -2,7 +2,7 @@
 
 ## Status
 
-Candidate architecture authority under governing issue #348.
+Accepted architecture authority under governing issue #348.
 
 This document defines the desired steady-state architecture for the repo-spec validation
 system. It is intentionally not an implementation plan, cleanup issue, or migration log.
@@ -25,7 +25,7 @@ not authority for the desired architecture.
   "title": "Validation System Desired-State Architecture",
   "product_id": "repo-spec validation system",
   "authority_category": "directional",
-  "lifecycle_status": "candidate",
+  "lifecycle_status": "accepted",
   "governing_issue": "#348",
   "controlling_documents": [
     "repo/docs/overview/PRODUCT-OVERVIEW.md"
@@ -144,9 +144,13 @@ for development-document relationships.
 
 ## Next authorized action
 
-None from this candidate document itself. Issue #348 authorizes only review, acceptance,
-and establishment of the successor audit gate. Validation implementation cleanup remains
-outside this architecture's direct authority.
+Perform a fresh validation-system audit against this accepted architecture and
+then-current `main`, using current accepted normative specifications as behavioral
+authority.
+
+The audit shall include the initialized-repository validation export and runtime
+dependency boundary. Any implementation change found by that audit requires a separate
+bounded governed issue.
 
 ## Discoverability
 

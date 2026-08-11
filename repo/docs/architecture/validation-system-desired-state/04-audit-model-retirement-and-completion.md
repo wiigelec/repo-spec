@@ -152,18 +152,19 @@ semantic equivalence with focused tests.
 Mitigation: this plan authorizes no validation code changes; implementation requires a
 separate governed issue derived from a fresh audit.
 
-## 10. Acceptance-review decisions
+## 10. Acceptance decisions
 
-The acceptance cycle must resolve:
-
-1. whether this artifact remains an `implementation-plan` or a future desired-state
-   document type is needed;
-2. whether validation needs a measured runtime budget;
-3. whether temporary compatibility checks need machine-readable retirement conditions;
-4. whether accepted plan workstreams should be assigned immediately or left to
-   audit-derived issues;
-5. whether initializer inventory roles sufficiently identify portable validation-core
-   membership or need a dedicated machine-readable classification.
+1. **Document role:** this is an `architecture-plan`, not an implementation plan.
+2. **Runtime budget:** no fixed numeric limit is set here. The fresh audit shall measure
+   runtime and identify disproportionate cost; a hard threshold needs separate evidence.
+3. **Compatibility retirement:** temporary compatibility checks require explicit,
+   repository-resident retirement conditions. No new machine-readable field is required
+   unless the audit shows existing structure is insufficient.
+4. **Implementation workstreams:** all implementation remains audit-derived; accepting
+   this architecture creates no standing cleanup workstream.
+5. **Initializer portability classification:** existing material roles and explicit path
+   inventory are the starting model. Add a dedicated portable-core classification only
+   if the audit finds unresolved ambiguity.
 
 ## 11. Successor action
 
