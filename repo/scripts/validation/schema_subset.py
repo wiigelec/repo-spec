@@ -291,6 +291,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
         "repo.product-overview": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/product-overview.schema.json")),
         "repo.product-decomposition": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/product-decomposition.schema.json")),
         "repo.implementation-plan": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/implementation-plan.schema.json")),
+        "repo.architecture-plan": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/architecture-plan.schema.json")),
     }
     ensure_schema_keywords(schemas["repo.manifest"], "repo/schemas/repo-manifest.schema.json")
     ensure_schema_keywords(schemas["repo.artifact-taxonomy"], "repo/schemas/repo-artifact-taxonomy.schema.json")
@@ -300,4 +301,5 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.product-overview"], "repo/schemas/repo/product-overview.schema.json")
     ensure_schema_keywords(schemas["repo.product-decomposition"], "repo/schemas/repo/product-decomposition.schema.json")
     ensure_schema_keywords(schemas["repo.implementation-plan"], "repo/schemas/repo/implementation-plan.schema.json")
+    ensure_schema_keywords(schemas["repo.architecture-plan"], "repo/schemas/repo/architecture-plan.schema.json")
     return schemas

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "repo/schemas/repo/architecture-plan.schema.json",
+  "title": "Architecture Plan Document Schema",
+  "allOf": [
+    {"$ref": "./development-document-base.schema.json"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "root_path", "authority_category", "required_content_areas"],
+      "properties": {
+        "artifact_type": {"type": "string", "const": "architecture-plan"},
+        "root_path": {"type": "string", "const": "repo/docs/architecture/"},
+        "authority_category": {"type": "string", "const": "directional"},
+        "required_content_areas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "authority_and_basis",
+            "scope_and_boundaries",
+            "target_architecture",
+            "portability_and_ownership",
+            "validation_strategy",
+            "risks_and_unresolved_decisions",
+            "audit_and_successor_work"
+          ],
+          "properties": {
+            "authority_and_basis": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}},
+            "scope_and_boundaries": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}},
+            "target_architecture": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}},
+            "portability_and_ownership": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}},
+            "validation_strategy": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}},
+            "risks_and_unresolved_decisions": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}},
+            "audit_and_successor_work": {"type":"array","minItems":1,"items":{"type":"string","pattern":"^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"}}
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}
