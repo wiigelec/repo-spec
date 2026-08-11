@@ -40,7 +40,7 @@ Defines the complete repository-framework output tree produced by local bootstra
 ## Normative requirements
 
 - `INIT-GRL-001`: The initialized repository shall contain exactly the reusable framework files declared by the closed output inventory material_index, copied from the resolved executing repo-spec commit tree by matching material_key entries in the framework material manifest.
-- `INIT-GRL-002`: The initialized repository shall contain both `product/scripts/repo-spec` and the subordinate/developer `product/scripts/repo-spec-init` launcher surfaces as required runtime-framework material.
+- `INIT-GRL-002`: The initialized repository shall not contain repo-spec product initializer launcher or implementation paths, including `product/scripts/repo-spec`, `product/scripts/repo-spec-init`, or descendants of `product/scripts/initializer/`; those remain source-side repo-spec product implementation and are not reusable destination framework.
 - `INIT-GRL-003`: Every installed framework path shall have exactly one material_index entry and one corresponding framework-inventory entry with the same material_key; broad undeclared directory copying is prohibited.
 - `INIT-GRL-004`: The initialized repository shall contain `repo/initializer/provenance.json` recording exact executing-framework provenance and canonical bootstrap request fingerprint.
 - `INIT-GRL-005`: The initialized repository shall contain `repo/initializer/handoff.json` describing installed framework material and the next governed product-definition action.

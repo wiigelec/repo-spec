@@ -3,7 +3,7 @@
   "entries": [
     {
       "material_key": "root-readme",
-      "source_path": "README.md",
+      "source_path": "product/scripts/initializer/templates/initialized-repository-README.md",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -24,22 +24,6 @@
       "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100644"
-    },
-    {
-      "material_key": "repo-spec",
-      "source_path": "product/scripts/repo-spec",
-      "role": "runtime-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100755"
-    },
-    {
-      "material_key": "repo-spec-init",
-      "source_path": "product/scripts/repo-spec-init",
-      "role": "runtime-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100755"
     },
     {
       "material_key": "repo-manifest",
@@ -179,7 +163,7 @@
     },
     {
       "material_key": "repo-validate-impl",
-      "source_path": "repo/scripts/validate_impl.py",
+      "source_path": "repo/scripts/validate_initialized_impl.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -410,94 +394,6 @@
       "mode": "100644"
     },
     {
-      "material_key": "product-initializer-init",
-      "source_path": "product/scripts/initializer/__init__.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-cli",
-      "source_path": "product/scripts/initializer/cli.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-destination",
-      "source_path": "product/scripts/initializer/destination.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-foundations",
-      "source_path": "product/scripts/initializer/foundations.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-framework-inventory",
-      "source_path": "product/scripts/initializer/framework-inventory.json",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-git",
-      "source_path": "product/scripts/initializer/git.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-inventory",
-      "source_path": "product/scripts/initializer/inventory.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-models",
-      "source_path": "product/scripts/initializer/models.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-promotion",
-      "source_path": "product/scripts/initializer/promotion.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-staging",
-      "source_path": "product/scripts/initializer/staging.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-validation",
-      "source_path": "product/scripts/initializer/validation.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
       "material_key": "repo-schema-development-document-base",
       "source_path": "repo/schemas/repo/development-document-base.schema.json",
       "source_type": "blob",
@@ -605,6 +501,638 @@
       "material_key": "validator-schema-product-level-3",
       "source_path": "product/schemas/product/product-level-3.schema.json",
       "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-scripts-validate",
+      "source_path": "repo/scripts/validate_initialized_aggregate",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "patch2-product-scripts-validate",
+      "source_path": "product/scripts/validate",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "patch2-product-scripts-validate-impl-py",
+      "source_path": "repo/scripts/validate_initialized_product_impl.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation---init---py",
+      "source_path": "product/scripts/product_validation/__init__.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-b0-evidence-py",
+      "source_path": "product/scripts/product_validation/b0_evidence.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-checks-py",
+      "source_path": "product/scripts/product_validation/product_checks.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-correspondence-py",
+      "source_path": "product/scripts/product_validation/product_correspondence.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-development-documents-py",
+      "source_path": "product/scripts/product_validation/product_development_documents.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-generated-freshness-py",
+      "source_path": "product/scripts/product_validation/product_generated_freshness.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-lifecycle-py",
+      "source_path": "product/scripts/product_validation/product_lifecycle.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-policy-py",
+      "source_path": "product/scripts/product_validation/product_policy.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-state-py",
+      "source_path": "product/scripts/product_validation/product_state.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-dot-gitignore",
+      "source_path": ".gitignore",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-dot-github-ISSUE-TEMPLATE-governing-issuedot-yml",
+      "source_path": "repo/profiles/github/ISSUE_TEMPLATE/governing-issue.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-dot-github-PULL-REQUEST-TEMPLATEdot-md",
+      "source_path": "repo/profiles/github/PULL_REQUEST_TEMPLATE.md",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-dot-github-workflows-github-field-policydot-yml",
+      "source_path": "repo/profiles/github/workflows/github-field-policy.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-dot-github-workflows-validationdot-yml",
+      "source_path": "repo/profiles/github/workflows/validation.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-dot-github-READMEdot-md",
+      "source_path": "reference/.github/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-AGENTSdot-md",
+      "source_path": "reference/AGENTS.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-READMEdot-md",
+      "source_path": "reference/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-product-level-0-kerneldot-md",
+      "source_path": "reference/derived/specs/product/level-0/kernel.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-product-level-1-primitivesdot-md",
+      "source_path": "reference/derived/specs/product/level-1/primitives.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-artifact-taxonomydot-md",
+      "source_path": "reference/derived/specs/repo/artifact-taxonomy.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-development-workflowdot-md",
+      "source_path": "reference/derived/specs/repo/development-workflow.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-governing-issuedot-md",
+      "source_path": "reference/derived/specs/repo/governing-issue.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-manifestdot-md",
+      "source_path": "reference/derived/specs/repo/manifest.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-platform-profilesdot-md",
+      "source_path": "reference/derived/specs/repo/platform-profiles.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-repository-structuredot-md",
+      "source_path": "reference/derived/specs/repo/repository-structure.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-review-proposaldot-md",
+      "source_path": "reference/derived/specs/repo/review-proposal.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-validationdot-md",
+      "source_path": "reference/derived/specs/repo/validation.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-docs-decompositions-READMEdot-md",
+      "source_path": "reference/docs/decompositions/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-docs-overview-READMEdot-md",
+      "source_path": "reference/docs/overview/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-docs-overview-REFERENCE-OVERVIEWdot-md",
+      "source_path": "reference/docs/overview/REFERENCE-OVERVIEW.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-docs-plans-01-reference-repository-plandot-md",
+      "source_path": "reference/docs/plans/01-reference-repository-plan.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-docs-plans-READMEdot-md",
+      "source_path": "reference/docs/plans/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-profiles-github-READMEdot-md",
+      "source_path": "reference/profiles/github/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-profiles-github-manifestdot-json",
+      "source_path": "reference/profiles/github/manifest.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-level-0dot-schemadot-json",
+      "source_path": "reference/schemas/product/product-level-0.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-level-1dot-schemadot-json",
+      "source_path": "reference/schemas/product/product-level-1.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-manifestdot-schemadot-json",
+      "source_path": "reference/schemas/product/product-manifest.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-spec-basedot-schemadot-json",
+      "source_path": "reference/schemas/product/product-spec-base.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-development-document-basedot-schemadot-json",
+      "source_path": "reference/schemas/repo/development-document-base.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-implementation-plandot-schemadot-json",
+      "source_path": "reference/schemas/repo/implementation-plan.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-product-decompositiondot-schemadot-json",
+      "source_path": "reference/schemas/repo/product-decomposition.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-product-overviewdot-schemadot-json",
+      "source_path": "reference/schemas/repo/product-overview.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-artifact-taxonomydot-schemadot-json",
+      "source_path": "reference/schemas/repo-artifact-taxonomy.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-manifestdot-schemadot-json",
+      "source_path": "reference/schemas/repo-manifest.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-platform-profilesdot-schemadot-json",
+      "source_path": "reference/schemas/repo-platform-profiles.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-specdot-schemadot-json",
+      "source_path": "reference/schemas/repo-spec.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-validationdot-schemadot-json",
+      "source_path": "reference/schemas/repo-validation.schema.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-generate-docs",
+      "source_path": "reference/scripts/generate-docs",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-generate-docsdot-py",
+      "source_path": "reference/scripts/generate_docs.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-validate",
+      "source_path": "reference/scripts/validate",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-validate-impldot-py",
+      "source_path": "reference/scripts/validate_impl.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-READMEdot-md",
+      "source_path": "reference/specs/product/README.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-level-0-kerneldot-json",
+      "source_path": "reference/specs/product/level-0/kernel.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-level-1-primitivesdot-json",
+      "source_path": "reference/specs/product/level-1/primitives.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-manifestdot-json",
+      "source_path": "reference/specs/product/manifest.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-artifact-taxonomydot-json",
+      "source_path": "reference/specs/repo/artifact-taxonomy.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-development-workflowdot-json",
+      "source_path": "reference/specs/repo/development-workflow.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-governing-issuedot-json",
+      "source_path": "reference/specs/repo/governing-issue.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-manifestdot-json",
+      "source_path": "reference/specs/repo/manifest.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-platform-profilesdot-json",
+      "source_path": "reference/specs/repo/platform-profiles.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-repository-structuredot-json",
+      "source_path": "reference/specs/repo/repository-structure.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-review-proposaldot-json",
+      "source_path": "reference/specs/repo/review-proposal.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-validationdot-json",
+      "source_path": "reference/specs/repo/validation.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-src---init--dot-py",
+      "source_path": "reference/src/__init__.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-src-product---init--dot-py",
+      "source_path": "reference/src/product/__init__.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-src-product-kerneldot-py",
+      "source_path": "reference/src/product/kernel.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-src-product-primitivesdot-py",
+      "source_path": "reference/src/product/primitives.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-tests---init--dot-py",
+      "source_path": "reference/tests/__init__.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-tests-test-kerneldot-py",
+      "source_path": "reference/tests/test_kernel.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-reference-tests-test-primitivesdot-py",
+      "source_path": "reference/tests/test_primitives.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-root-user-audit-workflow-handoffdot-json",
+      "source_path": "user/audit_workflow_handoff.json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-ISSUE-TEMPLATE-governing-issuedot-yml",
+      "source_path": "repo/profiles/github/ISSUE_TEMPLATE/governing-issue.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-PULL-REQUEST-TEMPLATEdot-md",
+      "source_path": "repo/profiles/github/PULL_REQUEST_TEMPLATE.md",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-manifestdot-json",
+      "source_path": "repo/profiles/github/manifest.json",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-workflows-github-field-policydot-yml",
+      "source_path": "repo/profiles/github/workflows/github-field-policy.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-workflows-validationdot-yml",
+      "source_path": "repo/profiles/github/workflows/validation.yml",
+      "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100644"

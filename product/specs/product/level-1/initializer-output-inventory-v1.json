@@ -39,24 +39,6 @@
       "role": "runtime-framework"
     },
     {
-      "material_key": "repo-spec",
-      "destination_path": "product/scripts/repo-spec",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100755",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-spec-init",
-      "destination_path": "product/scripts/repo-spec-init",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100755",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
       "material_key": "repo-manifest",
       "destination_path": "repo/specs/repo/manifest.json",
       "producer": "framework-installation",
@@ -471,105 +453,6 @@
       "role": "generated-reference"
     },
     {
-      "material_key": "product-initializer-init",
-      "destination_path": "product/scripts/initializer/__init__.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-cli",
-      "destination_path": "product/scripts/initializer/cli.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-destination",
-      "destination_path": "product/scripts/initializer/destination.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-foundations",
-      "destination_path": "product/scripts/initializer/foundations.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-framework-inventory",
-      "destination_path": "product/scripts/initializer/framework-inventory.json",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-git",
-      "destination_path": "product/scripts/initializer/git.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-inventory",
-      "destination_path": "product/scripts/initializer/inventory.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-models",
-      "destination_path": "product/scripts/initializer/models.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-promotion",
-      "destination_path": "product/scripts/initializer/promotion.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-staging",
-      "destination_path": "product/scripts/initializer/staging.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-validation",
-      "destination_path": "product/scripts/initializer/validation.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
       "material_key": "repo-schema-development-document-base",
       "destination_path": "repo/schemas/repo/development-document-base.schema.json",
       "operation": "copy-verbatim",
@@ -694,6 +577,717 @@
       "producer": "framework-installation",
       "required": true,
       "role": "validation-utility"
+    },
+    {
+      "material_key": "patch2-scripts-validate",
+      "destination_path": "scripts/validate",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-validate",
+      "destination_path": "product/scripts/validate",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-validate-impl-py",
+      "destination_path": "product/scripts/validate_impl.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation---init---py",
+      "destination_path": "product/scripts/product_validation/__init__.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-b0-evidence-py",
+      "destination_path": "product/scripts/product_validation/b0_evidence.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-checks-py",
+      "destination_path": "product/scripts/product_validation/product_checks.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-correspondence-py",
+      "destination_path": "product/scripts/product_validation/product_correspondence.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-development-documents-py",
+      "destination_path": "product/scripts/product_validation/product_development_documents.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-generated-freshness-py",
+      "destination_path": "product/scripts/product_validation/product_generated_freshness.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-lifecycle-py",
+      "destination_path": "product/scripts/product_validation/product_lifecycle.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-policy-py",
+      "destination_path": "product/scripts/product_validation/product_policy.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-product-scripts-product-validation-product-state-py",
+      "destination_path": "product/scripts/product_validation/product_state.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-dot-gitignore",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": ".gitignore",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-dot-github-ISSUE-TEMPLATE-governing-issuedot-yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": ".github/ISSUE_TEMPLATE/governing-issue.yml",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-dot-github-PULL-REQUEST-TEMPLATEdot-md",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-dot-github-workflows-github-field-policydot-yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": ".github/workflows/github-field-policy.yml",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-dot-github-workflows-validationdot-yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": ".github/workflows/validation.yml",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-dot-github-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/.github/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-AGENTSdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/AGENTS.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-product-level-0-kerneldot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/product/level-0/kernel.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-product-level-1-primitivesdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/product/level-1/primitives.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-artifact-taxonomydot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/artifact-taxonomy.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-development-workflowdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/development-workflow.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-governing-issuedot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/governing-issue.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-manifestdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/manifest.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-platform-profilesdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/platform-profiles.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-repository-structuredot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/repository-structure.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-review-proposaldot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/review-proposal.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-derived-specs-repo-validationdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/derived/specs/repo/validation.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-docs-decompositions-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/docs/decompositions/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-docs-overview-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/docs/overview/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-docs-overview-REFERENCE-OVERVIEWdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/docs/overview/REFERENCE-OVERVIEW.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-docs-plans-01-reference-repository-plandot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/docs/plans/01-reference-repository-plan.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-docs-plans-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/docs/plans/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-profiles-github-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/profiles/github/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-profiles-github-manifestdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/profiles/github/manifest.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-level-0dot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/product/product-level-0.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-level-1dot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/product/product-level-1.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-manifestdot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/product/product-manifest.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-product-product-spec-basedot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/product/product-spec-base.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-development-document-basedot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo/development-document-base.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-implementation-plandot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo/implementation-plan.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-product-decompositiondot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo/product-decomposition.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-product-overviewdot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo/product-overview.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-artifact-taxonomydot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo-artifact-taxonomy.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-manifestdot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo-manifest.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-platform-profilesdot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo-platform-profiles.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-specdot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo-spec.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-schemas-repo-validationdot-schemadot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/schemas/repo-validation.schema.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-generate-docs",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "destination_path": "reference/scripts/generate-docs",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-generate-docsdot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/scripts/generate_docs.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-validate",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "destination_path": "reference/scripts/validate",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-scripts-validate-impldot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/scripts/validate_impl.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-READMEdot-md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/product/README.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-level-0-kerneldot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/product/level-0/kernel.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-level-1-primitivesdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/product/level-1/primitives.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-product-manifestdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/product/manifest.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-artifact-taxonomydot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/artifact-taxonomy.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-development-workflowdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/development-workflow.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-governing-issuedot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/governing-issue.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-manifestdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/manifest.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-platform-profilesdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/platform-profiles.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-repository-structuredot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/repository-structure.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-review-proposaldot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/review-proposal.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-specs-repo-validationdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/specs/repo/validation.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-src---init--dot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/src/__init__.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-src-product---init--dot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/src/product/__init__.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-src-product-kerneldot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/src/product/kernel.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-src-product-primitivesdot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/src/product/primitives.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-tests---init--dot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/tests/__init__.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-tests-test-kerneldot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/tests/test_kernel.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-reference-tests-test-primitivesdot-py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "reference/tests/test_primitives.py",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-root-user-audit-workflow-handoffdot-json",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "user/audit_workflow_handoff.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-ISSUE-TEMPLATE-governing-issuedot-yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "repo/profiles/github/ISSUE_TEMPLATE/governing-issue.yml",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-PULL-REQUEST-TEMPLATEdot-md",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "repo/profiles/github/PULL_REQUEST_TEMPLATE.md",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-manifestdot-json",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "repo/profiles/github/manifest.json",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-workflows-github-field-policydot-yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "repo/profiles/github/workflows/github-field-policy.yml",
+      "producer": "framework-installation",
+      "required": true
+    },
+    {
+      "material_key": "patch2-profile-source-repo-profiles-github-workflows-validationdot-yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "destination_path": "repo/profiles/github/workflows/validation.yml",
+      "producer": "framework-installation",
+      "required": true
     }
   ],
   "dynamic_path_families": [],
@@ -799,7 +1393,7 @@
     },
     {
       "id": "INV-V1-015",
-      "text": "Every material_index entry shall have an intentional product output role declared in its role field. The valid roles are: runtime-framework (root-level files required for every initialized repository), governing-specification (repo-level spec contracts), validation-utility (scripts that validate or verify repository state), documentation-support (scripts that generate or maintain documentation), generated-reference (derived Markdown projections of governing specs), and initializer-framework (initializer implementation modules). No material_index entry may have role development-only; such entries shall not be installed."
+      "text": "Every material_index entry shall have an intentional destination-framework role declared in its role field. Valid destination roles are runtime-framework, governing-specification, validation-utility, documentation-support, and generated-reference. Repo-spec product initializer implementation, tests, and other source-product-only material shall not be installed into initialized repositories."
     }
   ],
   "dependencies": [
