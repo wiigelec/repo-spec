@@ -3,7 +3,7 @@
   "entries": [
     {
       "material_key": "root-readme",
-      "source_path": "README.md",
+      "source_path": "product/scripts/initializer/templates/initialized-repository-README.md",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
