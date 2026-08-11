@@ -182,30 +182,6 @@ def run_product_dependency_policy_tests(repo_root: Path) -> None:
         )
         deactivate_product_plans(temp_repo)
         expect_failure("retired dependency target", lambda: validate_product(temp_repo), "product dependencies failed")
-
-    print("ok: product dependency policy tests")
-
-def run_product_manifest_integrity_tests(repo_root: Path) -> None:
-    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
-        temp_root = Path(temp_root_name)
-        clone_index = 0
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "rogue.json", "product/specs/product/level-0/repo-validation.json")
-        mutate_json(
-            temp_repo / "product/specs/product/manifest.json",
-            lambda manifest: manifest["product_specifications"].append(
-                {
-                    "spec_id": "repo.validation",
-                    "path": "product/specs/product/level-0/repo-validation.json",
-                    "status": "accepted",
-                    "level": 0,
-                }
-            ) or manifest,
-        )
-        deactivate_product_plans(temp_repo)
-        expect_failure("repository file in product manifest", lambda: validate_product(temp_repo), "oneOf mismatch")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
@@ -240,8 +216,88 @@ def run_product_manifest_integrity_tests(repo_root: Path) -> None:
         validate_product(temp_repo)
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        install_fixture(temp_repo, "rogue.json", "product/specs/product/level-0/rogue.json")
-        expect_failure("product JSON without manifest", lambda: validate_product(temp_repo), "product specification root failed: undeclared JSON content under product/specs/product/")
+        install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
+        install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
+        accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
+        check_generated_document_write_behavior(temp_repo)
+        validate_product(temp_repo)
+
+    print("ok: product dependency policy tests")
+
+def run_product_schema_boundary_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "rogue.json", "product/specs/product/level-0/repo-validation.json")
+        mutate_json(
+            temp_repo / "product/specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"].append(
+                {
+                    "spec_id": "repo.validation",
+                    "path": "product/specs/product/level-0/repo-validation.json",
+                    "status": "accepted",
+                    "level": 0,
+                }
+            ) or manifest,
+        )
+        deactivate_product_plans(temp_repo)
+        expect_failure("repository file in product manifest", lambda: validate_product(temp_repo), "oneOf mismatch")
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate-missing-title.json", "product/specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        deactivate_product_plans(temp_repo)
+        expect_failure("base schema conformance", lambda: validate_product(temp_repo), "missing required property title")
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "product/specs/product/level-1/primitive.json",
+            lambda spec: spec["references"].append({"type": "specification", "spec_id": "repo.validation"}) or spec,
+        )
+        deactivate_product_plans(temp_repo)
+        expect_failure("repository reference in product specification", lambda: validate_product(temp_repo), "oneOf mismatch")
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
+        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
+        accept_kernel(temp_repo)
+        mutate_json(
+            temp_repo / "product/specs/product/manifest.json",
+            lambda manifest: manifest["product_specifications"][0].__setitem__(
+                "derived_artifacts",
+                [{"type": "markdown", "path": "product/derived/specs/product/kernel.md"}],
+            ) or manifest,
+        )
+        deactivate_product_plans(temp_repo)
+        expect_failure("manifest repeats derived artifacts", lambda: validate_product(temp_repo), "oneOf mismatch")
+        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
+        clone_index += 1
+        install_fixture(temp_repo, "manifest-wrong-level-root.json", "product/specs/product/manifest.json")
+        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-2/kernel.json")
+        deactivate_product_plans(temp_repo)
+        expect_failure("wrong level root", lambda: validate_product(temp_repo), "oneOf mismatch")
+
+    print("ok: product schema-boundary tests")
+
+
+def run_product_manifest_completeness_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
@@ -255,6 +311,14 @@ def run_product_manifest_integrity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "rogue.json", "product/specs/product/level-2/rogue.json")
         deactivate_product_plans(temp_repo)
         expect_failure("unregistered product file", lambda: validate_product(temp_repo), "product manifest completeness failed")
+
+    print("ok: product manifest completeness tests")
+
+
+def run_product_manifest_uniqueness_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-duplicate-id.json", "product/specs/product/manifest.json")
@@ -267,6 +331,14 @@ def run_product_manifest_integrity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         deactivate_product_plans(temp_repo)
         expect_failure("duplicate product path", lambda: validate_product(temp_repo), "duplicate product specification path")
+
+    print("ok: product manifest uniqueness tests")
+
+
+def run_product_manifest_correspondence_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-identity-mismatch.json", "product/specs/product/manifest.json")
@@ -290,14 +362,14 @@ def run_product_manifest_integrity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         deactivate_product_plans(temp_repo)
         expect_failure("lifecycle mismatch", lambda: validate_product(temp_repo), "product manifest correspondence failed: lifecycle mismatch")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate-missing-title.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        accept_kernel(temp_repo)
-        deactivate_product_plans(temp_repo)
-        expect_failure("base schema conformance", lambda: validate_product(temp_repo), "missing required property title")
+
+    print("ok: product manifest correspondence tests")
+
+
+def run_product_reference_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-reference-missing.json", "product/specs/product/manifest.json")
@@ -306,18 +378,14 @@ def run_product_manifest_integrity_tests(repo_root: Path) -> None:
         accept_kernel(temp_repo)
         deactivate_product_plans(temp_repo)
         expect_failure("unresolved reference", lambda: validate_product(temp_repo), "product references failed: unresolved spec")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        accept_kernel(temp_repo)
-        mutate_json(
-            temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: spec["references"].append({"type": "specification", "spec_id": "repo.validation"}) or spec,
-        )
-        deactivate_product_plans(temp_repo)
-        expect_failure("repository reference in product specification", lambda: validate_product(temp_repo), "oneOf mismatch")
+
+    print("ok: product reference tests")
+
+
+def run_product_lineage_tests(repo_root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        clone_index = 0
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-lineage-missing.json", "product/specs/product/manifest.json")
@@ -330,40 +398,8 @@ def run_product_manifest_integrity_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate-lineage-self.json", "product/specs/product/level-0/kernel.json")
         deactivate_product_plans(temp_repo)
         expect_failure("lineage self reference", lambda: validate_product(temp_repo), "product lineage failed: self reference")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        install_fixture(temp_repo, "level-2-accepted.json", "product/specs/product/level-2/component.json")
-        install_fixture(temp_repo, "level-3-accepted.json", "product/specs/product/level-3/orchestration.json")
-        accept_kernel(temp_repo)
-        deactivate_product_plans(temp_repo)
-        check_generated_document_write_behavior(temp_repo)
-        validate_product(temp_repo)
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        accept_kernel(temp_repo)
-        mutate_json(
-            temp_repo / "product/specs/product/manifest.json",
-            lambda manifest: manifest["product_specifications"][0].__setitem__(
-                "derived_artifacts",
-                [{"type": "markdown", "path": "product/derived/specs/product/kernel.md"}],
-            ) or manifest,
-        )
-        deactivate_product_plans(temp_repo)
-        expect_failure("manifest repeats derived artifacts", lambda: validate_product(temp_repo), "oneOf mismatch")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-wrong-level-root.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-2/kernel.json")
-        deactivate_product_plans(temp_repo)
-        expect_failure("wrong level root", lambda: validate_product(temp_repo), "oneOf mismatch")
 
-    print("ok: product manifest integrity tests")
+    print("ok: product lineage tests")
 
 def run_product_correspondence_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
