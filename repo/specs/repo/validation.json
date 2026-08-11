@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-VAL-001",
-      "text": "The repository shall provide `repo/scripts/validate` as the repository-owned leaf validation entry point, `product/scripts/validate` as the product-owned leaf validation entry point, and `scripts/validate` as the aggregate repository-wide validation entry point. Each leaf validation entry point shall validate only its owned tree, and the aggregate entry point shall run both leaf validators plus the repository-owned and product-owned validation mutation/self-test suites."
+      "text": "The repository shall provide `repo/scripts/validate` as the repository-owned leaf validation entry point, `product/scripts/validate` as the product-owned leaf validation entry point, and `scripts/validate` as the aggregate repository-wide production validation entry point. Each leaf validation entry point shall validate only its owned tree, and the aggregate production validation entry point shall run both leaf validators. Repository-owned and product-owned validation mutation/self-test suites shall remain independently runnable through an explicit validation self-test entry point and shall not be inseparable from routine production validation. Product validation self-tests shall not implicitly own or execute the initializer implementation/unit-test suite; initializer tests remain independently runnable under initializer ownership."
     },
     {
       "id": "REPO-VAL-002",
