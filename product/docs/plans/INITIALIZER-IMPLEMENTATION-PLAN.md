@@ -163,6 +163,14 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     },
     {
+      "id": "VA1",
+      "controlling_product_specifications": [
+        "product.initializer-output-inventory-v1",
+        "product.framework-installation",
+        "product.repository-validation"
+      ]
+    },
+    {
       "id": "H2",
       "controlling_product_specifications": [
         "product.initializer-level-0",
