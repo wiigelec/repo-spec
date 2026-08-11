@@ -79,6 +79,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
                     required_paths.append(ref_path)
             for chunk in metadata.get("subordinate_chunks", []):
                 required_paths.append(chunk["path"])
+            required_paths.extend(metadata.get("evidence", []))
     for entry in manifest["authoritative_specs"]:
         path = entry["path"]
         required_paths.append(path)
