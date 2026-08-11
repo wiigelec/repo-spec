@@ -15,7 +15,20 @@ from .test_github_profile_generation import (
     run_github_profile_mutation_tests,
 )
 from .test_reference_isolated_copy import run_reference_isolated_copy_tests
-from .test_repository_mutations import run_repository_mutations
+from .test_repository_mutations import (
+    run_repository_validation_phase_contract_tests,
+    run_repository_root_boundary_tests,
+    run_repository_development_document_compatibility_tests,
+    run_repository_manifest_completeness_tests,
+    run_repository_schema_conformance_tests,
+    run_repository_derived_artifact_tests,
+    run_repository_dependency_lifecycle_tests,
+    run_repository_reference_tests,
+    run_repository_lineage_tests,
+    run_repository_unique_item_property_tests,
+    run_repository_platform_profile_boundary_tests,
+    run_repository_path_helper_tests,
+)
 from .test_repository_fixture_metadata import run_repository_fixture_metadata_tests
 from .test_mutation_support import run_mutation_support_tests
 from .test_repository_projection_boundary import run_repository_projection_boundary_test
@@ -29,7 +42,18 @@ def run_repository_mutation_tests(repo_root: Path) -> None:
     run_schema_mutations(repo_root)
     run_architecture_document_contract_tests(repo_root)
     run_github_field_policy_tests(repo_root)
-    run_repository_mutations(repo_root)
+    run_repository_validation_phase_contract_tests(repo_root)
+    run_repository_root_boundary_tests(repo_root)
+    run_repository_development_document_compatibility_tests(repo_root)
+    run_repository_manifest_completeness_tests(repo_root)
+    run_repository_schema_conformance_tests(repo_root)
+    run_repository_derived_artifact_tests(repo_root)
+    run_repository_dependency_lifecycle_tests(repo_root)
+    run_repository_reference_tests(repo_root)
+    run_repository_lineage_tests(repo_root)
+    run_repository_unique_item_property_tests(repo_root)
+    run_repository_platform_profile_boundary_tests(repo_root)
+    run_repository_path_helper_tests(repo_root)
     run_repository_fixture_metadata_tests(repo_root)
     run_mutation_support_tests(repo_root)
     run_repository_projection_boundary_test(repo_root)
