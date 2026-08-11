@@ -273,6 +273,15 @@
       "role": "validation-utility"
     },
     {
+      "destination_path": "repo/scripts/validation/development_documents.py",
+      "material_key": "repo-validation-development-documents",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
       "material_key": "repo-validation-generated-outputs",
       "destination_path": "repo/scripts/validation/generated_outputs.py",
       "producer": "framework-installation",

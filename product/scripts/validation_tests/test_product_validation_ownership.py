@@ -28,6 +28,15 @@ REPO_FORBIDDEN_PRODUCT_SYMBOLS = {
     "_check_generated_freshness_for_domain",
 }
 
+SHARED_DEVELOPMENT_DOCUMENT_SYMBOLS = {
+    "DEVELOPMENT_DOCUMENT_ROOTS",
+    "DevelopmentDocumentRecord",
+    "check_development_documents_phase",
+    "get_development_document_records",
+    "load_development_document_compatibility_registry",
+}
+
+
 SHARED_INVARIANT_SYMBOLS = {
     "check_supersession_acyclicity",
     "check_supersession_pairs",
@@ -128,6 +137,44 @@ def run_product_validation_ownership_tests(repo_root: Path) -> None:
         detail = "; ".join(f"{filename}: {', '.join(symbols)}" for filename, symbols in invariant_leaks.items())
         raise AssertionError(
             "product validation ownership failed: shared invariant/path/failure mechanics imported from repository_checks: " + detail
+        )
+
+    development_document_leaks: dict[str, list[str]] = {}
+    for path in sorted(product_root.glob("*.py")):
+        leaked = sorted(
+            SHARED_DEVELOPMENT_DOCUMENT_SYMBOLS
+            & _repository_check_imported_symbols(path)
+        )
+        if leaked:
+            development_document_leaks[path.name] = leaked
+    if development_document_leaks:
+        detail = "; ".join(
+            f"{filename}: {', '.join(symbols)}"
+            for filename, symbols in development_document_leaks.items()
+        )
+        raise AssertionError(
+            "product validation ownership failed: shared development-document mechanics imported from repository_checks: "
+            + detail
+        )
+
+    shared_development_documents = (
+        repo_root / "repo/scripts/validation/development_documents.py"
+    )
+    required_development_document_symbols = {
+        "DevelopmentDocumentRecord",
+        "check_development_document_relationships",
+        "check_development_documents_phase",
+        "get_development_document_records",
+        "load_development_document_compatibility_registry",
+    }
+    if (
+        not shared_development_documents.exists()
+        or not required_development_document_symbols.issubset(
+            _defined_symbols(shared_development_documents)
+        )
+    ):
+        raise AssertionError(
+            "product validation ownership failed: shared development-document module incomplete"
         )
 
     shared_invariants = repo_root / "repo/scripts/validation/invariants.py"

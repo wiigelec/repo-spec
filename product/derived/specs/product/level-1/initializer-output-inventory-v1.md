@@ -263,6 +263,13 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `repo/scripts/validation/development_documents.py`
+- Material Key: `repo-validation-development-documents`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/generated_outputs.py`
 - Material Key: `repo-validation-generated-outputs`
 - Mode: `100644`

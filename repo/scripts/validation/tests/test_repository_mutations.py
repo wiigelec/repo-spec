@@ -6,11 +6,14 @@ import tempfile
 from pathlib import Path
 
 from repo_model import load_specs
-from validation.repository_checks import DevelopmentDocumentRecord
+from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from validation.generated_outputs import check_generated_document_write_behavior
 from validation.errors import fail
 from validation.paths import resolve_repo_path
-from validation.repository_checks import REPOSITORY_LEAF_VALIDATION_PHASES, check_development_document_relationships, validate_repo
+from validation.repository_checks import (
+    REPOSITORY_LEAF_VALIDATION_PHASES,
+    validate_repo,
+)
 
 from .mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
 
