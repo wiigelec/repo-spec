@@ -91,6 +91,14 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
+    "repo/docs/architecture/": {
+        "artifact_type": "architecture-plan",
+        "schema_key": "repo.architecture-plan",
+        "required_headings": ["Status", "Metadata", "Architecture basis", "Desired state", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
+        "required_content_area_keys": ["authority_and_basis", "scope_and_boundaries", "target_architecture", "portability_and_ownership", "validation_strategy", "risks_and_unresolved_decisions", "audit_and_successor_work"],
+        "filename_suffix": "-ARCHITECTURE.md",
+        "chunk_dir_suffix": "/",
+    },
 }
 
 for product_root, framework_root in (
@@ -100,7 +108,7 @@ for product_root, framework_root in (
 ):
     DEVELOPMENT_DOCUMENT_ROOTS[product_root] = DEVELOPMENT_DOCUMENT_ROOTS[framework_root]
 
-OVERVIEW_AND_PLAN_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "product/docs/overview/", "product/docs/plans/"}
+COVERAGE_DOCUMENT_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "repo/docs/architecture/", "product/docs/overview/", "product/docs/plans/"}
 DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "product/docs/decompositions/"}
 
 DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
@@ -316,6 +324,7 @@ def check_development_document_relationships(
             "product-overview": {"product-overview"},
             "product-decomposition": {"product-overview"},
             "implementation-plan": {"product-overview", "product-decomposition", "implementation-plan"},
+            "architecture-plan": {"product-overview", "architecture-plan"},
         }[source_type]
 
         controlling_documents = metadata["controlling_documents"]
@@ -352,7 +361,7 @@ def check_development_document_relationships(
             )
             expect(target_metadata["artifact_type"] in allowed_types, f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}")
             basis_graph[path].append(resolved_path)
-            if source_type in {"product-decomposition", "implementation-plan"} and target_metadata["artifact_type"] == "product-overview":
+            if source_type in {"product-decomposition", "implementation-plan", "architecture-plan"} and target_metadata["artifact_type"] == "product-overview":
                 saw_overview = True
             if source_type == "implementation-plan" and target_metadata["artifact_type"] == "product-decomposition":
                 saw_decomposition = True
@@ -396,6 +405,8 @@ def check_development_document_relationships(
         elif source_type == "implementation-plan":
             expect(saw_overview, f"development document relationship failed: missing controlling overview for {path}")
             expect(saw_decomposition, f"development document relationship failed: missing controlling decomposition for {path}")
+        elif source_type == "architecture-plan":
+            expect(saw_overview, f"development document relationship failed: missing controlling overview for {path}")
 
         for target_path in evidence:
             try:
@@ -877,7 +888,7 @@ def check_development_documents_phase(
                     covered_paths.add(area_path)
             expect(covered_paths == set(declared_paths), f"development document content inventory failed: required content area coverage mismatch in {rel_path}")
 
-            if root_rel in OVERVIEW_AND_PLAN_ROOTS:
+            if root_rel in COVERAGE_DOCUMENT_ROOTS:
                 for chunk in declared_chunks:
                     coverage = chunk.get("coverage")
                     expect(isinstance(coverage, list), f"development document content inventory failed: required coverage must be an array in {rel_path}")

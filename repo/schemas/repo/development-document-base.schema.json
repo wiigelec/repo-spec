@@ -29,7 +29,12 @@
     },
     "artifact_type": {
       "type": "string",
-      "enum": ["product-overview", "product-decomposition", "implementation-plan"]
+      "enum": [
+        "product-overview",
+        "product-decomposition",
+        "implementation-plan",
+        "architecture-plan"
+      ]
     },
     "document_slug": {
       "type": "string",
@@ -41,7 +46,15 @@
     },
     "root_path": {
       "type": "string",
-      "enum": ["repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/", "product/docs/overview/", "product/docs/decompositions/", "product/docs/plans/"]
+      "enum": [
+        "repo/docs/overview/",
+        "repo/docs/decompositions/",
+        "repo/docs/plans/",
+        "product/docs/overview/",
+        "product/docs/decompositions/",
+        "product/docs/plans/",
+        "repo/docs/architecture/"
+      ]
     },
     "title": {
       "type": "string",
@@ -53,11 +66,19 @@
     },
     "authority_category": {
       "type": "string",
-      "enum": ["directional", "planning"]
+      "enum": [
+        "directional",
+        "planning"
+      ]
     },
     "lifecycle_status": {
       "type": "string",
-      "enum": ["candidate", "accepted", "superseded", "retired"]
+      "enum": [
+        "candidate",
+        "accepted",
+        "superseded",
+        "retired"
+      ]
     },
     "governing_issue": {
       "type": "string",
@@ -90,7 +111,12 @@
     },
     "overview_role": {
       "type": "string",
-      "enum": ["initial", "revision", "replacement", "branch"]
+      "enum": [
+        "initial",
+        "revision",
+        "replacement",
+        "branch"
+      ]
     },
     "workstream_authority": {
       "type": "array"
@@ -119,10 +145,14 @@
             "const": "product-overview"
           }
         },
-        "required": ["artifact_type"]
+        "required": [
+          "artifact_type"
+        ]
       },
       "then": {
-        "required": ["overview_role"]
+        "required": [
+          "overview_role"
+        ]
       }
     },
     {
@@ -135,7 +165,10 @@
             "const": "initial"
           }
         },
-        "required": ["artifact_type", "overview_role"]
+        "required": [
+          "artifact_type",
+          "overview_role"
+        ]
       },
       "then": {
         "properties": {
@@ -145,12 +178,34 @@
         }
       },
       "else": {
-        "properties": {
-          "controlling_documents": {
-            "minItems": 1
+        "if": {
+          "properties": {
+            "artifact_type": {
+              "const": "architecture-plan"
+            }
           },
-          "predecessor_documents": {
-            "minItems": 1
+          "required": [
+            "artifact_type"
+          ]
+        },
+        "then": {
+          "properties": {
+            "controlling_documents": {
+              "minItems": 1
+            },
+            "predecessor_documents": {
+              "minItems": 0
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "controlling_documents": {
+              "minItems": 1
+            },
+            "predecessor_documents": {
+              "minItems": 1
+            }
           }
         }
       }
@@ -160,7 +215,11 @@
     "chunk": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["order", "path", "title"],
+      "required": [
+        "order",
+        "path",
+        "title"
+      ],
       "properties": {
         "order": {
           "type": "integer",

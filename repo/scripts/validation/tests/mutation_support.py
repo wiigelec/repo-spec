@@ -53,6 +53,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo/product-overview.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
+        "repo/schemas/repo/architecture-plan.schema.json",
         "product/schemas/product/product-manifest.schema.json",
         "product/schemas/product/product-spec-base.schema.json",
         "product/schemas/product/product-level-0.schema.json",
@@ -60,7 +61,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "product/schemas/product/product-level-2.schema.json",
         "product/schemas/product/product-level-3.schema.json",
     ]
-    for root_rel in ("repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/"):
+    for root_rel in ("repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/", "repo/docs/architecture/"):
         root = repo_root / root_rel
         for path in sorted(root.glob("*.md")):
             required_paths.append(path.relative_to(repo_root).as_posix())
@@ -78,6 +79,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
                     required_paths.append(ref_path)
             for chunk in metadata.get("subordinate_chunks", []):
                 required_paths.append(chunk["path"])
+            required_paths.extend(metadata.get("evidence", []))
     for entry in manifest["authoritative_specs"]:
         path = entry["path"]
         required_paths.append(path)

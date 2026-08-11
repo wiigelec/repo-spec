@@ -7,6 +7,7 @@ from validation.cli_contracts import (
     check_validate_cli_contract,
 )
 
+from .test_architecture_document_contract import run_architecture_document_contract_tests
 from .test_generation_mutations import run_generation_mutations
 from .test_github_field_policy import run_github_field_policy_tests
 from .test_github_profile_generation import (
@@ -26,6 +27,7 @@ def run_repository_mutation_tests(repo_root: Path) -> None:
     check_validate_cli_contract(repo_root)
     check_generate_docs_cli_contract(repo_root)
     run_schema_mutations(repo_root)
+    run_architecture_document_contract_tests(repo_root)
     run_github_field_policy_tests(repo_root)
     run_repository_mutations(repo_root)
     run_repository_fixture_metadata_tests(repo_root)
