@@ -58,6 +58,28 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | Canonical JSON request remains the initializer input boundary | No H1 plan or implementation authority introduces interactive request synthesis or implicit authority-bearing defaults |
 | H1 implementation is presentation/orchestration only | Scope excludes product-specification semantic changes, lifecycle reordering, status, dry-run, platform, recovery/resume, and other future-extension behavior |
 
+### VA1 authorization gate
+
+| Requirement | Evidence |
+| --- | --- |
+| Patch 1 portable-runtime authority correction is the exact predecessor | Governing issue #350 and local history identify the accepted Patch 1 commit; no unrelated functional correction intervenes |
+| Future Product-artifact implementation issue selects stable workstream `VA1` | Governing issue cites `VA1` and exactly `product.initializer-output-inventory-v1`, `product.framework-installation`, and `product.repository-validation` as controlling accepted product specifications |
+| Shared-module extraction remains semantic-preserving | Planned implementation changes ownership/dependency direction only; repository policy remains repository-owned, product policy remains product-owned, public validator behavior is unchanged |
+| Portable runtime stays closed | Any new maintained shared runtime module is reflected by accepted inventory authority and installed by the existing framework/materialization contract |
+| Self-test consolidation is not pulled into VA1 | Diff and issue scope exclude the separately authorized validation self-test ownership correction |
+
+
+### VA2 authorization gate
+
+| Requirement | Evidence |
+| --- | --- |
+| Patch 2 VA1 authority is the exact predecessor | Governing issue #350 and local history identify the accepted Patch 2 commit; no fourth functional correction intervenes |
+| Future Product-artifact implementation issue selects stable workstream `VA2` | Governing issue cites `VA2` and exactly `product.repository-validation` as the controlling accepted product specification |
+| Focused ownership replaces duplicate catch-all ownership without coverage loss | Planned case-by-case mapping identifies the focused owner for each retained invariant and distinguishes genuinely integrative cases |
+| Production validation remains separate | VA2 implementation diff is limited to validation self-test ownership/consolidation and does not change production validator behavior |
+| VA1 implementation is not silently bundled into VA2 | Shared-module extraction or production dependency-direction refactor requires the separately governed VA1 implementation scope |
+
+
 ## Validation strategy
 
 Every composite key in the accepted requirement-to-responsibility map produces observable positive/negative evidence. B0 classifies; I1-I5 produce focused evidence.
@@ -101,7 +123,10 @@ controlling accepted product-specification set.
 The B0/I1-I5 definitions and transition gates above remain historical planning and
 evidence structure; they do not direct recreation of completed increments.
 Future-extension specifications remain candidate/deferred and do not become
-implementation-authorized through H1.
+implementation-authorized through H1. Issue #350 adds only the bounded VA1
+production-validation ownership successor authority and the bounded VA2 validation
+self-test ownership successor authority described above. Neither creates new product
+semantics, neither authorizes H2, and they remain separately governed implementation scopes.
 
 ### Completion gate summary
 | Condition | Status |
@@ -117,8 +142,10 @@ implementation-authorized through H1.
 | Issues #255 and #257 accepted specification repairs reflected at every affected boundary | Impact review complete |
 | Future-extension specs excluded | Patches 1-3 |
 | Three patches; no fourth functional correction | Verified |
-| No product source/tests/schemas/specs modified | Verified |
+| Authority-cycle mutation scope | No maintained implementation source, validation tests, or schemas modified; Patch 1 changes only accepted `product.initializer-output-inventory-v1` authority plus its required generated projection |
 | `./scripts/validate` passes each commit | Verified |
 | Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260 and revalidated for acceptance under issue #261 |
 | Governed plan acceptance | Accepted under issue #261 after current-spec, manifest, correspondence/dependency, planning-completeness, and repository validation checks |
-| H1 bounded successor authority | Issue #311 planning amendment; H1 maps an exact accepted-spec set and preserves canonical JSON/full-init semantics. Issue #313 completed H1 implementation; issue #318 completed bounded post-H1 correction. No new successor is authorized by H1 completion. |
+| H1 bounded successor authority | Issue #311 planning amendment; H1 maps an exact accepted-spec set and preserves canonical JSON/full-init semantics. Issue #313 completed H1 implementation; issue #318 completed bounded post-H1 correction. H1 completion itself authorizes no successor. |
+| VA1 bounded successor authority | Issue #350 Patch 2; exact controlling set: `product.initializer-output-inventory-v1`, `product.framework-installation`, `product.repository-validation`; semantic-preserving production-validation ownership correction only. |
+| VA2 bounded successor authority | Issue #350 Patch 3; exact controlling set: `product.repository-validation`; validation self-test ownership/consolidation only, with distinct invariant coverage preserved and production validation unchanged. |

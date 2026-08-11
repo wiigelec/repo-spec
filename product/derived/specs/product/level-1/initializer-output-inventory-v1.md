@@ -431,6 +431,13 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `repo/schemas/repo/architecture-plan.schema.json`
+- Material Key: `repo-schema-architecture-plan`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/schemas/repo-manifest.schema.json`
 - Material Key: `validator-schema-repo-manifest`
 - Mode: `100644`
@@ -502,84 +509,77 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `scripts/validate`
-- Material Key: `patch2-scripts-validate`
+- Material Key: `validation-aggregate-entrypoint`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/validate`
-- Material Key: `patch2-product-scripts-validate`
+- Material Key: `product-validation-entrypoint`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/validate_impl.py`
-- Material Key: `patch2-product-scripts-validate-impl-py`
+- Material Key: `product-validation-implementation`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/__init__.py`
-- Material Key: `patch2-product-scripts-product-validation---init---py`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/b0_evidence.py`
-- Material Key: `patch2-product-scripts-product-validation-b0-evidence-py`
+- Material Key: `product-validation-package-init`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_checks.py`
-- Material Key: `patch2-product-scripts-product-validation-product-checks-py`
+- Material Key: `product-validation-product-checks`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_correspondence.py`
-- Material Key: `patch2-product-scripts-product-validation-product-correspondence-py`
+- Material Key: `product-validation-product-correspondence`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_development_documents.py`
-- Material Key: `patch2-product-scripts-product-validation-product-development-documents-py`
+- Material Key: `product-validation-development-documents`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_generated_freshness.py`
-- Material Key: `patch2-product-scripts-product-validation-product-generated-freshness-py`
+- Material Key: `product-validation-generated-freshness`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_lifecycle.py`
-- Material Key: `patch2-product-scripts-product-validation-product-lifecycle-py`
+- Material Key: `product-validation-lifecycle`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_policy.py`
-- Material Key: `patch2-product-scripts-product-validation-product-policy-py`
+- Material Key: `product-validation-policy`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/product_validation/product_state.py`
-- Material Key: `patch2-product-scripts-product-validation-product-state-py`
+- Material Key: `product-validation-state`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`

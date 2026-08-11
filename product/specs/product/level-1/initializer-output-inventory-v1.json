@@ -489,6 +489,15 @@
       "role": "validation-utility"
     },
     {
+      "material_key": "repo-schema-architecture-plan",
+      "destination_path": "repo/schemas/repo/architecture-plan.schema.json",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "producer": "framework-installation",
+      "role": "validation-utility"
+    },
+    {
       "material_key": "validator-schema-repo-manifest",
       "destination_path": "repo/schemas/repo-manifest.schema.json",
       "operation": "copy-verbatim",
@@ -579,7 +588,7 @@
       "role": "validation-utility"
     },
     {
-      "material_key": "patch2-scripts-validate",
+      "material_key": "validation-aggregate-entrypoint",
       "destination_path": "scripts/validate",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -588,7 +597,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-validate",
+      "material_key": "product-validation-entrypoint",
       "destination_path": "product/scripts/validate",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -597,7 +606,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-validate-impl-py",
+      "material_key": "product-validation-implementation",
       "destination_path": "product/scripts/validate_impl.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -606,7 +615,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation---init---py",
+      "material_key": "product-validation-package-init",
       "destination_path": "product/scripts/product_validation/__init__.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -615,16 +624,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-b0-evidence-py",
-      "destination_path": "product/scripts/product_validation/b0_evidence.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "patch2-product-scripts-product-validation-product-checks-py",
+      "material_key": "product-validation-product-checks",
       "destination_path": "product/scripts/product_validation/product_checks.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -633,7 +633,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-product-correspondence-py",
+      "material_key": "product-validation-product-correspondence",
       "destination_path": "product/scripts/product_validation/product_correspondence.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -642,7 +642,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-product-development-documents-py",
+      "material_key": "product-validation-development-documents",
       "destination_path": "product/scripts/product_validation/product_development_documents.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -651,7 +651,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-product-generated-freshness-py",
+      "material_key": "product-validation-generated-freshness",
       "destination_path": "product/scripts/product_validation/product_generated_freshness.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -660,7 +660,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-product-lifecycle-py",
+      "material_key": "product-validation-lifecycle",
       "destination_path": "product/scripts/product_validation/product_lifecycle.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -669,7 +669,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-product-policy-py",
+      "material_key": "product-validation-policy",
       "destination_path": "product/scripts/product_validation/product_policy.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
@@ -678,7 +678,7 @@
       "required": true
     },
     {
-      "material_key": "patch2-product-scripts-product-validation-product-state-py",
+      "material_key": "product-validation-state",
       "destination_path": "product/scripts/product_validation/product_state.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",

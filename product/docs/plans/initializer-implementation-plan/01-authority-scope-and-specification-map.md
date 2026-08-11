@@ -129,6 +129,15 @@ Affected I3/I4/I5 descriptions and gates are reaffirmed against the repaired sem
 Issue #261 accepted the synchronized plan after current-authority revalidation; future
 material specification changes still invalidate affected mapping until governed impact review.
 
+Issue #350 Patch 1 records the governed impact review for the portable validation-runtime
+inventory correction. The correction retires the nonexistent historical `b0_evidence.py`
+inventory obligation, replaces validation-runtime transition-shaped material keys with stable
+function/path ownership names, and adds the repository architecture-plan schema required by the
+maintained repository validator. These inventory changes do not alter accepted initializer
+behavioral semantics, requirement identities, the 34-spec/291-requirement mapping, or existing
+B0/I1-I5/H1 ownership. They do not authorize validator or initializer implementation changes;
+successor implementation authority remains to be established by later patches of issue #350.
+
 ## Scope
 
 Single standard bounded local initialization workflow: JSON request intake; exact SHA-1 commit in already-local source; absent destination preflight; same-filesystem isolated staging; closed-inventory framework/foundation realization; provenance/handoff assembly; deterministic local Git; ordered validation and report finalization; atomic promotion; terminal outcomes. Includes requirement-level baseline, increment/gate/validation planning for every composite key.
