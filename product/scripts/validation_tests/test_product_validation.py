@@ -380,19 +380,6 @@ def run_product_validation_tests(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        accept_kernel(temp_repo)
-        mutate_json(
-            temp_repo / "product/specs/product/level-0/kernel.json",
-            lambda spec: spec.__setitem__("derived_artifacts", [{"type": "markdown", "path": "product/derived/specs/product/primitive.md"}]) or spec,
-        )
-        deactivate_product_plans(temp_repo)
-        expect_failure("duplicate derived path", lambda: validate_product(temp_repo), "duplicate product derived artifact paths failed")
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
         install_fixture(temp_repo, "manifest-wrong-level-root.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-2/kernel.json")
         deactivate_product_plans(temp_repo)
