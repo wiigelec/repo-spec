@@ -255,6 +255,15 @@
       "role": "validation-utility"
     },
     {
+      "destination_path": "repo/scripts/validation/context.py",
+      "material_key": "repo-validation-context",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
       "material_key": "repo-validation-errors",
       "destination_path": "repo/scripts/validation/errors.py",
       "producer": "framework-installation",
@@ -264,11 +273,38 @@
       "role": "validation-utility"
     },
     {
+      "destination_path": "repo/scripts/validation/development_documents.py",
+      "material_key": "repo-validation-development-documents",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
       "material_key": "repo-validation-generated-outputs",
       "destination_path": "repo/scripts/validation/generated_outputs.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "destination_path": "repo/scripts/validation/invariants.py",
+      "material_key": "repo-validation-invariants",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "destination_path": "repo/scripts/validation/paths.py",
+      "material_key": "repo-validation-paths",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
       "required": true,
       "role": "validation-utility"
     },
