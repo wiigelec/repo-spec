@@ -10,6 +10,7 @@ from .test_product_dependency_directions import (
     run_product_dependency_direction_tests,
 )
 from .test_product_generation import run_product_generation_tests
+from .test_docgen_ownership import run_docgen_ownership_tests
 from .test_product_generation_mutations import run_product_generation_mutation_tests
 from .test_product_level_schemas import run_product_level_schema_tests
 from .test_product_manifest_schema import run_product_manifest_schema_tests
@@ -52,6 +53,7 @@ def run_product_mutation_tests(repo_root: Path) -> None:
     run_product_correspondence_tests(repo_root)
     run_product_manifest_schema_tests(repo_root)
     run_product_generation_tests(repo_root)
+    run_docgen_ownership_tests(repo_root)
     run_product_generation_mutation_tests(repo_root)
     run_product_projection_freshness_tests(repo_root)
     run_product_projection_rendering_tests(repo_root)
