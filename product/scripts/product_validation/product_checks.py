@@ -20,15 +20,13 @@ from .product_development_documents import check_product_development_documents
 from .product_lifecycle import check_product_lifecycle_readiness
 from .product_generated_freshness import check_product_generated_freshness
 
+from validation.context import ExternalRepositoryValidationContext, ValidationContext, load_repo_specs
+from validation.schema_subset import load_repo_schemas
 from validation.repository_checks import (
-    ExternalRepositoryValidationContext,
-    ValidationContext,
     check_supersession_acyclicity,
     check_supersession_pairs,
     check_unique_item_properties,
     expect,
-    load_repo_schemas,
-    load_repo_specs,
 )
 
 

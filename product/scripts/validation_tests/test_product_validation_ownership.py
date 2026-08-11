@@ -28,6 +28,27 @@ REPO_FORBIDDEN_PRODUCT_SYMBOLS = {
     "_check_generated_freshness_for_domain",
 }
 
+SHARED_CONTEXT_SYMBOLS = {
+    "ExternalRepositoryValidationContext",
+    "ValidationContext",
+    "load_repo_specs",
+    "load_repo_schemas",
+}
+
+
+def _repository_check_imported_symbols(path: Path) -> set[str]:
+    tree = ast.parse(path.read_text(), filename=str(path))
+    imported: set[str] = set()
+    for node in tree.body:
+        if (
+            isinstance(node, ast.ImportFrom)
+            and node.level == 0
+            and node.module == "validation.repository_checks"
+        ):
+            imported.update(alias.name for alias in node.names)
+    return imported
+
+
 PRODUCT_REQUIRED_SYMBOLS = {
     "product_state.py": {
         "ProductValidationContext",
@@ -73,6 +94,41 @@ def _defined_symbols(path: Path) -> set[str]:
 
 
 def run_product_validation_ownership_tests(repo_root: Path) -> None:
+    product_root = repo_root / "product/scripts/product_validation"
+    shared_leaks: dict[str, list[str]] = {}
+    for path in sorted(product_root.glob("*.py")):
+        leaked = sorted(SHARED_CONTEXT_SYMBOLS & _repository_check_imported_symbols(path))
+        if leaked:
+            shared_leaks[path.name] = leaked
+    if shared_leaks:
+        detail = "; ".join(
+            f"{filename}: {', '.join(symbols)}"
+            for filename, symbols in shared_leaks.items()
+        )
+        raise AssertionError(
+            "product validation ownership failed: shared context/loading imported "
+            "from repository_checks: " + detail
+        )
+
+    shared_context = repo_root / "repo/scripts/validation/context.py"
+    if not shared_context.exists():
+        raise AssertionError(
+            "product validation ownership failed: missing repo/scripts/validation/context.py"
+        )
+    shared_symbols = _defined_symbols(shared_context)
+    required_shared = {
+        "RepositoryValidationContext",
+        "ExternalRepositoryValidationContext",
+        "ValidationContext",
+        "load_repo_specs",
+    }
+    missing_shared = sorted(required_shared - shared_symbols)
+    if missing_shared:
+        raise AssertionError(
+            "product validation ownership failed: shared context module missing "
+            + ", ".join(missing_shared)
+        )
+
     repo_checks = repo_root / "repo/scripts/validation/repository_checks.py"
     repo_symbols = _defined_symbols(repo_checks)
     leaked = sorted(REPO_FORBIDDEN_PRODUCT_SYMBOLS & repo_symbols)
@@ -82,7 +138,6 @@ def run_product_validation_ownership_tests(repo_root: Path) -> None:
             + ", ".join(leaked)
         )
 
-    product_root = repo_root / "product/scripts/product_validation"
     for filename, expected_symbols in PRODUCT_REQUIRED_SYMBOLS.items():
         path = product_root / filename
         if not path.exists():

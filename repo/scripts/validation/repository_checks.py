@@ -7,38 +7,14 @@ import re
 from pathlib import Path
 from typing import Any
 
-from repo_model import load_json as load_repo_json, load_specs as load_repo_specs_impl, resolve_repo_path as resolve_repo_path_impl
+from repo_model import load_json as load_repo_json, resolve_repo_path as resolve_repo_path_impl
 from repo_model import RepositoryError
 from github_profile import GitHubProfileError, check_profile_freshness
 
 from .errors import expect, fail
+from .context import RepositoryValidationContext, ValidationContext, load_repo_specs
 from .generated_outputs import check_generated_document_freshness
 from .schema_subset import load_repo_schemas, validate_instance
-
-
-@dataclass(frozen=True)
-class RepositoryValidationContext:
-    manifest: dict[str, Any]
-    specs: dict[str, dict[str, Any]]
-    source_paths: dict[str, str]
-    actual_paths: list[str]
-    schemas: dict[str, dict[str, Any]]
-
-
-@dataclass(frozen=True)
-class ExternalRepositoryValidationContext:
-    """Repository authority read by another validation domain without certifying it."""
-
-    specs: dict[str, dict[str, Any]]
-    schemas: dict[str, dict[str, Any]]
-
-
-@dataclass(frozen=True)
-class ValidationContext:
-    repo_root: Path
-    repository: RepositoryValidationContext | None
-    product: Any | None
-    external_repository: ExternalRepositoryValidationContext | None = None
 
 
 def repository_reference_specs(context: ValidationContext) -> dict[str, dict[str, Any]]:
@@ -150,7 +126,6 @@ def check_repository_root_boundary(context: ValidationContext) -> None:
         if not matches:
             wrong_kind.append(f"{name} (expected {kind})")
     expect(not wrong_kind, "repository root boundary failed: wrong-kind top-level entries: " + ", ".join(sorted(wrong_kind)))
-
 
 
 def markdown_headings(text: str) -> set[str]:
@@ -440,13 +415,6 @@ def check_development_document_relationships(
 
     for node in basis_graph:
         visit(node)
-
-
-def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
-    try:
-        return load_repo_specs_impl(repo_root)
-    except RepositoryError as exc:
-        fail(str(exc))
 
 
 def resolve_repo_path(repo_root: Path, value: str) -> Path:
@@ -1007,8 +975,6 @@ def _check_repository_lifecycle(
                 )
 
 
-
-
 def get_development_document_records(
     context: ValidationContext,
     *,
@@ -1045,7 +1011,6 @@ def get_development_document_records(
                 chunk_owner_paths[chunk_path] = rel_path
 
     return records
-
 
 
 def _load_repository_only_context(repo_root: Path) -> ValidationContext:
@@ -1087,10 +1052,6 @@ def _check_repository_development_documents(
         compatibility_registry=full_registry,
         owned_compatibility_paths=owned_compatibility_paths,
     )
-
-
-
-
 
 
 def _check_repository_generated_freshness(

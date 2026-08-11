@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from validation.errors import fail
+from validation.context import ValidationContext
 from validation.repository_checks import (
-    ValidationContext,
     expect,
     get_development_document_records,
 )

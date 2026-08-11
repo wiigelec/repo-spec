@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from validation.context import ValidationContext
 from validation.repository_checks import (
     DEVELOPMENT_DOCUMENT_ROOTS,
-    ValidationContext,
     check_development_documents_phase,
     load_development_document_compatibility_registry,
 )

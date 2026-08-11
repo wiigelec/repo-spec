@@ -255,6 +255,15 @@
       "role": "validation-utility"
     },
     {
+      "destination_path": "repo/scripts/validation/context.py",
+      "material_key": "repo-validation-context",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
       "material_key": "repo-validation-errors",
       "destination_path": "repo/scripts/validation/errors.py",
       "producer": "framework-installation",
