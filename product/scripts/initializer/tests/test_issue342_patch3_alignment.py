@@ -34,6 +34,32 @@ class Issue342Patch3AlignmentTests(unittest.TestCase):
         self.assertFalse(any(path.startswith(forbidden_prefix) for path in manifest_paths))
         self.assertFalse(any(path.startswith(forbidden_prefix) for path in output_paths))
 
+    def test_initialized_validation_surface_is_in_closed_inventories(self) -> None:
+        manifest = json.loads((ROOT / "product/scripts/initializer/framework-inventory.json").read_text())
+        output = json.loads((ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text())
+
+        manifest_keys = {
+            entry["material_key"]
+            for entry in manifest["entries"]
+            if isinstance(entry, dict) and isinstance(entry.get("material_key"), str)
+        }
+        output_by_destination = {
+            entry["destination_path"]: entry
+            for entry in output["material_index"]
+            if isinstance(entry, dict) and isinstance(entry.get("destination_path"), str)
+        }
+
+        required = {
+            "scripts/validate",
+            "repo/scripts/validate",
+            "product/scripts/validate",
+        }
+        self.assertTrue(required.issubset(output_by_destination))
+
+        for destination in required:
+            material_key = output_by_destination[destination]["material_key"]
+            self.assertIn(material_key, manifest_keys)
+
     def test_output_inventory_has_no_product_foundation_producer(self) -> None:
         output = json.loads((ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text())
         forbidden = {"direction-evidence-installation", "workspace-seeding"}

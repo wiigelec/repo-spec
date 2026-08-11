@@ -501,6 +501,559 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `scripts/validate`
+- Material Key: `patch2-scripts-validate`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/validate`
+- Material Key: `patch2-product-scripts-validate`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/validate_impl.py`
+- Material Key: `patch2-product-scripts-validate-impl-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/__init__.py`
+- Material Key: `patch2-product-scripts-product-validation---init---py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/b0_evidence.py`
+- Material Key: `patch2-product-scripts-product-validation-b0-evidence-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_checks.py`
+- Material Key: `patch2-product-scripts-product-validation-product-checks-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_correspondence.py`
+- Material Key: `patch2-product-scripts-product-validation-product-correspondence-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_development_documents.py`
+- Material Key: `patch2-product-scripts-product-validation-product-development-documents-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_generated_freshness.py`
+- Material Key: `patch2-product-scripts-product-validation-product-generated-freshness-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_lifecycle.py`
+- Material Key: `patch2-product-scripts-product-validation-product-lifecycle-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_policy.py`
+- Material Key: `patch2-product-scripts-product-validation-product-policy-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_state.py`
+- Material Key: `patch2-product-scripts-product-validation-product-state-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `.gitignore`
+- Material Key: `patch2-root-dot-gitignore`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `.github/ISSUE_TEMPLATE/governing-issue.yml`
+- Material Key: `patch2-root-dot-github-ISSUE-TEMPLATE-governing-issuedot-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `.github/PULL_REQUEST_TEMPLATE.md`
+- Material Key: `patch2-root-dot-github-PULL-REQUEST-TEMPLATEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `.github/workflows/github-field-policy.yml`
+- Material Key: `patch2-root-dot-github-workflows-github-field-policydot-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `.github/workflows/validation.yml`
+- Material Key: `patch2-root-dot-github-workflows-validationdot-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `reference/.github/README.md`
+- Material Key: `patch2-root-reference-dot-github-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/AGENTS.md`
+- Material Key: `patch2-root-reference-AGENTSdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/README.md`
+- Material Key: `patch2-root-reference-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/product/level-0/kernel.md`
+- Material Key: `patch2-root-reference-derived-specs-product-level-0-kerneldot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/product/level-1/primitives.md`
+- Material Key: `patch2-root-reference-derived-specs-product-level-1-primitivesdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/artifact-taxonomy.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-artifact-taxonomydot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/development-workflow.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-development-workflowdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/governing-issue.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-governing-issuedot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/manifest.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-manifestdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/platform-profiles.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-platform-profilesdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/repository-structure.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-repository-structuredot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/review-proposal.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-review-proposaldot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/derived/specs/repo/validation.md`
+- Material Key: `patch2-root-reference-derived-specs-repo-validationdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/docs/decompositions/README.md`
+- Material Key: `patch2-root-reference-docs-decompositions-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/docs/overview/README.md`
+- Material Key: `patch2-root-reference-docs-overview-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/docs/overview/REFERENCE-OVERVIEW.md`
+- Material Key: `patch2-root-reference-docs-overview-REFERENCE-OVERVIEWdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/docs/plans/01-reference-repository-plan.md`
+- Material Key: `patch2-root-reference-docs-plans-01-reference-repository-plandot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/docs/plans/README.md`
+- Material Key: `patch2-root-reference-docs-plans-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/profiles/github/README.md`
+- Material Key: `patch2-root-reference-profiles-github-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/profiles/github/manifest.json`
+- Material Key: `patch2-root-reference-profiles-github-manifestdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/product/product-level-0.schema.json`
+- Material Key: `patch2-root-reference-schemas-product-product-level-0dot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/product/product-level-1.schema.json`
+- Material Key: `patch2-root-reference-schemas-product-product-level-1dot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/product/product-manifest.schema.json`
+- Material Key: `patch2-root-reference-schemas-product-product-manifestdot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/product/product-spec-base.schema.json`
+- Material Key: `patch2-root-reference-schemas-product-product-spec-basedot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo/development-document-base.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-development-document-basedot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo/implementation-plan.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-implementation-plandot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo/product-decomposition.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-product-decompositiondot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo/product-overview.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-product-overviewdot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo-artifact-taxonomy.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-artifact-taxonomydot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo-manifest.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-manifestdot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo-platform-profiles.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-platform-profilesdot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo-spec.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-specdot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/schemas/repo-validation.schema.json`
+- Material Key: `patch2-root-reference-schemas-repo-validationdot-schemadot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/scripts/generate-docs`
+- Material Key: `patch2-root-reference-scripts-generate-docs`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/scripts/generate_docs.py`
+- Material Key: `patch2-root-reference-scripts-generate-docsdot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/scripts/validate`
+- Material Key: `patch2-root-reference-scripts-validate`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/scripts/validate_impl.py`
+- Material Key: `patch2-root-reference-scripts-validate-impldot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/product/README.md`
+- Material Key: `patch2-root-reference-specs-product-READMEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/product/level-0/kernel.json`
+- Material Key: `patch2-root-reference-specs-product-level-0-kerneldot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/product/level-1/primitives.json`
+- Material Key: `patch2-root-reference-specs-product-level-1-primitivesdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/product/manifest.json`
+- Material Key: `patch2-root-reference-specs-product-manifestdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/artifact-taxonomy.json`
+- Material Key: `patch2-root-reference-specs-repo-artifact-taxonomydot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/development-workflow.json`
+- Material Key: `patch2-root-reference-specs-repo-development-workflowdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/governing-issue.json`
+- Material Key: `patch2-root-reference-specs-repo-governing-issuedot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/manifest.json`
+- Material Key: `patch2-root-reference-specs-repo-manifestdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/platform-profiles.json`
+- Material Key: `patch2-root-reference-specs-repo-platform-profilesdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/repository-structure.json`
+- Material Key: `patch2-root-reference-specs-repo-repository-structuredot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/review-proposal.json`
+- Material Key: `patch2-root-reference-specs-repo-review-proposaldot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/specs/repo/validation.json`
+- Material Key: `patch2-root-reference-specs-repo-validationdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/src/__init__.py`
+- Material Key: `patch2-root-reference-src---init--dot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/src/product/__init__.py`
+- Material Key: `patch2-root-reference-src-product---init--dot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/src/product/kernel.py`
+- Material Key: `patch2-root-reference-src-product-kerneldot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/src/product/primitives.py`
+- Material Key: `patch2-root-reference-src-product-primitivesdot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/tests/__init__.py`
+- Material Key: `patch2-root-reference-tests---init--dot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/tests/test_kernel.py`
+- Material Key: `patch2-root-reference-tests-test-kerneldot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `reference/tests/test_primitives.py`
+- Material Key: `patch2-root-reference-tests-test-primitivesdot-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `user/audit_workflow_handoff.json`
+- Material Key: `patch2-root-user-audit-workflow-handoffdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/profiles/github/ISSUE_TEMPLATE/governing-issue.yml`
+- Material Key: `patch2-profile-source-repo-profiles-github-ISSUE-TEMPLATE-governing-issuedot-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/profiles/github/PULL_REQUEST_TEMPLATE.md`
+- Material Key: `patch2-profile-source-repo-profiles-github-PULL-REQUEST-TEMPLATEdot-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/profiles/github/manifest.json`
+- Material Key: `patch2-profile-source-repo-profiles-github-manifestdot-json`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/profiles/github/workflows/github-field-policy.yml`
+- Material Key: `patch2-profile-source-repo-profiles-github-workflows-github-field-policydot-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/profiles/github/workflows/validation.yml`
+- Material Key: `patch2-profile-source-repo-profiles-github-workflows-validationdot-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
 
 ## Primitives
 
