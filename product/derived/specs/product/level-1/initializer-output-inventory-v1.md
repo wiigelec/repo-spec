@@ -228,6 +228,27 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `documentation-support`
+- Destination Path: `scripts/generate-docs`
+- Material Key: `root-generate-docs`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `product/scripts/docgen.py`
+- Material Key: `product-docgen`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `product/scripts/generate-docs`
+- Material Key: `product-generate-docs`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
 - Destination Path: `repo/scripts/github_profile.py`
 - Material Key: `repo-github-profile`
 - Mode: `100644`

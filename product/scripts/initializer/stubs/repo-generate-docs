@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+mode=${1:---write}
+
+case "$mode" in
+  --write|--check)
+    exit 0
+    ;;
+  *)
+    echo "unknown mode: $mode" >&2
+    exit 1
+    ;;
+esac
