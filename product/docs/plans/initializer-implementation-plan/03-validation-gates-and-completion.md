@@ -69,6 +69,17 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | Self-test consolidation is not pulled into VA1 | Diff and issue scope exclude the separately authorized validation self-test ownership correction |
 
 
+### VA2 authorization gate
+
+| Requirement | Evidence |
+| --- | --- |
+| Patch 2 VA1 authority is the exact predecessor | Governing issue #350 and local history identify the accepted Patch 2 commit; no fourth functional correction intervenes |
+| Future Product-artifact implementation issue selects stable workstream `VA2` | Governing issue cites `VA2` and exactly `product.repository-validation` as the controlling accepted product specification |
+| Focused ownership replaces duplicate catch-all ownership without coverage loss | Planned case-by-case mapping identifies the focused owner for each retained invariant and distinguishes genuinely integrative cases |
+| Production validation remains separate | VA2 implementation diff is limited to validation self-test ownership/consolidation and does not change production validator behavior |
+| VA1 implementation is not silently bundled into VA2 | Shared-module extraction or production dependency-direction refactor requires the separately governed VA1 implementation scope |
+
+
 ## Validation strategy
 
 Every composite key in the accepted requirement-to-responsibility map produces observable positive/negative evidence. B0 classifies; I1-I5 produce focused evidence.
@@ -113,8 +124,9 @@ The B0/I1-I5 definitions and transition gates above remain historical planning a
 evidence structure; they do not direct recreation of completed increments.
 Future-extension specifications remain candidate/deferred and do not become
 implementation-authorized through H1. Issue #350 adds only the bounded VA1
-production-validation ownership successor authority described above; VA1 creates no
-new product semantics and does not authorize the separate self-test ownership correction.
+production-validation ownership successor authority and the bounded VA2 validation
+self-test ownership successor authority described above. Neither creates new product
+semantics, neither authorizes H2, and they remain separately governed implementation scopes.
 
 ### Completion gate summary
 | Condition | Status |
@@ -136,3 +148,4 @@ new product semantics and does not authorize the separate self-test ownership co
 | Governed plan acceptance | Accepted under issue #261 after current-spec, manifest, correspondence/dependency, planning-completeness, and repository validation checks |
 | H1 bounded successor authority | Issue #311 planning amendment; H1 maps an exact accepted-spec set and preserves canonical JSON/full-init semantics. Issue #313 completed H1 implementation; issue #318 completed bounded post-H1 correction. H1 completion itself authorizes no successor. |
 | VA1 bounded successor authority | Issue #350 Patch 2; exact controlling set: `product.initializer-output-inventory-v1`, `product.framework-installation`, `product.repository-validation`; semantic-preserving production-validation ownership correction only. |
+| VA2 bounded successor authority | Issue #350 Patch 3; exact controlling set: `product.repository-validation`; validation self-test ownership/consolidation only, with distinct invariant coverage preserved and production validation unchanged. |

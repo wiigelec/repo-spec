@@ -130,6 +130,16 @@ semantic change, no broad validator rewrite, no self-test ownership consolidatio
 (which is reserved for issue #350 Patch 3 authority), no H2 work, and no reassignment of
 historical B0/I1-I5/H1 requirement ownership.
 
+## VA2 - Validation self-test ownership correction
+
+Purpose: authorize bounded self-test ownership consolidation without changing production validation semantics. Controlling accepted product specification: `product.repository-validation`.
+
+Predecessor/entry: issue #350 Patch 2; a separate Product-artifact implementation issue must select `VA2`, cite exactly `product.repository-validation`, use the then-current accepted base, and keep VA1 implementation separate.
+
+Scope/exit: consolidate duplicate or catch-all product validation self-tests into function-owned focused coverage, retain genuinely integrative cases, remove literal duplicates, preserve dependency-direction and every distinct accepted invariant, and require product/aggregate validation plus the complete product validation self-test runner to pass.
+
+Exclusions: no production-validator changes, new/weakened semantics, loss of distinct invariant coverage, VA1 extraction, initializer/H2 work, general cleanup, or historical B0/I1-I5/H1 ownership reassignment.
+
 ## Cross-increment carriage
 
 | Concern | Producer→consumers | Required carriage |
@@ -166,4 +176,4 @@ B0/I1-I5 requirement ownership or evidence.
 
 ## Plan-wide exclusions
 
-The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no implementation governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 and H1 are completed historical work. H1 was the bounded successor authorized by the #311 planning amendment and was implemented under issue #313. Issue #350 adds VA1 as a separate bounded successor authority for production-validation ownership correction; VA1 does not reopen or reassign historical requirement ownership, and no other successor scope is implied.
+The plan itself performs no product source, tests, schemas, templates, generated output, or specification mutation and creates no implementation governing issue. No dry-run/platform/remote/named-ref/SHA-256/retry/resume/recovery/migration/overwrite/cross-device capability is authorized, and no conformance claim may be inferred from existing behavior. Future-extension specs remain candidate and deferred. B0/I1-I5 and H1 are completed historical work. H1 was the bounded successor authorized by the #311 planning amendment and was implemented under issue #313. Issue #350 adds VA1 as a separate bounded successor authority for production-validation ownership correction and VA2 as a separate bounded successor authority for validation self-test ownership correction. Neither VA1 nor VA2 reopens or reassigns historical requirement ownership, and no other successor scope is implied.
