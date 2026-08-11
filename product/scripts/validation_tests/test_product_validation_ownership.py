@@ -28,6 +28,15 @@ REPO_FORBIDDEN_PRODUCT_SYMBOLS = {
     "_check_generated_freshness_for_domain",
 }
 
+SHARED_INVARIANT_SYMBOLS = {
+    "check_supersession_acyclicity",
+    "check_supersession_pairs",
+    "check_unique_item_properties",
+    "expect",
+    "resolve_repo_path",
+}
+
+
 SHARED_CONTEXT_SYMBOLS = {
     "ExternalRepositoryValidationContext",
     "ValidationContext",
@@ -109,6 +118,25 @@ def run_product_validation_ownership_tests(repo_root: Path) -> None:
             "product validation ownership failed: shared context/loading imported "
             "from repository_checks: " + detail
         )
+
+    invariant_leaks: dict[str, list[str]] = {}
+    for path in sorted(product_root.glob("*.py")):
+        leaked = sorted(SHARED_INVARIANT_SYMBOLS & _repository_check_imported_symbols(path))
+        if leaked:
+            invariant_leaks[path.name] = leaked
+    if invariant_leaks:
+        detail = "; ".join(f"{filename}: {', '.join(symbols)}" for filename, symbols in invariant_leaks.items())
+        raise AssertionError(
+            "product validation ownership failed: shared invariant/path/failure mechanics imported from repository_checks: " + detail
+        )
+
+    shared_invariants = repo_root / "repo/scripts/validation/invariants.py"
+    required_invariants = {"check_supersession_acyclicity", "check_supersession_pairs", "check_unique_item_properties"}
+    if not shared_invariants.exists() or not required_invariants.issubset(_defined_symbols(shared_invariants)):
+        raise AssertionError("product validation ownership failed: shared invariants module incomplete")
+    shared_paths = repo_root / "repo/scripts/validation/paths.py"
+    if not shared_paths.exists() or "resolve_repo_path" not in _defined_symbols(shared_paths):
+        raise AssertionError("product validation ownership failed: shared paths module incomplete")
 
     shared_context = repo_root / "repo/scripts/validation/context.py"
     if not shared_context.exists():

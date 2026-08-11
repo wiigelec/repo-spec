@@ -7,13 +7,15 @@ import re
 from pathlib import Path
 from typing import Any
 
-from repo_model import load_json as load_repo_json, resolve_repo_path as resolve_repo_path_impl
+from repo_model import load_json as load_repo_json
 from repo_model import RepositoryError
 from github_profile import GitHubProfileError, check_profile_freshness
 
 from .errors import expect, fail
 from .context import RepositoryValidationContext, ValidationContext, load_repo_specs
 from .generated_outputs import check_generated_document_freshness
+from .invariants import check_supersession_acyclicity, check_supersession_pairs, check_unique_item_properties
+from .paths import resolve_repo_path
 from .schema_subset import load_repo_schemas, validate_instance
 
 
@@ -244,35 +246,6 @@ def resolve_development_document_artifact(
     raise KeyError(path)
 
 
-def check_supersession_pairs(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
-    for spec_id, spec in specs.items():
-        for target_spec_id in spec.get("supersedes", []):
-            expect(target_spec_id in specs, f"{relation_label} failed: unresolved supersedes pair {spec_id} -> {target_spec_id}")
-            expect(spec_id in specs[target_spec_id].get("superseded_by", []), f"{relation_label} failed: non-reciprocal supersedes pair {spec_id} -> {target_spec_id}")
-        for target_spec_id in spec.get("superseded_by", []):
-            expect(target_spec_id in specs, f"{relation_label} failed: unresolved superseded_by pair {spec_id} -> {target_spec_id}")
-            expect(spec_id in specs[target_spec_id].get("supersedes", []), f"{relation_label} failed: non-reciprocal superseded_by pair {spec_id} -> {target_spec_id}")
-
-
-def check_supersession_acyclicity(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
-    graph = {spec_id: list(spec.get("supersedes", [])) for spec_id, spec in specs.items()}
-    visiting: set[str] = set()
-    visited: set[str] = set()
-
-    def visit(node: str) -> None:
-        if node in visited:
-            return
-        if node in visiting:
-            fail(f"{relation_label} failed: cycle detected")
-        visiting.add(node)
-        for dep in graph[node]:
-            expect(dep in graph, f"{relation_label} failed: unresolved supersedes relation {node} -> {dep}")
-            visit(dep)
-        visiting.remove(node)
-        visited.add(node)
-
-    for node in graph:
-        visit(node)
 
 
 def check_development_document_relationships(
@@ -417,12 +390,6 @@ def check_development_document_relationships(
         visit(node)
 
 
-def resolve_repo_path(repo_root: Path, value: str) -> Path:
-    try:
-        return resolve_repo_path_impl(repo_root, value)
-    except RepositoryError as exc:
-        fail(str(exc))
-
 
 def validate_repo_json_schema_conformance(specs: dict[str, dict[str, Any]], source_paths: dict[str, str], schemas: dict[str, dict[str, Any]]) -> None:
     validate_instance(specs["repo.manifest"], schemas["repo.manifest"], "repo/specs/repo/manifest.json", schemas["repo.manifest"])
@@ -460,14 +427,6 @@ def check_unique_derived_artifact_paths(specs: dict[str, dict[str, Any]]) -> Non
             paths.append(artifact["path"])
     expect(len(paths) == len(set(paths)), "duplicate derived artifact paths failed")
 
-
-def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str, field: str, keys: list[str]) -> None:
-    seen: set[tuple[Any, ...]] = set()
-    for index, item in enumerate(specs[spec_id][field]):
-        expect(isinstance(item, dict), f"{field} failed: {spec_id}[{index}] must be an object")
-        identity = tuple(item.get(key) for key in keys)
-        expect(identity not in seen, f"{field} failed: duplicate item properties {', '.join(keys)}")
-        seen.add(identity)
 
 
 EXPECTED_GITHUB_ARTIFACT_INVENTORY = {

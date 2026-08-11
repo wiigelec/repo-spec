@@ -270,6 +270,20 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `repo/scripts/validation/invariants.py`
+- Material Key: `repo-validation-invariants`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/scripts/validation/paths.py`
+- Material Key: `repo-validation-paths`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/validation/repository_checks.py`
 - Material Key: `repo-validation-repo-checks`
 - Mode: `100644`

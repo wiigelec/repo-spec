@@ -4,10 +4,8 @@ from __future__ import annotations
 
 from validation.errors import fail
 from validation.context import ValidationContext
-from validation.repository_checks import (
-    expect,
-    get_development_document_records,
-)
+from validation.errors import expect
+from validation.repository_checks import get_development_document_records
 
 from .product_development_documents import _product_development_roots
 

@@ -6,7 +6,7 @@ from typing import Any
 
 from validation.errors import expect, fail
 from validation.context import ValidationContext
-from validation.repository_checks import resolve_repo_path
+from validation.paths import resolve_repo_path
 
 
 def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:

@@ -22,12 +22,8 @@ from .product_generated_freshness import check_product_generated_freshness
 
 from validation.context import ExternalRepositoryValidationContext, ValidationContext, load_repo_specs
 from validation.schema_subset import load_repo_schemas
-from validation.repository_checks import (
-    check_supersession_acyclicity,
-    check_supersession_pairs,
-    check_unique_item_properties,
-    expect,
-)
+from validation.errors import expect
+from validation.invariants import check_supersession_acyclicity, check_supersession_pairs, check_unique_item_properties
 
 
 def _load_product_only_context(repo_root: Path) -> ValidationContext:

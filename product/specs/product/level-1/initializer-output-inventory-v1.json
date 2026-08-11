@@ -282,6 +282,24 @@
       "role": "validation-utility"
     },
     {
+      "destination_path": "repo/scripts/validation/invariants.py",
+      "material_key": "repo-validation-invariants",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "destination_path": "repo/scripts/validation/paths.py",
+      "material_key": "repo-validation-paths",
+      "mode": "100644",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
       "material_key": "repo-validation-repo-checks",
       "destination_path": "repo/scripts/validation/repository_checks.py",
       "producer": "framework-installation",

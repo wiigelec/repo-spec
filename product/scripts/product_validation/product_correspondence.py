@@ -7,7 +7,7 @@ from typing import Any
 
 from validation.errors import expect
 from validation.context import ValidationContext
-from validation.repository_checks import resolve_repo_path
+from validation.paths import resolve_repo_path
 
 
 @dataclass(frozen=True)
