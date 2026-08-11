@@ -142,7 +142,7 @@ semantics, neither authorizes H2, and they remain separately governed implementa
 | Issues #255 and #257 accepted specification repairs reflected at every affected boundary | Impact review complete |
 | Future-extension specs excluded | Patches 1-3 |
 | Three patches; no fourth functional correction | Verified |
-| No product source/tests/schemas/specs modified | Verified |
+| Authority-cycle mutation scope | No maintained implementation source, validation tests, or schemas modified; Patch 1 changes only accepted `product.initializer-output-inventory-v1` authority plus its required generated projection |
 | `./scripts/validate` passes each commit | Verified |
 | Clean-room review: current accepted specs, no invented semantics | Completed under issue #259 / PR #260 and revalidated for acceptance under issue #261 |
 | Governed plan acceptance | Accepted under issue #261 after current-spec, manifest, correspondence/dependency, planning-completeness, and repository validation checks |
