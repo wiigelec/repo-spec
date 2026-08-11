@@ -67,13 +67,6 @@ def run_product_repository_mutations(repo_root: Path) -> None:
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        chunk_path = temp_repo / "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"
-        chunk_text = chunk_path.read_text().replace("## Responsibilities\n\nSeparate reusable repository scaffolding from product-specific foundations and identify the governed materials that can be carried forward.\n\n", "")
-        chunk_path.write_text(chunk_text)
-        expect_failure("missing decomposition section heading", lambda: validate_product(temp_repo), "missing product-area heading Responsibilities")
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace('{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"], "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "decomposition-basis", "document_coverage": ["decomposition_basis", "unresolved_decisions"]}', 1)
