@@ -39,24 +39,6 @@
       "role": "runtime-framework"
     },
     {
-      "material_key": "repo-spec",
-      "destination_path": "product/scripts/repo-spec",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100755",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-spec-init",
-      "destination_path": "product/scripts/repo-spec-init",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100755",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
       "material_key": "repo-manifest",
       "destination_path": "repo/specs/repo/manifest.json",
       "producer": "framework-installation",
@@ -471,105 +453,6 @@
       "role": "generated-reference"
     },
     {
-      "material_key": "product-initializer-init",
-      "destination_path": "product/scripts/initializer/__init__.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-cli",
-      "destination_path": "product/scripts/initializer/cli.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-destination",
-      "destination_path": "product/scripts/initializer/destination.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-foundations",
-      "destination_path": "product/scripts/initializer/foundations.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-framework-inventory",
-      "destination_path": "product/scripts/initializer/framework-inventory.json",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-git",
-      "destination_path": "product/scripts/initializer/git.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-inventory",
-      "destination_path": "product/scripts/initializer/inventory.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-models",
-      "destination_path": "product/scripts/initializer/models.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-promotion",
-      "destination_path": "product/scripts/initializer/promotion.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-staging",
-      "destination_path": "product/scripts/initializer/staging.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
-      "material_key": "product-initializer-validation",
-      "destination_path": "product/scripts/initializer/validation.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "initializer-framework"
-    },
-    {
       "material_key": "repo-schema-development-document-base",
       "destination_path": "repo/schemas/repo/development-document-base.schema.json",
       "operation": "copy-verbatim",
@@ -799,7 +682,7 @@
     },
     {
       "id": "INV-V1-015",
-      "text": "Every material_index entry shall have an intentional product output role declared in its role field. The valid roles are: runtime-framework (root-level files required for every initialized repository), governing-specification (repo-level spec contracts), validation-utility (scripts that validate or verify repository state), documentation-support (scripts that generate or maintain documentation), generated-reference (derived Markdown projections of governing specs), and initializer-framework (initializer implementation modules). No material_index entry may have role development-only; such entries shall not be installed."
+      "text": "Every material_index entry shall have an intentional destination-framework role declared in its role field. Valid destination roles are runtime-framework, governing-specification, validation-utility, documentation-support, and generated-reference. Repo-spec product initializer implementation, tests, and other source-product-only material shall not be installed into initialized repositories."
     }
   ],
   "dependencies": [

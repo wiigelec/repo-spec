@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-GRL-002",
-      "text": "The initialized repository shall contain both `product/scripts/repo-spec` and the subordinate/developer `product/scripts/repo-spec-init` launcher surfaces as required runtime-framework material."
+      "text": "The initialized repository shall not contain repo-spec product initializer launcher or implementation paths, including `product/scripts/repo-spec`, `product/scripts/repo-spec-init`, or descendants of `product/scripts/initializer/`; those remain source-side repo-spec product implementation and are not reusable destination framework."
     },
     {
       "id": "INIT-GRL-003",

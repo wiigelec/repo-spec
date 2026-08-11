@@ -26,22 +26,6 @@
       "mode": "100644"
     },
     {
-      "material_key": "repo-spec",
-      "source_path": "product/scripts/repo-spec",
-      "role": "runtime-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100755"
-    },
-    {
-      "material_key": "repo-spec-init",
-      "source_path": "product/scripts/repo-spec-init",
-      "role": "runtime-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100755"
-    },
-    {
       "material_key": "repo-manifest",
       "source_path": "repo/specs/repo/manifest.json",
       "role": "governing-specification",
@@ -405,94 +389,6 @@
       "material_key": "derived-validation",
       "source_path": "repo/derived/specs/repo/validation.md",
       "role": "generated-reference",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-init",
-      "source_path": "product/scripts/initializer/__init__.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-cli",
-      "source_path": "product/scripts/initializer/cli.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-destination",
-      "source_path": "product/scripts/initializer/destination.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-foundations",
-      "source_path": "product/scripts/initializer/foundations.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-framework-inventory",
-      "source_path": "product/scripts/initializer/framework-inventory.json",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-git",
-      "source_path": "product/scripts/initializer/git.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-inventory",
-      "source_path": "product/scripts/initializer/inventory.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-models",
-      "source_path": "product/scripts/initializer/models.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-promotion",
-      "source_path": "product/scripts/initializer/promotion.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-staging",
-      "source_path": "product/scripts/initializer/staging.py",
-      "role": "initializer-framework",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "product-initializer-validation",
-      "source_path": "product/scripts/initializer/validation.py",
-      "role": "initializer-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100644"

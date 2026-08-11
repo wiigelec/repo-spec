@@ -8,17 +8,31 @@ ROOT = Path(__file__).resolve().parents[4]
 
 
 class Issue342Patch3AlignmentTests(unittest.TestCase):
-    def test_wrapper_is_in_both_closed_inventories(self) -> None:
+    def test_repo_spec_product_runtime_is_not_in_destination_inventories(self) -> None:
         manifest = json.loads((ROOT / "product/scripts/initializer/framework-inventory.json").read_text())
         output = json.loads((ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text())
-        m = {e["material_key"]: e for e in manifest["entries"]}
-        o = {e["material_key"]: e for e in output["material_index"]}
-        self.assertIn("repo-spec", m)
-        self.assertIn("repo-spec", o)
-        self.assertEqual(m["repo-spec"]["source_path"], "product/scripts/repo-spec")
-        self.assertEqual(o["repo-spec"]["destination_path"], "product/scripts/repo-spec")
-        self.assertEqual(m["repo-spec"]["mode"], "100755")
-        self.assertEqual(o["repo-spec"]["mode"], "100755")
+
+        manifest_paths = {
+            entry["source_path"]
+            for entry in manifest["entries"]
+            if isinstance(entry, dict) and isinstance(entry.get("source_path"), str)
+        }
+        output_paths = {
+            entry["destination_path"]
+            for entry in output["material_index"]
+            if isinstance(entry, dict) and isinstance(entry.get("destination_path"), str)
+        }
+
+        forbidden_exact = {
+            "product/scripts/repo-spec",
+            "product/scripts/repo-spec-init",
+        }
+        forbidden_prefix = "product/scripts/initializer/"
+
+        self.assertTrue(forbidden_exact.isdisjoint(manifest_paths))
+        self.assertTrue(forbidden_exact.isdisjoint(output_paths))
+        self.assertFalse(any(path.startswith(forbidden_prefix) for path in manifest_paths))
+        self.assertFalse(any(path.startswith(forbidden_prefix) for path in output_paths))
 
     def test_output_inventory_has_no_product_foundation_producer(self) -> None:
         output = json.loads((ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text())
