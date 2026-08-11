@@ -24,7 +24,12 @@ from .test_product_projection_rendering import run_product_projection_rendering_
 from .test_product_validation import (
     run_product_correspondence_tests,
     run_product_dependency_policy_tests,
-    run_product_manifest_integrity_tests,
+    run_product_lineage_tests,
+    run_product_manifest_completeness_tests,
+    run_product_manifest_correspondence_tests,
+    run_product_manifest_uniqueness_tests,
+    run_product_reference_tests,
+    run_product_schema_boundary_tests,
 )
 from .test_product_validation_ownership import (
     run_product_validation_ownership_tests,
@@ -38,7 +43,12 @@ def run_product_mutation_tests(repo_root: Path) -> None:
     run_product_acyclicity_tests(repo_root)
     run_product_level_schema_tests(repo_root)
     run_product_dependency_policy_tests(repo_root)
-    run_product_manifest_integrity_tests(repo_root)
+    run_product_schema_boundary_tests(repo_root)
+    run_product_manifest_completeness_tests(repo_root)
+    run_product_manifest_uniqueness_tests(repo_root)
+    run_product_manifest_correspondence_tests(repo_root)
+    run_product_reference_tests(repo_root)
+    run_product_lineage_tests(repo_root)
     run_product_correspondence_tests(repo_root)
     run_product_manifest_schema_tests(repo_root)
     run_product_generation_tests(repo_root)
