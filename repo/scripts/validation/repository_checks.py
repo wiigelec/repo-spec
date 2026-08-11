@@ -1036,30 +1036,6 @@ def get_development_document_records(
     return records
 
 
-VALIDATION_PHASES: list[tuple[str, Any]] = [
-    ("repository JSON Schema conformance", check_schema_conformance),
-    ("manifest completeness", check_manifest_phase),
-    ("unique specification IDs", check_unique_spec_ids_phase),
-    ("unique item properties", check_unique_item_properties_phase),
-    ("platform profile boundary", check_platform_profile_boundary),
-    ("GitHub profile freshness", check_github_profile_freshness_phase),
-    ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
-    ("dependency target lifecycle", check_dependency_targets_phase),
-    ("resolvable references", check_resolvable_references_phase),
-    ("lineage relations", check_lineage_relations_phase),
-    ("acyclic dependencies", check_acyclic_dependencies_phase),
-    ("development documents", check_development_documents_phase),
-    ("generated-document freshness", check_generated_document_freshness_phase),
-]
-
-
-def validate_repo(repo_root: Path) -> None:
-    context = load_validation_context(repo_root)
-    for label, check in VALIDATION_PHASES:
-        check(context)
-        print(f"ok: {label}")
-
-# PATCH-2-SPLIT-VALIDATION-OWNERSHIP
 
 def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)

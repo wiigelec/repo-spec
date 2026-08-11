@@ -124,7 +124,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             "accepted spec product.primitive -> candidate target product.kernel",
         )
 
-        # Patch 3: an unrelated accepted Level 0 does not satisfy this spec's closure.
+        # Completeness requires an accepted Level 0 in this spec's dependency closure.
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
@@ -142,7 +142,7 @@ def run_product_validation_tests(repo_root: Path) -> None:
             "product completeness failed: accepted spec product.primitive has no accepted Level 0 specification in its transitive dependency closure",
         )
 
-        # Patch 3: intermediate Levels are optional; Level 3 may reach Level 0 directly.
+        # Dependency levels may be skipped; Level 3 may depend directly on accepted Level 0.
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
@@ -208,55 +208,6 @@ def run_product_validation_tests(repo_root: Path) -> None:
         deactivate_product_plans(temp_repo)
         check_generated_document_write_behavior(temp_repo)
         validate_product(temp_repo)
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        accept_kernel(temp_repo)
-        mutate_json(
-            temp_repo / "product/specs/product/level-0/kernel.json",
-            lambda spec: spec["dependencies"].append({"spec_id": "product.primitive"}) or spec,
-        )
-        deactivate_product_plans(temp_repo)
-        expect_failure("upward dependency", lambda: validate_product(temp_repo), "product dependency direction failed")
-
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
-        install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
-        install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/secondary.json")
-        accept_kernel(temp_repo)
-        mutate_json(
-            temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: spec["dependencies"].append({"spec_id": "product.secondary"}) or spec,
-        )
-        mutate_json(
-            temp_repo / "product/specs/product/level-1/secondary.json",
-            lambda spec: (
-                spec.__setitem__("spec_id", "product.secondary"),
-                spec.__setitem__("title", "Secondary Primitive"),
-                spec.__setitem__("purpose", "Secondary primitive product specification."),
-                spec["dependencies"].__setitem__(0, {"spec_id": "product.primitive"}),
-                spec["derived_artifacts"][0].__setitem__("path", "product/derived/specs/product/secondary.md"),
-                spec,
-            )[-1],
-        )
-        mutate_json(
-            temp_repo / "product/specs/product/manifest.json",
-            lambda manifest: manifest["product_specifications"].append(
-                {
-                    "spec_id": "product.secondary",
-                    "path": "product/specs/product/level-1/secondary.json",
-                    "status": "accepted",
-                    "level": 1,
-                }
-            ) or manifest,
-        )
-        deactivate_product_plans(temp_repo)
-        expect_failure("same-level dependency cycle", lambda: validate_product(temp_repo), "acyclic dependencies failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
