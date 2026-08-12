@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from docgen import render_spec_projection
-from validation.tests.mutation_support import expect_render_change
+from .mutation_support import expect_render_change
 
 
 FIXTURE_PATH = (

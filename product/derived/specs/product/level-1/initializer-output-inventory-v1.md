@@ -200,13 +200,6 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/validate_impl.py`
-- Material Key: `repo-validate-impl`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
 - Destination Path: `repo/scripts/repo_model.py`
 - Material Key: `repo-repo-model`
 - Mode: `100644`
@@ -483,76 +476,13 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Destination Path: `scripts/validate`
 - Material Key: `validation-aggregate-entrypoint`
 - Mode: `100755`
-- Operation: `copy-verbatim`
+- Operation: `instantiate-template`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
 - Destination Path: `product/scripts/validate`
 - Material Key: `product-validation-entrypoint`
 - Mode: `100755`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/validate_impl.py`
-- Material Key: `product-validation-implementation`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/__init__.py`
-- Material Key: `product-validation-package-init`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_checks.py`
-- Material Key: `product-validation-product-checks`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_correspondence.py`
-- Material Key: `product-validation-product-correspondence`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_development_documents.py`
-- Material Key: `product-validation-development-documents`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_generated_freshness.py`
-- Material Key: `product-validation-generated-freshness`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_lifecycle.py`
-- Material Key: `product-validation-lifecycle`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_policy.py`
-- Material Key: `product-validation-policy`
-- Mode: `100644`
-- Operation: `copy-verbatim`
-- Producer: `framework-installation`
-- Required: `True`
-- Role: `validation-utility`
-- Destination Path: `product/scripts/product_validation/product_state.py`
-- Material Key: `product-validation-state`
-- Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
@@ -634,6 +564,48 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
+- Destination Path: `repo/scripts/root_validation.py`
+- Material Key: `repo-root-validation`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/validate_impl.py`
+- Material Key: `product-validate-impl`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/__init__.py`
+- Material Key: `product-validation-package`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_checks.py`
+- Material Key: `product-validation-product-checks`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/validation/__init__.py`
+- Material Key: `product-validation-support-package`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/validation/errors.py`
+- Material Key: `product-validation-errors`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 
 ## Primitives
 

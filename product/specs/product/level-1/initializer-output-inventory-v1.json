@@ -192,15 +192,6 @@
       "role": "validation-utility"
     },
     {
-      "material_key": "repo-validate-impl",
-      "destination_path": "repo/scripts/validate_impl.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "validation-utility"
-    },
-    {
       "material_key": "repo-repo-model",
       "destination_path": "repo/scripts/repo_model.py",
       "producer": "framework-installation",
@@ -555,7 +546,7 @@
       "material_key": "validation-aggregate-entrypoint",
       "destination_path": "scripts/validate",
       "role": "validation-utility",
-      "operation": "copy-verbatim",
+      "operation": "instantiate-template",
       "mode": "100755",
       "producer": "framework-installation",
       "required": true
@@ -566,87 +557,6 @@
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "mode": "100755",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-implementation",
-      "destination_path": "product/scripts/validate_impl.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-package-init",
-      "destination_path": "product/scripts/product_validation/__init__.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-product-checks",
-      "destination_path": "product/scripts/product_validation/product_checks.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-product-correspondence",
-      "destination_path": "product/scripts/product_validation/product_correspondence.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-development-documents",
-      "destination_path": "product/scripts/product_validation/product_development_documents.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-generated-freshness",
-      "destination_path": "product/scripts/product_validation/product_generated_freshness.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-lifecycle",
-      "destination_path": "product/scripts/product_validation/product_lifecycle.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-policy",
-      "destination_path": "product/scripts/product_validation/product_policy.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "producer": "framework-installation",
-      "required": true
-    },
-    {
-      "material_key": "product-validation-state",
-      "destination_path": "product/scripts/product_validation/product_state.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "mode": "100644",
       "producer": "framework-installation",
       "required": true
     },
@@ -748,6 +658,60 @@
       "destination_path": "repo/profiles/github/workflows/validation.yml",
       "producer": "framework-installation",
       "required": true
+    },
+    {
+      "material_key": "repo-root-validation",
+      "destination_path": "repo/scripts/root_validation.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-validate-impl",
+      "destination_path": "product/scripts/validate_impl.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-validation-package",
+      "destination_path": "product/scripts/product_validation/__init__.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-validation-product-checks",
+      "destination_path": "product/scripts/product_validation/product_checks.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-validation-support-package",
+      "destination_path": "product/scripts/validation/__init__.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-validation-errors",
+      "destination_path": "product/scripts/validation/errors.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
     }
   ],
   "dynamic_path_families": [],
