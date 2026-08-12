@@ -749,56 +749,6 @@ def _i3_identity(object_id: str, label: str) -> I3GitObjectIdentity:
 
 
 
-def _i3_materialize_repo_tree_sha(
-    repository: Path,
-    initialization_timestamp: str,
-) -> str:
-    validator = repository / "scripts/validate"
-    if not validator.is_file():
-        raise GitError("I3 root validator scripts/validate is missing")
-
-    data = validator.read_bytes()
-    placeholder = b'REPO_TREE_SHA=""'
-    if data.count(placeholder) != 1:
-        raise GitError(
-            "I3 root validator must contain exactly one empty REPO_TREE_SHA declaration"
-        )
-
-    root_tree = _i3_run_git(
-        repository,
-        "write-tree",
-        initialization_timestamp=initialization_timestamp,
-    ).strip()
-    repo_entry = _i3_run_git(
-        repository,
-        "ls-tree",
-        root_tree,
-        "--",
-        "repo",
-        initialization_timestamp=initialization_timestamp,
-    ).strip()
-    match = re.fullmatch(r"040000 tree ([0-9a-f]{40})\trepo", repo_entry)
-    if match is None:
-        raise GitError("I3 staged repo/ tree identity could not be resolved")
-    repo_tree_sha = match.group(1)
-
-    validator.write_bytes(
-        data.replace(
-            placeholder,
-            f'REPO_TREE_SHA="{repo_tree_sha}"'.encode("ascii"),
-            1,
-        )
-    )
-    _i3_run_git(
-        repository,
-        "add",
-        "--",
-        "scripts/validate",
-        initialization_timestamp=initialization_timestamp,
-    )
-    return repo_tree_sha
-
-
 def verify_i3_git_repository(
     repository_path: str | Path,
     initialization_timestamp: str | None = None,
@@ -938,7 +888,6 @@ def initialize_i3_git_repository(
         _i3_run_git(repository, "config", "--local", "core.safecrlf", "false", initialization_timestamp=initialization_timestamp)
         _i3_run_git(repository, "config", "--local", "commit.gpgSign", "false", initialization_timestamp=initialization_timestamp)
         _i3_run_git(repository, "add", "-A", initialization_timestamp=initialization_timestamp)
-        _i3_materialize_repo_tree_sha(repository, initialization_timestamp)
 
         staged = _i3_run_git(repository, "diff", "--cached", "--name-only", initialization_timestamp=initialization_timestamp)
         if not staged.strip():

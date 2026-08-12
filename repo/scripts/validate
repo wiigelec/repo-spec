@@ -3,16 +3,15 @@
 set -euo pipefail
 
 root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
-repo_tree_sha=${1-}
 
-if [[ $# -gt 1 ]]; then
-    echo "validation error: unknown argument: ${2}" >&2
+if [[ $# -gt 0 ]]; then
+    echo "validation error: unknown argument: ${1}" >&2
     exit 1
 fi
 
-env PYTHONDONTWRITEBYTECODE=1 python3 "$root/repo/scripts/root_validation.py" "$root" "$repo_tree_sha"
+env PYTHONDONTWRITEBYTECODE=1 python3 "$root/repo/scripts/root_validation.py" "$root"
 
-if [[ -n "$repo_tree_sha" ]]; then
+if [[ ! -d "$root/reference" ]]; then
     exit 0
 fi
 

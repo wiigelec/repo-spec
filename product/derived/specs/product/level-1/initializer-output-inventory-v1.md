@@ -476,7 +476,7 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Destination Path: `scripts/validate`
 - Material Key: `validation-aggregate-entrypoint`
 - Mode: `100755`
-- Operation: `instantiate-template`
+- Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
