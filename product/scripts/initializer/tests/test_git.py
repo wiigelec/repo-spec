@@ -144,7 +144,7 @@ class GitEstablishmentPlanTests(unittest.TestCase):
         self.assertEqual(plan.commit_message, "Initial repository foundation")
         self.assertEqual(plan.author_name, "Repo-Spec Initializer")
         self.assertEqual(plan.author_email, "initializer@repo-spec.local")
-        self.assertEqual(plan.timestamp, "1234567890 +0000")
+        self.assertRegex(plan.timestamp, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 
     def test_custom_plan(self) -> None:
         plan = GitEstablishmentPlan(
@@ -197,7 +197,7 @@ class GitEstablishmentResultTests(unittest.TestCase):
             commit_tree="def456",
             author_identity="A <a@b>",
             committer_identity="A <a@b>",
-            timestamps="1234567890 +0000",
+            timestamps="2026-08-12T12:00:00Z",
             commit_message="Initial",
             staged_path_count=10,
             ignored_path_count=0,
@@ -463,18 +463,24 @@ class GitDeterminismTests(unittest.TestCase):
         self.assertEqual(trees[0], trees[1],
                          "equivalent inputs should produce the same commit tree")
 
-    def test_equivalent_inputs_produce_same_root_commit(self) -> None:
+    def test_equivalent_inputs_preserve_tree_when_commit_timestamp_varies(self) -> None:
         if not git_available():
             self.skipTest("git not available")
-        commits: list[str] = []
+        results: list[GitEstablishmentResult] = []
         for _ in range(2):
             with tempfile.TemporaryDirectory() as td:
                 (Path(td) / "file.txt").write_text("deterministic content")
                 result = establish_git_repository(td)
                 self.assertEqual(result.status, "success")
-                commits.append(result.root_commit)
-        self.assertEqual(commits[0], commits[1],
-                         "equivalent inputs should produce the same root commit identity")
+                results.append(result)
+        self.assertEqual(
+            results[0].commit_tree,
+            results[1].commit_tree,
+            "equivalent content should produce the same commit tree",
+        )
+        for result in results:
+            self.assertEqual(len(result.root_commit), 40)
+            self.assertRegex(result.timestamps, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 
     def test_different_content_produces_different_commit(self) -> None:
         if not git_available():
@@ -677,7 +683,7 @@ class GitCLIIntegrationTests(unittest.TestCase):
             self.assertNotEqual(data["root_commit"], "")
             self.assertTrue(data["worktree_clean"])
 
-    def test_git_establish_deterministic_cli(self) -> None:
+    def test_git_establish_deterministic_tree_cli(self) -> None:
         if not git_available():
             self.skipTest("git not available")
         outputs: list[dict[str, object]] = []
@@ -689,7 +695,12 @@ class GitCLIIntegrationTests(unittest.TestCase):
                     self.skipTest("git-establish failed")
                 outputs.append(json.loads(proc.stdout))
         self.assertEqual(outputs[0]["commit_tree"], outputs[1]["commit_tree"])
-        self.assertEqual(outputs[0]["root_commit"], outputs[1]["root_commit"])
+        for output in outputs:
+            self.assertEqual(len(str(output["root_commit"])), 40)
+            self.assertRegex(
+                str(output["timestamps"]),
+                r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$",
+            )
 
 
 class GitNoGitNoPlatformTests(unittest.TestCase):

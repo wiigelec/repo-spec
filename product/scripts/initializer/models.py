@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -926,7 +927,7 @@ class GitEstablishmentPlan:
         author_email: str = "initializer@repo-spec.local",
         committer_name: str | None = None,
         committer_email: str | None = None,
-        timestamp: str = "1234567890 +0000",
+        timestamp: str | None = None,
     ) -> None:
         self._destination_path = destination_path
         self._initial_branch = initial_branch
@@ -935,7 +936,7 @@ class GitEstablishmentPlan:
         self._author_email = author_email
         self._committer_name = committer_name if committer_name is not None else author_name
         self._committer_email = committer_email if committer_email is not None else author_email
-        self._timestamp = timestamp
+        self._timestamp = timestamp if timestamp is not None else datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         self._frozen = True
 
     @property

@@ -15,6 +15,9 @@ from initializer.git import (
 )
 
 
+TEST_TIMESTAMP = "2026-08-12T12:00:00Z"
+OTHER_TIMESTAMP = "2026-08-12T12:00:01Z"
+
 class I3GitBootstrapTests(unittest.TestCase):
     def make_repository(self) -> tuple[tempfile.TemporaryDirectory, Path]:
         td = tempfile.TemporaryDirectory()
@@ -30,7 +33,7 @@ class I3GitBootstrapTests(unittest.TestCase):
 
     def test_initializes_exact_single_root_commit_profile(self):
         _td, repo = self.make_repository()
-        result = initialize_i3_git_repository(repo)
+        result = initialize_i3_git_repository(repo, TEST_TIMESTAMP)
 
         self.assertEqual(result.profile_id, I3_BOOTSTRAP_PROFILE_ID)
         self.assertEqual(result.branch, "main")
@@ -47,23 +50,31 @@ class I3GitBootstrapTests(unittest.TestCase):
     def test_identical_content_produces_identical_tree_and_commit(self):
         _a, repo_a = self.make_repository()
         _b, repo_b = self.make_repository()
-        a = initialize_i3_git_repository(repo_a)
-        b = initialize_i3_git_repository(repo_b)
+        a = initialize_i3_git_repository(repo_a, TEST_TIMESTAMP)
+        b = initialize_i3_git_repository(repo_b, TEST_TIMESTAMP)
         self.assertEqual(a.tree, b.tree)
         self.assertEqual(a.commit, b.commit)
+
+    def test_identical_content_different_timestamp_keeps_tree_changes_commit(self):
+        _a, repo_a = self.make_repository()
+        _b, repo_b = self.make_repository()
+        a = initialize_i3_git_repository(repo_a, TEST_TIMESTAMP)
+        b = initialize_i3_git_repository(repo_b, OTHER_TIMESTAMP)
+        self.assertEqual(a.tree, b.tree)
+        self.assertNotEqual(a.commit, b.commit)
 
     def test_executable_mode_changes_tree_and_commit(self):
         _a, repo_a = self.make_repository()
         _b, repo_b = self.make_repository()
         (repo_b / "repo" / "scripts" / "validate").chmod(0o644)
-        a = initialize_i3_git_repository(repo_a)
-        b = initialize_i3_git_repository(repo_b)
+        a = initialize_i3_git_repository(repo_a, TEST_TIMESTAMP)
+        b = initialize_i3_git_repository(repo_b, TEST_TIMESTAMP)
         self.assertNotEqual(a.tree, b.tree)
         self.assertNotEqual(a.commit, b.commit)
 
     def test_verify_rejects_remote(self):
         _td, repo = self.make_repository()
-        initialize_i3_git_repository(repo)
+        initialize_i3_git_repository(repo, TEST_TIMESTAMP)
         import subprocess
         subprocess.run(
             ["git", "-C", str(repo), "remote", "add", "origin", "https://example.invalid/x"],
@@ -74,7 +85,7 @@ class I3GitBootstrapTests(unittest.TestCase):
 
     def test_verify_rejects_extra_commit(self):
         _td, repo = self.make_repository()
-        initialize_i3_git_repository(repo)
+        initialize_i3_git_repository(repo, TEST_TIMESTAMP)
         import os
         import subprocess
         (repo / "extra.txt").write_text("extra\n", encoding="utf-8")
@@ -84,8 +95,8 @@ class I3GitBootstrapTests(unittest.TestCase):
             "GIT_AUTHOR_EMAIL": I3_AUTHOR_EMAIL,
             "GIT_COMMITTER_NAME": I3_AUTHOR_NAME,
             "GIT_COMMITTER_EMAIL": I3_AUTHOR_EMAIL,
-            "GIT_AUTHOR_DATE": "1234567890 +0000",
-            "GIT_COMMITTER_DATE": "1234567890 +0000",
+            "GIT_AUTHOR_DATE": TEST_TIMESTAMP,
+            "GIT_COMMITTER_DATE": TEST_TIMESTAMP,
         })
         subprocess.run(["git", "-C", str(repo), "add", "-A"], check=True, env=env)
         subprocess.run(
@@ -104,7 +115,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         marker = repo / ".git" / "marker"
         marker.write_text("keep\n", encoding="utf-8")
         with self.assertRaisesRegex(GitError, "absent .git"):
-            initialize_i3_git_repository(repo)
+            initialize_i3_git_repository(repo, TEST_TIMESTAMP)
         self.assertEqual(marker.read_text(encoding="utf-8"), "keep\n")
 
 

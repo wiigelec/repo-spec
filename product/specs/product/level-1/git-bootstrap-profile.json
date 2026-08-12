@@ -1,7 +1,7 @@
 {
   "spec_id": "product.git-bootstrap-profile",
   "title": "Git Bootstrap Profile",
-  "purpose": "Defines versioned bootstrap constants for the deterministic local Git repository produced by the bounded initialization workflow.",
+  "purpose": "Defines the versioned bootstrap profile and initialization-time metadata rules for the local Git repository produced by the bounded initialization workflow.",
   "status": "accepted",
   "schema_version": "1",
   "level": 1,
@@ -13,23 +13,23 @@
   "normative_requirements": [
     {
       "id": "INIT-BPF-001",
-      "text": "A git bootstrap profile shall be identified by a profile identifier and schema_version; for the bounded local initialization workflow, the governing bootstrap profile shall be `standard-v1` with schema_version `1`."
+      "text": "A git bootstrap profile shall be identified by a profile identifier and schema_version; for the bounded local initialization workflow, the governing bootstrap profile shall be `standard-v2` with schema_version `1`."
     },
     {
       "id": "INIT-BPF-002",
-      "text": "The `standard-v1` bootstrap profile shall define the following constants: `initial_branch` = `main`, `author_name` = `Repo-Spec Initializer`, `author_email` = `initializer@repo-spec.local`, `author_timestamp` = `1234567890 +0000`, `commit_message` = `Initial repository foundation`, and `root_commit_model` = `single`."
+      "text": "The `standard-v2` bootstrap profile shall define the following constants: `initial_branch` = `main`, `author_name` = `Repo-Spec Initializer`, `author_email` = `initializer@repo-spec.local`, `commit_message` = `Initial repository foundation`, and `root_commit_model` = `single`; its `author_timestamp` and committer timestamp shall be the initialization timestamp captured once for the initialization operation and recorded in provenance."
     },
     {
       "id": "INIT-BPF-003",
-      "text": "All constants within a bootstrap profile version shall be defined together and changed together; changing any constant shall produce a new profile version with a distinct profile identifier, and no constant from one profile version shall be combined with constants from a different profile version."
+      "text": "All fixed constants within a bootstrap profile version shall be defined together and changed together; changing a fixed constant shall produce a new profile version with a distinct profile identifier. Runtime initialization metadata explicitly declared by the profile, including the initialization timestamp, is not a fixed profile constant."
     },
     {
       "id": "INIT-BPF-004",
-      "text": "The initializer shall apply the governing bootstrap profile constants exactly as defined, without substitution, interpolation, or default, and shall reject any request that specifies or implies a bootstrap profile that is not recognized."
+      "text": "The initializer shall apply the governing bootstrap profile fixed constants exactly as defined and shall apply the single captured initialization timestamp exactly to both provenance and Git author/committer timestamps; it shall reject any request that specifies or implies an unrecognized bootstrap profile."
     },
     {
       "id": "INIT-BPF-005",
-      "text": "A bootstrap profile identifier (for example `standard-v1`) shall be permanently associated with its constants and shall not be reused for a different set of constants after the original profile is superseded or retired."
+      "text": "A bootstrap profile identifier (including `standard-v1` and `standard-v2`) shall be permanently associated with its fixed constants and timestamp semantics and shall not be reused for a different definition after supersession or retirement."
     }
   ],
   "dependencies": [

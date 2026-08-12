@@ -46,7 +46,7 @@
     },
     {
       "id": "INIT-EQV-015",
-      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry (each independently inventoried \u2014 no tree-valued entries), every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository."
+      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry (each independently inventoried — no tree-valued entries), every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository."
     },
     {
       "id": "INIT-EQV-013",
@@ -62,11 +62,11 @@
     },
     {
       "id": "INIT-EQV-010",
-      "text": "Git topology and bootstrap metadata (initial branch, root commit count, author and committer identities, commit message, and remote configuration) shall be equivalent across Git implementations and versions, independent of Git tool differences; tree and commit object identifiers shall be equivalent when committed variable data (the provenance initialization timestamp) is identical between runs, and may differ when committed variable data differs."
+      "text": "Git topology and bootstrap metadata (initial branch, root commit count, author and committer identities, commit message, initialization timestamp, and remote configuration) shall be equivalent across Git implementations and versions when the same captured initialization timestamp is supplied; tree object identifiers remain content-deterministic, while commit object identifiers may differ between otherwise equivalent runs whose initialization timestamps differ."
     },
     {
       "id": "INIT-EQV-011",
-      "text": "The variables permitted to differ between equivalent outcomes shall be explicitly declared with their scope, representation, and source: the only declared variable data for the bounded workflow is the initialization timestamp recorded in the provenance record, and no other element may vary between equivalent outcomes."
+      "text": "The variables permitted to differ between equivalent outcomes shall be explicitly declared with their scope, representation, and source: the only declared variable data for the bounded workflow is the initialization timestamp captured once per operation, recorded in the provenance record, and applied to the root commit author and committer timestamps; no other element may vary."
     },
     {
       "id": "INIT-EQV-014",

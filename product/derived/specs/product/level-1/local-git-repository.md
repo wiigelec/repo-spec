@@ -1,4 +1,4 @@
-# Deterministic Local Git Repository
+# Local Git Repository
 
 ## Status
 
@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Defines the atomic local Git repository state produced by the bounded initialization workflow.
+Defines the atomic local Git repository state produced by the bounded initialization workflow, including truthful initialization-time commit metadata.
 
 ## Correspondence
 
@@ -40,8 +40,8 @@ Defines the atomic local Git repository state produced by the bounded initializa
 ## Normative requirements
 
 - `INIT-GIT-001`: The initialized local Git repository shall have exactly one root commit containing all generated repository content, a clean worktree, and no configured remotes; the initial branch name and root-commit model shall be determined by the governing git bootstrap profile.
-- `INIT-GIT-002`: The root commit shall use the commit message, author identity, and author timestamp defined by the governing git bootstrap profile, so that equivalent generated content produced under the same bootstrap profile version produces equivalent local Git history.
-- `INIT-GIT-003`: The root commit object identifier shall be deterministic: identical generated repository content produced under the same bootstrap profile version shall produce identical tree and commit object identifiers, and the initializer shall not include non-deterministic data in the committed tree outside the explicitly declared variable fields defined by the content-equivalence contract.
+- `INIT-GIT-002`: The root commit shall use the commit message and author identity defined by the governing git bootstrap profile, and both author and committer timestamps shall equal the initialization timestamp captured for the same operation and recorded in provenance.
+- `INIT-GIT-003`: The generated tree object identifier shall remain deterministic for identical generated repository content. The root commit object identifier shall be deterministic only when the generated tree, bootstrap profile metadata, and captured initialization timestamp are identical; separate initialization operations with different timestamps may produce different root commit object identifiers.
 - `INIT-GIT-004`: The repository shall contain no additional commits beyond the root commit, no merge commits, no tag references, and no orphan references, and the root commit shall have no parent commit.
 - `INIT-GIT-005`: Git administrative state (.git/ directory) is governed by this specification and product.git-bootstrap-profile. It is not part of the worktree output inventory (product.initializer-output-inventory-v1). Repository validation checks verify Git state independently from worktree file enumeration.
 

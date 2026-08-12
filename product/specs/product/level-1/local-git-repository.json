@@ -1,7 +1,7 @@
 {
   "spec_id": "product.local-git-repository",
-  "title": "Deterministic Local Git Repository",
-  "purpose": "Defines the atomic local Git repository state produced by the bounded initialization workflow.",
+  "title": "Local Git Repository",
+  "purpose": "Defines the atomic local Git repository state produced by the bounded initialization workflow, including truthful initialization-time commit metadata.",
   "status": "accepted",
   "schema_version": "1",
   "level": 1,
@@ -17,11 +17,11 @@
     },
     {
       "id": "INIT-GIT-002",
-      "text": "The root commit shall use the commit message, author identity, and author timestamp defined by the governing git bootstrap profile, so that equivalent generated content produced under the same bootstrap profile version produces equivalent local Git history."
+      "text": "The root commit shall use the commit message and author identity defined by the governing git bootstrap profile, and both author and committer timestamps shall equal the initialization timestamp captured for the same operation and recorded in provenance."
     },
     {
       "id": "INIT-GIT-003",
-      "text": "The root commit object identifier shall be deterministic: identical generated repository content produced under the same bootstrap profile version shall produce identical tree and commit object identifiers, and the initializer shall not include non-deterministic data in the committed tree outside the explicitly declared variable fields defined by the content-equivalence contract."
+      "text": "The generated tree object identifier shall remain deterministic for identical generated repository content. The root commit object identifier shall be deterministic only when the generated tree, bootstrap profile metadata, and captured initialization timestamp are identical; separate initialization operations with different timestamps may produce different root commit object identifiers."
     },
     {
       "id": "INIT-GIT-004",

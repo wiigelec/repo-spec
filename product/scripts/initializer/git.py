@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 import stat
+from datetime import datetime
 from pathlib import Path
 
 from .models import (
@@ -645,12 +646,11 @@ from dataclasses import dataclass as _i3_dataclass
 import tempfile as _i3_tempfile
 
 
-I3_BOOTSTRAP_PROFILE_ID = "standard-v1"
+I3_BOOTSTRAP_PROFILE_ID = "standard-v2"
 I3_BOOTSTRAP_SCHEMA_VERSION = "1"
 I3_INITIAL_BRANCH = "main"
 I3_AUTHOR_NAME = "Repo-Spec Initializer"
 I3_AUTHOR_EMAIL = "initializer@repo-spec.local"
-I3_AUTHOR_TIMESTAMP = "1234567890 +0000"
 I3_COMMIT_MESSAGE = "Initial repository foundation"
 
 
@@ -694,7 +694,7 @@ class I3GitResult:
         }
 
 
-def _i3_git_env() -> dict[str, str]:
+def _i3_git_env(initialization_timestamp: str | None = None) -> dict[str, str]:
     env = dict(os.environ)
     for key in SANITIZE_ENV_REMOVE:
         env.pop(key, None)
@@ -706,15 +706,22 @@ def _i3_git_env() -> dict[str, str]:
         "GIT_AUTHOR_EMAIL": I3_AUTHOR_EMAIL,
         "GIT_COMMITTER_NAME": I3_AUTHOR_NAME,
         "GIT_COMMITTER_EMAIL": I3_AUTHOR_EMAIL,
-        "GIT_AUTHOR_DATE": I3_AUTHOR_TIMESTAMP,
-        "GIT_COMMITTER_DATE": I3_AUTHOR_TIMESTAMP,
+        "GIT_AUTHOR_DATE": initialization_timestamp,
+        "GIT_COMMITTER_DATE": initialization_timestamp,
         "LC_ALL": "C",
         "LANG": "C",
     })
+    if initialization_timestamp is None:
+        env.pop("GIT_AUTHOR_DATE", None)
+        env.pop("GIT_COMMITTER_DATE", None)
     return env
 
 
-def _i3_run_git(repository: Path, *args: str) -> str:
+def _i3_run_git(
+    repository: Path,
+    *args: str,
+    initialization_timestamp: str | None = None,
+) -> str:
     git_path = _find_git()
     if git_path is None:
         raise GitError("git executable not found or below minimum version")
@@ -723,7 +730,7 @@ def _i3_run_git(repository: Path, *args: str) -> str:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        env=_i3_git_env(),
+        env=_i3_git_env(initialization_timestamp),
         check=False,
         timeout=120,
     )
@@ -740,7 +747,10 @@ def _i3_identity(object_id: str, label: str) -> I3GitObjectIdentity:
     return I3GitObjectIdentity("sha1", object_id)
 
 
-def verify_i3_git_repository(repository_path: str | Path) -> I3GitResult:
+def verify_i3_git_repository(
+    repository_path: str | Path,
+    initialization_timestamp: str | None = None,
+) -> I3GitResult:
     repository = Path(repository_path).resolve()
     if not repository.is_dir() or repository.is_symlink():
         raise GitError("I3 Git repository path must be a real directory")
@@ -779,11 +789,19 @@ def verify_i3_git_repository(repository_path: str | Path) -> I3GitResult:
     committer = _i3_run_git(
         repository, "log", "-1", "--format=%cn%n%ce%n%ct%n%cI", "HEAD"
     ).splitlines()
-    expected_epoch = "1234567890"
-    if author[:3] != [I3_AUTHOR_NAME, I3_AUTHOR_EMAIL, expected_epoch]:
-        raise GitError(f"I3 author identity/timestamp mismatch: {author[:3]}")
-    if committer[:3] != [I3_AUTHOR_NAME, I3_AUTHOR_EMAIL, expected_epoch]:
-        raise GitError(f"I3 committer identity/timestamp mismatch: {committer[:3]}")
+    if author[:2] != [I3_AUTHOR_NAME, I3_AUTHOR_EMAIL]:
+        raise GitError(f"I3 author identity mismatch: {author[:2]}")
+    if committer[:2] != [I3_AUTHOR_NAME, I3_AUTHOR_EMAIL]:
+        raise GitError(f"I3 committer identity mismatch: {committer[:2]}")
+    if author[2] != committer[2]:
+        raise GitError(f"I3 author/committer timestamps differ: {author[2]} != {committer[2]}")
+    if initialization_timestamp is not None:
+        expected = datetime.fromisoformat(initialization_timestamp.replace("Z", "+00:00"))
+        expected_epoch = str(int(expected.timestamp()))
+        if author[2] != expected_epoch:
+            raise GitError(
+                f"I3 initialization timestamp mismatch: expected {expected_epoch}, observed {author[2]}"
+            )
 
     status = _i3_run_git(
         repository, "status", "--porcelain=v1", "--untracked-files=all"
@@ -825,7 +843,10 @@ def verify_i3_git_repository(repository_path: str | Path) -> I3GitResult:
     )
 
 
-def initialize_i3_git_repository(repository_path: str | Path) -> I3GitResult:
+def initialize_i3_git_repository(
+    repository_path: str | Path,
+    initialization_timestamp: str,
+) -> I3GitResult:
     repository = Path(repository_path).resolve()
     if not repository.is_dir() or repository.is_symlink():
         raise GitError("I3 Git initialization requires a real repository directory")
@@ -852,7 +873,7 @@ def initialize_i3_git_repository(repository_path: str | Path) -> I3GitResult:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                env=_i3_git_env(),
+                env=_i3_git_env(initialization_timestamp),
                 check=False,
                 timeout=120,
             )
@@ -861,12 +882,12 @@ def initialize_i3_git_repository(repository_path: str | Path) -> I3GitResult:
                     f"git init failed: {init.stderr.strip() or init.stdout.strip()}"
                 )
 
-        _i3_run_git(repository, "config", "--local", "core.autocrlf", "false")
-        _i3_run_git(repository, "config", "--local", "core.safecrlf", "false")
-        _i3_run_git(repository, "config", "--local", "commit.gpgSign", "false")
-        _i3_run_git(repository, "add", "-A")
+        _i3_run_git(repository, "config", "--local", "core.autocrlf", "false", initialization_timestamp=initialization_timestamp)
+        _i3_run_git(repository, "config", "--local", "core.safecrlf", "false", initialization_timestamp=initialization_timestamp)
+        _i3_run_git(repository, "config", "--local", "commit.gpgSign", "false", initialization_timestamp=initialization_timestamp)
+        _i3_run_git(repository, "add", "-A", initialization_timestamp=initialization_timestamp)
 
-        staged = _i3_run_git(repository, "diff", "--cached", "--name-only")
+        staged = _i3_run_git(repository, "diff", "--cached", "--name-only", initialization_timestamp=initialization_timestamp)
         if not staged.strip():
             raise GitError("I3 root commit may not be empty")
 
@@ -877,8 +898,9 @@ def initialize_i3_git_repository(repository_path: str | Path) -> I3GitResult:
             "--no-verify",
             "-m",
             I3_COMMIT_MESSAGE,
+            initialization_timestamp=initialization_timestamp,
         )
-        return verify_i3_git_repository(repository)
+        return verify_i3_git_repository(repository, initialization_timestamp)
     except BaseException:
         if dot_git.exists() and not dot_git.is_symlink():
             shutil.rmtree(dot_git, ignore_errors=True)
