@@ -134,17 +134,35 @@ PRODUCT_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
 ]
 
 
+PRODUCT_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    *PRODUCT_LEAF_VALIDATION_PHASES,
+    ("product development documents", check_product_development_documents),
+    ("product lifecycle authority sequence", check_product_lifecycle_readiness),
+    ("product generated-document freshness", check_product_generated_freshness),
+]
+
+
+def validate_product_phases(repo_root: Path, phase_labels: tuple[str, ...]) -> None:
+    context = _load_product_only_context(repo_root)
+    phase_map = dict(PRODUCT_VALIDATION_PHASES)
+    leaf_labels = {label for label, _check in PRODUCT_LEAF_VALIDATION_PHASES}
+    for label in phase_labels:
+        check = phase_map.get(label)
+        if check is None:
+            raise ValueError(f"unknown product validation phase: {label}")
+        if context.product is None and label in leaf_labels:
+            continue
+        check(context)
+
+
 def validate_product(repo_root: Path) -> None:
     context = _load_product_only_context(repo_root)
     if context.product is not None:
-        for label, check in PRODUCT_LEAF_VALIDATION_PHASES:
+        for label, check in PRODUCT_VALIDATION_PHASES:
             check(context)
             print(f"ok: {label}")
     else:
         print("ok: product specification system inactive")
-    check_product_development_documents(context)
-    print("ok: product development documents")
-    check_product_lifecycle_readiness(context)
-    print("ok: product lifecycle authority sequence")
-    check_product_generated_freshness(context)
-    print("ok: product generated-document freshness")
+        for label, check in PRODUCT_VALIDATION_PHASES[len(PRODUCT_LEAF_VALIDATION_PHASES):]:
+            check(context)
+            print(f"ok: {label}")

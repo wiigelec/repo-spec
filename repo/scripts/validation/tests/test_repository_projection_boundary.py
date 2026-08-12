@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 
 from validation.errors import ValidationFailure, fail
-from validation.repository_checks import validate_repo
+from validation.repository_checks import validate_repository_phase
 
 from .mutation_support import create_repo_fixture, mutate_json
 
@@ -24,7 +24,10 @@ def run_repository_projection_boundary_test(repo_root: Path) -> None:
             ) or spec,
         )
         try:
-            validate_repo(temp_repo)
+            validate_repository_phase(
+                temp_repo,
+                "repository generated-document freshness",
+            )
         except ValidationFailure:
             pass
         else:

@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from docgen import write_all
-from product_validation.product_checks import validate_product
+from product_validation.product_checks import validate_product_phases
 from validation.tests.mutation_support import (
     create_repo_fixture,
     deactivate_product_plans,
@@ -105,7 +105,7 @@ def run_product_generation_mutation_tests(repo_root: Path) -> None:
 
         temp_repo = build_product_repo(repo_root, temp_root, 0)
         write_all(temp_repo)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product generated-document freshness',))
 
         temp_repo = build_product_repo(repo_root, temp_root, 1)
         write_all(temp_repo)
@@ -119,7 +119,7 @@ def run_product_generation_mutation_tests(repo_root: Path) -> None:
         )
         expect_failure(
             "product generated artifact freshness",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(temp_repo, ('product generated-document freshness',)),
             "generated-document freshness failed",
         )
 
@@ -129,7 +129,7 @@ def run_product_generation_mutation_tests(repo_root: Path) -> None:
         orphan.write_text("stale\n")
         expect_failure(
             "product orphaned derived markdown",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(temp_repo, ('product generated-document freshness',)),
             "generated-document freshness failed",
         )
 
