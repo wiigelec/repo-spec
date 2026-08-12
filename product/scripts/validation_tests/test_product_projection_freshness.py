@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from docgen import write_all
-from product_validation.product_checks import validate_product, validate_product_phases
+from product_validation.product_checks import validate_product_phases
 
 from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
@@ -60,7 +60,10 @@ def build_product_repo(repo_root: Path, temp_root: Path, index: int) -> Path:
     accept_kernel(temp_repo)
     deactivate_product_plans(temp_repo)
     write_all(temp_repo)
-    validate_product(temp_repo)
+    validate_product_phases(
+        temp_repo,
+        ('product generated-document freshness',),
+    )
     return temp_repo
 
 
