@@ -694,7 +694,7 @@ def _i2_prepare_framework_outputs(
             raise StagingError(f"operation mismatch: {entry.material_key}")
         if raw.get("mode") != entry.mode:
             raise StagingError(f"mode mismatch: {entry.material_key}")
-        if entry.operation != "copy-verbatim":
+        if entry.operation not in {"copy-verbatim", "instantiate-template"}:
             raise StagingError(
                 f"accepted V1 closed framework inventory operation is unsupported: "
                 f"{entry.operation!r}"
