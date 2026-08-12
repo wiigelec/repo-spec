@@ -142,18 +142,6 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/plans/01-framework-architecture-plan.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/03-development-and-specifications.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
     }
   ],
   "derived_artifacts": [

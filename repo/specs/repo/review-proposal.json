@@ -172,23 +172,7 @@
     },
     {
       "type": "artifact",
-      "path": "repo/docs/overview/product-overview/04-git-and-change-workflow.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
-    },
-    {
-      "type": "artifact",
       "path": ".github/PULL_REQUEST_TEMPLATE.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/scripts/docgen.py"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/scripts/validate_impl.py"
     }
   ],
   "derived_artifacts": [

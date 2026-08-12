@@ -31,7 +31,7 @@
     },
     {
       "id": "REPO-PDC-007",
-      "text": "A product decomposition shall identify the expected Level 0–3 product-specification families, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. This identification shall remain directional and shall not prematurely define normative product semantics."
+      "text": "A product decomposition shall identify the expected Level 0\u20133 product-specification families, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. This identification shall remain directional and shall not prematurely define normative product semantics."
     }
   ],
   "dependencies": [
@@ -64,10 +64,6 @@
     {
       "type": "specification",
       "spec_id": "repo.development-workflow"
-    },
-    {
-      "type": "artifact",
-      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
     }
   ],
   "derived_artifacts": [

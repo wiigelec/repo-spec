@@ -102,10 +102,6 @@
     {
       "type": "artifact",
       "path": "AGENTS.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/04-git-and-change-workflow.md"
     }
   ],
   "derived_artifacts": [

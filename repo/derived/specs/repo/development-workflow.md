@@ -50,7 +50,6 @@ Defines the governed development process for bounded repository changes.
 - specification: `repo.implementation-plan`
 - specification: `repo.product-decomposition`
 - artifact: `AGENTS.md`
-- artifact: `repo/docs/overview/product-overview/04-git-and-change-workflow.md`
 
 ## Derived artifacts
 

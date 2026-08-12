@@ -41,7 +41,6 @@ Defines the directional, non-normative contract for product decomposition docume
 - specification: `repo.repository-structure`
 - specification: `repo.validation`
 - specification: `repo.development-workflow`
-- artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts
 

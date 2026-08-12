@@ -80,7 +80,6 @@ Defines ownership, scope, and aggregate orchestration for repository and product
 - artifact: `repo/scripts/validate`
 - artifact: `repo/scripts/generate-docs`
 - artifact: `repo/scripts/github_field_policy.py`
-- artifact: `repo/docs/development-document-compatibility.json`
 
 ## Derived artifacts
 
