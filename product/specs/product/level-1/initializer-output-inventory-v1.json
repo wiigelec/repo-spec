@@ -210,15 +210,6 @@
       "role": "validation-utility"
     },
     {
-      "material_key": "repo-docgen",
-      "destination_path": "repo/scripts/docgen.py",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "documentation-support"
-    },
-    {
       "material_key": "repo-generate-docs",
       "destination_path": "repo/scripts/generate-docs",
       "producer": "framework-installation",
