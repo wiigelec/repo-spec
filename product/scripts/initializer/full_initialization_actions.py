@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import os
+import subprocess
+from pathlib import Path
 from typing import Any
 
 from .destination import i1_destination_preflight, promote_finalized_repository
@@ -33,6 +36,56 @@ INITIALIZER_VERSION = "1"
 def _utc_timestamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+
+_AMBIENT_VALIDATION_ENV_KEYS = (
+    "BASH_ENV",
+    "ENV",
+    "CDPATH",
+    "PYTHONPATH",
+    "PYTHONHOME",
+    "PYTHONSTARTUP",
+    "PYTHONUSERBASE",
+    "GIT_DIR",
+    "GIT_WORK_TREE",
+    "GIT_INDEX_FILE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+    "GIT_COMMON_DIR",
+)
+
+
+def _run_installed_repository_validation(repository_path: Path) -> None:
+    validator = repository_path / "scripts/validate"
+    if not validator.is_file():
+        raise RuntimeError(
+            "installed repository validation failed: scripts/validate is missing"
+        )
+
+    env = dict(os.environ)
+    for key in _AMBIENT_VALIDATION_ENV_KEYS:
+        env.pop(key, None)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+
+    completed = subprocess.run(
+        ["bash", "scripts/validate"],
+        cwd=repository_path,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if completed.returncode == 0:
+        return
+
+    detail = completed.stderr.strip() or completed.stdout.strip()
+    if len(detail) > 4000:
+        detail = detail[-4000:]
+    suffix = f": {detail}" if detail else ""
+    raise RuntimeError(
+        "installed repository validation failed "
+        f"(exit {completed.returncode}){suffix}"
+    )
 
 def build_full_initialization_actions(
     framework_root: str,
@@ -99,6 +152,7 @@ def build_full_initialization_actions(
         )
         if not pair.promotion_gate_open():
             raise RuntimeError("repository validation failed; promotion gate is closed")
+        _run_installed_repository_validation(workspace.repository_path)
         return pair
 
     def promotion(carried: dict[str, Any]):
