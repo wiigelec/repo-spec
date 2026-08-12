@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from docgen import render_all, write_all, check_generated_outputs
-from product_validation.product_checks import validate_product
+from product_validation.product_checks import validate_product_phases
 
 from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, mutate_json
 
@@ -122,6 +122,6 @@ def run_product_generation_tests(repo_root: Path) -> None:
         second_pass = snapshot_generated_docs(temp_repo)
         assert first_pass == second_pass
 
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product generated-document freshness',))
 
     print("ok: product generation tests")

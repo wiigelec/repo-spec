@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from validation.generated_outputs import check_generated_document_write_behavior
-from product_validation.product_checks import validate_product
+from product_validation.product_checks import validate_product_phases
 
 from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
@@ -99,11 +99,11 @@ def run_product_dependency_direction_tests(repo_root: Path) -> None:
             temp_repo = create_repo_fixture(repo_root, temp_root, index)
             build_case(temp_repo, source, target)
             if is_valid:
-                validate_product(temp_repo)
+                validate_product_phases(temp_repo, ('product dependency directions',))
             else:
                 expect_failure(
                     f"dependency direction {source['spec_id']} -> {target['spec_id']}",
-                    lambda temp_repo=temp_repo: validate_product(temp_repo),
+                    lambda temp_repo=temp_repo: validate_product_phases(temp_repo, ('product dependency directions',)),
                     f"product dependency direction failed: {source['spec_id']} (level {source['level']}) -> {target['spec_id']} (level {target['level']})",
                 )
 

@@ -9,7 +9,7 @@ from validation.generated_outputs import check_generated_document_write_behavior
 from validation.errors import fail
 from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from validation.paths import resolve_repo_path
-from product_validation.product_checks import validate_product
+from product_validation.product_checks import validate_product_phases
 
 from validation.tests.mutation_support import add_lifecycle_spec, create_repo_fixture, declared_repo_fixture_paths, expect_failure, mutate_json
 
@@ -33,7 +33,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         clone_index += 1
         chunk_path = temp_repo / "product/docs/overview/initializer-overview/04-capabilities-and-success.md"
         chunk_path.write_text(chunk_path.read_text() + "\n<!--" + ("x" * 30000) + "-->")
-        expect_failure("oversized overview chunk bytes", lambda: validate_product(temp_repo), "chunk exceeds byte limit")
+        expect_failure("oversized overview chunk bytes", lambda: validate_product_phases(temp_repo, ('product development documents',)), "chunk exceeds byte limit")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -46,20 +46,20 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         )
         decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace('  "required_content_areas": {\n    "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', '  "required_content_areas": {\n    "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', 1)
-        expect_failure("missing decomposition chunk role", lambda: validate_product(temp_repo), "missing required property role")
+        expect_failure("missing decomposition chunk role", lambda: validate_product_phases(temp_repo, ('product development documents',)), "missing required property role")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_text = decomposition_path.read_text()
         decomposition_text = decomposition_text.replace('{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"], "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"]}', 1)
         decomposition_path.write_text(decomposition_text)
-        expect_failure("missing decomposition area coverage", lambda: validate_product(temp_repo), "missing required property coverage")
+        expect_failure("missing decomposition area coverage", lambda: validate_product_phases(temp_repo, ('product development documents',)), "missing required property coverage")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         chunk_path = temp_repo / "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"
         chunk_text = chunk_path.read_text().replace("## Responsibilities\n\nSeparate reusable repository scaffolding from product-specific foundations and identify the governed materials that can be carried forward.\n\n", "")
         chunk_path.write_text(chunk_text)
-        expect_failure("missing decomposition section heading", lambda: validate_product(temp_repo), "missing product-area heading Responsibilities")
+        expect_failure("missing decomposition section heading", lambda: validate_product_phases(temp_repo, ('product development documents',)), "missing product-area heading Responsibilities")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -67,7 +67,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         decomposition_text = decomposition_text.replace('{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"], "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "decomposition-basis", "document_coverage": ["decomposition_basis", "unresolved_decisions"]}', 1)
         decomposition_text = decomposition_text.replace('  "required_content_areas": {\n    "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', '  "required_content_areas": {\n    "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', 1)
         decomposition_path.write_text(decomposition_text)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -75,7 +75,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         decomposition_text = decomposition_text.replace('{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "product-area", "area_id": "invocation-and-authority", "document_coverage": ["decomposition_basis", "product_area_inventory", "unresolved_decisions"], "coverage": ["purpose", "responsibilities", "boundaries", "dependencies", "exclusions", "unresolved-decisions", "successor-work"]}', '{"order": 1, "path": "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "title": "Invocation and authority", "role": "decomposition-basis", "document_coverage": ["decomposition_basis", "unresolved_decisions"]}', 1)
         decomposition_text = decomposition_text.replace('  "required_content_areas": {\n    "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', '  "required_content_areas": {\n    "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],\n    "product_area_inventory": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "dependency_model": ["product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md"],\n    "cross_cutting_concerns": ["product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md"],\n    "unresolved_decisions": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md", "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md", "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md", "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "stopping_criteria": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"],\n    "planning_handoff": ["product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"]\n  },\n', 1)
         decomposition_path.write_text(decomposition_text)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -86,7 +86,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         decomposition_path.write_text(decomposition_text)
-        expect_failure("decomposition without required content areas", lambda: validate_product(temp_repo), "missing required property decomposition_basis")
+        expect_failure("decomposition without required content areas", lambda: validate_product_phases(temp_repo, ('product development documents',)), "missing required property decomposition_basis")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -97,7 +97,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         decomposition_path.write_text(decomposition_text)
-        expect_failure("product-area inventory mismatch", lambda: validate_product(temp_repo), "product-area inventory mismatch")
+        expect_failure("product-area inventory mismatch", lambda: validate_product_phases(temp_repo, ('product development documents',)), "product-area inventory mismatch")
         plan_a = DevelopmentDocumentRecord(
             "docs/plans/plan-a.md",
             "docs/plans/",
@@ -218,7 +218,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         clone_index += 1
         overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
         overview_path.write_text(overview_path.read_text().replace('  "artifact_id": "initializer-overview",\n', '  "artifact_id": "initializer.plan.bootstrap",\n'))
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
@@ -229,7 +229,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         overview_path.write_text(overview_text)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
@@ -240,28 +240,28 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         overview_path.write_text(overview_text)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
         overview_path.write_text(overview_text)
-        expect_failure("overview without overview role", lambda: validate_product(temp_repo), "overview_role")
+        expect_failure("overview without overview role", lambda: validate_product_phases(temp_repo, ('product development documents',)), "overview_role")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace('{"order": 1, "path": "product/docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose", "coverage": ["product_identity"]}', '{"order": 1, "path": "product/docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"}', 1)
         overview_path.write_text(overview_text)
-        expect_failure("overview chunk without coverage", lambda: validate_product(temp_repo), "required coverage must be an array")
+        expect_failure("overview chunk without coverage", lambda: validate_product_phases(temp_repo, ('product development documents',)), "required coverage must be an array")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace('  "overview_role": "initial",\n', '  "overview_role": "revision",\n', 1)
         overview_path.write_text(overview_text)
-        expect_failure("revision overview without predecessor", lambda: validate_product(temp_repo), "minItems violation")
+        expect_failure("revision overview without predecessor", lambda: validate_product_phases(temp_repo, ('product development documents',)), "minItems violation")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         overview_chunk_path = temp_repo / "product/docs/overview/initializer-overview/07-capabilities-addendum.md"
@@ -284,24 +284,24 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         overview_path.write_text(overview_text)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         chunk_index_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
         chunk_index_path.write_text(chunk_index_path.read_text().replace("./initializer-overview/04-capabilities-and-success.md", "./initializer-overview/05-unresolved-questions.md", 1))
-        expect_failure("wrong overview chunk link", lambda: validate_product(temp_repo), "chunk index link mismatch")
+        expect_failure("wrong overview chunk link", lambda: validate_product_phases(temp_repo, ('product development documents',)), "chunk index link mismatch")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
         decomposition_path.write_text(decomposition_path.read_text().replace("repo/docs/overview/PRODUCT-OVERVIEW.md", "docs/overview/MISSING-OVERVIEW.md", 1))
-        expect_failure("missing decomposition predecessor path", lambda: validate_product(temp_repo), "missing evidence path")
+        expect_failure("missing decomposition predecessor path", lambda: validate_product_phases(temp_repo, ('product development documents',)), "missing evidence path")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_text = plan_path.read_text()
         plan_text = plan_text.replace("product/docs/decompositions/INITIALIZER-DECOMPOSITION.md", "docs/decompositions/MISSING-DECOMPOSITION.md")
         plan_path.write_text(plan_text)
-        expect_failure("plan without controlling decomposition", lambda: validate_product(temp_repo), "unresolved controlling document path")
+        expect_failure("plan without controlling decomposition", lambda: validate_product_phases(temp_repo, ('product development documents',)), "unresolved controlling document path")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         plan_chunk_path = temp_repo / "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md"
@@ -324,7 +324,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         plan_path.write_text(plan_text)
-        validate_product(temp_repo)
+        validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
@@ -335,14 +335,14 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             1,
         )
         plan_path.write_text(plan_text)
-        expect_failure("plan chunk without coverage", lambda: validate_product(temp_repo), "required coverage must be an array")
+        expect_failure("plan chunk without coverage", lambda: validate_product_phases(temp_repo, ('product development documents',)), "required coverage must be an array")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_path.write_text(plan_path.read_text().replace('"id": "I1"', '"id": "B0"', 1))
         expect_failure(
             "duplicate plan workstream authority identifier",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(temp_repo, ('product development documents',)),
             "duplicate workstream authority identifier B0",
         )
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
@@ -357,7 +357,10 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         )
         expect_failure(
             "candidate plan workstream authority specification",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(
+                temp_repo,
+                ('product lifecycle authority sequence',),
+            ),
             "non-accepted specification product.platform-integrated-initialization",
         )
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -366,7 +369,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         plan_path.write_text(plan_path.read_text().replace('"workstream_authority":', '"missing_workstream_authority":', 1))
         expect_failure(
             "accepted plan without canonical workstream authority",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(temp_repo, ('product development documents',)),
             "additionalProperties disallowed: missing_workstream_authority",
         )
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
@@ -381,7 +384,10 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         plan_path.write_text(prefix + "```json\n" + json.dumps(metadata, indent=2) + "\n```" + suffix)
         expect_failure(
             "all-unknown plan workstream authority specifications",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(
+                temp_repo,
+                ('product lifecycle authority sequence',),
+            ),
             "unknown specification product.audit-unknown-0",
         )
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
@@ -397,12 +403,21 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         plan_path.write_text(prefix + "```json\n" + json.dumps(metadata, indent=2) + "\n```" + suffix)
         expect_failure(
             "mixed known and unknown plan workstream authority specifications",
-            lambda: validate_product(temp_repo),
+            lambda: validate_product_phases(
+                temp_repo,
+                ('product lifecycle authority sequence',),
+            ),
             "unknown specification product.audit-unknown-mixed",
         )
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index, tuple(active_product_paths))
         clone_index += 1
-        validate_product(temp_repo)
+        validate_product_phases(
+            temp_repo,
+            (
+                'product development documents',
+                'product lifecycle authority sequence',
+            ),
+        )
 
     print("ok: product development document tests")
 
@@ -428,7 +443,7 @@ def run_product_root_tests(repo_root: Path) -> None:
         extra_spec["spec_id"] = "repo.product-root-rogue"
         (product_root / "rogue.json").parent.mkdir(parents=True, exist_ok=True)
         (product_root / "rogue.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
-        expect_failure("product root contamination", lambda: validate_product(temp_repo), "undeclared JSON content under product/specs/product/")
+        expect_failure("product root contamination", lambda: validate_product_phases(temp_repo, ('product specification root',)), "undeclared JSON content under product/specs/product/")
         for level_name in ["level-0", "level-1", "level-2", "level-3"]:
             temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
             clone_index += 1
@@ -437,7 +452,7 @@ def run_product_root_tests(repo_root: Path) -> None:
             extra_spec["spec_id"] = f"repo.{level_name}.rogue"
             product_level_root.mkdir(parents=True, exist_ok=True)
             (product_level_root / "rogue.json").write_text(json.dumps(extra_spec, indent=2) + "\n")
-            expect_failure(f"product root contamination in {level_name}", lambda: validate_product(temp_repo), "undeclared JSON content under product/specs/product/")
+            expect_failure(f"product root contamination in {level_name}", lambda: validate_product_phases(temp_repo, ('product specification root',)), "undeclared JSON content under product/specs/product/")
 
     print("ok: product root tests")
 
