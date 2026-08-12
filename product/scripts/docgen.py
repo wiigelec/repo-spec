@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Deterministic Markdown generation for repo-spec JSON artifacts."""
+"""Deterministic Markdown generation for product-spec JSON artifacts."""
 
 from __future__ import annotations
 
@@ -8,13 +8,100 @@ import json
 import sys
 from pathlib import Path
 
-from repo_model import (
-    declared_derived_artifact_paths,
-    load_specs,
-    resolve_repo_path,
-)
+class RepositoryError(Exception):
+    pass
 
-GENERATOR_NAME = "repo/scripts/generate-docs"
+
+def load_json(path: Path) -> object:
+    try:
+        return json.loads(path.read_text())
+    except OSError as exc:
+        raise RepositoryError(f"missing required file: {path}") from exc
+    except json.JSONDecodeError as exc:
+        raise RepositoryError(f"invalid JSON: {path}: {exc.msg}") from exc
+
+
+def resolve_repo_path(repo_root: Path, value: str) -> Path:
+    if not value:
+        raise RepositoryError(f"invalid repository-relative path: {value}")
+    if value.startswith("/") or value.startswith("./") or "/./" in value or value.endswith("/.") or "\\" in value or "//" in value:
+        raise RepositoryError(f"invalid repository-relative path: {value}")
+    relative = Path(value)
+    if any(part in {".", ".."} for part in relative.parts):
+        raise RepositoryError(f"invalid repository-relative path: {value}")
+    resolved = (repo_root / relative).resolve()
+    try:
+        resolved.relative_to(repo_root.resolve())
+    except ValueError as exc:
+        raise RepositoryError(f"invalid repository-relative path: {value}") from exc
+    return resolved
+
+
+def index_product_manifest_paths(manifest: dict) -> tuple[dict[str, str], dict[str, str]]:
+    path_to_spec_id: dict[str, str] = {}
+    spec_id_to_path: dict[str, str] = {}
+    for entry in manifest["product_specifications"]:
+        spec_id = entry["spec_id"]
+        path = entry["path"]
+        if path in path_to_spec_id:
+            raise RepositoryError(f"duplicate product specification path: {path}")
+        if spec_id in spec_id_to_path:
+            raise RepositoryError(f"duplicate product specification id: {spec_id}")
+        path_to_spec_id[path] = spec_id
+        spec_id_to_path[spec_id] = path
+    return path_to_spec_id, spec_id_to_path
+
+
+def load_product_specs(repo_root: Path) -> tuple[dict, dict[str, dict], dict[str, str], list[str]]:
+    manifest_path = repo_root / "product/specs/product/manifest.json"
+    if not manifest_path.exists():
+        return {}, {}, {}, []
+    manifest = load_json(manifest_path)
+    if not isinstance(manifest, dict):
+        raise RepositoryError("product manifest must be a JSON object")
+    actual_paths = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in (repo_root / "product/specs/product").rglob("*.json")
+        if path.is_file() and path.relative_to(repo_root).as_posix() != "product/specs/product/manifest.json"
+    )
+    manifest_paths = [entry["path"] for entry in manifest["product_specifications"]]
+    if len(manifest_paths) != len(set(manifest_paths)):
+        raise RepositoryError("product manifest completeness failed")
+    if set(actual_paths) != set(manifest_paths):
+        raise RepositoryError("product manifest completeness failed")
+    path_to_spec_id, spec_id_to_path = index_product_manifest_paths(manifest)
+    specs: dict[str, dict] = {}
+    paths: dict[str, str] = {}
+    for path in actual_paths:
+        expected_spec_id = path_to_spec_id[path]
+        spec = load_json(repo_root / path)
+        if not isinstance(spec, dict):
+            raise RepositoryError(f"product specification must be a JSON object: {path}")
+        spec_id = spec["spec_id"]
+        if spec_id != expected_spec_id:
+            raise RepositoryError(f"product manifest entry {expected_spec_id} does not match {path}")
+        if spec_id in specs:
+            raise RepositoryError(f"duplicate product specification id: {spec_id}")
+        specs[spec_id] = spec
+        paths[spec_id] = path
+    if set(paths) != set(spec_id_to_path):
+        raise RepositoryError("product manifest completeness failed")
+    return manifest, specs, paths, actual_paths
+
+
+def declared_derived_artifact_paths(specs: dict[str, dict]) -> set[str]:
+    paths: list[str] = []
+    for spec in specs.values():
+        for artifact in spec.get("derived_artifacts", []):
+            if artifact.get("type") not in {"markdown", "yaml"}:
+                raise RepositoryError(f"unsupported derived artifact type: {artifact.get('type')}")
+            paths.append(artifact["path"])
+    if len(paths) != len(set(paths)):
+        raise RepositoryError("duplicate derived artifact paths failed")
+    return set(paths)
+
+
+GENERATOR_NAME = "product/scripts/generate-docs"
 
 COMMON_SPEC_KEYS = {
     "spec_id",
@@ -364,7 +451,7 @@ SPECIAL_RENDERERS = {
 
 
 def actual_derived_markdown_paths(repo_root: Path) -> set[str]:
-    derived_root = repo_root / "repo/derived/specs/repo"
+    derived_root = repo_root / "product/derived/specs/product"
     if not derived_root.exists():
         return set()
     return {
@@ -397,7 +484,7 @@ def render_all(repo_root: Path) -> dict[str, str]:
 
 
 def render_all_detailed(repo_root: Path) -> dict[str, tuple[str, str]]:
-    _repo_manifest, specs, paths, _actual_paths = load_specs(repo_root)
+    _product_manifest, specs, paths, _actual_paths = load_product_specs(repo_root)
     rendered: dict[str, tuple[str, str]] = {}
     for spec_id in sorted(specs, key=lambda item: paths[item]):
         spec = specs[spec_id]
@@ -414,7 +501,7 @@ def render_all_detailed(repo_root: Path) -> dict[str, tuple[str, str]]:
                     spec["title"],
                     source_path,
                     spec,
-                    include_authoritative_specs=(spec_id == "repo.manifest"),
+                    include_authoritative_specs=False,
                     ),
                 )
                 continue
@@ -438,7 +525,7 @@ def write_all(repo_root: Path) -> None:
 
 def check_generated_outputs(repo_root: Path) -> None:
     rendered = render_all_detailed(repo_root)
-    expected_markdown_paths = {path for path in rendered if path.endswith(".md") and (path.startswith("repo/derived/specs/"))}
+    expected_markdown_paths = {path for path in rendered if path.endswith(".md") and (path.startswith("product/derived/specs/"))}
     check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=True)
     for relative_path, (source_path, content) in rendered.items():
         path = resolve_repo_path(repo_root, relative_path)
@@ -450,7 +537,7 @@ def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     mode = argv[2] if len(argv) > 2 else "--write"
     rendered = render_all_detailed(repo_root)
-    expected_markdown_paths = {path for path in rendered if path.endswith(".md") and (path.startswith("repo/derived/specs/"))}
+    expected_markdown_paths = {path for path in rendered if path.endswith(".md") and (path.startswith("product/derived/specs/"))}
 
     if mode == "--write":
         check_orphaned_derived_markdown(repo_root, expected_markdown_paths, strict=False)

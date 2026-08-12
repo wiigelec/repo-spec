@@ -187,7 +187,31 @@
     },
     {
       "material_key": "repo-generate-docs",
-      "source_path": "repo/scripts/generate-docs",
+      "source_path": "product/scripts/initializer/stubs/repo-generate-docs",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "root-generate-docs",
+      "source_path": "scripts/generate-docs",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "product-docgen",
+      "source_path": "product/scripts/docgen.py",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-generate-docs",
+      "source_path": "product/scripts/generate-docs",
       "role": "documentation-support",
       "operation": "copy-verbatim",
       "source_type": "blob",

@@ -228,6 +228,33 @@
       "role": "documentation-support"
     },
     {
+      "material_key": "root-generate-docs",
+      "destination_path": "scripts/generate-docs",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "documentation-support"
+    },
+    {
+      "material_key": "product-docgen",
+      "destination_path": "product/scripts/docgen.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "documentation-support"
+    },
+    {
+      "material_key": "product-generate-docs",
+      "destination_path": "product/scripts/generate-docs",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "documentation-support"
+    },
+    {
       "material_key": "repo-github-profile",
       "destination_path": "repo/scripts/github_profile.py",
       "producer": "framework-installation",
