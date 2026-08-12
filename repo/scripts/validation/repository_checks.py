@@ -42,15 +42,24 @@ REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS = {
 IGNORED_REPOSITORY_ROOT_ENTRIES = {".git"}
 
 
+def _repository_root_entry_kinds(context: ValidationContext) -> dict[str, str]:
+    expected = dict(REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS)
+    initialized_provenance = context.repo_root / "repo" / "initializer" / "provenance.json"
+    if initialized_provenance.is_file():
+        expected.pop("reference")
+    return expected
+
+
 def check_repository_root_boundary(context: ValidationContext) -> None:
     actual = {path.name: path for path in context.repo_root.iterdir() if path.name not in IGNORED_REPOSITORY_ROOT_ENTRIES}
-    expected = set(REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS)
+    required_kinds = _repository_root_entry_kinds(context)
+    expected = set(required_kinds)
     unexpected = sorted(set(actual) - expected)
     expect(not unexpected, "repository root boundary failed: undeclared top-level entries: " + ", ".join(unexpected))
     missing = sorted(expected - set(actual))
     expect(not missing, "repository root boundary failed: missing required top-level entries: " + ", ".join(missing))
     wrong_kind: list[str] = []
-    for name, kind in REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS.items():
+    for name, kind in required_kinds.items():
         path = actual[name]
         matches = path.is_file() if kind == "file" else path.is_dir()
         if not matches:

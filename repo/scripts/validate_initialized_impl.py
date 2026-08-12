@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 REQUIRED_FILES = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
-REQUIRED_DIRS = {".github", "product", "reference", "repo", "scripts", "user"}
+REQUIRED_DIRS = {".github", "product", "repo", "scripts", "user"}
 ALLOWED_TOP_LEVEL = REQUIRED_FILES | REQUIRED_DIRS | {".git"}
 
 class ValidationError(RuntimeError):
