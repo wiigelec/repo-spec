@@ -7,7 +7,6 @@ import copy
 from pathlib import Path
 from typing import Any
 
-from repo_model import RepositoryError, load_json as load_repo_json
 from validation.errors import expect, fail
 from validation.schema_subset import ensure_schema_keywords, load_json, validate_instance
 
@@ -78,10 +77,7 @@ def load_product_validation_context(repo_root: Path) -> ProductValidationContext
         return None
 
     schemas = load_product_schemas(repo_root)
-    try:
-        manifest = load_repo_json(manifest_path)
-    except RepositoryError as exc:
-        fail(str(exc))
+    manifest = load_json(manifest_path)
     validate_instance(manifest, schemas["product.manifest"], "product/specs/product/manifest.json", schemas["product.manifest"])
     entries = manifest["product_specifications"]
     manifest_paths = [entry["path"] for entry in entries]
@@ -93,10 +89,7 @@ def load_product_validation_context(repo_root: Path) -> ProductValidationContext
     source_paths: dict[str, str] = {}
     for entry in entries:
         path = entry["path"]
-        try:
-            spec = load_repo_json(repo_root / path)
-        except RepositoryError as exc:
-            fail(str(exc))
+        spec = load_json(repo_root / path)
         validate_instance(spec, schemas["product.spec-base"], path, schemas["product.spec-base"])
         level_schema_key = f"product.level-{spec['level']}"
         expect(level_schema_key in schemas, f"product schema loading failed: missing {level_schema_key}")
@@ -105,11 +98,11 @@ def load_product_validation_context(repo_root: Path) -> ProductValidationContext
         expect(spec["status"] == entry["status"], f"product manifest correspondence failed: lifecycle mismatch for {path}")
         expect(spec["level"] == entry["level"], f"product manifest correspondence failed: level mismatch for {path}")
         if spec["spec_id"] in specs:
-            raise RepositoryError(f"duplicate product specification id: {spec['spec_id']}")
+            fail(f"duplicate product specification id: {spec['spec_id']}")
         specs[spec["spec_id"]] = spec
         source_paths[spec["spec_id"]] = path
 
     if len(source_paths) != len(set(source_paths.values())):
-        raise RepositoryError("duplicate product specification path")
+        fail("duplicate product specification path")
 
     return ProductValidationContext(manifest, manifest_path, entries, specs, source_paths, actual_paths, schemas)

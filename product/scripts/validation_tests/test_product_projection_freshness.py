@@ -7,7 +7,7 @@ from pathlib import Path
 from docgen import write_all
 from product_validation.product_checks import validate_product_phases
 
-from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
+from .mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"

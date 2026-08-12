@@ -6,6 +6,7 @@ import tempfile
 from pathlib import Path
 
 from repo_model import load_specs
+from root_validation import RootValidationError, validate_root_boundary
 from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from validation.generated_outputs import check_generated_document_write_behavior
 from validation.errors import fail
@@ -21,7 +22,6 @@ from .mutation_support import add_lifecycle_spec, create_repo_fixture, expect_fa
 def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
     labels = [label for label, _check in REPOSITORY_LEAF_VALIDATION_PHASES]
     expected_labels = [
-        "repository root boundary",
         "repository JSON Schema conformance",
         "manifest completeness",
         "unique specification IDs",
@@ -47,43 +47,89 @@ def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
 
 
 def run_repository_root_boundary_tests(repo_root: Path) -> None:
+    def expect_root_failure(description: str, func, fragment: str) -> None:
+        try:
+            func()
+        except RootValidationError as exc:
+            if fragment not in str(exc):
+                fail(
+                    f"mutation test failed: {description} "
+                    f"(expected {fragment!r}, got {exc})"
+                )
+        else:
+            fail(f"mutation test failed: {description} did not fail")
+
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
         clone_index = 0
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        (temp_repo / "undeclared-root-file.txt").write_text("mutation\\n")
-        expect_failure("undeclared root file", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: undeclared top-level entries: undeclared-root-file.txt")
+        (temp_repo / "undeclared-root-file.txt").write_text("mutation\n")
+        expect_root_failure(
+            "undeclared root file",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: undeclared top-level entries: undeclared-root-file.txt",
+        )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "undeclared-root-directory").mkdir()
-        expect_failure("undeclared root directory", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: undeclared top-level entries: undeclared-root-directory")
+        expect_root_failure(
+            "undeclared root directory",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: undeclared top-level entries: undeclared-root-directory",
+        )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "docs").mkdir()
-        expect_failure("legacy root docs reintroduction", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: undeclared top-level entries: docs")
+        expect_root_failure(
+            "legacy root docs reintroduction",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: undeclared top-level entries: docs",
+        )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "README.md").unlink()
-        expect_failure("missing required root", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: missing required top-level entries: README.md")
+        expect_root_failure(
+            "missing required root",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: missing required top-level entries: README.md",
+        )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / "README.md").unlink()
         (temp_repo / "README.md").mkdir()
-        expect_failure("wrong-kind required root file", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: wrong-kind top-level entries: README.md (expected file)")
+        expect_root_failure(
+            "wrong-kind required root file",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: wrong-kind top-level entries: README.md (expected file)",
+        )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         import shutil
         shutil.rmtree(temp_repo / "user")
-        (temp_repo / "user").write_text("mutation\\n")
-        expect_failure("wrong-kind required root directory", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: wrong-kind top-level entries: user (expected directory)")
+        (temp_repo / "user").write_text("mutation\n")
+        expect_root_failure(
+            "wrong-kind required root directory",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: wrong-kind top-level entries: user (expected directory)",
+        )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         (temp_repo / ".pytest_cache").mkdir()
-        expect_failure("pytest cache at repository root", lambda: validate_repository_phase(temp_repo, "repository root boundary"), "repository root boundary failed: undeclared top-level entries: .pytest_cache")
+        expect_root_failure(
+            "pytest cache at repository root",
+            lambda: validate_root_boundary(temp_repo, initialized=False),
+            "repository root boundary failed: undeclared top-level entries: .pytest_cache",
+        )
 
     print("ok: repository root boundary")
-
 
 def run_repository_development_document_compatibility_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:

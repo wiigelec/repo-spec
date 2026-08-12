@@ -6,7 +6,7 @@ from pathlib import Path
 from validation.schema_subset import validate_instance
 from product_validation.product_state import load_product_schemas
 
-from validation.tests.mutation_support import expect_failure
+from .mutation_support import expect_failure
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-manifest"

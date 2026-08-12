@@ -4,10 +4,10 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from validation.generated_outputs import check_generated_document_write_behavior
+from .generation_support import check_generated_document_write_behavior
 from product_validation.product_checks import validate_product_phases
 
-from validation.tests.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
+from .mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"

@@ -24,15 +24,20 @@ def check_validate_cli_contract(repo_root: Path) -> None:
     expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
     expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
 
+    expect(
+        'python3 "$root/repo/scripts/root_validation.py" "$root" "$repo_tree_sha"' in validate_launcher,
+        "repository validate launcher omits transportable root validation",
+    )
+
     proc = subprocess.run(
-        [str(repo_root / "repo/scripts/validate"), "--unknown-mode"],
+        [str(repo_root / "repo/scripts/validate"), "", "--unknown-mode"],
         cwd=repo_root,
         capture_output=True,
         text=True,
     )
-    expect(proc.returncode != 0, "repository validate unknown mode succeeded")
-    expect(proc.stdout.strip() == "", "repository validate unknown mode wrote stdout")
+    expect(proc.returncode != 0, "repository validate unknown argument succeeded")
+    expect(proc.stdout.strip() == "", "repository validate unknown argument wrote stdout")
     expect(
-        proc.stderr.strip() == "validation error: unknown mode: --unknown-mode",
-        "repository validate unknown-mode stderr mismatch",
+        proc.stderr.strip() == "validation error: unknown argument: --unknown-mode",
+        "repository validate unknown-argument stderr mismatch",
     )

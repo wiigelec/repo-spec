@@ -27,46 +27,6 @@ def repository_reference_specs(context: ValidationContext) -> dict[str, dict[str
     return context.external_repository.specs
 
 
-REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS = {
-    '.github': 'directory',
-    '.gitignore': 'file',
-    'AGENTS.md': 'file',
-    'LICENSE': 'file',
-    'README.md': 'file',
-    'product': 'directory',
-    'reference': 'directory',
-    'repo': 'directory',
-    'scripts': 'directory',
-    'user': 'directory',
-}
-IGNORED_REPOSITORY_ROOT_ENTRIES = {".git"}
-
-
-def _repository_root_entry_kinds(context: ValidationContext) -> dict[str, str]:
-    expected = dict(REQUIRED_REPOSITORY_ROOT_ENTRY_KINDS)
-    initialized_provenance = context.repo_root / "repo" / "initializer" / "provenance.json"
-    if initialized_provenance.is_file():
-        expected.pop("reference")
-    return expected
-
-
-def check_repository_root_boundary(context: ValidationContext) -> None:
-    actual = {path.name: path for path in context.repo_root.iterdir() if path.name not in IGNORED_REPOSITORY_ROOT_ENTRIES}
-    required_kinds = _repository_root_entry_kinds(context)
-    expected = set(required_kinds)
-    unexpected = sorted(set(actual) - expected)
-    expect(not unexpected, "repository root boundary failed: undeclared top-level entries: " + ", ".join(unexpected))
-    missing = sorted(expected - set(actual))
-    expect(not missing, "repository root boundary failed: missing required top-level entries: " + ", ".join(missing))
-    wrong_kind: list[str] = []
-    for name, kind in required_kinds.items():
-        path = actual[name]
-        matches = path.is_file() if kind == "file" else path.is_dir()
-        if not matches:
-            wrong_kind.append(f"{name} (expected {kind})")
-    expect(not wrong_kind, "repository root boundary failed: wrong-kind top-level entries: " + ", ".join(sorted(wrong_kind)))
-
-
 def chunk_dir_for_metadata(metadata: dict[str, Any]) -> str:
     return f"{metadata['root_path']}{metadata['document_slug']}/"
 
@@ -553,7 +513,6 @@ def _check_repository_generated_freshness(
 
 
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
-    ("repository root boundary", check_repository_root_boundary),
     ("repository JSON Schema conformance", check_schema_conformance),
     ("manifest completeness", check_manifest_phase),
     ("unique specification IDs", check_unique_spec_ids_phase),

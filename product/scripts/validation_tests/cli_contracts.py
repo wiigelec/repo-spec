@@ -10,16 +10,23 @@ def check_product_validate_cli_contract(repo_root: Path) -> None:
     validate_launcher = (repo_root / "product/scripts/validate").read_text()
     test_launcher = (repo_root / "product/scripts/test-validation").read_text()
     expected_pythonpath = (
-        'PYTHONPATH="$root/repo/scripts:$root/product/scripts'
-        '${PYTHONPATH:+:$PYTHONPATH}"'
+        'PYTHONPATH="$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}"'
     )
     expect(
         expected_pythonpath in validate_launcher,
-        "product validate launcher shared-support boundary mismatch",
+        "product validate launcher product-owned runtime boundary mismatch",
     )
     expect(
         expected_pythonpath in test_launcher,
-        "product validation-test launcher shared-support boundary mismatch",
+        "product validation-test launcher product-owned runtime boundary mismatch",
+    )
+    expect(
+        "$root/repo/scripts" not in validate_launcher,
+        "product validate launcher depends on repo scripts",
+    )
+    expect(
+        "$root/repo/scripts" not in test_launcher,
+        "product validation-test launcher depends on repo scripts",
     )
 
     proc = subprocess.run(
