@@ -568,14 +568,25 @@ REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
 ]
 
 
+REPOSITORY_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    *REPOSITORY_LEAF_VALIDATION_PHASES,
+    ("repository development documents", _check_repository_development_documents),
+    ("repository lifecycle authority sequence", _check_repository_lifecycle),
+    ("repository generated-document freshness", _check_repository_generated_freshness),
+]
+
+
+def validate_repository_phase(repo_root: Path, phase_label: str) -> None:
+    context = _load_repository_only_context(repo_root)
+    for label, check in REPOSITORY_VALIDATION_PHASES:
+        if label == phase_label:
+            check(context)
+            return
+    fail(f"unknown repository validation phase: {phase_label}")
+
+
 def validate_repo(repo_root: Path) -> None:
     context = _load_repository_only_context(repo_root)
-    for label, check in REPOSITORY_LEAF_VALIDATION_PHASES:
+    for label, check in REPOSITORY_VALIDATION_PHASES:
         check(context)
         print(f"ok: {label}")
-    _check_repository_development_documents(context)
-    print("ok: repository development documents")
-    _check_repository_lifecycle(context)
-    print("ok: repository lifecycle authority sequence")
-    _check_repository_generated_freshness(context)
-    print("ok: repository generated-document freshness")

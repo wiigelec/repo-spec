@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 
 from github_profile import render_profile_adapters, write_profile_adapters
-from validation.repository_checks import validate_repo
+from validation.repository_checks import validate_repository_phase
 
 from .mutation_support import create_repo_fixture, expect_failure
 
@@ -36,7 +36,7 @@ def run_github_profile_generation_tests(repo_root: Path) -> None:
 
         before = snapshot_profile_files(temp_repo)
         write_profile_adapters(temp_repo)
-        validate_repo(temp_repo)
+        validate_repository_phase(temp_repo, "GitHub profile freshness")
         after_first = snapshot_profile_files(temp_repo)
         write_profile_adapters(temp_repo)
         after_second = snapshot_profile_files(temp_repo)
@@ -56,7 +56,7 @@ def run_github_profile_mutation_tests(repo_root: Path) -> None:
         )
         expect_failure(
             "stale installed GitHub adapter",
-            lambda: validate_repo(temp_repo),
+            lambda: validate_repository_phase(temp_repo, "GitHub profile freshness"),
             "github profile freshness failed: stale generated adapter: source repo/profiles/github/PULL_REQUEST_TEMPLATE.md -> output .github/PULL_REQUEST_TEMPLATE.md",
         )
 
@@ -66,7 +66,7 @@ def run_github_profile_mutation_tests(repo_root: Path) -> None:
         )
         expect_failure(
             "stale installed GitHub workflow adapter",
-            lambda: validate_repo(temp_repo),
+            lambda: validate_repository_phase(temp_repo, "GitHub profile freshness"),
             "github profile freshness failed: stale generated adapter: source repo/profiles/github/workflows/github-field-policy.yml -> output .github/workflows/github-field-policy.yml",
         )
 
@@ -74,7 +74,7 @@ def run_github_profile_mutation_tests(repo_root: Path) -> None:
         (temp_repo / ".github/workflows/validation.yml").unlink()
         expect_failure(
             "missing installed GitHub workflow adapter",
-            lambda: validate_repo(temp_repo),
+            lambda: validate_repository_phase(temp_repo, "GitHub profile freshness"),
             "github profile freshness failed: missing managed adapter(s): .github/workflows/validation.yml",
         )
 
@@ -84,7 +84,7 @@ def run_github_profile_mutation_tests(repo_root: Path) -> None:
         orphan.write_text("name: orphaned\n")
         expect_failure(
             "orphaned installed GitHub adapter",
-            lambda: validate_repo(temp_repo),
+            lambda: validate_repository_phase(temp_repo, "GitHub profile freshness"),
             "github profile freshness failed: orphaned managed adapter(s): .github/orphaned-adapter.yml",
         )
 
