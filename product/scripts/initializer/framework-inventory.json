@@ -226,54 +226,6 @@
       "mode": "100644"
     },
     {
-      "material_key": "repo-validation-init",
-      "source_path": "repo/scripts/validation/__init__.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-cli-contracts",
-      "source_path": "repo/scripts/validation/cli_contracts.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-errors",
-      "source_path": "repo/scripts/validation/errors.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-generated-outputs",
-      "source_path": "repo/scripts/validation/generated_outputs.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-repo-checks",
-      "source_path": "repo/scripts/validation/repository_checks.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-schema-subset",
-      "source_path": "repo/scripts/validation/schema_subset.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
       "material_key": "repo-github-field-policy",
       "source_path": "repo/scripts/github-field-policy",
       "role": "validation-utility",
@@ -708,38 +660,6 @@
     {
       "material_key": "repo-schema-architecture-plan",
       "source_path": "repo/schemas/repo/architecture-plan.schema.json",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-context",
-      "source_path": "repo/scripts/validation/context.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-development-documents",
-      "source_path": "repo/scripts/validation/development_documents.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-invariants",
-      "source_path": "repo/scripts/validation/invariants.py",
-      "role": "validation-utility",
-      "operation": "copy-verbatim",
-      "source_type": "blob",
-      "mode": "100644"
-    },
-    {
-      "material_key": "repo-validation-paths",
-      "source_path": "repo/scripts/validation/paths.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
