@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .errors import expect, fail
+from validation.errors import expect, fail
 
 
 def check_supersession_pairs(specs: dict[str, dict[str, Any]], relation_label: str) -> None:

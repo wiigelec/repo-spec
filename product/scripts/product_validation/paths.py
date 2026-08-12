@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .errors import fail
+from validation.errors import fail
 
 
 def resolve_repo_path(repo_root: Path, value: str) -> Path:

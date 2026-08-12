@@ -5,9 +5,9 @@ from __future__ import annotations
 from docgen import SPECIAL_RENDERERS, render_spec_projection
 
 from validation.errors import fail
-from validation.context import ValidationContext
+from .context import ValidationContext
 from validation.errors import expect
-from validation.paths import resolve_repo_path
+from .paths import resolve_repo_path
 
 
 def check_product_generated_freshness(context: ValidationContext) -> None:

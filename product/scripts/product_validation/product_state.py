@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from validation.errors import expect, fail
-from validation.schema_subset import ensure_schema_keywords, load_json, validate_instance
+from .schema_subset import ensure_schema_keywords, load_json, validate_instance
 
 
 @dataclass(frozen=True)

@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path
 
 from validation.errors import ValidationFailure, fail
-from validation.development_documents import extract_document_metadata
+from product_validation.development_documents import extract_document_metadata
 
 
 def deactivate_product_plans(repo_root: Path) -> None:

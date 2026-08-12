@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from validation.context import ValidationContext
-from validation.development_documents import DEVELOPMENT_DOCUMENT_ROOTS, check_development_documents_phase, load_development_document_compatibility_registry
+from .context import ValidationContext
+from .development_documents import DEVELOPMENT_DOCUMENT_ROOTS, check_development_documents_phase, load_development_document_compatibility_registry
 
 
 def _product_development_roots() -> dict[str, dict[str, Any]]:

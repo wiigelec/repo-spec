@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .errors import expect
+from validation.errors import expect
 from .schema_subset import load_json
 
 

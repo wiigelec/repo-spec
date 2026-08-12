@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from .context import ValidationContext
-from .errors import expect, fail
+from validation.errors import expect, fail
 from .schema_subset import validate_instance
 
 

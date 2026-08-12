@@ -28,6 +28,15 @@ def check_product_validate_cli_contract(repo_root: Path) -> None:
         "$root/repo/scripts" not in test_launcher,
         "product validation-test launcher depends on repo scripts",
     )
+    validate_impl = (repo_root / "product/scripts/validate_impl.py").read_text()
+    expect(
+        "from validation.errors import ValidationFailure" in validate_impl,
+        "product validate implementation missing stable ValidationFailure contract",
+    )
+    expect(
+        "from product_validation.product_checks import validate_product" in validate_impl,
+        "product validate implementation missing stable product_checks entry point",
+    )
 
     proc = subprocess.run(
         [str(repo_root / "product/scripts/validate"), "--unknown-mode"],

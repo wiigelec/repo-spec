@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .errors import ValidationFailure, expect, fail
+from validation.errors import ValidationFailure, expect, fail
 
 SUPPORTED_SCHEMA_KEYS = {
     "$schema",
