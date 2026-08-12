@@ -81,7 +81,8 @@ def build_full_initialization_actions(
 
     def git_initialization(carried: dict[str, Any]):
         return initialize_i3_git_repository(
-            carried["staging-establishment"].repository_path
+            carried["staging-establishment"].repository_path,
+            initialization_timestamp=timestamp,
         )
 
     def repository_validation(carried: dict[str, Any]):
