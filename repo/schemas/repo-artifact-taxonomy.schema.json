@@ -53,6 +53,15 @@
             "$ref": "#/$defs/productOverview"
           },
           {
+            "$ref": "#/$defs/overviewWhiteboard"
+          },
+          {
+            "$ref": "#/$defs/overviewAnalysis"
+          },
+          {
+            "$ref": "#/$defs/functionalSet"
+          },
+          {
             "$ref": "#/$defs/productDecomposition"
           },
           {
@@ -163,6 +172,9 @@
           "enum": [
             "discovery-record",
             "product-overview",
+            "overview-whiteboard",
+            "overview-analysis",
+            "functional-set",
             "product-decomposition",
             "implementation-plan",
             "repository-specification",
@@ -194,6 +206,9 @@
           "enum": [
             "discovery record",
             "overview",
+            "collection evidence",
+            "analysis synthesis",
+            "functional-set handoff",
             "decomposition",
             "plan",
             "repository specification",
@@ -1096,6 +1111,102 @@
             },
             "validation_ownership": {
               "const": "review"
+            },
+            "portability_category": {
+              "const": "framework-generic"
+            },
+            "manifest_participation": {
+              "const": "none"
+            }
+          }
+        }
+      ]
+    },
+    "overviewWhiteboard": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactClass"
+        },
+        {
+          "properties": {
+            "identifier": {
+              "const": "overview-whiteboard"
+            },
+            "role": {
+              "const": "collection evidence"
+            },
+            "authority_category": {
+              "const": "evidentiary"
+            },
+            "generation_mode": {
+              "const": "manual"
+            },
+            "validation_ownership": {
+              "const": "validation"
+            },
+            "portability_category": {
+              "const": "framework-generic"
+            },
+            "manifest_participation": {
+              "const": "none"
+            }
+          }
+        }
+      ]
+    },
+    "overviewAnalysis": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactClass"
+        },
+        {
+          "properties": {
+            "identifier": {
+              "const": "overview-analysis"
+            },
+            "role": {
+              "const": "analysis synthesis"
+            },
+            "authority_category": {
+              "const": "directional"
+            },
+            "generation_mode": {
+              "const": "manual"
+            },
+            "validation_ownership": {
+              "const": "validation"
+            },
+            "portability_category": {
+              "const": "framework-generic"
+            },
+            "manifest_participation": {
+              "const": "none"
+            }
+          }
+        }
+      ]
+    },
+    "functionalSet": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactClass"
+        },
+        {
+          "properties": {
+            "identifier": {
+              "const": "functional-set"
+            },
+            "role": {
+              "const": "functional-set handoff"
+            },
+            "authority_category": {
+              "const": "directional"
+            },
+            "generation_mode": {
+              "const": "manual"
+            },
+            "validation_ownership": {
+              "const": "validation"
             },
             "portability_category": {
               "const": "framework-generic"

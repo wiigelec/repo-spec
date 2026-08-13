@@ -83,7 +83,7 @@
     },
     {
       "id": "REPO-VAL-020",
-      "text": "Each leaf validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview, decomposition, and planning artifacts within its owned tree."
+      "text": "Each leaf validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview-process, decomposition, and planning artifacts within its owned tree."
     },
     {
       "id": "REPO-VAL-021",
@@ -91,11 +91,11 @@
     },
     {
       "id": "REPO-VAL-022",
-      "text": "Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview, decomposition, and planning artifacts within its owned tree so the declared chunk roles cover the subordinate chunks exactly once."
+      "text": "Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview whiteboards, overview analyses, functional sets, legacy product overviews retained for compatibility, decompositions, and planning artifacts within its owned tree so the declared chunk coverage matches the artifact contract."
     },
     {
       "id": "REPO-VAL-023",
-      "text": "Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, accepted predecessor lifecycle states, no predecessor cycles, and mandatory controlling overview or decomposition predecessors where the artifact type requires them."
+      "text": "Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, lifecycle-state eligibility, no predecessor cycles, analysis traceability to whiteboard evidence, functional-set traceability to analysis, and approved functional-set eligibility when a functional set governs decomposition. Legacy product-overview transitions may remain mechanically supported only as compatibility behavior for existing documents and shall not redefine the normative lifecycle."
     },
     {
       "id": "REPO-VAL-024",
@@ -160,6 +160,10 @@
     {
       "id": "REPO-VAL-039",
       "text": "The repository leaf validation entry point shall enforce the approved maintained source-repository root boundary declared by accepted repository structure and related accepted repository-local contracts, shall allow the governed `user/` convenience namespace, shall reject root `docs/`, and shall reject any other undeclared top-level file or directory."
+    },
+    {
+      "id": "REPO-VAL-040",
+      "text": "The applicable leaf validation entry point shall reject a functional-set artifact whose lifecycle status is neither candidate nor approved, shall reject an overview-whiteboard artifact that claims approval, shall require overview analysis to trace to whiteboard evidence, shall require a functional set to trace to analysis, and shall reject candidate functional sets as decomposition authority."
     }
   ],
   "dependencies": [

@@ -31,6 +31,9 @@
       "type": "string",
       "enum": [
         "product-overview",
+        "overview-whiteboard",
+        "overview-analysis",
+        "functional-set",
         "product-decomposition",
         "implementation-plan",
         "architecture-plan"
@@ -74,7 +77,9 @@
     "lifecycle_status": {
       "type": "string",
       "enum": [
+        "active",
         "candidate",
+        "approved",
         "accepted",
         "superseded",
         "retired"
@@ -181,7 +186,7 @@
         "if": {
           "properties": {
             "artifact_type": {
-              "const": "architecture-plan"
+              "const": "overview-whiteboard"
             }
           },
           "required": [
@@ -191,7 +196,7 @@
         "then": {
           "properties": {
             "controlling_documents": {
-              "minItems": 1
+              "minItems": 0
             },
             "predecessor_documents": {
               "minItems": 0
@@ -199,12 +204,34 @@
           }
         },
         "else": {
-          "properties": {
-            "controlling_documents": {
-              "minItems": 1
+          "if": {
+            "properties": {
+              "artifact_type": {
+                "const": "architecture-plan"
+              }
             },
-            "predecessor_documents": {
-              "minItems": 1
+            "required": [
+              "artifact_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "controlling_documents": {
+                "minItems": 1
+              },
+              "predecessor_documents": {
+                "minItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "controlling_documents": {
+                "minItems": 1
+              },
+              "predecessor_documents": {
+                "minItems": 1
+              }
             }
           }
         }
