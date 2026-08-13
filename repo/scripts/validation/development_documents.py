@@ -588,7 +588,11 @@ def get_development_document_records(
                 continue
 
             metadata = extract_document_metadata(text, rel_path)
-            metadata["artifact_type"] = info["artifact_type"]
+            allowed_artifact_types = info.get("artifact_types", [info.get("artifact_type")])
+            expect(
+                metadata["artifact_type"] in allowed_artifact_types,
+                f"development document metadata failed: artifact type mismatch in {rel_path}",
+            )
             metadata["root_path"] = root_rel
             declared_chunks = metadata["subordinate_chunks"]
             declared_paths = [chunk["path"] for chunk in declared_chunks]

@@ -6,6 +6,9 @@ This root holds governed product-overview documents.
 
 - [Product overview](./PRODUCT-OVERVIEW.md)
 - [Initializer overview](./INITIALIZER-OVERVIEW.md)
+- [Repo-Spec Repository whiteboard](./REPOSITORY-WHITEBOARD.md)
+- [Repo-Spec Repository analysis](./REPOSITORY-ANALYSIS.md)
+- [Repo-Spec Repository functional set](./REPOSITORY-FUNCTIONAL-SET.md)
 
 ## Notes
 
