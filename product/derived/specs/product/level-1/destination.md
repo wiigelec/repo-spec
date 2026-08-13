@@ -55,7 +55,7 @@ Defines the absent-only local destination for the bounded initialization workflo
 - artifact: `repo/specs/repo/product-manifest.json`
 - artifact: `repo/specs/repo/validation.json`
 - artifact: `repo/specs/repo/repository-structure.json`
-- artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
+- artifact: `product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md`
 - artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts

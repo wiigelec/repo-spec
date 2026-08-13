@@ -394,7 +394,7 @@ class StageFrameworkTests(unittest.TestCase):
         (self.source_root / "repo" / "derived").mkdir()
         (self.source_root / "repo" / "derived" / "README.md").write_text("# derived")
         (self.source_root / "docs" / "overview").mkdir(parents=True)
-        (self.source_root / "docs" / "overview" / "PRODUCT-OVERVIEW.md").write_text("# overview")
+        (self.source_root / "docs" / "overview" / "functional-set-process.md").write_text("# overview")
         (self.source_root / ".github").mkdir()
         (self.source_root / ".github" / "workflows").mkdir(parents=True)
         (self.source_root / ".gitignore").write_text("*.pyc\n__pycache__/\n")

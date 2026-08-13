@@ -46,8 +46,8 @@
       "path": "repo/specs/repo/development-document-base.json"
     },
     {
-      "spec_id": "repo.product-overview",
-      "path": "repo/specs/repo/product-overview.json"
+      "spec_id": "repo.functional-set-process",
+      "path": "repo/specs/repo/functional-set-process.json"
     },
     {
       "spec_id": "repo.product-decomposition",

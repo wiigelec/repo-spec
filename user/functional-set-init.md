@@ -1,4 +1,4 @@
-# Product Overview Whiteboard — Initial Functional-Set Discussion
+# functional-set lifecycle Whiteboard — Initial Functional-Set Discussion
 
 Status: working collection evidence  
 Authority: non-normative  
@@ -7,7 +7,7 @@ Purpose: durably capture user-supplied product-direction observations before fun
 
 ## WB-0001 — Conversational overview development
 
-Product overview development is expected to begin conversationally between the user and an AI agent.
+functional-set lifecycle development is expected to begin conversationally between the user and an AI agent.
 
 The user may describe the desired product incrementally, informally, and without a predetermined structure.
 

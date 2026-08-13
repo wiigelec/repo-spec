@@ -75,7 +75,7 @@ class Issue332ReferenceConformanceTests(unittest.TestCase):
         for phrase in (
             "product ID or product identity",
             "product direction material or direction evidence",
-            "product overview",
+            "functional-set lifecycle",
             "product decomposition",
             "product specifications or product manifest authority",
             "product implementation plan",

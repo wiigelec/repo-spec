@@ -92,7 +92,7 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 - Output: `Confirmed deferral of product-definition work`
 - Predecessors:
   - `direction-evidence-installation`
-- Purpose: `Enforce the bootstrap boundary that no product overview, decomposition, product specifications, or implementation-plan authority is seeded during repository initialization.`
+- Purpose: `Enforce the bootstrap boundary that no functional-set lifecycle, decomposition, product specifications, or implementation-plan authority is seeded during repository initialization.`
 - Recoverable: `False`
 - Required: `True`
 - Deferrable: `False`

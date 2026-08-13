@@ -16,11 +16,10 @@ from .schema_subset import validate_instance
 
 DEVELOPMENT_DOCUMENT_ROOTS = {
     "repo/docs/overview/": {
-        "artifact_types": ["product-overview", "overview-whiteboard", "overview-analysis", "functional-set"],
-        "schema_key": "repo.product-overview",
+        "artifact_types": ["overview-whiteboard", "overview-analysis", "functional-set"],
+        "schema_key": "repo.functional-set-process",
         "required_headings": ["Status", "Metadata", "Overview", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
         "required_content_area_keys_by_type": {
-            "product-overview": ["product_identity", "problem_and_outcome", "intended_users_and_stakeholders", "scope_and_non_goals", "product_boundaries", "durable_principles", "capabilities_and_success", "unresolved_questions", "readiness_for_decomposition"],
             "overview-whiteboard": ["collected_input", "provenance", "unresolved_intent"],
             "overview-analysis": ["source_evidence", "candidate_groupings", "dependencies", "ambiguities", "candidate_functional_sets"],
             "functional-set": ["capability_boundary", "included_intent", "exclusions", "dependencies", "integration_foundation", "end_to_end_usability", "decomposition_handoff"],
@@ -68,7 +67,6 @@ DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "product/docs/decompositions
 
 DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
 DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
-    "repo/docs/overview/product-overview/": "repo/docs/overview/PRODUCT-OVERVIEW.md",
     "product/docs/decompositions/initializer-decomposition/": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md",
     "product/docs/plans/initializer-implementation-plan/": "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
 }
@@ -222,143 +220,180 @@ def check_development_document_relationships(
         source_product = metadata["product_id"]
         source_status = metadata["lifecycle_status"]
         allowed_types = {
-            "product-overview": {"product-overview"},
             "overview-whiteboard": {"overview-whiteboard"},
             "overview-analysis": {"overview-whiteboard", "overview-analysis"},
             "functional-set": {"overview-whiteboard", "overview-analysis", "functional-set"},
-            "product-decomposition": {"product-overview", "functional-set"},
-            "implementation-plan": {"product-overview", "functional-set", "product-decomposition", "implementation-plan"},
-            "architecture-plan": {"product-overview", "functional-set", "architecture-plan"},
+            "product-decomposition": {"functional-set"},
+            "implementation-plan": {"functional-set", "product-decomposition", "implementation-plan"},
+            "architecture-plan": {"functional-set", "architecture-plan"},
         }[source_type]
 
         controlling_documents = metadata["controlling_documents"]
         predecessor_documents = metadata["predecessor_documents"]
         evidence = metadata["evidence"]
-        overview_role = metadata.get("overview_role")
 
         expect(len(controlling_documents) == len(set(controlling_documents)), f"development document relationship failed: duplicate controlling documents for {path}")
         expect(len(predecessor_documents) == len(set(predecessor_documents)), f"development document relationship failed: duplicate predecessor documents for {path}")
         expect(len(evidence) == len(set(evidence)), f"development document relationship failed: duplicate evidence entries for {path}")
 
-        saw_overview = False
         saw_whiteboard = False
         saw_analysis = False
         saw_functional_set = False
         saw_approved_functional_set = False
         saw_decomposition = False
-        saw_overview_predecessor = False
+
+        def classify_target(target_metadata: dict[str, Any]) -> None:
+            nonlocal saw_whiteboard
+            nonlocal saw_analysis
+            nonlocal saw_functional_set
+            nonlocal saw_approved_functional_set
+            nonlocal saw_decomposition
+
+            target_type = target_metadata["artifact_type"]
+            if target_type == "overview-whiteboard":
+                saw_whiteboard = True
+            elif target_type == "overview-analysis":
+                saw_analysis = True
+            elif target_type == "functional-set":
+                saw_functional_set = True
+                if target_metadata["lifecycle_status"] == "approved":
+                    saw_approved_functional_set = True
+            elif target_type == "product-decomposition":
+                saw_decomposition = True
 
         for target_path in controlling_documents:
             try:
-                resolved_path, resolved_record = resolve_development_document_artifact(target_path, records, compatibility_registry, chunk_owner_paths)
+                resolved_path, resolved_record = resolve_development_document_artifact(
+                    target_path, records, compatibility_registry, chunk_owner_paths
+                )
             except KeyError:
                 fail(f"development document relationship failed: unresolved controlling document path {path} -> {target_path}")
 
-            expect(resolved_path == target_path or resolved_path in compatibility_registry, f"development document relationship failed: controlling document must reference a governed document {path} -> {target_path}")
+            expect(
+                resolved_path == target_path or resolved_path in compatibility_registry,
+                f"development document relationship failed: controlling document must reference a governed document {path} -> {target_path}",
+            )
             if resolved_record is None:
-                if resolved_path == "repo/docs/overview/PRODUCT-OVERVIEW.md":
-                    saw_overview = True
                 continue
 
             target_metadata = resolved_record.metadata
             expect(resolved_path != path, f"development document relationship failed: self reference {path}")
-            expect(target_metadata["product_id"] == source_product, f"development document relationship failed: product mismatch {path} -> {target_path}")
             expect(
-                source_status in {"superseded", "retired"} or target_metadata["lifecycle_status"] in {"active", "candidate", "approved", "accepted"},
+                target_metadata["product_id"] == source_product,
+                f"development document relationship failed: product mismatch {path} -> {target_path}",
+            )
+            expect(
+                source_status in {"superseded", "retired"}
+                or target_metadata["lifecycle_status"] in {"active", "candidate", "approved", "accepted"},
                 f"development document relationship failed: controlling lifecycle mismatch {path} -> {target_path}",
             )
-            expect(target_metadata["artifact_type"] in allowed_types, f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}")
+            expect(
+                target_metadata["artifact_type"] in allowed_types,
+                f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}",
+            )
             basis_graph[path].append(resolved_path)
-            target_type = target_metadata["artifact_type"]
-            if source_type in {"product-decomposition", "implementation-plan", "architecture-plan"} and target_type == "product-overview":
-                saw_overview = True
-            if target_type == "overview-whiteboard":
-                saw_whiteboard = True
-            if target_type == "overview-analysis":
-                saw_analysis = True
-            if target_type == "functional-set":
-                saw_functional_set = True
-                if target_metadata["lifecycle_status"] == "approved":
-                    saw_approved_functional_set = True
-            if source_type == "implementation-plan" and target_type == "product-decomposition":
-                saw_decomposition = True
+            classify_target(target_metadata)
 
         for target_path in predecessor_documents:
             try:
-                resolved_path, resolved_record = resolve_development_document_artifact(target_path, records, compatibility_registry, chunk_owner_paths)
+                resolved_path, resolved_record = resolve_development_document_artifact(
+                    target_path, records, compatibility_registry, chunk_owner_paths
+                )
             except KeyError:
                 fail(f"development document relationship failed: unresolved predecessor path {path} -> {target_path}")
 
-            expect(resolved_path == target_path, f"development document relationship failed: predecessor document must reference a governing document {path} -> {target_path}")
+            expect(
+                resolved_path == target_path,
+                f"development document relationship failed: predecessor document must reference a governing document {path} -> {target_path}",
+            )
             if resolved_record is None:
-                if resolved_path == "repo/docs/overview/PRODUCT-OVERVIEW.md":
-                    saw_overview = True
                 continue
 
             target_metadata = resolved_record.metadata
             expect(resolved_path != path, f"development document relationship failed: self reference {path}")
-            expect(target_metadata["product_id"] == source_product, f"development document relationship failed: product mismatch {path} -> {target_path}")
             expect(
-                source_status in {"superseded", "retired"} or target_metadata["lifecycle_status"] in {"active", "candidate", "approved", "accepted"},
+                target_metadata["product_id"] == source_product,
+                f"development document relationship failed: product mismatch {path} -> {target_path}",
+            )
+            expect(
+                source_status in {"superseded", "retired"}
+                or target_metadata["lifecycle_status"] in {"active", "candidate", "approved", "accepted"},
                 f"development document relationship failed: predecessor lifecycle mismatch {path} -> {target_path}",
             )
-            expect(target_metadata["artifact_type"] in allowed_types, f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}")
-
+            expect(
+                target_metadata["artifact_type"] in allowed_types,
+                f"development document relationship failed: artifact-type transition mismatch {path} -> {target_path}",
+            )
             basis_graph[path].append(resolved_path)
-            target_type = target_metadata["artifact_type"]
-            if target_type == "product-overview":
-                saw_overview = True
-                if source_type == "product-overview":
-                    saw_overview_predecessor = True
-            if target_type == "overview-whiteboard":
-                saw_whiteboard = True
-            if target_type == "overview-analysis":
-                saw_analysis = True
-            if target_type == "functional-set":
-                saw_functional_set = True
-                if target_metadata["lifecycle_status"] == "approved":
-                    saw_approved_functional_set = True
-            if source_type == "implementation-plan" and target_type == "product-decomposition":
-                saw_decomposition = True
+            classify_target(target_metadata)
 
-        if source_type == "product-overview":
-            if not predecessor_documents:
-                expect(overview_role == "initial", f"development document relationship failed: missing initial overview role for {path}")
-            else:
-                expect(saw_overview_predecessor, f"development document relationship failed: missing predecessor overview for {path}")
-        elif source_type == "overview-whiteboard":
-            expect(source_status in {"active", "superseded", "retired"}, f"development document relationship failed: invalid whiteboard lifecycle status for {path}")
-            expect(not controlling_documents and not predecessor_documents, f"development document relationship failed: whiteboard must bootstrap from evidence for {path}")
+        if source_type == "overview-whiteboard":
+            expect(
+                source_status in {"active", "superseded", "retired"},
+                f"development document relationship failed: invalid whiteboard lifecycle status for {path}",
+            )
+            expect(
+                not controlling_documents and not predecessor_documents,
+                f"development document relationship failed: whiteboard must bootstrap from evidence for {path}",
+            )
         elif source_type == "overview-analysis":
-            expect(source_status in {"candidate", "superseded", "retired"}, f"development document relationship failed: invalid analysis lifecycle status for {path}")
-            expect(saw_whiteboard, f"development document relationship failed: analysis missing whiteboard evidence predecessor for {path}")
+            expect(
+                source_status in {"candidate", "superseded", "retired"},
+                f"development document relationship failed: invalid analysis lifecycle status for {path}",
+            )
+            expect(
+                saw_whiteboard,
+                f"development document relationship failed: analysis missing whiteboard evidence predecessor for {path}",
+            )
         elif source_type == "functional-set":
-            expect(source_status in {"candidate", "approved", "superseded", "retired"}, f"development document relationship failed: invalid functional-set lifecycle status for {path}")
-            expect(saw_analysis, f"development document relationship failed: functional set missing analysis predecessor for {path}")
+            expect(
+                source_status in {"candidate", "approved", "superseded", "retired"},
+                f"development document relationship failed: invalid functional-set lifecycle status for {path}",
+            )
+            expect(
+                saw_analysis,
+                f"development document relationship failed: functional set missing analysis predecessor for {path}",
+            )
         elif source_type == "product-decomposition":
-            if saw_functional_set:
-                expect(saw_approved_functional_set, f"development document relationship failed: candidate functional set cannot govern decomposition for {path}")
-            else:
-                expect(saw_overview, f"development document relationship failed: missing approved functional set or legacy controlling overview for {path}")
+            expect(
+                saw_functional_set,
+                f"development document relationship failed: decomposition missing controlling functional set for {path}",
+            )
+            expect(
+                saw_approved_functional_set,
+                f"development document relationship failed: candidate functional set cannot govern decomposition for {path}",
+            )
         elif source_type == "implementation-plan":
-            expect(saw_functional_set or saw_overview, f"development document relationship failed: missing controlling functional set or legacy overview for {path}")
-            expect(saw_decomposition, f"development document relationship failed: missing controlling decomposition for {path}")
-        elif source_type == "architecture-plan":
-            expect(saw_functional_set or saw_overview, f"development document relationship failed: missing controlling functional set or legacy overview for {path}")
+            expect(
+                saw_functional_set,
+                f"development document relationship failed: missing controlling functional set for {path}",
+            )
+            expect(
+                saw_decomposition,
+                f"development document relationship failed: missing controlling decomposition for {path}",
+            )
 
         for target_path in evidence:
             try:
-                resolved_path, resolved_record = resolve_development_document_artifact(target_path, records, compatibility_registry, chunk_owner_paths)
+                resolved_path, resolved_record = resolve_development_document_artifact(
+                    target_path, records, compatibility_registry, chunk_owner_paths
+                )
             except KeyError:
                 evidence_path = repo_root / target_path
-                expect(evidence_path.exists(), f"development document evidence failed: missing evidence path {path} -> {target_path}")
+                expect(
+                    evidence_path.exists(),
+                    f"development document evidence failed: missing evidence path {path} -> {target_path}",
+                )
                 continue
 
             if resolved_record is not None:
                 continue
 
             evidence_path = repo_root / resolved_path
-            expect(evidence_path.exists(), f"development document evidence failed: missing evidence path {path} -> {target_path}")
+            expect(
+                evidence_path.exists(),
+                f"development document evidence failed: missing evidence path {path} -> {target_path}",
+            )
 
     visiting: list[str] = []
     visited: set[str] = set()
@@ -588,7 +623,11 @@ def get_development_document_records(
                 continue
 
             metadata = extract_document_metadata(text, rel_path)
-            metadata["artifact_type"] = info["artifact_type"]
+            allowed_artifact_types = info.get("artifact_types", [info.get("artifact_type")])
+            expect(
+                metadata["artifact_type"] in allowed_artifact_types,
+                f"development document metadata failed: artifact type mismatch in {rel_path}",
+            )
             metadata["root_path"] = root_rel
             declared_chunks = metadata["subordinate_chunks"]
             declared_paths = [chunk["path"] for chunk in declared_chunks]

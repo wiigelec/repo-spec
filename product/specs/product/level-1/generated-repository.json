@@ -33,7 +33,7 @@
     },
     {
       "id": "INIT-GRL-006",
-      "text": "Repository bootstrap shall not generate a product manifest, product overview, direction evidence, product decomposition, product specifications, implementation plan, or any other product-semantic authority artifact."
+      "text": "Repository bootstrap shall not generate a product manifest, overview analysis, functional set, product decomposition, product specifications, implementation plan, or any other product-semantic authority artifact."
     },
     {
       "id": "INIT-GRL-007",

@@ -51,10 +51,10 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 - `INIT-L0-004`: The initializer shall enforce framework provenance traceability: the initialized repository shall record the exact repo-spec framework source and revision actually used for bootstrap. Repository initialization shall not create product-direction evidence or generated product authority artifacts merely to satisfy bootstrap provenance.
 - `INIT-L0-005`: The initializer shall satisfy failure safety: a partial or failed initialization shall not falsely present the destination as a successfully initialized repository.
 - `INIT-L0-006`: Explicit user bootstrap intent shall take precedence over inferred product semantics: the initializer may mechanically derive repository identity from the explicitly requested destination and may resolve its own executing framework provenance locally, but shall not infer product identity, product direction, product specifications, implementation-plan authority, or other successor product semantics.
-- `INIT-L0-007`: Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.
+- `INIT-L0-007`: Directional documents (overview analysis, functional set, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.
 - `INIT-L0-008`: The initializer shall have a stable product identity and an explicit version identity.
 - `INIT-L0-009`: The initializer shall use common lifecycle terms consistently: accepted means authorized and valid for processing; rejected means processing did not begin because required authority, input, or preconditions were not satisfied; failed means processing began but did not satisfy a required outcome; completed means the required outcome was satisfied; and deferred means explicitly postponed and not treated as completed.
-- `INIT-L0-010`: Repository initialization shall establish the governed repository framework before product definition. Product overview, product direction, product decomposition, product specifications, and product implementation planning are successor governed lifecycle work and shall not be established or accepted by repository bootstrap.
+- `INIT-L0-010`: Repository initialization shall establish the governed repository framework before product definition. Overview collection, overview analysis, functional-set approval, product decomposition, product specifications, and product implementation planning are successor governed lifecycle work and shall not be established or accepted by repository bootstrap.
 
 ## Dependencies
 
@@ -68,7 +68,7 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 - artifact: `repo/specs/repo/product-correspondence.json`
 - artifact: `repo/specs/repo/validation.json`
 - artifact: `repo/specs/repo/repository-structure.json`
-- artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
+- artifact: `product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md`
 - artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts

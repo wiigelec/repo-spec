@@ -56,7 +56,7 @@
     },
     {
       "id": "INIT-HND-007",
-      "text": "The `provenance` field shall reference `repo/initializer/provenance.json`, and `next_action` shall direct governed product overview/direction work before decomposition, specifications, planning, and implementation."
+      "text": "The `provenance` field shall reference `repo/initializer/provenance.json`, and `next_action` shall direct overview collection, analysis, explicit functional-set approval, and only then decomposition, specifications, planning, and implementation."
     },
     {
       "id": "INIT-HND-008",
@@ -106,7 +106,7 @@
     },
     {
       "type": "artifact",
-      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+      "path": "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
     },
     {
       "type": "artifact",

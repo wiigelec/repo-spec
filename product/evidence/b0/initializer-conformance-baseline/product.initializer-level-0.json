@@ -258,7 +258,7 @@
       "level": 0,
       "requirement_id": "INIT-L0-007",
       "composite_key": "product.initializer-level-0::INIT-L0-007",
-      "requirement_text": "Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.",
+      "requirement_text": "Directional documents (functional-set lifecycle, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior.",
       "classification": "repair",
       "source_evidence": [
         "product/scripts/initializer/validation.py:95-99::validate_and_normalize \u2014 maintained source behavior excerpt: def validate_and_normalize(raw: dict[str, Any]) -> ExecutionContext: result = validate_request(raw) result.raise_if_invalid() request = ImmutableRequest(raw) return ExecutionContext(request)",

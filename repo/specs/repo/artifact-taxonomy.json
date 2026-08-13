@@ -19,19 +19,6 @@
       "manifest_participation": "none"
     },
     {
-      "identifier": "product-overview",
-      "label": "Legacy product overview",
-      "role": "overview",
-      "authority_category": "directional",
-      "authority_source": "pre-functional-set directional product overview",
-      "source_of_truth_rule": "Retained for compatibility with existing governed documents; it remains directional and shall not act as the new pre-decomposition lifecycle gate after the functional-set workflow is available.",
-      "mutability": "mutable through governed updates",
-      "generation_mode": "manual",
-      "validation_ownership": "review",
-      "portability_category": "framework-generic",
-      "manifest_participation": "none"
-    },
-    {
       "identifier": "overview-whiteboard",
       "label": "Overview whiteboard",
       "role": "collection evidence",
@@ -375,7 +362,7 @@
     },
     {
       "id": "REPO-AT-004",
-      "text": "An overview whiteboard, overview analysis, legacy product overview, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority."
+      "text": "An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority."
     },
     {
       "id": "REPO-AT-005",

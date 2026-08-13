@@ -22,7 +22,15 @@
   "references": [
     {
       "type": "artifact",
-      "path": "repo/docs/overview/product-overview/03-development-and-specifications.md"
+      "path": "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md"
     }
   ],
   "supersedes": [],

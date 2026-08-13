@@ -1,6 +1,6 @@
-# Product Overview: Human and AI Continuity
+# functional-set lifecycle: Human and AI Continuity
 
-> Part 5 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./04-git-and-change-workflow.md) · [Next](./06-governance-and-evolution.md)
+> Part 5 of 6 · [functional-set lifecycle index](../functional-set-process.md) · [Previous](./04-git-and-change-workflow.md) · [Next](./06-governance-and-evolution.md)
 
 This part defines human and AI responsibilities and the durable context needed for an independent session to resume work.
 
@@ -67,7 +67,7 @@ A new AI session should be able to recover the smallest sufficient development c
 A new development session should be able to follow a predictable discovery path:
 
 1. Read the repository README.
-2. Read the [product overview index](../PRODUCT-OVERVIEW.md) and the relevant overview parts.
+2. Read the [functional-set lifecycle index](../functional-set-process.md) and the relevant overview parts.
 3. Read the current governing issue for active bounded work.
 4. Discover the normative specification roots and authority hierarchy.
 5. If no governing issue is open, the repository has no active implementation plan.

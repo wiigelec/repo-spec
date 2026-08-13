@@ -1,8 +1,9 @@
-# Product Overview: Decomposition Model
+# functional-set lifecycle: Decomposition Model — Part 1
 
-> Part 2 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./01-product-direction.md) · [Next](./03-development-and-specifications.md)
+> Part 2 of 6 · [functional-set lifecycle index](../functional-set-process.md) · [Previous](./01-product-direction.md) · [Next](./03-development-and-specifications.md)
 
 This part defines the canonical decomposition model used by the framework to turn broad human intent into bounded AI-executable work.
+
 
 ## Status
 
@@ -10,11 +11,13 @@ Canonical decomposition model.
 
 This document records the architectural reference for decomposition in repo-spec. It is directional only in the sense that it describes the framework's accepted decomposition principle; it does not replace accepted normative specifications.
 
+
 ## Purpose
 
 repo-spec uses decomposition as its central engineering principle.
 
 The goal is to reduce uncertainty, ambiguity, context size, decision freedom, and implicit assumptions before implementation begins, and again whenever implementation exposes unresolved higher-level decisions that exceed the bounded task's authority.
+
 
 ## Failure modes addressed
 
@@ -26,6 +29,7 @@ The goal is to reduce uncertainty, ambiguity, context size, decision freedom, an
 | Scope drift | Require explicit scope, exclusions, dependencies, and bounded task boundaries. |
 | Hallucination | Require accepted authority for missing decisions and escalate unresolved gaps instead of guessing. |
 
+
 ## Core thesis
 
 Complexity should be reduced before implementation rather than delegated to the implementation task.
@@ -33,6 +37,7 @@ Complexity should be reduced before implementation rather than delegated to the 
 The framework should progressively decompose a large human problem into smaller, more explicit representations whose roles, boundaries, and authority become more precisely defined as decisions move toward accepted specifications until the remaining work is sufficiently bounded for reliable implementation.
 
 Decomposition does not make every child artifact normative.
+
 
 ## Decomposition dimensions
 
@@ -45,6 +50,7 @@ repo-spec uses multiple compatible decomposition views rather than one canonical
 | Dependency | What must exist first? |
 | Work | What can be implemented as one bounded change? |
 | Evidence | How is each requirement demonstrated? |
+
 
 ## Recursive decomposition
 
@@ -63,6 +69,7 @@ problem
 ```
 
 The number of layers is determined by complexity, not by a fixed template.
+
 
 ## Decomposition pipeline
 
@@ -99,6 +106,7 @@ resume decomposition or implementation
 
 A maintenance request re-enters the same decomposition process at the highest layer that owns the requested change.
 
+
 ## Bounded tasks
 
 A bounded task has explicit:
@@ -116,6 +124,7 @@ A bounded task has explicit:
 
 If a task cannot answer those questions, it is not sufficiently bounded.
 
+
 ## Stopping criteria
 
 Decomposition should stop when additional subdivision no longer materially improves implementation reliability.
@@ -126,6 +135,7 @@ A candidate leaf task should have explicit purpose, authority, inputs, outputs, 
 
 A leaf task should change one coherent responsibility, have a reviewable diff, be independently validatable, avoid coupling unrelated decisions, and avoid requiring simultaneous acceptance of multiple architectural changes.
 
+
 ## AI reasoning boundaries
 
 The framework should keep implementation work inside an AI assistant's bounded reasoning envelope.
@@ -133,6 +143,7 @@ The framework should keep implementation work inside an AI assistant's bounded r
 A task is inside that envelope when its required context is finite and identifiable, its product and architectural decisions are resolved or explicitly escalated, it has a limited number of interacting responsibilities, its file and behavior boundaries are explicit, and its completion and review criteria are objective.
 
 Context-window size alone does not determine boundedness.
+
 
 ## Traceability
 
@@ -152,30 +163,3 @@ Machine verification may establish the presence, structure, and referential vali
 Human review remains responsible for determining whether those links correctly preserve the intended semantics, including the relationship between recorded and accepted directional overview and accepted revision.
 
 The exact evidence artifacts may vary by product and requirement, but every maintained implementation should retain a declared traceable relationship to its owning accepted requirement.
-
-## Architectural invariants
-
-- Complex problems are decomposed before implementation.
-- Each decomposition step should reduce meaningful uncertainty.
-- Implementation tasks must have explicit authority.
-- Implementation must not invent missing product semantics.
-- Missing higher-level decisions are escalated rather than guessed.
-- Conversation is not durable authority.
-- Specifications preserve decisions and constrain realization.
-- Generated artifacts do not become independent authority.
-- Validation proves structural properties, not semantic correctness.
-- Human review retains semantic authority.
-- Every implementation artifact should be traceable to accepted product intent.
-- Decomposition stops when work is reliably bounded.
-
-## Terminology
-
-- **Decomposition**: the process of reducing a large problem into smaller, more explicit units with defined roles, boundaries, dependencies, and authority.
-- **Conversation**: a discovery and clarification medium that may produce candidate understanding, expose intent, identify uncertainty, test interpretations, and discover constraints; decisions required for later work must be recorded in the repository artifact that owns them.
-- **Product understanding**: the provisional shared interpretation of human intent produced through discovery and clarification before it is recorded as durable overview direction; it is explicitly non-authoritative until recorded and accepted in the proper artifact.
-- **Bounded task**: a task with explicit authority, scope, dependencies, outputs, and success criteria.
-- **Authority**: the accepted source that controls a decision.
-- **Reasoning envelope**: the set of conditions under which an AI assistant can complete a task without inventing major missing context.
-- **Invariant**: a rule that remains true across decomposition and implementation.
-- **Escalation**: the act of returning an unresolved decision to its owning authority.
-- **Maintained product**: the final product realized and preserved through accepted work.

@@ -366,7 +366,6 @@ class InstallationEntryStatus:
 
 VALID_LIFECYCLE_STATUSES = frozenset({"candidate", "accepted", "superseded", "retired"})
 
-VALID_OVERVIEW_ROLES = frozenset({"initial", "revision", "replacement", "branch"})
 
 PRODUCT_SPEC_LIFECYCLE_STATUSES = frozenset({"candidate", "accepted", "superseded", "retired"})
 

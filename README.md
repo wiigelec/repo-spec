@@ -22,7 +22,7 @@ The destination path is the only normal-user bootstrap input. The repository nam
 
 The local wrapper determines the repo-spec framework source and exact Git revision from the clean checkout that is actually executing the initializer. You do not supply a Git SHA, source-repository field, product ID, direction material, execution profile, or separate initialization-authority token.
 
-Repository initialization establishes the governed repository framework only. It does **not** define the product. Product overview and direction are governed successor work performed after initialization; decomposition, product specifications, implementation planning, and implementation follow through the repository workflow.
+Repository initialization establishes the governed repository framework only. It does **not** define the product. overview collection, analysis, and functional-set approval are governed successor work performed after initialization; decomposition, product specifications, implementation planning, and implementation follow through the repository workflow.
 
 The initializer fails closed when the destination is unsafe or the executing repo-spec checkout cannot provide accurate, unambiguous framework provenance.
 
@@ -39,8 +39,8 @@ For lifecycle behavior and lower-level diagnostic/developer interfaces, see the 
 ## Start here
 
 - [Repository chatbot initialization](AGENTS.md)
-- [Product overview](repo/docs/overview/PRODUCT-OVERVIEW.md)
-- [Initializer overview](product/docs/overview/INITIALIZER-OVERVIEW.md)
+- [functional-set lifecycle](repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md)
+- [Initializer overview](product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md)
 - [Initializer decomposition](product/docs/decompositions/INITIALIZER-DECOMPOSITION.md)
 - [Initializer reference](product/docs/initializer/README.md)
 - [Repository manifest](repo/specs/repo/manifest.json)

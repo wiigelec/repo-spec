@@ -77,7 +77,7 @@
     },
     {
       "id": "workspace-seeding",
-      "purpose": "Enforce the bootstrap boundary that no product overview, decomposition, product specifications, or implementation-plan authority is seeded during repository initialization.",
+      "purpose": "Enforce the bootstrap boundary that no functional-set lifecycle, decomposition, product specifications, or implementation-plan authority is seeded during repository initialization.",
       "required": true,
       "deferrable": false,
       "recoverable": false,

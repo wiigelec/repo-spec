@@ -17,7 +17,7 @@
     },
     {
       "id": "INIT-FSD-002",
-      "text": "Repository bootstrap shall not generate a product overview, product decomposition, implementation plan, direction-evidence manifest, direction-evidence files, or product-specific controlling-document skeletons."
+      "text": "Repository bootstrap shall not generate a functional-set lifecycle, product decomposition, implementation plan, direction-evidence manifest, direction-evidence files, or product-specific controlling-document skeletons."
     },
     {
       "id": "INIT-FSD-003",
@@ -29,7 +29,7 @@
     },
     {
       "id": "INIT-FSD-005",
-      "text": "Product overview and direction shall begin only after bootstrap through the repository's governed successor lifecycle. Decomposition, accepted product specifications, and implementation planning shall follow the accepted repository development-workflow ordering."
+      "text": "Overview collection, analysis, and functional-set approval shall begin only after bootstrap through the repository's governed successor lifecycle. Decomposition, accepted product specifications, and implementation planning shall follow the accepted repository development-workflow ordering."
     },
     {
       "id": "INIT-FSD-006",

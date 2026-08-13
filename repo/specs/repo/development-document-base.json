@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-DDB-001",
-      "text": "The repository shall define one canonical composite-document base contract for overview whiteboards, overview analyses, functional sets, legacy product overviews retained for compatibility, product decompositions, and implementation plans."
+      "text": "The repository shall define one canonical composite-document base contract for overview whiteboards, overview analyses, functional sets, product decompositions, and implementation plans."
     },
     {
       "id": "REPO-DDB-002",

@@ -33,19 +33,6 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Portability category: `framework-generic`
 - Manifest participation: `none`
 
-### Legacy product overview
-
-- Identifier: `product-overview`
-- Role: `overview`
-- Authority category: `directional`
-- Authority source: pre-functional-set directional product overview
-- Source of truth rule: Retained for compatibility with existing governed documents; it remains directional and shall not act as the new pre-decomposition lifecycle gate after the functional-set workflow is available.
-- Mutability: mutable through governed updates
-- Generation mode: `manual`
-- Validation ownership: `review`
-- Portability category: `framework-generic`
-- Manifest participation: `none`
-
 ### Overview whiteboard
 
 - Identifier: `overview-whiteboard`
@@ -376,7 +363,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - `REPO-AT-002`: The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, profile-specific, and convenience authority categories, and shall distinguish overview collection evidence, overview analysis synthesis, candidate functional sets, and approved functional sets.
 - `REPO-AT-003`: The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation.
 - `REPO-AT-003A`: An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance.
-- `REPO-AT-004`: An overview whiteboard, overview analysis, legacy product overview, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority.
+- `REPO-AT-004`: An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority.
 - `REPO-AT-005`: Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized.
 - `REPO-AT-006`: Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.
 - `REPO-AT-007`: Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.

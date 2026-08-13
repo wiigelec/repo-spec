@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "repo/schemas/repo/product-overview.schema.json",
-  "title": "Product Overview Process Document Schema",
+  "$id": "repo/schemas/repo/functional-set-process.schema.json",
+  "title": "Functional-Set Process Document Schema",
   "allOf": [
     {
       "$ref": "./development-document-base.schema.json"
@@ -17,7 +17,6 @@
         "artifact_type": {
           "type": "string",
           "enum": [
-            "product-overview",
             "overview-whiteboard",
             "overview-analysis",
             "functional-set"
@@ -29,114 +28,6 @@
             "repo/docs/overview/",
             "product/docs/overview/"
           ]
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "artifact_type": {
-            "const": "product-overview"
-          }
-        },
-        "required": [
-          "artifact_type"
-        ]
-      },
-      "then": {
-        "required": [
-          "overview_role"
-        ],
-        "properties": {
-          "required_content_areas": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "product_identity",
-              "problem_and_outcome",
-              "intended_users_and_stakeholders",
-              "scope_and_non_goals",
-              "product_boundaries",
-              "durable_principles",
-              "capabilities_and_success",
-              "unresolved_questions",
-              "readiness_for_decomposition"
-            ],
-            "properties": {
-              "product_identity": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "problem_and_outcome": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "intended_users_and_stakeholders": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "scope_and_non_goals": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "product_boundaries": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "durable_principles": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "capabilities_and_success": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "unresolved_questions": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              },
-              "readiness_for_decomposition": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string",
-                  "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+\\.md$"
-                }
-              }
-            }
-          }
         }
       }
     },

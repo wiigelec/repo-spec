@@ -41,7 +41,7 @@
     },
     {
       "id": "INIT-REQ-008",
-      "text": "Repository bootstrap shall not accept product-direction material and shall not establish product overview, product decomposition, product specification, or implementation-plan authority. Those artifacts are successor governed work in the initialized repository."
+      "text": "Repository bootstrap shall not accept product-direction material and shall not establish functional-set lifecycle, product decomposition, product specification, or implementation-plan authority. Those artifacts are successor governed work in the initialized repository."
     },
     {
       "id": "INIT-REQ-009",
@@ -84,7 +84,7 @@
     },
     {
       "type": "artifact",
-      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+      "path": "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
     },
     {
       "type": "artifact",

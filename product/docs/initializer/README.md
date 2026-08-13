@@ -38,7 +38,7 @@ Repository bootstrap does not establish:
 
 - product ID or product identity
 - product direction material or direction evidence
-- product overview
+- functional-set lifecycle
 - product decomposition
 - product specifications or product manifest authority
 - product implementation plan
@@ -83,7 +83,7 @@ The initializer does not overwrite or migrate an existing repository, perform re
 
 `repo/initializer/provenance.json` records initializer identity/version, exact local framework repository/revision, initialization timestamp, and canonical bootstrap request fingerprint.
 
-`repo/initializer/handoff.json` classifies installed framework material and generated bootstrap records. Product foundations are empty at bootstrap. The next governed action is product overview/direction work.
+`repo/initializer/handoff.json` classifies installed framework material and generated bootstrap records. Product foundations are empty at bootstrap. The next governed action is functional-set lifecycle/direction work.
 
 ## Validation
 

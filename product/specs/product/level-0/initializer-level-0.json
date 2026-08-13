@@ -43,7 +43,7 @@
     },
     {
       "id": "INIT-L0-007",
-      "text": "Directional documents (product overview, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior."
+      "text": "Directional documents (overview analysis, functional set, decomposition) shall guide scope and boundaries but shall not define normative product semantics; only accepted product specifications may define normative product behavior."
     },
     {
       "id": "INIT-L0-008",
@@ -55,7 +55,7 @@
     },
     {
       "id": "INIT-L0-010",
-      "text": "Repository initialization shall establish the governed repository framework before product definition. Product overview, product direction, product decomposition, product specifications, and product implementation planning are successor governed lifecycle work and shall not be established or accepted by repository bootstrap."
+      "text": "Repository initialization shall establish the governed repository framework before product definition. Overview collection, overview analysis, functional-set approval, product decomposition, product specifications, and product implementation planning are successor governed lifecycle work and shall not be established or accepted by repository bootstrap."
     }
   ],
   "dependencies": [],
@@ -86,7 +86,7 @@
     },
     {
       "type": "artifact",
-      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
+      "path": "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
     },
     {
       "type": "artifact",

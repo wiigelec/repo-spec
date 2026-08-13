@@ -62,7 +62,7 @@ Defines the atomic repository-bootstrap handoff manifest.
 - `INIT-HND-004`: `foundations.framework` shall list all installed reusable framework regular files. `foundations.product` shall be an empty array for repository bootstrap because product foundations are deferred.
 - `INIT-HND-005`: `material.generated` shall list bootstrap-generated records including provenance and handoff. `material.selected` shall be empty because bootstrap installs no user-selected direction material.
 - `INIT-HND-006`: `material.omitted` and `material.deferred` may record governed absent paths where applicable, but absent product-definition work need not be enumerated path-by-path to establish the bootstrap boundary.
-- `INIT-HND-007`: The `provenance` field shall reference `repo/initializer/provenance.json`, and `next_action` shall direct governed product overview/direction work before decomposition, specifications, planning, and implementation.
+- `INIT-HND-007`: The `provenance` field shall reference `repo/initializer/provenance.json`, and `next_action` shall direct overview collection, analysis, explicit functional-set approval, and only then decomposition, specifications, planning, and implementation.
 - `INIT-HND-008`: All classification arrays shall be mutually disjoint, lexicographically sorted, and contain normalized repository-relative file paths only.
 - `INIT-HND-009`: Every regular file present before Git initialization shall appear exactly once in a present classification array, and no omitted/deferred path may be present.
 - `INIT-HND-010`: The handoff manifest shall not claim that product identity, direction, decomposition, specifications, or implementation planning were established by bootstrap.
@@ -80,7 +80,7 @@ Defines the atomic repository-bootstrap handoff manifest.
 - artifact: `repo/specs/repo/product-manifest.json`
 - artifact: `repo/specs/repo/validation.json`
 - artifact: `repo/specs/repo/repository-structure.json`
-- artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
+- artifact: `product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md`
 - artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts

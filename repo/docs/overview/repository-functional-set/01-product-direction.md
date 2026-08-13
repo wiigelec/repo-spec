@@ -1,6 +1,6 @@
-# Product Overview: Product Direction
+# functional-set lifecycle: Product Direction
 
-> Part 1 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Next](./02-decomposition-model.md)
+> Part 1 of 6 · [functional-set lifecycle index](../functional-set-process.md) · [Next](./02-decomposition-model.md)
 
 This part defines the framework’s intended outcome, audience, success conditions, and explicit boundaries.
 
@@ -42,7 +42,7 @@ The framework should provide:
 
 - a predictable repository structure;
 - clear artifact roles and authority boundaries;
-- a durable product overview;
+- a durable functional-set lifecycle;
 - non-normative implementation planning;
 - normative repository and product specifications;
 - maintained product artifacts;

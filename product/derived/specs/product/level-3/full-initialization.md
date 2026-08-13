@@ -45,12 +45,12 @@ Defines the complete bounded local repository-bootstrap workflow from a minimal 
 - `INIT-FIN-004`: The normal local workflow shall require only the explicit destination as user bootstrap input. Repository name is mechanically derived from the destination basename. Framework source/revision are locally resolved execution provenance. Product identity, product direction, execution profile, and a separate initialization-authority token are not bootstrap inputs.
 - `INIT-FIN-005`: The workflow shall reject unsafe or existing destinations, ambiguous or dirty framework provenance, remote retrieval, hosting-platform mutation, arbitrary staging resume, migration, overwrite, and cross-device promotion before unsafe mutation.
 - `INIT-FIN-006`: Equivalent canonical destination requests and equivalent clean executing framework revisions shall produce equivalent repository content except for explicitly variable provenance timestamp data and any downstream Git object identifiers affected by that timestamp.
-- `INIT-FIN-007`: The promoted repository shall contain only the reusable repository framework material permitted by the closed output inventory, bootstrap provenance/handoff records, and deterministic local Git state. It shall not contain initializer-generated product direction evidence, product overview/decomposition, product specifications, product manifest authority, or implementation-plan authority.
+- `INIT-FIN-007`: The promoted repository shall contain only the reusable repository framework material permitted by the closed output inventory, bootstrap provenance/handoff records, and deterministic local Git state. It shall not contain initializer-generated product direction evidence, functional-set lifecycle/decomposition, product specifications, product manifest authority, or implementation-plan authority.
 - `INIT-FIN-008`: A pre-promotion failure leaves the destination unpromoted and preserves governed diagnostics; no automatic retry or arbitrary resume is authorized.
 - `INIT-FIN-009`: A promoted success occurs only after the staged repository is atomically renamed to the confirmed-absent destination and success-finalization completes.
 - `INIT-FIN-010`: An indeterminate promotion shall never be reported as success and requires external diagnosis before retry or cleanup.
 - `INIT-FIN-011`: A cleanup failure after committed promotion is distinct from pre-promotion failure and shall preserve the fact that the repository was promoted while reporting finalization failure.
-- `INIT-FIN-012`: Product overview and direction are governed successor work performed only after repository bootstrap; bootstrap does not authorize or synthesize them.
+- `INIT-FIN-012`: Overview collection, analysis, and functional-set approval are governed successor work performed only after repository bootstrap; bootstrap does not authorize or synthesize them.
 
 ## Dependencies
 

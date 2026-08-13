@@ -27,9 +27,7 @@ not authority for the desired architecture.
   "authority_category": "directional",
   "lifecycle_status": "accepted",
   "governing_issue": "#348",
-  "controlling_documents": [
-    "repo/docs/overview/PRODUCT-OVERVIEW.md"
-  ],
+  "controlling_documents": [],
   "predecessor_documents": [],
   "evidence": [
     "repo/specs/repo/validation.json",
@@ -63,25 +61,36 @@ not authority for the desired architecture.
       "order": 1,
       "path": "repo/docs/architecture/validation-system-desired-state/01-purpose-authority-and-boundaries.md",
       "title": "Purpose, authority, and boundaries",
-      "coverage": ["authority_and_basis", "scope_and_boundaries"]
+      "coverage": [
+        "authority_and_basis",
+        "scope_and_boundaries"
+      ]
     },
     {
       "order": 2,
       "path": "repo/docs/architecture/validation-system-desired-state/02-target-architecture-and-ownership.md",
       "title": "Target architecture and ownership",
-      "coverage": ["target_architecture", "portability_and_ownership"]
+      "coverage": [
+        "target_architecture",
+        "portability_and_ownership"
+      ]
     },
     {
       "order": 3,
       "path": "repo/docs/architecture/validation-system-desired-state/03-test-strategy-and-efficiency.md",
       "title": "Test strategy and efficiency",
-      "coverage": ["validation_strategy"]
+      "coverage": [
+        "validation_strategy"
+      ]
     },
     {
       "order": 4,
       "path": "repo/docs/architecture/validation-system-desired-state/04-audit-model-retirement-and-completion.md",
       "title": "Audit model, retirement, and completion",
-      "coverage": ["risks_and_unresolved_decisions", "audit_and_successor_work"]
+      "coverage": [
+        "risks_and_unresolved_decisions",
+        "audit_and_successor_work"
+      ]
     }
   ],
   "successor_action": "After this architecture is accepted through issue #348, perform a fresh validation-system audit against then-current main and current accepted normative specifications. Any implementation changes require separate bounded governed issue authority.",
@@ -135,7 +144,7 @@ artifact is a candidate for consolidation, relocation, or retirement.
 ## Relationships
 
 This architecture is directionally controlled by
-`repo/docs/overview/PRODUCT-OVERVIEW.md`.
+`repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md`.
 
 Normative validation behavior remains governed by accepted specifications, especially
 `repo.validation`. The initializer output inventory and framework-installation

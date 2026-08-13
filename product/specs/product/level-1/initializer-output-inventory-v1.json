@@ -129,8 +129,8 @@
       "role": "governing-specification"
     },
     {
-      "material_key": "repo-product-overview",
-      "destination_path": "repo/specs/repo/product-overview.json",
+      "material_key": "repo-functional-set-process",
+      "destination_path": "repo/specs/repo/functional-set-process.json",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -363,8 +363,8 @@
       "role": "generated-reference"
     },
     {
-      "material_key": "derived-product-overview",
-      "destination_path": "repo/derived/specs/repo/product-overview.md",
+      "material_key": "derived-functional-set-process",
+      "destination_path": "repo/derived/specs/repo/functional-set-process.md",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -417,8 +417,8 @@
       "role": "validation-utility"
     },
     {
-      "material_key": "repo-schema-product-overview",
-      "destination_path": "repo/schemas/repo/product-overview.schema.json",
+      "material_key": "repo-schema-functional-set-process",
+      "destination_path": "repo/schemas/repo/functional-set-process.schema.json",
       "operation": "copy-verbatim",
       "mode": "100644",
       "required": true,

@@ -31,7 +31,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         clone_index = 0
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        chunk_path = temp_repo / "product/docs/overview/initializer-overview/04-capabilities-and-success.md"
+        chunk_path = temp_repo / "product/docs/overview/initializer-functional-set/04-capabilities-and-success.md"
         chunk_path.write_text(chunk_path.read_text() + "\n<!--" + ("x" * 30000) + "-->")
         expect_failure("oversized overview chunk bytes", lambda: validate_product_phases(temp_repo, ('product development documents',)), "chunk exceeds byte limit")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
@@ -98,79 +98,48 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         )
         decomposition_path.write_text(decomposition_text)
         expect_failure("product-area inventory mismatch", lambda: validate_product_phases(temp_repo, ('product development documents',)), "product-area inventory mismatch")
-        plan_a = DevelopmentDocumentRecord(
-            "docs/plans/plan-a.md",
-            "docs/plans/",
-            {},
-            {
-                "artifact_id": "plan-a",
-                "artifact_type": "implementation-plan",
-                "document_slug": "plan-a",
-                "filename_stem": "plan-a",
-                "root_path": "docs/plans/",
-                "title": "Plan A",
-                "product_id": "test-product",
-                "authority_category": "planning",
-                "lifecycle_status": "candidate",
-                "governing_issue": "#1",
-                "controlling_documents": ["docs/overview/overview.md", "docs/decompositions/decomposition.md", "docs/plans/plan-b.md"],
-                "predecessor_documents": [],
-                "evidence": ["docs/overview/overview.md"],
-                "required_content_areas": {"authority_and_basis": ["docs/plans/plan-a/01.md"], "scope_and_exclusions": ["docs/plans/plan-a/01.md"], "workstreams_and_dependencies": ["docs/plans/plan-a/02.md"], "entry_and_exit_conditions": ["docs/plans/plan-a/03.md"], "transition_gates": ["docs/plans/plan-a/03.md"], "validation_strategy": ["docs/plans/plan-a/03.md"], "risks_and_unresolved_decisions": ["docs/plans/plan-a/02.md", "docs/plans/plan-a/03.md"], "completion_and_successor_work": ["docs/plans/plan-a/03.md"]},
-                "subordinate_chunks": [],
-                "successor_action": "next",
-                "schema_version": "1",
-            },
-            [],
-        )
-        plan_b = DevelopmentDocumentRecord(
-            "docs/plans/plan-b.md",
-            "docs/plans/",
-            {},
-            {
-                "artifact_id": "plan-b",
-                "artifact_type": "implementation-plan",
-                "document_slug": "plan-b",
-                "filename_stem": "plan-b",
-                "root_path": "docs/plans/",
-                "title": "Plan B",
-                "product_id": "test-product",
-                "authority_category": "planning",
-                "lifecycle_status": "candidate",
-                "governing_issue": "#1",
-                "controlling_documents": ["docs/overview/overview.md", "docs/decompositions/decomposition.md", "docs/plans/plan-a.md"],
-                "predecessor_documents": [],
-                "evidence": ["docs/overview/overview.md"],
-                "required_content_areas": {"authority_and_basis": ["docs/plans/plan-b/01.md"], "scope_and_exclusions": ["docs/plans/plan-b/01.md"], "workstreams_and_dependencies": ["docs/plans/plan-b/02.md"], "entry_and_exit_conditions": ["docs/plans/plan-b/03.md"], "transition_gates": ["docs/plans/plan-b/03.md"], "validation_strategy": ["docs/plans/plan-b/03.md"], "risks_and_unresolved_decisions": ["docs/plans/plan-b/02.md", "docs/plans/plan-b/03.md"], "completion_and_successor_work": ["docs/plans/plan-b/03.md"]},
-                "subordinate_chunks": [],
-                "successor_action": "next",
-                "schema_version": "1",
-            },
-            [],
-        )
-        overview = DevelopmentDocumentRecord(
-            "docs/overview/overview.md",
+        whiteboard = DevelopmentDocumentRecord(
+            "docs/overview/whiteboard.md",
             "docs/overview/",
             {},
             {
-                "artifact_id": "overview",
-                "artifact_type": "product-overview",
-                "document_slug": "overview",
-                "filename_stem": "overview",
-                "root_path": "docs/overview/",
-                "title": "Overview",
+                "artifact_id": "whiteboard",
+                "artifact_type": "overview-whiteboard",
                 "product_id": "test-product",
-                "authority_category": "directional",
-                "lifecycle_status": "accepted",
-                "overview_role": "initial",
-                "governing_issue": "#1",
+                "lifecycle_status": "active",
                 "controlling_documents": [],
                 "predecessor_documents": [],
-                "evidence": ["docs/overview/overview.md"],
-                "required_content_areas": {"product_identity": ["docs/overview/overview/01.md"], "problem_and_outcome": ["docs/overview/overview/01.md"], "intended_users_and_stakeholders": ["docs/overview/overview/01.md"], "scope_and_non_goals": ["docs/overview/overview/01.md"], "product_boundaries": ["docs/overview/overview/01.md"], "durable_principles": ["docs/overview/overview/01.md"], "capabilities_and_success": ["docs/overview/overview/01.md"], "unresolved_questions": ["docs/overview/overview/01.md"], "readiness_for_decomposition": ["docs/overview/overview/01.md"]},
-                "subordinate_chunks": [],
-                "successor_action": "next",
-                "schema_version": "1",
+                "evidence": [],
+            },
+            [],
+        )
+        analysis = DevelopmentDocumentRecord(
+            "docs/overview/analysis.md",
+            "docs/overview/",
+            {},
+            {
+                "artifact_id": "analysis",
+                "artifact_type": "overview-analysis",
+                "product_id": "test-product",
+                "lifecycle_status": "candidate",
+                "controlling_documents": [whiteboard.path],
+                "predecessor_documents": [whiteboard.path],
+                "evidence": [],
+            },
+            [],
+        )
+        functional_set = DevelopmentDocumentRecord(
+            "docs/overview/functional-set.md",
+            "docs/overview/",
+            {},
+            {
+                "artifact_id": "functional-set",
+                "artifact_type": "functional-set",
+                "product_id": "test-product",
+                "lifecycle_status": "approved",
+                "controlling_documents": [analysis.path],
+                "predecessor_documents": [analysis.path],
+                "evidence": [],
             },
             [],
         )
@@ -181,21 +150,41 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             {
                 "artifact_id": "decomposition",
                 "artifact_type": "product-decomposition",
-                "document_slug": "decomposition",
-                "filename_stem": "decomposition",
-                "root_path": "docs/decompositions/",
-                "title": "Decomposition",
                 "product_id": "test-product",
-                "authority_category": "directional",
-                "lifecycle_status": "accepted",
-                "governing_issue": "#1",
-                "controlling_documents": ["docs/overview/overview.md"],
-                "predecessor_documents": ["docs/overview/overview.md"],
-                "evidence": ["docs/overview/overview.md"],
-                "required_content_areas": {"decomposition_basis": ["docs/decompositions/decomposition/01.md"], "product_area_inventory": ["docs/decompositions/decomposition/01.md"], "dependency_model": ["docs/decompositions/decomposition/01.md"], "cross_cutting_concerns": ["docs/decompositions/decomposition/01.md"], "unresolved_decisions": ["docs/decompositions/decomposition/01.md"], "stopping_criteria": ["docs/decompositions/decomposition/01.md"], "planning_handoff": ["docs/decompositions/decomposition/01.md"]},
-                "subordinate_chunks": [],
-                "successor_action": "next",
-                "schema_version": "1",
+                "lifecycle_status": "candidate",
+                "controlling_documents": [functional_set.path],
+                "predecessor_documents": [functional_set.path],
+                "evidence": [],
+            },
+            [],
+        )
+        plan_a = DevelopmentDocumentRecord(
+            "docs/plans/plan-a.md",
+            "docs/plans/",
+            {},
+            {
+                "artifact_id": "plan-a",
+                "artifact_type": "implementation-plan",
+                "product_id": "test-product",
+                "lifecycle_status": "candidate",
+                "controlling_documents": [functional_set.path, decomposition.path, "docs/plans/plan-b.md"],
+                "predecessor_documents": [decomposition.path],
+                "evidence": [],
+            },
+            [],
+        )
+        plan_b = DevelopmentDocumentRecord(
+            "docs/plans/plan-b.md",
+            "docs/plans/",
+            {},
+            {
+                "artifact_id": "plan-b",
+                "artifact_type": "implementation-plan",
+                "product_id": "test-product",
+                "lifecycle_status": "candidate",
+                "controlling_documents": [functional_set.path, decomposition.path, "docs/plans/plan-a.md"],
+                "predecessor_documents": [decomposition.path],
+                "evidence": [],
             },
             [],
         )
@@ -204,7 +193,9 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             lambda: check_development_document_relationships(
                 Path("/tmp"),
                 {
-                    overview.path: overview,
+                    whiteboard.path: whiteboard,
+                    analysis.path: analysis,
+                    functional_set.path: functional_set,
                     decomposition.path: decomposition,
                     plan_a.path: plan_a,
                     plan_b.path: plan_b,
@@ -214,17 +205,18 @@ def run_product_development_document_tests(repo_root: Path) -> None:
             ),
             "cycle detected",
         )
+
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_path.write_text(overview_path.read_text().replace('  "artifact_id": "initializer-overview",\n', '  "artifact_id": "initializer.plan.bootstrap",\n'))
+        overview_path = temp_repo / "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
+        overview_path.write_text(overview_path.read_text().replace('  "artifact_id": "initializer-functional-set",\n', '  "artifact_id": "initializer.plan.bootstrap",\n'))
         validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_path = temp_repo / "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace(
-            '  "controlling_documents": [\n    "repo/docs/overview/PRODUCT-OVERVIEW.md"\n  ],\n',
+            '  "controlling_documents": [\n    "repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md"\n  ],\n',
             '  "controlling_documents": [],\n',
             1,
         )
@@ -232,69 +224,80 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_path = temp_repo / "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
         overview_text = overview_path.read_text()
         overview_text = overview_text.replace(
-            '    "repo/docs/overview/product-overview/06-governance-and-evolution.md"\n  ],\n',
-            '    "repo/docs/overview/product-overview/06-governance-and-evolution.md",\n    "repo/docs/overview/README.md"\n  ],\n',
+            '    "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md"\n  ],\n',
+            '    "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",\n    "repo/docs/overview/README.md"\n  ],\n',
             1,
         )
         overview_path.write_text(overview_text)
         validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_text = overview_path.read_text()
-        overview_text = overview_text.replace('  "overview_role": "initial",\n', '', 1)
-        overview_path.write_text(overview_text)
-        expect_failure("overview without overview role", lambda: validate_product_phases(temp_repo, ('product development documents',)), "overview_role")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_text = overview_path.read_text()
-        overview_text = overview_text.replace('{"order": 1, "path": "product/docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose", "coverage": ["product_identity"]}', '{"order": 1, "path": "product/docs/overview/initializer-overview/01-product-identity-and-purpose.md", "title": "Product identity and purpose"}', 1)
-        overview_path.write_text(overview_text)
-        expect_failure("overview chunk without coverage", lambda: validate_product_phases(temp_repo, ('product development documents',)), "required coverage must be an array")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
-        overview_text = overview_path.read_text()
-        overview_text = overview_text.replace('  "overview_role": "initial",\n', '  "overview_role": "revision",\n', 1)
-        overview_path.write_text(overview_text)
-        expect_failure("revision overview without predecessor", lambda: validate_product_phases(temp_repo, ('product development documents',)), "minItems violation")
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        overview_chunk_path = temp_repo / "product/docs/overview/initializer-overview/07-capabilities-addendum.md"
+        overview_chunk_path = temp_repo / "product/docs/overview/initializer-functional-set/07-capabilities-addendum.md"
         overview_chunk_path.write_text("# Additional capabilities\n")
-        overview_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
+        overview_path = temp_repo / "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
         overview_text = overview_path.read_text()
-        overview_text = overview_text.replace(
-            '    "capabilities_and_success": ["product/docs/overview/initializer-overview/04-capabilities-and-success.md"],\n',
-            '    "capabilities_and_success": ["product/docs/overview/initializer-overview/04-capabilities-and-success.md", "product/docs/overview/initializer-overview/07-capabilities-addendum.md"],\n',
-            1,
+        metadata_prefix, metadata_rest = overview_text.split("```json\n", 1)
+        metadata_text, metadata_suffix = metadata_rest.split("\n```", 1)
+        metadata = json.loads(metadata_text)
+        addendum_path = "product/docs/overview/initializer-functional-set/07-capabilities-addendum.md"
+        metadata["required_content_areas"]["capability_boundary"].append(addendum_path)
+        metadata["subordinate_chunks"].append({
+            "order": 7,
+            "path": addendum_path,
+            "title": "Capabilities addendum",
+            "coverage": ["capability_boundary"],
+        })
+        overview_text = (
+            metadata_prefix
+            + "```json\n"
+            + json.dumps(metadata, indent=2)
+            + "\n```"
+            + metadata_suffix
         )
+        index_anchor = "- [Initializer Overview: Lifecycle and Handoff](initializer-functional-set/06-lifecycle-and-handoff.md)\n"
+        if overview_text.count(index_anchor) != 1:
+            raise AssertionError("functional-set chunk index anchor mismatch")
         overview_text = overview_text.replace(
-            '    {"order": 6, "path": "product/docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]}\n  ],\n',
-            '    {"order": 6, "path": "product/docs/overview/initializer-overview/06-lifecycle-and-handoff.md", "title": "Lifecycle and handoff", "coverage": ["readiness_for_decomposition"]},\n    {"order": 7, "path": "product/docs/overview/initializer-overview/07-capabilities-addendum.md", "title": "Capabilities addendum", "coverage": ["capabilities_and_success"]}\n  ],\n',
-            1,
-        )
-        overview_text = overview_text.replace(
-            '- [06 - Lifecycle and handoff](./initializer-overview/06-lifecycle-and-handoff.md)\n',
-            '- [06 - Lifecycle and handoff](./initializer-overview/06-lifecycle-and-handoff.md)\n- [07 - Capabilities addendum](./initializer-overview/07-capabilities-addendum.md)\n',
+            index_anchor,
+            index_anchor + "- [Capabilities addendum](initializer-functional-set/07-capabilities-addendum.md)\n",
             1,
         )
         overview_path.write_text(overview_text)
         validate_product_phases(temp_repo, ('product development documents',))
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        chunk_index_path = temp_repo / "product/docs/overview/INITIALIZER-OVERVIEW.md"
-        chunk_index_path.write_text(chunk_index_path.read_text().replace("./initializer-overview/04-capabilities-and-success.md", "./initializer-overview/05-unresolved-questions.md", 1))
-        expect_failure("wrong overview chunk link", lambda: validate_product_phases(temp_repo, ('product development documents',)), "chunk index link mismatch")
+        chunk_index_path = temp_repo / "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
+        chunk_index_path.write_text(chunk_index_path.read_text().replace("initializer-functional-set/04-capabilities-and-success.md", "initializer-functional-set/05-unresolved-questions.md", 1))
+        expect_failure("wrong functional-set chunk link", lambda: validate_product_phases(temp_repo, ('product development documents',)), "chunk coverage mismatch")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         decomposition_path = temp_repo / "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
-        decomposition_path.write_text(decomposition_path.read_text().replace("repo/docs/overview/PRODUCT-OVERVIEW.md", "docs/overview/MISSING-OVERVIEW.md", 1))
-        expect_failure("missing decomposition predecessor path", lambda: validate_product_phases(temp_repo, ('product development documents',)), "missing evidence path")
+        decomposition_text = decomposition_path.read_text()
+        metadata_prefix, metadata_rest = decomposition_text.split("```json\n", 1)
+        metadata_text, metadata_suffix = metadata_rest.split("\n```", 1)
+        metadata = json.loads(metadata_text)
+        expected_predecessor = "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
+        if metadata.get("predecessor_documents") != [expected_predecessor]:
+            raise AssertionError(
+                f"unexpected decomposition predecessor set: {metadata.get('predecessor_documents')!r}"
+            )
+        metadata["predecessor_documents"] = ["docs/overview/MISSING-FUNCTIONAL-SET.md"]
+        decomposition_text = (
+            metadata_prefix
+            + "```json\n"
+            + json.dumps(metadata, indent=2)
+            + "\n```"
+            + metadata_suffix
+        )
+        decomposition_path.write_text(decomposition_text)
+        expect_failure(
+            "missing decomposition predecessor path",
+            lambda: validate_product_phases(temp_repo, ('product development documents',)),
+            "unresolved predecessor path",
+        )
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"

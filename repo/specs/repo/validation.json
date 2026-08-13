@@ -91,11 +91,11 @@
     },
     {
       "id": "REPO-VAL-022",
-      "text": "Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview whiteboards, overview analyses, functional sets, legacy product overviews retained for compatibility, decompositions, and planning artifacts within its owned tree so the declared chunk coverage matches the artifact contract."
+      "text": "Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview whiteboards, overview analyses, functional sets, decompositions, and planning artifacts within its owned tree so the declared chunk coverage matches the artifact contract."
     },
     {
       "id": "REPO-VAL-023",
-      "text": "Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, lifecycle-state eligibility, no predecessor cycles, analysis traceability to whiteboard evidence, functional-set traceability to analysis, and approved functional-set eligibility when a functional set governs decomposition. Legacy product-overview transitions may remain mechanically supported only as compatibility behavior for existing documents and shall not redefine the normative lifecycle."
+      "text": "Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, lifecycle-state eligibility, no predecessor cycles, analysis traceability to whiteboard evidence, functional-set traceability to analysis, and approved functional-set eligibility when a functional set governs decomposition."
     },
     {
       "id": "REPO-VAL-024",
