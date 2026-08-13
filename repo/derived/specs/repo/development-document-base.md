@@ -44,9 +44,6 @@ Defines the canonical composite-document envelope shared by product overviews, p
 - specification: `repo.repository-structure`
 - specification: `repo.artifact-taxonomy`
 - specification: `repo.validation`
-- artifact: `repo/docs/overview/PRODUCT-OVERVIEW.md`
-- artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
-- artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts
 

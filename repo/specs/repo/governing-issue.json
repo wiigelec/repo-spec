@@ -279,18 +279,6 @@
     },
     {
       "type": "artifact",
-      "path": "repo/docs/overview/product-overview/04-git-and-change-workflow.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/05-human-ai-continuity.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
-    },
-    {
-      "type": "artifact",
       "path": ".github/ISSUE_TEMPLATE/governing-issue.yml"
     }
   ],

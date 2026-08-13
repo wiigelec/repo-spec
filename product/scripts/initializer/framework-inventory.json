@@ -469,7 +469,7 @@
       "material_key": "validation-aggregate-entrypoint",
       "source_path": "scripts/validate",
       "role": "validation-utility",
-      "operation": "instantiate-template",
+      "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100755"
     },

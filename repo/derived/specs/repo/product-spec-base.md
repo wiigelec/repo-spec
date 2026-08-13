@@ -53,9 +53,6 @@ Defines the normative common envelope shared by all product specifications.
 - specification: `repo.artifact-taxonomy`
 - specification: `repo.validation`
 - artifact: `repo/specs/repo/product-manifest.json`
-- artifact: `repo/docs/plans/01-framework-architecture-plan.md`
-- artifact: `repo/docs/overview/product-overview/03-development-and-specifications.md`
-- artifact: `repo/docs/overview/product-overview/06-governance-and-evolution.md`
 - specification: `repo.product-levels`
 - specification: `repo.product-correspondence`
 

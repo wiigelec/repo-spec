@@ -546,7 +546,7 @@
       "material_key": "validation-aggregate-entrypoint",
       "destination_path": "scripts/validate",
       "role": "validation-utility",
-      "operation": "instantiate-template",
+      "operation": "copy-verbatim",
       "mode": "100755",
       "producer": "framework-installation",
       "required": true

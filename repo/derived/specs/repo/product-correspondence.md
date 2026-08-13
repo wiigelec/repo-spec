@@ -49,9 +49,6 @@ Defines the normative contract for correspondence declarations linking accepted 
 - specification: `repo.product-spec-base`
 - specification: `repo.product-levels`
 - specification: `repo.validation`
-- artifact: `repo/docs/plans/01-framework-architecture-plan.md`
-- artifact: `repo/docs/overview/product-overview/03-development-and-specifications.md`
-- artifact: `repo/docs/overview/product-overview/06-governance-and-evolution.md`
 
 ## Derived artifacts
 

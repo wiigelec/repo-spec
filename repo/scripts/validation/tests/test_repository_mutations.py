@@ -254,7 +254,58 @@ def run_repository_dependency_lifecycle_tests(repo_root: Path) -> None:
     print("ok: repository dependency lifecycle")
 
 
+def _check_transported_repository_artifact_reference_closure(
+    repo_root: Path,
+) -> None:
+    output_inventory = json.loads(
+        (
+            repo_root
+            / "product/specs/product/level-1/initializer-output-inventory-v1.json"
+        ).read_text()
+    )
+
+    installed_paths: set[str] = set()
+
+    def collect(value) -> None:
+        if isinstance(value, dict):
+            destination = value.get("destination_path")
+            if isinstance(destination, str):
+                installed_paths.add(destination)
+            for child in value.values():
+                collect(child)
+        elif isinstance(value, list):
+            for child in value:
+                collect(child)
+
+    collect(output_inventory)
+
+    transported_specs = sorted(
+        path
+        for path in installed_paths
+        if path.startswith("repo/specs/repo/")
+        and path.endswith(".json")
+    )
+
+    unresolved: list[str] = []
+    for rel in transported_specs:
+        spec = json.loads((repo_root / rel).read_text())
+        for ref in spec.get("references", []):
+            if not isinstance(ref, dict) or ref.get("type") != "artifact":
+                continue
+            target = ref.get("path")
+            if isinstance(target, str) and target not in installed_paths:
+                unresolved.append(f"{rel}: {target}")
+
+    if unresolved:
+        fail(
+            "initialized repository artifact-reference closure failed: "
+            "unresolved retained artifact references: "
+            + "; ".join(unresolved)
+        )
+
+
 def run_repository_reference_tests(repo_root: Path) -> None:
+    _check_transported_repository_artifact_reference_closure(repo_root)
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

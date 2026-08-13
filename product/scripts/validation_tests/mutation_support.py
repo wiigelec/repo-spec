@@ -153,6 +153,12 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
         shutil.copy2(repo_root / name, fixture_root / name)
     if required_paths is None:
         required_paths = declared_repo_fixture_paths(repo_root)
+
+    compatibility_registry = "repo/docs/development-document-compatibility.json"
+    required_paths = tuple(
+        dict.fromkeys((*required_paths, compatibility_registry))
+    )
+
     for relative_path in required_paths:
         source = repo_root / relative_path
         target = fixture_root / relative_path

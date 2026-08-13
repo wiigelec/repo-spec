@@ -76,18 +76,6 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/PRODUCT-OVERVIEW.md"
-    },
-    {
-      "type": "artifact",
-      "path": "product/docs/overview/INITIALIZER-OVERVIEW.md"
-    },
-    {
-      "type": "artifact",
-      "path": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
     }
   ],
   "derived_artifacts": [

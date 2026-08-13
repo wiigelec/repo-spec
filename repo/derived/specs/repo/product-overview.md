@@ -39,8 +39,6 @@ Defines the directional, non-normative contract for product overview documents.
 - specification: `repo.development-document-base`
 - specification: `repo.repository-structure`
 - specification: `repo.validation`
-- artifact: `repo/docs/overview/PRODUCT-OVERVIEW.md`
-- artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
 
 ## Derived artifacts
 

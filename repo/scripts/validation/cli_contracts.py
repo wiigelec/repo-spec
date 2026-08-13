@@ -25,12 +25,16 @@ def check_validate_cli_contract(repo_root: Path) -> None:
     expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
 
     expect(
-        'python3 "$root/repo/scripts/root_validation.py" "$root" "$repo_tree_sha"' in validate_launcher,
+        'python3 "$root/repo/scripts/root_validation.py" "$root"' in validate_launcher,
         "repository validate launcher omits transportable root validation",
+    )
+    expect(
+        "repo_tree_sha" not in validate_launcher,
+        "repository validate launcher still carries mutable repo-tree SHA state",
     )
 
     proc = subprocess.run(
-        [str(repo_root / "repo/scripts/validate"), "", "--unknown-mode"],
+        [str(repo_root / "repo/scripts/validate"), "--unknown-mode"],
         cwd=repo_root,
         capture_output=True,
         text=True,

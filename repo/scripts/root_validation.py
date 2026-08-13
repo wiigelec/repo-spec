@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -13,7 +12,6 @@ SOURCE_REQUIRED_DIRS = {".github", "product", "reference", "repo", "scripts", "u
 INITIALIZED_REQUIRED_FILES = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
 INITIALIZED_REQUIRED_DIRS = {".github", "product", "repo", "scripts", "user"}
 IGNORED_ROOT_ENTRIES = {".git"}
-SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
 class RootValidationError(RuntimeError):
@@ -32,6 +30,10 @@ def _git(repo_root: Path, *args: str, check: bool = True) -> subprocess.Complete
         detail = result.stderr.strip() or result.stdout.strip()
         raise RootValidationError(f"git command failed: git {' '.join(args)}: {detail}")
     return result
+
+
+def _is_initialized(repo_root: Path) -> bool:
+    return not (repo_root / "reference").exists()
 
 
 def validate_root_boundary(repo_root: Path, initialized: bool) -> None:
@@ -74,24 +76,38 @@ def validate_root_boundary(repo_root: Path, initialized: bool) -> None:
     print("ok: repository root boundary")
 
 
-def validate_repo_tree_integrity(repo_root: Path, expected_sha: str) -> None:
-    if SHA1_RE.fullmatch(expected_sha) is None:
-        raise RootValidationError(
-            "repo tree integrity failed: expected repo tree SHA must be 40 lowercase hexadecimal characters"
-        )
+def validate_repo_tree_integrity(repo_root: Path) -> None:
     if not (repo_root / ".git").exists():
         raise RootValidationError(
             "repo tree integrity failed: initialized repository is missing .git"
         )
+
+    roots = [
+        line.strip()
+        for line in _git(repo_root, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
+        if line.strip()
+    ]
+    if len(roots) != 1:
+        raise RootValidationError(
+            f"repo tree integrity failed: expected exactly one root commit, found {len(roots)}"
+        )
+    root_commit = roots[0]
+
+    baseline_result = _git(repo_root, "rev-parse", f"{root_commit}:repo", check=False)
+    if baseline_result.returncode != 0:
+        raise RootValidationError(
+            "repo tree integrity failed: repo/ is absent from the root commit"
+        )
+    baseline = baseline_result.stdout.strip()
 
     current_result = _git(repo_root, "rev-parse", "HEAD:repo", check=False)
     if current_result.returncode != 0:
         raise RootValidationError("repo tree integrity failed: repo/ is absent from HEAD")
     current = current_result.stdout.strip()
 
-    if current != expected_sha:
+    if current != baseline:
         raise RootValidationError(
-            "repo tree integrity failed: committed repo/ tree differs from declared framework identity"
+            "repo tree integrity failed: committed repo/ tree differs from initialized baseline"
         )
 
     status = _git(
@@ -107,26 +123,26 @@ def validate_repo_tree_integrity(repo_root: Path, expected_sha: str) -> None:
             "repo tree integrity failed: working tree changes exist under repo/"
         )
 
-    print(f"ok: immutable repo tree ({expected_sha})")
+    print(f"ok: immutable repo tree ({baseline})")
 
 
-def validate(repo_root: Path, expected_sha: str) -> None:
-    initialized = bool(expected_sha)
+def validate(repo_root: Path) -> bool:
+    initialized = _is_initialized(repo_root)
     validate_root_boundary(repo_root, initialized)
     if initialized:
-        validate_repo_tree_integrity(repo_root, expected_sha)
+        validate_repo_tree_integrity(repo_root)
+    return initialized
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) > 3:
-        print(f"validation error: unknown argument: {argv[3]}", file=sys.stderr)
+    if len(argv) > 2:
+        print(f"validation error: unknown argument: {argv[2]}", file=sys.stderr)
         return 1
 
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
-    expected_sha = argv[2] if len(argv) > 2 else ""
 
     try:
-        validate(repo_root, expected_sha)
+        validate(repo_root)
         return 0
     except (RootValidationError, OSError) as exc:
         print(f"validation error: {exc}", file=sys.stderr)

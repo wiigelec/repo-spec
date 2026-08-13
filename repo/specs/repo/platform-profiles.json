@@ -246,26 +246,6 @@
     {
       "type": "artifact",
       "path": "repo/scripts/github_field_policy.py"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/scripts/github_field_policy_mutation_test.py"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/04-git-and-change-workflow.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/05-human-ai-continuity.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
-    },
-    {
-      "type": "artifact",
-      "path": "repo/docs/plans/01-framework-architecture-plan.md"
     }
   ],
   "derived_artifacts": [

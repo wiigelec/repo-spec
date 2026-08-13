@@ -3,7 +3,6 @@
 set -euo pipefail
 
 root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-REPO_TREE_SHA=""
 
-"$root/repo/scripts/validate" "$REPO_TREE_SHA"
+"$root/repo/scripts/validate"
 "$root/product/scripts/validate"
