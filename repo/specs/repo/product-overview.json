@@ -1,37 +1,37 @@
 {
   "spec_id": "repo.product-overview",
-  "title": "Product Overview Contract",
-  "purpose": "Defines the directional, non-normative contract for product overview documents.",
+  "title": "Product Overview Process Contract",
+  "purpose": "Defines the repository-generic collection, analysis, candidate-functional-set, and approved-functional-set process that replaces accepted product overview as the pre-decomposition lifecycle stage.",
   "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
       "id": "REPO-POV-001",
-      "text": "A product overview shall be stored under the owner-specific overview root defined by `repo.development-document-base`: repository/framework-owned overviews under `repo/docs/overview/` and product-owned overviews under `product/docs/overview/`. It shall use the canonical top-level `*-OVERVIEW.md` controlling document plus subordinate chunks."
+      "text": "Overview-process artifacts shall be stored under the owner-specific overview root defined by `repo.development-document-base`: repository/framework-owned artifacts under `repo/docs/overview/` and product-owned artifacts under `product/docs/overview/`. The recognized new artifact types are `overview-whiteboard`, `overview-analysis`, and `functional-set`; legacy `product-overview` documents may remain for compatibility but are not the new lifecycle gate."
     },
     {
       "id": "REPO-POV-002",
-      "text": "A product overview shall record product identity, problem or opportunity, intended users or stakeholders, desired outcomes, scope, non-goals, product boundaries, durable principles, major capabilities, success conditions, unresolved product direction, controlling documents or bootstrap authority, predecessor documents, evidence, and readiness for decomposition, with semantic coverage separated from subordinate chunk layout. Evidence may come from discovery records, interviews, proposals, issues, statements, README files, or other non-governed sources."
+      "text": "An overview whiteboard shall durably record unordered user statements, discovered evidence, provenance, and unresolved intent before interpretation. Collection shall not prematurely convert that material into requirements, decomposition, specifications, implementation plans, implementation, or functional-set approval."
     },
     {
       "id": "REPO-POV-003",
-      "text": "A product overview shall remain directional and non-normative and shall not define exact product behavior, accepted interfaces, accepted schemas, or release readiness."
+      "text": "An overview analysis shall consume recorded whiteboard evidence and identify capability-oriented groupings, dependencies, ambiguities, candidate functional-set boundaries, and candidate FS0/core choices without itself establishing approved product direction."
     },
     {
       "id": "REPO-POV-004",
-      "text": "The top-level controlling document shall act as the index, status declaration, and navigation entry point for the overview composite document."
+      "text": "A functional set shall be capability-oriented rather than a technical-layer slice, shall define a bounded directional unit suitable for downstream decomposition, and shall remain non-normative with respect to exact product behavior, interfaces, schemas, implementation architecture, and release readiness."
     },
     {
       "id": "REPO-POV-005",
-      "text": "A product overview may contain a concise summary, but the substantive directional content shall live in subordinate chunks, and a semantic area may span multiple chunks or share chunks with other areas. A product overview shall declare `overview_role`. An initial overview shall use `overview_role: initial`; its `governing_issue` and `evidence` fields constitute bootstrap authority, it may omit predecessor documents, and it may keep controlling documents empty. A revision, replacement, or branch overview shall declare predecessor documents and shall have nonempty controlling documents. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree."
+      "text": "A functional-set artifact shall use lifecycle status `candidate` until explicit user approval and `approved` after that decision. Candidate status shall not authorize decomposition. Approval shall establish the bounded directional handoff point for decomposition, later specification work, planning, implementation, tests, integration, and functional-set-bounded audit traversal."
     },
     {
       "id": "REPO-POV-006",
-      "text": "A product overview shall expose unresolved product-direction questions rather than silently resolving them in later stages."
+      "text": "Whiteboard evidence shall persist beyond functional-set approval so deferred or unaccepted intent remains available for successor analysis. Analysis and functional-set documents shall preserve predecessor and evidence traceability rather than silently absorbing unresolved intent."
     },
     {
       "id": "REPO-POV-007",
-      "text": "A product overview shall declare when it is ready for decomposition, but that readiness shall remain directional rather than constituting acceptance of normative behavior."
+      "text": "The overview process shall support multiple candidate functional sets, including candidate FS0/core choices, before approval. An approved functional set shall explicitly declare decomposition handoff readiness; no accepted product overview shall be required as an additional gate."
     }
   ],
   "dependencies": [

@@ -33,16 +33,55 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Portability category: `framework-generic`
 - Manifest participation: `none`
 
-### Product overview
+### Legacy product overview
 
 - Identifier: `product-overview`
 - Role: `overview`
 - Authority category: `directional`
-- Authority source: durable product direction
-- Source of truth rule: States intended outcome, boundaries, and success conditions without becoming normative product authority.
+- Authority source: pre-functional-set directional product overview
+- Source of truth rule: Retained for compatibility with existing governed documents; it remains directional and shall not act as the new pre-decomposition lifecycle gate after the functional-set workflow is available.
 - Mutability: mutable through governed updates
 - Generation mode: `manual`
 - Validation ownership: `review`
+- Portability category: `framework-generic`
+- Manifest participation: `none`
+
+### Overview whiteboard
+
+- Identifier: `overview-whiteboard`
+- Role: `collection evidence`
+- Authority category: `evidentiary`
+- Authority source: user-provided and discovered overview intent
+- Source of truth rule: Durably captures unordered product intent and evidence without interpreting it into requirements, decomposition, specifications, implementation, or accepted functional-set authority.
+- Mutability: append-oriented and persistent across later lifecycle stages
+- Generation mode: `manual`
+- Validation ownership: `validation`
+- Portability category: `framework-generic`
+- Manifest participation: `none`
+
+### Overview analysis
+
+- Identifier: `overview-analysis`
+- Role: `analysis synthesis`
+- Authority category: `directional`
+- Authority source: analysis of recorded overview whiteboard evidence
+- Source of truth rule: Synthesizes candidate capability groupings, dependencies, ambiguities, and functional-set boundaries without itself establishing approved product direction.
+- Mutability: mutable through governed analysis
+- Generation mode: `manual`
+- Validation ownership: `validation`
+- Portability category: `framework-generic`
+- Manifest participation: `none`
+
+### Functional set
+
+- Identifier: `functional-set`
+- Role: `functional-set handoff`
+- Authority category: `directional`
+- Authority source: explicit user approval of a candidate functional set
+- Source of truth rule: Defines a bounded capability-oriented product-direction unit. Candidate instances are proposals only; an approved instance becomes the directional predecessor authority for its corresponding decomposition without becoming normative product behavior.
+- Mutability: candidate until approved; approved revisions require governed successor analysis
+- Generation mode: `manual`
+- Validation ownership: `validation`
 - Portability category: `framework-generic`
 - Manifest participation: `none`
 
@@ -334,16 +373,17 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 ## Normative requirements
 
 - `REPO-AT-001`: The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes.
-- `REPO-AT-002`: The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, profile-specific, and convenience authority categories.
+- `REPO-AT-002`: The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, profile-specific, and convenience authority categories, and shall distinguish overview collection evidence, overview analysis synthesis, candidate functional sets, and approved functional sets.
 - `REPO-AT-003`: The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation.
 - `REPO-AT-003A`: An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance.
-- `REPO-AT-004`: An overview, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative specification authority.
+- `REPO-AT-004`: An overview whiteboard, overview analysis, legacy product overview, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority.
 - `REPO-AT-005`: Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized.
 - `REPO-AT-006`: Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.
 - `REPO-AT-007`: Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.
 - `REPO-AT-008`: The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.
 - `REPO-AT-009`: Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`.
 - `REPO-AT-010`: The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics.
+- `REPO-AT-011`: The overview-whiteboard class shall remain evidentiary, the overview-analysis class shall remain directional synthesis, and a functional-set artifact shall distinguish candidate from approved lifecycle status; only an approved functional set may act as the directional predecessor authority for decomposition.
 
 ## Dependencies
 

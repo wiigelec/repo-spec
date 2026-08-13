@@ -64,5 +64,5 @@ def run_architecture_document_contract_tests(repo_root: Path) -> None:
             {},
             {},
         ),
-        "missing controlling overview",
+        "missing controlling functional set or legacy overview",
     )

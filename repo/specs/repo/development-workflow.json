@@ -31,11 +31,11 @@
     },
     {
       "id": "REPO-WF-007",
-      "text": "The normative development lifecycle for product development shall be: accepted overview, accepted decomposition, accepted product specifications (Level 0\u20133 in dependency order), accepted implementation plan, governed implementation issues, and product artifacts. Each stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
+      "text": "The normative development lifecycle for product development shall be: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted product specifications (Level 0–3 in dependency order), accepted implementation plan, governed implementation issues, and product artifacts. Collection and analysis shall precede candidate functional-set formation, an approved functional set shall be required before the corresponding product decomposition may be accepted, and each later acceptance-bearing stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
     },
     {
       "id": "REPO-WF-008",
-      "text": "A product overview must be accepted before a product decomposition may be accepted. An initial overview satisfies this requirement through its governing-issue bootstrap authority."
+      "text": "An approved functional set must be approved before a product decomposition may be accepted. An accepted product overview shall not be required as an additional lifecycle gate between functional-set approval and decomposition."
     },
     {
       "id": "REPO-WF-009",

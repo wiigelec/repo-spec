@@ -1,17 +1,17 @@
 {
   "spec_id": "repo.development-document-base",
   "title": "Development Document Base Contract",
-  "purpose": "Defines the canonical composite-document envelope shared by product overviews, product decompositions, and implementation plans.",
+  "purpose": "Defines the canonical composite-document envelope shared by overview-process artifacts, product decompositions, and implementation plans.",
   "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
       "id": "REPO-DDB-001",
-      "text": "The repository shall define one canonical composite-document base contract for product overviews, product decompositions, and implementation plans."
+      "text": "The repository shall define one canonical composite-document base contract for overview whiteboards, overview analyses, functional sets, legacy product overviews retained for compatibility, product decompositions, and implementation plans."
     },
     {
       "id": "REPO-DDB-002",
-      "text": "The canonical source-repository roots for repository/framework governed development documents shall be `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`, while product-owned development documents maintained by this source repository shall use `product/docs/overview/`, `product/docs/decompositions/`, and `product/docs/plans/`. Initialized-repository product development-document outputs are governed separately by the accepted initializer output contracts. Each artifact type shall remain confined to the applicable root for its owner."
+      "text": "The canonical source-repository roots for repository/framework governed development documents shall be `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`, while product-owned development documents maintained by this source repository shall use `product/docs/overview/`, `product/docs/decompositions/`, and `product/docs/plans/`. Overview whiteboards, overview analyses, and functional sets share the applicable owner-specific overview root. Initialized-repository outputs are governed separately by the accepted initializer output contracts. Each artifact type shall remain confined to the applicable root for its owner."
     },
     {
       "id": "REPO-DDB-003",
@@ -19,7 +19,7 @@
     },
     {
       "id": "REPO-DDB-004",
-      "text": "The top-level controlling document shall declare the artifact identifier, artifact type, product scope, authority category, lifecycle status, governing issue, predecessor or controlling sources, subordinate chunk inventory, successor action, and contract version in a machine-readable envelope; an initial product-overview document may satisfy the controlling-source requirement through its governing issue and evidence without a controlling-document predecessor."
+      "text": "The top-level controlling document shall declare the artifact identifier, artifact type, product scope, authority category, lifecycle status, governing issue, predecessor or controlling sources, evidence, subordinate chunk inventory, successor action, and contract version in a machine-readable envelope. An overview whiteboard may bootstrap from its governing issue and evidence without a controlling-document predecessor; analysis shall trace to whiteboard evidence; and a functional set shall trace to analysis and distinguish candidate from approved status."
     },
     {
       "id": "REPO-DDB-005",
