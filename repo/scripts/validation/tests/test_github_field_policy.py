@@ -1,8 +1,16 @@
 from __future__ import annotations
 
+import json
+import tempfile
 from pathlib import Path
 
-from github_field_policy import PolicyError, check_issue, load_fields, parse_change_type
+from github_field_policy import (
+    PolicyError,
+    check_issue,
+    load_body_from_event,
+    load_fields,
+    parse_change_type,
+)
 
 
 def _expect_policy_error(label: str, action, expected: str | None = None) -> None:
@@ -44,8 +52,68 @@ def _issue_body(fields: list[dict], change_type: str) -> str:
     return "\n\n".join(sections) + "\n"
 
 
+
+def _check_unlabeled_issue_workflow_policy(repo_root: Path, fields: list[dict]) -> None:
+    workflow = (repo_root / ".github/workflows/github-field-policy.yml").read_text()
+
+    if "types: [opened, edited, reopened]" not in workflow:
+        raise AssertionError("issue workflow event set changed")
+
+    issue_condition = (
+        "  issue-policy:\n"
+        "    if: github.event_name == 'issues'\n"
+    )
+    if issue_condition not in workflow:
+        raise AssertionError("issue-policy job is not unconditional with respect to labels")
+
+    issue_block = workflow.split("  issue-policy:\n", 1)[1].split(
+        "\n  pr-policy:\n", 1
+    )[0]
+    if "governed-work" in issue_block or "labels" in issue_block:
+        raise AssertionError("issue-policy job still depends on labels")
+
+    pr_condition = (
+        "  pr-policy:\n"
+        "    if: github.event_name == 'pull_request_target'\n"
+    )
+    if pr_condition not in workflow:
+        raise AssertionError("pull-request policy condition changed unexpectedly")
+
+    valid_body = _issue_body(fields, "Maintenance")
+    malformed_body = valid_body.replace(
+        "## Problem statement\n\nMeaningful governed policy test content.",
+        "",
+        1,
+    )
+    if malformed_body == valid_body:
+        raise AssertionError("could not construct malformed issue fixture")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        event_path = Path(tmpdir) / "event.json"
+
+        event_path.write_text(json.dumps({
+            "action": "opened",
+            "issue": {"body": valid_body, "labels": []},
+        }))
+        check_issue(load_body_from_event(event_path, "issue"), fields, repo_root)
+
+        event_path.write_text(json.dumps({
+            "action": "edited",
+            "issue": {"body": malformed_body, "labels": []},
+        }))
+        _expect_policy_error(
+            "unlabeled malformed issue event",
+            lambda: check_issue(
+                load_body_from_event(event_path, "issue"),
+                fields,
+                repo_root,
+            ),
+            "missing section: Problem statement",
+        )
+
 def run_github_field_policy_tests(repo_root: Path) -> None:
     fields = load_fields(repo_root, "repo/specs/repo/governing-issue.json", "issue_fields")
+    _check_unlabeled_issue_workflow_policy(repo_root, fields)
     field = next(item for item in fields if item["id"] == "change_type")
     values = field["validation"]["values"]
 
