@@ -14,6 +14,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from validation.errors import fail
+from .context import ExternalRepositoryValidationContext, ValidationContext, load_repo_specs
+from .schema_subset import load_repo_schemas
+from .product_development_documents import check_product_development_documents
+from .product_lifecycle import check_product_lifecycle_readiness
 
 
 def _validate_inactive_product(repo_root: Path) -> None:
@@ -34,6 +38,18 @@ def _validate_inactive_product(repo_root: Path) -> None:
             "contains JSON material: "
             + ", ".join(undeclared_json)
         )
+
+    _manifest, repo_specs, _source_paths, _actual_paths = load_repo_specs(repo_root)
+    context = ValidationContext(
+        repo_root,
+        None,
+        None,
+        ExternalRepositoryValidationContext(repo_specs, load_repo_schemas(repo_root)),
+    )
+    check_product_development_documents(context)
+    print("ok: product development documents")
+    check_product_lifecycle_readiness(context)
+    print("ok: product lifecycle authority sequence")
 
 
 def validate_product_phases(repo_root: Path, phase_labels: tuple[str, ...]) -> None:

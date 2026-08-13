@@ -15,9 +15,11 @@ class HandoffError(InitializerError):
 
 HANDOFF_RELATIVE_PATH = Path("repo/initializer/handoff.json")
 NEXT_ACTION = (
-    "Develop and accept the product overview and decomposition, then create product "
-    "specifications. Create an implementation plan only after the controlling "
-    "specifications are accepted."
+    "Continue product development by collecting direction in an overview whiteboard, "
+    "analyzing it into candidate functional sets, obtaining explicit user approval of "
+    "a functional set, and decomposing only an approved functional set. Create product "
+    "specifications from the decomposition. Create an implementation plan only after "
+    "the controlling specifications are accepted."
 )
 ROOT_FIELD_ORDER = (
     "schema_version",
