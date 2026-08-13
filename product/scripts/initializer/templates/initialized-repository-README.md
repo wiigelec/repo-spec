@@ -32,6 +32,6 @@ Immediately after initialization, the product specification system may be inacti
 
 ## Product definition
 
-Product identity, direction, overview, decomposition, specifications, and implementation planning are governed successor work. Establish those artifacts through the repository's governing issue and development workflow rather than inferring or synthesizing them during bootstrap.
+Product identity and direction are governed successor work through collection, analysis, candidate functional sets, approved functional sets, decomposition, specifications, and implementation planning. Establish those artifacts through the repository's governing issue and development workflow rather than inferring or synthesizing them during bootstrap. The initializer transports the framework contracts for that workflow, not repo-spec's own whiteboard, analysis, or functional-set working content.
 
 The initialized framework is intended to remain stable while governed product work is introduced through the applicable repository workflow.
