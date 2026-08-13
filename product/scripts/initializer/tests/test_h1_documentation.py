@@ -45,7 +45,7 @@ class H1DocumentationTests(unittest.TestCase):
             self.reference.index("## Internal canonical request")
         ]
         for phrase in (
-            "product overview",
+            "functional-set lifecycle",
             "product decomposition",
             "product specifications",
             "product implementation plan",

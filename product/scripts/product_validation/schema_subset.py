@@ -288,7 +288,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
         "repo.platform-profiles": load_json(repo_root / "repo/schemas/repo-platform-profiles.schema.json"),
         "repo.spec": load_json(repo_root / "repo/schemas/repo-spec.schema.json"),
         "repo.development-document-base": copy.deepcopy(base_document_schema),
-        "repo.product-overview": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/product-overview.schema.json")),
+        "repo.functional-set-process": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/functional-set-process.schema.json")),
         "repo.product-decomposition": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/product-decomposition.schema.json")),
         "repo.implementation-plan": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/implementation-plan.schema.json")),
         "repo.architecture-plan": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/architecture-plan.schema.json")),
@@ -298,7 +298,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.platform-profiles"], "repo/schemas/repo-platform-profiles.schema.json")
     ensure_schema_keywords(schemas["repo.spec"], "repo/schemas/repo-spec.schema.json")
     ensure_schema_keywords(schemas["repo.development-document-base"], "repo/schemas/repo/development-document-base.schema.json")
-    ensure_schema_keywords(schemas["repo.product-overview"], "repo/schemas/repo/product-overview.schema.json")
+    ensure_schema_keywords(schemas["repo.functional-set-process"], "repo/schemas/repo/functional-set-process.schema.json")
     ensure_schema_keywords(schemas["repo.product-decomposition"], "repo/schemas/repo/product-decomposition.schema.json")
     ensure_schema_keywords(schemas["repo.implementation-plan"], "repo/schemas/repo/implementation-plan.schema.json")
     ensure_schema_keywords(schemas["repo.architecture-plan"], "repo/schemas/repo/architecture-plan.schema.json")

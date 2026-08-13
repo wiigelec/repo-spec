@@ -1,37 +1,37 @@
 {
-  "spec_id": "repo.product-overview",
-  "title": "Product Overview Process Contract",
-  "purpose": "Defines the repository-generic collection, analysis, candidate-functional-set, and approved-functional-set process that replaces accepted product overview as the pre-decomposition lifecycle stage.",
+  "spec_id": "repo.functional-set-process",
+  "title": "Functional-Set Process Contract",
+  "purpose": "Defines the repository-generic collection, analysis, candidate-functional-set, and approved-functional-set process governing the pre-decomposition lifecycle.",
   "status": "accepted",
   "schema_version": "1",
   "normative_requirements": [
     {
-      "id": "REPO-POV-001",
-      "text": "Overview-process artifacts shall be stored under the owner-specific overview root defined by `repo.development-document-base`: repository/framework-owned artifacts under `repo/docs/overview/` and product-owned artifacts under `product/docs/overview/`. The recognized new artifact types are `overview-whiteboard`, `overview-analysis`, and `functional-set`; legacy `product-overview` documents may remain for compatibility but are not the new lifecycle gate."
+      "id": "REPO-FSP-001",
+      "text": "Overview-process artifacts shall be stored under the owner-specific overview root defined by `repo.development-document-base`: repository/framework-owned artifacts under `repo/docs/overview/` and product-owned artifacts under `product/docs/overview/`. The recognized artifact types are `overview-whiteboard`, `overview-analysis`, and `functional-set`."
     },
     {
-      "id": "REPO-POV-002",
+      "id": "REPO-FSP-002",
       "text": "An overview whiteboard shall durably record unordered user statements, discovered evidence, provenance, and unresolved intent before interpretation. Collection shall not prematurely convert that material into requirements, decomposition, specifications, implementation plans, implementation, or functional-set approval."
     },
     {
-      "id": "REPO-POV-003",
+      "id": "REPO-FSP-003",
       "text": "An overview analysis shall consume recorded whiteboard evidence and identify capability-oriented groupings, dependencies, ambiguities, candidate functional-set boundaries, and candidate FS0/core choices without itself establishing approved product direction."
     },
     {
-      "id": "REPO-POV-004",
+      "id": "REPO-FSP-004",
       "text": "A functional set shall be capability-oriented rather than a technical-layer slice, shall define a bounded directional unit suitable for downstream decomposition, and shall remain non-normative with respect to exact product behavior, interfaces, schemas, implementation architecture, and release readiness."
     },
     {
-      "id": "REPO-POV-005",
+      "id": "REPO-FSP-005",
       "text": "A functional-set artifact shall use lifecycle status `candidate` until explicit user approval and `approved` after that decision. Candidate status shall not authorize decomposition. Approval shall establish the bounded directional handoff point for decomposition, later specification work, planning, implementation, tests, integration, and functional-set-bounded audit traversal."
     },
     {
-      "id": "REPO-POV-006",
+      "id": "REPO-FSP-006",
       "text": "Whiteboard evidence shall persist beyond functional-set approval so deferred or unaccepted intent remains available for successor analysis. Analysis and functional-set documents shall preserve predecessor and evidence traceability rather than silently absorbing unresolved intent."
     },
     {
-      "id": "REPO-POV-007",
-      "text": "The overview process shall support multiple candidate functional sets, including candidate FS0/core choices, before approval. An approved functional set shall explicitly declare decomposition handoff readiness; no accepted product overview shall be required as an additional gate."
+      "id": "REPO-FSP-007",
+      "text": "The overview process shall support multiple candidate functional sets, including candidate FS0/core choices, before approval. An approved functional set shall explicitly declare decomposition handoff readiness."
     }
   ],
   "dependencies": [
@@ -62,7 +62,7 @@
   "derived_artifacts": [
     {
       "type": "markdown",
-      "path": "repo/derived/specs/repo/product-overview.md"
+      "path": "repo/derived/specs/repo/functional-set-process.md"
     }
   ]
 }

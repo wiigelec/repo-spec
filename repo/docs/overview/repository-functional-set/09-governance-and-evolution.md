@@ -1,6 +1,6 @@
-# Product Overview: Governance and Evolution
+# functional-set lifecycle: Governance and Evolution
 
-> Part 6 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./05-human-ai-continuity.md)
+> Part 6 of 6 · [functional-set lifecycle index](../functional-set-process.md) · [Previous](./05-human-ai-continuity.md)
 
 This part defines validation and authority boundaries, generated artifacts, portability, derived-product separation, and development continuity.
 

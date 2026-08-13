@@ -34,7 +34,7 @@ Accepted Stage 6 completion base and first reference-repository base:
 main at f7fa9c51a88771599f9e908249a61d4353a436e9
 ```
 
-This plan translates the accepted product overview into an ordered architecture and implementation roadmap for the reusable repository framework.
+This plan translates the approved repository functional set into an ordered architecture and implementation roadmap for the reusable repository framework.
 
 It does not define normative product behavior, replace accepted specifications, authorize repository mutation by itself, or establish acceptance of any future implementation. Each implementation stage requires separately governed work.
 
@@ -42,13 +42,16 @@ It does not define normative product behavior, replace accepted specifications, 
 
 This plan is based on:
 
-- `repo/docs/overview/PRODUCT-OVERVIEW.md`
-- `repo/docs/overview/product-overview/01-product-direction.md`
-- `repo/docs/overview/product-overview/02-decomposition-model.md`
-- `repo/docs/overview/product-overview/03-development-and-specifications.md`
-- `repo/docs/overview/product-overview/04-git-and-change-workflow.md`
-- `repo/docs/overview/product-overview/05-human-ai-continuity.md`
-- `repo/docs/overview/product-overview/06-governance-and-evolution.md`
+- `repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md`
+- `repo/docs/overview/repository-functional-set/01-product-direction.md`
+- `repo/docs/overview/repository-functional-set/02-decomposition-model-part-1.md`
+- `repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md`
+- `repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md`
+- `repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md`
+- `repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md`
+- `repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md`
+- `repo/docs/overview/repository-functional-set/08-human-ai-continuity.md`
+- `repo/docs/overview/repository-functional-set/09-governance-and-evolution.md`
 
 Accepted repository baseline at plan creation:
 
@@ -277,7 +280,7 @@ It should be retired only after a replacement is:
 The framework should recognize these artifact families:
 
 - discovery records;
-- product overview;
+- functional-set lifecycle;
 - implementation plans;
 - repository specifications;
 - product specifications;
@@ -726,7 +729,7 @@ No universal initializer should be implemented until the reference repository pr
 The reference should demonstrate:
 
 ```text
-product overview
+functional-set lifecycle
 implementation plan
 product manifest
 one Level 0 specification
@@ -1149,7 +1152,7 @@ Further issues should follow the stages in this plan rather than being pre-autho
 This planning phase is complete when:
 
 - the plan is reviewed and accepted through governed work;
-- no unresolved contradiction remains with the product overview;
+- no unresolved contradiction remains with the functional-set lifecycle;
 - the first implementation phase is bounded and independently reviewable;
 - successor work is explicit but not automatically authorized;
 - the repository remains valid and CI-clean on the accepted default-branch revision.

@@ -30,7 +30,6 @@
     "artifact_type": {
       "type": "string",
       "enum": [
-        "product-overview",
         "overview-whiteboard",
         "overview-analysis",
         "functional-set",
@@ -115,15 +114,6 @@
         "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$"
       }
     },
-    "overview_role": {
-      "type": "string",
-      "enum": [
-        "initial",
-        "revision",
-        "replacement",
-        "branch"
-      ]
-    },
     "workstream_authority": {
       "type": "array"
     },
@@ -143,102 +133,7 @@
       "const": "1"
     }
   },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "artifact_type": {
-            "const": "product-overview"
-          }
-        },
-        "required": [
-          "artifact_type"
-        ]
-      },
-      "then": {
-        "required": [
-          "overview_role"
-        ]
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "artifact_type": {
-            "const": "product-overview"
-          },
-          "overview_role": {
-            "const": "initial"
-          }
-        },
-        "required": [
-          "artifact_type",
-          "overview_role"
-        ]
-      },
-      "then": {
-        "properties": {
-          "controlling_documents": {
-            "minItems": 0
-          }
-        }
-      },
-      "else": {
-        "if": {
-          "properties": {
-            "artifact_type": {
-              "const": "overview-whiteboard"
-            }
-          },
-          "required": [
-            "artifact_type"
-          ]
-        },
-        "then": {
-          "properties": {
-            "controlling_documents": {
-              "minItems": 0
-            },
-            "predecessor_documents": {
-              "minItems": 0
-            }
-          }
-        },
-        "else": {
-          "if": {
-            "properties": {
-              "artifact_type": {
-                "const": "architecture-plan"
-              }
-            },
-            "required": [
-              "artifact_type"
-            ]
-          },
-          "then": {
-            "properties": {
-              "controlling_documents": {
-                "minItems": 1
-              },
-              "predecessor_documents": {
-                "minItems": 0
-              }
-            }
-          },
-          "else": {
-            "properties": {
-              "controlling_documents": {
-                "minItems": 1
-              },
-              "predecessor_documents": {
-                "minItems": 1
-              }
-            }
-          }
-        }
-      }
-    }
-  ],
+  "allOf": [],
   "$defs": {
     "chunk": {
       "type": "object",

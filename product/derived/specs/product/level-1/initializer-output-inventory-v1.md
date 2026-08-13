@@ -151,8 +151,8 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `governing-specification`
-- Destination Path: `repo/specs/repo/product-overview.json`
-- Material Key: `repo-product-overview`
+- Destination Path: `repo/specs/repo/functional-set-process.json`
+- Material Key: `repo-functional-set-process`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
@@ -333,8 +333,8 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `generated-reference`
-- Destination Path: `repo/derived/specs/repo/product-overview.md`
-- Material Key: `derived-product-overview`
+- Destination Path: `repo/derived/specs/repo/functional-set-process.md`
+- Material Key: `derived-functional-set-process`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
@@ -375,8 +375,8 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/schemas/repo/product-overview.schema.json`
-- Material Key: `repo-schema-product-overview`
+- Destination Path: `repo/schemas/repo/functional-set-process.schema.json`
+- Material Key: `repo-schema-functional-set-process`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`

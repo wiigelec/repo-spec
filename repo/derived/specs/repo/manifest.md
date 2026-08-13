@@ -30,7 +30,7 @@ Identifies the complete repository-spec JSON set.
 - `repo.validation` -> `repo/specs/repo/validation.json`
 - `repo.product-manifest` -> `repo/specs/repo/product-manifest.json`
 - `repo.development-document-base` -> `repo/specs/repo/development-document-base.json`
-- `repo.product-overview` -> `repo/specs/repo/product-overview.json`
+- `repo.functional-set-process` -> `repo/specs/repo/functional-set-process.json`
 - `repo.product-decomposition` -> `repo/specs/repo/product-decomposition.json`
 - `repo.implementation-plan` -> `repo/specs/repo/implementation-plan.json`
 - `repo.product-spec-base` -> `repo/specs/repo/product-spec-base.json`

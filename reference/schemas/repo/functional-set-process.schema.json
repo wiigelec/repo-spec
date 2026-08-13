@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "repo/schemas/repo/functional-set-process.schema.json",
+  "title": "Functional-Set Process Document Schema",
+  "allOf": [
+    {
+      "$ref": "./development-document-base.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "artifact_type",
+        "root_path"
+      ],
+      "properties": {
+        "artifact_type": {
+          "type": "string",
+          "enum": [
+            "overview-whiteboard",
+            "overview-analysis",
+            "functional-set"
+          ]
+        },
+        "root_path": {
+          "type": "string",
+          "const": "docs/overview/"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,6 +1,6 @@
-# Product Overview: Decomposition Model — Part 1
+# functional-set lifecycle: Decomposition Model — Part 1
 
-> Part 2 of 6 · [Product overview index](../PRODUCT-OVERVIEW.md) · [Previous](./01-product-direction.md) · [Next](./03-development-and-specifications.md)
+> Part 2 of 6 · [functional-set lifecycle index](../functional-set-process.md) · [Previous](./01-product-direction.md) · [Next](./03-development-and-specifications.md)
 
 This part defines the canonical decomposition model used by the framework to turn broad human intent into bounded AI-executable work.
 

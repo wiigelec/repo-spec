@@ -40,10 +40,10 @@ Defines the boundary that keeps product direction and product foundations out of
 ## Normative requirements
 
 - `INIT-FSD-001`: Repository bootstrap shall not ingest, copy, project, summarize, or otherwise process product-direction material.
-- `INIT-FSD-002`: Repository bootstrap shall not generate a product overview, product decomposition, implementation plan, direction-evidence manifest, direction-evidence files, or product-specific controlling-document skeletons.
+- `INIT-FSD-002`: Repository bootstrap shall not generate a functional-set lifecycle, product decomposition, implementation plan, direction-evidence manifest, direction-evidence files, or product-specific controlling-document skeletons.
 - `INIT-FSD-003`: Repository bootstrap shall not create or accept product specification semantics, product specification JSON documents, or an accepted product manifest on behalf of an as-yet undefined product.
 - `INIT-FSD-004`: Any repository structure required to make later governed product-definition work possible shall remain product-semantics-neutral and shall not claim product identity, direction, acceptance, conformance, or planning authority.
-- `INIT-FSD-005`: Product overview and direction shall begin only after bootstrap through the repository's governed successor lifecycle. Decomposition, accepted product specifications, and implementation planning shall follow the accepted repository development-workflow ordering.
+- `INIT-FSD-005`: Overview collection, analysis, and functional-set approval shall begin only after bootstrap through the repository's governed successor lifecycle. Decomposition, accepted product specifications, and implementation planning shall follow the accepted repository development-workflow ordering.
 - `INIT-FSD-006`: Framework installation output and bootstrap provenance may be established during repository initialization, but neither shall be treated as product authority.
 - `INIT-FSD-007`: A later governed product-foundation workflow may create product direction, overview, decomposition, specification, and planning artifacts only under the repository and product authority applicable at that later time; repository bootstrap does not pre-authorize that successor work.
 

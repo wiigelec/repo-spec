@@ -19,7 +19,7 @@
   "references": [
     {
       "type": "artifact",
-      "path": "repo/docs/overview/product-overview/06-governance-and-evolution.md"
+      "path": "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md"
     }
   ],
   "supersedes": [],

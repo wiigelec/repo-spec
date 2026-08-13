@@ -50,7 +50,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo-platform-profiles.schema.json",
         "repo/schemas/repo-spec.schema.json",
         "repo/schemas/repo/development-document-base.schema.json",
-        "repo/schemas/repo/product-overview.schema.json",
+        "repo/schemas/repo/functional-set-process.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
         "repo/schemas/repo/architecture-plan.schema.json",

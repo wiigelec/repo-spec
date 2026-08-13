@@ -12,7 +12,7 @@ FRAMEWORK = ROOT / "product/scripts/initializer/framework-inventory.json"
 
 EXISTING = {
     "repo/schemas/repo/development-document-base.schema.json",
-    "repo/schemas/repo/product-overview.schema.json",
+    "repo/schemas/repo/functional-set-process.schema.json",
     "repo/schemas/repo/product-decomposition.schema.json",
     "repo/schemas/repo/implementation-plan.schema.json",
 }

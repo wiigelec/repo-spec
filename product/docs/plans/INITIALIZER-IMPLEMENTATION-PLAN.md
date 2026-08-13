@@ -32,19 +32,19 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "lifecycle_status": "accepted",
   "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350",
   "controlling_documents": [
-    "product/docs/overview/INITIALIZER-OVERVIEW.md",
+    "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
   ],
   "predecessor_documents": [
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
   ],
   "evidence": [
-    "product/docs/overview/initializer-overview/01-product-identity-and-purpose.md",
-    "product/docs/overview/initializer-overview/02-problem-and-outcome.md",
-    "product/docs/overview/initializer-overview/03-users-principles-and-boundaries.md",
-    "product/docs/overview/initializer-overview/04-capabilities-and-success.md",
-    "product/docs/overview/initializer-overview/05-unresolved-questions.md",
-    "product/docs/overview/initializer-overview/06-lifecycle-and-handoff.md",
+    "product/docs/overview/initializer-functional-set/01-product-identity-and-purpose.md",
+    "product/docs/overview/initializer-functional-set/02-problem-and-outcome.md",
+    "product/docs/overview/initializer-functional-set/03-users-principles-and-boundaries.md",
+    "product/docs/overview/initializer-functional-set/04-capabilities-and-success.md",
+    "product/docs/overview/initializer-functional-set/05-unresolved-questions.md",
+    "product/docs/overview/initializer-functional-set/06-lifecycle-and-handoff.md",
     "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md",
     "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md",
     "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md",
@@ -330,7 +330,7 @@ product semantics.
 - Controlling repository contracts: `repo.development-document-base`,
   `repo.implementation-plan`, `repo.development-workflow`, and applicable
   repository workflow and validation contracts
-- Controlling overview: `product/docs/overview/INITIALIZER-OVERVIEW.md`
+- Controlling overview: `product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md`
 - Controlling decomposition: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 - Normative product authority: accepted initial-bounded-workflow product
   specifications registered in `product/specs/product/manifest.json`

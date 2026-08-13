@@ -68,7 +68,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 1,
       "path": "repo/docs/overview/repository-functional-set/01-product-direction.md",
-      "title": "Product Overview: Product Direction",
+      "title": "functional-set lifecycle: Product Direction",
       "coverage": [
         "capability_boundary",
         "included_intent",
@@ -79,7 +79,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 2,
       "path": "repo/docs/overview/repository-functional-set/02-decomposition-model-part-1.md",
-      "title": "Product Overview: Decomposition Model \u2014 Part 1",
+      "title": "functional-set lifecycle: Decomposition Model \u2014 Part 1",
       "coverage": [
         "included_intent",
         "dependencies",
@@ -89,7 +89,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 3,
       "path": "repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md",
-      "title": "Product Overview: Decomposition Model \u2014 Part 2",
+      "title": "functional-set lifecycle: Decomposition Model \u2014 Part 2",
       "coverage": [
         "included_intent",
         "dependencies",
@@ -99,7 +99,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 4,
       "path": "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md",
-      "title": "Product Overview: Development and Specifications \u2014 Part 1",
+      "title": "functional-set lifecycle: Development and Specifications \u2014 Part 1",
       "coverage": [
         "dependencies",
         "integration_foundation"
@@ -108,7 +108,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 5,
       "path": "repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md",
-      "title": "Product Overview: Development and Specifications \u2014 Part 2",
+      "title": "functional-set lifecycle: Development and Specifications \u2014 Part 2",
       "coverage": [
         "dependencies",
         "integration_foundation"
@@ -117,7 +117,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 6,
       "path": "repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md",
-      "title": "Product Overview: Development and Specifications \u2014 Part 3",
+      "title": "functional-set lifecycle: Development and Specifications \u2014 Part 3",
       "coverage": [
         "dependencies",
         "integration_foundation"
@@ -126,7 +126,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 7,
       "path": "repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md",
-      "title": "Product Overview: Git and Change Workflow",
+      "title": "functional-set lifecycle: Git and Change Workflow",
       "coverage": [
         "dependencies",
         "integration_foundation"
@@ -135,7 +135,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 8,
       "path": "repo/docs/overview/repository-functional-set/08-human-ai-continuity.md",
-      "title": "Product Overview: Human and AI Continuity",
+      "title": "functional-set lifecycle: Human and AI Continuity",
       "coverage": [
         "end_to_end_usability"
       ]
@@ -143,7 +143,7 @@ Approved functional set migrated from the maintained directional overview. Direc
     {
       "order": 9,
       "path": "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",
-      "title": "Product Overview: Governance and Evolution",
+      "title": "functional-set lifecycle: Governance and Evolution",
       "coverage": [
         "integration_foundation",
         "decomposition_handoff"
@@ -161,15 +161,15 @@ This functional set is the canonical capability-oriented replacement for the mai
 
 ## Chunk index
 
-- [Product Overview: Product Direction](repository-functional-set/01-product-direction.md)
-- [Product Overview: Decomposition Model — Part 1](repository-functional-set/02-decomposition-model-part-1.md)
-- [Product Overview: Decomposition Model — Part 2](repository-functional-set/03-decomposition-model-part-2.md)
-- [Product Overview: Development and Specifications — Part 1](repository-functional-set/04-development-and-specifications-part-1.md)
-- [Product Overview: Development and Specifications — Part 2](repository-functional-set/05-development-and-specifications-part-2.md)
-- [Product Overview: Development and Specifications — Part 3](repository-functional-set/06-development-and-specifications-part-3.md)
-- [Product Overview: Git and Change Workflow](repository-functional-set/07-git-and-change-workflow.md)
-- [Product Overview: Human and AI Continuity](repository-functional-set/08-human-ai-continuity.md)
-- [Product Overview: Governance and Evolution](repository-functional-set/09-governance-and-evolution.md)
+- [functional-set lifecycle: Product Direction](repository-functional-set/01-product-direction.md)
+- [functional-set lifecycle: Decomposition Model — Part 1](repository-functional-set/02-decomposition-model-part-1.md)
+- [functional-set lifecycle: Decomposition Model — Part 2](repository-functional-set/03-decomposition-model-part-2.md)
+- [functional-set lifecycle: Development and Specifications — Part 1](repository-functional-set/04-development-and-specifications-part-1.md)
+- [functional-set lifecycle: Development and Specifications — Part 2](repository-functional-set/05-development-and-specifications-part-2.md)
+- [functional-set lifecycle: Development and Specifications — Part 3](repository-functional-set/06-development-and-specifications-part-3.md)
+- [functional-set lifecycle: Git and Change Workflow](repository-functional-set/07-git-and-change-workflow.md)
+- [functional-set lifecycle: Human and AI Continuity](repository-functional-set/08-human-ai-continuity.md)
+- [functional-set lifecycle: Governance and Evolution](repository-functional-set/09-governance-and-evolution.md)
 
 ## Relationships
 

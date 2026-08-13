@@ -19,7 +19,7 @@ Before any mutation that creates or modifies maintained product artifacts, verif
 
 Do not mutate the repository until initialization is complete.
 
-The normative development lifecycle for product development is: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted product specifications, accepted implementation plan, governed implementation issues, and product artifacts. An accepted product overview is not an additional gate between functional-set approval and decomposition. An implementation plan may not become accepted without its required controlling product specifications being accepted and structurally valid. A plan cannot supply missing normative product semantics.
+The normative development lifecycle for product development is: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted product specifications, accepted implementation plan, governed implementation issues, and product artifacts. No additional development-document gate exists between functional-set approval and decomposition. An implementation plan may not become accepted without its required controlling product specifications being accepted and structurally valid. A plan cannot supply missing normative product semantics.
 
 Code, tests, schemas, templates, generated output, or prior implementation behavior do not become product authority merely because they exist.
 

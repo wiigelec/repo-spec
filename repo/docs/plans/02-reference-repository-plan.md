@@ -14,8 +14,8 @@ main at f7fa9c51a88771599f9e908249a61d4353a436e9
 
 This plan is based on:
 
-- `repo/docs/overview/product-overview/04-git-and-change-workflow.md`
-- `repo/docs/overview/product-overview/06-governance-and-evolution.md`
+- `repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md`
+- `repo/docs/overview/repository-functional-set/09-governance-and-evolution.md`
 - `repo/docs/plans/01-framework-architecture-plan.md`
 - `repo/specs/repo/artifact-taxonomy.json`
 - `repo/specs/repo/repository-structure.json`

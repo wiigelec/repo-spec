@@ -37,7 +37,7 @@
     },
     {
       "id": "INIT-FIN-007",
-      "text": "The promoted repository shall contain only the reusable repository framework material permitted by the closed output inventory, bootstrap provenance/handoff records, and deterministic local Git state. It shall not contain initializer-generated product direction evidence, product overview/decomposition, product specifications, product manifest authority, or implementation-plan authority."
+      "text": "The promoted repository shall contain only the reusable repository framework material permitted by the closed output inventory, bootstrap provenance/handoff records, and deterministic local Git state. It shall not contain initializer-generated product direction evidence, functional-set lifecycle/decomposition, product specifications, product manifest authority, or implementation-plan authority."
     },
     {
       "id": "INIT-FIN-008",
@@ -57,7 +57,7 @@
     },
     {
       "id": "INIT-FIN-012",
-      "text": "Product overview and direction are governed successor work performed only after repository bootstrap; bootstrap does not authorize or synthesize them."
+      "text": "Overview collection, analysis, and functional-set approval are governed successor work performed only after repository bootstrap; bootstrap does not authorize or synthesize them."
     }
   ],
   "dependencies": [

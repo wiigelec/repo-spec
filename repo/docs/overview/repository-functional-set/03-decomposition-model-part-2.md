@@ -1,4 +1,4 @@
-# Product Overview: Decomposition Model — Part 2
+# functional-set lifecycle: Decomposition Model — Part 2
 
 ## Architectural invariants
 

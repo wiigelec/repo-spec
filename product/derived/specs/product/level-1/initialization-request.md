@@ -46,7 +46,7 @@ Defines the minimal canonical repository-bootstrap request used by the bounded l
 - `INIT-REQ-005`: The destination path shall use the bounded local filesystem path grammar of the initializer, shall contain no U+0000, shall reject URL or remote identities, and shall normalize deterministically to the canonical absolute destination path without environment-variable expansion, tilde expansion, filesystem canonicalization, or symbolic-link resolution.
 - `INIT-REQ-006`: The canonical request representation shall contain `schema_version` followed by normalized `destination`, encoded as deterministic UTF-8 JSON without insignificant whitespace or a trailing newline; the request fingerprint shall be the SHA-256 digest of those canonical bytes.
 - `INIT-REQ-007`: Framework source repository and exact revision are execution provenance resolved by the local repo-spec initializer from the framework instance being executed; they shall not be supplied or selected by the repository-bootstrap request.
-- `INIT-REQ-008`: Repository bootstrap shall not accept product-direction material and shall not establish product overview, product decomposition, product specification, or implementation-plan authority. Those artifacts are successor governed work in the initialized repository.
+- `INIT-REQ-008`: Repository bootstrap shall not accept product-direction material and shall not establish functional-set lifecycle, product decomposition, product specification, or implementation-plan authority. Those artifacts are successor governed work in the initialized repository.
 - `INIT-REQ-009`: Request validation shall reject unknown fields, malformed schema_version or destination values, unsupported destination syntax, and any attempt to reintroduce source, revision, product, authority, profile, or direction-material values into the bootstrap request.
 - `INIT-REQ-010`: The canonical request shall be immutable after validation; local framework provenance resolved by execution shall be recorded separately from the user request and shall not alter the request fingerprint.
 
@@ -62,7 +62,7 @@ Defines the minimal canonical repository-bootstrap request used by the bounded l
 - artifact: `repo/specs/repo/product-manifest.json`
 - artifact: `repo/specs/repo/validation.json`
 - artifact: `repo/specs/repo/repository-structure.json`
-- artifact: `product/docs/overview/INITIALIZER-OVERVIEW.md`
+- artifact: `product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md`
 - artifact: `product/docs/decompositions/INITIALIZER-DECOMPOSITION.md`
 
 ## Derived artifacts

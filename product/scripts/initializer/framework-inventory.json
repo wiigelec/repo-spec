@@ -106,8 +106,8 @@
       "mode": "100644"
     },
     {
-      "material_key": "repo-product-overview",
-      "source_path": "repo/specs/repo/product-overview.json",
+      "material_key": "repo-functional-set-process",
+      "source_path": "repo/specs/repo/functional-set-process.json",
       "role": "governing-specification",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -314,8 +314,8 @@
       "mode": "100644"
     },
     {
-      "material_key": "derived-product-overview",
-      "source_path": "repo/derived/specs/repo/product-overview.md",
+      "material_key": "derived-functional-set-process",
+      "source_path": "repo/derived/specs/repo/functional-set-process.md",
       "role": "generated-reference",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -362,8 +362,8 @@
       "role": "validation-utility"
     },
     {
-      "material_key": "repo-schema-product-overview",
-      "source_path": "repo/schemas/repo/product-overview.schema.json",
+      "material_key": "repo-schema-functional-set-process",
+      "source_path": "repo/schemas/repo/functional-set-process.schema.json",
       "source_type": "blob",
       "operation": "copy-verbatim",
       "mode": "100644",

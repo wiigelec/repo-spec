@@ -50,9 +50,6 @@
             "$ref": "#/$defs/discoveryRecord"
           },
           {
-            "$ref": "#/$defs/productOverview"
-          },
-          {
             "$ref": "#/$defs/overviewWhiteboard"
           },
           {
@@ -171,7 +168,6 @@
           "type": "string",
           "enum": [
             "discovery-record",
-            "product-overview",
             "overview-whiteboard",
             "overview-analysis",
             "functional-set",
@@ -205,7 +201,6 @@
           "type": "string",
           "enum": [
             "discovery record",
-            "overview",
             "collection evidence",
             "analysis synthesis",
             "functional-set handoff",
@@ -415,38 +410,6 @@
             },
             "role": {
               "const": "discovery record"
-            },
-            "authority_category": {
-              "const": "directional"
-            },
-            "generation_mode": {
-              "const": "manual"
-            },
-            "validation_ownership": {
-              "const": "review"
-            },
-            "portability_category": {
-              "const": "framework-generic"
-            },
-            "manifest_participation": {
-              "const": "none"
-            }
-          }
-        }
-      ]
-    },
-    "productOverview": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/artifactClass"
-        },
-        {
-          "properties": {
-            "identifier": {
-              "const": "product-overview"
-            },
-            "role": {
-              "const": "overview"
             },
             "authority_category": {
               "const": "directional"
