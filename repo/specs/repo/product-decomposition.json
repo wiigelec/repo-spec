@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-PDC-002",
-      "text": "A product decomposition shall record the controlling product overview, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action."
+      "text": "A product decomposition shall record the controlling approved functional set, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action."
     },
     {
       "id": "REPO-PDC-003",
@@ -31,7 +31,7 @@
     },
     {
       "id": "REPO-PDC-007",
-      "text": "A product decomposition shall identify the expected Level 0\u20133 product-specification families, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. This identification shall remain directional and shall not prematurely define normative product semantics."
+      "text": "A product decomposition shall identify the expected Level 0–3 product-specification families, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. This identification shall remain directional and shall not prematurely define normative product semantics."
     }
   ],
   "dependencies": [
