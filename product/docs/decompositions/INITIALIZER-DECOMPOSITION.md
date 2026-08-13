@@ -2,7 +2,7 @@
 
 ## Status
 
-Directional decomposition record for the initializer overview.
+Directional decomposition record for the approved initializer functional set.
 
 This document is the controlling entry point for the initializer decomposition composite document. It is directional and non-normative.
 
@@ -21,18 +21,18 @@ This document is the controlling entry point for the initializer decomposition c
   "lifecycle_status": "accepted",
   "governing_issue": "#175",
   "controlling_documents": [
-    "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
   ],
   "predecessor_documents": [
-    "product/docs/overview/INITIALIZER-OVERVIEW.md"
+    "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md"
   ],
   "evidence": [
-    "repo/docs/overview/PRODUCT-OVERVIEW.md",
-    "repo/docs/overview/product-overview/02-decomposition-model.md",
-    "repo/docs/overview/product-overview/03-development-and-specifications.md",
-    "repo/docs/overview/product-overview/04-git-and-change-workflow.md",
-    "repo/docs/overview/product-overview/05-human-ai-continuity.md",
-    "repo/docs/overview/product-overview/06-governance-and-evolution.md"
+    "product/docs/overview/initializer-functional-set/01-product-identity-and-purpose.md",
+    "product/docs/overview/initializer-functional-set/02-problem-and-outcome.md",
+    "product/docs/overview/initializer-functional-set/03-users-principles-and-boundaries.md",
+    "product/docs/overview/initializer-functional-set/04-capabilities-and-success.md",
+    "product/docs/overview/initializer-functional-set/05-unresolved-questions.md",
+    "product/docs/overview/initializer-functional-set/06-lifecycle-and-handoff.md"
   ],
   "required_content_areas": {
     "decomposition_basis": ["product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md"],
@@ -56,7 +56,7 @@ This document is the controlling entry point for the initializer decomposition c
 
 ## Decomposition basis
 
-This decomposition translates the initializer overview into bounded areas and is intentionally non-normative.
+This decomposition translates the approved initializer functional set into bounded areas and is intentionally non-normative.
 
 ## Bounded areas
 
@@ -71,7 +71,7 @@ The initializer is decomposed into invocation and authority, framework and produ
 
 ## Relationships
 
-The basis records show the controlling overview and predecessor evidence. The decomposition preserves unresolved decisions rather than deciding them early.
+The basis records show the approved initializer functional set as controlling and predecessor authority. The decomposition preserves unresolved decisions rather than deciding them early.
 
 ## Next authorized action
 
@@ -80,6 +80,6 @@ The next authorized action is an initializer implementation plan under `product/
 ## Discoverability
 
 - [Initializer decomposition root index](./README.md)
-- [Initializer overview](../overview/INITIALIZER-OVERVIEW.md)
+- [Initializer functional set](../overview/INITIALIZER-FUNCTIONAL-SET.md)
 
 - [Initializer implementation plan](../plans/INITIALIZER-IMPLEMENTATION-PLAN.md)
