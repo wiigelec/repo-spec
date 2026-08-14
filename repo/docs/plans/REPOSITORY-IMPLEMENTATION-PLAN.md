@@ -2,9 +2,9 @@
 
 ## Status
 
-Candidate; planning-authoritative only after separate acceptance; non-normative with respect to product semantics.
+Accepted; planning-authoritative; non-normative with respect to product semantics.
 
-This document is the controlling entry point for the Issue Intake and Governance Routing implementation-plan composite. Issue #400 authorizes candidate planning only. The plan does not itself authorize implementation issues or maintained implementation mutation.
+This document is the controlling entry point for the accepted Issue Intake and Governance Routing implementation-plan composite. Issue #400 created and reviewed the candidate plan; issue #402 records explicit acceptance. The plan authorizes separately governed implementation issues only after the accepted-plan patch is manually merged and post-merge validation passes. The plan does not itself mutate maintained implementation artifacts.
 
 ## Metadata
 
@@ -18,8 +18,8 @@ This document is the controlling entry point for the Issue Intake and Governance
   "title": "Repo-Spec Issue Intake and Governance Routing Implementation Plan",
   "product_id": "repo-spec",
   "authority_category": "planning",
-  "lifecycle_status": "candidate",
-  "governing_issue": "#400",
+  "lifecycle_status": "accepted",
+  "governing_issue": "#400, #402",
   "controlling_documents": [
     "repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md",
     "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
@@ -152,7 +152,7 @@ This document is the controlling entry point for the Issue Intake and Governance
       ]
     }
   ],
-  "successor_action": "Review and explicitly accept this candidate implementation plan in a separate governed plan-acceptance step before creating Product-artifact implementation issues.",
+  "successor_action": "After manual merge and post-merge validation of the accepted-plan patch under issue #402, create separately governed Product-artifact implementation issues in dependency order for IRP-I1 through IRP-I5. Each issue must cite this accepted plan, exact workstream ID(s), exact controlling accepted product specifications, accepted default-branch base, and predecessor evidence.",
   "schema_version": "1"
 }
 ```
@@ -185,9 +185,9 @@ Primary order:
 
 Parallel work is allowed only where an implementation issue can prove that its entry conditions and controlling accepted specifications are satisfied without depending on unfinished predecessor behavior.
 
-## Candidate planning boundary
+## Accepted planning boundary
 
-This plan may select implementation mechanics needed to realize accepted product behavior, but it may not manufacture new product semantics. A newly discovered semantic gap must return to specification governance.
+This accepted plan may select implementation mechanics needed to realize accepted product behavior, but it may not manufacture new product semantics. A newly discovered semantic gap must return to specification governance.
 
 ## Chunk index
 
@@ -206,7 +206,7 @@ This plan may select implementation mechanics needed to realize accepted product
 
 ## Next authorized action
 
-Review this candidate plan. A separate governed acceptance step must explicitly accept the plan before Product-artifact implementation issues may cite IRP-I1 through IRP-I5 as planning authority.
+After the accepted-plan patch under issue #402 is manually merged and post-merge validation passes, separately governed Product-artifact implementation issues may cite IRP-I1 through IRP-I5 as planning authority in dependency order.
 
 ## Discoverability
 
