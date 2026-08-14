@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import pathlib
@@ -33,40 +34,57 @@ from issue_intake_governance_routing import (
 )
 
 
+MANAGED_CANONICAL_PRODUCER = (
+    REPO_ROOT / "repo/scripts/canonical-governed-state-validator"
+)
+
+
+def canonical_governed_body() -> str:
+    return (
+        "## Change type\nProduct-artifact implementation\n\n"
+        "## Problem statement\nBounded canonical validation fixture.\n\n"
+        "## Intended outcome\nValidate canonical governed structure.\n\n"
+        "## Governing specifications\n"
+        "repo.governing-issue, repo.development-workflow, repo.validation, "
+        "repo.repository-structure, repo.artifact-taxonomy, "
+        "repo.product-correspondence, repo.implementation-plan, "
+        "product.issue-routing-governance, product.issue-routing-classification, "
+        "product.governed-work-provenance, product.issue-authority-routing, "
+        "product.governed-work-promotion, product.issue-routing-platform-validation, "
+        "product.issue-intake-governance-routing, and the accepted "
+        "`repo/docs/plans/REPOSITORY-IMPLEMENTATION-PLAN.md` composite.\n\n"
+        "## Implementation-plan workstreams/stages\nIRP-I2\nIRP-I3\nIRP-I4\nIRP-I5\n\n"
+        "## Accepted default-branch base\n"
+        "main at 00030fcc48f2b7fefefacc42a4a4dd9cdba9cea4\n\n"
+        "## In-scope behavior and paths\n- Canonical validation fixture.\n\n"
+        "## Explicit exclusions\n- No unrelated work.\n\n"
+        "## Dependencies and predecessor evidence\n""Issue #426 governs this bounded correction and follows merged PR #425. ""The accepted implementation baseline is ""`main@00030fcc48f2b7fefefacc42a4a4dd9cdba9cea4`; this fixture exists only ""to exercise the canonical governed-issue field-policy boundary.\n\n"
+        "## Ordered patch plan\n1. Validate.\n\n"
+        "## Validation plan\nRun field policy.\n\n"
+        "## Acceptance criteria\nCanonical structure passes.\n\n"
+        "## Completion gate\nManual merge.\n\n"
+        "## Open decisions or authority conflicts\nNone.\n\n"
+        "## Successor work explicitly not authorized\nAnything else.\n"
+    )
+
+
 class TrustedProducerFixture:
-    def __init__(
-        self,
-        *,
-        governing_issue: str,
-        governed_operation: str,
-        revision: str = "rev-1",
-        valid: bool = True,
-        producer_id: str = "repository-canonical-validator",
-    ):
+    def __init__(self, *, body: str | None = None):
         self.tmp = tempfile.TemporaryDirectory()
-        self.dir = pathlib.Path(self.tmp.name)
-        self.command = self.dir / "canonical-governed-state-validator"
-        payload = {
-            "governing_issue": governing_issue,
-            "governed_operation": governed_operation,
-            "validated_revision": revision,
-            "validation_artifact_id": f"fixture:{revision}",
-            "producer_id": producer_id,
-            "canonical_structure_valid": valid,
-        }
-        self.command.write_text(
-            "#!/usr/bin/env python3\n"
-            "import json\n"
-            "print(" + repr(json.dumps(payload)) + ")\n",
+        self.body_path = pathlib.Path(self.tmp.name) / "canonical.md"
+        self.body_path.write_text(
+            canonical_governed_body() if body is None else body,
             encoding="utf-8",
         )
-        self.command.chmod(self.command.stat().st_mode | stat.S_IXUSR)
+        self.revision = hashlib.sha256(self.body_path.read_bytes()).hexdigest()
 
     def __enter__(self):
-        old = os.environ.get("PATH", "")
         self.patch = mock.patch.dict(
             os.environ,
-            {"PATH": str(self.dir) + os.pathsep + old},
+            {
+                "REPO_SPEC_CANONICAL_VALIDATOR": str(MANAGED_CANONICAL_PRODUCER),
+                "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT": str(self.body_path),
+            },
             clear=False,
         )
         self.patch.start()
@@ -77,22 +95,13 @@ class TrustedProducerFixture:
         self.tmp.cleanup()
 
 
-def canonical_evidence(
-    *,
-    governing_issue: str,
-    governed_operation: str,
-    revision: str = "rev-1",
-):
-    observation = CanonicalGovernedStateObservation(
-        governing_issue=governing_issue,
-        governed_operation=governed_operation,
-        observed_revision=revision,
-    )
-    with TrustedProducerFixture(
-        governing_issue=governing_issue,
-        governed_operation=governed_operation,
-        revision=revision,
-    ):
+def canonical_evidence(*, governing_issue: str, governed_operation: str):
+    with TrustedProducerFixture() as fixture:
+        observation = CanonicalGovernedStateObservation(
+            governing_issue=governing_issue,
+            governed_operation=governed_operation,
+            observed_revision=fixture.revision,
+        )
         return validate_canonical_governed_state(
             observation=observation,
             producer_id="repository-canonical-validator",
@@ -158,22 +167,67 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
             )
 
     def test_unrecognized_or_unavailable_producer_fails_closed(self):
-        observation = CanonicalGovernedStateObservation(
-            governing_issue="#12",
-            governed_operation="operation-12",
-            observed_revision="rev-1",
-        )
-        with self.assertRaisesRegex(ValueError, "unrecognized"):
-            validate_canonical_governed_state(
-                observation=observation,
-                producer_id="caller-supplied-validator",
+        with TrustedProducerFixture() as fixture:
+            observation = CanonicalGovernedStateObservation(
+                governing_issue="#12",
+                governed_operation="operation-12",
+                observed_revision=fixture.revision,
             )
-        with mock.patch.dict(os.environ, {"PATH": ""}, clear=False):
+            with self.assertRaisesRegex(ValueError, "unrecognized"):
+                validate_canonical_governed_state(
+                    observation=observation,
+                    producer_id="caller-supplied-validator",
+                )
+
+        with mock.patch.dict(
+            os.environ,
+            {
+                "REPO_SPEC_CANONICAL_VALIDATOR": "",
+                "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT": "",
+            },
+            clear=False,
+        ):
+            observation = CanonicalGovernedStateObservation(
+                governing_issue="#12",
+                governed_operation="operation-12",
+                observed_revision="rev-1",
+            )
             with self.assertRaisesRegex(ValueError, "unavailable"):
                 validate_canonical_governed_state(
                     observation=observation,
                     producer_id="repository-canonical-validator",
                 )
+
+    def test_same_name_substituted_producer_fails_artifact_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = pathlib.Path(tmp) / "canonical-governed-state-validator"
+            fake.write_text(
+                "#!/usr/bin/env python3\nprint('fabricated')\n",
+                encoding="utf-8",
+            )
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            subject = pathlib.Path(tmp) / "canonical.md"
+            subject.write_text(canonical_governed_body(), encoding="utf-8")
+            revision = hashlib.sha256(subject.read_bytes()).hexdigest()
+            observation = CanonicalGovernedStateObservation(
+                governing_issue="#12",
+                governed_operation="operation-12",
+                observed_revision=revision,
+            )
+            with mock.patch.dict(
+                os.environ,
+                {
+                    "REPO_SPEC_CANONICAL_VALIDATOR": str(fake),
+                    "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT": str(subject),
+                    "PATH": str(pathlib.Path(tmp)),
+                },
+                clear=False,
+            ):
+                with self.assertRaisesRegex(ValueError, "artifact identity mismatch"):
+                    validate_canonical_governed_state(
+                        observation=observation,
+                        producer_id="repository-canonical-validator",
+                    )
 
     def test_trusted_producer_result_is_bound_and_fresh(self):
         evidence = canonical_evidence(
@@ -185,31 +239,31 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(evidence.producer_id, "repository-canonical-validator")
         self.assertTrue(evidence.is_fresh)
 
-    def test_trusted_producer_mismatch_invalid_or_stale_fails_closed(self):
-        observation = CanonicalGovernedStateObservation(
-            governing_issue="#12",
-            governed_operation="operation-12",
-            observed_revision="rev-2",
-        )
-        cases = (
-            ("#34", "operation-12", "rev-2", True, "governing issue"),
-            ("#12", "operation-99", "rev-2", True, "governed operation"),
-            ("#12", "operation-12", "rev-1", True, "stale"),
-            ("#12", "operation-12", "rev-2", False, "validation failed"),
-        )
-        for governing, operation, revision, valid, message in cases:
-            with self.subTest(message=message):
-                with TrustedProducerFixture(
-                    governing_issue=governing,
-                    governed_operation=operation,
-                    revision=revision,
-                    valid=valid,
-                ):
-                    with self.assertRaisesRegex(ValueError, message):
-                        validate_canonical_governed_state(
-                            observation=observation,
-                            producer_id="repository-canonical-validator",
-                        )
+    def test_managed_producer_rejects_stale_subject_revision(self):
+        with TrustedProducerFixture() as fixture:
+            observation = CanonicalGovernedStateObservation(
+                governing_issue="#12",
+                governed_operation="operation-12",
+                observed_revision="0" * 64,
+            )
+            with self.assertRaisesRegex(ValueError, "revision mismatch"):
+                validate_canonical_governed_state(
+                    observation=observation,
+                    producer_id="repository-canonical-validator",
+                )
+
+    def test_managed_producer_rejects_noncanonical_subject(self):
+        with TrustedProducerFixture(body="ordinary unformatted intake body") as fixture:
+            observation = CanonicalGovernedStateObservation(
+                governing_issue="#12",
+                governed_operation="operation-12",
+                observed_revision=fixture.revision,
+            )
+            with self.assertRaisesRegex(ValueError, "field policy failed"):
+                validate_canonical_governed_state(
+                    observation=observation,
+                    producer_id="repository-canonical-validator",
+                )
 
     def test_no_module_level_evidence_issuance_or_verification_helpers(self):
         self.assertFalse(hasattr(promotion_module, "_issue_validated_evidence"))

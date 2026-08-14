@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
-import shutil
 import subprocess
+from pathlib import Path
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
@@ -13,7 +14,10 @@ from .provenance import IntakeProvenance
 
 
 TRUSTED_CANONICAL_VALIDATION_PRODUCERS = {
-    "repository-canonical-validator": "canonical-governed-state-validator",
+    "repository-canonical-validator": {
+        "command_env": "REPO_SPEC_CANONICAL_VALIDATOR",
+        "sha256": "e33c64598dab548733ae0869bded33877c8a49b104e372928ac82d5f0cbc6dcc",
+    },
 }
 
 
@@ -141,26 +145,43 @@ def _build_promotion_boundary():
     ) -> CanonicalGovernedStateEvidence:
         if not isinstance(observation, CanonicalGovernedStateObservation):
             raise ValueError("canonical governed-state observation is required")
-        command_name = TRUSTED_CANONICAL_VALIDATION_PRODUCERS.get(producer_id)
-        if command_name is None:
+        descriptor = TRUSTED_CANONICAL_VALIDATION_PRODUCERS.get(producer_id)
+        if descriptor is None:
             raise ValueError(
                 f"unrecognized canonical validation producer: {producer_id}"
             )
 
-        command = shutil.which(command_name)
-        if command is None:
+        command_value = os.environ.get(descriptor["command_env"], "")
+        if not command_value:
             raise ValueError(
                 f"trusted canonical validation producer is unavailable: {producer_id}"
             )
+        command = Path(command_value).resolve()
+        if not command.is_file():
+            raise ValueError(
+                f"trusted canonical validation producer is unavailable: {producer_id}"
+            )
+        observed_command_sha256 = hashlib.sha256(command.read_bytes()).hexdigest()
+        if observed_command_sha256 != descriptor["sha256"]:
+            raise ValueError(
+                "canonical validation producer artifact identity mismatch"
+            )
+
+        validation_subject = os.environ.get(
+            "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT", ""
+        )
+        if not validation_subject:
+            raise ValueError("canonical validation subject is unavailable")
 
         request = {
             "governing_issue": observation.governing_issue,
             "governed_operation": observation.governed_operation,
             "observed_revision": observation.observed_revision,
             "producer_id": producer_id,
+            "validation_subject": validation_subject,
         }
         result = subprocess.run(
-            [command],
+            [str(command)],
             input=json.dumps(request),
             text=True,
             stdout=subprocess.PIPE,
