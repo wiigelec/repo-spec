@@ -65,3 +65,16 @@ FEATURE_DEVELOPMENT_STAGES = (
     "candidate-functional-set",
     "explicit-functional-set-approval",
 )
+
+class AuditDisposition(str, Enum):
+    ACCEPTED_AUTHORITY_VIOLATION = "accepted-authority-violation"
+    MISSING_OR_UNACCEPTED_BEHAVIOR = "missing-or-unaccepted-behavior"
+
+
+def route_audited_bug(disposition: AuditDisposition) -> AuthorityPath:
+    if disposition is AuditDisposition.ACCEPTED_AUTHORITY_VIOLATION:
+        return AuthorityPath.AUDIT
+    if disposition is AuditDisposition.MISSING_OR_UNACCEPTED_BEHAVIOR:
+        return AuthorityPath.FEATURE_DEVELOPMENT
+    raise ValueError(f"unsupported audit disposition: {disposition!r}")
+

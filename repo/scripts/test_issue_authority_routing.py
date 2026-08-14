@@ -61,6 +61,18 @@ class IssueAuthorityRoutingTests(unittest.TestCase):
             self.assertFalse(result.mutation_authorized)
             self.assertNotEqual(result.path.value, "implementation")
 
+    def test_audited_bug_with_accepted_authority_violation_stays_with_audit(self):
+        path = MODULE.route_audited_bug(
+            MODULE.AuditDisposition.ACCEPTED_AUTHORITY_VIOLATION
+        )
+        self.assertEqual(path, MODULE.AuthorityPath.AUDIT)
+
+    def test_audited_bug_with_missing_or_unaccepted_behavior_redirects_to_feature_development(self):
+        path = MODULE.route_audited_bug(
+            MODULE.AuditDisposition.MISSING_OR_UNACCEPTED_BEHAVIOR
+        )
+        self.assertEqual(path, MODULE.AuthorityPath.FEATURE_DEVELOPMENT)
+
 
 if __name__ == "__main__":
     unittest.main()
