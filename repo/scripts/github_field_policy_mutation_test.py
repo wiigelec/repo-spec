@@ -381,25 +381,22 @@ def check_change_type_validation() -> None:
             elif result.returncode != 0:
                 raise SystemExit(f"canonical change type was rejected: {value}: {result.stderr.strip()}")
 
-        legacy = body.replace(
-            "Maintenance",
-            "Maintenance and specification consistency correction following a prior audit.",
-            1,
-        )
-        body_path.write_text(legacy)
-        result = run_policy("issue", REPO_ROOT, body_path)
-        if result.returncode != 0:
-            raise SystemExit(f"legacy recognized maintenance classification was rejected: {result.stderr.strip()}")
-
-        descriptive = body.replace(
-            "Maintenance",
-            "Maintenance discussing Product-artifact implementation policy semantics.",
-            1,
-        )
-        body_path.write_text(descriptive)
-        result = run_policy("issue", REPO_ROOT, body_path)
-        if result.returncode != 0:
-            raise SystemExit(f"descriptive prose accidentally activated product-artifact policy: {result.stderr.strip()}")
+        for description, noncanonical in (
+            (
+                "legacy descriptive maintenance classification",
+                "Maintenance and specification consistency correction following a prior audit.",
+            ),
+            (
+                "descriptive maintenance prose mentioning product-artifact policy",
+                "Maintenance discussing Product-artifact implementation policy semantics.",
+            ),
+        ):
+            body_path.write_text(body.replace("Maintenance", noncanonical, 1))
+            result = run_policy("issue", REPO_ROOT, body_path)
+            if result.returncode == 0 or "invalid change type in Change type" not in result.stderr:
+                raise SystemExit(
+                    f"{description} was not rejected as a noncanonical change type: {result.stderr.strip()}"
+                )
 
         fuzzy_product = body.replace(
             "Maintenance",

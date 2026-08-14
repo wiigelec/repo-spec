@@ -384,6 +384,28 @@ def check_pr(body: str, fields: list[dict]) -> None:
         validate_field_value(field, value)
 
 
+def load_issue_from_event(event_path: Path) -> tuple[str, bool]:
+    try:
+        payload = json.loads(event_path.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PolicyError(f"invalid event payload: {event_path}") from exc
+
+    issue = payload.get("issue", {})
+    labels = issue.get("labels", [])
+    label_names = {
+        label.get("name")
+        for label in labels
+        if isinstance(label, dict) and isinstance(label.get("name"), str)
+    }
+    return issue.get("body", ""), "governed-work" in label_names
+
+
+def check_issue_event(body: str, governed_work: bool, fields: list[dict], repo_root: Path) -> None:
+    if not governed_work:
+        return
+    check_issue(body, fields, repo_root)
+
+
 def load_body_from_event(event_path: Path, mode: str) -> str:
     try:
         payload = json.loads(event_path.read_text())
@@ -414,14 +436,18 @@ def main(argv: list[str]) -> int:
                 body = Path(args.body_file).read_text()
             except OSError as exc:
                 raise PolicyError(f"invalid body file: {args.body_file}") from exc
+            if args.mode == "issue":
+                check_issue(body, issue_fields, repo_root)
+            else:
+                check_pr(body, pr_fields)
         else:
             event_path = Path(args.event_path)
-            body = load_body_from_event(event_path, args.mode)
-
-        if args.mode == "issue":
-            check_issue(body, issue_fields, repo_root)
-        else:
-            check_pr(body, pr_fields)
+            if args.mode == "issue":
+                body, governed_work = load_issue_from_event(event_path)
+                check_issue_event(body, governed_work, issue_fields, repo_root)
+            else:
+                body = load_body_from_event(event_path, args.mode)
+                check_pr(body, pr_fields)
         return 0
     except PolicyError as exc:
         return fail(str(exc))
