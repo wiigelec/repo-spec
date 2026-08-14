@@ -15,6 +15,15 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+PRODUCT_SCRIPTS = Path(__file__).resolve().parents[2] / "product" / "scripts"
+if str(PRODUCT_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(PRODUCT_SCRIPTS))
+
+from issue_intake_governance_routing import (
+    CanonicalGovernedStateObservation,
+    validate_canonical_governed_state,
+)
+
 ROUTING_LABELS = frozenset({"bug-fix", "feature-request"})
 GOVERNED_WORK = "governed-work"
 
@@ -503,6 +512,37 @@ def main(argv: list[str]) -> int:
             canonical_body=canonical_body,
         )
 
+        canonical_revision = hashlib.sha256(
+            canonical_body.encode()
+        ).hexdigest()
+        previous_subject = os.environ.get(
+            "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT"
+        )
+        os.environ["REPO_SPEC_CANONICAL_VALIDATION_SUBJECT"] = str(
+            args.canonical_body_file.resolve()
+        )
+        try:
+            try:
+                canonical_evidence = validate_canonical_governed_state(
+                    observation=CanonicalGovernedStateObservation(
+                        governing_issue=f"#{args.governing_issue}",
+                        governed_operation=args.governed_operation.strip(),
+                        observed_revision=canonical_revision,
+                    ),
+                    producer_id="repository-canonical-validator",
+                )
+            except ValueError as exc:
+                raise PromotionError(
+                    f"trusted canonical validation failed: {exc}"
+                ) from exc
+        finally:
+            if previous_subject is None:
+                os.environ.pop("REPO_SPEC_CANONICAL_VALIDATION_SUBJECT", None)
+            else:
+                os.environ[
+                    "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT"
+                ] = previous_subject
+
         authorization = require_repository_governance_authorization(
             client=client,
             authority_issue=args.authority_issue,
@@ -586,16 +626,14 @@ def main(argv: list[str]) -> int:
                     "status": "applied",
                     "plan": plan,
                     "canonical_state_evidence": {
-                        "governing_issue": issue_ref(
-                            args.repository,
-                            args.governing_issue,
+                        "governing_issue": canonical_evidence.governing_issue,
+                        "governed_operation": canonical_evidence.governed_operation,
+                        "validated_revision": canonical_evidence.validated_revision,
+                        "observed_revision": canonical_evidence.observed_revision,
+                        "validation_artifact_id": (
+                            canonical_evidence.validation_artifact_id
                         ),
-                        "governed_operation": args.governed_operation.strip(),
-                        "validated_revision": body_sha,
-                        "observed_revision": hashlib.sha256(
-                            final_issue["body"].encode()
-                        ).hexdigest(),
-                        "validation_artifact_id": evidence.validation_artifact_id,
+                        "producer_id": canonical_evidence.producer_id,
                     },
                     "promotion_evidence": asdict(evidence),
                 },

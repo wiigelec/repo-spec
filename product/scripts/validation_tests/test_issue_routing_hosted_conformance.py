@@ -18,13 +18,12 @@ PRODUCT_SCRIPTS = REPO_ROOT / "product" / "scripts"
 if str(PRODUCT_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(PRODUCT_SCRIPTS))
 
-from issue_intake_governance_routing import (
-    CanonicalGovernedStateObservation,
-    validate_canonical_governed_state,
-)
-
 HELPER_PATH = REPO_ROOT / "repo/scripts/github_issue_promotion.py"
 POLICY = REPO_ROOT / "repo/scripts/github-field-policy"
+CANONICAL_PRODUCER = REPO_ROOT / "repo/scripts/canonical-governed-state-validator"
+AUTHORIZATION_PRODUCER = (
+    REPO_ROOT / "repo/scripts/repository-governance-authorization-validator"
+)
 SOURCE_WORKFLOW = REPO_ROOT / "repo/profiles/github/workflows/governed-work-promotion.yml"
 INSTALLED_WORKFLOW = REPO_ROOT / ".github/workflows/governed-work-promotion.yml"
 
@@ -48,7 +47,7 @@ ALL_PRODUCT_SPECS = (
 )
 
 
-def canonical_governed_body(extra_dependency_text: str = "") -> str:
+def canonical_governed_body() -> str:
     specs = ", ".join(ALL_PRODUCT_SPECS)
     return (
         "## Change type\nProduct-artifact implementation\n\n"
@@ -62,18 +61,20 @@ def canonical_governed_body(extra_dependency_text: str = "") -> str:
         "`repo/docs/plans/REPOSITORY-IMPLEMENTATION-PLAN.md` composite.\n\n"
         "## Implementation-plan workstreams/stages\nIRP-I2\nIRP-I3\nIRP-I4\nIRP-I5\n\n"
         "## Accepted default-branch base\n"
-        "main at de7d75ffc8d08a40be4ca46cfbd9336c9fa0b4ec\n\n"
+        "main at 00030fcc48f2b7fefefacc42a4a4dd9cdba9cea4\n\n"
         "## In-scope behavior and paths\n"
-        "- Exercise trusted promotion evidence producers through hosted conformance.\n\n"
+        "- Exercise managed producer-backed promotion conformance.\n\n"
         "## Explicit exclusions\n"
         "- No new product semantics or lifecycle authority.\n\n"
         "## Dependencies and predecessor evidence\n"
-        "#424 and de7d75ffc8d08a40be4ca46cfbd9336c9fa0b4ec.\n"
-        f"{extra_dependency_text}\n\n"
+        "Issue #426 governs this bounded correction after merged PR #425. "
+        "The accepted baseline is "
+        "`main@00030fcc48f2b7fefefacc42a4a4dd9cdba9cea4`, and the fixture "
+        "exists only to exercise the accepted hosted routing boundaries.\n\n"
         "## Ordered patch plan\n1. Exercise bounded producer-backed conformance.\n\n"
-        "## Validation plan\nRun repository field policy and trusted producer commands.\n\n"
+        "## Validation plan\nRun repository field policy and managed producers.\n\n"
         "## Acceptance criteria\n"
-        "Caller-fabricated evidence fails; trusted producer-backed evidence succeeds.\n\n"
+        "Substituted producer artifacts fail; managed producer-backed evidence succeeds.\n\n"
         "## Completion gate\nManual review and merge remain required.\n\n"
         "## Open decisions or authority conflicts\nNone.\n\n"
         "## Successor work explicitly not authorized\nUnrelated work.\n"
@@ -83,7 +84,6 @@ def canonical_governed_body(extra_dependency_text: str = "") -> str:
 class FakeClient:
     instances = []
     classification = "bug-fix"
-    authority_governed = True
 
     def __init__(self, repository: str, token: str):
         self.repository = repository
@@ -102,11 +102,7 @@ class FakeClient:
             56: {
                 "number": 56,
                 "body": canonical_governed_body(),
-                "labels": (
-                    [{"name": "governed-work"}]
-                    if self.__class__.authority_governed
-                    else []
-                ),
+                "labels": [{"name": "governed-work"}],
             },
         }
         self.__class__.instances.append(self)
@@ -136,68 +132,46 @@ class FakeClient:
         return self.issues[number]["labels"]
 
 
-class ProducerEnvironment:
+class ManagedProducerEnvironment:
     def __init__(
         self,
         *,
         classification: str,
         governing_issue: int,
         operation: str,
-        canonical_body_path: pathlib.Path,
-        canonical_valid: bool = True,
-        authorization_valid: bool = True,
+        lifecycle_governing_issue: int | None = None,
     ):
         self.tmp = tempfile.TemporaryDirectory()
         self.dir = pathlib.Path(self.tmp.name)
-        revision = hashlib.sha256(canonical_body_path.read_bytes()).hexdigest()
-
-        canonical_payload = {
-            "governing_issue": f"#{governing_issue}",
-            "governed_operation": operation,
-            "validated_revision": revision,
-            "validation_artifact_id": f"field-policy:sha256:{revision}",
-            "producer_id": "repository-canonical-validator",
-            "canonical_structure_valid": canonical_valid,
-        }
-        canonical_cmd = self.dir / "canonical-governed-state-validator"
-        canonical_cmd.write_text(
-            "#!/usr/bin/env python3\n"
-            "import json,sys\n"
-            "request=json.load(sys.stdin)\n"
-            "print(" + repr(json.dumps(canonical_payload)) + ")\n",
-            encoding="utf-8",
-        )
-        canonical_cmd.chmod(canonical_cmd.stat().st_mode | stat.S_IXUSR)
-
         path = "audit" if classification == "bug-fix" else "feature-development"
-        auth_payload = {
+        lifecycle = {
             "authority_issue": 56,
-            "governing_issue": governing_issue if authorization_valid else 99,
+            "governing_issue": (
+                governing_issue
+                if lifecycle_governing_issue is None
+                else lifecycle_governing_issue
+            ),
             "governed_operation": operation,
             "routing_classification": classification,
             "authority_path": path,
             "lifecycle_artifact_id": (
-                f"audit-run:accepted:56"
+                "audit-run:accepted:56"
                 if classification == "bug-fix"
                 else "feature-development:approved:56"
             ),
-            "producer_id": "repository-governance-authority",
+            "status": "accepted",
         }
-        auth_cmd = self.dir / "repository-governance-authorization-validator"
-        auth_cmd.write_text(
-            "#!/usr/bin/env python3\n"
-            "import json,sys\n"
-            "request=json.load(sys.stdin)\n"
-            "print(" + repr(json.dumps(auth_payload)) + ")\n",
-            encoding="utf-8",
-        )
-        auth_cmd.chmod(auth_cmd.stat().st_mode | stat.S_IXUSR)
+        self.lifecycle = self.dir / "lifecycle-authority.json"
+        self.lifecycle.write_text(json.dumps(lifecycle), encoding="utf-8")
 
     def __enter__(self):
-        old = os.environ.get("PATH", "")
         self.patch = mock.patch.dict(
             os.environ,
-            {"PATH": str(self.dir) + os.pathsep + old},
+            {
+                "REPO_SPEC_CANONICAL_VALIDATOR": str(CANONICAL_PRODUCER),
+                "REPO_SPEC_AUTHORIZATION_VALIDATOR": str(AUTHORIZATION_PRODUCER),
+                "REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT": str(self.lifecycle),
+            },
             clear=False,
         )
         self.patch.start()
@@ -212,16 +186,14 @@ class HostedRoutingConformanceTests(unittest.TestCase):
     def setUp(self):
         FakeClient.instances.clear()
         FakeClient.classification = "bug-fix"
-        FakeClient.authority_governed = True
 
     def invoke_apply(
         self,
         *,
         classification="bug-fix",
         promotion_form="successor",
-        canonical_valid=True,
-        authorization_valid=True,
-        producer_paths=True,
+        lifecycle_governing_issue=None,
+        extra_env=None,
     ):
         FakeClient.instances.clear()
         FakeClient.classification = classification
@@ -230,31 +202,24 @@ class HostedRoutingConformanceTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             body_path = pathlib.Path(tmp) / "canonical.md"
-            body_path.write_text(canonical_governed_body())
-            real_policy = subprocess_run = __import__("subprocess").run
-            policy_result = real_policy(
-                [str(POLICY), "--mode", "issue", "--body-file", str(body_path)],
-                cwd=REPO_ROOT,
-                text=True,
-                stdout=__import__("subprocess").PIPE,
-                stderr=__import__("subprocess").PIPE,
-            )
-            self.assertEqual(policy_result.returncode, 0, policy_result.stderr)
-
-            env = ProducerEnvironment(
+            body_path.write_text(canonical_governed_body(), encoding="utf-8")
+            env = ManagedProducerEnvironment(
                 classification=classification,
                 governing_issue=governing_issue,
                 operation=operation,
-                canonical_body_path=body_path,
-                canonical_valid=canonical_valid,
-                authorization_valid=authorization_valid,
+                lifecycle_governing_issue=lifecycle_governing_issue,
             )
 
             output = io.StringIO()
             errors = io.StringIO()
-            context = env if producer_paths else contextlib.nullcontext()
+            patch_env = (
+                mock.patch.dict(os.environ, extra_env, clear=False)
+                if extra_env
+                else contextlib.nullcontext()
+            )
             with (
-                context,
+                env,
+                patch_env,
                 mock.patch.object(promotion, "GitHubClient", FakeClient),
                 mock.patch.dict(os.environ, {"GITHUB_TOKEN": "test-token"}, clear=False),
                 contextlib.redirect_stdout(output),
@@ -278,25 +243,27 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         self.assertEqual(len(FakeClient.instances), 1)
         return rc, FakeClient.instances[0], result, errors.getvalue()
 
-    def test_bug_fix_uses_trusted_producers_and_preserves_order(self):
-        rc, client, result, _ = self.invoke_apply()
-        self.assertEqual(rc, 0)
+    def test_bug_fix_uses_managed_producers_before_mutation(self):
+        rc, client, result, error = self.invoke_apply()
+        self.assertEqual(rc, 0, error)
         self.assertEqual(
             [operation[0] for operation in client.operations],
             ["comment", "body", "labels"],
+        )
+        evidence = result["canonical_state_evidence"]
+        self.assertEqual(evidence["producer_id"], "repository-canonical-validator")
+        self.assertEqual(
+            result["plan"]["repository_authorization"]["producer_id"],
+            "repository-governance-authority",
         )
         self.assertEqual(
             result["plan"]["repository_authorization"]["authority_path"],
             "audit",
         )
-        self.assertEqual(
-            result["plan"]["repository_authorization"]["producer_id"],
-            "repository-governance-authority",
-        )
 
-    def test_feature_request_uses_trusted_feature_authority(self):
-        rc, client, result, _ = self.invoke_apply(classification="feature-request")
-        self.assertEqual(rc, 0)
+    def test_feature_request_uses_managed_feature_authority(self):
+        rc, client, result, error = self.invoke_apply(classification="feature-request")
+        self.assertEqual(rc, 0, error)
         self.assertEqual(
             result["plan"]["repository_authorization"]["authority_path"],
             "feature-development",
@@ -306,63 +273,68 @@ class HostedRoutingConformanceTests(unittest.TestCase):
             ["comment", "body", "labels"],
         )
 
-    def test_missing_trusted_producer_paths_fail_before_mutation(self):
-        rc, client, result, error = self.invoke_apply(producer_paths=False)
+    def test_wrong_lifecycle_target_fails_before_mutation(self):
+        rc, client, result, error = self.invoke_apply(lifecycle_governing_issue=99)
         self.assertEqual(rc, 1)
         self.assertIsNone(result)
-        self.assertIn("producer is unavailable", error)
+        self.assertIn("governing issue mismatch", error)
         self.assertEqual(client.operations, [])
 
-    def test_wrong_authorization_target_fails_before_mutation(self):
-        rc, client, result, error = self.invoke_apply(authorization_valid=False)
-        self.assertEqual(rc, 1)
-        self.assertIsNone(result)
-        self.assertIn("target governing issue", error)
-        self.assertEqual(client.operations, [])
-
-    def test_invalid_canonical_producer_result_fails_closed(self):
+    def test_substituted_canonical_producer_fails_before_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:
-            body_path = pathlib.Path(tmp) / "canonical.md"
-            body_path.write_text(canonical_governed_body())
-            revision = hashlib.sha256(body_path.read_bytes()).hexdigest()
-            observation = CanonicalGovernedStateObservation(
-                governing_issue="#34",
-                governed_operation="operation-34",
-                observed_revision=revision,
+            fake = pathlib.Path(tmp) / "canonical-governed-state-validator"
+            fake.write_text(
+                "#!/usr/bin/env python3\nprint('{}')\n",
+                encoding="utf-8",
             )
-            with ProducerEnvironment(
-                classification="bug-fix",
-                governing_issue=34,
-                operation="operation-34",
-                canonical_body_path=body_path,
-                canonical_valid=False,
-            ):
-                with self.assertRaisesRegex(ValueError, "validation failed"):
-                    validate_canonical_governed_state(
-                        observation=observation,
-                        producer_id="repository-canonical-validator",
-                    )
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            rc, client, result, error = self.invoke_apply(
+                extra_env={"REPO_SPEC_CANONICAL_VALIDATOR": str(fake)}
+            )
+        self.assertEqual(rc, 1)
+        self.assertIsNone(result)
+        self.assertIn("artifact identity mismatch", error)
+        self.assertEqual(client.operations, [])
+
+    def test_substituted_authorization_producer_fails_before_mutation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = pathlib.Path(tmp) / "repository-governance-authorization-validator"
+            fake.write_text(
+                "#!/usr/bin/env python3\nprint('{}')\n",
+                encoding="utf-8",
+            )
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            rc, client, result, error = self.invoke_apply(
+                extra_env={"REPO_SPEC_AUTHORIZATION_VALIDATOR": str(fake)}
+            )
+        self.assertEqual(rc, 1)
+        self.assertIsNone(result)
+        self.assertIn("artifact identity mismatch", error)
+        self.assertEqual(client.operations, [])
 
     def test_both_promotion_forms_remain_supported(self):
         for form in ("successor", "in-place"):
             with self.subTest(form=form):
-                rc, client, result, _ = self.invoke_apply(promotion_form=form)
-                self.assertEqual(rc, 0)
+                rc, client, result, error = self.invoke_apply(promotion_form=form)
+                self.assertEqual(rc, 0, error)
                 self.assertEqual(result["plan"]["promotion_form"], form)
                 self.assertEqual(
                     [operation[0] for operation in client.operations],
                     ["comment", "body", "labels"],
                 )
 
-    def test_workflow_remains_manual_and_producer_gated(self):
+    def test_workflow_wires_managed_producers_and_lifecycle_artifact(self):
         source = SOURCE_WORKFLOW.read_text()
         installed = INSTALLED_WORKFLOW.read_text()
         self.assertEqual(source, installed)
         self.assertIn("workflow_dispatch:", source)
-        self.assertIn("authority_issue:", source)
+        self.assertIn("lifecycle_authority_base64:", source)
+        self.assertIn("REPO_SPEC_CANONICAL_VALIDATOR=", source)
+        self.assertIn("REPO_SPEC_AUTHORIZATION_VALIDATOR=", source)
+        self.assertIn("REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT=", source)
         helper = HELPER_PATH.read_text()
-        self.assertIn("TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS", helper)
-        self.assertNotIn("parse_repository_governance_authorization", helper)
+        self.assertIn("validate_canonical_governed_state(", helper)
+        self.assertIn("CanonicalGovernedStateObservation(", helper)
 
 
 if __name__ == "__main__":
