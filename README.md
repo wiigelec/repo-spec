@@ -1,21 +1,21 @@
 # repo-spec
 
-Repository specification workspace.
+`repo-spec` is a specification-governed repository bootstrap framework for long-running human and AI-assisted software development. It establishes a repository structure in which accepted repository and product specifications remain explicit authority, while generated documentation, implementation artifacts, tests, and prior behavior remain subordinate evidence.
 
 Supported runtime: Python 3.10+
 
 ## Initialize a repository
 
-The normal local initialization workflow is:
-
-```text
-repo-spec init --repo /path/to/new/repository-name
-```
-
-When running directly from a repo-spec checkout without putting the wrapper on `PATH`:
+From a repo-spec checkout, the normal local initialization workflow is:
 
 ```text
 product/scripts/repo-spec init --repo /path/to/new/repository-name
+```
+
+If the `repo-spec` wrapper from this checkout has been placed on `PATH`, the equivalent command is:
+
+```text
+repo-spec init --repo /path/to/new/repository-name
 ```
 
 The destination path is the only normal-user bootstrap input. The repository name is derived mechanically from the destination basename.
