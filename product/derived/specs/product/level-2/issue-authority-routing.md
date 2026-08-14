@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Candidate reusable capability for choosing the accepted authority path from issue routing classification. It composes classification with existing audit and feature-development lifecycles without redefining those lifecycles.
+Reusable capability for choosing the accepted authority path from issue routing classification while composing with, rather than redefining, existing audit and feature-development lifecycles.
 
 ## Correspondence
 

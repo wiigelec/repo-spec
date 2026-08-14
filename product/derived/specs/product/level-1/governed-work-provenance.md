@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Candidate primitive contract for governance-state identity and intake provenance. It records the confirmed provenance floor: original unformatted body plus routing-classification labels before promotion that replaces or restructures the body. Title preservation and additional provenance fields remain unresolved.
+Primitive contract for governance-state identity and the minimum intake provenance that must be preserved before ordinary intake content is replaced or restructured for governed work.
 
 ## Correspondence
 
@@ -42,10 +42,10 @@ Candidate primitive contract for governance-state identity and intake provenance
 ## Normative requirements
 
 - `IRG-PROV-001`: `governed-work` shall represent governance state rather than routing classification.
-- `IRG-PROV-002`: When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved before that replacement or restructuring.
-- `IRG-PROV-003`: The routing-classification labels associated with the intake item shall be preserved as provenance before body replacement or restructuring during promotion.
+- `IRG-PROV-002`: When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring.
+- `IRG-PROV-003`: The routing-classification labels associated with the intake item before promotion shall be preserved in the same or another traceable issue comment before body replacement or restructuring during promotion.
 - `IRG-PROV-004`: Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion.
-- `IRG-PROV-005`: This candidate does not define title preservation, additional provenance payload beyond the confirmed body-and-classification floor, or whether the original intake issue versus a successor issue carries governed-work state.
+- `IRG-PROV-005`: This contract introduces no intake-title preservation requirement. Its normative minimum provenance payload is the original unformatted issue body plus the pre-promotion routing-classification labels; additional provenance may be recorded but is not required by this contract.
 
 ## Dependencies
 

@@ -1,8 +1,8 @@
 {
   "spec_id": "product.issue-routing-platform-validation",
   "title": "Issue Routing Platform Validation",
-  "purpose": "Candidate reusable integration contract separating repository-generic governance from hosting-platform realization. It defines validation-state boundaries but leaves exact GitHub event, API, CI, and label-retention mechanics unresolved.",
-  "status": "candidate",
+  "purpose": "Reusable platform-validation boundary that keeps hosted field validation subordinate to repository authority and constrains platform realizations by observable provenance and governed-state invariants rather than exact API sequencing.",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {
@@ -30,7 +30,7 @@
     },
     {
       "id": "IRG-PVAL-005",
-      "text": "This candidate does not define exact GitHub Actions triggers, exact event ordering, exact API call ordering, label colors, routing-label retention after promotion, or transactional behavior for non-atomic hosting platforms."
+      "text": "Repository-generic validation integration shall constrain observable ordering only as needed to preserve required provenance before destructive body replacement or restructuring and to prevent governed-field validation from applying before canonical governed fields and governed-work state are established; exact hosting-platform API or event sequencing and live routing-label retention remain platform-profile concerns."
     }
   ],
   "dependencies": [

@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Candidate complete lifecycle outcome coordinating ordinary intake classification, authority routing, provenance-preserving governed-work promotion, and platform validation activation. It delegates unresolved primitive and mechanism choices to lower-level candidates rather than redefining them.
+End-to-end orchestration for moving ordinary issue intake through classification, authority routing, provenance preservation, governed-work promotion, and hosted validation activation with observable success and failure conditions.
 
 ## Correspondence
 
@@ -45,7 +45,7 @@ Candidate complete lifecycle outcome coordinating ordinary intake classification
 - `IRG-E2E-004`: If authority routing cannot determine a permitted path without resolving an unaccepted semantic decision, the lifecycle shall stop rather than manufacture authority.
 - `IRG-E2E-005`: A successful routing outcome shall leave the applicable authority path explicit, preserved intake evidence traceable, and any governed operation structurally subject to the existing bounded-change workflow.
 - `IRG-E2E-006`: The lifecycle shall treat failure to preserve required provenance, failure to establish a canonical governed issue before governed-work validation, or conflict between hosting state and repository authority as unsuccessful routing rather than successful governance.
-- `IRG-E2E-007`: This candidate does not redefine lower-level classification, provenance, promotion, routing, or platform mechanics and remains blocked from acceptance where those candidates retain unresolved acceptance-relevant choices.
+- `IRG-E2E-007`: The orchestration shall not redefine lower-level concepts or capabilities and shall treat either in-place or successor governed-issue realization as conforming when the accepted lower-level routing, provenance, promotion, and validation invariants are satisfied.
 
 ## Dependencies
 

@@ -1,8 +1,8 @@
 {
   "spec_id": "product.issue-intake-governance-routing",
   "title": "Issue Intake to Governed Work Routing",
-  "purpose": "Candidate complete lifecycle outcome coordinating ordinary intake classification, authority routing, provenance-preserving governed-work promotion, and platform validation activation. It delegates unresolved primitive and mechanism choices to lower-level candidates rather than redefining them.",
-  "status": "candidate",
+  "purpose": "End-to-end orchestration for moving ordinary issue intake through classification, authority routing, provenance preservation, governed-work promotion, and hosted validation activation with observable success and failure conditions.",
+  "status": "accepted",
   "schema_version": "1",
   "level": 3,
   "orchestrations": {
@@ -37,7 +37,7 @@
     },
     {
       "id": "IRG-E2E-007",
-      "text": "This candidate does not redefine lower-level classification, provenance, promotion, routing, or platform mechanics and remains blocked from acceptance where those candidates retain unresolved acceptance-relevant choices."
+      "text": "The orchestration shall not redefine lower-level concepts or capabilities and shall treat either in-place or successor governed-issue realization as conforming when the accepted lower-level routing, provenance, promotion, and validation invariants are satisfied."
     }
   ],
   "dependencies": [
