@@ -83,5 +83,21 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
             path.unlink()
 
 
+    def test_profile_workflow_validates_governed_label_transition(self):
+        source = self.repo_root / "repo/profiles/github/workflows/github-field-policy.yml"
+        installed = self.repo_root / ".github/workflows/github-field-policy.yml"
+        source_text = source.read_text()
+        installed_text = installed.read_text()
+        self.assertEqual(source_text, installed_text)
+        self.assertIn(
+            "types: [opened, edited, reopened, labeled]",
+            source_text,
+        )
+        self.assertNotIn(
+            "types: [opened, edited, reopened]\n",
+            source_text,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
