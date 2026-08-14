@@ -19,6 +19,10 @@
     {
       "source": "repo/profiles/github/workflows/validation.yml",
       "installed": ".github/workflows/validation.yml"
+    },
+    {
+      "source": "repo/profiles/github/workflows/governed-work-promotion.yml",
+      "installed": ".github/workflows/governed-work-promotion.yml"
     }
   ],
   "deployment_state": {
