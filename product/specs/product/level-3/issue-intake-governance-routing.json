@@ -99,8 +99,111 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.issue-intake-governance-routing",
+        "paths": [
+          "product/scripts/issue_intake_governance_routing/orchestration.py"
+        ],
+        "requirements": [
+          "IRG-E2E-001",
+          "IRG-E2E-002",
+          "IRG-E2E-003",
+          "IRG-E2E-004",
+          "IRG-E2E-005",
+          "IRG-E2E-006",
+          "IRG-E2E-007"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.issue-intake-governance-routing",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
+        ],
+        "requirements": [
+          "IRG-E2E-001",
+          "IRG-E2E-002",
+          "IRG-E2E-003",
+          "IRG-E2E-004",
+          "IRG-E2E-005",
+          "IRG-E2E-006",
+          "IRG-E2E-007"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "IRG-E2E-001",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-E2E-002",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-E2E-003",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-E2E-004",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-E2E-005",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-E2E-006",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-E2E-007",
+        "implementation_ids": [
+          "impl.issue-intake-governance-routing"
+        ],
+        "test_ids": [
+          "test.issue-intake-governance-routing"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

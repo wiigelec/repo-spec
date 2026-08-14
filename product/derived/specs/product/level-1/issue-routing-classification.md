@@ -22,15 +22,64 @@ Primitive contract for classifying ordinary issue intake into routing concepts a
 
 ### Implementations
 
-- None
+- `impl.issue-routing-classification`
+  - Paths:
+    - `product/scripts/issue_intake_governance_routing/classification.py`
+  - Requirements:
+    - `IRG-CLS-001`
+    - `IRG-CLS-002`
+    - `IRG-CLS-003`
+    - `IRG-CLS-004`
+    - `IRG-CLS-005`
 
 ### Tests
 
-- None
+- `test.issue-routing-classification`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
+  - Requirements:
+    - `IRG-CLS-001`
+    - `IRG-CLS-002`
+    - `IRG-CLS-003`
+    - `IRG-CLS-004`
+    - `IRG-CLS-005`
 
 ### Conformance
 
-- None
+- `IRG-CLS-001`
+  - Implementation Ids:
+    - `impl.issue-routing-classification`
+  - Test Ids:
+    - `test.issue-routing-classification`
+  - Status: `covered`
+
+- `IRG-CLS-002`
+  - Implementation Ids:
+    - `impl.issue-routing-classification`
+  - Test Ids:
+    - `test.issue-routing-classification`
+  - Status: `covered`
+
+- `IRG-CLS-003`
+  - Implementation Ids:
+    - `impl.issue-routing-classification`
+  - Test Ids:
+    - `test.issue-routing-classification`
+  - Status: `covered`
+
+- `IRG-CLS-004`
+  - Implementation Ids:
+    - `impl.issue-routing-classification`
+  - Test Ids:
+    - `test.issue-routing-classification`
+  - Status: `covered`
+
+- `IRG-CLS-005`
+  - Implementation Ids:
+    - `impl.issue-routing-classification`
+  - Test Ids:
+    - `test.issue-routing-classification`
+  - Status: `covered`
 
 ## Primitives
 

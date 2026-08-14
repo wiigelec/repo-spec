@@ -22,15 +22,64 @@ Reusable platform-validation boundary that keeps hosted field validation subordi
 
 ### Implementations
 
-- None
+- `impl.issue-routing-platform-validation`
+  - Paths:
+    - `product/scripts/issue_intake_governance_routing/hosted_validation.py`
+  - Requirements:
+    - `IRG-PVAL-001`
+    - `IRG-PVAL-002`
+    - `IRG-PVAL-003`
+    - `IRG-PVAL-004`
+    - `IRG-PVAL-005`
 
 ### Tests
 
-- None
+- `test.issue-routing-platform-validation`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
+  - Requirements:
+    - `IRG-PVAL-001`
+    - `IRG-PVAL-002`
+    - `IRG-PVAL-003`
+    - `IRG-PVAL-004`
+    - `IRG-PVAL-005`
 
 ### Conformance
 
-- None
+- `IRG-PVAL-001`
+  - Implementation Ids:
+    - `impl.issue-routing-platform-validation`
+  - Test Ids:
+    - `test.issue-routing-platform-validation`
+  - Status: `covered`
+
+- `IRG-PVAL-002`
+  - Implementation Ids:
+    - `impl.issue-routing-platform-validation`
+  - Test Ids:
+    - `test.issue-routing-platform-validation`
+  - Status: `covered`
+
+- `IRG-PVAL-003`
+  - Implementation Ids:
+    - `impl.issue-routing-platform-validation`
+  - Test Ids:
+    - `test.issue-routing-platform-validation`
+  - Status: `covered`
+
+- `IRG-PVAL-004`
+  - Implementation Ids:
+    - `impl.issue-routing-platform-validation`
+  - Test Ids:
+    - `test.issue-routing-platform-validation`
+  - Status: `covered`
+
+- `IRG-PVAL-005`
+  - Implementation Ids:
+    - `impl.issue-routing-platform-validation`
+  - Test Ids:
+    - `test.issue-routing-platform-validation`
+  - Status: `covered`
 
 ## Components
 
