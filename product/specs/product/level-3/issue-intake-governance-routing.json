@@ -1,0 +1,106 @@
+{
+  "spec_id": "product.issue-intake-governance-routing",
+  "title": "Issue Intake to Governed Work Routing",
+  "purpose": "Candidate complete lifecycle outcome coordinating ordinary intake classification, authority routing, provenance-preserving governed-work promotion, and platform validation activation. It delegates unresolved primitive and mechanism choices to lower-level candidates rather than redefining them.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 3,
+  "orchestrations": {
+    "workflows": [
+      "issue-intake-to-governed-work-routing"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "IRG-E2E-001",
+      "text": "The issue-routing lifecycle shall begin with ordinary intake that may be unformatted and not yet governed."
+    },
+    {
+      "id": "IRG-E2E-002",
+      "text": "The lifecycle shall classify intake, select the accepted authority path, preserve required intake provenance before content-restructuring promotion, establish governed-work state only for a canonical bounded governed operation, and activate governed field-policy validation only after that governed state exists."
+    },
+    {
+      "id": "IRG-E2E-003",
+      "text": "Bug-fix routing shall enter audit; feature-request routing shall enter the governed feature-development lifecycle and shall not bypass functional-set approval, decomposition, specification, planning, or implementation gates applicable to later work."
+    },
+    {
+      "id": "IRG-E2E-004",
+      "text": "If authority routing cannot determine a permitted path without resolving an unaccepted semantic decision, the lifecycle shall stop rather than manufacture authority."
+    },
+    {
+      "id": "IRG-E2E-005",
+      "text": "A successful routing outcome shall leave the applicable authority path explicit, preserved intake evidence traceable, and any governed operation structurally subject to the existing bounded-change workflow."
+    },
+    {
+      "id": "IRG-E2E-006",
+      "text": "The lifecycle shall treat failure to preserve required provenance, failure to establish a canonical governed issue before governed-work validation, or conflict between hosting state and repository authority as unsuccessful routing rather than successful governance."
+    },
+    {
+      "id": "IRG-E2E-007",
+      "text": "This candidate does not redefine lower-level classification, provenance, promotion, routing, or platform mechanics and remains blocked from acceptance where those candidates retain unresolved acceptance-relevant choices."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.issue-routing-governance"
+    },
+    {
+      "spec_id": "product.issue-routing-classification"
+    },
+    {
+      "spec_id": "product.governed-work-provenance"
+    },
+    {
+      "spec_id": "product.issue-authority-routing"
+    },
+    {
+      "spec_id": "product.governed-work-promotion"
+    },
+    {
+      "spec_id": "product.issue-routing-platform-validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-correspondence.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-3/issue-intake-governance-routing.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

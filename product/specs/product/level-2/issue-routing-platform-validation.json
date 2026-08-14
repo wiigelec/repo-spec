@@ -1,0 +1,94 @@
+{
+  "spec_id": "product.issue-routing-platform-validation",
+  "title": "Issue Routing Platform Validation",
+  "purpose": "Candidate reusable integration contract separating repository-generic governance from hosting-platform realization. It defines validation-state boundaries but leaves exact GitHub event, API, CI, and label-retention mechanics unresolved.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "platform-validation-boundary",
+      "governed-field-policy-activation"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "IRG-PVAL-001",
+      "text": "Hosting-platform labels, comments, body updates, issue events, and hosted field-policy realization shall remain subordinate to repository-generic routing and governance authority."
+    },
+    {
+      "id": "IRG-PVAL-002",
+      "text": "Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent."
+    },
+    {
+      "id": "IRG-PVAL-003",
+      "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state."
+    },
+    {
+      "id": "IRG-PVAL-004",
+      "text": "Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance."
+    },
+    {
+      "id": "IRG-PVAL-005",
+      "text": "This candidate does not define exact GitHub Actions triggers, exact event ordering, exact API call ordering, label colors, routing-label retention after promotion, or transactional behavior for non-atomic hosting platforms."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.issue-routing-governance"
+    },
+    {
+      "spec_id": "product.governed-work-provenance"
+    },
+    {
+      "spec_id": "product.governed-work-promotion"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-correspondence.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/04-platform-validation-integration.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/issue-routing-platform-validation.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

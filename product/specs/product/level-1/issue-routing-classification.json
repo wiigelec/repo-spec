@@ -1,0 +1,89 @@
+{
+  "spec_id": "product.issue-routing-classification",
+  "title": "Issue Routing Classification",
+  "purpose": "Candidate primitive contract for classifying ordinary issue intake into routing concepts. It encodes confirmed bug-fix and feature-request meanings while leaving mutual-exclusivity and conflict-representation policy unresolved for later acceptance review.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "issue-routing-classification",
+      "bug-fix",
+      "feature-request"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "IRG-CLS-001",
+      "text": "The routing classification vocabulary shall include `bug-fix` for reported behavior believed to violate already accepted authority and `feature-request` for requested new or changed direction."
+    },
+    {
+      "id": "IRG-CLS-002",
+      "text": "The `bug-fix` and `feature-request` classifications may be assigned at issue creation or after review."
+    },
+    {
+      "id": "IRG-CLS-003",
+      "text": "A routing classification shall remain distinct from `governed-work` governance state."
+    },
+    {
+      "id": "IRG-CLS-004",
+      "text": "Classification uncertainty that changes the applicable authority path shall be surfaced rather than silently converted into repository mutation authority."
+    },
+    {
+      "id": "IRG-CLS-005",
+      "text": "This candidate does not define whether `bug-fix` and `feature-request` are mutually exclusive, whether additional routing classifications exist, or the representation of classification conflicts."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.issue-routing-governance"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-correspondence.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/01-intake-classification.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/issue-routing-classification.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

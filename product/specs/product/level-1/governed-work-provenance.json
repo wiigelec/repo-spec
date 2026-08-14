@@ -1,0 +1,89 @@
+{
+  "spec_id": "product.governed-work-provenance",
+  "title": "Governed Work Provenance",
+  "purpose": "Candidate primitive contract for governance-state identity and intake provenance. It records the confirmed provenance floor: original unformatted body plus routing-classification labels before promotion that replaces or restructures the body. Title preservation and additional provenance fields remain unresolved.",
+  "status": "candidate",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "governed-work-state",
+      "intake-provenance",
+      "promotion-evidence"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "IRG-PROV-001",
+      "text": "`governed-work` shall represent governance state rather than routing classification."
+    },
+    {
+      "id": "IRG-PROV-002",
+      "text": "When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved before that replacement or restructuring."
+    },
+    {
+      "id": "IRG-PROV-003",
+      "text": "The routing-classification labels associated with the intake item shall be preserved as provenance before body replacement or restructuring during promotion."
+    },
+    {
+      "id": "IRG-PROV-004",
+      "text": "Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion."
+    },
+    {
+      "id": "IRG-PROV-005",
+      "text": "This candidate does not define title preservation, additional provenance payload beyond the confirmed body-and-classification floor, or whether the original intake issue versus a successor issue carries governed-work state."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.issue-routing-governance"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-correspondence.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/03-governed-work-promotion-and-provenance.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/governed-work-provenance.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
