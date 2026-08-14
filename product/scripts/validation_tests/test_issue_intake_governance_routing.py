@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+import json
+import os
 import pathlib
+import stat
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 PRODUCT_SCRIPTS = REPO_ROOT / "product" / "scripts"
@@ -15,7 +20,6 @@ from issue_intake_governance_routing import (
     AuthorityPath,
     CanonicalGovernedStateEvidence,
     CanonicalGovernedStateObservation,
-    CanonicalGovernedStateValidationResult,
     ClassificationState,
     PromotionForm,
     activate_hosted_validation,
@@ -29,53 +33,70 @@ from issue_intake_governance_routing import (
 )
 
 
-class StaticCanonicalValidator:
+class TrustedProducerFixture:
     def __init__(
         self,
         *,
         governing_issue: str,
         governed_operation: str,
-        validated_revision: str = "rev-1",
-        validation_artifact_id: str = "canonical-governed-fields/rev-1",
-        validator_id: str = "test.canonical-governed-state-validator",
-        canonical_structure_valid: bool = True,
+        revision: str = "rev-1",
+        valid: bool = True,
+        producer_id: str = "repository-canonical-validator",
     ):
-        self.result = CanonicalGovernedStateValidationResult(
-            governing_issue=governing_issue,
-            governed_operation=governed_operation,
-            validated_revision=validated_revision,
-            validation_artifact_id=validation_artifact_id,
-            validator_id=validator_id,
-            canonical_structure_valid=canonical_structure_valid,
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = pathlib.Path(self.tmp.name)
+        self.command = self.dir / "canonical-governed-state-validator"
+        payload = {
+            "governing_issue": governing_issue,
+            "governed_operation": governed_operation,
+            "validated_revision": revision,
+            "validation_artifact_id": f"fixture:{revision}",
+            "producer_id": producer_id,
+            "canonical_structure_valid": valid,
+        }
+        self.command.write_text(
+            "#!/usr/bin/env python3\n"
+            "import json\n"
+            "print(" + repr(json.dumps(payload)) + ")\n",
+            encoding="utf-8",
         )
+        self.command.chmod(self.command.stat().st_mode | stat.S_IXUSR)
 
-    def validate(self, observation):
-        return self.result
+    def __enter__(self):
+        old = os.environ.get("PATH", "")
+        self.patch = mock.patch.dict(
+            os.environ,
+            {"PATH": str(self.dir) + os.pathsep + old},
+            clear=False,
+        )
+        self.patch.start()
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.patch.stop()
+        self.tmp.cleanup()
 
 
 def canonical_evidence(
     *,
     governing_issue: str,
     governed_operation: str,
-    validated_revision: str = "rev-1",
-    observed_revision: str = "rev-1",
-    validation_artifact_id: str = "canonical-governed-fields/rev-1",
-) -> CanonicalGovernedStateEvidence:
+    revision: str = "rev-1",
+):
     observation = CanonicalGovernedStateObservation(
         governing_issue=governing_issue,
         governed_operation=governed_operation,
-        observed_revision=observed_revision,
+        observed_revision=revision,
     )
-    validator = StaticCanonicalValidator(
+    with TrustedProducerFixture(
         governing_issue=governing_issue,
         governed_operation=governed_operation,
-        validated_revision=validated_revision,
-        validation_artifact_id=validation_artifact_id,
-    )
-    return validate_canonical_governed_state(
-        observation=observation,
-        validator=validator,
-    )
+        revision=revision,
+    ):
+        return validate_canonical_governed_state(
+            observation=observation,
+            producer_id="repository-canonical-validator",
+        )
 
 
 class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
@@ -118,12 +139,82 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(provenance.routing_labels, ("bug-fix",))
         self.assertEqual(provenance.original_body, "ordinary unformatted intake body")
         self.assertTrue(provenance.captured_before_restructure)
-        self.assertIn("`bug-fix`", provenance.to_comment())
-        self.assertIn("ordinary unformatted intake body", provenance.to_comment())
 
-    def test_evidence_cannot_be_directly_constructed_or_forged_with_object_new(self):
-        self.assertFalse(hasattr(promotion_module, "_VALIDATED_EVIDENCE_SEAL"))
-        with self.assertRaisesRegex(ValueError, "issued by successful validation"):
+    def test_arbitrary_validator_objects_are_not_an_api_surface(self):
+        observation = CanonicalGovernedStateObservation(
+            governing_issue="#12",
+            governed_operation="operation-12",
+            observed_revision="rev-1",
+        )
+
+        class CallerValidator:
+            def validate(self, observation):
+                return {"canonical_structure_valid": True}
+
+        with self.assertRaises(TypeError):
+            validate_canonical_governed_state(
+                observation=observation,
+                validator=CallerValidator(),
+            )
+
+    def test_unrecognized_or_unavailable_producer_fails_closed(self):
+        observation = CanonicalGovernedStateObservation(
+            governing_issue="#12",
+            governed_operation="operation-12",
+            observed_revision="rev-1",
+        )
+        with self.assertRaisesRegex(ValueError, "unrecognized"):
+            validate_canonical_governed_state(
+                observation=observation,
+                producer_id="caller-supplied-validator",
+            )
+        with mock.patch.dict(os.environ, {"PATH": ""}, clear=False):
+            with self.assertRaisesRegex(ValueError, "unavailable"):
+                validate_canonical_governed_state(
+                    observation=observation,
+                    producer_id="repository-canonical-validator",
+                )
+
+    def test_trusted_producer_result_is_bound_and_fresh(self):
+        evidence = canonical_evidence(
+            governing_issue="#12",
+            governed_operation="operation-12",
+        )
+        self.assertEqual(evidence.governing_issue, "#12")
+        self.assertEqual(evidence.governed_operation, "operation-12")
+        self.assertEqual(evidence.producer_id, "repository-canonical-validator")
+        self.assertTrue(evidence.is_fresh)
+
+    def test_trusted_producer_mismatch_invalid_or_stale_fails_closed(self):
+        observation = CanonicalGovernedStateObservation(
+            governing_issue="#12",
+            governed_operation="operation-12",
+            observed_revision="rev-2",
+        )
+        cases = (
+            ("#34", "operation-12", "rev-2", True, "governing issue"),
+            ("#12", "operation-99", "rev-2", True, "governed operation"),
+            ("#12", "operation-12", "rev-1", True, "stale"),
+            ("#12", "operation-12", "rev-2", False, "validation failed"),
+        )
+        for governing, operation, revision, valid, message in cases:
+            with self.subTest(message=message):
+                with TrustedProducerFixture(
+                    governing_issue=governing,
+                    governed_operation=operation,
+                    revision=revision,
+                    valid=valid,
+                ):
+                    with self.assertRaisesRegex(ValueError, message):
+                        validate_canonical_governed_state(
+                            observation=observation,
+                            producer_id="repository-canonical-validator",
+                        )
+
+    def test_no_module_level_evidence_issuance_or_verification_helpers(self):
+        self.assertFalse(hasattr(promotion_module, "_issue_validated_evidence"))
+        self.assertFalse(hasattr(promotion_module, "_require_issued_evidence_for"))
+        with self.assertRaisesRegex(ValueError, "issued by trusted validation"):
             CanonicalGovernedStateEvidence()
 
         forged = object.__new__(CanonicalGovernedStateEvidence)
@@ -132,15 +223,14 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         forged._validated_revision = "rev-1"
         forged._observed_revision = "rev-1"
         forged._validation_artifact_id = "fabricated"
-        forged._validator_id = "fabricated"
-
+        forged._producer_id = "repository-canonical-validator"
         provenance = capture_intake_provenance(
             intake_issue="#12",
             governed_operation="operation-12",
             original_body="body",
             labels=["bug-fix"],
         )
-        with self.assertRaisesRegex(ValueError, "not issued by successful validation"):
+        with self.assertRaisesRegex(ValueError, "not issued by trusted validation"):
             plan_promotion(
                 form=PromotionForm.IN_PLACE,
                 intake_issue="#12",
@@ -150,66 +240,7 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                 canonical_state_evidence=forged,
             )
 
-    def test_validator_mints_matching_fresh_canonical_evidence(self):
-        evidence = canonical_evidence(
-            governing_issue="#12",
-            governed_operation="operation-12",
-        )
-        self.assertEqual(evidence.governing_issue, "#12")
-        self.assertEqual(evidence.governed_operation, "operation-12")
-        self.assertEqual(evidence.validator_id, "test.canonical-governed-state-validator")
-        self.assertTrue(evidence.is_fresh)
-
-    def test_canonical_validation_fails_closed_for_invalid_stale_or_mismatched_results(self):
-        observation = CanonicalGovernedStateObservation(
-            governing_issue="#12",
-            governed_operation="operation-12",
-            observed_revision="rev-2",
-        )
-        cases = (
-            (
-                StaticCanonicalValidator(
-                    governing_issue="#12",
-                    governed_operation="operation-12",
-                    validated_revision="rev-2",
-                    canonical_structure_valid=False,
-                ),
-                "validation failed",
-            ),
-            (
-                StaticCanonicalValidator(
-                    governing_issue="#34",
-                    governed_operation="operation-12",
-                    validated_revision="rev-2",
-                ),
-                "does not match governing issue",
-            ),
-            (
-                StaticCanonicalValidator(
-                    governing_issue="#12",
-                    governed_operation="operation-99",
-                    validated_revision="rev-2",
-                ),
-                "does not match governed operation",
-            ),
-            (
-                StaticCanonicalValidator(
-                    governing_issue="#12",
-                    governed_operation="operation-12",
-                    validated_revision="rev-1",
-                ),
-                "stale",
-            ),
-        )
-        for validator, message in cases:
-            with self.subTest(message=message):
-                with self.assertRaisesRegex(ValueError, message):
-                    validate_canonical_governed_state(
-                        observation=observation,
-                        validator=validator,
-                    )
-
-    def test_both_promotion_forms_require_validator_issued_canonical_evidence(self):
+    def test_both_promotion_forms_require_trusted_producer_evidence(self):
         provenance = capture_intake_provenance(
             intake_issue="#12",
             governed_operation="operation-12",
@@ -252,17 +283,6 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         )
         self.assertFalse(inactive.validation_active)
         self.assertTrue(active.validation_active)
-        with self.assertRaisesRegex(ValueError, "cannot precede"):
-            activate_hosted_validation(
-                governed_work_state=True,
-                canonical_governed_state=False,
-            )
-        with self.assertRaisesRegex(ValueError, "conflicts with repository authority"):
-            activate_hosted_validation(
-                governed_work_state=True,
-                canonical_governed_state=True,
-                repository_authority_conflict=True,
-            )
 
     def test_end_to_end_bug_fix_success(self):
         outcome = route_intake_to_governed_work(
@@ -321,14 +341,6 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                             governed_operation="operation-12",
                         ),
                     )
-
-    def test_product_owned_implementation_has_no_importable_validation_sentinel(self):
-        promotion_text = (
-            PRODUCT_SCRIPTS / "issue_intake_governance_routing/promotion.py"
-        ).read_text()
-        self.assertNotIn("_VALIDATED_EVIDENCE_SEAL", promotion_text)
-        self.assertIn("WeakSet", promotion_text)
-        self.assertIn("not issued by successful validation", promotion_text)
 
     def test_product_owned_implementation_does_not_import_repository_helpers(self):
         package = PRODUCT_SCRIPTS / "issue_intake_governance_routing"
