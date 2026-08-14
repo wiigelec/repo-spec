@@ -44,7 +44,8 @@
     ],
     "assistant_must_never_merge_pr": true,
     "user_merges_manually": true,
-    "post_merge_action": "return_to_fresh_audit"
+    "post_merge_action": "return_to_fresh_audit",
+    "functional_corrections_per_cycle_semantics": "maximum_not_minimum"
   },
   "phase_gates": {
     "audit": {
@@ -53,7 +54,7 @@
         "inspect_current_repository_state",
         "compare_against_controlling_authority",
         "classify_material_findings",
-        "select_exactly_three_bounded_functional_corrections",
+        "select_up_to_three_bounded_material_functional_corrections",
         "record_other_findings_as_deferred"
       ],
       "finding_classes": [
@@ -105,7 +106,8 @@
         "functional_patch_scope_count": 3,
         "patch_count_semantics": "functional_scope_not_git_commit_count",
         "additional_repair_commits_allowed": true,
-        "additional_repair_commits_must_not_introduce_fourth_functional_correction": true
+        "additional_repair_commits_must_not_introduce_fourth_functional_correction": true,
+        "functional_patch_scope_count_semantics": "maximum_not_minimum"
       }
     },
     "patch_1": {
@@ -147,8 +149,8 @@
     },
     "pre_pr_validation": {
       "checks": [
-        "all_three_governed_corrections_present",
-        "all_three_consistent_with_controlling_authority",
+        "all_selected_governed_corrections_present",
+        "all_selected_corrections_consistent_with_controlling_authority",
         "no_fourth_functional_correction",
         "exclusions_respected",
         "working_tree_clean",
@@ -319,7 +321,7 @@
     "canonical_contract_controls_visible_pr_body_fields": true,
     "session_content_expectations": [
       "document_governing_issue",
-      "summarize_three_functional_corrections",
+      "summarize_selected_functional_corrections",
       "record_exact_validation_performed",
       "identify_review_focus",
       "record_scope_exclusions_and_deferred_work_in_canonical_scope_notes",
@@ -340,7 +342,7 @@
     "compare_against_controlling_authority": true,
     "must_not_weaken_correct_validator_just_to_make_ci_green": true,
     "repair_commit_requirements": [
-      "directly_repairs_authorized_three_patch_work",
+      "directly_repairs_authorized_selected_patch_work",
       "narrowly_scoped",
       "does_not_introduce_new_functional_correction",
       "independently_understandable",
@@ -351,7 +353,7 @@
       "Review repair:"
     ],
     "do_not_rewrite_published_commits_for_artificial_three_commit_count": true,
-    "invariant": "exactly_three_governed_functional_patches_with_additional_repair_commits_allowed"
+    "invariant": "up_to_three_governed_functional_patches_with_additional_repair_commits_allowed"
   },
   "revalidation_after_repairs": {
     "after_every_substantive_repair": [
@@ -416,7 +418,7 @@
   },
   "session_rules": [
     "Never mutate during the audit phase.",
-    "Select exactly three functional corrections per governed audit cycle.",
+    "Select up to three material functional corrections per governed audit cycle; do not manufacture corrections to reach three.",
     "Do not silently add a fourth functional correction.",
     "Additional narrowly scoped repair commits are allowed.",
     "Product or domain semantics must come from controlling authority, not guesses.",
