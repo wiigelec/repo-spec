@@ -105,7 +105,7 @@
     ],
     "tests": [
       {
-        "id": "test.issue-authority-routing",
+        "id": "test.issue-authority-routing.product",
         "paths": [
           "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
         ],
@@ -113,6 +113,19 @@
           "IRG-ROUTE-001",
           "IRG-ROUTE-002",
           "IRG-ROUTE-003",
+          "IRG-ROUTE-004",
+          "IRG-ROUTE-005",
+          "IRG-ROUTE-006"
+        ]
+      },
+      {
+        "id": "test.issue-authority-routing.hosted-conformance",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py"
+        ],
+        "requirements": [
+          "IRG-ROUTE-001",
+          "IRG-ROUTE-002",
           "IRG-ROUTE-004",
           "IRG-ROUTE-005",
           "IRG-ROUTE-006"
@@ -126,7 +139,8 @@
           "impl.issue-authority-routing"
         ],
         "test_ids": [
-          "test.issue-authority-routing"
+          "test.issue-authority-routing.product",
+          "test.issue-authority-routing.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -136,7 +150,8 @@
           "impl.issue-authority-routing"
         ],
         "test_ids": [
-          "test.issue-authority-routing"
+          "test.issue-authority-routing.product",
+          "test.issue-authority-routing.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -146,7 +161,7 @@
           "impl.issue-authority-routing"
         ],
         "test_ids": [
-          "test.issue-authority-routing"
+          "test.issue-authority-routing.product"
         ],
         "status": "covered"
       },
@@ -156,7 +171,8 @@
           "impl.issue-authority-routing"
         ],
         "test_ids": [
-          "test.issue-authority-routing"
+          "test.issue-authority-routing.product",
+          "test.issue-authority-routing.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -166,7 +182,8 @@
           "impl.issue-authority-routing"
         ],
         "test_ids": [
-          "test.issue-authority-routing"
+          "test.issue-authority-routing.product",
+          "test.issue-authority-routing.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -176,7 +193,8 @@
           "impl.issue-authority-routing"
         ],
         "test_ids": [
-          "test.issue-authority-routing"
+          "test.issue-authority-routing.product",
+          "test.issue-authority-routing.hosted-conformance"
         ],
         "status": "covered"
       }
