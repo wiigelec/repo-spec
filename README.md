@@ -32,7 +32,7 @@ A web chat agent does not need access to your local Git checkout to resolve Git 
 
 A useful instruction is:
 
-> Help me initialize a new repo-spec repository. I will run the initializer locally. The normal command is `repo-spec init --repo <destination>`. Do not invent product identity or product direction during initialization; those are established afterward in the initialized repository.
+> Help me initialize a new repo-spec repository. I will run the initializer locally. From a repo-spec checkout, use `product/scripts/repo-spec init --repo <destination>`. Use bare `repo-spec init --repo <destination>` only if that checkout's wrapper has already been placed on `PATH`. Do not invent product identity or product direction during initialization; those are established afterward in the initialized repository.
 
 For lifecycle behavior and lower-level diagnostic/developer interfaces, see the [initializer reference](product/docs/initializer/README.md).
 
