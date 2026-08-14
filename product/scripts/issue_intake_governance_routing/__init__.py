@@ -19,9 +19,13 @@ from .authority import (
 from .provenance import IntakeProvenance, capture_intake_provenance
 from .promotion import (
     CanonicalGovernedStateEvidence,
+    CanonicalGovernedStateObservation,
+    CanonicalGovernedStateValidationResult,
+    CanonicalGovernedStateValidator,
     PromotionForm,
     PromotionPlan,
     plan_promotion,
+    validate_canonical_governed_state,
 )
 from .hosted_validation import HostedValidationDecision, activate_hosted_validation
 from .orchestration import RoutingOutcome, route_intake_to_governed_work
@@ -42,6 +46,10 @@ __all__ = [
     "IntakeProvenance",
     "capture_intake_provenance",
     "CanonicalGovernedStateEvidence",
+    "CanonicalGovernedStateObservation",
+    "CanonicalGovernedStateValidationResult",
+    "CanonicalGovernedStateValidator",
+    "validate_canonical_governed_state",
     "PromotionForm",
     "PromotionPlan",
     "plan_promotion",

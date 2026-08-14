@@ -139,6 +139,8 @@
         ],
         "requirements": [
           "IRG-E2E-002",
+          "IRG-E2E-003",
+          "IRG-E2E-004",
           "IRG-E2E-005",
           "IRG-E2E-006",
           "IRG-E2E-007"
@@ -173,7 +175,8 @@
           "impl.issue-intake-governance-routing"
         ],
         "test_ids": [
-          "test.issue-intake-governance-routing.product"
+          "test.issue-intake-governance-routing.product",
+          "test.issue-intake-governance-routing.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -183,7 +186,8 @@
           "impl.issue-intake-governance-routing"
         ],
         "test_ids": [
-          "test.issue-intake-governance-routing.product"
+          "test.issue-intake-governance-routing.product",
+          "test.issue-intake-governance-routing.hosted-conformance"
         ],
         "status": "covered"
       },

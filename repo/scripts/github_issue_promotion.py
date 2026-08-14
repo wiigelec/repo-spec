@@ -7,6 +7,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -103,6 +104,97 @@ class GitHubClient:
         )
 
 
+
+@dataclass(frozen=True)
+class RepositoryGovernanceAuthorization:
+    authority_issue: int
+    governed_operation: str
+    routing_classification: str
+    authority_path: str
+    evidence_artifact_id: str
+
+
+def require_repository_governance_authorization(
+    *,
+    client: GitHubClient,
+    authority_issue: int,
+    governed_operation: str,
+    routing_labels: tuple[str, ...],
+    policy_command: str,
+) -> RepositoryGovernanceAuthorization:
+    if len(routing_labels) != 1:
+        raise PromotionError(
+            "repository authority requires exactly one routing classification"
+        )
+    classification = routing_labels[0]
+    authority = client.get_issue(authority_issue)
+    authority_labels = normalize_labels(authority)
+    if GOVERNED_WORK not in authority_labels:
+        raise PromotionError(
+            "authority evidence issue must already be in governed-work state"
+        )
+
+    body = authority.get("body")
+    if not isinstance(body, str) or not body.strip():
+        raise PromotionError("authority evidence issue has no governed body")
+
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False) as handle:
+        handle.write(body)
+        body_path = handle.name
+    try:
+        result = subprocess.run(
+            [policy_command, "--mode", "issue", "--body-file", body_path],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    finally:
+        try:
+            os.unlink(body_path)
+        except OSError:
+            pass
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip()
+        raise PromotionError(
+            f"authority evidence issue failed governed field policy: {detail}"
+        )
+
+    if governed_operation not in body:
+        raise PromotionError(
+            "authority evidence issue is not traceable to the governed operation"
+        )
+
+    if classification == "bug-fix":
+        authority_path = "audit"
+        required_markers = ("audit",)
+    elif classification == "feature-request":
+        authority_path = "feature-development"
+        required_markers = (
+            "whiteboard",
+            "analysis",
+            "candidate-functional-set",
+            "explicit-functional-set-approval",
+        )
+    else:
+        raise PromotionError("unsupported routing classification for authority evidence")
+
+    lowered = body.lower()
+    missing = [marker for marker in required_markers if marker.lower() not in lowered]
+    if missing:
+        raise PromotionError(
+            "authority evidence issue does not demonstrate accepted authority path: "
+            + ", ".join(missing)
+        )
+
+    artifact = f"github-issue:{client.repository}#{authority_issue}"
+    return RepositoryGovernanceAuthorization(
+        authority_issue=authority_issue,
+        governed_operation=governed_operation,
+        routing_classification=classification,
+        authority_path=authority_path,
+        evidence_artifact_id=artifact,
+    )
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -113,6 +205,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--repository", required=True)
     parser.add_argument("--intake-issue", type=int, required=True)
     parser.add_argument("--governing-issue", type=int, required=True)
+    parser.add_argument("--authority-issue", type=int, required=True)
     parser.add_argument("--governed-operation", required=True)
     parser.add_argument(
         "--promotion-form",
@@ -299,6 +392,14 @@ def main(argv: list[str]) -> int:
             canonical_body=canonical_body,
         )
 
+        authorization = require_repository_governance_authorization(
+            client=client,
+            authority_issue=args.authority_issue,
+            governed_operation=args.governed_operation.strip(),
+            routing_labels=routing_labels,
+            policy_command=args.policy_command,
+        )
+
         plan = {
             "repository": args.repository,
             "intake_issue": args.intake_issue,
@@ -308,6 +409,7 @@ def main(argv: list[str]) -> int:
             "routing_labels": list(routing_labels),
             "canonical_body_sha256": body_sha,
             "mutation_authorized_by_routing": False,
+            "repository_authorization": asdict(authorization),
             "apply_requested": args.apply,
             "ordered_operations": [
                 "create intake provenance comment",

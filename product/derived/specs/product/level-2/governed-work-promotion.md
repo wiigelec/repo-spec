@@ -40,6 +40,7 @@ Reusable capability for transitioning routed intake into a bounded governed oper
   - Requirements:
     - `IRG-PROM-001`
     - `IRG-PROM-002`
+    - `IRG-PROM-003`
     - `IRG-PROM-004`
     - `IRG-PROM-005`
 
@@ -73,6 +74,7 @@ Reusable capability for transitioning routed intake into a bounded governed oper
     - `impl.governed-work-promotion`
   - Test Ids:
     - `test.governed-work-promotion.product`
+    - `test.governed-work-promotion.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROM-004`

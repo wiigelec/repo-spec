@@ -34,13 +34,19 @@ Primitive contract for governance-state identity and the minimum intake provenan
 
 ### Tests
 
-- `test.governed-work-provenance`
+- `test.governed-work-provenance.hosted-conformance`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_routing_hosted_conformance.py`
+  - Requirements:
+    - `IRG-PROV-002`
+    - `IRG-PROV-003`
+    - `IRG-PROV-004`
+
+- `test.governed-work-provenance.product`
   - Paths:
     - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
   - Requirements:
     - `IRG-PROV-001`
-    - `IRG-PROV-002`
-    - `IRG-PROV-003`
     - `IRG-PROV-004`
     - `IRG-PROV-005`
 
@@ -50,35 +56,36 @@ Primitive contract for governance-state identity and the minimum intake provenan
   - Implementation Ids:
     - `impl.governed-work-provenance`
   - Test Ids:
-    - `test.governed-work-provenance`
+    - `test.governed-work-provenance.product`
   - Status: `covered`
 
 - `IRG-PROV-002`
   - Implementation Ids:
     - `impl.governed-work-provenance`
   - Test Ids:
-    - `test.governed-work-provenance`
+    - `test.governed-work-provenance.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROV-003`
   - Implementation Ids:
     - `impl.governed-work-provenance`
   - Test Ids:
-    - `test.governed-work-provenance`
+    - `test.governed-work-provenance.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROV-004`
   - Implementation Ids:
     - `impl.governed-work-provenance`
   - Test Ids:
-    - `test.governed-work-provenance`
+    - `test.governed-work-provenance.product`
+    - `test.governed-work-provenance.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROV-005`
   - Implementation Ids:
     - `impl.governed-work-provenance`
   - Test Ids:
-    - `test.governed-work-provenance`
+    - `test.governed-work-provenance.product`
   - Status: `covered`
 
 ## Primitives

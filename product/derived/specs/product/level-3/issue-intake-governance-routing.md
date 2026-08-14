@@ -41,6 +41,8 @@ End-to-end orchestration for moving ordinary issue intake through classification
     - `product/scripts/validation_tests/test_issue_routing_hosted_conformance.py`
   - Requirements:
     - `IRG-E2E-002`
+    - `IRG-E2E-003`
+    - `IRG-E2E-004`
     - `IRG-E2E-005`
     - `IRG-E2E-006`
     - `IRG-E2E-007`
@@ -79,6 +81,7 @@ End-to-end orchestration for moving ordinary issue intake through classification
     - `impl.issue-intake-governance-routing`
   - Test Ids:
     - `test.issue-intake-governance-routing.product`
+    - `test.issue-intake-governance-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-E2E-004`
@@ -86,6 +89,7 @@ End-to-end orchestration for moving ordinary issue intake through classification
     - `impl.issue-intake-governance-routing`
   - Test Ids:
     - `test.issue-intake-governance-routing.product`
+    - `test.issue-intake-governance-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-E2E-005`

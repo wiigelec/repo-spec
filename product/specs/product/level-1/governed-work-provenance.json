@@ -99,16 +99,25 @@
     ],
     "tests": [
       {
-        "id": "test.governed-work-provenance",
+        "id": "test.governed-work-provenance.product",
         "paths": [
           "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
         ],
         "requirements": [
           "IRG-PROV-001",
-          "IRG-PROV-002",
-          "IRG-PROV-003",
           "IRG-PROV-004",
           "IRG-PROV-005"
+        ]
+      },
+      {
+        "id": "test.governed-work-provenance.hosted-conformance",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py"
+        ],
+        "requirements": [
+          "IRG-PROV-002",
+          "IRG-PROV-003",
+          "IRG-PROV-004"
         ]
       }
     ],
@@ -119,7 +128,7 @@
           "impl.governed-work-provenance"
         ],
         "test_ids": [
-          "test.governed-work-provenance"
+          "test.governed-work-provenance.product"
         ],
         "status": "covered"
       },
@@ -129,7 +138,7 @@
           "impl.governed-work-provenance"
         ],
         "test_ids": [
-          "test.governed-work-provenance"
+          "test.governed-work-provenance.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -139,7 +148,7 @@
           "impl.governed-work-provenance"
         ],
         "test_ids": [
-          "test.governed-work-provenance"
+          "test.governed-work-provenance.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -149,7 +158,8 @@
           "impl.governed-work-provenance"
         ],
         "test_ids": [
-          "test.governed-work-provenance"
+          "test.governed-work-provenance.product",
+          "test.governed-work-provenance.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -159,7 +169,7 @@
           "impl.governed-work-provenance"
         ],
         "test_ids": [
-          "test.governed-work-provenance"
+          "test.governed-work-provenance.product"
         ],
         "status": "covered"
       }
