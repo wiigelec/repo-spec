@@ -17,7 +17,12 @@ from .authority import (
     route_labels,
 )
 from .provenance import IntakeProvenance, capture_intake_provenance
-from .promotion import PromotionForm, PromotionPlan, plan_promotion
+from .promotion import (
+    CanonicalGovernedStateEvidence,
+    PromotionForm,
+    PromotionPlan,
+    plan_promotion,
+)
 from .hosted_validation import HostedValidationDecision, activate_hosted_validation
 from .orchestration import RoutingOutcome, route_intake_to_governed_work
 
@@ -36,6 +41,7 @@ __all__ = [
     "route_labels",
     "IntakeProvenance",
     "capture_intake_provenance",
+    "CanonicalGovernedStateEvidence",
     "PromotionForm",
     "PromotionPlan",
     "plan_promotion",
