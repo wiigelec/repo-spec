@@ -13,8 +13,6 @@ from initializer.foundations import (
     build_foundation_plan,
     establish_product_foundations,
     OVERVIEW_CHUNK_COVERAGE,
-    DECOMPOSITION_CHUNK_COVERAGE,
-    PLAN_CHUNK_COVERAGE,
 )
 from initializer.models import (
     FoundationArtifactStatus,
@@ -114,19 +112,17 @@ class BuildFoundationPlanTests(unittest.TestCase):
 
 
 class Issue337CanonicalFoundationNamesTests(unittest.TestCase):
+
+
     def test_overview_chunk_names_match_accepted_i2_contract(self):
         self.assertEqual(
             [item[0] for item in OVERVIEW_CHUNK_COVERAGE],
             [
-                "01-identity-and-purpose.md",
-                "02-problem-and-outcome.md",
-                "03-users-principles-boundaries.md",
-                "04-capabilities-and-success.md",
-                "05-unresolved-questions.md",
-                "06-lifecycle-and-handoff.md",
+                "01-collected-input.md",
+                "02-provenance.md",
+                "03-unresolved-intent.md",
             ],
         )
-
 
     def test_legacy_chunk03_basename_is_not_present(self):
         self.assertNotIn(
@@ -149,19 +145,21 @@ class EstablishFoundationsTests(unittest.TestCase):
         with self.assertRaises(FoundationError):
             establish_product_foundations(self.plan, missing)
 
+
     def test_creates_overview_controlling(self):
         result = establish_product_foundations(self.plan, self.staging)
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        overview = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         self.assertTrue(overview.exists())
         content = overview.read_text()
         self.assertIn("Overview Whiteboard", content)
         created_paths = [c["path"] for c in result.created]
-        self.assertIn("product/docs/overview/test-WHITEBOARD.md", created_paths)
+        self.assertIn("product/docs/overview/test-product-WHITEBOARD.md", created_paths)
+
 
     def test_creates_overview_chunks(self):
-        result = establish_product_foundations(self.plan, self.staging)
+        establish_product_foundations(self.plan, self.staging)
         for filename, title, _ in OVERVIEW_CHUNK_COVERAGE:
-            chunk_path = self.staging / "product" / "docs" / "overview" / "test-whiteboard" / filename
+            chunk_path = self.staging / "product" / "docs" / "overview" / "test-product-whiteboard" / filename
             self.assertTrue(chunk_path.exists(), f"missing chunk: {filename}")
             self.assertIn(title, chunk_path.read_text())
 
@@ -174,9 +172,8 @@ class EstablishFoundationsTests(unittest.TestCase):
 
     def test_does_not_create_decomposition_chunks(self):
         establish_product_foundations(self.plan, self.staging)
-        for filename, title, _, _, _ in DECOMPOSITION_CHUNK_COVERAGE:
-            chunk_path = self.staging / "product" / "docs" / "decompositions" / "test-product-decomposition" / filename
-            self.assertFalse(chunk_path.exists(), f"unexpected decomposition chunk: {filename}")
+        chunk_dir = self.staging / "product" / "docs" / "decompositions" / "test-product-decomposition"
+        self.assertFalse(chunk_dir.exists())
 
     def test_defers_plan_controlling(self):
         result = establish_product_foundations(self.plan, self.staging)
@@ -187,9 +184,8 @@ class EstablishFoundationsTests(unittest.TestCase):
 
     def test_does_not_create_plan_chunks(self):
         establish_product_foundations(self.plan, self.staging)
-        for filename, title, _ in PLAN_CHUNK_COVERAGE:
-            chunk_path = self.staging / "product" / "docs" / "plans" / "test-product-implementation-plan" / filename
-            self.assertFalse(chunk_path.exists(), f"unexpected plan chunk: {filename}")
+        chunk_dir = self.staging / "product" / "docs" / "plans" / "test-product-implementation-plan"
+        self.assertFalse(chunk_dir.exists())
 
     def test_creates_product_manifest(self):
         result = establish_product_foundations(self.plan, self.staging)
@@ -206,24 +202,26 @@ class EstablishFoundationsTests(unittest.TestCase):
             path = self.staging / "product" / "specs" / "product" / level
             self.assertTrue(path.is_dir(), f"missing level root: {level}")
 
+
     def test_creates_readme_discoverability(self):
-        result = establish_product_foundations(self.plan, self.staging)
+        establish_product_foundations(self.plan, self.staging)
         overview_readme = self.staging / "product" / "docs" / "overview" / "README.md"
         self.assertTrue(overview_readme.exists())
         content = overview_readme.read_text()
-        self.assertIn("test-WHITEBOARD.md", content)
+        self.assertIn("test-product-WHITEBOARD.md", content)
+
 
     def test_rejects_overwrite_of_existing(self):
-        existing = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        existing = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         existing.parent.mkdir(parents=True, exist_ok=True)
         existing.write_text("existing content")
         result = establish_product_foundations(self.plan, self.staging)
         rejected_paths = [r["path"] for r in result.rejected]
-        self.assertIn("product/docs/overview/test-WHITEBOARD.md", rejected_paths)
+        self.assertIn("product/docs/overview/test-product-WHITEBOARD.md", rejected_paths)
 
     def test_overview_metadata_uses_candidate_lifecycle(self):
         result = establish_product_foundations(self.plan, self.staging)
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        overview = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         content = overview.read_text()
         import re
         meta_match = re.search(r'\{.*"artifact_type".*\}', content, re.DOTALL)
@@ -233,13 +231,13 @@ class EstablishFoundationsTests(unittest.TestCase):
 
     def test_direction_material_preserved_in_overview(self):
         result = establish_product_foundations(self.plan, self.staging)
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        overview = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         content = overview.read_text()
         self.assertIn("/path/to/direction.md", content)
 
     def test_evidence_references_in_overview_metadata(self):
         result = establish_product_foundations(self.plan, self.staging)
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        overview = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         content = overview.read_text()
         import re
         meta_match = re.search(r'\{.*"artifact_type".*\}', content, re.DOTALL)
@@ -249,7 +247,7 @@ class EstablishFoundationsTests(unittest.TestCase):
 
     def test_governing_issue_in_overview_metadata(self):
         result = establish_product_foundations(self.plan, self.staging)
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        overview = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         content = overview.read_text()
         import re
         meta_match = re.search(r'\{.*"artifact_type".*\}', content, re.DOTALL)
@@ -257,31 +255,44 @@ class EstablishFoundationsTests(unittest.TestCase):
         meta = json.loads(meta_match.group())
         self.assertEqual(meta["governing_issue"], "#195")
 
+
     def test_chunks_have_placeholder_content(self):
-        result = establish_product_foundations(self.plan, self.staging)
-        chunk = self.staging / "product" / "docs" / "overview" / "test-whiteboard" / "01-collected-input.md"
+        establish_product_foundations(self.plan, self.staging)
+        chunk = self.staging / "product" / "docs" / "overview" / "test-product-whiteboard" / "01-collected-input.md"
         content = chunk.read_text()
-        self.assertIn("placeholder", content)
+        self.assertIn("evidentiary scaffolding", content)
+        self.assertIn("/path/to/direction.md", content)
+
 
     def test_overview_controlling_references_chunks(self):
-        result = establish_product_foundations(self.plan, self.staging)
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
+        establish_product_foundations(self.plan, self.staging)
+        overview = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
         content = overview.read_text()
-        self.assertIn("01-identity-and-purpose.md", content)
-        self.assertIn("06-lifecycle-and-handoff.md", content)
+        self.assertIn("01-collected-input.md", content)
+        self.assertIn("02-provenance.md", content)
+        self.assertIn("03-unresolved-intent.md", content)
+
 
     def test_decomposition_controlling_references_overview(self):
         result = establish_product_foundations(self.plan, self.staging)
         decomp = self.staging / "product" / "docs" / "decompositions" / "test-product-DECOMPOSITION.md"
-        content = decomp.read_text()
-        self.assertIn("test-WHITEBOARD.md", content)
+        self.assertFalse(decomp.exists())
+        deferred = {item["path"]: item["reason"] for item in result.deferred}
+        self.assertEqual(
+            deferred["product/docs/decompositions/test-product-DECOMPOSITION.md"],
+            "requires an approved functional set",
+        )
+
 
     def test_plan_controlling_references_overview_and_decomposition(self):
         result = establish_product_foundations(self.plan, self.staging)
         plan_path = self.staging / "product" / "docs" / "plans" / "test-product-IMPLEMENTATION-PLAN.md"
-        content = plan_path.read_text()
-        self.assertIn("test-WHITEBOARD.md", content)
-        self.assertIn("test-product-DECOMPOSITION.md", content)
+        self.assertFalse(plan_path.exists())
+        deferred = {item["path"]: item["reason"] for item in result.deferred}
+        self.assertEqual(
+            deferred["product/docs/plans/test-product-IMPLEMENTATION-PLAN.md"],
+            "requires decomposition",
+        )
 
     def test_preserves_existing_files(self):
         existing_readme = self.staging / "product" / "docs" / "overview" / "README.md"
@@ -304,16 +315,11 @@ class EstablishFoundationsTests(unittest.TestCase):
             path = self.staging / "product" / "specs" / "product" / level
             self.assertTrue(path.is_dir())
 
+
     def test_created_artifact_count(self):
         result = establish_product_foundations(self.plan, self.staging)
-        num_chunks = len(OVERVIEW_CHUNK_COVERAGE) + len(DECOMPOSITION_CHUNK_COVERAGE) + len(PLAN_CHUNK_COVERAGE)
-        num_controlling = 3
-        num_manifest = 1
-        num_level_roots = 4
-        num_readmes = 4
-        expected = num_chunks + num_controlling + num_manifest + num_level_roots + num_readmes
-        self.assertGreaterEqual(len(result.created), expected)
-
+        self.assertEqual(len(result.created), 11)
+        self.assertEqual(len(result.deferred), 4)
 
 class FoundationDeterminismTests(unittest.TestCase):
     def setUp(self):
@@ -358,13 +364,14 @@ class FoundationOverwriteTests(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.staging, ignore_errors=True)
 
+
     def test_overview_controlling_rejected_if_exists(self):
-        overview = self.staging / "product" / "docs" / "overview" / "test-WHITEBOARD.md"
-        overview.parent.mkdir(parents=True, exist_ok=True)
-        overview.write_text("preexisting")
+        existing = self.staging / "product" / "docs" / "overview" / "test-product-WHITEBOARD.md"
+        existing.parent.mkdir(parents=True, exist_ok=True)
+        existing.write_text("existing")
         result = establish_product_foundations(self.plan, self.staging)
-        rejected = [r["path"] for r in result.rejected]
-        self.assertIn("product/docs/overview/test-WHITEBOARD.md", rejected)
+        rejected = [item["path"] for item in result.rejected]
+        self.assertIn("product/docs/overview/test-product-WHITEBOARD.md", rejected)
 
     def test_manifest_rejected_if_exists(self):
         manifest = self.staging / "product" / "specs" / "product" / "manifest.json"

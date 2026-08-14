@@ -696,6 +696,51 @@
       "role": "validation-utility"
     },
     {
+      "material_key": "product-validation-context",
+      "destination_path": "product/scripts/product_validation/context.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-development-documents",
+      "destination_path": "product/scripts/product_validation/development_documents.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-product-development-documents",
+      "destination_path": "product/scripts/product_validation/product_development_documents.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-product-lifecycle",
+      "destination_path": "product/scripts/product_validation/product_lifecycle.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-schema-subset",
+      "destination_path": "product/scripts/product_validation/schema_subset.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "producer": "framework-installation",
+      "required": true,
+      "mode": "100644"
+    },
+    {
       "material_key": "product-validation-support-package",
       "destination_path": "product/scripts/validation/__init__.py",
       "producer": "framework-installation",

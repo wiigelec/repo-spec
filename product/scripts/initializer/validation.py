@@ -7,11 +7,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .foundations import (
-    DECOMPOSITION_CHUNK_COVERAGE,
-    OVERVIEW_CHUNK_COVERAGE,
-    PLAN_CHUNK_COVERAGE,
-)
 from .models import ExecutionContext, ImmutableRequest, InitializerError
 
 
@@ -682,28 +677,6 @@ def _i4_observed_worktree_files(repository_root: Path) -> set[str]:
 
 
 def _i4_dynamic_template_pattern(template_value: str) -> str | None:
-    chunk_families = {
-        "product/docs/overview/{slug}-overview/chunk-{NN}-{topic}.md":
-            tuple("chunk-" + item[0] for item in OVERVIEW_CHUNK_COVERAGE),
-        "product/docs/decompositions/{slug}-decomposition/chunk-{NN}-{topic}.md":
-            tuple("chunk-" + item[0] for item in DECOMPOSITION_CHUNK_COVERAGE),
-        "product/docs/plans/{slug}-implementation-plan/chunk-{NN}-{topic}.md":
-            tuple("chunk-" + item[0] for item in PLAN_CHUNK_COVERAGE),
-    }
-    chunk_basenames = chunk_families.get(template_value)
-    if chunk_basenames is not None:
-        prefix, marker = template_value.split("chunk-{NN}-{topic}.md", 1)
-        if marker:
-            return None
-        prefix_pattern = re.escape(prefix).replace(
-            re.escape("{slug}"),
-            PRODUCT_ID_RE.pattern.removeprefix("^").removesuffix("$"),
-        )
-        basename_pattern = "(?:" + "|".join(
-            re.escape(name) for name in chunk_basenames
-        ) + ")"
-        return prefix_pattern + basename_pattern
-
     pattern = re.escape(template_value)
     pattern = pattern.replace(
         re.escape("{slug}"),

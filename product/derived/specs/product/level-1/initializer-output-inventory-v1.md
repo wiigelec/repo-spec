@@ -592,6 +592,41 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/context.py`
+- Material Key: `product-validation-context`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/development_documents.py`
+- Material Key: `product-validation-development-documents`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_development_documents.py`
+- Material Key: `product-validation-product-development-documents`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/product_lifecycle.py`
+- Material Key: `product-validation-product-lifecycle`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/product_validation/schema_subset.py`
+- Material Key: `product-validation-schema-subset`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 - Destination Path: `product/scripts/validation/__init__.py`
 - Material Key: `product-validation-support-package`
 - Mode: `100644`
