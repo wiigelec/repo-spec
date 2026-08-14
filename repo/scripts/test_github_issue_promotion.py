@@ -3,8 +3,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import pathlib
+import stat
 import sys
+import tempfile
 import unittest
 from unittest import mock
 
@@ -38,72 +41,20 @@ class FakeClient:
 
     def add_labels(self, number, labels):
         self.operations.append(("labels", number, tuple(labels)))
-        existing = {
-            item["name"] if isinstance(item, dict) else item
-            for item in self.issues[number].get("labels", [])
-        }
-        existing.update(labels)
-        self.issues[number]["labels"] = [
-            {"name": value} for value in sorted(existing)
-        ]
-        return self.issues[number]["labels"]
+        return []
 
 
-def authorization_record(
-    *,
-    classification="bug-fix",
-    governing_issue=34,
-    governed_operation="operation-34",
-):
-    if classification == "bug-fix":
-        path = "audit"
-        lifecycle = {"audit": "accepted"}
-    else:
-        path = "feature-development"
-        lifecycle = {
-            "whiteboard": "accepted",
-            "analysis": "accepted",
-            "candidate-functional-set": "accepted",
-            "explicit-functional-set-approval": "accepted",
-        }
-    return {
-        "schema_version": "1",
-        "routing_classification": classification,
-        "authority_path": path,
-        "governed_operation": governed_operation,
-        "governing_issue": (
-            f"https://github.com/wiigelec/repo-spec/issues/{governing_issue}"
-        ),
-        "lifecycle_evidence": lifecycle,
-    }
-
-
-def governed_authority_body(
-    operation="operation-34",
-    *,
-    classification="bug-fix",
-    record=None,
-    unrelated_keywords="",
-):
-    if record is None:
-        record = authorization_record(
-            classification=classification,
-            governed_operation=operation,
-        )
-    record_text = json.dumps(record, sort_keys=True)
+def governed_authority_body(extra=""):
     return (
         "## Change type\nProduct-artifact implementation\n\n"
         "## Problem statement\nBounded authority evidence.\n\n"
-        f"## Intended outcome\nAuthorize {operation}.\n\n"
+        "## Intended outcome\nAuthorize a bounded operation.\n\n"
         "## Governing specifications\nproduct.issue-routing-governance\n\n"
         "## Accepted default-branch base\nmain at "
-        "b7606ca6d058c47b10f00913e678707c22c378ee\n\n"
+        "de7d75ffc8d08a40be4ca46cfbd9336c9fa0b4ec\n\n"
         "## Dependencies and predecessor evidence\n"
-        "#420 b7606ca6d058c47b10f00913e678707c22c378ee\n\n"
-        "```repo-governance-authorization\n"
-        f"{record_text}\n"
-        "```\n\n"
-        f"{unrelated_keywords}\n\n"
+        "#422 de7d75ffc8d08a40be4ca46cfbd9336c9fa0b4ec\n\n"
+        f"{extra}\n\n"
         "## Ordered patch plan\n1. bounded correction\n\n"
         "## Validation plan\nvalidate\n\n"
         "## Acceptance criteria\naccepted\n\n"
@@ -113,16 +64,59 @@ def governed_authority_body(
     )
 
 
-class GitHubIssuePromotionTests(unittest.TestCase):
-    def make_issues(
+class ProducerFixture:
+    def __init__(
         self,
         *,
         classification="bug-fix",
-        record=None,
-        authority_governed=True,
-        unrelated_keywords="",
+        authority_issue=56,
+        governing_issue=34,
+        governed_operation="operation-34",
+        producer_id="repository-governance-authority",
+        authority_path=None,
+        lifecycle_artifact_id="audit-run:accepted:56",
     ):
-        labels = [{"name": "governed-work"}] if authority_governed else []
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = pathlib.Path(self.tmp.name)
+        self.command = self.dir / "repository-governance-authorization-validator"
+        if authority_path is None:
+            authority_path = (
+                "audit" if classification == "bug-fix" else "feature-development"
+            )
+        payload = {
+            "authority_issue": authority_issue,
+            "governing_issue": governing_issue,
+            "governed_operation": governed_operation,
+            "routing_classification": classification,
+            "authority_path": authority_path,
+            "lifecycle_artifact_id": lifecycle_artifact_id,
+            "producer_id": producer_id,
+        }
+        self.command.write_text(
+            "#!/usr/bin/env python3\n"
+            "import json\n"
+            "print(" + repr(json.dumps(payload)) + ")\n",
+            encoding="utf-8",
+        )
+        self.command.chmod(self.command.stat().st_mode | stat.S_IXUSR)
+
+    def __enter__(self):
+        old = os.environ.get("PATH", "")
+        self.patch = mock.patch.dict(
+            os.environ,
+            {"PATH": str(self.dir) + os.pathsep + old},
+            clear=False,
+        )
+        self.patch.start()
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.patch.stop()
+        self.tmp.cleanup()
+
+
+class GitHubIssuePromotionTests(unittest.TestCase):
+    def make_issues(self, classification="bug-fix", authority_governed=True, extra=""):
         return {
             12: {
                 "number": 12,
@@ -136,182 +130,155 @@ class GitHubIssuePromotionTests(unittest.TestCase):
             },
             56: {
                 "number": 56,
-                "body": governed_authority_body(
-                    classification=classification,
-                    record=record,
-                    unrelated_keywords=unrelated_keywords,
-                ),
-                "labels": labels,
+                "body": governed_authority_body(extra),
+                "labels": ([{"name": "governed-work"}] if authority_governed else []),
             },
         }
 
     @mock.patch("subprocess.run")
-    def test_bug_fix_requires_structured_target_bound_audit_authority(self, run):
-        run.return_value.returncode = 0
-        run.return_value.stdout = ""
-        run.return_value.stderr = ""
-        client = FakeClient(self.make_issues())
-        authorization = promotion.require_repository_governance_authorization(
-            client=client,
-            authority_issue=56,
-            governing_issue=34,
-            governed_operation="operation-34",
-            routing_labels=("bug-fix",),
-            policy_command="repo/scripts/github-field-policy",
+    def test_self_attested_issue_body_is_not_authority(self, run):
+        def dispatch(cmd, *args, **kwargs):
+            if cmd and str(cmd[0]).endswith("github-field-policy"):
+                result = mock.Mock()
+                result.returncode = 0
+                result.stdout = ""
+                result.stderr = ""
+                return result
+            raise AssertionError(f"unexpected subprocess: {cmd}")
+
+        run.side_effect = dispatch
+        body_record = (
+            '```repo-governance-authorization\n'
+            '{"schema_version":"1","routing_classification":"bug-fix",'
+            '"authority_path":"audit","governed_operation":"operation-34",'
+            '"governing_issue":"https://github.com/wiigelec/repo-spec/issues/34",'
+            '"lifecycle_evidence":{"audit":"accepted"}}\n```'
         )
+        client = FakeClient(self.make_issues(extra=body_record))
+        with mock.patch.dict(os.environ, {"PATH": ""}, clear=False):
+            with self.assertRaisesRegex(
+                promotion.PromotionError, "producer is unavailable"
+            ):
+                promotion.require_repository_governance_authorization(
+                    client=client,
+                    authority_issue=56,
+                    governing_issue=34,
+                    governed_operation="operation-34",
+                    routing_labels=("bug-fix",),
+                    policy_command="repo/scripts/github-field-policy",
+                    producer_id="repository-governance-authority",
+                )
+
+    def test_bug_fix_accepts_trusted_audit_producer(self):
+        client = FakeClient(self.make_issues())
+        with (
+            ProducerFixture(),
+            mock.patch.object(
+                promotion.subprocess,
+                "run",
+                wraps=promotion.subprocess.run,
+            ),
+        ):
+            authorization = promotion.require_repository_governance_authorization(
+                client=client,
+                authority_issue=56,
+                governing_issue=34,
+                governed_operation="operation-34",
+                routing_labels=("bug-fix",),
+                policy_command="/bin/true",
+                producer_id="repository-governance-authority",
+            )
         self.assertEqual(authorization.authority_path, "audit")
         self.assertEqual(authorization.governing_issue, 34)
-
-    @mock.patch("subprocess.run")
-    def test_feature_request_requires_complete_structured_feature_authority(self, run):
-        run.return_value.returncode = 0
-        run.return_value.stdout = ""
-        run.return_value.stderr = ""
-        complete = authorization_record(classification="feature-request")
-        incomplete = authorization_record(classification="feature-request")
-        incomplete["lifecycle_evidence"].pop("explicit-functional-set-approval")
-
-        client = FakeClient(
-            self.make_issues(
-                classification="feature-request",
-                record=incomplete,
-                unrelated_keywords=(
-                    "whiteboard analysis candidate-functional-set "
-                    "explicit-functional-set-approval"
-                ),
-            )
+        self.assertEqual(
+            authorization.lifecycle_artifact_id,
+            "audit-run:accepted:56",
         )
-        with self.assertRaisesRegex(
-            promotion.PromotionError,
-            "complete structured feature-development evidence",
+
+    def test_feature_request_accepts_trusted_feature_development_producer(self):
+        client = FakeClient(self.make_issues(classification="feature-request"))
+        with ProducerFixture(
+            classification="feature-request",
+            authority_path="feature-development",
+            lifecycle_artifact_id="feature-development:approved:56",
         ):
-            promotion.require_repository_governance_authorization(
+            authorization = promotion.require_repository_governance_authorization(
                 client=client,
                 authority_issue=56,
                 governing_issue=34,
                 governed_operation="operation-34",
                 routing_labels=("feature-request",),
-                policy_command="repo/scripts/github-field-policy",
+                policy_command="/bin/true",
+                producer_id="repository-governance-authority",
             )
-
-        client = FakeClient(
-            self.make_issues(
-                classification="feature-request",
-                record=complete,
-            )
-        )
-        authorization = promotion.require_repository_governance_authorization(
-            client=client,
-            authority_issue=56,
-            governing_issue=34,
-            governed_operation="operation-34",
-            routing_labels=("feature-request",),
-            policy_command="repo/scripts/github-field-policy",
-        )
         self.assertEqual(authorization.authority_path, "feature-development")
 
-    @mock.patch("subprocess.run")
-    def test_arbitrary_keywords_do_not_create_authority(self, run):
-        run.return_value.returncode = 0
-        run.return_value.stdout = ""
-        run.return_value.stderr = ""
-        body = governed_authority_body(
-            unrelated_keywords=(
-                "audit whiteboard analysis candidate-functional-set "
-                "explicit-functional-set-approval"
-            ),
-        ).replace("```repo-governance-authorization", "```not-authority")
-        issues = self.make_issues()
-        issues[56]["body"] = body
-        client = FakeClient(issues)
-        with self.assertRaisesRegex(
-            promotion.PromotionError,
-            "exactly one structured repository-governance authorization record",
-        ):
+    def test_unrecognized_producer_fails_closed(self):
+        client = FakeClient(self.make_issues())
+        with self.assertRaisesRegex(promotion.PromotionError, "unrecognized"):
             promotion.require_repository_governance_authorization(
                 client=client,
                 authority_issue=56,
                 governing_issue=34,
                 governed_operation="operation-34",
                 routing_labels=("bug-fix",),
-                policy_command="repo/scripts/github-field-policy",
+                policy_command="/bin/true",
+                producer_id="caller-supplied-authority",
             )
 
-    @mock.patch("subprocess.run")
-    def test_authority_must_match_target_classification_and_operation(self, run):
-        run.return_value.returncode = 0
-        run.return_value.stdout = ""
-        run.return_value.stderr = ""
-
-        cases = [
-            (
-                authorization_record(governing_issue=99),
-                ("bug-fix",),
-                "operation-34",
-                "target governing issue",
-            ),
-            (
-                authorization_record(classification="feature-request"),
-                ("bug-fix",),
-                "operation-34",
-                "classification",
-            ),
-            (
-                authorization_record(governed_operation="operation-99"),
-                ("bug-fix",),
-                "operation-34",
-                "governed operation",
-            ),
-        ]
-        for record, labels, operation, message in cases:
-            with self.subTest(message=message):
-                client = FakeClient(self.make_issues(record=record))
-                with self.assertRaisesRegex(promotion.PromotionError, message):
-                    promotion.require_repository_governance_authorization(
-                        client=client,
-                        authority_issue=56,
-                        governing_issue=34,
-                        governed_operation=operation,
-                        routing_labels=labels,
-                        policy_command="repo/scripts/github-field-policy",
-                    )
-
-    @mock.patch("subprocess.run")
-    def test_routing_label_alone_cannot_authorize_mutation(self, run):
-        run.return_value.returncode = 0
-        run.return_value.stdout = ""
-        run.return_value.stderr = ""
-        client = FakeClient(self.make_issues(authority_governed=False))
-        with self.assertRaisesRegex(
-            promotion.PromotionError, "already be in governed-work state"
-        ):
-            promotion.require_repository_governance_authorization(
-                client=client,
-                authority_issue=56,
-                governing_issue=34,
-                governed_operation="operation-34",
-                routing_labels=("bug-fix",),
-                policy_command="repo/scripts/github-field-policy",
-            )
-        self.assertEqual(client.operations, [])
-
-    def test_authority_check_precedes_all_mutation(self):
-        source = MODULE_PATH.read_text()
-        authority_pos = source.index(
-            "authorization = require_repository_governance_authorization"
+    def test_producer_result_must_match_target_classification_operation_and_path(self):
+        cases = (
+            ({"governing_issue": 99}, "target governing issue"),
+            ({"classification": "feature-request"}, "classification"),
+            ({"governed_operation": "operation-99"}, "governed operation"),
+            ({"authority_path": "feature-development"}, "accepted authority path"),
+            ({"producer_id": "caller"}, "trusted producer"),
         )
-        comment_pos = source.index("client.add_comment(args.intake_issue")
-        body_pos = source.index("client.update_issue_body(args.governing_issue")
-        label_pos = source.index("client.add_labels(args.governing_issue")
-        self.assertLess(authority_pos, comment_pos)
-        self.assertLess(comment_pos, body_pos)
-        self.assertLess(body_pos, label_pos)
+        for override, message in cases:
+            with self.subTest(message=message):
+                kwargs = {
+                    "classification": "bug-fix",
+                    "authority_issue": 56,
+                    "governing_issue": 34,
+                    "governed_operation": "operation-34",
+                    "producer_id": "repository-governance-authority",
+                    "authority_path": "audit",
+                }
+                kwargs.update(override)
+                client = FakeClient(self.make_issues())
+                with ProducerFixture(**kwargs):
+                    with self.assertRaisesRegex(promotion.PromotionError, message):
+                        promotion.require_repository_governance_authorization(
+                            client=client,
+                            authority_issue=56,
+                            governing_issue=34,
+                            governed_operation="operation-34",
+                            routing_labels=("bug-fix",),
+                            policy_command="/bin/true",
+                            producer_id="repository-governance-authority",
+                        )
 
-    def test_hosted_helper_no_longer_searches_lifecycle_keywords_in_body(self):
+    def test_authority_issue_must_be_governed_before_producer_is_invoked(self):
+        client = FakeClient(self.make_issues(authority_governed=False))
+        with ProducerFixture():
+            with self.assertRaisesRegex(
+                promotion.PromotionError, "already be in governed-work state"
+            ):
+                promotion.require_repository_governance_authorization(
+                    client=client,
+                    authority_issue=56,
+                    governing_issue=34,
+                    governed_operation="operation-34",
+                    routing_labels=("bug-fix",),
+                    policy_command="/bin/true",
+                    producer_id="repository-governance-authority",
+                )
+
+    def test_hosted_helper_has_no_issue_body_authorization_parser(self):
         source = MODULE_PATH.read_text()
-        self.assertNotIn('required_markers = ("audit",)', source)
-        self.assertNotIn("missing = [marker for marker", source)
-        self.assertIn("parse_repository_governance_authorization", source)
+        self.assertNotIn("parse_repository_governance_authorization", source)
+        self.assertNotIn("AUTHORITY_EVIDENCE_FENCE", source)
+        self.assertIn("TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS", source)
 
 
 if __name__ == "__main__":

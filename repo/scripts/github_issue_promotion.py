@@ -5,7 +5,7 @@ import argparse
 import hashlib
 import json
 import os
-import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -107,15 +107,10 @@ class GitHubClient:
 
 
 
-AUTHORITY_EVIDENCE_FENCE = "repo-governance-authorization"
-AUTHORITY_EVIDENCE_KEYS = frozenset({
-    "schema_version",
-    "routing_classification",
-    "authority_path",
-    "governed_operation",
-    "governing_issue",
-    "lifecycle_evidence",
-})
+
+TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS = {
+    "repository-governance-authority": "repository-governance-authorization-validator",
+}
 
 
 @dataclass(frozen=True)
@@ -125,35 +120,8 @@ class RepositoryGovernanceAuthorization:
     governed_operation: str
     routing_classification: str
     authority_path: str
-    evidence_artifact_id: str
-
-
-def parse_repository_governance_authorization(body: str) -> dict[str, Any]:
-    pattern = re.compile(
-        rf"```{re.escape(AUTHORITY_EVIDENCE_FENCE)}\s*\n(.*?)\n```",
-        re.S,
-    )
-    matches = pattern.findall(body)
-    if len(matches) != 1:
-        raise PromotionError(
-            "authority evidence issue must contain exactly one structured "
-            "repository-governance authorization record"
-        )
-    try:
-        record = json.loads(matches[0])
-    except json.JSONDecodeError as exc:
-        raise PromotionError(
-            "repository-governance authorization record is not valid JSON"
-        ) from exc
-    if not isinstance(record, dict) or set(record) != AUTHORITY_EVIDENCE_KEYS:
-        raise PromotionError(
-            "repository-governance authorization record has invalid fields"
-        )
-    if record["schema_version"] != "1":
-        raise PromotionError(
-            "unsupported repository-governance authorization schema version"
-        )
-    return record
+    lifecycle_artifact_id: str
+    producer_id: str
 
 
 def require_repository_governance_authorization(
@@ -164,6 +132,7 @@ def require_repository_governance_authorization(
     governed_operation: str,
     routing_labels: tuple[str, ...],
     policy_command: str,
+    producer_id: str,
 ) -> RepositoryGovernanceAuthorization:
     if len(routing_labels) != 1:
         raise PromotionError(
@@ -202,68 +171,108 @@ def require_repository_governance_authorization(
             f"authority evidence issue failed governed field policy: {detail}"
         )
 
-    record = parse_repository_governance_authorization(body)
+    command_name = TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS.get(producer_id)
+    if command_name is None:
+        raise PromotionError(
+            f"unrecognized repository-governance authorization producer: {producer_id}"
+        )
+    command = shutil.which(command_name)
+    if command is None:
+        raise PromotionError(
+            f"trusted repository-governance authorization producer is unavailable: "
+            f"{producer_id}"
+        )
 
-    if record["routing_classification"] != classification:
+    request = {
+        "repository": client.repository,
+        "authority_issue": authority_issue,
+        "authority_issue_body_sha256": hashlib.sha256(body.encode()).hexdigest(),
+        "governing_issue": governing_issue,
+        "governed_operation": governed_operation,
+        "routing_classification": classification,
+        "producer_id": producer_id,
+    }
+    producer = subprocess.run(
+        [command],
+        input=json.dumps(request),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=os.environ.copy(),
+    )
+    if producer.returncode != 0:
+        detail = producer.stderr.strip() or producer.stdout.strip()
         raise PromotionError(
-            "repository-governance authorization classification does not match intake"
+            f"trusted repository-governance authorization producer failed: {detail}"
         )
-    if record["governed_operation"] != governed_operation:
+    try:
+        payload = json.loads(producer.stdout)
+    except json.JSONDecodeError as exc:
         raise PromotionError(
-            "repository-governance authorization does not match governed operation"
+            "trusted repository-governance authorization producer returned invalid JSON"
+        ) from exc
+
+    expected_fields = {
+        "authority_issue",
+        "governing_issue",
+        "governed_operation",
+        "routing_classification",
+        "authority_path",
+        "lifecycle_artifact_id",
+        "producer_id",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected_fields:
+        raise PromotionError(
+            "trusted repository-governance authorization producer returned invalid fields"
         )
-    if record["governing_issue"] != issue_ref(client.repository, governing_issue):
+
+    if payload["producer_id"] != producer_id:
+        raise PromotionError(
+            "repository-governance authorization does not match trusted producer"
+        )
+    if payload["authority_issue"] != authority_issue:
+        raise PromotionError(
+            "repository-governance authorization does not match authority issue"
+        )
+    if payload["governing_issue"] != governing_issue:
         raise PromotionError(
             "repository-governance authorization does not match target governing issue"
         )
-
-    lifecycle = record["lifecycle_evidence"]
-    if not isinstance(lifecycle, dict):
+    if payload["routing_classification"] != classification:
         raise PromotionError(
-            "repository-governance authorization lifecycle evidence must be an object"
+            "repository-governance authorization classification does not match intake"
+        )
+    if payload["governed_operation"] != governed_operation:
+        raise PromotionError(
+            "repository-governance authorization does not match governed operation"
         )
 
     if classification == "bug-fix":
         authority_path = "audit"
-        if record["authority_path"] != authority_path:
-            raise PromotionError(
-                "bug-fix repository-governance authorization must use audit authority"
-            )
-        if lifecycle != {"audit": "accepted"}:
-            raise PromotionError(
-                "bug-fix authorization requires structured accepted audit evidence"
-            )
     elif classification == "feature-request":
         authority_path = "feature-development"
-        if record["authority_path"] != authority_path:
-            raise PromotionError(
-                "feature-request repository-governance authorization must use "
-                "feature-development authority"
-            )
-        expected_lifecycle = {
-            "whiteboard": "accepted",
-            "analysis": "accepted",
-            "candidate-functional-set": "accepted",
-            "explicit-functional-set-approval": "accepted",
-        }
-        if lifecycle != expected_lifecycle:
-            raise PromotionError(
-                "feature-request authorization requires complete structured "
-                "feature-development evidence"
-            )
     else:
         raise PromotionError(
             "unsupported routing classification for repository-governance authorization"
         )
+    if payload["authority_path"] != authority_path:
+        raise PromotionError(
+            "repository-governance authorization does not match accepted authority path"
+        )
+    lifecycle_artifact_id = payload["lifecycle_artifact_id"]
+    if not isinstance(lifecycle_artifact_id, str) or not lifecycle_artifact_id.strip():
+        raise PromotionError(
+            "repository-governance authorization lacks lifecycle artifact identity"
+        )
 
-    artifact = f"github-issue:{client.repository}#{authority_issue}"
     return RepositoryGovernanceAuthorization(
         authority_issue=authority_issue,
         governing_issue=governing_issue,
         governed_operation=governed_operation,
         routing_classification=classification,
         authority_path=authority_path,
-        evidence_artifact_id=artifact,
+        lifecycle_artifact_id=lifecycle_artifact_id.strip(),
+        producer_id=producer_id,
     )
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -277,6 +286,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--intake-issue", type=int, required=True)
     parser.add_argument("--governing-issue", type=int, required=True)
     parser.add_argument("--authority-issue", type=int, required=True)
+    parser.add_argument(
+        "--authority-producer-id",
+        default="repository-governance-authority",
+    )
     parser.add_argument("--governed-operation", required=True)
     parser.add_argument(
         "--promotion-form",
@@ -470,6 +483,7 @@ def main(argv: list[str]) -> int:
             governed_operation=args.governed_operation.strip(),
             routing_labels=routing_labels,
             policy_command=args.policy_command,
+            producer_id=args.authority_producer_id,
         )
 
         plan = {
