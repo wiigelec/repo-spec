@@ -34,14 +34,21 @@ Reusable capability for transitioning routed intake into a bounded governed oper
 
 ### Tests
 
-- `test.governed-work-promotion`
+- `test.governed-work-promotion.hosted-conformance`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_routing_hosted_conformance.py`
+  - Requirements:
+    - `IRG-PROM-001`
+    - `IRG-PROM-002`
+    - `IRG-PROM-004`
+    - `IRG-PROM-005`
+
+- `test.governed-work-promotion.product`
   - Paths:
     - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
   - Requirements:
     - `IRG-PROM-001`
-    - `IRG-PROM-002`
     - `IRG-PROM-003`
-    - `IRG-PROM-004`
     - `IRG-PROM-005`
 
 ### Conformance
@@ -50,35 +57,37 @@ Reusable capability for transitioning routed intake into a bounded governed oper
   - Implementation Ids:
     - `impl.governed-work-promotion`
   - Test Ids:
-    - `test.governed-work-promotion`
+    - `test.governed-work-promotion.product`
+    - `test.governed-work-promotion.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROM-002`
   - Implementation Ids:
     - `impl.governed-work-promotion`
   - Test Ids:
-    - `test.governed-work-promotion`
+    - `test.governed-work-promotion.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROM-003`
   - Implementation Ids:
     - `impl.governed-work-promotion`
   - Test Ids:
-    - `test.governed-work-promotion`
+    - `test.governed-work-promotion.product`
   - Status: `covered`
 
 - `IRG-PROM-004`
   - Implementation Ids:
     - `impl.governed-work-promotion`
   - Test Ids:
-    - `test.governed-work-promotion`
+    - `test.governed-work-promotion.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PROM-005`
   - Implementation Ids:
     - `impl.governed-work-promotion`
   - Test Ids:
-    - `test.governed-work-promotion`
+    - `test.governed-work-promotion.product`
+    - `test.governed-work-promotion.hosted-conformance`
   - Status: `covered`
 
 ## Components

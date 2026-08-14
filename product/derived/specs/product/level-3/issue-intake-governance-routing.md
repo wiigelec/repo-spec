@@ -36,7 +36,16 @@ End-to-end orchestration for moving ordinary issue intake through classification
 
 ### Tests
 
-- `test.issue-intake-governance-routing`
+- `test.issue-intake-governance-routing.hosted-conformance`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_routing_hosted_conformance.py`
+  - Requirements:
+    - `IRG-E2E-002`
+    - `IRG-E2E-005`
+    - `IRG-E2E-006`
+    - `IRG-E2E-007`
+
+- `test.issue-intake-governance-routing.product`
   - Paths:
     - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
   - Requirements:
@@ -54,49 +63,53 @@ End-to-end orchestration for moving ordinary issue intake through classification
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
   - Status: `covered`
 
 - `IRG-E2E-002`
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
+    - `test.issue-intake-governance-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-E2E-003`
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
   - Status: `covered`
 
 - `IRG-E2E-004`
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
   - Status: `covered`
 
 - `IRG-E2E-005`
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
+    - `test.issue-intake-governance-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-E2E-006`
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
+    - `test.issue-intake-governance-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-E2E-007`
   - Implementation Ids:
     - `impl.issue-intake-governance-routing`
   - Test Ids:
-    - `test.issue-intake-governance-routing`
+    - `test.issue-intake-governance-routing.product`
+    - `test.issue-intake-governance-routing.hosted-conformance`
   - Status: `covered`
 
 ## Orchestrations

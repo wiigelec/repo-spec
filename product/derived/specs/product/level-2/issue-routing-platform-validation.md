@@ -22,9 +22,28 @@ Reusable platform-validation boundary that keeps hosted field validation subordi
 
 ### Implementations
 
-- `impl.issue-routing-platform-validation`
+- `impl.issue-routing-platform-validation.boundary`
   - Paths:
     - `product/scripts/issue_intake_governance_routing/hosted_validation.py`
+  - Requirements:
+    - `IRG-PVAL-002`
+    - `IRG-PVAL-003`
+    - `IRG-PVAL-004`
+    - `IRG-PVAL-005`
+
+- `impl.issue-routing-platform-validation.orchestration`
+  - Paths:
+    - `product/scripts/issue_intake_governance_routing/orchestration.py`
+  - Requirements:
+    - `IRG-PVAL-001`
+    - `IRG-PVAL-004`
+    - `IRG-PVAL-005`
+
+### Tests
+
+- `test.issue-routing-platform-validation.hosted-conformance`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_routing_hosted_conformance.py`
   - Requirements:
     - `IRG-PVAL-001`
     - `IRG-PVAL-002`
@@ -32,13 +51,10 @@ Reusable platform-validation boundary that keeps hosted field validation subordi
     - `IRG-PVAL-004`
     - `IRG-PVAL-005`
 
-### Tests
-
-- `test.issue-routing-platform-validation`
+- `test.issue-routing-platform-validation.product`
   - Paths:
     - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
   - Requirements:
-    - `IRG-PVAL-001`
     - `IRG-PVAL-002`
     - `IRG-PVAL-003`
     - `IRG-PVAL-004`
@@ -48,37 +64,43 @@ Reusable platform-validation boundary that keeps hosted field validation subordi
 
 - `IRG-PVAL-001`
   - Implementation Ids:
-    - `impl.issue-routing-platform-validation`
+    - `impl.issue-routing-platform-validation.orchestration`
   - Test Ids:
-    - `test.issue-routing-platform-validation`
+    - `test.issue-routing-platform-validation.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PVAL-002`
   - Implementation Ids:
-    - `impl.issue-routing-platform-validation`
+    - `impl.issue-routing-platform-validation.boundary`
   - Test Ids:
-    - `test.issue-routing-platform-validation`
+    - `test.issue-routing-platform-validation.product`
+    - `test.issue-routing-platform-validation.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PVAL-003`
   - Implementation Ids:
-    - `impl.issue-routing-platform-validation`
+    - `impl.issue-routing-platform-validation.boundary`
   - Test Ids:
-    - `test.issue-routing-platform-validation`
+    - `test.issue-routing-platform-validation.product`
+    - `test.issue-routing-platform-validation.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PVAL-004`
   - Implementation Ids:
-    - `impl.issue-routing-platform-validation`
+    - `impl.issue-routing-platform-validation.boundary`
+    - `impl.issue-routing-platform-validation.orchestration`
   - Test Ids:
-    - `test.issue-routing-platform-validation`
+    - `test.issue-routing-platform-validation.product`
+    - `test.issue-routing-platform-validation.hosted-conformance`
   - Status: `covered`
 
 - `IRG-PVAL-005`
   - Implementation Ids:
-    - `impl.issue-routing-platform-validation`
+    - `impl.issue-routing-platform-validation.boundary`
+    - `impl.issue-routing-platform-validation.orchestration`
   - Test Ids:
-    - `test.issue-routing-platform-validation`
+    - `test.issue-routing-platform-validation.product`
+    - `test.issue-routing-platform-validation.hosted-conformance`
   - Status: `covered`
 
 ## Components
