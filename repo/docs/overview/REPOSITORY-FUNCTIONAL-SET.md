@@ -20,12 +20,14 @@ Approved functional set migrated from the maintained directional overview. Direc
   "governing_issue": "#374",
   "required_content_areas": {
     "capability_boundary": [
-      "repo/docs/overview/repository-functional-set/01-product-direction.md"
+      "repo/docs/overview/repository-functional-set/01-product-direction.md",
+      "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md"
     ],
     "included_intent": [
       "repo/docs/overview/repository-functional-set/01-product-direction.md",
       "repo/docs/overview/repository-functional-set/02-decomposition-model-part-1.md",
-      "repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md"
+      "repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md",
+      "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md"
     ],
     "exclusions": [
       "repo/docs/overview/repository-functional-set/01-product-direction.md"
@@ -36,14 +38,16 @@ Approved functional set migrated from the maintained directional overview. Direc
       "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md",
       "repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md",
       "repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md",
-      "repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md"
+      "repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md",
+      "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md"
     ],
     "integration_foundation": [
       "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md",
       "repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md",
       "repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md",
       "repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md",
-      "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md"
+      "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",
+      "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md"
     ],
     "end_to_end_usability": [
       "repo/docs/overview/repository-functional-set/01-product-direction.md",
@@ -52,7 +56,8 @@ Approved functional set migrated from the maintained directional overview. Direc
     "decomposition_handoff": [
       "repo/docs/overview/repository-functional-set/02-decomposition-model-part-1.md",
       "repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md",
-      "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md"
+      "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",
+      "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md"
     ]
   },
   "controlling_documents": [
@@ -62,7 +67,8 @@ Approved functional set migrated from the maintained directional overview. Direc
     "repo/docs/overview/REPOSITORY-ANALYSIS.md"
   ],
   "evidence": [
-    "repo/docs/overview/repository-analysis/01-migration-analysis.md"
+    "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+    "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
   ],
   "subordinate_chunks": [
     {
@@ -148,9 +154,21 @@ Approved functional set migrated from the maintained directional overview. Direc
         "integration_foundation",
         "decomposition_handoff"
       ]
+    },
+    {
+      "order": 10,
+      "path": "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
+      "title": "functional-set lifecycle: Issue Intake and Governance Routing",
+      "coverage": [
+        "capability_boundary",
+        "included_intent",
+        "dependencies",
+        "integration_foundation",
+        "decomposition_handoff"
+      ]
     }
   ],
-  "successor_action": "Proceed to product decomposition using this approved functional set as the controlling directional authority.",
+  "successor_action": "Proceed to repository decomposition for the approved Issue Intake and Governance Routing capability before specification, planning, or implementation.",
   "schema_version": "1"
 }
 ```
@@ -170,6 +188,7 @@ This functional set is the canonical capability-oriented replacement for the mai
 - [functional-set lifecycle: Git and Change Workflow](repository-functional-set/07-git-and-change-workflow.md)
 - [functional-set lifecycle: Human and AI Continuity](repository-functional-set/08-human-ai-continuity.md)
 - [functional-set lifecycle: Governance and Evolution](repository-functional-set/09-governance-and-evolution.md)
+- [functional-set lifecycle: Issue Intake and Governance Routing](repository-functional-set/10-issue-intake-and-governance-routing.md)
 
 ## Relationships
 
@@ -177,7 +196,7 @@ This approved functional set is controlled by and succeeds [Repo-Spec Repository
 
 ## Next authorized action
 
-Use this approved functional set as the pre-decomposition directional authority. Decomposition rewiring is intentionally deferred to Patch 2 of issue #374.
+Use this approved functional set as the directional authority for decomposition. The newly approved **Issue Intake and Governance Routing** capability requires a subsequent governed repository-decomposition update before specification, planning, or implementation.
 
 ## Discoverability
 
