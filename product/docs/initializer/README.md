@@ -2,16 +2,16 @@
 
 ## Normal human workflow
 
-The supported normal-user command is:
-
-```text
-repo-spec init --repo /path/to/new/repository-name
-```
-
-From an uninstalled repo-spec checkout:
+From a repo-spec checkout, the supported normal-user command is:
 
 ```text
 product/scripts/repo-spec init --repo /path/to/new/repository-name
+```
+
+If the `repo-spec` wrapper from that checkout has already been placed on `PATH`, the equivalent command is:
+
+```text
+repo-spec init --repo /path/to/new/repository-name
 ```
 
 `--repo` names the destination repository path. The repository name is derived mechanically from the final destination path segment. No user-authored JSON is required for the normal workflow.
