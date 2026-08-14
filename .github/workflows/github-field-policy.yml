@@ -2,7 +2,7 @@ name: GitHub field policy
 
 on:
   issues:
-    types: [opened, edited, reopened]
+    types: [opened, edited, reopened, labeled]
   pull_request_target:
     types: [opened, edited, reopened, synchronize]
 
