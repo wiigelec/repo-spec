@@ -11,6 +11,10 @@ on:
         description: Existing target governing issue number
         required: true
         type: string
+      authority_issue:
+        description: Existing governed issue that records accepted repository authority
+        required: true
+        type: string
       governed_operation:
         description: Stable bounded governed operation identifier
         required: true
@@ -52,6 +56,7 @@ jobs:
             --repository "${{ github.repository }}" \
             --intake-issue "${{ inputs.intake_issue }}" \
             --governing-issue "${{ inputs.governing_issue }}" \
+            --authority-issue "${{ inputs.authority_issue }}" \
             --governed-operation "${{ inputs.governed_operation }}" \
             --promotion-form "${{ inputs.promotion_form }}" \
             --canonical-body-file "$RUNNER_TEMP/canonical-governed-body.md" \
