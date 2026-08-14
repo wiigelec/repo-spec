@@ -289,17 +289,20 @@ overview and decomposition remain directional context only.
 
 ## Workstreams
 
-The accepted plan records six completed historical increments and one bounded human-facing successor:
+The accepted plan records six completed historical increments plus the separately identified successor workstreams already present in canonical `workstream_authority` metadata and subordinate plan content:
 
-| Rank | Increment | Purpose |
+| Increment | Planning role | Purpose / current plan status |
 | --- | --- | --- |
-| 0 | B0 | Existing-implementation conformance baseline across all 291 composite keys |
-| 1 | I1 | Request intake, identity handling, source resolution, and destination preflight |
-| 2 | I2 | Transactional staging, material realization, foundation seeding, and framework installation |
-| 3 | I3 | Provenance, handoff, Git initialization, and repository-state assembly |
-| 4 | I4 | Two-phase validation, report finalization, atomic promotion, and cleanup |
-| 5 | I5 | End-to-end lifecycle orchestration, terminal outcomes, and whole-workflow conformance |
-| 6 | H1 | Human-facing `repo-spec-init --request <file>` entry point, CLI surface reconciliation, terminal presentation, and AI-assisted request-creation documentation |
+| B0 | Historical baseline | Existing-implementation conformance baseline across all 291 composite keys; completed |
+| I1 | Historical implementation increment | Request intake, identity handling, source resolution, and destination preflight; completed |
+| I2 | Historical implementation increment | Transactional staging, material realization, foundation seeding, and framework installation; completed |
+| I3 | Historical implementation increment | Provenance, handoff, Git initialization, and repository-state assembly; completed |
+| I4 | Historical implementation increment | Two-phase validation, report finalization, atomic promotion, and cleanup; completed |
+| I5 | Historical implementation increment | End-to-end lifecycle orchestration, terminal outcomes, and whole-workflow conformance; completed |
+| H1 | Human-facing successor | Human-facing `repo-spec-init --request <file>` entry point, CLI surface reconciliation, terminal presentation, and AI-assisted request-creation documentation; completed historical work |
+| H2 | Repository-bootstrap successor | Destination-only repository bootstrap UX simplification using the existing H2 authority mapping; separately governed by its H2 planning/implementation authority |
+| VA1 | Validation-ownership successor | Production-validation ownership correction under the exact VA1 accepted-spec set; separately governed implementation scope |
+| VA2 | Validation-self-test successor | Validation self-test ownership/consolidation under the exact VA2 accepted-spec set; separately governed implementation scope |
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
@@ -341,18 +344,23 @@ product semantics.
 
 Issue #261 accepted this implementation plan after clean-room revalidation against
 current accepted specifications and synchronized planning state. B0 through I5 and H1 are
-now completed historical work. Issue #311 authorized the bounded H1 planning amendment;
+completed historical work. Issue #311 authorized the bounded H1 planning amendment;
 issue #313 completed its separately governed Product-artifact implementation, merged by
 PR #317, and issue #318 completed bounded post-H1 conformance correction.
 
-No new successor implementation scope is authorized by H1 completion. Any future
-successor requires separate accepted planning authority and a separately governed
-implementation issue under that authority.
+H1 completion itself authorizes no successor. Separately accepted amendments represented
+in this plan now identify H2, VA1, and VA2 as bounded successor workstreams under their
+own exact authority mappings and entry conditions. Their presence in this controlling
+index does not combine those scopes, change their authority sets, or authorize unrelated
+initializer capability; each remains subject to its separately governed implementation
+conditions.
 
 ## Discoverability
 
 This is the canonical initializer implementation-plan entry point. Its
-subordinate chunks are listed above.
+subordinate chunks are listed above. The Workstreams summary indexes the canonical
+machine-readable authority data and the accepted successor scopes described by this
+composite document, including H2, VA1, and VA2.
 
 
 ## H2 — Repository bootstrap UX simplification
