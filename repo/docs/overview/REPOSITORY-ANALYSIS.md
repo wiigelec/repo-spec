@@ -20,19 +20,24 @@ Candidate migration analysis. Directional and non-normative.
   "governing_issue": "#374",
   "required_content_areas": {
     "source_evidence": [
-      "repo/docs/overview/repository-analysis/01-migration-analysis.md"
+      "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
     ],
     "candidate_groupings": [
-      "repo/docs/overview/repository-analysis/01-migration-analysis.md"
+      "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
     ],
     "dependencies": [
-      "repo/docs/overview/repository-analysis/01-migration-analysis.md"
+      "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
     ],
     "ambiguities": [
-      "repo/docs/overview/repository-analysis/01-migration-analysis.md"
+      "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
     ],
     "candidate_functional_sets": [
-      "repo/docs/overview/repository-analysis/01-migration-analysis.md"
+      "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
     ]
   },
   "controlling_documents": [
@@ -42,7 +47,8 @@ Candidate migration analysis. Directional and non-normative.
     "repo/docs/overview/REPOSITORY-WHITEBOARD.md"
   ],
   "evidence": [
-    "repo/docs/overview/repository-whiteboard/01-migration-input.md"
+    "repo/docs/overview/repository-whiteboard/01-migration-input.md",
+    "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
   ],
   "subordinate_chunks": [
     {
@@ -56,9 +62,21 @@ Candidate migration analysis. Directional and non-normative.
         "ambiguities",
         "candidate_functional_sets"
       ]
+    },
+    {
+      "order": 2,
+      "path": "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "title": "Issue-routing analysis",
+      "coverage": [
+        "source_evidence",
+        "candidate_groupings",
+        "dependencies",
+        "ambiguities",
+        "candidate_functional_sets"
+      ]
     }
   ],
-  "successor_action": "Approve the faithful migrated direction recorded in repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md.",
+  "successor_action": "Decide whether to approve, revise, or reject the Issue Intake and Governance Routing candidate functional-set boundary before downstream decomposition or implementation.",
   "schema_version": "1"
 }
 ```
@@ -70,6 +88,7 @@ This analysis performs only the structural interpretation necessary to migrate m
 ## Chunk index
 
 - [Migration analysis](repository-analysis/01-migration-analysis.md)
+- [Issue-routing analysis](repository-analysis/02-issue-routing-analysis.md)
 
 ## Relationships
 
@@ -77,7 +96,7 @@ The analysis is controlled by and succeeds [Repo-Spec Repository whiteboard](./R
 
 ## Next authorized action
 
-Proceed to [Repo-Spec Repository functional set](./REPOSITORY-FUNCTIONAL-SET.md).
+Review the **Issue Intake and Governance Routing** candidate boundary from [Issue-routing analysis](repository-analysis/02-issue-routing-analysis.md) before creating or approving successor functional-set material.
 
 ## Discoverability
 
