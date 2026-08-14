@@ -89,30 +89,24 @@
         "dependencies"
       ],
       "if_no_material_gaps": "report_audit_converged",
-      "must_not_manufacture_three_changes": true
+      "must_not_manufacture_three_changes": true,
+      "if_fewer_than_three_material_corrections_exist": "select_only_the_material_corrections_that_exist_and_report_partial_convergence"
     },
     "governed_issue": {
       "inspect_repository_issue_governance_requirements_first": true,
-      "required_fields": [
-        "governing_issue_identity",
-        "accepted_or_base_revision",
-        "working_branch",
-        "authority_basis",
-        "exactly_three_functional_patches",
-        "scope",
-        "exclusions",
-        "dependencies",
-        "known_conflicts",
-        "validation_requirements",
-        "completion_criteria",
-        "post_merge_requirements"
-      ],
       "patches": {
         "patch_1": "first_bounded_functional_correction",
         "patch_2": "second_bounded_functional_correction",
         "patch_3": "third_bounded_functional_correction"
       },
-      "patch_count_semantics": "functional_scope_not_git_commit_count"
+      "canonical_contract": "repo.governing-issue",
+      "canonical_contract_controls_structure_and_required_fields": true,
+      "session_constraints": {
+        "functional_patch_scope_count": 3,
+        "patch_count_semantics": "functional_scope_not_git_commit_count",
+        "additional_repair_commits_allowed": true,
+        "additional_repair_commits_must_not_introduce_fourth_functional_correction": true
+      }
     },
     "patch_1": {
       "preconditions": [
@@ -319,17 +313,18 @@
     "read_canonical_pr_template_and_field_policy": true,
     "use_required_heading_names_exactly": true,
     "do_not_improvise_validated_section_names": true,
-    "document": [
-      "governing_issue",
-      "summary",
-      "validation",
-      "review_focus",
-      "scope_and_exclusions",
-      "deferred_work",
-      "repair_commits_when_relevant"
-    ],
     "must_not_claim_unperformed_validation": true,
-    "avoid_auto_close_syntax_if_post_merge_validation_required": true
+    "avoid_auto_close_syntax_if_post_merge_validation_required": true,
+    "canonical_contract": "repo.review-proposal",
+    "canonical_contract_controls_visible_pr_body_fields": true,
+    "session_content_expectations": [
+      "document_governing_issue",
+      "summarize_three_functional_corrections",
+      "record_exact_validation_performed",
+      "identify_review_focus",
+      "record_scope_exclusions_and_deferred_work_in_canonical_scope_notes",
+      "explain_repair_commits_when_relevant"
+    ]
   },
   "ci_and_review_repairs": {
     "investigate_before_mutating": true,
