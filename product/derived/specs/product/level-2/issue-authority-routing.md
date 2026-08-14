@@ -35,7 +35,17 @@ Reusable capability for choosing the accepted authority path from issue routing 
 
 ### Tests
 
-- `test.issue-authority-routing`
+- `test.issue-authority-routing.hosted-conformance`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_routing_hosted_conformance.py`
+  - Requirements:
+    - `IRG-ROUTE-001`
+    - `IRG-ROUTE-002`
+    - `IRG-ROUTE-004`
+    - `IRG-ROUTE-005`
+    - `IRG-ROUTE-006`
+
+- `test.issue-authority-routing.product`
   - Paths:
     - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
   - Requirements:
@@ -52,42 +62,47 @@ Reusable capability for choosing the accepted authority path from issue routing 
   - Implementation Ids:
     - `impl.issue-authority-routing`
   - Test Ids:
-    - `test.issue-authority-routing`
+    - `test.issue-authority-routing.product`
+    - `test.issue-authority-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-ROUTE-002`
   - Implementation Ids:
     - `impl.issue-authority-routing`
   - Test Ids:
-    - `test.issue-authority-routing`
+    - `test.issue-authority-routing.product`
+    - `test.issue-authority-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-ROUTE-003`
   - Implementation Ids:
     - `impl.issue-authority-routing`
   - Test Ids:
-    - `test.issue-authority-routing`
+    - `test.issue-authority-routing.product`
   - Status: `covered`
 
 - `IRG-ROUTE-004`
   - Implementation Ids:
     - `impl.issue-authority-routing`
   - Test Ids:
-    - `test.issue-authority-routing`
+    - `test.issue-authority-routing.product`
+    - `test.issue-authority-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-ROUTE-005`
   - Implementation Ids:
     - `impl.issue-authority-routing`
   - Test Ids:
-    - `test.issue-authority-routing`
+    - `test.issue-authority-routing.product`
+    - `test.issue-authority-routing.hosted-conformance`
   - Status: `covered`
 
 - `IRG-ROUTE-006`
   - Implementation Ids:
     - `impl.issue-authority-routing`
   - Test Ids:
-    - `test.issue-authority-routing`
+    - `test.issue-authority-routing.product`
+    - `test.issue-authority-routing.hosted-conformance`
   - Status: `covered`
 
 ## Components

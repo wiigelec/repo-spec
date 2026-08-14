@@ -115,7 +115,9 @@ class IssueRoutingCorrespondenceTests(unittest.TestCase):
                             implementation_ids
                         )
                     )
-                    self.assertTrue(set(record["test_ids"]).issubset(test_ids))
+                    self.assertTrue(
+                        set(record["test_ids"]).issubset(test_ids)
+                    )
 
     def test_all_correspondence_paths_are_real_product_owned_files(self):
         for spec_id in SPEC_IDS:
@@ -133,6 +135,60 @@ class IssueRoutingCorrespondenceTests(unittest.TestCase):
                         self.assertNotIn(".github/", path)
                         self.assertTrue((self.repo_root / path).is_file())
 
+    def test_authority_routing_uses_hosted_conformance_where_hosted_authority_matters(self):
+        spec = self.load_spec("product.issue-authority-routing")
+        tests = {
+            mapping["id"]: mapping
+            for mapping in spec["correspondence"]["tests"]
+        }
+        self.assertEqual(
+            tests["test.issue-authority-routing.product"]["paths"],
+            [BEHAVIOR_TEST],
+        )
+        self.assertEqual(
+            tests["test.issue-authority-routing.hosted-conformance"]["paths"],
+            [HOSTED_TEST],
+        )
+        records = {
+            item["requirement_id"]: item
+            for item in spec["correspondence"]["conformance"]
+        }
+        for requirement_id in (
+            "IRG-ROUTE-001",
+            "IRG-ROUTE-002",
+            "IRG-ROUTE-004",
+            "IRG-ROUTE-005",
+            "IRG-ROUTE-006",
+        ):
+            self.assertIn(
+                "test.issue-authority-routing.hosted-conformance",
+                records[requirement_id]["test_ids"],
+            )
+        self.assertNotIn(
+            "test.issue-authority-routing.hosted-conformance",
+            records["IRG-ROUTE-003"]["test_ids"],
+        )
+
+    def test_existing_hosted_correspondence_remains_attached_to_real_hosted_test(self):
+        cases = {
+            "product.governed-work-provenance":
+                "test.governed-work-provenance.hosted-conformance",
+            "product.governed-work-promotion":
+                "test.governed-work-promotion.hosted-conformance",
+            "product.issue-routing-platform-validation":
+                "test.issue-routing-platform-validation.hosted-conformance",
+            "product.issue-intake-governance-routing":
+                "test.issue-intake-governance-routing.hosted-conformance",
+        }
+        for spec_id, test_id in cases.items():
+            with self.subTest(spec_id=spec_id):
+                spec = self.load_spec(spec_id)
+                tests = {
+                    mapping["id"]: mapping
+                    for mapping in spec["correspondence"]["tests"]
+                }
+                self.assertEqual(tests[test_id]["paths"], [HOSTED_TEST])
+
     def test_provenance_comment_requirements_use_hosted_conformance(self):
         spec = self.load_spec("product.governed-work-provenance")
         records = {
@@ -145,48 +201,30 @@ class IssueRoutingCorrespondenceTests(unittest.TestCase):
                 records[requirement_id]["test_ids"],
             )
 
-    def test_promotion_correspondence_uses_validator_and_hosted_evidence(self):
-        spec = self.load_spec("product.governed-work-promotion")
-        tests = {
-            mapping["id"]: mapping
-            for mapping in spec["correspondence"]["tests"]
-        }
-        self.assertEqual(
-            tests["test.governed-work-promotion.product"]["paths"],
-            [BEHAVIOR_TEST],
-        )
-        self.assertEqual(
-            tests["test.governed-work-promotion.hosted-conformance"]["paths"],
-            [HOSTED_TEST],
-        )
-        records = {
+    def test_promotion_and_platform_hosted_requirements_remain_covered(self):
+        promotion_spec = self.load_spec("product.governed-work-promotion")
+        promotion_records = {
             item["requirement_id"]: item
-            for item in spec["correspondence"]["conformance"]
+            for item in promotion_spec["correspondence"]["conformance"]
         }
-        for requirement_id in (
-            "IRG-PROM-001",
-            "IRG-PROM-002",
-            "IRG-PROM-003",
-            "IRG-PROM-004",
-            "IRG-PROM-005",
-        ):
+        for record in promotion_records.values():
             self.assertIn(
                 "test.governed-work-promotion.hosted-conformance",
-                records[requirement_id]["test_ids"],
+                record["test_ids"],
             )
 
-    def test_platform_validation_correspondence_requires_hosted_conformance(self):
-        spec = self.load_spec("product.issue-routing-platform-validation")
-        records = {
+        platform_spec = self.load_spec(
+            "product.issue-routing-platform-validation"
+        )
+        platform_records = {
             item["requirement_id"]: item
-            for item in spec["correspondence"]["conformance"]
+            for item in platform_spec["correspondence"]["conformance"]
         }
-        for requirement_id, record in records.items():
-            with self.subTest(requirement_id=requirement_id):
-                self.assertIn(
-                    "test.issue-routing-platform-validation.hosted-conformance",
-                    record["test_ids"],
-                )
+        for record in platform_records.values():
+            self.assertIn(
+                "test.issue-routing-platform-validation.hosted-conformance",
+                record["test_ids"],
+            )
 
     def test_level3_authority_sensitive_requirements_use_hosted_conformance(self):
         spec = self.load_spec("product.issue-intake-governance-routing")
