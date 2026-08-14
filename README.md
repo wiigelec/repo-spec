@@ -2,7 +2,7 @@
 
 `repo-spec` is a specification-governed repository bootstrap framework for long-running human and AI-assisted software development. It establishes a repository structure in which accepted repository and product specifications remain explicit authority, while generated documentation, implementation artifacts, tests, and prior behavior remain subordinate evidence.
 
-Supported runtime: Python 3.10+
+Supported runtime: Python 3.10-3.14
 
 ## Initialize a repository
 
