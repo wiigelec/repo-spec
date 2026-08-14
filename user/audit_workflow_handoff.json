@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "handoff_type": "audit_workflow_handoff",
-  "title": "Agent Handoff — Audit → Issue → Three Patches → PR → Manual Merge → Audit",
+  "title": "Agent Handoff — Audit → Issue → Up to Three Selected Patches → PR → Manual Merge → Audit",
   "source": {
     "file": "Pasted markdown(20260807-214635).md",
     "role": "audit workflow session handoff",
@@ -26,9 +26,7 @@
     "cycle": [
       "audit",
       "governed_issue",
-      "patch_1",
-      "patch_2",
-      "patch_3",
+      "selected_patches_1_to_3",
       "pull_request",
       "manual_merge",
       "fresh_audit"
@@ -37,7 +35,7 @@
     "additional_commits_allowed_for": [
       "narrowly_scoped_ci_repairs",
       "review_fixes",
-      "corrections_required_to_make_authorized_three_patches_valid"
+      "corrections_required_to_make_authorized_selected_patches_valid"
     ],
     "additional_commits_must_not": [
       "introduce_a_fourth_functional_correction"
@@ -95,11 +93,6 @@
     },
     "governed_issue": {
       "inspect_repository_issue_governance_requirements_first": true,
-      "patches": {
-        "patch_1": "first_bounded_functional_correction",
-        "patch_2": "second_bounded_functional_correction",
-        "patch_3": "third_bounded_functional_correction"
-      },
       "canonical_contract": "repo.governing-issue",
       "canonical_contract_controls_structure_and_required_fields": true,
       "session_constraints": {
@@ -108,44 +101,14 @@
         "additional_repair_commits_allowed": true,
         "additional_repair_commits_must_not_introduce_fourth_functional_correction": true,
         "functional_patch_scope_count_semantics": "maximum_not_minimum"
+      },
+      "selected_patch_execution": {
+        "minimum_when_material_findings_exist": 1,
+        "maximum": 3,
+        "ordering": "selected_order",
+        "unused_slots": "not_executed",
+        "partial_convergence_allowed": true
       }
-    },
-    "patch_1": {
-      "preconditions": [
-        "re_read_controlling_authority_as_needed",
-        "verify_current_git_state",
-        "verify_patch_remains_valid",
-        "verify_scope_and_exclusions"
-      ],
-      "mutation": "standalone_python_script",
-      "postconditions": [
-        "inspect_json_result",
-        "verify_changed_files",
-        "verify_validation",
-        "verify_commit",
-        "verify_no_unauthorized_scope"
-      ],
-      "next_gate": "patch_1_must_be_satisfactory_before_patch_2"
-    },
-    "patch_2": {
-      "evaluate_against_state_after_patch_1": true,
-      "preconditions": [
-        "expected_patch_1_commit_or_state_exists",
-        "tree_suitable_for_mutation",
-        "patch_2_authority_remains_valid",
-        "scope_remains_bounded"
-      ],
-      "mutation": "standalone_python_script",
-      "next_gate": "inspect_and_validate_before_patch_3"
-    },
-    "patch_3": {
-      "evaluate_against_state_after_patches_1_and_2": true,
-      "must_remain_bounded": true,
-      "must_not_become_catch_all": true,
-      "unrelated_discoveries": "record_and_defer",
-      "blocking_exception": "fix_only_if_directly_required_for_correctness_or_validation_of_authorized_three_patch_scope",
-      "mutation": "standalone_python_script",
-      "next_gate": "inspect_result"
     },
     "pre_pr_validation": {
       "checks": [
@@ -217,6 +180,27 @@
         "treat_merged_repository_state_as_new_baseline",
         "return_to_fresh_audit"
       ]
+    },
+    "selected_patch": {
+      "applies_to_each_selected_patch_in_order": true,
+      "preconditions": [
+        "re_read_controlling_authority_as_needed",
+        "verify_current_git_state",
+        "verify_prior_selected_patches_or_state_as_applicable",
+        "verify_patch_remains_valid",
+        "verify_scope_and_exclusions"
+      ],
+      "mutation": "standalone_python_script",
+      "postconditions": [
+        "inspect_json_result",
+        "verify_changed_files_or_external_state",
+        "verify_validation",
+        "verify_commit_or_evidence_record_as_applicable",
+        "verify_no_unauthorized_scope"
+      ],
+      "unrelated_discoveries": "record_and_defer",
+      "blocking_exception": "fix_only_if_directly_required_for_correctness_or_validation_of_authorized_selected_patch_scope",
+      "next_gate": "proceed_to_next_selected_patch_if_any_otherwise_pre_pr_validation"
     }
   },
   "local_mutation_protocol": {
@@ -352,8 +336,8 @@
       "CI repair:",
       "Review repair:"
     ],
-    "do_not_rewrite_published_commits_for_artificial_three_commit_count": true,
-    "invariant": "up_to_three_governed_functional_patches_with_additional_repair_commits_allowed"
+    "invariant": "up_to_three_governed_functional_patches_with_additional_repair_commits_allowed",
+    "do_not_rewrite_published_commits_for_artificial_patch_or_commit_count": true
   },
   "revalidation_after_repairs": {
     "after_every_substantive_repair": [
