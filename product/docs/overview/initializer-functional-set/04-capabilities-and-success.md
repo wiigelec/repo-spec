@@ -1,6 +1,6 @@
 # Initializer Overview: Capabilities and Success
 
-> Part 4 of 6 · [Initializer overview index](../INITIALIZER-OVERVIEW.md) · [Previous](./03-users-principles-and-boundaries.md) · [Next](./05-unresolved-questions.md)
+> Part 4 of 6 · [Initializer overview index](../INITIALIZER-FUNCTIONAL-SET.md) · [Previous](./03-users-principles-and-boundaries.md) · [Next](./05-unresolved-questions.md)
 
 ## Status
 

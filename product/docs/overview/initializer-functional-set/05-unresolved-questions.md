@@ -1,6 +1,6 @@
 # Initializer Overview: Unresolved Questions
 
-> Part 5 of 6 · [Initializer overview index](../INITIALIZER-OVERVIEW.md) · [Previous](./04-capabilities-and-success.md) · [Next](./06-lifecycle-and-handoff.md)
+> Part 5 of 6 · [Initializer overview index](../INITIALIZER-FUNCTIONAL-SET.md) · [Previous](./04-capabilities-and-success.md) · [Next](./06-lifecycle-and-handoff.md)
 
 ## Status
 

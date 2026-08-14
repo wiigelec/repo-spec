@@ -1,6 +1,6 @@
 # Initializer Overview: Product Identity and Purpose
 
-> Part 1 of 6 · [Initializer overview index](../INITIALIZER-OVERVIEW.md) · [Next](./02-problem-and-outcome.md)
+> Part 1 of 6 · [Initializer overview index](../INITIALIZER-FUNCTIONAL-SET.md) · [Next](./02-problem-and-outcome.md)
 
 ## Status
 

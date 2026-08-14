@@ -1,6 +1,6 @@
 # Initializer Overview: Problem and Outcome
 
-> Part 2 of 6 · [Initializer overview index](../INITIALIZER-OVERVIEW.md) · [Previous](./01-product-identity-and-purpose.md) · [Next](./03-users-principles-and-boundaries.md)
+> Part 2 of 6 · [Initializer overview index](../INITIALIZER-FUNCTIONAL-SET.md) · [Previous](./01-product-identity-and-purpose.md) · [Next](./03-users-principles-and-boundaries.md)
 
 ## Status
 
