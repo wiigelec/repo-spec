@@ -288,49 +288,49 @@
     {
       "spec_id": "product.issue-routing-governance",
       "path": "product/specs/product/level-0/issue-routing-governance.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 0,
       "capability_group": "future-extension"
     },
     {
       "spec_id": "product.issue-routing-classification",
       "path": "product/specs/product/level-1/issue-routing-classification.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 1,
       "capability_group": "future-extension"
     },
     {
       "spec_id": "product.governed-work-provenance",
       "path": "product/specs/product/level-1/governed-work-provenance.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 1,
       "capability_group": "future-extension"
     },
     {
       "spec_id": "product.issue-authority-routing",
       "path": "product/specs/product/level-2/issue-authority-routing.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 2,
       "capability_group": "future-extension"
     },
     {
       "spec_id": "product.governed-work-promotion",
       "path": "product/specs/product/level-2/governed-work-promotion.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 2,
       "capability_group": "future-extension"
     },
     {
       "spec_id": "product.issue-routing-platform-validation",
       "path": "product/specs/product/level-2/issue-routing-platform-validation.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 2,
       "capability_group": "future-extension"
     },
     {
       "spec_id": "product.issue-intake-governance-routing",
       "path": "product/specs/product/level-3/issue-intake-governance-routing.json",
-      "status": "candidate",
+      "status": "accepted",
       "level": 3,
       "capability_group": "future-extension"
     }

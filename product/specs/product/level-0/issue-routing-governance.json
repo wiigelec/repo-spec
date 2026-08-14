@@ -1,8 +1,8 @@
 {
   "spec_id": "product.issue-routing-governance",
   "title": "Issue Routing Governance Foundations",
-  "purpose": "Candidate product-wide foundations for issue intake and governance routing. Defines only confirmed shared meanings and authority invariants. It intentionally leaves routing-label mutual exclusivity, routing-label retention after promotion, title preservation, original-versus-successor issue lifecycle selection, and hosting-platform event/API sequencing unresolved.",
-  "status": "candidate",
+  "purpose": "Issue-intake and governance-routing foundations defining shared meanings, authority boundaries, provenance expectations, and validation-state boundaries across the routing specification family.",
+  "status": "accepted",
   "schema_version": "1",
   "level": 0,
   "kernel": {
@@ -37,7 +37,7 @@
     },
     {
       "id": "IRG-L0-006",
-      "text": "This foundation does not define whether routing classifications are mutually exclusive, whether routing labels persist after promotion, whether an original intake issue or a successor issue becomes governed work, whether an intake title is preserved, or how a hosting platform sequences issue mutations and validation events."
+      "text": "This foundation introduces no intake-title preservation requirement, no universal requirement to retain routing labels after promotion, and no universal requirement to choose either in-place promotion or successor-issue promotion; exact hosting-platform mutation and event sequencing remains subordinate platform-specific authority."
     }
   ],
   "dependencies": [],

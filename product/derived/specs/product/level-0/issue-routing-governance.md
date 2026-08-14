@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Candidate product-wide foundations for issue intake and governance routing. Defines only confirmed shared meanings and authority invariants. It intentionally leaves routing-label mutual exclusivity, routing-label retention after promotion, title preservation, original-versus-successor issue lifecycle selection, and hosting-platform event/API sequencing unresolved.
+Issue-intake and governance-routing foundations defining shared meanings, authority boundaries, provenance expectations, and validation-state boundaries across the routing specification family.
 
 ## Correspondence
 
@@ -48,7 +48,7 @@ Candidate product-wide foundations for issue intake and governance routing. Defi
 - `IRG-L0-003`: Ordinary issue intake may exist before governed-work state and shall not be required to satisfy governed-work field completeness solely because it exists.
 - `IRG-L0-004`: The routing model shall preserve traceability from ordinary intake into any later bounded governed operation.
 - `IRG-L0-005`: Hosted governed-field validation shall not be treated as applicable before the governed-work state that activates that validation boundary.
-- `IRG-L0-006`: This foundation does not define whether routing classifications are mutually exclusive, whether routing labels persist after promotion, whether an original intake issue or a successor issue becomes governed work, whether an intake title is preserved, or how a hosting platform sequences issue mutations and validation events.
+- `IRG-L0-006`: This foundation introduces no intake-title preservation requirement, no universal requirement to retain routing labels after promotion, and no universal requirement to choose either in-place promotion or successor-issue promotion; exact hosting-platform mutation and event sequencing remains subordinate platform-specific authority.
 
 ## Dependencies
 

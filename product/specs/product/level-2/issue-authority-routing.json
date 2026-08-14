@@ -1,8 +1,8 @@
 {
   "spec_id": "product.issue-authority-routing",
   "title": "Issue Authority Routing",
-  "purpose": "Candidate reusable capability for choosing the accepted authority path from issue routing classification. It composes classification with existing audit and feature-development lifecycles without redefining those lifecycles.",
-  "status": "candidate",
+  "purpose": "Reusable capability for choosing the accepted authority path from issue routing classification while composing with, rather than redefining, existing audit and feature-development lifecycles.",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {

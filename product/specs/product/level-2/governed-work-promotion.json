@@ -1,8 +1,8 @@
 {
   "spec_id": "product.governed-work-promotion",
   "title": "Governed Work Promotion",
-  "purpose": "Candidate reusable capability for transitioning routed intake into a bounded governed operation while preserving provenance. The exact original-versus-successor issue lifecycle and exact promotion sequencing remain unresolved.",
-  "status": "candidate",
+  "purpose": "Reusable capability for transitioning routed intake into a bounded governed operation while preserving provenance and allowing either in-place or successor-issue realization when the governing lifecycle requires it.",
+  "status": "accepted",
   "schema_version": "1",
   "level": 2,
   "components": {
@@ -30,7 +30,7 @@
     },
     {
       "id": "IRG-PROM-005",
-      "text": "This candidate does not require either promotion of the original intake issue or creation of a successor governed issue, and it does not define the post-promotion lifetime of routing labels or the exact hosting-platform mutation order."
+      "text": "Promotion may occur in place on the original intake issue or through a successor governed issue when lifecycle separation or bounded-work scoping requires it; neither form is universally mandatory. The selected form shall preserve intake provenance and maintain a unique traceable governing issue for the bounded mutation. Post-promotion retention of live routing labels is not required by this repository-generic contract."
     }
   ],
   "dependencies": [

@@ -1,8 +1,8 @@
 {
   "spec_id": "product.issue-routing-classification",
   "title": "Issue Routing Classification",
-  "purpose": "Candidate primitive contract for classifying ordinary issue intake into routing concepts. It encodes confirmed bug-fix and feature-request meanings while leaving mutual-exclusivity and conflict-representation policy unresolved for later acceptance review.",
-  "status": "candidate",
+  "purpose": "Primitive contract for classifying ordinary issue intake into routing concepts and resolving classification conflicts before authority routing proceeds.",
+  "status": "accepted",
   "schema_version": "1",
   "level": 1,
   "primitives": {
@@ -31,7 +31,7 @@
     },
     {
       "id": "IRG-CLS-005",
-      "text": "This candidate does not define whether `bug-fix` and `feature-request` are mutually exclusive, whether additional routing classifications exist, or the representation of classification conflicts."
+      "text": "The `bug-fix` and `feature-request` classifications may coexist during raw intake or review, but before authority routing proceeds the routing state shall resolve to one applicable authority direction; unresolved conflicting classifications that imply different authority paths shall stop routing rather than select a path implicitly."
     }
   ],
   "dependencies": [

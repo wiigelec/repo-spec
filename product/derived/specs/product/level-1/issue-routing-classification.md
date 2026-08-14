@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Candidate primitive contract for classifying ordinary issue intake into routing concepts. It encodes confirmed bug-fix and feature-request meanings while leaving mutual-exclusivity and conflict-representation policy unresolved for later acceptance review.
+Primitive contract for classifying ordinary issue intake into routing concepts and resolving classification conflicts before authority routing proceeds.
 
 ## Correspondence
 
@@ -45,7 +45,7 @@ Candidate primitive contract for classifying ordinary issue intake into routing 
 - `IRG-CLS-002`: The `bug-fix` and `feature-request` classifications may be assigned at issue creation or after review.
 - `IRG-CLS-003`: A routing classification shall remain distinct from `governed-work` governance state.
 - `IRG-CLS-004`: Classification uncertainty that changes the applicable authority path shall be surfaced rather than silently converted into repository mutation authority.
-- `IRG-CLS-005`: This candidate does not define whether `bug-fix` and `feature-request` are mutually exclusive, whether additional routing classifications exist, or the representation of classification conflicts.
+- `IRG-CLS-005`: The `bug-fix` and `feature-request` classifications may coexist during raw intake or review, but before authority routing proceeds the routing state shall resolve to one applicable authority direction; unresolved conflicting classifications that imply different authority paths shall stop routing rather than select a path implicitly.
 
 ## Dependencies
 

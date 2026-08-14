@@ -16,7 +16,7 @@ Do not edit directly.
 `product/scripts/generate-docs`
 ## Purpose
 
-Candidate reusable integration contract separating repository-generic governance from hosting-platform realization. It defines validation-state boundaries but leaves exact GitHub event, API, CI, and label-retention mechanics unresolved.
+Reusable platform-validation boundary that keeps hosted field validation subordinate to repository authority and constrains platform realizations by observable provenance and governed-state invariants rather than exact API sequencing.
 
 ## Correspondence
 
@@ -44,7 +44,7 @@ Candidate reusable integration contract separating repository-generic governance
 - `IRG-PVAL-002`: Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent.
 - `IRG-PVAL-003`: Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state.
 - `IRG-PVAL-004`: Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance.
-- `IRG-PVAL-005`: This candidate does not define exact GitHub Actions triggers, exact event ordering, exact API call ordering, label colors, routing-label retention after promotion, or transactional behavior for non-atomic hosting platforms.
+- `IRG-PVAL-005`: Repository-generic validation integration shall constrain observable ordering only as needed to preserve required provenance before destructive body replacement or restructuring and to prevent governed-field validation from applying before canonical governed fields and governed-work state are established; exact hosting-platform API or event sequencing and live routing-label retention remain platform-profile concerns.
 
 ## Dependencies
 
