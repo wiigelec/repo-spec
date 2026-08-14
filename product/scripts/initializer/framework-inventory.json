@@ -610,6 +610,46 @@
       "mode": "100644"
     },
     {
+      "material_key": "product-validation-context",
+      "source_path": "product/scripts/product_validation/context.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-development-documents",
+      "source_path": "product/scripts/product_validation/development_documents.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-product-development-documents",
+      "source_path": "product/scripts/product_validation/product_development_documents.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-product-lifecycle",
+      "source_path": "product/scripts/product_validation/product_lifecycle.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-validation-schema-subset",
+      "source_path": "product/scripts/product_validation/schema_subset.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
       "material_key": "product-validation-support-package",
       "source_path": "product/scripts/validation/__init__.py",
       "role": "validation-utility",
