@@ -1,4 +1,4 @@
-"""Portable Issue Intake and Governance Routing product implementation."""
+"Portable Issue Intake and Governance Routing product implementation."
 
 from .classification import (
     BUG_FIX,
@@ -21,9 +21,9 @@ from .promotion import (
     CanonicalGovernedStateEvidence,
     CanonicalGovernedStateObservation,
     CanonicalGovernedStateValidationResult,
-    CanonicalGovernedStateValidator,
     PromotionForm,
     PromotionPlan,
+    TRUSTED_CANONICAL_VALIDATION_PRODUCERS,
     plan_promotion,
     validate_canonical_governed_state,
 )
@@ -48,7 +48,7 @@ __all__ = [
     "CanonicalGovernedStateEvidence",
     "CanonicalGovernedStateObservation",
     "CanonicalGovernedStateValidationResult",
-    "CanonicalGovernedStateValidator",
+    "TRUSTED_CANONICAL_VALIDATION_PRODUCERS",
     "validate_canonical_governed_state",
     "PromotionForm",
     "PromotionPlan",

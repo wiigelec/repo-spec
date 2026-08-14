@@ -1,11 +1,20 @@
 from __future__ import annotations
 
+import json
+import os
+import shutil
+import subprocess
 from dataclasses import dataclass
 from enum import Enum
-from typing import Protocol
+from typing import Any
 from weakref import WeakSet
 
 from .provenance import IntakeProvenance
+
+
+TRUSTED_CANONICAL_VALIDATION_PRODUCERS = {
+    "repository-canonical-validator": "canonical-governed-state-validator",
+}
 
 
 class PromotionForm(str, Enum):
@@ -38,7 +47,7 @@ class CanonicalGovernedStateValidationResult:
     governed_operation: str
     validated_revision: str
     validation_artifact_id: str
-    validator_id: str
+    producer_id: str
     canonical_structure_valid: bool
 
     def __post_init__(self) -> None:
@@ -47,21 +56,13 @@ class CanonicalGovernedStateValidationResult:
             "governed_operation",
             "validated_revision",
             "validation_artifact_id",
-            "validator_id",
+            "producer_id",
         ):
             value = getattr(self, field_name)
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(
                     f"canonical governed-state validation result requires non-empty {field_name}"
                 )
-
-
-class CanonicalGovernedStateValidator(Protocol):
-    def validate(
-        self,
-        observation: CanonicalGovernedStateObservation,
-    ) -> CanonicalGovernedStateValidationResult:
-        ...
 
 
 class CanonicalGovernedStateEvidence:
@@ -71,13 +72,13 @@ class CanonicalGovernedStateEvidence:
         "_validated_revision",
         "_observed_revision",
         "_validation_artifact_id",
-        "_validator_id",
+        "_producer_id",
         "__weakref__",
     )
 
     def __new__(cls, *args, **kwargs):
         raise ValueError(
-            "canonical governed-state evidence must be issued by successful validation"
+            "canonical governed-state evidence must be issued by trusted validation"
         )
 
     @property
@@ -101,108 +102,173 @@ class CanonicalGovernedStateEvidence:
         return self._validation_artifact_id
 
     @property
+    def producer_id(self) -> str:
+        return self._producer_id
+
+    @property
     def validator_id(self) -> str:
-        return self._validator_id
+        # Compatibility alias for callers that only need producer identity.
+        return self._producer_id
 
     @property
     def is_fresh(self) -> bool:
         return self.validated_revision == self.observed_revision
 
 
-def _create_evidence_boundary():
+def _parse_validation_result(payload: Any) -> CanonicalGovernedStateValidationResult:
+    if not isinstance(payload, dict):
+        raise ValueError("trusted canonical validator returned a non-object result")
+    expected = {
+        "governing_issue",
+        "governed_operation",
+        "validated_revision",
+        "validation_artifact_id",
+        "producer_id",
+        "canonical_structure_valid",
+    }
+    if set(payload) != expected:
+        raise ValueError("trusted canonical validator returned invalid result fields")
+    return CanonicalGovernedStateValidationResult(**payload)
+
+
+def _build_promotion_boundary():
     issued: WeakSet[CanonicalGovernedStateEvidence] = WeakSet()
 
-    def issue(
+    def validate_canonical_governed_state(
         *,
-        governing_issue: str,
-        governed_operation: str,
-        validated_revision: str,
-        observed_revision: str,
-        validation_artifact_id: str,
-        validator_id: str,
+        observation: CanonicalGovernedStateObservation,
+        producer_id: str,
     ) -> CanonicalGovernedStateEvidence:
+        if not isinstance(observation, CanonicalGovernedStateObservation):
+            raise ValueError("canonical governed-state observation is required")
+        command_name = TRUSTED_CANONICAL_VALIDATION_PRODUCERS.get(producer_id)
+        if command_name is None:
+            raise ValueError(
+                f"unrecognized canonical validation producer: {producer_id}"
+            )
+
+        command = shutil.which(command_name)
+        if command is None:
+            raise ValueError(
+                f"trusted canonical validation producer is unavailable: {producer_id}"
+            )
+
+        request = {
+            "governing_issue": observation.governing_issue,
+            "governed_operation": observation.governed_operation,
+            "observed_revision": observation.observed_revision,
+            "producer_id": producer_id,
+        }
+        result = subprocess.run(
+            [command],
+            input=json.dumps(request),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=os.environ.copy(),
+        )
+        if result.returncode != 0:
+            detail = result.stderr.strip() or result.stdout.strip()
+            raise ValueError(
+                f"trusted canonical validation producer failed: {detail}"
+            )
+        try:
+            payload = json.loads(result.stdout)
+        except json.JSONDecodeError as exc:
+            raise ValueError(
+                "trusted canonical validator returned invalid JSON"
+            ) from exc
+
+        validated = _parse_validation_result(payload)
+        if validated.producer_id != producer_id:
+            raise ValueError(
+                "canonical validation result does not match trusted producer"
+            )
+        if not validated.canonical_structure_valid:
+            raise ValueError("canonical governed-state validation failed")
+        if validated.governing_issue != observation.governing_issue:
+            raise ValueError(
+                "canonical governed-state validation result does not match governing issue"
+            )
+        if validated.governed_operation != observation.governed_operation:
+            raise ValueError(
+                "canonical governed-state validation result does not match governed operation"
+            )
+        if validated.validated_revision != observation.observed_revision:
+            raise ValueError(
+                "canonical governed-state validation result is stale for the observed target revision"
+            )
+
         evidence = object.__new__(CanonicalGovernedStateEvidence)
-        evidence._governing_issue = governing_issue
-        evidence._governed_operation = governed_operation
-        evidence._validated_revision = validated_revision
-        evidence._observed_revision = observed_revision
-        evidence._validation_artifact_id = validation_artifact_id
-        evidence._validator_id = validator_id
+        evidence._governing_issue = validated.governing_issue
+        evidence._governed_operation = validated.governed_operation
+        evidence._validated_revision = validated.validated_revision
+        evidence._observed_revision = observation.observed_revision
+        evidence._validation_artifact_id = validated.validation_artifact_id
+        evidence._producer_id = validated.producer_id
         issued.add(evidence)
         return evidence
 
-    def require_issued_for(
-        evidence: object,
+    def plan_promotion(
         *,
+        form: PromotionForm,
+        intake_issue: str,
         governing_issue: str,
         governed_operation: str,
-    ) -> CanonicalGovernedStateEvidence:
-        if not isinstance(evidence, CanonicalGovernedStateEvidence):
+        provenance: IntakeProvenance,
+        canonical_state_evidence: CanonicalGovernedStateEvidence,
+    ) -> "PromotionPlan":
+        intake = intake_issue.strip()
+        governing = governing_issue.strip()
+        operation = governed_operation.strip()
+
+        if not intake:
+            raise ValueError("intake_issue is required")
+        if not governing:
+            raise ValueError("governing_issue is required")
+        if not operation:
+            raise ValueError("governed_operation is required")
+        if not provenance.captured_before_restructure:
+            raise ValueError("required intake provenance must be captured before promotion")
+        if provenance.intake_issue != intake:
+            raise ValueError("provenance intake identity does not match promotion intake")
+        if provenance.governed_operation != operation:
+            raise ValueError("provenance operation identity does not match promotion operation")
+
+        if not isinstance(canonical_state_evidence, CanonicalGovernedStateEvidence):
             raise ValueError("validated canonical governed-state evidence is required")
-        if evidence not in issued:
+        if canonical_state_evidence not in issued:
             raise ValueError(
-                "canonical governed-state evidence was not issued by successful validation"
+                "canonical governed-state evidence was not issued by trusted validation"
             )
-        if evidence.governing_issue != governing_issue:
+        if canonical_state_evidence.governing_issue != governing:
             raise ValueError(
                 "canonical governed-state evidence does not match governing issue"
             )
-        if evidence.governed_operation != governed_operation:
+        if canonical_state_evidence.governed_operation != operation:
             raise ValueError(
                 "canonical governed-state evidence does not match governed operation"
             )
-        if not evidence.is_fresh:
+        if not canonical_state_evidence.is_fresh:
             raise ValueError(
                 "canonical governed-state evidence is stale for the observed target revision"
             )
-        return evidence
 
-    return issue, require_issued_for
+        if form is PromotionForm.IN_PLACE and intake != governing:
+            raise ValueError("in-place promotion requires intake_issue to equal governing_issue")
+        if form is PromotionForm.SUCCESSOR and intake == governing:
+            raise ValueError("successor promotion requires a distinct governing_issue")
 
-
-_issue_validated_evidence, _require_issued_evidence_for = _create_evidence_boundary()
-del _create_evidence_boundary
-
-
-def validate_canonical_governed_state(
-    *,
-    observation: CanonicalGovernedStateObservation,
-    validator: CanonicalGovernedStateValidator,
-) -> CanonicalGovernedStateEvidence:
-    if not isinstance(observation, CanonicalGovernedStateObservation):
-        raise ValueError("canonical governed-state observation is required")
-    validate = getattr(validator, "validate", None)
-    if not callable(validate):
-        raise ValueError("canonical governed-state validator is required")
-
-    result = validate(observation)
-    if not isinstance(result, CanonicalGovernedStateValidationResult):
-        raise ValueError(
-            "canonical governed-state validator returned an invalid validation result"
-        )
-    if not result.canonical_structure_valid:
-        raise ValueError("canonical governed-state validation failed")
-    if result.governing_issue != observation.governing_issue:
-        raise ValueError(
-            "canonical governed-state validation result does not match governing issue"
-        )
-    if result.governed_operation != observation.governed_operation:
-        raise ValueError(
-            "canonical governed-state validation result does not match governed operation"
-        )
-    if result.validated_revision != observation.observed_revision:
-        raise ValueError(
-            "canonical governed-state validation result is stale for the observed target revision"
+        return PromotionPlan(
+            form=form,
+            intake_issue=intake,
+            governing_issue=governing,
+            governed_operation=operation,
+            provenance=provenance,
+            canonical_state_evidence=canonical_state_evidence,
         )
 
-    return _issue_validated_evidence(
-        governing_issue=result.governing_issue,
-        governed_operation=result.governed_operation,
-        validated_revision=result.validated_revision,
-        observed_revision=observation.observed_revision,
-        validation_artifact_id=result.validation_artifact_id,
-        validator_id=result.validator_id,
-    )
+    return validate_canonical_governed_state, plan_promotion
 
 
 @dataclass(frozen=True)
@@ -232,48 +298,5 @@ class PromotionPlan:
         return True
 
 
-def plan_promotion(
-    *,
-    form: PromotionForm,
-    intake_issue: str,
-    governing_issue: str,
-    governed_operation: str,
-    provenance: IntakeProvenance,
-    canonical_state_evidence: CanonicalGovernedStateEvidence,
-) -> PromotionPlan:
-    intake = intake_issue.strip()
-    governing = governing_issue.strip()
-    operation = governed_operation.strip()
-
-    if not intake:
-        raise ValueError("intake_issue is required")
-    if not governing:
-        raise ValueError("governing_issue is required")
-    if not operation:
-        raise ValueError("governed_operation is required")
-    if not provenance.captured_before_restructure:
-        raise ValueError("required intake provenance must be captured before promotion")
-    if provenance.intake_issue != intake:
-        raise ValueError("provenance intake identity does not match promotion intake")
-    if provenance.governed_operation != operation:
-        raise ValueError("provenance operation identity does not match promotion operation")
-
-    _require_issued_evidence_for(
-        canonical_state_evidence,
-        governing_issue=governing,
-        governed_operation=operation,
-    )
-
-    if form is PromotionForm.IN_PLACE and intake != governing:
-        raise ValueError("in-place promotion requires intake_issue to equal governing_issue")
-    if form is PromotionForm.SUCCESSOR and intake == governing:
-        raise ValueError("successor promotion requires a distinct governing_issue")
-
-    return PromotionPlan(
-        form=form,
-        intake_issue=intake,
-        governing_issue=governing,
-        governed_operation=operation,
-        provenance=provenance,
-        canonical_state_evidence=canonical_state_evidence,
-    )
+validate_canonical_governed_state, plan_promotion = _build_promotion_boundary()
+del _build_promotion_boundary
