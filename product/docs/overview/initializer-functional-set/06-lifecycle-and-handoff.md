@@ -8,7 +8,7 @@ Directional overview content.
 
 ## Directional lifecycle
 
-The intended initializer development sequence is overview, decomposition, implementation plan, specifications, product artifacts, conformance evidence, exact-revision review and acceptance, release, and maintenance.
+The intended initializer development sequence is overview, decomposition, accepted product specifications, accepted implementation plan, governed implementation, product artifacts, conformance evidence, exact-revision review and acceptance, release, and maintenance.
 
 ## Handoff
 
