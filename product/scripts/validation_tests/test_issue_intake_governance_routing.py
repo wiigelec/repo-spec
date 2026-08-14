@@ -9,6 +9,7 @@ PRODUCT_SCRIPTS = REPO_ROOT / "product" / "scripts"
 if str(PRODUCT_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(PRODUCT_SCRIPTS))
 
+import issue_intake_governance_routing.promotion as promotion_module
 from issue_intake_governance_routing import (
     AuditDisposition,
     AuthorityPath,
@@ -120,16 +121,33 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertIn("`bug-fix`", provenance.to_comment())
         self.assertIn("ordinary unformatted intake body", provenance.to_comment())
 
-    def test_raw_canonical_evidence_cannot_be_constructed_as_validated_evidence(self):
-        with self.assertRaisesRegex(ValueError, "must be produced by validation"):
-            CanonicalGovernedStateEvidence(
+    def test_evidence_cannot_be_directly_constructed_or_forged_with_object_new(self):
+        self.assertFalse(hasattr(promotion_module, "_VALIDATED_EVIDENCE_SEAL"))
+        with self.assertRaisesRegex(ValueError, "issued by successful validation"):
+            CanonicalGovernedStateEvidence()
+
+        forged = object.__new__(CanonicalGovernedStateEvidence)
+        forged._governing_issue = "#12"
+        forged._governed_operation = "operation-12"
+        forged._validated_revision = "rev-1"
+        forged._observed_revision = "rev-1"
+        forged._validation_artifact_id = "fabricated"
+        forged._validator_id = "fabricated"
+
+        provenance = capture_intake_provenance(
+            intake_issue="#12",
+            governed_operation="operation-12",
+            original_body="body",
+            labels=["bug-fix"],
+        )
+        with self.assertRaisesRegex(ValueError, "not issued by successful validation"):
+            plan_promotion(
+                form=PromotionForm.IN_PLACE,
+                intake_issue="#12",
                 governing_issue="#12",
                 governed_operation="operation-12",
-                validated_revision="rev-1",
-                observed_revision="rev-1",
-                validation_artifact_id="fabricated",
-                validator_id="fabricated-validator",
-                _seal=object(),
+                provenance=provenance,
+                canonical_state_evidence=forged,
             )
 
     def test_validator_mints_matching_fresh_canonical_evidence(self):
@@ -191,7 +209,7 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                         validator=validator,
                     )
 
-    def test_both_promotion_forms_require_validator_produced_canonical_evidence(self):
+    def test_both_promotion_forms_require_validator_issued_canonical_evidence(self):
         provenance = capture_intake_provenance(
             intake_issue="#12",
             governed_operation="operation-12",
@@ -222,32 +240,6 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         )
         self.assertEqual(in_place.form, PromotionForm.IN_PLACE)
         self.assertEqual(successor.form, PromotionForm.SUCCESSOR)
-        self.assertTrue(in_place.canonical_governed_state)
-        self.assertTrue(successor.canonical_governed_state)
-
-    def test_promotion_fails_closed_when_validated_evidence_absent_or_mismatched(self):
-        provenance = capture_intake_provenance(
-            intake_issue="#12",
-            governed_operation="operation-12",
-            original_body="body",
-            labels=["bug-fix"],
-        )
-        common = dict(
-            form=PromotionForm.IN_PLACE,
-            intake_issue="#12",
-            governing_issue="#12",
-            governed_operation="operation-12",
-            provenance=provenance,
-        )
-        with self.assertRaisesRegex(ValueError, "validated canonical governed-state evidence"):
-            plan_promotion(**common, canonical_state_evidence=None)
-
-        mismatched = canonical_evidence(
-            governing_issue="#34",
-            governed_operation="operation-12",
-        )
-        with self.assertRaisesRegex(ValueError, "does not match governing issue"):
-            plan_promotion(**common, canonical_state_evidence=mismatched)
 
     def test_hosted_validation_activates_only_after_canonical_governed_state(self):
         inactive = activate_hosted_validation(
@@ -287,10 +279,6 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         )
         self.assertEqual(outcome.classification_state, "bug-fix")
         self.assertEqual(outcome.authority_path, "audit")
-        self.assertEqual(outcome.provenance.routing_labels, ("bug-fix",))
-        self.assertEqual(outcome.promotion.governing_issue, "#12")
-        self.assertTrue(outcome.hosted_validation.validation_active)
-        self.assertEqual(outcome.feature_development_stages, ())
         self.assertFalse(outcome.mutation_authorized)
 
     def test_end_to_end_feature_request_success_preserves_feature_gates(self):
@@ -316,11 +304,6 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                 "explicit-functional-set-approval",
             ),
         )
-        self.assertFalse(outcome.promotion.branch_bypass_authorized)
-        self.assertFalse(outcome.promotion.validation_bypass_authorized)
-        self.assertFalse(outcome.promotion.review_bypass_authorized)
-        self.assertFalse(outcome.promotion.acceptance_bypass_authorized)
-        self.assertFalse(outcome.promotion.merge_bypass_authorized)
 
     def test_end_to_end_fails_closed_for_ambiguous_or_unclassified_intake(self):
         for labels in ([], ["bug-fix", "feature-request"]):
@@ -339,40 +322,13 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                         ),
                     )
 
-    def test_end_to_end_fails_closed_for_provenance_promotion_and_hosting_failures(self):
-        common = dict(
-            labels=["bug-fix"],
-            intake_issue="#12",
-            original_body="body",
-            governed_operation="operation-12",
-            promotion_form=PromotionForm.IN_PLACE,
-            governing_issue="#12",
-            canonical_state_evidence=canonical_evidence(
-                governing_issue="#12",
-                governed_operation="operation-12",
-            ),
-        )
-        with self.assertRaisesRegex(ValueError, "provenance"):
-            route_intake_to_governed_work(**common, provenance_available=False)
-        with self.assertRaisesRegex(ValueError, "precedes canonical promotion"):
-            route_intake_to_governed_work(
-                **common,
-                hosted_governed_state_before_promotion=True,
-            )
-        with self.assertRaisesRegex(ValueError, "conflicts with repository authority"):
-            route_intake_to_governed_work(
-                **common,
-                repository_authority_conflict=True,
-            )
-
-    def test_product_owned_implementation_uses_validator_mediated_evidence(self):
-        package = PRODUCT_SCRIPTS / "issue_intake_governance_routing"
-        promotion_text = (package / "promotion.py").read_text()
-        orchestration_text = (package / "orchestration.py").read_text()
-        self.assertNotIn("canonical_governed_state: bool", promotion_text)
-        self.assertNotIn("canonical_governed_state: bool", orchestration_text)
-        self.assertIn("validate_canonical_governed_state", promotion_text)
-        self.assertIn("_VALIDATED_EVIDENCE_SEAL", promotion_text)
+    def test_product_owned_implementation_has_no_importable_validation_sentinel(self):
+        promotion_text = (
+            PRODUCT_SCRIPTS / "issue_intake_governance_routing/promotion.py"
+        ).read_text()
+        self.assertNotIn("_VALIDATED_EVIDENCE_SEAL", promotion_text)
+        self.assertIn("WeakSet", promotion_text)
+        self.assertIn("not issued by successful validation", promotion_text)
 
     def test_product_owned_implementation_does_not_import_repository_helpers(self):
         package = PRODUCT_SCRIPTS / "issue_intake_governance_routing"

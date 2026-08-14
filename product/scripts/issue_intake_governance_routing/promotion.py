@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import Protocol
+from weakref import WeakSet
 
 from .provenance import IntakeProvenance
 
@@ -63,9 +64,6 @@ class CanonicalGovernedStateValidator(Protocol):
         ...
 
 
-_VALIDATED_EVIDENCE_SEAL = object()
-
-
 class CanonicalGovernedStateEvidence:
     __slots__ = (
         "_governing_issue",
@@ -74,31 +72,13 @@ class CanonicalGovernedStateEvidence:
         "_observed_revision",
         "_validation_artifact_id",
         "_validator_id",
-        "_seal",
+        "__weakref__",
     )
 
-    def __init__(
-        self,
-        *,
-        governing_issue: str,
-        governed_operation: str,
-        validated_revision: str,
-        observed_revision: str,
-        validation_artifact_id: str,
-        validator_id: str,
-        _seal: object,
-    ) -> None:
-        if _seal is not _VALIDATED_EVIDENCE_SEAL:
-            raise ValueError(
-                "canonical governed-state evidence must be produced by validation"
-            )
-        self._governing_issue = governing_issue
-        self._governed_operation = governed_operation
-        self._validated_revision = validated_revision
-        self._observed_revision = observed_revision
-        self._validation_artifact_id = validation_artifact_id
-        self._validator_id = validator_id
-        self._seal = _seal
+    def __new__(cls, *args, **kwargs):
+        raise ValueError(
+            "canonical governed-state evidence must be issued by successful validation"
+        )
 
     @property
     def governing_issue(self) -> str:
@@ -128,28 +108,60 @@ class CanonicalGovernedStateEvidence:
     def is_fresh(self) -> bool:
         return self.validated_revision == self.observed_revision
 
-    def require_valid_for(
-        self,
+
+def _create_evidence_boundary():
+    issued: WeakSet[CanonicalGovernedStateEvidence] = WeakSet()
+
+    def issue(
         *,
         governing_issue: str,
         governed_operation: str,
-    ) -> None:
-        if self._seal is not _VALIDATED_EVIDENCE_SEAL:
+        validated_revision: str,
+        observed_revision: str,
+        validation_artifact_id: str,
+        validator_id: str,
+    ) -> CanonicalGovernedStateEvidence:
+        evidence = object.__new__(CanonicalGovernedStateEvidence)
+        evidence._governing_issue = governing_issue
+        evidence._governed_operation = governed_operation
+        evidence._validated_revision = validated_revision
+        evidence._observed_revision = observed_revision
+        evidence._validation_artifact_id = validation_artifact_id
+        evidence._validator_id = validator_id
+        issued.add(evidence)
+        return evidence
+
+    def require_issued_for(
+        evidence: object,
+        *,
+        governing_issue: str,
+        governed_operation: str,
+    ) -> CanonicalGovernedStateEvidence:
+        if not isinstance(evidence, CanonicalGovernedStateEvidence):
+            raise ValueError("validated canonical governed-state evidence is required")
+        if evidence not in issued:
             raise ValueError(
-                "canonical governed-state evidence was not produced by validation"
+                "canonical governed-state evidence was not issued by successful validation"
             )
-        if self.governing_issue != governing_issue:
+        if evidence.governing_issue != governing_issue:
             raise ValueError(
                 "canonical governed-state evidence does not match governing issue"
             )
-        if self.governed_operation != governed_operation:
+        if evidence.governed_operation != governed_operation:
             raise ValueError(
                 "canonical governed-state evidence does not match governed operation"
             )
-        if not self.is_fresh:
+        if not evidence.is_fresh:
             raise ValueError(
                 "canonical governed-state evidence is stale for the observed target revision"
             )
+        return evidence
+
+    return issue, require_issued_for
+
+
+_issue_validated_evidence, _require_issued_evidence_for = _create_evidence_boundary()
+del _create_evidence_boundary
 
 
 def validate_canonical_governed_state(
@@ -183,14 +195,13 @@ def validate_canonical_governed_state(
             "canonical governed-state validation result is stale for the observed target revision"
         )
 
-    return CanonicalGovernedStateEvidence(
+    return _issue_validated_evidence(
         governing_issue=result.governing_issue,
         governed_operation=result.governed_operation,
         validated_revision=result.validated_revision,
         observed_revision=observation.observed_revision,
         validation_artifact_id=result.validation_artifact_id,
         validator_id=result.validator_id,
-        _seal=_VALIDATED_EVIDENCE_SEAL,
     )
 
 
@@ -240,8 +251,6 @@ def plan_promotion(
         raise ValueError("governing_issue is required")
     if not operation:
         raise ValueError("governed_operation is required")
-    if not isinstance(canonical_state_evidence, CanonicalGovernedStateEvidence):
-        raise ValueError("validated canonical governed-state evidence is required")
     if not provenance.captured_before_restructure:
         raise ValueError("required intake provenance must be captured before promotion")
     if provenance.intake_issue != intake:
@@ -249,7 +258,8 @@ def plan_promotion(
     if provenance.governed_operation != operation:
         raise ValueError("provenance operation identity does not match promotion operation")
 
-    canonical_state_evidence.require_valid_for(
+    _require_issued_evidence_for(
+        canonical_state_evidence,
         governing_issue=governing,
         governed_operation=operation,
     )
