@@ -122,6 +122,7 @@
         "requirements": [
           "IRG-PROM-001",
           "IRG-PROM-002",
+          "IRG-PROM-003",
           "IRG-PROM-004",
           "IRG-PROM-005"
         ]
@@ -155,7 +156,8 @@
           "impl.governed-work-promotion"
         ],
         "test_ids": [
-          "test.governed-work-promotion.product"
+          "test.governed-work-promotion.product",
+          "test.governed-work-promotion.hosted-conformance"
         ],
         "status": "covered"
       },
