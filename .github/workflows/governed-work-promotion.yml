@@ -1,0 +1,58 @@
+name: Governed work promotion
+
+on:
+  workflow_dispatch:
+    inputs:
+      intake_issue:
+        description: Ordinary intake issue number
+        required: true
+        type: string
+      governing_issue:
+        description: Existing target governing issue number
+        required: true
+        type: string
+      governed_operation:
+        description: Stable bounded governed operation identifier
+        required: true
+        type: string
+      promotion_form:
+        description: Promotion form
+        required: true
+        type: choice
+        options:
+          - in-place
+          - successor
+      canonical_body_base64:
+        description: Base64-encoded canonical governed issue body
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Decode canonical governed body
+        env:
+          CANONICAL_BODY_BASE64: ${{ inputs.canonical_body_base64 }}
+        run: |
+          printf '%s' "$CANONICAL_BODY_BASE64" | base64 --decode > "$RUNNER_TEMP/canonical-governed-body.md"
+      - name: Apply provenance-preserving governed-work promotion
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 repo/scripts/github_issue_promotion.py \
+            --repository "${{ github.repository }}" \
+            --intake-issue "${{ inputs.intake_issue }}" \
+            --governing-issue "${{ inputs.governing_issue }}" \
+            --governed-operation "${{ inputs.governed_operation }}" \
+            --promotion-form "${{ inputs.promotion_form }}" \
+            --canonical-body-file "$RUNNER_TEMP/canonical-governed-body.md" \
+            --apply

@@ -10,7 +10,12 @@ from .authority import (
 )
 from .classification import classify_labels
 from .hosted_validation import HostedValidationDecision, activate_hosted_validation
-from .promotion import PromotionForm, PromotionPlan, plan_promotion
+from .promotion import (
+    CanonicalGovernedStateEvidence,
+    PromotionForm,
+    PromotionPlan,
+    plan_promotion,
+)
 from .provenance import IntakeProvenance, capture_intake_provenance
 
 
@@ -33,7 +38,7 @@ def route_intake_to_governed_work(
     governed_operation: str,
     promotion_form: PromotionForm,
     governing_issue: str,
-    canonical_governed_state: bool,
+    canonical_state_evidence: CanonicalGovernedStateEvidence,
     provenance_available: bool = True,
     hosted_governed_state_before_promotion: bool = False,
     repository_authority_conflict: bool = False,
@@ -71,7 +76,7 @@ def route_intake_to_governed_work(
         governing_issue=governing_issue,
         governed_operation=governed_operation,
         provenance=provenance,
-        canonical_governed_state=canonical_governed_state,
+        canonical_state_evidence=canonical_state_evidence,
     )
 
     hosted_validation = activate_hosted_validation(

@@ -89,14 +89,24 @@
   "correspondence": {
     "implementations": [
       {
-        "id": "impl.issue-routing-platform-validation",
+        "id": "impl.issue-routing-platform-validation.boundary",
         "paths": [
           "product/scripts/issue_intake_governance_routing/hosted_validation.py"
         ],
         "requirements": [
-          "IRG-PVAL-001",
           "IRG-PVAL-002",
           "IRG-PVAL-003",
+          "IRG-PVAL-004",
+          "IRG-PVAL-005"
+        ]
+      },
+      {
+        "id": "impl.issue-routing-platform-validation.orchestration",
+        "paths": [
+          "product/scripts/issue_intake_governance_routing/orchestration.py"
+        ],
+        "requirements": [
+          "IRG-PVAL-001",
           "IRG-PVAL-004",
           "IRG-PVAL-005"
         ]
@@ -104,9 +114,21 @@
     ],
     "tests": [
       {
-        "id": "test.issue-routing-platform-validation",
+        "id": "test.issue-routing-platform-validation.product",
         "paths": [
           "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
+        ],
+        "requirements": [
+          "IRG-PVAL-002",
+          "IRG-PVAL-003",
+          "IRG-PVAL-004",
+          "IRG-PVAL-005"
+        ]
+      },
+      {
+        "id": "test.issue-routing-platform-validation.hosted-conformance",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py"
         ],
         "requirements": [
           "IRG-PVAL-001",
@@ -121,50 +143,56 @@
       {
         "requirement_id": "IRG-PVAL-001",
         "implementation_ids": [
-          "impl.issue-routing-platform-validation"
+          "impl.issue-routing-platform-validation.orchestration"
         ],
         "test_ids": [
-          "test.issue-routing-platform-validation"
+          "test.issue-routing-platform-validation.hosted-conformance"
         ],
         "status": "covered"
       },
       {
         "requirement_id": "IRG-PVAL-002",
         "implementation_ids": [
-          "impl.issue-routing-platform-validation"
+          "impl.issue-routing-platform-validation.boundary"
         ],
         "test_ids": [
-          "test.issue-routing-platform-validation"
+          "test.issue-routing-platform-validation.product",
+          "test.issue-routing-platform-validation.hosted-conformance"
         ],
         "status": "covered"
       },
       {
         "requirement_id": "IRG-PVAL-003",
         "implementation_ids": [
-          "impl.issue-routing-platform-validation"
+          "impl.issue-routing-platform-validation.boundary"
         ],
         "test_ids": [
-          "test.issue-routing-platform-validation"
+          "test.issue-routing-platform-validation.product",
+          "test.issue-routing-platform-validation.hosted-conformance"
         ],
         "status": "covered"
       },
       {
         "requirement_id": "IRG-PVAL-004",
         "implementation_ids": [
-          "impl.issue-routing-platform-validation"
+          "impl.issue-routing-platform-validation.boundary",
+          "impl.issue-routing-platform-validation.orchestration"
         ],
         "test_ids": [
-          "test.issue-routing-platform-validation"
+          "test.issue-routing-platform-validation.product",
+          "test.issue-routing-platform-validation.hosted-conformance"
         ],
         "status": "covered"
       },
       {
         "requirement_id": "IRG-PVAL-005",
         "implementation_ids": [
-          "impl.issue-routing-platform-validation"
+          "impl.issue-routing-platform-validation.boundary",
+          "impl.issue-routing-platform-validation.orchestration"
         ],
         "test_ids": [
-          "test.issue-routing-platform-validation"
+          "test.issue-routing-platform-validation.product",
+          "test.issue-routing-platform-validation.hosted-conformance"
         ],
         "status": "covered"
       }

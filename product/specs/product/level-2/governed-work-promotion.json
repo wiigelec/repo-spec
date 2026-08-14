@@ -104,14 +104,24 @@
     ],
     "tests": [
       {
-        "id": "test.governed-work-promotion",
+        "id": "test.governed-work-promotion.product",
         "paths": [
           "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
         ],
         "requirements": [
           "IRG-PROM-001",
-          "IRG-PROM-002",
           "IRG-PROM-003",
+          "IRG-PROM-005"
+        ]
+      },
+      {
+        "id": "test.governed-work-promotion.hosted-conformance",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py"
+        ],
+        "requirements": [
+          "IRG-PROM-001",
+          "IRG-PROM-002",
           "IRG-PROM-004",
           "IRG-PROM-005"
         ]
@@ -124,7 +134,8 @@
           "impl.governed-work-promotion"
         ],
         "test_ids": [
-          "test.governed-work-promotion"
+          "test.governed-work-promotion.product",
+          "test.governed-work-promotion.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -134,7 +145,7 @@
           "impl.governed-work-promotion"
         ],
         "test_ids": [
-          "test.governed-work-promotion"
+          "test.governed-work-promotion.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -144,7 +155,7 @@
           "impl.governed-work-promotion"
         ],
         "test_ids": [
-          "test.governed-work-promotion"
+          "test.governed-work-promotion.product"
         ],
         "status": "covered"
       },
@@ -154,7 +165,7 @@
           "impl.governed-work-promotion"
         ],
         "test_ids": [
-          "test.governed-work-promotion"
+          "test.governed-work-promotion.hosted-conformance"
         ],
         "status": "covered"
       },
@@ -164,7 +175,8 @@
           "impl.governed-work-promotion"
         ],
         "test_ids": [
-          "test.governed-work-promotion"
+          "test.governed-work-promotion.product",
+          "test.governed-work-promotion.hosted-conformance"
         ],
         "status": "covered"
       }
