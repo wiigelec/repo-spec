@@ -30,6 +30,10 @@ on:
         description: Base64-encoded canonical governed issue body
         required: true
         type: string
+      lifecycle_authority_base64:
+        description: Base64-encoded accepted repository lifecycle authority artifact
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -47,6 +51,18 @@ jobs:
           CANONICAL_BODY_BASE64: ${{ inputs.canonical_body_base64 }}
         run: |
           printf '%s' "$CANONICAL_BODY_BASE64" | base64 --decode > "$RUNNER_TEMP/canonical-governed-body.md"
+      - name: Decode accepted repository lifecycle authority
+        env:
+          LIFECYCLE_AUTHORITY_BASE64: ${{ inputs.lifecycle_authority_base64 }}
+        run: |
+          printf '%s' "$LIFECYCLE_AUTHORITY_BASE64" | base64 --decode > "$RUNNER_TEMP/repository-lifecycle-authority.json"
+      - name: Anchor managed promotion producers
+        run: |
+          echo "REPO_SPEC_CANONICAL_VALIDATOR=$GITHUB_WORKSPACE/repo/scripts/canonical-governed-state-validator" >> "$GITHUB_ENV"
+          echo "REPO_SPEC_AUTHORIZATION_VALIDATOR=$GITHUB_WORKSPACE/repo/scripts/repository-governance-authorization-validator" >> "$GITHUB_ENV"
+          echo "REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT=$RUNNER_TEMP/repository-lifecycle-authority.json" >> "$GITHUB_ENV"
+          sha256sum repo/scripts/canonical-governed-state-validator
+          sha256sum repo/scripts/repository-governance-authorization-validator
       - name: Apply provenance-preserving governed-work promotion
         env:
           GH_TOKEN: ${{ github.token }}

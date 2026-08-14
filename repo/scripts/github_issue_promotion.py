@@ -5,7 +5,6 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -15,6 +14,15 @@ import urllib.request
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
+
+PRODUCT_SCRIPTS = Path(__file__).resolve().parents[2] / "product" / "scripts"
+if str(PRODUCT_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(PRODUCT_SCRIPTS))
+
+from issue_intake_governance_routing import (
+    CanonicalGovernedStateObservation,
+    validate_canonical_governed_state,
+)
 
 ROUTING_LABELS = frozenset({"bug-fix", "feature-request"})
 GOVERNED_WORK = "governed-work"
@@ -109,7 +117,10 @@ class GitHubClient:
 
 
 TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS = {
-    "repository-governance-authority": "repository-governance-authorization-validator",
+    "repository-governance-authority": {
+        "command_env": "REPO_SPEC_AUTHORIZATION_VALIDATOR",
+        "sha256": "d53e2cf3eb841e00b2ee3cef5b233a1e178615ef6fc45e2b14f3600ef85bee27",
+    },
 }
 
 
@@ -171,17 +182,41 @@ def require_repository_governance_authorization(
             f"authority evidence issue failed governed field policy: {detail}"
         )
 
-    command_name = TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS.get(producer_id)
-    if command_name is None:
+    descriptor = TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS.get(producer_id)
+    if descriptor is None:
         raise PromotionError(
             f"unrecognized repository-governance authorization producer: {producer_id}"
         )
-    command = shutil.which(command_name)
-    if command is None:
+
+    command_value = os.environ.get(descriptor["command_env"], "")
+    if not command_value:
         raise PromotionError(
             f"trusted repository-governance authorization producer is unavailable: "
             f"{producer_id}"
         )
+    command = Path(command_value).resolve()
+    if not command.is_file():
+        raise PromotionError(
+            f"trusted repository-governance authorization producer is unavailable: "
+            f"{producer_id}"
+        )
+    observed_command_sha256 = hashlib.sha256(command.read_bytes()).hexdigest()
+    if observed_command_sha256 != descriptor["sha256"]:
+        raise PromotionError(
+            "repository-governance authorization producer artifact identity mismatch"
+        )
+
+    lifecycle_path = os.environ.get("REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT", "")
+    if not lifecycle_path:
+        raise PromotionError(
+            "repository lifecycle authority artifact is unavailable"
+        )
+    try:
+        lifecycle_authority = json.loads(Path(lifecycle_path).read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PromotionError(
+            "repository lifecycle authority artifact is invalid"
+        ) from exc
 
     request = {
         "repository": client.repository,
@@ -191,9 +226,10 @@ def require_repository_governance_authorization(
         "governed_operation": governed_operation,
         "routing_classification": classification,
         "producer_id": producer_id,
+        "lifecycle_authority": lifecycle_authority,
     }
     producer = subprocess.run(
-        [command],
+        [str(command)],
         input=json.dumps(request),
         text=True,
         stdout=subprocess.PIPE,
@@ -476,6 +512,37 @@ def main(argv: list[str]) -> int:
             canonical_body=canonical_body,
         )
 
+        canonical_revision = hashlib.sha256(
+            canonical_body.encode()
+        ).hexdigest()
+        previous_subject = os.environ.get(
+            "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT"
+        )
+        os.environ["REPO_SPEC_CANONICAL_VALIDATION_SUBJECT"] = str(
+            args.canonical_body_file.resolve()
+        )
+        try:
+            try:
+                canonical_evidence = validate_canonical_governed_state(
+                    observation=CanonicalGovernedStateObservation(
+                        governing_issue=f"#{args.governing_issue}",
+                        governed_operation=args.governed_operation.strip(),
+                        observed_revision=canonical_revision,
+                    ),
+                    producer_id="repository-canonical-validator",
+                )
+            except ValueError as exc:
+                raise PromotionError(
+                    f"trusted canonical validation failed: {exc}"
+                ) from exc
+        finally:
+            if previous_subject is None:
+                os.environ.pop("REPO_SPEC_CANONICAL_VALIDATION_SUBJECT", None)
+            else:
+                os.environ[
+                    "REPO_SPEC_CANONICAL_VALIDATION_SUBJECT"
+                ] = previous_subject
+
         authorization = require_repository_governance_authorization(
             client=client,
             authority_issue=args.authority_issue,
@@ -559,16 +626,14 @@ def main(argv: list[str]) -> int:
                     "status": "applied",
                     "plan": plan,
                     "canonical_state_evidence": {
-                        "governing_issue": issue_ref(
-                            args.repository,
-                            args.governing_issue,
+                        "governing_issue": canonical_evidence.governing_issue,
+                        "governed_operation": canonical_evidence.governed_operation,
+                        "validated_revision": canonical_evidence.validated_revision,
+                        "observed_revision": canonical_evidence.observed_revision,
+                        "validation_artifact_id": (
+                            canonical_evidence.validation_artifact_id
                         ),
-                        "governed_operation": args.governed_operation.strip(),
-                        "validated_revision": body_sha,
-                        "observed_revision": hashlib.sha256(
-                            final_issue["body"].encode()
-                        ).hexdigest(),
-                        "validation_artifact_id": evidence.validation_artifact_id,
+                        "producer_id": canonical_evidence.producer_id,
                     },
                     "promotion_evidence": asdict(evidence),
                 },
