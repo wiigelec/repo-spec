@@ -38,8 +38,10 @@ The following are implementation mechanics, not unresolved product semantics:
 - exact GitHub mutation/API/event ordering consistent with accepted invariants;
 - whether live routing-classification labels are retained, removed, or transformed after promotion;
 - concrete criteria for choosing in-place versus successor issue where both conform;
-- exact ownership split among GitHub profile source, installed `.github` adapters, helper scripts, and validation tests;
+- exact internal split between product-owned portable implementation/test/conformance evidence and repository/profile-owned helper and adapter mechanics, provided maintained product correspondence never substitutes repository/framework tooling for the product-owned evidence required to claim covered `product.*` requirements;
 - rollout treatment for existing issues.
+
+The ownership class itself is not deferred: implementation/test/conformance artifacts cited as maintained correspondence for the seven controlling `product.*` specifications are product-owned. GitHub profile source, installed `.github` adapters, and repository/framework helpers remain governed by their existing repository/profile ownership boundaries and may support the product implementation without becoming product correspondence evidence.
 
 ## Explicit exclusions
 

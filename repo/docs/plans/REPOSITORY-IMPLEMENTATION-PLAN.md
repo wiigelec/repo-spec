@@ -189,6 +189,10 @@ Parallel work is allowed only where an implementation issue can prove that its e
 
 This accepted plan may select implementation mechanics needed to realize accepted product behavior, but it may not manufacture new product semantics. A newly discovered semantic gap must return to specification governance.
 
+Portable implementation, test, and conformance artifacts used as maintained correspondence evidence for the seven controlling `product.*` specifications are product-owned and shall reside within the accepted product-owned implementation/test/conformance surface rather than repository/framework tooling paths. Repository/framework helpers and hosting-profile source or installed adapters may remain under their accepted repository/profile-owned locations, but those repository/profile artifacts do not substitute for product-owned correspondence evidence when IRP-I5 claims covered implementation/test/conformance for a product specification.
+
+This ownership boundary constrains implementation mechanics only; it does not redefine routing, provenance, promotion, authority, or hosted-validation product semantics.
+
 ## Chunk index
 
 - [Authority, scope, and specification map](./repository-implementation-plan/01-authority-scope-and-specification-map.md)
