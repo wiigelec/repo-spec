@@ -22,15 +22,82 @@ End-to-end orchestration for moving ordinary issue intake through classification
 
 ### Implementations
 
-- None
+- `impl.issue-intake-governance-routing`
+  - Paths:
+    - `product/scripts/issue_intake_governance_routing/orchestration.py`
+  - Requirements:
+    - `IRG-E2E-001`
+    - `IRG-E2E-002`
+    - `IRG-E2E-003`
+    - `IRG-E2E-004`
+    - `IRG-E2E-005`
+    - `IRG-E2E-006`
+    - `IRG-E2E-007`
 
 ### Tests
 
-- None
+- `test.issue-intake-governance-routing`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
+  - Requirements:
+    - `IRG-E2E-001`
+    - `IRG-E2E-002`
+    - `IRG-E2E-003`
+    - `IRG-E2E-004`
+    - `IRG-E2E-005`
+    - `IRG-E2E-006`
+    - `IRG-E2E-007`
 
 ### Conformance
 
-- None
+- `IRG-E2E-001`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
+
+- `IRG-E2E-002`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
+
+- `IRG-E2E-003`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
+
+- `IRG-E2E-004`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
+
+- `IRG-E2E-005`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
+
+- `IRG-E2E-006`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
+
+- `IRG-E2E-007`
+  - Implementation Ids:
+    - `impl.issue-intake-governance-routing`
+  - Test Ids:
+    - `test.issue-intake-governance-routing`
+  - Status: `covered`
 
 ## Orchestrations
 

@@ -22,15 +22,78 @@ Issue-intake and governance-routing foundations defining shared meanings, author
 
 ### Implementations
 
-- None
+- `impl.issue-routing-governance`
+  - Paths:
+    - `product/scripts/issue_intake_governance_routing/classification.py`
+    - `product/scripts/issue_intake_governance_routing/authority.py`
+    - `product/scripts/issue_intake_governance_routing/provenance.py`
+    - `product/scripts/issue_intake_governance_routing/promotion.py`
+    - `product/scripts/issue_intake_governance_routing/hosted_validation.py`
+    - `product/scripts/issue_intake_governance_routing/orchestration.py`
+  - Requirements:
+    - `IRG-L0-001`
+    - `IRG-L0-002`
+    - `IRG-L0-003`
+    - `IRG-L0-004`
+    - `IRG-L0-005`
+    - `IRG-L0-006`
 
 ### Tests
 
-- None
+- `test.issue-routing-governance`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
+  - Requirements:
+    - `IRG-L0-001`
+    - `IRG-L0-002`
+    - `IRG-L0-003`
+    - `IRG-L0-004`
+    - `IRG-L0-005`
+    - `IRG-L0-006`
 
 ### Conformance
 
-- None
+- `IRG-L0-001`
+  - Implementation Ids:
+    - `impl.issue-routing-governance`
+  - Test Ids:
+    - `test.issue-routing-governance`
+  - Status: `covered`
+
+- `IRG-L0-002`
+  - Implementation Ids:
+    - `impl.issue-routing-governance`
+  - Test Ids:
+    - `test.issue-routing-governance`
+  - Status: `covered`
+
+- `IRG-L0-003`
+  - Implementation Ids:
+    - `impl.issue-routing-governance`
+  - Test Ids:
+    - `test.issue-routing-governance`
+  - Status: `covered`
+
+- `IRG-L0-004`
+  - Implementation Ids:
+    - `impl.issue-routing-governance`
+  - Test Ids:
+    - `test.issue-routing-governance`
+  - Status: `covered`
+
+- `IRG-L0-005`
+  - Implementation Ids:
+    - `impl.issue-routing-governance`
+  - Test Ids:
+    - `test.issue-routing-governance`
+  - Status: `covered`
+
+- `IRG-L0-006`
+  - Implementation Ids:
+    - `impl.issue-routing-governance`
+  - Test Ids:
+    - `test.issue-routing-governance`
+  - Status: `covered`
 
 ## Kernel
 

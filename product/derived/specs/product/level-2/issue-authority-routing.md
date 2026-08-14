@@ -22,15 +22,73 @@ Reusable capability for choosing the accepted authority path from issue routing 
 
 ### Implementations
 
-- None
+- `impl.issue-authority-routing`
+  - Paths:
+    - `product/scripts/issue_intake_governance_routing/authority.py`
+  - Requirements:
+    - `IRG-ROUTE-001`
+    - `IRG-ROUTE-002`
+    - `IRG-ROUTE-003`
+    - `IRG-ROUTE-004`
+    - `IRG-ROUTE-005`
+    - `IRG-ROUTE-006`
 
 ### Tests
 
-- None
+- `test.issue-authority-routing`
+  - Paths:
+    - `product/scripts/validation_tests/test_issue_intake_governance_routing.py`
+  - Requirements:
+    - `IRG-ROUTE-001`
+    - `IRG-ROUTE-002`
+    - `IRG-ROUTE-003`
+    - `IRG-ROUTE-004`
+    - `IRG-ROUTE-005`
+    - `IRG-ROUTE-006`
 
 ### Conformance
 
-- None
+- `IRG-ROUTE-001`
+  - Implementation Ids:
+    - `impl.issue-authority-routing`
+  - Test Ids:
+    - `test.issue-authority-routing`
+  - Status: `covered`
+
+- `IRG-ROUTE-002`
+  - Implementation Ids:
+    - `impl.issue-authority-routing`
+  - Test Ids:
+    - `test.issue-authority-routing`
+  - Status: `covered`
+
+- `IRG-ROUTE-003`
+  - Implementation Ids:
+    - `impl.issue-authority-routing`
+  - Test Ids:
+    - `test.issue-authority-routing`
+  - Status: `covered`
+
+- `IRG-ROUTE-004`
+  - Implementation Ids:
+    - `impl.issue-authority-routing`
+  - Test Ids:
+    - `test.issue-authority-routing`
+  - Status: `covered`
+
+- `IRG-ROUTE-005`
+  - Implementation Ids:
+    - `impl.issue-authority-routing`
+  - Test Ids:
+    - `test.issue-authority-routing`
+  - Status: `covered`
+
+- `IRG-ROUTE-006`
+  - Implementation Ids:
+    - `impl.issue-authority-routing`
+  - Test Ids:
+    - `test.issue-authority-routing`
+  - Status: `covered`
 
 ## Components
 

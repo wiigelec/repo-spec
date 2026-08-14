@@ -87,8 +87,99 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.issue-authority-routing",
+        "paths": [
+          "product/scripts/issue_intake_governance_routing/authority.py"
+        ],
+        "requirements": [
+          "IRG-ROUTE-001",
+          "IRG-ROUTE-002",
+          "IRG-ROUTE-003",
+          "IRG-ROUTE-004",
+          "IRG-ROUTE-005",
+          "IRG-ROUTE-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.issue-authority-routing",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
+        ],
+        "requirements": [
+          "IRG-ROUTE-001",
+          "IRG-ROUTE-002",
+          "IRG-ROUTE-003",
+          "IRG-ROUTE-004",
+          "IRG-ROUTE-005",
+          "IRG-ROUTE-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "IRG-ROUTE-001",
+        "implementation_ids": [
+          "impl.issue-authority-routing"
+        ],
+        "test_ids": [
+          "test.issue-authority-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-ROUTE-002",
+        "implementation_ids": [
+          "impl.issue-authority-routing"
+        ],
+        "test_ids": [
+          "test.issue-authority-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-ROUTE-003",
+        "implementation_ids": [
+          "impl.issue-authority-routing"
+        ],
+        "test_ids": [
+          "test.issue-authority-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-ROUTE-004",
+        "implementation_ids": [
+          "impl.issue-authority-routing"
+        ],
+        "test_ids": [
+          "test.issue-authority-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-ROUTE-005",
+        "implementation_ids": [
+          "impl.issue-authority-routing"
+        ],
+        "test_ids": [
+          "test.issue-authority-routing"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-ROUTE-006",
+        "implementation_ids": [
+          "impl.issue-authority-routing"
+        ],
+        "test_ids": [
+          "test.issue-authority-routing"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

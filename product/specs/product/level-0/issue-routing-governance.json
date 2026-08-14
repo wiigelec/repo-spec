@@ -84,8 +84,104 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.issue-routing-governance",
+        "paths": [
+          "product/scripts/issue_intake_governance_routing/classification.py",
+          "product/scripts/issue_intake_governance_routing/authority.py",
+          "product/scripts/issue_intake_governance_routing/provenance.py",
+          "product/scripts/issue_intake_governance_routing/promotion.py",
+          "product/scripts/issue_intake_governance_routing/hosted_validation.py",
+          "product/scripts/issue_intake_governance_routing/orchestration.py"
+        ],
+        "requirements": [
+          "IRG-L0-001",
+          "IRG-L0-002",
+          "IRG-L0-003",
+          "IRG-L0-004",
+          "IRG-L0-005",
+          "IRG-L0-006"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.issue-routing-governance",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
+        ],
+        "requirements": [
+          "IRG-L0-001",
+          "IRG-L0-002",
+          "IRG-L0-003",
+          "IRG-L0-004",
+          "IRG-L0-005",
+          "IRG-L0-006"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "IRG-L0-001",
+        "implementation_ids": [
+          "impl.issue-routing-governance"
+        ],
+        "test_ids": [
+          "test.issue-routing-governance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-L0-002",
+        "implementation_ids": [
+          "impl.issue-routing-governance"
+        ],
+        "test_ids": [
+          "test.issue-routing-governance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-L0-003",
+        "implementation_ids": [
+          "impl.issue-routing-governance"
+        ],
+        "test_ids": [
+          "test.issue-routing-governance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-L0-004",
+        "implementation_ids": [
+          "impl.issue-routing-governance"
+        ],
+        "test_ids": [
+          "test.issue-routing-governance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-L0-005",
+        "implementation_ids": [
+          "impl.issue-routing-governance"
+        ],
+        "test_ids": [
+          "test.issue-routing-governance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-L0-006",
+        "implementation_ids": [
+          "impl.issue-routing-governance"
+        ],
+        "test_ids": [
+          "test.issue-routing-governance"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }

@@ -82,8 +82,87 @@
     }
   ],
   "correspondence": {
-    "implementations": [],
-    "tests": [],
-    "conformance": []
+    "implementations": [
+      {
+        "id": "impl.governed-work-provenance",
+        "paths": [
+          "product/scripts/issue_intake_governance_routing/provenance.py"
+        ],
+        "requirements": [
+          "IRG-PROV-001",
+          "IRG-PROV-002",
+          "IRG-PROV-003",
+          "IRG-PROV-004",
+          "IRG-PROV-005"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.governed-work-provenance",
+        "paths": [
+          "product/scripts/validation_tests/test_issue_intake_governance_routing.py"
+        ],
+        "requirements": [
+          "IRG-PROV-001",
+          "IRG-PROV-002",
+          "IRG-PROV-003",
+          "IRG-PROV-004",
+          "IRG-PROV-005"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "IRG-PROV-001",
+        "implementation_ids": [
+          "impl.governed-work-provenance"
+        ],
+        "test_ids": [
+          "test.governed-work-provenance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-PROV-002",
+        "implementation_ids": [
+          "impl.governed-work-provenance"
+        ],
+        "test_ids": [
+          "test.governed-work-provenance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-PROV-003",
+        "implementation_ids": [
+          "impl.governed-work-provenance"
+        ],
+        "test_ids": [
+          "test.governed-work-provenance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-PROV-004",
+        "implementation_ids": [
+          "impl.governed-work-provenance"
+        ],
+        "test_ids": [
+          "test.governed-work-provenance"
+        ],
+        "status": "covered"
+      },
+      {
+        "requirement_id": "IRG-PROV-005",
+        "implementation_ids": [
+          "impl.governed-work-provenance"
+        ],
+        "test_ids": [
+          "test.governed-work-provenance"
+        ],
+        "status": "covered"
+      }
+    ]
   }
 }
