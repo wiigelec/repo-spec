@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -105,19 +106,61 @@ class GitHubClient:
 
 
 
+
+AUTHORITY_EVIDENCE_FENCE = "repo-governance-authorization"
+AUTHORITY_EVIDENCE_KEYS = frozenset({
+    "schema_version",
+    "routing_classification",
+    "authority_path",
+    "governed_operation",
+    "governing_issue",
+    "lifecycle_evidence",
+})
+
+
 @dataclass(frozen=True)
 class RepositoryGovernanceAuthorization:
     authority_issue: int
+    governing_issue: int
     governed_operation: str
     routing_classification: str
     authority_path: str
     evidence_artifact_id: str
 
 
+def parse_repository_governance_authorization(body: str) -> dict[str, Any]:
+    pattern = re.compile(
+        rf"```{re.escape(AUTHORITY_EVIDENCE_FENCE)}\s*\n(.*?)\n```",
+        re.S,
+    )
+    matches = pattern.findall(body)
+    if len(matches) != 1:
+        raise PromotionError(
+            "authority evidence issue must contain exactly one structured "
+            "repository-governance authorization record"
+        )
+    try:
+        record = json.loads(matches[0])
+    except json.JSONDecodeError as exc:
+        raise PromotionError(
+            "repository-governance authorization record is not valid JSON"
+        ) from exc
+    if not isinstance(record, dict) or set(record) != AUTHORITY_EVIDENCE_KEYS:
+        raise PromotionError(
+            "repository-governance authorization record has invalid fields"
+        )
+    if record["schema_version"] != "1":
+        raise PromotionError(
+            "unsupported repository-governance authorization schema version"
+        )
+    return record
+
+
 def require_repository_governance_authorization(
     *,
     client: GitHubClient,
     authority_issue: int,
+    governing_issue: int,
     governed_operation: str,
     routing_labels: tuple[str, ...],
     policy_command: str,
@@ -159,36 +202,64 @@ def require_repository_governance_authorization(
             f"authority evidence issue failed governed field policy: {detail}"
         )
 
-    if governed_operation not in body:
+    record = parse_repository_governance_authorization(body)
+
+    if record["routing_classification"] != classification:
         raise PromotionError(
-            "authority evidence issue is not traceable to the governed operation"
+            "repository-governance authorization classification does not match intake"
+        )
+    if record["governed_operation"] != governed_operation:
+        raise PromotionError(
+            "repository-governance authorization does not match governed operation"
+        )
+    if record["governing_issue"] != issue_ref(client.repository, governing_issue):
+        raise PromotionError(
+            "repository-governance authorization does not match target governing issue"
+        )
+
+    lifecycle = record["lifecycle_evidence"]
+    if not isinstance(lifecycle, dict):
+        raise PromotionError(
+            "repository-governance authorization lifecycle evidence must be an object"
         )
 
     if classification == "bug-fix":
         authority_path = "audit"
-        required_markers = ("audit",)
+        if record["authority_path"] != authority_path:
+            raise PromotionError(
+                "bug-fix repository-governance authorization must use audit authority"
+            )
+        if lifecycle != {"audit": "accepted"}:
+            raise PromotionError(
+                "bug-fix authorization requires structured accepted audit evidence"
+            )
     elif classification == "feature-request":
         authority_path = "feature-development"
-        required_markers = (
-            "whiteboard",
-            "analysis",
-            "candidate-functional-set",
-            "explicit-functional-set-approval",
-        )
+        if record["authority_path"] != authority_path:
+            raise PromotionError(
+                "feature-request repository-governance authorization must use "
+                "feature-development authority"
+            )
+        expected_lifecycle = {
+            "whiteboard": "accepted",
+            "analysis": "accepted",
+            "candidate-functional-set": "accepted",
+            "explicit-functional-set-approval": "accepted",
+        }
+        if lifecycle != expected_lifecycle:
+            raise PromotionError(
+                "feature-request authorization requires complete structured "
+                "feature-development evidence"
+            )
     else:
-        raise PromotionError("unsupported routing classification for authority evidence")
-
-    lowered = body.lower()
-    missing = [marker for marker in required_markers if marker.lower() not in lowered]
-    if missing:
         raise PromotionError(
-            "authority evidence issue does not demonstrate accepted authority path: "
-            + ", ".join(missing)
+            "unsupported routing classification for repository-governance authorization"
         )
 
     artifact = f"github-issue:{client.repository}#{authority_issue}"
     return RepositoryGovernanceAuthorization(
         authority_issue=authority_issue,
+        governing_issue=governing_issue,
         governed_operation=governed_operation,
         routing_classification=classification,
         authority_path=authority_path,
@@ -395,6 +466,7 @@ def main(argv: list[str]) -> int:
         authorization = require_repository_governance_authorization(
             client=client,
             authority_issue=args.authority_issue,
+            governing_issue=args.governing_issue,
             governed_operation=args.governed_operation.strip(),
             routing_labels=routing_labels,
             policy_command=args.policy_command,
