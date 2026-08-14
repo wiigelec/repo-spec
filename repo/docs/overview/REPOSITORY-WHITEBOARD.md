@@ -20,13 +20,16 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
   "governing_issue": "#374",
   "required_content_areas": {
     "collected_input": [
-      "repo/docs/overview/repository-whiteboard/01-migration-input.md"
+      "repo/docs/overview/repository-whiteboard/01-migration-input.md",
+      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
     ],
     "provenance": [
-      "repo/docs/overview/repository-whiteboard/01-migration-input.md"
+      "repo/docs/overview/repository-whiteboard/01-migration-input.md",
+      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
     ],
     "unresolved_intent": [
-      "repo/docs/overview/repository-whiteboard/01-migration-input.md"
+      "repo/docs/overview/repository-whiteboard/01-migration-input.md",
+      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
     ]
   },
   "controlling_documents": [],
@@ -39,6 +42,16 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
       "order": 1,
       "path": "repo/docs/overview/repository-whiteboard/01-migration-input.md",
       "title": "Migration input",
+      "coverage": [
+        "collected_input",
+        "provenance",
+        "unresolved_intent"
+      ]
+    },
+    {
+      "order": 2,
+      "path": "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md",
+      "title": "Issue-routing intake",
       "coverage": [
         "collected_input",
         "provenance",
@@ -58,6 +71,7 @@ This document provides the minimal collection-stage artifact required for migrat
 ## Chunk index
 
 - [Migration input](repository-whiteboard/01-migration-input.md)
+- [Issue-routing intake](repository-whiteboard/02-issue-routing-intake.md)
 
 ## Relationships
 
