@@ -5,7 +5,6 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -109,7 +108,10 @@ class GitHubClient:
 
 
 TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS = {
-    "repository-governance-authority": "repository-governance-authorization-validator",
+    "repository-governance-authority": {
+        "command_env": "REPO_SPEC_AUTHORIZATION_VALIDATOR",
+        "sha256": "d53e2cf3eb841e00b2ee3cef5b233a1e178615ef6fc45e2b14f3600ef85bee27",
+    },
 }
 
 
@@ -171,17 +173,41 @@ def require_repository_governance_authorization(
             f"authority evidence issue failed governed field policy: {detail}"
         )
 
-    command_name = TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS.get(producer_id)
-    if command_name is None:
+    descriptor = TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS.get(producer_id)
+    if descriptor is None:
         raise PromotionError(
             f"unrecognized repository-governance authorization producer: {producer_id}"
         )
-    command = shutil.which(command_name)
-    if command is None:
+
+    command_value = os.environ.get(descriptor["command_env"], "")
+    if not command_value:
         raise PromotionError(
             f"trusted repository-governance authorization producer is unavailable: "
             f"{producer_id}"
         )
+    command = Path(command_value).resolve()
+    if not command.is_file():
+        raise PromotionError(
+            f"trusted repository-governance authorization producer is unavailable: "
+            f"{producer_id}"
+        )
+    observed_command_sha256 = hashlib.sha256(command.read_bytes()).hexdigest()
+    if observed_command_sha256 != descriptor["sha256"]:
+        raise PromotionError(
+            "repository-governance authorization producer artifact identity mismatch"
+        )
+
+    lifecycle_path = os.environ.get("REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT", "")
+    if not lifecycle_path:
+        raise PromotionError(
+            "repository lifecycle authority artifact is unavailable"
+        )
+    try:
+        lifecycle_authority = json.loads(Path(lifecycle_path).read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PromotionError(
+            "repository lifecycle authority artifact is invalid"
+        ) from exc
 
     request = {
         "repository": client.repository,
@@ -191,9 +217,10 @@ def require_repository_governance_authorization(
         "governed_operation": governed_operation,
         "routing_classification": classification,
         "producer_id": producer_id,
+        "lifecycle_authority": lifecycle_authority,
     }
     producer = subprocess.run(
-        [command],
+        [str(command)],
         input=json.dumps(request),
         text=True,
         stdout=subprocess.PIPE,

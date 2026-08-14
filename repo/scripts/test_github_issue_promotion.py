@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import os
 import pathlib
@@ -64,6 +65,11 @@ def governed_authority_body(extra=""):
     )
 
 
+MANAGED_AUTHORIZATION_PRODUCER = (
+    REPO_ROOT / 'repo/scripts/repository-governance-authorization-validator'
+)
+
+
 class ProducerFixture:
     def __init__(
         self,
@@ -72,39 +78,38 @@ class ProducerFixture:
         authority_issue=56,
         governing_issue=34,
         governed_operation="operation-34",
-        producer_id="repository-governance-authority",
         authority_path=None,
         lifecycle_artifact_id="audit-run:accepted:56",
+        status="accepted",
     ):
         self.tmp = tempfile.TemporaryDirectory()
         self.dir = pathlib.Path(self.tmp.name)
-        self.command = self.dir / "repository-governance-authorization-validator"
         if authority_path is None:
             authority_path = (
                 "audit" if classification == "bug-fix" else "feature-development"
             )
-        payload = {
-            "authority_issue": authority_issue,
-            "governing_issue": governing_issue,
-            "governed_operation": governed_operation,
-            "routing_classification": classification,
-            "authority_path": authority_path,
-            "lifecycle_artifact_id": lifecycle_artifact_id,
-            "producer_id": producer_id,
-        }
-        self.command.write_text(
-            "#!/usr/bin/env python3\n"
-            "import json\n"
-            "print(" + repr(json.dumps(payload)) + ")\n",
+        self.artifact = self.dir / "lifecycle-authority.json"
+        self.artifact.write_text(
+            json.dumps({
+                "authority_issue": authority_issue,
+                "governing_issue": governing_issue,
+                "governed_operation": governed_operation,
+                "routing_classification": classification,
+                "authority_path": authority_path,
+                "lifecycle_artifact_id": lifecycle_artifact_id,
+                "status": status,
+            }),
             encoding="utf-8",
         )
-        self.command.chmod(self.command.stat().st_mode | stat.S_IXUSR)
 
     def __enter__(self):
-        old = os.environ.get("PATH", "")
         self.patch = mock.patch.dict(
             os.environ,
-            {"PATH": str(self.dir) + os.pathsep + old},
+            {
+                "REPO_SPEC_AUTHORIZATION_VALIDATOR":
+                    str(MANAGED_AUTHORIZATION_PRODUCER),
+                "REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT": str(self.artifact),
+            },
             clear=False,
         )
         self.patch.start()
@@ -173,11 +178,6 @@ class GitHubIssuePromotionTests(unittest.TestCase):
         client = FakeClient(self.make_issues())
         with (
             ProducerFixture(),
-            mock.patch.object(
-                promotion.subprocess,
-                "run",
-                wraps=promotion.subprocess.run,
-            ),
         ):
             authorization = promotion.require_repository_governance_authorization(
                 client=client,
@@ -228,11 +228,10 @@ class GitHubIssuePromotionTests(unittest.TestCase):
 
     def test_producer_result_must_match_target_classification_operation_and_path(self):
         cases = (
-            ({"governing_issue": 99}, "target governing issue"),
+            ({"governing_issue": 99}, "governing issue mismatch"),
             ({"classification": "feature-request"}, "classification"),
             ({"governed_operation": "operation-99"}, "governed operation"),
-            ({"authority_path": "feature-development"}, "accepted authority path"),
-            ({"producer_id": "caller"}, "trusted producer"),
+            ({"authority_path": "feature-development"}, "authority path mismatch"),
         )
         for override, message in cases:
             with self.subTest(message=message):
@@ -241,7 +240,6 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                     "authority_issue": 56,
                     "governing_issue": 34,
                     "governed_operation": "operation-34",
-                    "producer_id": "repository-governance-authority",
                     "authority_path": "audit",
                 }
                 kwargs.update(override)
@@ -257,6 +255,50 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                             policy_command="/bin/true",
                             producer_id="repository-governance-authority",
                         )
+
+    def test_same_name_substituted_authorization_producer_fails_identity(self):
+        client = FakeClient(self.make_issues())
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = pathlib.Path(tmp) / "repository-governance-authorization-validator"
+            fake.write_text(
+                "#!/usr/bin/env python3\nprint('{}')\n",
+                encoding="utf-8",
+            )
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            artifact = pathlib.Path(tmp) / "authority.json"
+            artifact.write_text(
+                json.dumps({
+                    "authority_issue": 56,
+                    "governing_issue": 34,
+                    "governed_operation": "operation-34",
+                    "routing_classification": "bug-fix",
+                    "authority_path": "audit",
+                    "lifecycle_artifact_id": "audit-run:accepted:56",
+                    "status": "accepted",
+                }),
+                encoding="utf-8",
+            )
+            with mock.patch.dict(
+                os.environ,
+                {
+                    "REPO_SPEC_AUTHORIZATION_VALIDATOR": str(fake),
+                    "REPO_SPEC_LIFECYCLE_AUTHORITY_ARTIFACT": str(artifact),
+                    "PATH": str(pathlib.Path(tmp)),
+                },
+                clear=False,
+            ):
+                with self.assertRaisesRegex(
+                    promotion.PromotionError, "artifact identity mismatch"
+                ):
+                    promotion.require_repository_governance_authorization(
+                        client=client,
+                        authority_issue=56,
+                        governing_issue=34,
+                        governed_operation="operation-34",
+                        routing_labels=("bug-fix",),
+                        policy_command="/bin/true",
+                        producer_id="repository-governance-authority",
+                    )
 
     def test_authority_issue_must_be_governed_before_producer_is_invoked(self):
         client = FakeClient(self.make_issues(authority_governed=False))

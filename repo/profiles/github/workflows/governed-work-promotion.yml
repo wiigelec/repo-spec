@@ -47,6 +47,10 @@ jobs:
           CANONICAL_BODY_BASE64: ${{ inputs.canonical_body_base64 }}
         run: |
           printf '%s' "$CANONICAL_BODY_BASE64" | base64 --decode > "$RUNNER_TEMP/canonical-governed-body.md"
+      - name: Anchor managed promotion producers
+        run: |
+          echo "REPO_SPEC_AUTHORIZATION_VALIDATOR=$GITHUB_WORKSPACE/repo/scripts/repository-governance-authorization-validator" >> "$GITHUB_ENV"
+          sha256sum repo/scripts/repository-governance-authorization-validator
       - name: Apply provenance-preserving governed-work promotion
         env:
           GH_TOKEN: ${{ github.token }}
