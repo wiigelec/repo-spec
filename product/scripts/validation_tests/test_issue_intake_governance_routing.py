@@ -13,6 +13,8 @@ from issue_intake_governance_routing import (
     AuditDisposition,
     AuthorityPath,
     CanonicalGovernedStateEvidence,
+    CanonicalGovernedStateObservation,
+    CanonicalGovernedStateValidationResult,
     ClassificationState,
     PromotionForm,
     activate_hosted_validation,
@@ -22,7 +24,32 @@ from issue_intake_governance_routing import (
     route_audited_bug,
     route_intake_to_governed_work,
     route_labels,
+    validate_canonical_governed_state,
 )
+
+
+class StaticCanonicalValidator:
+    def __init__(
+        self,
+        *,
+        governing_issue: str,
+        governed_operation: str,
+        validated_revision: str = "rev-1",
+        validation_artifact_id: str = "canonical-governed-fields/rev-1",
+        validator_id: str = "test.canonical-governed-state-validator",
+        canonical_structure_valid: bool = True,
+    ):
+        self.result = CanonicalGovernedStateValidationResult(
+            governing_issue=governing_issue,
+            governed_operation=governed_operation,
+            validated_revision=validated_revision,
+            validation_artifact_id=validation_artifact_id,
+            validator_id=validator_id,
+            canonical_structure_valid=canonical_structure_valid,
+        )
+
+    def validate(self, observation):
+        return self.result
 
 
 def canonical_evidence(
@@ -33,12 +60,20 @@ def canonical_evidence(
     observed_revision: str = "rev-1",
     validation_artifact_id: str = "canonical-governed-fields/rev-1",
 ) -> CanonicalGovernedStateEvidence:
-    return CanonicalGovernedStateEvidence(
+    observation = CanonicalGovernedStateObservation(
+        governing_issue=governing_issue,
+        governed_operation=governed_operation,
+        observed_revision=observed_revision,
+    )
+    validator = StaticCanonicalValidator(
         governing_issue=governing_issue,
         governed_operation=governed_operation,
         validated_revision=validated_revision,
-        observed_revision=observed_revision,
         validation_artifact_id=validation_artifact_id,
+    )
+    return validate_canonical_governed_state(
+        observation=observation,
+        validator=validator,
     )
 
 
@@ -85,7 +120,78 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertIn("`bug-fix`", provenance.to_comment())
         self.assertIn("ordinary unformatted intake body", provenance.to_comment())
 
-    def test_both_promotion_forms_require_matching_fresh_canonical_evidence(self):
+    def test_raw_canonical_evidence_cannot_be_constructed_as_validated_evidence(self):
+        with self.assertRaisesRegex(ValueError, "must be produced by validation"):
+            CanonicalGovernedStateEvidence(
+                governing_issue="#12",
+                governed_operation="operation-12",
+                validated_revision="rev-1",
+                observed_revision="rev-1",
+                validation_artifact_id="fabricated",
+                validator_id="fabricated-validator",
+                _seal=object(),
+            )
+
+    def test_validator_mints_matching_fresh_canonical_evidence(self):
+        evidence = canonical_evidence(
+            governing_issue="#12",
+            governed_operation="operation-12",
+        )
+        self.assertEqual(evidence.governing_issue, "#12")
+        self.assertEqual(evidence.governed_operation, "operation-12")
+        self.assertEqual(evidence.validator_id, "test.canonical-governed-state-validator")
+        self.assertTrue(evidence.is_fresh)
+
+    def test_canonical_validation_fails_closed_for_invalid_stale_or_mismatched_results(self):
+        observation = CanonicalGovernedStateObservation(
+            governing_issue="#12",
+            governed_operation="operation-12",
+            observed_revision="rev-2",
+        )
+        cases = (
+            (
+                StaticCanonicalValidator(
+                    governing_issue="#12",
+                    governed_operation="operation-12",
+                    validated_revision="rev-2",
+                    canonical_structure_valid=False,
+                ),
+                "validation failed",
+            ),
+            (
+                StaticCanonicalValidator(
+                    governing_issue="#34",
+                    governed_operation="operation-12",
+                    validated_revision="rev-2",
+                ),
+                "does not match governing issue",
+            ),
+            (
+                StaticCanonicalValidator(
+                    governing_issue="#12",
+                    governed_operation="operation-99",
+                    validated_revision="rev-2",
+                ),
+                "does not match governed operation",
+            ),
+            (
+                StaticCanonicalValidator(
+                    governing_issue="#12",
+                    governed_operation="operation-12",
+                    validated_revision="rev-1",
+                ),
+                "stale",
+            ),
+        )
+        for validator, message in cases:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(ValueError, message):
+                    validate_canonical_governed_state(
+                        observation=observation,
+                        validator=validator,
+                    )
+
+    def test_both_promotion_forms_require_validator_produced_canonical_evidence(self):
         provenance = capture_intake_provenance(
             intake_issue="#12",
             governed_operation="operation-12",
@@ -119,7 +225,7 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertTrue(in_place.canonical_governed_state)
         self.assertTrue(successor.canonical_governed_state)
 
-    def test_canonical_evidence_fails_closed_when_absent_invalid_stale_or_mismatched(self):
+    def test_promotion_fails_closed_when_validated_evidence_absent_or_mismatched(self):
         provenance = capture_intake_provenance(
             intake_issue="#12",
             governed_operation="operation-12",
@@ -133,47 +239,15 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
             governed_operation="operation-12",
             provenance=provenance,
         )
-
         with self.assertRaisesRegex(ValueError, "validated canonical governed-state evidence"):
             plan_promotion(**common, canonical_state_evidence=None)
 
-        with self.assertRaisesRegex(ValueError, "non-empty validation_artifact_id"):
-            CanonicalGovernedStateEvidence(
-                governing_issue="#12",
-                governed_operation="operation-12",
-                validated_revision="rev-1",
-                observed_revision="rev-1",
-                validation_artifact_id="",
-            )
-
-        with self.assertRaisesRegex(ValueError, "stale"):
-            plan_promotion(
-                **common,
-                canonical_state_evidence=canonical_evidence(
-                    governing_issue="#12",
-                    governed_operation="operation-12",
-                    validated_revision="rev-1",
-                    observed_revision="rev-2",
-                ),
-            )
-
+        mismatched = canonical_evidence(
+            governing_issue="#34",
+            governed_operation="operation-12",
+        )
         with self.assertRaisesRegex(ValueError, "does not match governing issue"):
-            plan_promotion(
-                **common,
-                canonical_state_evidence=canonical_evidence(
-                    governing_issue="#34",
-                    governed_operation="operation-12",
-                ),
-            )
-
-        with self.assertRaisesRegex(ValueError, "does not match governed operation"):
-            plan_promotion(
-                **common,
-                canonical_state_evidence=canonical_evidence(
-                    governing_issue="#12",
-                    governed_operation="operation-99",
-                ),
-            )
+            plan_promotion(**common, canonical_state_evidence=mismatched)
 
     def test_hosted_validation_activates_only_after_canonical_governed_state(self):
         inactive = activate_hosted_validation(
@@ -280,17 +354,6 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "provenance"):
             route_intake_to_governed_work(**common, provenance_available=False)
-
-        bad_evidence = dict(common)
-        bad_evidence["canonical_state_evidence"] = canonical_evidence(
-            governing_issue="#12",
-            governed_operation="operation-12",
-            validated_revision="rev-1",
-            observed_revision="rev-2",
-        )
-        with self.assertRaisesRegex(ValueError, "stale"):
-            route_intake_to_governed_work(**bad_evidence)
-
         with self.assertRaisesRegex(ValueError, "precedes canonical promotion"):
             route_intake_to_governed_work(
                 **common,
@@ -302,13 +365,14 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                 repository_authority_conflict=True,
             )
 
-    def test_product_owned_implementation_has_no_caller_canonical_state_boolean(self):
+    def test_product_owned_implementation_uses_validator_mediated_evidence(self):
         package = PRODUCT_SCRIPTS / "issue_intake_governance_routing"
         promotion_text = (package / "promotion.py").read_text()
         orchestration_text = (package / "orchestration.py").read_text()
         self.assertNotIn("canonical_governed_state: bool", promotion_text)
         self.assertNotIn("canonical_governed_state: bool", orchestration_text)
-        self.assertIn("CanonicalGovernedStateEvidence", promotion_text)
+        self.assertIn("validate_canonical_governed_state", promotion_text)
+        self.assertIn("_VALIDATED_EVIDENCE_SEAL", promotion_text)
 
     def test_product_owned_implementation_does_not_import_repository_helpers(self):
         package = PRODUCT_SCRIPTS / "issue_intake_governance_routing"
