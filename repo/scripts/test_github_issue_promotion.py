@@ -50,7 +50,7 @@ def governed_authority_body(extra=""):
         "## Change type\nProduct-artifact implementation\n\n"
         "## Problem statement\nBounded authority evidence.\n\n"
         "## Intended outcome\nAuthorize a bounded operation.\n\n"
-        "## Governing specifications\nproduct.issue-routing-governance\n\n"
+        "## Governing specifications\nrepo.issue-routing-governance\n\n"
         "## Accepted default-branch base\nmain at "
         "de7d75ffc8d08a40be4ca46cfbd9336c9fa0b4ec\n\n"
         "## Dependencies and predecessor evidence\n"

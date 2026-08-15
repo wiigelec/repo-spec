@@ -11,7 +11,7 @@
     },
     {
       "id": "IRG-PROM-002",
-      "text": "Promotion shall preserve the provenance requirements defined by `product.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content."
+      "text": "Promotion shall preserve the provenance requirements defined by `repo.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content."
     },
     {
       "id": "IRG-PROM-003",

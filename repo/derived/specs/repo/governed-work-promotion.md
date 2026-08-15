@@ -21,7 +21,7 @@ Reusable capability for transitioning routed intake into a bounded governed oper
 ## Normative requirements
 
 - `IRG-PROM-001`: Promotion into `governed-work` shall occur only when the target issue carries the canonical governed-issue structure required for the bounded operation.
-- `IRG-PROM-002`: Promotion shall preserve the provenance requirements defined by `product.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content.
+- `IRG-PROM-002`: Promotion shall preserve the provenance requirements defined by `repo.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content.
 - `IRG-PROM-003`: Promotion into governed-work shall establish entry into the bounded governed-change lifecycle and shall not itself bypass that lifecycle's branch, validation, review, or acceptance gates.
 - `IRG-PROM-004`: A promoted governed operation shall remain traceable to the intake classification and preserved intake evidence that caused or informed its authority routing.
 - `IRG-PROM-005`: Promotion may occur in place on the original intake issue or through a successor governed issue when lifecycle separation or bounded-work scoping requires it; neither form is universally mandatory. The selected form shall preserve intake provenance and maintain a unique traceable governing issue for the bounded mutation. Post-promotion retention of live routing labels is not required by this repository-generic contract.
