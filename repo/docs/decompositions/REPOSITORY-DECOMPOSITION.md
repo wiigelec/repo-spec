@@ -147,7 +147,7 @@ This document is the controlling entry point for the repository decomposition co
       ]
     }
   ],
-  "successor_action": "Draft and accept the required Level 0-3 product specifications for Issue Intake and Governance Routing before implementation planning.",
+  "successor_action": "Draft and accept the required owner-appropriate normative specifications for Issue Intake and Governance Routing, with repository-generic requirements under repository specification authority and hosting-platform realization kept within the accepted platform-profile boundary, before implementation planning.",
   "schema_version": "1"
 }
 ```
@@ -203,7 +203,7 @@ The approved repository functional set is the controlling and predecessor direct
 
 ## Next authorized action
 
-Draft and accept the required Level 0–3 product specifications for these areas before implementation planning.
+Draft and accept the required owner-appropriate normative specifications for these areas before implementation planning. Repository-generic routing requirements belong under repository specification authority; hosting-platform-specific realization remains within the accepted platform-profile boundary.
 
 ## Discoverability
 
