@@ -1,105 +1,57 @@
-# Derived-repository upgrade analysis
+# Derived-repository upgrade direction and evidence
 
 ## Source evidence
 
-The controlling collection evidence is `product/docs/overview/INITIALIZER-WHITEBOARD.md` and its second subordinate chunk, `product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md`, with GitHub issue #418 retained as intake provenance.
+The controlling collection evidence is `product/docs/overview/INITIALIZER-WHITEBOARD.md` and `product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md`, with GitHub issue #418 retained as intake provenance.
 
-The collected request is that repositories initialized from an earlier repo-spec revision should have some future product capability through which later repo-spec changes can be propagated to them. The intake explicitly names new features, bug fixes, and security enhancements, while leaving the upgrade mechanism, compatibility policy, migration policy, conflict policy, and implementation form unresolved.
+The collected request is to propagate later repo-spec features, bug fixes, and security enhancements into repositories initialized from earlier repo-spec revisions.
 
-During governed analysis, the user supplied three additional directional decisions:
+The governed analysis stage also examined the current repo-spec initializer architecture, its material inventories, repository validation and GitHub-profile projection behavior, generated repository `wiigelec/test-repo`, its bootstrap provenance, and the framework delta since that repository was initialized.
 
-- the user invokes upgrade through `repo-spec upgrade --repo <existing-repo>`;
-- the target derived repository exposes a manifest identifying repo-spec-managed/upgradable files;
-- the upgrade command should fit within the same basic lifecycle as `repo-spec init --repo <new-repo>`, specifically staging the prospective repository state, validating it, promoting only after successful validation, and then finalizing success.
+## Resolved product direction
 
-The existing initializer implementation provides the established lifecycle vocabulary: `staging-establishment`, `repository-validation`, `promotion`, and `success-finalization`. Upgrade should adapt that model rather than introduce an unrelated lifecycle.
+The user supplied the following directional decisions during analysis:
+
+- the public entry point is `repo-spec upgrade --repo <existing-repo>`;
+- the upgrade manifest is owned by the repo-spec repository and consumed by the upgrade command; the target repository does not expose or maintain it;
+- the upgrade workflow reuses the basic lifecycle model of `repo-spec init --repo <new-repo>`;
+- upgrade is staged before promotion;
+- the staged upgraded repository is validated before promotion;
+- normal upgrade scope is the target repository's `repo/` tree;
+- the upgraded repository framework is re-anchored to the new repo-spec upgrade revision before validation;
+- `product/` updates are exceptional and primarily validation-related;
+- repo-spec needs a workflow for identifying which source-side manifest entries apply to a particular upgrade.
 
 ## Candidate groupings
 
-The evidence supports several capability-oriented groupings for later functional-set consideration without choosing exact behavior.
-
-### Upgrade source and target identity
-
-A future upgrade capability needs to reason about the relationship between the repo-spec state from which a derived repository originated and a later repo-spec state that may be applied. This includes source identity, target identity, provenance, and eligibility of changes between those states.
-
-### Managed-content evolution and upgrade manifest
-
-The target derived repository should expose a manifest identifying files managed by repo-spec and therefore eligible for upgrade handling.
-
-That manifest provides the directional basis for distinguishing repo-spec-managed material from product-owned or repository-local material. The exact manifest name, location, schema, producer, lifecycle, revision metadata, and ownership semantics remain unresolved.
-
-Directional concerns include managed-versus-local ownership, local modifications to managed content, preservation of local customization, human conflict resolution, and how the manifest itself is created and maintained as the repository evolves.
-
-### Change-class policy
-
-The intake distinguishes new features, bug fixes, and security enhancements. That distinction may imply different urgency, compatibility expectations, opt-in behavior, or validation needs, but this analysis does not establish whether those classes share one policy or use distinct policy paths.
-
-### Initializer-aligned upgrade execution lifecycle
-
-The upgrade command should reuse the same basic lifecycle model already used by `repo-spec init --repo <new-repo>` rather than define a parallel lifecycle.
-
-For upgrade, the established initializer stages imply this directional sequence:
-
-1. establish a staged prospective repository state (`staging-establishment`);
-2. perform upgrade-specific preparation and file application inside that staged state;
-3. validate the staged repository (`repository-validation`);
-4. permit promotion only after successful repository validation (`promotion`);
-5. finalize the successful operation after promotion (`success-finalization`).
-
-The exact upgrade-specific stages between staging establishment and repository validation remain unresolved, as do staging representation, promotion mechanics, rollback/recovery, and handling of indeterminate promotion.
-
-### Upgrade command and hosted coordination
-
-The user-facing initiation surface is resolved as `repo-spec upgrade --repo <existing-repo>`, where `<existing-repo>` identifies the existing derived repository to upgrade.
-
-The command should enter the initializer-aligned staged lifecycle described above. This does not decide how it discovers source or target repo-spec state, how it consumes the managed-file manifest, or whether hosted workflows may propose or coordinate command invocation. Any hosted coordination remains subordinate to the command-driven product lifecycle.
+1. source and target framework identity;
+2. source-side managed-material inventory and upgrade-entry selection;
+3. repository-first framework mutation;
+4. exceptional product-validation propagation;
+5. managed projection reconciliation outside `repo/`;
+6. framework re-anchoring and upgrade provenance;
+7. staged validation and promotion;
+8. local customization and conflict handling;
+9. recovery and failure reporting.
 
 ## Dependencies
 
-The candidate groupings have a directional dependency order:
-
-1. source and target identity before eligibility;
-2. the target repository's managed-file manifest and resulting managed-content boundaries before safe application;
-3. change-class policy over identified changes;
-4. initializer-aligned `staging-establishment` before upgrade application and `repository-validation` before `promotion`;
-5. `success-finalization` only after committed promotion;
-6. any hosted coordination subordinate to the `repo-spec upgrade --repo <existing-repo>` command lifecycle.
-
-The analysis also depends on initializer provenance because derivation cannot be reasoned about reliably if the originating repo-spec identity is unavailable or untrustworthy.
+1. identify the target's current framework revision;
+2. identify the exact repo-spec revision supplying the upgrade;
+3. reconcile managed-material inventories;
+4. select the applicable upgrade entry set;
+5. stage the existing target repository;
+6. apply selected managed changes;
+7. reconcile managed projections;
+8. re-anchor the staged framework;
+9. validate the full staged repository;
+10. promote only after successful validation;
+11. finalize upgrade provenance and cleanup.
 
 ## Ambiguities
 
-The evidence does not resolve:
+Still unresolved are exact manifest schema/lifecycle, revision-range rules, dependency expression, deletion/rename semantics, local modification policy, compatibility enforcement, exact anchor representation, exceptional product eligibility, projection regeneration policy, existing-repository promotion mechanics, rollback/recovery, security policy, and hosted coordination.
 
-- the exact managed-file manifest name, path, schema, producer, lifecycle, and trust model;
-- what counts as repo-spec-managed content after initialization and how the manifest represents that ownership;
-- whether all repo-spec revisions are valid sources or targets;
-- whether upgrades may skip revisions;
-- what compatibility guarantees exist;
-- how local modifications are preserved, merged, rejected, or escalated;
-- whether feature, bug-fix, and security updates use one policy or distinct policy paths;
-- whether security updates may alter ordinary opt-in or compatibility expectations;
-- whether application must be atomic;
-- how generated artifacts participate;
-- what rollback guarantees exist;
-- how partial upgrades are represented;
-- what exact provenance must be persisted;
-- whether hosted workflows may propose, coordinate, or observe invocation of the command-driven upgrade flow.
+## Candidate functional-set direction
 
-These ambiguities remain unresolved until later lifecycle stages have authority to decide them.
-
-## Candidate functional sets
-
-### Candidate A — Derived-repository upgrade lifecycle
-
-One end-to-end capability exposed through `repo-spec upgrade --repo <existing-repo>`, using a managed-file manifest and the initializer-aligned staged validation/promotion lifecycle, while spanning source/target identity, eligibility, managed-content evolution, recovery, provenance, and optional hosted coordination.
-
-### Candidate B — Upgrade identity and compatibility foundation
-
-A narrower foundation centered on source/target provenance, managed-content boundaries, eligibility, and compatibility determination, leaving execution orchestration and recovery to a later functional set.
-
-### Candidate C — Managed update application
-
-A narrower execution-centered boundary focused on safely applying an already selected and authorized repo-spec change set to a derived repository, including local-customization handling, validation, recovery, and provenance.
-
-No candidate is approved by this analysis. Candidate A appears to best preserve the original end-to-end request, but explicit candidate formation and approval remain separate successor work.
+The architecture evidence favors one end-to-end derived-repository upgrade capability rather than independent subsystems. No functional set is approved by this analysis.
