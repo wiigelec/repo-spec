@@ -7,8 +7,8 @@ Candidate implementation-plan content.
 ## IRP-I1 — Intake classification realization
 
 **Controlling specifications**
-- `product.issue-routing-governance`
-- `product.issue-routing-classification`
+- `repo.issue-routing-governance`
+- `repo.issue-routing-classification`
 
 **Entry conditions**
 - both controlling specs remain accepted;
@@ -32,9 +32,9 @@ IRP-I2 may begin only when the classification representation and fail-closed con
 ## IRP-I2 — Authority routing realization
 
 **Controlling specifications**
-- `product.issue-routing-governance`
-- `product.issue-routing-classification`
-- `product.issue-authority-routing`
+- `repo.issue-routing-governance`
+- `repo.issue-routing-classification`
+- `repo.issue-authority-routing`
 
 **Dependencies**
 - IRP-I1.
@@ -56,10 +56,10 @@ IRP-I3 may begin when routing outcomes are explicit and traceable.
 ## IRP-I3 — Provenance-preserving governed-work promotion
 
 **Controlling specifications**
-- `product.issue-routing-governance`
-- `product.governed-work-provenance`
-- `product.issue-authority-routing`
-- `product.governed-work-promotion`
+- `repo.issue-routing-governance`
+- `repo.governed-work-provenance`
+- `repo.issue-authority-routing`
+- `repo.governed-work-promotion`
 
 **Dependencies**
 - IRP-I1 and IRP-I2.
@@ -82,10 +82,10 @@ IRP-I4 may begin only when promotion can establish a canonical governed state wi
 ## IRP-I4 — Hosted validation and platform integration
 
 **Controlling specifications**
-- `product.issue-routing-governance`
-- `product.governed-work-provenance`
-- `product.governed-work-promotion`
-- `product.issue-routing-platform-validation`
+- `repo.issue-routing-governance`
+- `repo.governed-work-provenance`
+- `repo.governed-work-promotion`
+- `repo.issue-routing-platform-validation`
 
 **Dependencies**
 - IRP-I3.
@@ -108,7 +108,7 @@ IRP-I5 begins after hosted integration satisfies all lower-level invariants.
 ## IRP-I5 — End-to-end integration and conformance
 
 **Controlling specifications**
-- all seven accepted Issue Intake and Governance Routing product specifications.
+- all seven accepted Issue Intake and Governance Routing repository specifications.
 
 **Dependencies**
 - IRP-I1 through IRP-I4.
