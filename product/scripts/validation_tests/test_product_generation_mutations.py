@@ -18,6 +18,11 @@ FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation
 
 
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
+    if dest_path == "product/specs/product/manifest.json" and source_name.startswith("manifest-"):
+        product_specs_root = temp_repo / "product/specs/product"
+        if product_specs_root.exists():
+            shutil.rmtree(product_specs_root)
+        product_specs_root.mkdir(parents=True, exist_ok=True)
     source = FIXTURE_DIR / source_name
     target = temp_repo / dest_path
     target.parent.mkdir(parents=True, exist_ok=True)

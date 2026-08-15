@@ -31,6 +31,7 @@ def run_github_profile_generation_tests(repo_root: Path) -> None:
             ".github/ISSUE_TEMPLATE/governing-issue.yml",
             ".github/PULL_REQUEST_TEMPLATE.md",
             ".github/workflows/github-field-policy.yml",
+            ".github/workflows/governed-work-promotion.yml",
             ".github/workflows/validation.yml",
         ]
 

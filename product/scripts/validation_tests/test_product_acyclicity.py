@@ -41,11 +41,19 @@ def configure_spec(temp_repo: Path, dest_path: str, *, spec_id: str, title: str,
     )
 
 
+def reset_product_spec_registry(temp_repo: Path) -> None:
+    product_specs_root = temp_repo / "product/specs/product"
+    if product_specs_root.exists():
+        shutil.rmtree(product_specs_root)
+    product_specs_root.mkdir(parents=True, exist_ok=True)
+
+
 def run_product_acyclicity_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 0)
+        reset_product_spec_registry(temp_repo)
         deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
@@ -56,6 +64,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         validate_product_phases(temp_repo, ('product acyclic dependencies',))
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 1)
+        reset_product_spec_registry(temp_repo)
         deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
@@ -70,6 +79,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("self dependency", lambda: validate_product_phases(temp_repo, ('product acyclic dependencies',)), "product acyclic dependencies failed: product.kernel -> product.kernel")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 2)
+        reset_product_spec_registry(temp_repo)
         deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate-status-accepted.json", "product/specs/product/level-0/kernel.json")
@@ -95,6 +105,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("two-node level 0 cycle", lambda: validate_product_phases(temp_repo, ('product acyclic dependencies',)), "product acyclic dependencies failed: product.a -> product.b -> product.a")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 3)
+        reset_product_spec_registry(temp_repo)
         deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
@@ -142,6 +153,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("two-node level 1 cycle", lambda: validate_product_phases(temp_repo, ('product acyclic dependencies',)), "product acyclic dependencies failed: product.a -> product.b -> product.a")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 4)
+        reset_product_spec_registry(temp_repo)
         deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
@@ -192,6 +204,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
         expect_failure("three-node level 2 cycle", lambda: validate_product_phases(temp_repo, ('product acyclic dependencies',)), "product acyclic dependencies failed")
 
         temp_repo = create_repo_fixture(repo_root, temp_root, 5)
+        reset_product_spec_registry(temp_repo)
         deactivate_product_plans(temp_repo)
         install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")

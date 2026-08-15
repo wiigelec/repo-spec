@@ -56,8 +56,11 @@ def _issue_body(fields: list[dict], change_type: str) -> str:
 def _check_unlabeled_issue_workflow_policy(repo_root: Path, fields: list[dict]) -> None:
     workflow = (repo_root / ".github/workflows/github-field-policy.yml").read_text()
 
-    if "types: [opened, edited, reopened]" not in workflow:
+    accepted_event_set = "types: [opened, edited, reopened, labeled]"
+    if accepted_event_set not in workflow:
         raise AssertionError("issue workflow event set changed")
+    if "types: [opened, edited, reopened]\n" in workflow:
+        raise AssertionError("issue workflow event set regressed")
 
     issue_condition = (
         "  issue-policy:\n"

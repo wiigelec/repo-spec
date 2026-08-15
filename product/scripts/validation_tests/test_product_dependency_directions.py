@@ -59,6 +59,10 @@ def write_manifest(temp_repo: Path, entries: list[dict[str, object]]) -> None:
 
 
 def build_case(temp_repo: Path, source: dict[str, object], target: dict[str, object]) -> None:
+    product_specs_root = temp_repo / "product/specs/product"
+    if product_specs_root.exists():
+        shutil.rmtree(product_specs_root)
+    product_specs_root.mkdir(parents=True, exist_ok=True)
     install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
     configure_spec(temp_repo, source["fixture"], source["path"], spec_id=source["spec_id"], level=source["level"], status=source["status"], dependency_ids=[target["spec_id"]])
     configure_spec(temp_repo, target["fixture"], target["path"], spec_id=target["spec_id"], level=target["level"], status=target["status"], dependency_ids=[])
