@@ -20,19 +20,24 @@ Candidate migration analysis. Directional and non-normative.
   "governing_issue": "#374",
   "required_content_areas": {
     "source_evidence": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md"
     ],
     "candidate_groupings": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md"
     ],
     "dependencies": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md"
     ],
     "ambiguities": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md"
     ],
     "candidate_functional_sets": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md"
     ]
   },
   "controlling_documents": [
@@ -42,13 +47,26 @@ Candidate migration analysis. Directional and non-normative.
     "product/docs/overview/INITIALIZER-WHITEBOARD.md"
   ],
   "evidence": [
-    "product/docs/overview/initializer-whiteboard/01-migration-input.md"
+    "product/docs/overview/initializer-whiteboard/01-migration-input.md",
+    "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
   ],
   "subordinate_chunks": [
     {
       "order": 1,
       "path": "product/docs/overview/initializer-analysis/01-migration-analysis.md",
       "title": "Migration analysis",
+      "coverage": [
+        "source_evidence",
+        "candidate_groupings",
+        "dependencies",
+        "ambiguities",
+        "candidate_functional_sets"
+      ]
+    },
+    {
+      "order": 2,
+      "path": "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "title": "Derived-repository upgrade analysis",
       "coverage": [
         "source_evidence",
         "candidate_groupings",
@@ -70,6 +88,7 @@ This analysis performs only the structural interpretation necessary to migrate m
 ## Chunk index
 
 - [Migration analysis](initializer-analysis/01-migration-analysis.md)
+- [Derived-repository upgrade analysis](initializer-analysis/02-derived-repository-upgrade-analysis.md)
 
 ## Relationships
 
