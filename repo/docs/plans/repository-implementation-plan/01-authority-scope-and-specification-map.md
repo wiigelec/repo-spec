@@ -2,11 +2,11 @@
 
 ## Status
 
-Candidate implementation-plan content. Planning authority only after plan acceptance; non-normative with respect to product semantics.
+Candidate implementation-plan content. Planning authority only after plan acceptance; non-normative with respect to repository semantics.
 
 ## Authority and basis
 
-The accepted Issue Intake and Governance Routing Level 0-3 specifications provide the complete normative product basis for this plan. `repo.implementation-plan` and `repo.development-document-base` control plan structure and lifecycle.
+The accepted Issue Intake and Governance Routing repository specifications provide the complete normative repository basis for this plan. `repo.implementation-plan` and `repo.development-document-base` control plan structure and lifecycle.
 
 The plan must not redefine:
 - routing classification versus governance state;
@@ -34,14 +34,14 @@ After separate acceptance, implementation issues may realize the five workstream
 
 ## Deferred implementation decisions
 
-The following are implementation mechanics, not unresolved product semantics:
+The following are implementation mechanics, not unresolved repository semantics:
 - exact GitHub mutation/API/event ordering consistent with accepted invariants;
 - whether live routing-classification labels are retained, removed, or transformed after promotion;
 - concrete criteria for choosing in-place versus successor issue where both conform;
-- exact internal split between product-owned portable implementation/test/conformance evidence and repository/profile-owned helper and adapter mechanics, provided maintained product correspondence never substitutes repository/framework tooling for the product-owned evidence required to claim covered `product.*` requirements;
+- exact internal split between repository-owned implementation/test/conformance evidence and repository/profile-owned helper and adapter mechanics, provided maintained implementation/test/conformance evidence never substitutes repository/framework tooling for the repository-owned evidence required to claim covered `product.*` requirements;
 - rollout treatment for existing issues.
 
-The ownership class itself is not deferred: implementation/test/conformance artifacts cited as maintained correspondence for the seven controlling `product.*` specifications are product-owned. GitHub profile source, installed `.github` adapters, and repository/framework helpers remain governed by their existing repository/profile ownership boundaries and may support the product implementation without becoming product correspondence evidence.
+The ownership class itself is not deferred: implementation/test/conformance artifacts cited as maintained correspondence for the seven controlling `repo.*` specifications are repository-owned. GitHub profile source, installed `.github` adapters, and repository/framework helpers remain governed by their existing repository/profile ownership boundaries and may support the product implementation without becoming implementation/test/conformance evidence.
 
 ## Explicit exclusions
 
@@ -49,11 +49,11 @@ This candidate plan does not authorize:
 - implementation issues;
 - source/executable changes;
 - GitHub Actions, labels, templates, platform-profile mutation, or audit mutation;
-- product specification changes;
+- repository specification changes;
 - title-preservation semantics;
 - universal live routing-label retention;
 - universal in-place or successor promotion.
 
 ## Semantic gap rule
 
-If implementation planning discovers a requirement that cannot be derived from accepted specifications without choosing new product behavior, the affected workstream stops and returns to specification governance.
+If implementation planning discovers a requirement that cannot be derived from accepted specifications without choosing new repository behavior, the affected workstream stops and returns to specification governance.

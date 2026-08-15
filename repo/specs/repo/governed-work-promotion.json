@@ -1,0 +1,68 @@
+{
+  "spec_id": "repo.governed-work-promotion",
+  "title": "Governed Work Promotion",
+  "purpose": "Reusable capability for transitioning routed intake into a bounded governed operation while preserving provenance and allowing either in-place or successor-issue realization when the governing lifecycle requires it.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-PROM-001",
+      "text": "Promotion into `governed-work` shall occur only when the target issue carries the canonical governed-issue structure required for the bounded operation."
+    },
+    {
+      "id": "IRG-PROM-002",
+      "text": "Promotion shall preserve the provenance requirements defined by `repo.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content."
+    },
+    {
+      "id": "IRG-PROM-003",
+      "text": "Promotion into governed-work shall establish entry into the bounded governed-change lifecycle and shall not itself bypass that lifecycle's branch, validation, review, or acceptance gates."
+    },
+    {
+      "id": "IRG-PROM-004",
+      "text": "A promoted governed operation shall remain traceable to the intake classification and preserved intake evidence that caused or informed its authority routing."
+    },
+    {
+      "id": "IRG-PROM-005",
+      "text": "Promotion may occur in place on the original intake issue or through a successor governed issue when lifecycle separation or bounded-work scoping requires it; neither form is universally mandatory. The selected form shall preserve intake provenance and maintain a unique traceable governing issue for the bounded mutation. Post-promotion retention of live routing labels is not required by this repository-generic contract."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.issue-routing-governance"
+    },
+    {
+      "spec_id": "repo.governed-work-provenance"
+    },
+    {
+      "spec_id": "repo.issue-authority-routing"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/03-governed-work-promotion-and-provenance.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/governed-work-promotion.md"
+    }
+  ]
+}

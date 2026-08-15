@@ -15,10 +15,6 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-PRODUCT_SCRIPTS = Path(__file__).resolve().parents[2] / "product" / "scripts"
-if str(PRODUCT_SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(PRODUCT_SCRIPTS))
-
 from issue_intake_governance_routing import (
     CanonicalGovernedStateObservation,
     validate_canonical_governed_state,

@@ -1,0 +1,69 @@
+{
+  "spec_id": "repo.issue-authority-routing",
+  "title": "Issue Authority Routing",
+  "purpose": "Reusable capability for choosing the accepted authority path from issue routing classification while composing with, rather than redefining, existing audit and feature-development lifecycles.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-ROUTE-001",
+      "text": "An intake item classified `bug-fix` shall route toward audit rather than directly authorizing repository mutation."
+    },
+    {
+      "id": "IRG-ROUTE-002",
+      "text": "An intake item classified `feature-request` shall route toward whiteboard collection, analysis, candidate functional-set formation, and explicit functional-set approval before downstream decomposition, specification, planning, or implementation authority is inferred."
+    },
+    {
+      "id": "IRG-ROUTE-003",
+      "text": "A claimed bug that audit determines is missing or unaccepted behavior shall be redirected toward feature-request development rather than allowing audit to invent new product scope."
+    },
+    {
+      "id": "IRG-ROUTE-004",
+      "text": "Feature-request routing shall not jump directly from intake to implementation."
+    },
+    {
+      "id": "IRG-ROUTE-005",
+      "text": "Routing failure or ambiguity that prevents a unique authority path shall halt authority selection rather than silently choosing a mutation path."
+    },
+    {
+      "id": "IRG-ROUTE-006",
+      "text": "This candidate does not redefine audit, whiteboard, analysis, functional-set, decomposition, specification, or implementation-plan semantics."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.issue-routing-governance"
+    },
+    {
+      "spec_id": "repo.issue-routing-classification"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/02-authority-routing.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/issue-authority-routing.md"
+    }
+  ]
+}

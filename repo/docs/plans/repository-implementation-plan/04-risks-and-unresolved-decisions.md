@@ -33,7 +33,7 @@ These remain candidate plan choices until plan acceptance:
 
 ## Decision boundary
 
-These questions are implementation mechanics only while every permitted choice satisfies the accepted product specifications.
+These questions are implementation mechanics only while every permitted choice satisfies the accepted repository specifications.
 
 If resolving any question requires introducing a new product invariant, the plan cannot decide it. The affected workstream must return to governed specification work before implementation proceeds.
 

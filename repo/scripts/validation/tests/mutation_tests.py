@@ -11,6 +11,8 @@ from .test_architecture_document_contract import run_architecture_document_contr
 from .test_functional_set_overview_contract import run_functional_set_overview_contract_tests
 from .test_generation_mutations import run_generation_mutations
 from .test_github_field_policy import run_github_field_policy_tests
+from .test_issue_intake_governance_routing import run_issue_intake_governance_routing_tests
+from .test_issue_routing_hosted_conformance import run_issue_routing_hosted_conformance_tests
 from .test_github_profile_generation import (
     run_github_profile_generation_tests,
     run_github_profile_mutation_tests,
@@ -44,6 +46,8 @@ def run_repository_mutation_tests(repo_root: Path) -> None:
     run_architecture_document_contract_tests(repo_root)
     run_functional_set_overview_contract_tests(repo_root)
     run_github_field_policy_tests(repo_root)
+    run_issue_intake_governance_routing_tests(repo_root)
+    run_issue_routing_hosted_conformance_tests(repo_root)
     run_repository_validation_phase_contract_tests(repo_root)
     run_repository_root_boundary_tests(repo_root)
     run_repository_development_document_compatibility_tests(repo_root)

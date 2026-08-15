@@ -45,13 +45,11 @@ This area depends on ordinary issue intake existing on the selected hosting-plat
 
 Directional expectation:
 
-- **Level 0**: repository issue-intake/routing purpose and scope;
-- **Level 1**: intake classification concepts and invariants;
-- **Level 2**: classification-state relationships and allowed transitions;
-- **Level 3**: hosting-profile realization requirements where labels or issue metadata carry classification.
+- **Repository specification family**: repository-generic issue-intake/routing purpose, scope, classification concepts, invariants, state relationships, and allowed transitions;
+- **Hosting-platform profile boundary**: profile-specific realization requirements only where labels or issue metadata carry classification.
 
-Exact specification partitioning remains subject to later governed specification work.
+Repository-generic classification requirements shall not be forced into product-specification levels. Exact repository-specification partitioning and profile realization remain subject to later governed specification work.
 
 ## Successor work
 
-Normative specifications must define the accepted classification semantics and invariants before implementation planning.
+Owner-appropriate normative specifications must define the accepted classification semantics and invariants before implementation planning. Repository-generic requirements belong under repository specification authority.

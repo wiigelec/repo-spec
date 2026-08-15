@@ -60,10 +60,10 @@ Depends on:
 
 Directional expectation:
 
-- **Level 0**: platform integration scope for issue-routing governance;
-- **Level 1**: repository-generic validation and state invariants;
-- **Level 2**: profile boundary, event/state relationships, and failure semantics;
-- **Level 3**: GitHub profile requirements for labels, comments, body updates, events, and field-policy integration.
+- **Repository specification family**: repository-generic issue-routing validation, lifecycle-state invariants, profile-boundary requirements, event/state relationships, and failure semantics;
+- **Hosting-platform profile boundary**: GitHub-specific requirements for labels, comments, body updates, events, and field-policy integration remain subordinate profile realization rather than repository-generic product semantics.
+
+Repository-generic validation and integration requirements shall not be forced into product-specification levels.
 
 Areas that may not require separate standalone specifications:
 - purely documentary discoverability/index updates;
@@ -75,10 +75,10 @@ This decomposition area is complete when downstream normative work can separatel
 
 ## Planning handoff
 
-Implementation planning is not authorized until the required Level 0–3 specifications are accepted.
+Implementation planning is not authorized until the required owner-appropriate normative specifications are accepted.
 
-The next authorized lifecycle step is governed product-specification drafting and acceptance for the decomposed areas.
+The next authorized lifecycle step is governed repository-specification drafting and acceptance for repository-generic routing requirements, with hosting-platform-specific realization retained within the accepted platform-profile authority boundary.
 
 ## Successor work
 
-Create the required repository-owned and platform-profile specification artifacts, establish their dependency direction, accept them through governed review, and only then create an implementation plan.
+Create the required repository-owned normative specification artifacts, establish their dependency direction, identify any subordinate platform-profile realization requirements, accept the normative specifications through governed review, and only then create an implementation plan.

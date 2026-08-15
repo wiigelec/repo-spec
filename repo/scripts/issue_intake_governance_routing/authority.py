@@ -51,6 +51,15 @@ def route_labels(labels: Iterable[str]) -> AuthorityRoutingResult:
         mutation_authorized=False,
     )
 
+def require_unique_authority_path(labels: Iterable[str]) -> AuthorityPath:
+    result = route_labels(labels)
+    if not result.has_unique_path:
+        raise ValueError(
+            f"no unique authority path for classification state: {result.classification_state.value}"
+        )
+    return result.path
+
+
 
 def route_audited_bug(disposition: AuditDisposition) -> AuthorityPath:
     if disposition is AuditDisposition.ACCEPTED_AUTHORITY_VIOLATION:

@@ -1,0 +1,62 @@
+{
+  "spec_id": "repo.governed-work-provenance",
+  "title": "Governed Work Provenance",
+  "purpose": "Primitive contract for governance-state identity and the minimum intake provenance that must be preserved before ordinary intake content is replaced or restructured for governed work.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-PROV-001",
+      "text": "`governed-work` shall represent governance state rather than routing classification."
+    },
+    {
+      "id": "IRG-PROV-002",
+      "text": "When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring."
+    },
+    {
+      "id": "IRG-PROV-003",
+      "text": "The routing-classification labels associated with the intake item before promotion shall be preserved in the same or another traceable issue comment before body replacement or restructuring during promotion."
+    },
+    {
+      "id": "IRG-PROV-004",
+      "text": "Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion."
+    },
+    {
+      "id": "IRG-PROV-005",
+      "text": "This contract introduces no intake-title preservation requirement. Its normative minimum provenance payload is the original unformatted issue body plus the pre-promotion routing-classification labels; additional provenance may be recorded but is not required by this contract."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.issue-routing-governance"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/03-governed-work-promotion-and-provenance.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/governed-work-provenance.md"
+    }
+  ]
+}

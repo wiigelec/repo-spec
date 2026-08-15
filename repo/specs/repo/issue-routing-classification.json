@@ -1,0 +1,62 @@
+{
+  "spec_id": "repo.issue-routing-classification",
+  "title": "Issue Routing Classification",
+  "purpose": "Primitive contract for classifying ordinary issue intake into routing concepts and resolving classification conflicts before authority routing proceeds.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-CLS-001",
+      "text": "The routing classification vocabulary shall include `bug-fix` for reported behavior believed to violate already accepted authority and `feature-request` for requested new or changed direction."
+    },
+    {
+      "id": "IRG-CLS-002",
+      "text": "The `bug-fix` and `feature-request` classifications may be assigned at issue creation or after review."
+    },
+    {
+      "id": "IRG-CLS-003",
+      "text": "A routing classification shall remain distinct from `governed-work` governance state."
+    },
+    {
+      "id": "IRG-CLS-004",
+      "text": "Classification uncertainty that changes the applicable authority path shall be surfaced rather than silently converted into repository mutation authority."
+    },
+    {
+      "id": "IRG-CLS-005",
+      "text": "The `bug-fix` and `feature-request` classifications may coexist during raw intake or review, but before authority routing proceeds the routing state shall resolve to one applicable authority direction; unresolved conflicting classifications that imply different authority paths shall stop routing rather than select a path implicitly."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.issue-routing-governance"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/01-intake-classification.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/issue-routing-classification.md"
+    }
+  ]
+}

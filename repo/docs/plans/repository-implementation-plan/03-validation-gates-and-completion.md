@@ -8,7 +8,7 @@ Candidate implementation-plan content.
 
 Each implementation issue created after plan acceptance must:
 - cite one or more stable IRP workstream IDs;
-- cite the exact accepted product specification set declared for those workstreams;
+- cite the exact accepted repository specification set declared for those workstreams;
 - start from an exact accepted default-branch base;
 - define focused validation for its bounded mutation;
 - run repository-wide `scripts/validate`;
@@ -55,9 +55,9 @@ Execution completion does not itself imply merge, release, or plan retirement.
 
 ## Successor implementation issue shape
 
-After plan acceptance, each Product-artifact implementation issue must identify:
+After plan acceptance, each implementation issue must identify:
 - exact workstream/stage ID(s);
-- exact controlling accepted product specifications;
+- exact controlling accepted repository specifications;
 - accepted default-branch base;
 - predecessor implementation evidence;
 - bounded artifact paths/behavior;

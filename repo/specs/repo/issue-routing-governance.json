@@ -1,0 +1,62 @@
+{
+  "spec_id": "repo.issue-routing-governance",
+  "title": "Issue Routing Governance Foundations",
+  "purpose": "Issue-intake and governance-routing foundations defining shared meanings, authority boundaries, provenance expectations, and validation-state boundaries across the routing specification family.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-L0-001",
+      "text": "Routing classification and governance state shall be distinct concepts; classification of an intake item shall not itself establish governed-work state."
+    },
+    {
+      "id": "IRG-L0-002",
+      "text": "Routing metadata shall not authorize repository mutation; mutation authority shall arise only from the applicable accepted governed lifecycle."
+    },
+    {
+      "id": "IRG-L0-003",
+      "text": "Ordinary issue intake may exist before governed-work state and shall not be required to satisfy governed-work field completeness solely because it exists."
+    },
+    {
+      "id": "IRG-L0-004",
+      "text": "The routing model shall preserve traceability from ordinary intake into any later bounded governed operation."
+    },
+    {
+      "id": "IRG-L0-005",
+      "text": "Hosted governed-field validation shall not be treated as applicable before the governed-work state that activates that validation boundary."
+    },
+    {
+      "id": "IRG-L0-006",
+      "text": "This foundation introduces no intake-title preservation requirement, no universal requirement to retain routing labels after promotion, and no universal requirement to choose either in-place promotion or successor-issue promotion; exact hosting-platform mutation and event sequencing remains subordinate platform-specific authority."
+    }
+  ],
+  "dependencies": [],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/01-intake-classification.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/issue-routing-governance.md"
+    }
+  ]
+}

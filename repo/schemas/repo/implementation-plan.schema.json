@@ -20,7 +20,10 @@
         },
         "root_path": {
           "type": "string",
-          "enum": ["repo/docs/plans/", "product/docs/plans/"]
+          "enum": [
+            "repo/docs/plans/",
+            "product/docs/plans/"
+          ]
         },
         "workstream_authority": {
           "type": "array",
@@ -43,7 +46,7 @@
                 "uniqueItems": true,
                 "items": {
                   "type": "string",
-                  "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+                  "pattern": "^(?:repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
                 }
               }
             }
@@ -138,10 +141,14 @@
                 "const": "accepted"
               }
             },
-            "required": ["lifecycle_status"]
+            "required": [
+              "lifecycle_status"
+            ]
           },
           "then": {
-            "required": ["workstream_authority"]
+            "required": [
+              "workstream_authority"
+            ]
           }
         }
       ]

@@ -49,11 +49,11 @@ Feeds Platform Validation Integration.
 
 Directional expectation:
 
-- **Level 0**: governed-work promotion and provenance capability contract;
-- **Level 1**: promotion invariants and provenance requirements;
-- **Level 2**: lifecycle transition model between intake, routed state, and governed operations;
-- **Level 3**: platform-profile issue/comment/body/label requirements needed to realize promotion safely.
+- **Repository specification family**: repository-generic governed-work promotion/provenance capability, promotion invariants, provenance requirements, and lifecycle transition relationships between intake, routed state, and governed operations;
+- **Hosting-platform profile boundary**: issue/comment/body/label realization requirements needed to perform promotion safely on a supported platform.
+
+Repository-generic promotion and provenance requirements shall not be forced into product-specification levels.
 
 ## Successor work
 
-Normative specifications must define accepted promotion, provenance, and traceability behavior before implementation planning.
+Owner-appropriate normative specifications must define accepted promotion, provenance, and traceability behavior before implementation planning. Repository-generic requirements belong under repository specification authority.

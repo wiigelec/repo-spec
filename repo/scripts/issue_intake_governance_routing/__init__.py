@@ -1,4 +1,4 @@
-"Portable Issue Intake and Governance Routing product implementation."
+"Repository-owned Issue Intake and Governance Routing implementation."
 
 from .classification import (
     BUG_FIX,
@@ -7,6 +7,7 @@ from .classification import (
     ClassificationResult,
     ClassificationState,
     classify_labels,
+    require_single_direction,
 )
 from .authority import (
     AuditDisposition,
@@ -15,6 +16,7 @@ from .authority import (
     FEATURE_DEVELOPMENT_STAGES,
     route_audited_bug,
     route_labels,
+    require_unique_authority_path,
 )
 from .provenance import IntakeProvenance, capture_intake_provenance
 from .promotion import (
@@ -37,12 +39,14 @@ __all__ = [
     "ClassificationResult",
     "ClassificationState",
     "classify_labels",
+    "require_single_direction",
     "AuditDisposition",
     "AuthorityPath",
     "AuthorityRoutingResult",
     "FEATURE_DEVELOPMENT_STAGES",
     "route_audited_bug",
     "route_labels",
+    "require_unique_authority_path",
     "IntakeProvenance",
     "capture_intake_provenance",
     "CanonicalGovernedStateEvidence",

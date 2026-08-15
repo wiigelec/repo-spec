@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Iterable
 
-
 BUG_FIX = "bug-fix"
 FEATURE_REQUEST = "feature-request"
 GOVERNED_WORK = "governed-work"
@@ -49,7 +48,6 @@ def classify_labels(labels: Iterable[str]) -> ClassificationResult:
         routing_labels=routing,
         governed_work=GOVERNED_WORK in normalized,
     )
-
 
 def require_single_direction(labels: Iterable[str]) -> ClassificationState:
     result = classify_labels(labels)

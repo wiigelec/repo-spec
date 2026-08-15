@@ -664,6 +664,390 @@
       "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-issue-routing-governance",
+      "source_path": "repo/specs/repo/issue-routing-governance.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-issue-routing-governance",
+      "source_path": "repo/derived/specs/repo/issue-routing-governance.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-issue-routing-classification",
+      "source_path": "repo/specs/repo/issue-routing-classification.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-issue-routing-classification",
+      "source_path": "repo/derived/specs/repo/issue-routing-classification.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-governed-work-provenance",
+      "source_path": "repo/specs/repo/governed-work-provenance.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-governed-work-provenance",
+      "source_path": "repo/derived/specs/repo/governed-work-provenance.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-issue-authority-routing",
+      "source_path": "repo/specs/repo/issue-authority-routing.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-issue-authority-routing",
+      "source_path": "repo/derived/specs/repo/issue-authority-routing.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-governed-work-promotion",
+      "source_path": "repo/specs/repo/governed-work-promotion.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-governed-work-promotion",
+      "source_path": "repo/derived/specs/repo/governed-work-promotion.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-issue-routing-platform-validation",
+      "source_path": "repo/specs/repo/issue-routing-platform-validation.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-issue-routing-platform-validation",
+      "source_path": "repo/derived/specs/repo/issue-routing-platform-validation.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-spec-issue-intake-governance-routing",
+      "source_path": "repo/specs/repo/issue-intake-governance-routing.json",
+      "role": "governing-specification",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-derived-issue-intake-governance-routing",
+      "source_path": "repo/derived/specs/repo/issue-intake-governance-routing.md",
+      "role": "generated-reference",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-live-promotion",
+      "source_path": "repo/scripts/github_issue_promotion.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-canonical-producer",
+      "source_path": "repo/scripts/canonical-governed-state-validator",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "repo-routing-authorization-producer",
+      "source_path": "repo/scripts/repository-governance-authorization-validator",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "repo-routing-runtime--init-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/__init__.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-runtime-authority-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/authority.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-runtime-classification-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/classification.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-runtime-hosted-validation-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/hosted_validation.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-runtime-orchestration-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/orchestration.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-runtime-promotion-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/promotion.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-runtime-provenance-py",
+      "source_path": "repo/scripts/issue_intake_governance_routing/provenance.py",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-profile-source-workflows-governed-work-promotion-yml",
+      "source_path": "repo/profiles/github/workflows/governed-work-promotion.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-profile-installed-workflows-governed-work-promotion-yml",
+      "source_path": ".github/workflows/governed-work-promotion.yml",
+      "role": "runtime-framework",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-decompositions-REPOSITORY-DECOMPOSITION-md",
+      "source_path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-01-intake-classification-md",
+      "source_path": "repo/docs/decompositions/repository-decomposition/01-intake-classification.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-02-authority-routing-md",
+      "source_path": "repo/docs/decompositions/repository-decomposition/02-authority-routing.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-03-governed-work-promotion-and-provenance-md",
+      "source_path": "repo/docs/decompositions/repository-decomposition/03-governed-work-promotion-and-provenance.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-04-platform-validation-integration-md",
+      "source_path": "repo/docs/decompositions/repository-decomposition/04-platform-validation-integration.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-REPOSITORY-ANALYSIS-md",
+      "source_path": "repo/docs/overview/REPOSITORY-ANALYSIS.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-REPOSITORY-FUNCTIONAL-SET-md",
+      "source_path": "repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-REPOSITORY-WHITEBOARD-md",
+      "source_path": "repo/docs/overview/REPOSITORY-WHITEBOARD.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-analysis-01-migration-analysis-md",
+      "source_path": "repo/docs/overview/repository-analysis/01-migration-analysis.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-analysis-02-issue-routing-analysis-md",
+      "source_path": "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-01-product-direction-md",
+      "source_path": "repo/docs/overview/repository-functional-set/01-product-direction.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-02-decomposition-model-part-1-md",
+      "source_path": "repo/docs/overview/repository-functional-set/02-decomposition-model-part-1.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-03-decomposition-model-part-2-md",
+      "source_path": "repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-04-development-and-specifications-part-1-md",
+      "source_path": "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-05-development-and-specifications-part-2-md",
+      "source_path": "repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-06-development-and-specifications-part-3-md",
+      "source_path": "repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-07-git-and-change-workflow-md",
+      "source_path": "repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-08-human-ai-continuity-md",
+      "source_path": "repo/docs/overview/repository-functional-set/08-human-ai-continuity.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-09-governance-and-evolution-md",
+      "source_path": "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-functional-set-10-issue-intake-and-governance-routing-md",
+      "source_path": "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-whiteboard-01-migration-input-md",
+      "source_path": "repo/docs/overview/repository-whiteboard/01-migration-input.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "repo-routing-authority-document-repo-docs-overview-repository-whiteboard-02-issue-routing-intake-md",
+      "source_path": "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md",
+      "role": "documentation-support",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
     }
   ]
 }

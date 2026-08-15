@@ -641,6 +641,342 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `repo/specs/repo/issue-routing-governance.json`
+- Material Key: `repo-routing-spec-issue-routing-governance`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/issue-routing-governance.md`
+- Material Key: `repo-routing-derived-issue-routing-governance`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/specs/repo/issue-routing-classification.json`
+- Material Key: `repo-routing-spec-issue-routing-classification`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/issue-routing-classification.md`
+- Material Key: `repo-routing-derived-issue-routing-classification`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/specs/repo/governed-work-provenance.json`
+- Material Key: `repo-routing-spec-governed-work-provenance`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/governed-work-provenance.md`
+- Material Key: `repo-routing-derived-governed-work-provenance`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/specs/repo/issue-authority-routing.json`
+- Material Key: `repo-routing-spec-issue-authority-routing`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/issue-authority-routing.md`
+- Material Key: `repo-routing-derived-issue-authority-routing`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/specs/repo/governed-work-promotion.json`
+- Material Key: `repo-routing-spec-governed-work-promotion`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/governed-work-promotion.md`
+- Material Key: `repo-routing-derived-governed-work-promotion`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/specs/repo/issue-routing-platform-validation.json`
+- Material Key: `repo-routing-spec-issue-routing-platform-validation`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/issue-routing-platform-validation.md`
+- Material Key: `repo-routing-derived-issue-routing-platform-validation`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/specs/repo/issue-intake-governance-routing.json`
+- Material Key: `repo-routing-spec-issue-intake-governance-routing`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `governing-specification`
+- Destination Path: `repo/derived/specs/repo/issue-intake-governance-routing.md`
+- Material Key: `repo-routing-derived-issue-intake-governance-routing`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `generated-reference`
+- Destination Path: `repo/scripts/github_issue_promotion.py`
+- Material Key: `repo-routing-live-promotion`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/canonical-governed-state-validator`
+- Material Key: `repo-routing-canonical-producer`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/scripts/repository-governance-authorization-validator`
+- Material Key: `repo-routing-authorization-producer`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/__init__.py`
+- Material Key: `repo-routing-runtime--init-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/authority.py`
+- Material Key: `repo-routing-runtime-authority-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/classification.py`
+- Material Key: `repo-routing-runtime-classification-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/hosted_validation.py`
+- Material Key: `repo-routing-runtime-hosted-validation-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/orchestration.py`
+- Material Key: `repo-routing-runtime-orchestration-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/promotion.py`
+- Material Key: `repo-routing-runtime-promotion-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/scripts/issue_intake_governance_routing/provenance.py`
+- Material Key: `repo-routing-runtime-provenance-py`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/profiles/github/workflows/governed-work-promotion.yml`
+- Material Key: `repo-routing-profile-source-workflows-governed-work-promotion-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `.github/workflows/governed-work-promotion.yml`
+- Material Key: `repo-routing-profile-installed-workflows-governed-work-promotion-yml`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `runtime-framework`
+- Destination Path: `repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md`
+- Material Key: `repo-routing-authority-document-repo-docs-decompositions-REPOSITORY-DECOMPOSITION-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/decompositions/repository-decomposition/01-intake-classification.md`
+- Material Key: `repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-01-intake-classification-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/decompositions/repository-decomposition/02-authority-routing.md`
+- Material Key: `repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-02-authority-routing-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/decompositions/repository-decomposition/03-governed-work-promotion-and-provenance.md`
+- Material Key: `repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-03-governed-work-promotion-and-provenance-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/decompositions/repository-decomposition/04-platform-validation-integration.md`
+- Material Key: `repo-routing-authority-document-repo-docs-decompositions-repository-decomposition-04-platform-validation-integration-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/REPOSITORY-ANALYSIS.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-REPOSITORY-ANALYSIS-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-REPOSITORY-FUNCTIONAL-SET-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/REPOSITORY-WHITEBOARD.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-REPOSITORY-WHITEBOARD-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-analysis/01-migration-analysis.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-analysis-01-migration-analysis-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-analysis/02-issue-routing-analysis.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-analysis-02-issue-routing-analysis-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/01-product-direction.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-01-product-direction-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/02-decomposition-model-part-1.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-02-decomposition-model-part-1-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-03-decomposition-model-part-2-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-04-development-and-specifications-part-1-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-05-development-and-specifications-part-2-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-06-development-and-specifications-part-3-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-07-git-and-change-workflow-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/08-human-ai-continuity.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-08-human-ai-continuity-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/09-governance-and-evolution.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-09-governance-and-evolution-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-functional-set-10-issue-intake-and-governance-routing-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-whiteboard/01-migration-input.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-whiteboard-01-migration-input-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
+- Destination Path: `repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md`
+- Material Key: `repo-routing-authority-document-repo-docs-overview-repository-whiteboard-02-issue-routing-intake-md`
+- Mode: `100644`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `documentation-support`
 
 ## Primitives
 

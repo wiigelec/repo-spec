@@ -54,11 +54,11 @@ Feeds Governed-work Promotion and Provenance when a bounded governed operation b
 
 Directional expectation:
 
-- **Level 0**: authority-routing capability contract;
-- **Level 1**: routing decision model and authority invariants;
-- **Level 2**: lifecycle routing relationships among audit, feature-development, and governed work;
-- **Level 3**: profile-specific routing signals and externally visible state where needed.
+- **Repository specification family**: repository-generic authority-routing capability, routing decision model, authority invariants, and lifecycle relationships among audit, feature-development, and governed work;
+- **Hosting-platform profile boundary**: profile-specific routing signals and externally visible state only where needed for realization.
+
+Repository-generic authority-routing requirements shall not be forced into product-specification levels.
 
 ## Successor work
 
-Normative specifications must define accepted routing invariants and failure behavior before implementation planning.
+Owner-appropriate normative specifications must define accepted routing invariants and failure behavior before implementation planning. Repository-generic requirements belong under repository specification authority.

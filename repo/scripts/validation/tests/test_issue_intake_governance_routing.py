@@ -10,10 +10,10 @@ import tempfile
 import unittest
 from unittest import mock
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
-PRODUCT_SCRIPTS = REPO_ROOT / "product" / "scripts"
-if str(PRODUCT_SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(PRODUCT_SCRIPTS))
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
+REPO_SCRIPTS = REPO_ROOT / "repo" / "scripts"
+if str(REPO_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(REPO_SCRIPTS))
 
 import issue_intake_governance_routing.promotion as promotion_module
 from issue_intake_governance_routing import (
@@ -41,17 +41,17 @@ MANAGED_CANONICAL_PRODUCER = (
 
 def canonical_governed_body() -> str:
     return (
-        "## Change type\nProduct-artifact implementation\n\n"
+        "## Change type\nMaintenance\n\n"
         "## Problem statement\nBounded canonical validation fixture.\n\n"
         "## Intended outcome\nValidate canonical governed structure.\n\n"
         "## Governing specifications\n"
         "repo.governing-issue, repo.development-workflow, repo.validation, "
         "repo.repository-structure, repo.artifact-taxonomy, "
         "repo.product-correspondence, repo.implementation-plan, "
-        "product.issue-routing-governance, product.issue-routing-classification, "
-        "product.governed-work-provenance, product.issue-authority-routing, "
-        "product.governed-work-promotion, product.issue-routing-platform-validation, "
-        "product.issue-intake-governance-routing, and the accepted "
+        "repo.issue-routing-governance, repo.issue-routing-classification, "
+        "repo.governed-work-provenance, repo.issue-authority-routing, "
+        "repo.governed-work-promotion, repo.issue-routing-platform-validation, "
+        "repo.issue-intake-governance-routing, and the accepted "
         "`repo/docs/plans/REPOSITORY-IMPLEMENTATION-PLAN.md` composite.\n\n"
         "## Implementation-plan workstreams/stages\nIRP-I2\nIRP-I3\nIRP-I4\nIRP-I5\n\n"
         "## Accepted default-branch base\n"
@@ -108,7 +108,7 @@ def canonical_evidence(*, governing_issue: str, governed_operation: str):
         )
 
 
-class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
+class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
     def test_classification_states_and_governed_state_are_orthogonal(self):
         self.assertEqual(classify_labels([]).state, ClassificationState.UNCLASSIFIED)
         self.assertEqual(classify_labels(["bug-fix"]).state, ClassificationState.BUG_FIX)
@@ -396,12 +396,41 @@ class ProductOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                         ),
                     )
 
-    def test_product_owned_implementation_does_not_import_repository_helpers(self):
-        package = PRODUCT_SCRIPTS / "issue_intake_governance_routing"
+    def test_repository_owned_implementation_has_no_product_runtime_dependency(self):
+        package = REPO_SCRIPTS / "issue_intake_governance_routing"
         for path in package.glob("*.py"):
             text = path.read_text()
-            self.assertNotIn("repo/scripts", text, path.name)
-            self.assertNotIn("github_field_policy", text, path.name)
+            self.assertNotIn("product/scripts", text, path.name)
+
+        live_promotion = (REPO_SCRIPTS / "github_issue_promotion.py").read_text()
+        self.assertNotIn("PRODUCT_SCRIPTS", live_promotion)
+        self.assertNotIn(' / "product" / "scripts"', live_promotion)
+
+        stale_product_routing_tests = (
+            "product/scripts/validation_tests/test_issue_routing_correspondence.py",
+            "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py",
+        )
+        for relative_path in stale_product_routing_tests:
+            self.assertFalse((REPO_ROOT / relative_path).exists(), relative_path)
+
+
+def run_issue_intake_governance_routing_tests(repo_root: pathlib.Path) -> None:
+    if repo_root.resolve() != REPO_ROOT.resolve():
+        raise AssertionError(
+            f"routing test root mismatch: expected {REPO_ROOT}, observed {repo_root}"
+        )
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(
+        RepositoryOwnedIssueIntakeGovernanceRoutingTests
+    )
+    result = unittest.TextTestRunner(verbosity=0).run(suite)
+    if not result.wasSuccessful():
+        details = []
+        for test, traceback in list(result.failures) + list(result.errors):
+            details.append(f"{test}: {traceback}")
+        raise AssertionError(
+            "repository issue-routing behavioral tests failed:\n" + "\n".join(details)
+        )
+
 
 
 if __name__ == "__main__":

@@ -13,11 +13,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
-PRODUCT_SCRIPTS = REPO_ROOT / "product" / "scripts"
-if str(PRODUCT_SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(PRODUCT_SCRIPTS))
-
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
 HELPER_PATH = REPO_ROOT / "repo/scripts/github_issue_promotion.py"
 POLICY = REPO_ROOT / "repo/scripts/github-field-policy"
 CANONICAL_PRODUCER = REPO_ROOT / "repo/scripts/canonical-governed-state-validator"
@@ -28,7 +24,7 @@ SOURCE_WORKFLOW = REPO_ROOT / "repo/profiles/github/workflows/governed-work-prom
 INSTALLED_WORKFLOW = REPO_ROOT / ".github/workflows/governed-work-promotion.yml"
 
 spec = importlib.util.spec_from_file_location(
-    "product_hosted_conformance_promotion",
+    "repository_hosted_conformance_promotion",
     HELPER_PATH,
 )
 assert spec and spec.loader
@@ -36,27 +32,27 @@ promotion = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = promotion
 spec.loader.exec_module(promotion)
 
-ALL_PRODUCT_SPECS = (
-    "product.issue-routing-governance",
-    "product.issue-routing-classification",
-    "product.governed-work-provenance",
-    "product.issue-authority-routing",
-    "product.governed-work-promotion",
-    "product.issue-routing-platform-validation",
-    "product.issue-intake-governance-routing",
+ALL_REPO_SPECS = (
+    "repo.issue-routing-governance",
+    "repo.issue-routing-classification",
+    "repo.governed-work-provenance",
+    "repo.issue-authority-routing",
+    "repo.governed-work-promotion",
+    "repo.issue-routing-platform-validation",
+    "repo.issue-intake-governance-routing",
 )
 
 
 def canonical_governed_body() -> str:
-    specs = ", ".join(ALL_PRODUCT_SPECS)
+    specs = ", ".join(ALL_REPO_SPECS)
     return (
-        "## Change type\nProduct-artifact implementation\n\n"
+        "## Change type\nMaintenance\n\n"
         "## Problem statement\nA bounded governed operation for hosted conformance.\n\n"
         "## Intended outcome\nExercise accepted hosted routing boundaries.\n\n"
         "## Governing specifications\n"
         "repo.governing-issue, repo.development-workflow, repo.validation, "
         "repo.repository-structure, repo.artifact-taxonomy, "
-        "repo.product-correspondence, repo.implementation-plan, "
+        "repo.implementation-plan, "
         f"{specs}, and the accepted "
         "`repo/docs/plans/REPOSITORY-IMPLEMENTATION-PLAN.md` composite.\n\n"
         "## Implementation-plan workstreams/stages\nIRP-I2\nIRP-I3\nIRP-I4\nIRP-I5\n\n"
@@ -335,6 +331,17 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         helper = HELPER_PATH.read_text()
         self.assertIn("validate_canonical_governed_state(", helper)
         self.assertIn("CanonicalGovernedStateObservation(", helper)
+
+
+def run_issue_routing_hosted_conformance_tests(repo_root: pathlib.Path) -> None:
+    if repo_root.resolve() != REPO_ROOT.resolve():
+        raise AssertionError(
+            f"hosted routing test root mismatch: expected {REPO_ROOT}, observed {repo_root}"
+        )
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(HostedRoutingConformanceTests)
+    result = unittest.TextTestRunner(verbosity=1).run(suite)
+    if not result.wasSuccessful():
+        raise AssertionError("repository hosted routing conformance tests failed")
 
 
 if __name__ == "__main__":

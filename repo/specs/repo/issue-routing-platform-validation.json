@@ -1,0 +1,68 @@
+{
+  "spec_id": "repo.issue-routing-platform-validation",
+  "title": "Issue Routing Platform Validation",
+  "purpose": "Reusable platform-validation boundary that keeps hosted field validation subordinate to repository authority and constrains platform realizations by observable provenance and governed-state invariants rather than exact API sequencing.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-PVAL-001",
+      "text": "Hosting-platform labels, comments, body updates, issue events, and hosted field-policy realization shall remain subordinate to repository-generic routing and governance authority."
+    },
+    {
+      "id": "IRG-PVAL-002",
+      "text": "Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent."
+    },
+    {
+      "id": "IRG-PVAL-003",
+      "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state."
+    },
+    {
+      "id": "IRG-PVAL-004",
+      "text": "Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance."
+    },
+    {
+      "id": "IRG-PVAL-005",
+      "text": "Repository-generic validation integration shall constrain observable ordering only as needed to preserve required provenance before destructive body replacement or restructuring and to prevent governed-field validation from applying before canonical governed fields and governed-work state are established; exact hosting-platform API or event sequencing and live routing-label retention remain platform-profile concerns."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.issue-routing-governance"
+    },
+    {
+      "spec_id": "repo.governed-work-provenance"
+    },
+    {
+      "spec_id": "repo.governed-work-promotion"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/repository-decomposition/04-platform-validation-integration.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/issue-routing-platform-validation.md"
+    }
+  ]
+}
