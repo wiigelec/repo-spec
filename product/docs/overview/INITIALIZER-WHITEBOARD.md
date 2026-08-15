@@ -20,13 +20,16 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
   "governing_issue": "#374",
   "required_content_areas": {
     "collected_input": [
-      "product/docs/overview/initializer-whiteboard/01-migration-input.md"
+      "product/docs/overview/initializer-whiteboard/01-migration-input.md",
+      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
     ],
     "provenance": [
-      "product/docs/overview/initializer-whiteboard/01-migration-input.md"
+      "product/docs/overview/initializer-whiteboard/01-migration-input.md",
+      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
     ],
     "unresolved_intent": [
-      "product/docs/overview/initializer-whiteboard/01-migration-input.md"
+      "product/docs/overview/initializer-whiteboard/01-migration-input.md",
+      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
     ]
   },
   "controlling_documents": [],
@@ -39,6 +42,16 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
       "order": 1,
       "path": "product/docs/overview/initializer-whiteboard/01-migration-input.md",
       "title": "Migration input",
+      "coverage": [
+        "collected_input",
+        "provenance",
+        "unresolved_intent"
+      ]
+    },
+    {
+      "order": 2,
+      "path": "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md",
+      "title": "Derived-repository upgrade intake",
       "coverage": [
         "collected_input",
         "provenance",
@@ -58,6 +71,7 @@ This document provides the minimal collection-stage artifact required for migrat
 ## Chunk index
 
 - [Migration input](initializer-whiteboard/01-migration-input.md)
+- [Derived-repository upgrade intake](initializer-whiteboard/02-derived-repository-upgrade-intake.md)
 
 ## Relationships
 
