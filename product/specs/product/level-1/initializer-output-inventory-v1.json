@@ -975,60 +975,6 @@
       "role": "runtime-framework"
     },
     {
-      "material_key": "repo-routing-profile-source-ISSUE-TEMPLATE-governing-issue-yml",
-      "destination_path": "repo/profiles/github/ISSUE_TEMPLATE/governing-issue.yml",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-installed-ISSUE-TEMPLATE-governing-issue-yml",
-      "destination_path": ".github/ISSUE_TEMPLATE/governing-issue.yml",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-source-PULL-REQUEST-TEMPLATE-md",
-      "destination_path": "repo/profiles/github/PULL_REQUEST_TEMPLATE.md",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-installed-PULL-REQUEST-TEMPLATE-md",
-      "destination_path": ".github/PULL_REQUEST_TEMPLATE.md",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-source-workflows-github-field-policy-yml",
-      "destination_path": "repo/profiles/github/workflows/github-field-policy.yml",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-installed-workflows-github-field-policy-yml",
-      "destination_path": ".github/workflows/github-field-policy.yml",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
       "material_key": "repo-routing-profile-source-workflows-governed-work-promotion-yml",
       "destination_path": "repo/profiles/github/workflows/governed-work-promotion.yml",
       "producer": "framework-installation",
@@ -1040,24 +986,6 @@
     {
       "material_key": "repo-routing-profile-installed-workflows-governed-work-promotion-yml",
       "destination_path": ".github/workflows/governed-work-promotion.yml",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-source-workflows-validation-yml",
-      "destination_path": "repo/profiles/github/workflows/validation.yml",
-      "producer": "framework-installation",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "role": "runtime-framework"
-    },
-    {
-      "material_key": "repo-routing-profile-installed-workflows-validation-yml",
-      "destination_path": ".github/workflows/validation.yml",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
