@@ -1,0 +1,81 @@
+{
+  "spec_id": "repo.issue-intake-governance-routing",
+  "title": "Issue Intake to Governed Work Routing",
+  "purpose": "End-to-end orchestration for moving ordinary issue intake through classification, authority routing, provenance preservation, governed-work promotion, and hosted validation activation with observable success and failure conditions.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "IRG-E2E-001",
+      "text": "The issue-routing lifecycle shall begin with ordinary intake that may be unformatted and not yet governed."
+    },
+    {
+      "id": "IRG-E2E-002",
+      "text": "The lifecycle shall classify intake, select the accepted authority path, preserve required intake provenance before content-restructuring promotion, establish governed-work state only for a canonical bounded governed operation, and activate governed field-policy validation only after that governed state exists."
+    },
+    {
+      "id": "IRG-E2E-003",
+      "text": "Bug-fix routing shall enter audit; feature-request routing shall enter the governed feature-development lifecycle and shall not bypass functional-set approval, decomposition, specification, planning, or implementation gates applicable to later work."
+    },
+    {
+      "id": "IRG-E2E-004",
+      "text": "If authority routing cannot determine a permitted path without resolving an unaccepted semantic decision, the lifecycle shall stop rather than manufacture authority."
+    },
+    {
+      "id": "IRG-E2E-005",
+      "text": "A successful routing outcome shall leave the applicable authority path explicit, preserved intake evidence traceable, and any governed operation structurally subject to the existing bounded-change workflow."
+    },
+    {
+      "id": "IRG-E2E-006",
+      "text": "The lifecycle shall treat failure to preserve required provenance, failure to establish a canonical governed issue before governed-work validation, or conflict between hosting state and repository authority as unsuccessful routing rather than successful governance."
+    },
+    {
+      "id": "IRG-E2E-007",
+      "text": "The orchestration shall not redefine lower-level concepts or capabilities and shall treat either in-place or successor governed-issue realization as conforming when the accepted lower-level routing, provenance, promotion, and validation invariants are satisfied."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.issue-routing-governance"
+    },
+    {
+      "spec_id": "repo.issue-routing-classification"
+    },
+    {
+      "spec_id": "repo.governed-work-provenance"
+    },
+    {
+      "spec_id": "repo.issue-authority-routing"
+    },
+    {
+      "spec_id": "repo.governed-work-promotion"
+    },
+    {
+      "spec_id": "repo.issue-routing-platform-validation"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/issue-intake-governance-routing.md"
+    }
+  ]
+}

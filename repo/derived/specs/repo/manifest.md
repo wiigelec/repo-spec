@@ -36,6 +36,13 @@ Identifies the complete repository-spec JSON set.
 - `repo.product-spec-base` -> `repo/specs/repo/product-spec-base.json`
 - `repo.product-correspondence` -> `repo/specs/repo/product-correspondence.json`
 - `repo.product-levels` -> `repo/specs/repo/product-levels.json`
+- `repo.issue-routing-governance` -> `repo/specs/repo/issue-routing-governance.json`
+- `repo.issue-routing-classification` -> `repo/specs/repo/issue-routing-classification.json`
+- `repo.governed-work-provenance` -> `repo/specs/repo/governed-work-provenance.json`
+- `repo.issue-authority-routing` -> `repo/specs/repo/issue-authority-routing.json`
+- `repo.governed-work-promotion` -> `repo/specs/repo/governed-work-promotion.json`
+- `repo.issue-routing-platform-validation` -> `repo/specs/repo/issue-routing-platform-validation.json`
+- `repo.issue-intake-governance-routing` -> `repo/specs/repo/issue-intake-governance-routing.json`
 
 ## Normative requirements
 

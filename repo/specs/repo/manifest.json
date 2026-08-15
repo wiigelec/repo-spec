@@ -68,6 +68,34 @@
     {
       "spec_id": "repo.product-levels",
       "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "spec_id": "repo.issue-routing-governance",
+      "path": "repo/specs/repo/issue-routing-governance.json"
+    },
+    {
+      "spec_id": "repo.issue-routing-classification",
+      "path": "repo/specs/repo/issue-routing-classification.json"
+    },
+    {
+      "spec_id": "repo.governed-work-provenance",
+      "path": "repo/specs/repo/governed-work-provenance.json"
+    },
+    {
+      "spec_id": "repo.issue-authority-routing",
+      "path": "repo/specs/repo/issue-authority-routing.json"
+    },
+    {
+      "spec_id": "repo.governed-work-promotion",
+      "path": "repo/specs/repo/governed-work-promotion.json"
+    },
+    {
+      "spec_id": "repo.issue-routing-platform-validation",
+      "path": "repo/specs/repo/issue-routing-platform-validation.json"
+    },
+    {
+      "spec_id": "repo.issue-intake-governance-routing",
+      "path": "repo/specs/repo/issue-intake-governance-routing.json"
     }
   ],
   "normative_requirements": [
