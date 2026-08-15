@@ -406,6 +406,13 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertNotIn("PRODUCT_SCRIPTS", live_promotion)
         self.assertNotIn(' / "product" / "scripts"', live_promotion)
 
+        stale_product_routing_tests = (
+            "product/scripts/validation_tests/test_issue_routing_correspondence.py",
+            "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py",
+        )
+        for relative_path in stale_product_routing_tests:
+            self.assertFalse((REPO_ROOT / relative_path).exists(), relative_path)
+
 
 def run_issue_intake_governance_routing_tests(repo_root: pathlib.Path) -> None:
     if repo_root.resolve() != REPO_ROOT.resolve():
