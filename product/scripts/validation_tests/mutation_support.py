@@ -130,8 +130,10 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
 
     product_manifest_path = repo_root / "product/specs/product/manifest.json"
     if product_manifest_path.exists():
+        required_paths.append("product/specs/product/manifest.json")
         product_manifest = json.loads(product_manifest_path.read_text())
         for entry in product_manifest.get("product_specifications", []):
+            required_paths.append(entry["path"])
             spec = json.loads((repo_root / entry["path"]).read_text())
             correspondence = spec.get("correspondence", {})
             for collection_name in ("implementations", "tests"):
