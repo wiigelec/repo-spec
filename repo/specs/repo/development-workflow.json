@@ -31,19 +31,19 @@
     },
     {
       "id": "REPO-WF-007",
-      "text": "The normative development lifecycle for product development shall be: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted product specifications (Level 0\u20133 in dependency order), accepted implementation plan, governed implementation issues, and product artifacts. Collection and analysis shall precede candidate functional-set formation, an approved functional set shall be required before the corresponding product decomposition may be accepted, and each later acceptance-bearing stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
+      "text": "The normative development lifecycle for governed development shall be: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted owner-appropriate normative specifications, accepted implementation plan, governed implementation issues, and maintained artifacts. Repository/framework-owned development shall use accepted repository specifications for repository-generic requirements; product-owned development shall use accepted product specifications in the applicable Level 0\u20133 dependency order. Collection and analysis shall precede candidate functional-set formation, an approved functional set shall be required before the corresponding decomposition may be accepted, and each later acceptance-bearing stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
     },
     {
       "id": "REPO-WF-008",
-      "text": "An approved functional set must be approved before a product decomposition may be accepted. No additional development-document gate exists between functional-set approval and decomposition."
+      "text": "An approved functional set must be approved before the corresponding decomposition may be accepted. No additional development-document gate exists between functional-set approval and decomposition."
     },
     {
       "id": "REPO-WF-009",
-      "text": "A product decomposition must be accepted before the controlling product-specification set for the corresponding implementation scope may be finalized and accepted."
+      "text": "A decomposition must be accepted before the controlling owner-appropriate normative specification set for the corresponding implementation scope may be finalized and accepted."
     },
     {
       "id": "REPO-WF-010",
-      "text": "All product specifications necessary to govern a planned implementation scope must be accepted before the corresponding implementation plan may become accepted. An implementation plan whose required controlling product specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the product manifest, or missing required correspondence or dependency declarations shall not be accepted."
+      "text": "All owner-appropriate normative specifications necessary to govern a planned implementation scope must be accepted before the corresponding implementation plan may become accepted. An implementation plan whose required controlling specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the applicable authoritative manifest, or missing correspondence or dependency declarations required by the governing specification contracts shall not be accepted."
     },
     {
       "id": "REPO-WF-011",
