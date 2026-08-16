@@ -103,11 +103,31 @@ def validate_repo_tree_integrity(repo_root: Path) -> None:
     current_result = _git(repo_root, "rev-parse", "HEAD:repo", check=False)
     if current_result.returncode != 0:
         raise RootValidationError("repo tree integrity failed: repo/ is absent from HEAD")
-    current = current_result.stdout.strip()
 
-    if current != baseline:
+    # Accepted derived-repository upgrades deliberately maintain one mutable
+    # repository-local metadata path: framework lineage. All other committed
+    # repo/ content remains anchored to the initialization root commit.
+    committed_diff = _git(
+        repo_root,
+        "diff",
+        "--quiet",
+        root_commit,
+        "HEAD",
+        "--",
+        "repo",
+        ":(exclude)repo/initializer/framework-lineage.json",
+        check=False,
+    )
+    if committed_diff.returncode not in {0, 1}:
+        detail = committed_diff.stderr.strip() or committed_diff.stdout.strip()
         raise RootValidationError(
-            "repo tree integrity failed: committed repo/ tree differs from initialized baseline"
+            "repo tree integrity failed: cannot compare committed repo/ tree"
+            + (f": {detail}" if detail else "")
+        )
+    if committed_diff.returncode == 1:
+        raise RootValidationError(
+            "repo tree integrity failed: committed repo/ tree differs from initialized baseline "
+            "outside governed framework lineage"
         )
 
     status = _git(

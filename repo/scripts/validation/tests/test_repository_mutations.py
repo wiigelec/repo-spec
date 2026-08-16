@@ -6,7 +6,11 @@ import tempfile
 from pathlib import Path
 
 from repo_model import load_specs
-from root_validation import RootValidationError, validate_root_boundary
+from root_validation import (
+    RootValidationError,
+    validate_repo_tree_integrity,
+    validate_root_boundary,
+)
 from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from validation.generated_outputs import check_generated_document_write_behavior
 from validation.errors import fail
@@ -130,6 +134,84 @@ def run_repository_root_boundary_tests(repo_root: Path) -> None:
         )
 
     print("ok: repository root boundary")
+
+
+def _git_for_root_integrity(repo: Path, *args: str) -> str:
+    import subprocess
+
+    result = subprocess.run(
+        ["git", "-C", str(repo), *args],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode:
+        raise RuntimeError(result.stderr or result.stdout)
+    return result.stdout.strip()
+
+
+def _make_initialized_integrity_fixture(root: Path, name: str) -> Path:
+    repo = root / name
+    repo.mkdir()
+    _git_for_root_integrity(repo, "init", "-q")
+    _git_for_root_integrity(repo, "config", "user.email", "validation@example.invalid")
+    _git_for_root_integrity(repo, "config", "user.name", "Validation")
+    (repo / "repo/specs/repo").mkdir(parents=True)
+    (repo / "repo/specs/repo/validation.json").write_text(
+        '{"fixture":true}\n',
+        encoding="utf-8",
+    )
+    _git_for_root_integrity(repo, "add", "-A")
+    _git_for_root_integrity(repo, "commit", "-qm", "initialized baseline")
+    return repo
+
+
+def run_repository_initialized_tree_integrity_tests(repo_root: Path) -> None:
+    del repo_root
+
+    def expect_integrity_failure(description: str, func, fragment: str) -> None:
+        try:
+            func()
+        except RootValidationError as exc:
+            if fragment not in str(exc):
+                fail(
+                    f"mutation test failed: {description} "
+                    f"(expected {fragment!r}, got {exc})"
+                )
+        else:
+            fail(f"mutation test failed: {description} did not fail")
+
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_name:
+        temp_root = Path(temp_name)
+
+        lineage_repo = _make_initialized_integrity_fixture(
+            temp_root, "lineage-only"
+        )
+        lineage = lineage_repo / "repo/initializer/framework-lineage.json"
+        lineage.parent.mkdir(parents=True)
+        lineage.write_text('{"schema_version":"1","entries":[]}\n', encoding="utf-8")
+        _git_for_root_integrity(lineage_repo, "add", "-A")
+        _git_for_root_integrity(lineage_repo, "commit", "-qm", "accepted lineage")
+        validate_repo_tree_integrity(lineage_repo)
+
+        drift_repo = _make_initialized_integrity_fixture(
+            temp_root, "unrelated-drift"
+        )
+        (drift_repo / "repo/specs/repo/validation.json").write_text(
+            '{"fixture":false}\n',
+            encoding="utf-8",
+        )
+        _git_for_root_integrity(drift_repo, "add", "-A")
+        _git_for_root_integrity(drift_repo, "commit", "-qm", "unrelated repo drift")
+        expect_integrity_failure(
+            "committed repo drift outside framework lineage",
+            lambda: validate_repo_tree_integrity(drift_repo),
+            "outside governed framework lineage",
+        )
+
+    print("ok: initialized repository tree integrity")
+
 
 def run_repository_development_document_compatibility_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
