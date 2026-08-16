@@ -50,6 +50,10 @@
     {
       "id": "UPG-FULL-010",
       "text": "Remote framework retrieval, arbitrary caller-selected framework revision, generalized automatic conflict resolution, hosted orchestration, release policy, and automatic retry or rollback are outside this complete local workflow unless separately accepted by normative successor specifications."
+    },
+    {
+      "id": "UPG-FULL-011",
+      "text": "The complete upgrade workflow shall produce and validate transportable repository-local framework authority for the reconciliation-target revision, and shall backfill any required pre-representation accepted lineage authority only from exact locally resolvable recorded framework identities. A promoted upgraded repository shall thereafter support routine framework-managed repository integrity validation without the originating repo-spec checkout and without remote framework retrieval."
     }
   ],
   "dependencies": [
@@ -79,6 +83,9 @@
     },
     {
       "spec_id": "product.provenance-record"
+    },
+    {
+      "spec_id": "product.transportable-framework-authority"
     }
   ],
   "references": [

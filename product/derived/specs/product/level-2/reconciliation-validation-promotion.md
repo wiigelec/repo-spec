@@ -47,6 +47,7 @@ Defines complete staged validation, promotion gating, accepted-lineage advanceme
 - `UPG-VAP-006`: Terminal evidence shall distinguish at minimum accepted promoted success from rejection before reconciliation, failure before promotion, indeterminate promotion, and promotion committed with finalization error when such an outcome is technically possible.
 - `UPG-VAP-007`: Post-promotion cleanup or finalization failure shall not falsely rewrite a committed promotion as unpromoted. Because accepted lineage is established by commitment of the exact validated lineage-bearing repository state, terminal evidence shall report whether that transition committed and shall not perform a later repository-content rewrite merely to synchronize lineage acceptance.
 - `UPG-VAP-008`: Automatic rollback, retry, or resume after an indeterminate promotion is not authorized by this contract and requires separate accepted semantics.
+- `UPG-VAP-009`: Complete staged validation shall verify all transportable framework-authority evidence required by the prospective accepted lineage state using repository-local Git-object identity traversal. Missing, incomplete, unanchored, or tampered required authority shall prevent promotion; successful promotion accepts exactly the validated lineage and framework-authority state together.
 
 ## Dependencies
 
@@ -57,6 +58,7 @@ Defines complete staged validation, promotion gating, accepted-lineage advanceme
 - `product.validation-report`
 - `product.execution-report`
 - `product.framework-reconciliation-lineage`
+- `product.transportable-framework-authority`
 
 ## References
 

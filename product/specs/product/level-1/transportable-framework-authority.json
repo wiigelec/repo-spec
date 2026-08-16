@@ -1,0 +1,115 @@
+{
+  "spec_id": "product.transportable-framework-authority",
+  "title": "Transportable Framework Authority",
+  "purpose": "Defines durable repository-local Git-object evidence that allows an initialized repository to prove initializer-managed framework material against exact accepted repo-spec revisions after transport away from the originating framework checkout.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "transportable-framework-authority"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-TFA-001",
+      "text": "For each accepted framework reconciliation lineage revision governed by this contract, the initialized repository shall maintain a deterministic repository-local framework-authority bundle at `repo/initializer/framework-authority/<framework-sha1>/`, where `<framework-sha1>` is the exact lowercase SHA-1 object ID of that accepted framework commit."
+    },
+    {
+      "id": "UPG-TFA-002",
+      "text": "A framework-authority bundle shall retain the exact Git commit object identified by the corresponding accepted lineage revision and the minimal tree/blob object closure necessary to resolve the authoritative initialization inventory endpoints and framework source objects required to prove initializer-managed `repo/` material for that revision."
+    },
+    {
+      "id": "UPG-TFA-003",
+      "text": "Every retained Git object shall be locally verifiable by recomputing its canonical Git object identity from object type, byte length, and uncompressed content; the bundle shall fail validation when any retained object's computed identity differs from its stored object ID."
+    },
+    {
+      "id": "UPG-TFA-004",
+      "text": "Framework-authority verification shall begin from the exact accepted lineage commit object ID and traverse only cryptographically linked Git tree/blob identities to resolve required inventory and source content; a repository-local index, manifest, path list, digest list, or other sidecar metadata shall be subordinate evidence and shall not independently authorize managed content."
+    },
+    {
+      "id": "UPG-TFA-005",
+      "text": "The retained object closure shall be sufficient to determine the initializer-managed `repo/` destination authority relevant to the accepted state, including authoritative inventory identity, stable managed-material correspondence, exact source blob bytes, executable/non-executable mode where governed, and historical managed paths needed to distinguish authorized transition from unrelated committed repository drift."
+    },
+    {
+      "id": "UPG-TFA-006",
+      "text": "The bundle representation and any subordinate index shall be deterministically serialized/stored so equivalent accepted framework identity and authoritative inventory/source content produce equivalent repository-local authority content."
+    },
+    {
+      "id": "UPG-TFA-007",
+      "text": "Routine validation of a promoted initialized repository shall be able to verify framework-managed repository integrity using only the promoted repository's committed lineage and framework-authority bundles; it shall not require the originating local repo-spec checkout and shall not retrieve framework authority from a network or remote repository."
+    },
+    {
+      "id": "UPG-TFA-008",
+      "text": "Missing, malformed, incomplete, internally inconsistent, unanchored, or tampered framework-authority evidence required for the accepted lineage state shall fail closed; coordinated modification of managed content and subordinate local metadata shall not be sufficient to produce a valid authority proof."
+    },
+    {
+      "id": "UPG-TFA-009",
+      "text": "When an initialized repository has accepted lineage entries that predate this framework-authority representation, a later governed upgrade may materialize the missing historical bundles only from the exact locally resolvable framework repository/revision identities already recorded by accepted lineage or valid legacy provenance; unresolved history shall not be guessed and remote retrieval is not authorized."
+    },
+    {
+      "id": "UPG-TFA-010",
+      "text": "A prospective reconciliation-target framework-authority bundle, together with any required exact historical backfill, shall be present in the staged candidate before complete staged validation; non-promoted attempts shall not advance accepted lineage or accepted framework-authority state."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/transportable-framework-authority.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

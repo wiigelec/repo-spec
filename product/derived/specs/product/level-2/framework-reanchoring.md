@@ -45,6 +45,7 @@ Defines transition of a reconciled staged repository from its prior accepted fra
 - `UPG-ANC-004`: The reconciliation-target revision shall be represented in staging as a prospective lineage entry whose presence is not yet accepted lineage because the staged repository has not been promoted. Re-anchoring shall not require changing that entry's serialized repository content after successful validation in order for it to become accepted; acceptance occurs only when promotion commits the exact validated staged repository state.
 - `UPG-ANC-005`: The candidate anchor and lineage evidence shall retain enough immutable identity to resolve the reconciliation-target repo-spec initialization material/output inventory authority used for the reconciliation.
 - `UPG-ANC-006`: Re-anchoring shall fail closed when the staged candidate identity conflicts with the resolved reconciliation target, when accepted lineage history cannot be preserved, or when candidate provenance would become ambiguous.
+- `UPG-ANC-007`: Before complete staged validation, re-anchoring shall materialize the prospective reconciliation-target transportable framework-authority bundle and any exact historical bundle backfill required for accepted lineage portability. The staged authority shall be cryptographically anchored to the corresponding exact lineage Git identities and shall not become accepted unless the exact validated staged state is promoted.
 
 ## Dependencies
 
@@ -53,6 +54,7 @@ Defines transition of a reconciled staged repository from its prior accepted fra
 - `product.staged-managed-reconciliation`
 - `product.source-revision-identity`
 - `product.git-object-identity`
+- `product.transportable-framework-authority`
 
 ## References
 
