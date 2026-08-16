@@ -1,0 +1,97 @@
+{
+  "spec_id": "product.framework-reconciliation-lineage",
+  "title": "Framework Reconciliation Lineage",
+  "purpose": "Defines the durable accepted repo-spec framework lineage retained by an initialized repository across original initialization and subsequent successful reconciliations.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "framework-reconciliation-lineage"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-LIN-001",
+      "text": "An initialized target repository shall maintain a durable ordered accepted framework lineage beginning with the exact repo-spec revision used for original initialization and appending each later repo-spec revision whose reconciliation is successfully validated and promoted."
+    },
+    {
+      "id": "UPG-LIN-002",
+      "text": "Each accepted lineage entry shall contain or reference enough immutable framework identity to resolve the exact repo-spec commit and the corresponding initialization material/output inventory authority for that revision."
+    },
+    {
+      "id": "UPG-LIN-003",
+      "text": "The most recent accepted lineage entry shall be the active baseline framework revision for the next reconciliation; older accepted entries remain durable historical provenance and audit evidence."
+    },
+    {
+      "id": "UPG-LIN-004",
+      "text": "A failed, rejected, interrupted, or otherwise non-promoted reconciliation attempt shall not become an accepted lineage entry and shall not replace the active baseline."
+    },
+    {
+      "id": "UPG-LIN-005",
+      "text": "Appending an accepted reconciliation entry shall occur only as part of successful promotion/finalization of the complete reconciled repository; a staged candidate lineage entry is not accepted lineage."
+    },
+    {
+      "id": "UPG-LIN-006",
+      "text": "The lineage shall preserve original initialization identity even after one or more accepted reconciliations and shall not collapse history to only the latest framework revision."
+    },
+    {
+      "id": "UPG-LIN-007",
+      "text": "The exact serialized storage representation may evolve under later governed specification revision, but any accepted representation shall preserve ordered accepted identities, active-baseline determination, and resolvability of each accepted framework inventory authority."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/framework-reconciliation-lineage.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

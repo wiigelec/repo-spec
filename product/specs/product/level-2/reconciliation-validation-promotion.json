@@ -1,0 +1,113 @@
+{
+  "spec_id": "product.reconciliation-validation-promotion",
+  "title": "Reconciliation Validation and Promotion",
+  "purpose": "Defines complete staged validation, promotion gating, accepted-lineage advancement, and terminal evidence for a reconciled repository.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "reconciliation-validation-promotion"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-VAP-001",
+      "text": "The complete re-anchored staged repository shall undergo the repository validation required for the candidate accepted framework state before promotion may begin."
+    },
+    {
+      "id": "UPG-VAP-002",
+      "text": "Any required validation failure, error, unresolved managed-state conflict, inconsistent candidate anchor, or incomplete required evidence shall prevent promotion and shall leave the previously accepted target framework lineage unchanged."
+    },
+    {
+      "id": "UPG-VAP-003",
+      "text": "Promotion shall commit the complete validated staged repository as one governed transition whose success or failure is determinable; no partially reconciled repository may be reported as accepted success."
+    },
+    {
+      "id": "UPG-VAP-004",
+      "text": "The reconciliation-target repo-spec revision shall be appended to product.framework-reconciliation-lineage only after promotion has successfully committed; after that append it becomes the active baseline for the next reconciliation."
+    },
+    {
+      "id": "UPG-VAP-005",
+      "text": "Rejected, failed, interrupted, indeterminate, or non-promoted attempts shall not append accepted lineage, even when candidate re-anchoring or candidate lineage evidence existed in staging."
+    },
+    {
+      "id": "UPG-VAP-006",
+      "text": "Terminal evidence shall distinguish at minimum accepted promoted success from rejection before reconciliation, failure before promotion, indeterminate promotion, and promotion committed with finalization error when such an outcome is technically possible."
+    },
+    {
+      "id": "UPG-VAP-007",
+      "text": "Post-promotion cleanup or finalization failure shall not falsely rewrite a committed promotion as unpromoted; terminal evidence and accepted lineage shall agree on whether the framework transition committed."
+    },
+    {
+      "id": "UPG-VAP-008",
+      "text": "Automatic rollback, retry, or resume after an indeterminate promotion is not authorized by this contract and requires separate accepted semantics."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "spec_id": "product.validation-report"
+    },
+    {
+      "spec_id": "product.execution-report"
+    },
+    {
+      "spec_id": "product.framework-reconciliation-lineage"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/reconciliation-validation-promotion.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "spec_id": "product.upgrade-set-resolution",
+  "title": "Upgrade Set Resolution",
+  "purpose": "Defines deterministic resolution of the legal initializer-managed reconciliation set from accepted baseline and supplying framework inventories.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "upgrade-set-resolution"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-SET-001",
+      "text": "Upgrade-set resolution shall validate the target's accepted framework lineage, select its most recent accepted entry as the active baseline, and resolve the exact supplying repo-spec framework revision from the executing upgrade instance."
+    },
+    {
+      "id": "UPG-SET-002",
+      "text": "The component shall load the authoritative initialization material/output inventories from the baseline framework revision and the supplying reconciliation-target framework revision and shall fail closed if either endpoint cannot be resolved or validated."
+    },
+    {
+      "id": "UPG-SET-003",
+      "text": "The component shall construct product.managed-material-delta by comparing the two inventory endpoints through stable managed-material identity rather than by raw repository Git diff."
+    },
+    {
+      "id": "UPG-SET-004",
+      "text": "Source-owned upgrade qualification or transition metadata may remove, defer, order, or otherwise constrain manifest-derived transitions only when that qualification is itself supplied by the reconciliation-target framework authority; it shall not replace either inventory endpoint."
+    },
+    {
+      "id": "UPG-SET-005",
+      "text": "Upgrade qualification shall never expand mutation authority to material absent from initializer-managed inventory authority and shall fail closed on an attempted qualification of unmanaged target content."
+    },
+    {
+      "id": "UPG-SET-006",
+      "text": "The resolved reconciliation set shall preserve enough evidence to identify the baseline revision, target revision, compared inventory identities, every selected managed-material identity, its delta classification, and any qualification that caused inclusion, exclusion, or deferral."
+    },
+    {
+      "id": "UPG-SET-007",
+      "text": "Ambiguous stable identity, incompatible inventory schema, unresolved qualification, or inconsistent endpoint evidence shall reject or fail resolution before staged target mutation begins."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/upgrade-set-resolution.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
