@@ -134,6 +134,8 @@ class UP1ConformanceTests(unittest.TestCase):
                 raw = json.loads(p.read_text(encoding="utf-8"))
                 del raw["request_fingerprint"]
                 p.write_text(json.dumps(raw, indent=2) + "\n", encoding="utf-8")
+                git(target, "add", "repo/initializer/provenance.json")
+                git(target, "commit", "-qm", "invalid committed provenance")
                 with self.assertRaisesRegex(
                     UpgradeResolutionError, "canonical ordered provenance fields"
                 ):

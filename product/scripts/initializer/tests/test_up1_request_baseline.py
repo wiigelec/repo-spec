@@ -122,6 +122,8 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 (target / "repo/initializer/framework-lineage.json").write_bytes(
                     serialize_framework_lineage(entries)
                 )
+                git(target, "add", "repo/initializer/framework-lineage.json")
+                git(target, "commit", "-qm", "accepted lineage")
                 result = resolve_accepted_baseline(str(target))
                 self.assertEqual(result.baseline_source, "accepted-lineage")
                 self.assertEqual(len(result.lineage), 2)
@@ -135,6 +137,8 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 (target / "repo/initializer/framework-lineage.json").write_text(
                     '{"schema_version":"1","entries":[]}\n', encoding="utf-8"
                 )
+                git(target, "add", "repo/initializer/framework-lineage.json")
+                git(target, "commit", "-qm", "invalid committed lineage")
                 with self.assertRaisesRegex(
                     UpgradeResolutionError, "entries must be a non-empty array"
                 ):
@@ -151,10 +155,107 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 provenance_path.write_text(
                     json.dumps(provenance, indent=2) + "\n", encoding="utf-8"
                 )
+                git(target, "add", "repo/initializer/provenance.json")
+                git(target, "commit", "-qm", "unresolvable committed provenance")
                 with self.assertRaisesRegex(
                     UpgradeResolutionError, "inventory authority cannot be resolved"
                 ):
                     resolve_accepted_baseline(str(target))
+
+    def test_dirty_lineage_cannot_replace_committed_accepted_baseline(self):
+        ftd, framework, first = self.make_framework()
+        with ftd:
+            (framework / "README.md").write_text("framework-v2\n", encoding="utf-8")
+            git(framework, "add", "README.md")
+            git(framework, "commit", "-qm", "framework-v2")
+            second = git(framework, "rev-parse", "HEAD")
+            (framework / "README.md").write_text("framework-v3\n", encoding="utf-8")
+            git(framework, "add", "README.md")
+            git(framework, "commit", "-qm", "framework-v3")
+            third = git(framework, "rev-parse", "HEAD")
+
+            ttd, target = self.make_target(framework, first)
+            with ttd:
+                committed = (
+                    FrameworkLineageEntry(str(framework), GitObjectIdentity("sha1", first)),
+                    FrameworkLineageEntry(str(framework), GitObjectIdentity("sha1", second)),
+                )
+                lineage_path = target / "repo/initializer/framework-lineage.json"
+                lineage_path.write_bytes(serialize_framework_lineage(committed))
+                git(target, "add", "repo/initializer/framework-lineage.json")
+                git(target, "commit", "-qm", "accepted lineage")
+
+                dirty = committed + (
+                    FrameworkLineageEntry(str(framework), GitObjectIdentity("sha1", third)),
+                )
+                lineage_path.write_bytes(serialize_framework_lineage(dirty))
+
+                result = resolve_accepted_baseline(str(target))
+                self.assertEqual(result.baseline_source, "accepted-lineage")
+                self.assertEqual(result.active_baseline.framework_revision.object_id, second)
+
+    def test_dirty_provenance_cannot_replace_committed_bootstrap_authority(self):
+        ftd, framework, first = self.make_framework()
+        with ftd:
+            (framework / "README.md").write_text("framework-v2\n", encoding="utf-8")
+            git(framework, "add", "README.md")
+            git(framework, "commit", "-qm", "framework-v2")
+            second = git(framework, "rev-parse", "HEAD")
+
+            ttd, target = self.make_target(framework, first)
+            with ttd:
+                provenance_path = target / "repo/initializer/provenance.json"
+                dirty = json.loads(provenance_path.read_text(encoding="utf-8"))
+                dirty["framework_revision"]["object_id"] = second
+                provenance_path.write_text(
+                    json.dumps(dirty, indent=2) + "\n", encoding="utf-8"
+                )
+
+                result = resolve_accepted_baseline(str(target))
+                self.assertEqual(result.baseline_source, "legacy-provenance-bootstrap")
+                self.assertEqual(result.active_baseline.framework_revision.object_id, first)
+
+    def test_untracked_lineage_cannot_shadow_committed_legacy_provenance(self):
+        ftd, framework, first = self.make_framework()
+        with ftd:
+            (framework / "README.md").write_text("framework-v2\n", encoding="utf-8")
+            git(framework, "add", "README.md")
+            git(framework, "commit", "-qm", "framework-v2")
+            second = git(framework, "rev-parse", "HEAD")
+
+            ttd, target = self.make_target(framework, first)
+            with ttd:
+                lineage_path = target / "repo/initializer/framework-lineage.json"
+                lineage_path.write_bytes(
+                    serialize_framework_lineage(
+                        (
+                            FrameworkLineageEntry(
+                                str(framework),
+                                GitObjectIdentity("sha1", second),
+                            ),
+                        )
+                    )
+                )
+                result = resolve_accepted_baseline(str(target))
+                self.assertEqual(result.baseline_source, "legacy-provenance-bootstrap")
+                self.assertEqual(result.active_baseline.framework_revision.object_id, first)
+
+    def test_unrelated_dirty_content_does_not_block_committed_authority_resolution(self):
+        ftd, framework, first = self.make_framework()
+        with ftd:
+            ttd, target = self.make_target(framework, first)
+            with ttd:
+                (target / "README.md").write_text("locally customized\n", encoding="utf-8")
+                (target / "untracked-product-note.txt").write_text("keep me\n", encoding="utf-8")
+                before = git(target, "status", "--porcelain=v1", "--untracked-files=all")
+
+                result = resolve_accepted_baseline(str(target))
+
+                self.assertEqual(result.active_baseline.framework_revision.object_id, first)
+                self.assertEqual(
+                    git(target, "status", "--porcelain=v1", "--untracked-files=all"),
+                    before,
+                )
 
     def test_remote_like_target_and_nested_target_are_rejected(self):
         with self.assertRaisesRegex(UpgradeResolutionError, "local filesystem"):

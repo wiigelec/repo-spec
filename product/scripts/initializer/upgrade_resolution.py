@@ -82,11 +82,7 @@ def _git(target: Path, *args: str) -> subprocess.CompletedProcess[str]:
         check=False,
     )
 
-def _read_json_object(path: Path, context: str) -> dict[str, Any]:
-    try:
-        raw = path.read_bytes()
-    except OSError as exc:
-        raise UpgradeResolutionError(f"cannot read {context}: {path}") from exc
+def _read_json_bytes(raw: bytes, context: str) -> dict[str, Any]:
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -98,6 +94,44 @@ def _read_json_object(path: Path, context: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise UpgradeResolutionError(f"{context} must contain one JSON object")
     return value
+
+
+def _read_committed_regular_file(
+    repository: Path,
+    relative_path: Path,
+    context: str,
+) -> bytes | None:
+    path_text = relative_path.as_posix()
+    tree = _git(repository, "ls-tree", "HEAD", "--", path_text)
+    if tree.returncode:
+        raise UpgradeResolutionError(
+            f"cannot resolve committed {context}: {tree.stderr.strip()}"
+        )
+    line = tree.stdout.strip()
+    if not line:
+        return None
+
+    fields = line.split(None, 3)
+    if len(fields) != 4:
+        raise UpgradeResolutionError(f"committed {context} tree entry is invalid")
+    mode, object_type, _object_id, observed_path = fields
+    if observed_path != path_text:
+        raise UpgradeResolutionError(f"committed {context} path is ambiguous")
+    if object_type != "blob" or mode not in {"100644", "100755"}:
+        raise UpgradeResolutionError(f"committed {context} must be a regular file")
+
+    p = subprocess.run(
+        ["git", "-C", str(repository), "show", f"HEAD:{path_text}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if p.returncode:
+        raise UpgradeResolutionError(
+            f"cannot read committed {context}: "
+            f"{p.stderr.decode('utf-8', errors='replace').strip()}"
+        )
+    return p.stdout
 
 def _parse_git_identity(value: object, context: str) -> GitObjectIdentity:
     if not isinstance(value, dict):
@@ -235,24 +269,29 @@ def _resolve_entry_material(entry: FrameworkLineageEntry) -> ResolvedSourceMater
 def resolve_accepted_baseline(target_repository: str) -> BaselineResolution:
     request = resolve_upgrade_request(target_repository)
     target = Path(request.target_repository)
-    lineage_path = target / LINEAGE_RELATIVE_PATH
-    provenance_path = target / PROVENANCE_RELATIVE_PATH
-
-    if lineage_path.exists() or lineage_path.is_symlink():
-        if lineage_path.is_symlink() or not lineage_path.is_file():
-            raise UpgradeResolutionError("framework lineage must be a regular file")
+    lineage_raw = _read_committed_regular_file(
+        target,
+        LINEAGE_RELATIVE_PATH,
+        "framework lineage",
+    )
+    if lineage_raw is not None:
         lineage = parse_framework_lineage(
-            _read_json_object(lineage_path, "framework lineage")
+            _read_json_bytes(lineage_raw, "framework lineage")
         )
         active = lineage[-1]
         source = "accepted-lineage"
     else:
-        if provenance_path.is_symlink() or not provenance_path.is_file():
+        provenance_raw = _read_committed_regular_file(
+            target,
+            PROVENANCE_RELATIVE_PATH,
+            "bootstrap provenance",
+        )
+        if provenance_raw is None:
             raise UpgradeResolutionError(
                 "target has neither accepted framework lineage nor canonical bootstrap provenance"
             )
         active = _parse_provenance_bootstrap(
-            _read_json_object(provenance_path, "bootstrap provenance")
+            _read_json_bytes(provenance_raw, "bootstrap provenance")
         )
         lineage = (active,)
         source = "legacy-provenance-bootstrap"
