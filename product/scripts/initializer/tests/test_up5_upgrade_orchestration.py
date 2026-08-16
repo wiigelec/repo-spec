@@ -19,15 +19,15 @@ from initializer.upgrade_resolution import resolve_accepted_baseline
 
 
 REQUIREMENT_TEST_MAP = {
-    "UPG-FULL-001": "test_first_and_subsequent_upgrade_compose_complete_lifecycle",
+    "UPG-FULL-001": "test_public_repo_spec_upgrade_drives_real_lifecycle",
     "UPG-FULL-002": "test_first_and_subsequent_upgrade_compose_complete_lifecycle",
-    "UPG-FULL-003": "test_first_and_subsequent_upgrade_compose_complete_lifecycle",
+    "UPG-FULL-003": "test_public_repo_spec_upgrade_drives_real_lifecycle",
     "UPG-FULL-004": "test_managed_conflict_rejects_without_target_mutation",
     "UPG-FULL-005": "test_first_and_subsequent_upgrade_compose_complete_lifecycle",
     "UPG-FULL-006": "test_validation_failure_prevents_promotion",
     "UPG-FULL-007": "test_first_and_subsequent_upgrade_compose_complete_lifecycle",
     "UPG-FULL-008": "test_validation_failure_prevents_promotion",
-    "UPG-FULL-009": "test_terminal_evidence_is_deterministic",
+    "UPG-FULL-009": "test_equivalent_inputs_produce_equivalent_reconciliation_and_content",
     "UPG-FULL-010": "test_public_cli_dispatch_has_no_framework_revision_selector",
 }
 
@@ -151,6 +151,128 @@ def make_target(
 
 
 class UP5UpgradeOrchestrationTests(unittest.TestCase):
+    def test_public_repo_spec_upgrade_drives_real_lifecycle(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            source_root = Path(__file__).resolve().parents[4]
+            baseline_framework = root / "baseline-framework"
+            current_framework = root / "current-framework"
+            target = root / "target"
+
+            subprocess.run(
+                [
+                    "git",
+                    "clone",
+                    "-q",
+                    "--no-hardlinks",
+                    str(source_root),
+                    str(baseline_framework),
+                ],
+                check=True,
+            )
+            git(
+                baseline_framework,
+                "checkout",
+                "-q",
+                "--detach",
+                "691bf74513eaadc85856d951221a4deae87da25b",
+            )
+
+            subprocess.run(
+                [
+                    "git",
+                    "clone",
+                    "-q",
+                    "--no-hardlinks",
+                    str(source_root),
+                    str(current_framework),
+                ],
+                check=True,
+            )
+            current_revision = git(current_framework, "rev-parse", "HEAD")
+
+            init_cli = baseline_framework / "product/scripts/repo-spec"
+            init_proc = subprocess.run(
+                [str(init_cli), "init", "--repo", str(target)],
+                cwd=baseline_framework,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            self.assertEqual(init_proc.returncode, 0, init_proc.stderr)
+
+            upgrade_cli = current_framework / "product/scripts/repo-spec"
+            proc = subprocess.run(
+                [str(upgrade_cli), "upgrade", "--repo", str(target)],
+                cwd=current_framework,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            self.assertEqual(
+                proc.returncode,
+                0,
+                "stdout:\n" + proc.stdout + "\nstderr:\n" + proc.stderr,
+            )
+            result = json.loads(proc.stdout)
+            self.assertEqual(result["terminal_result"], "promoted-success")
+            self.assertTrue(result["succeeded"])
+            self.assertTrue(result["accepted"])
+            self.assertEqual(
+                result["reconciliation_target_revision"],
+                current_revision,
+            )
+
+            accepted = resolve_accepted_baseline(str(target))
+            self.assertEqual(accepted.baseline_source, "accepted-lineage")
+            self.assertEqual(
+                accepted.active_baseline.framework_revision.object_id,
+                current_revision,
+            )
+
+    def test_equivalent_inputs_produce_equivalent_reconciliation_and_content(self):
+        from initializer.upgrade_validation_promotion import repository_content_digest
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            framework = make_framework(root)
+            write_inventory(framework, {"managed": ("managed.txt", "one\n")})
+            baseline = commit(framework, "baseline")
+
+            first_root = root / "case-one"
+            second_root = root / "case-two"
+            first_root.mkdir()
+            second_root.mkdir()
+            first_target = make_target(first_root, framework, baseline)
+            second_target = make_target(second_root, framework, baseline)
+
+            write_inventory(framework, {"managed": ("managed.txt", "two\n")})
+            target_revision = commit(framework, "target")
+
+            first = execute_repository_upgrade(str(first_target), str(framework))
+            second = execute_repository_upgrade(str(second_target), str(framework))
+
+            self.assertTrue(first.succeeded)
+            self.assertTrue(second.succeeded)
+            self.assertEqual(first.reconciliation_target_revision, target_revision)
+            self.assertEqual(second.reconciliation_target_revision, target_revision)
+            self.assertEqual(first.selected_material_keys, second.selected_material_keys)
+            self.assertEqual(first.upgrade_set_fingerprint, second.upgrade_set_fingerprint)
+            self.assertEqual(
+                repository_content_digest(first_target),
+                repository_content_digest(second_target),
+            )
+            self.assertEqual(
+                (first_target / "managed.txt").read_bytes(),
+                (second_target / "managed.txt").read_bytes(),
+            )
+            self.assertEqual(
+                (first_target / "user-owned.txt").read_bytes(),
+                (second_target / "user-owned.txt").read_bytes(),
+            )
+
     def test_requirement_map_covers_all_level3_requirements(self):
         self.assertEqual(
             set(REQUIREMENT_TEST_MAP),
