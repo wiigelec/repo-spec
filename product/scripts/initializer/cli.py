@@ -71,6 +71,7 @@ def main(argv: list[str]) -> int:
     if handler is None:
         print(f"unknown command: {command}", file=sys.stderr)
         print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("       repo-spec upgrade --repo <existing-repo>", file=sys.stderr)
         print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         return 1
     return handler(argv)
@@ -117,7 +118,9 @@ def _cmd_upgrade_repo(argv: list[str]) -> int:
         print(f"Repository upgrade failed before workflow completion: {exc}", file=sys.stderr)
         return 1
 
-    print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+    from initializer.human_presentation import present_upgrade_terminal_result
+
+    present_upgrade_terminal_result(result, target_repository, sys.stderr)
     return 0 if result.succeeded else 1
 
 

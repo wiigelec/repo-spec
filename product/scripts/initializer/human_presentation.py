@@ -46,6 +46,58 @@ def with_human_progress(
     return replace(actions, **replacements)
 
 
+def present_upgrade_terminal_result(
+    result,
+    target_repository: str,
+    stream: TextIO,
+) -> None:
+    terminal = result.terminal_result
+    reason = getattr(result, "failure_reason", None)
+
+    if terminal == "promoted-success":
+        print(f"Upgrade complete: {target_repository}", file=stream)
+        print("Repository was promoted successfully.", file=stream)
+        return
+
+    if terminal in {
+        "pre-promotion-failure",
+        "rejected",
+        "non-promoted",
+    }:
+        print("Upgrade did not complete successfully.", file=stream)
+        if reason:
+            print(f"Reason: {reason}", file=stream)
+        print("Repository was not promoted.", file=stream)
+        return
+
+    if terminal == "indeterminate":
+        print("Upgrade failed during promotion.", file=stream)
+        if reason:
+            print(f"Reason: {reason}", file=stream)
+        print(
+            "Promotion outcome is indeterminate; inspect the repository "
+            "before retrying.",
+            file=stream,
+        )
+        return
+
+    if terminal == "promoted-with-finalization-error":
+        print(f"Repository was promoted to: {target_repository}", file=stream)
+        print("Upgrade finalization did not complete cleanly.", file=stream)
+        if reason:
+            print(f"Reason: {reason}", file=stream)
+        print(
+            "Repository was promoted; do not treat this as a pre-promotion failure.",
+            file=stream,
+        )
+        return
+
+    raise ValueError(
+        f"unsupported upgrade terminal result for human presentation: {terminal}"
+    )
+
+
+
 def present_terminal_result(
     result: FullInitializationResult,
     destination: str,

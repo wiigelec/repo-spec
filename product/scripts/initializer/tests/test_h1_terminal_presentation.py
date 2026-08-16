@@ -8,6 +8,7 @@ from unittest.mock import Mock, patch
 from initializer import cli
 from initializer.human_presentation import (
     present_terminal_result,
+    present_upgrade_terminal_result,
     with_human_progress,
 )
 from initializer.orchestration import (
@@ -149,6 +150,61 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("Repository was promoted to: /tmp/out", text)
         self.assertIn("finalization did not complete cleanly", text)
         self.assertIn("Destination was promoted", text)
+
+
+    def test_upgrade_success_presentation_matches_public_cli_style(self):
+        result = SimpleNamespace(
+            terminal_result="promoted-success",
+            succeeded=True,
+            failure_reason=None,
+        )
+        stream = io.StringIO()
+        present_upgrade_terminal_result(result, "/tmp/repo", stream)
+        text = stream.getvalue()
+        self.assertIn("Upgrade complete: /tmp/repo", text)
+        self.assertIn("promoted successfully", text)
+        self.assertNotIn("{", text)
+        self.assertNotIn("upgrade_set_fingerprint", text)
+
+    def test_upgrade_pre_promotion_failure_reports_reason_and_no_promotion(self):
+        result = SimpleNamespace(
+            terminal_result="pre-promotion-failure",
+            succeeded=False,
+            failure_reason="validation failed",
+        )
+        stream = io.StringIO()
+        present_upgrade_terminal_result(result, "/tmp/repo", stream)
+        text = stream.getvalue()
+        self.assertIn("did not complete successfully", text)
+        self.assertIn("validation failed", text)
+        self.assertIn("not promoted", text)
+
+    def test_upgrade_indeterminate_does_not_claim_final_state(self):
+        result = SimpleNamespace(
+            terminal_result="indeterminate",
+            succeeded=False,
+            failure_reason="rename outcome indeterminate",
+        )
+        stream = io.StringIO()
+        present_upgrade_terminal_result(result, "/tmp/repo", stream)
+        text = stream.getvalue()
+        self.assertIn("indeterminate", text)
+        self.assertIn("inspect the repository", text)
+        self.assertNotIn("promoted successfully", text)
+        self.assertNotIn("Repository was not promoted.", text)
+
+    def test_upgrade_promoted_finalization_error_preserves_promotion_fact(self):
+        result = SimpleNamespace(
+            terminal_result="promoted-with-finalization-error",
+            succeeded=False,
+            failure_reason="cleanup failed",
+        )
+        stream = io.StringIO()
+        present_upgrade_terminal_result(result, "/tmp/repo", stream)
+        text = stream.getvalue()
+        self.assertIn("Repository was promoted to: /tmp/repo", text)
+        self.assertIn("finalization did not complete cleanly", text)
+        self.assertIn("Repository was promoted", text)
 
     def test_progress_wrapper_preserves_action_return_values_and_order(self):
         calls = []
