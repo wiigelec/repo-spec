@@ -118,7 +118,9 @@ def _cmd_upgrade_repo(argv: list[str]) -> int:
         print(f"Repository upgrade failed before workflow completion: {exc}", file=sys.stderr)
         return 1
 
-    print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+    from initializer.human_presentation import present_upgrade_terminal_result
+
+    present_upgrade_terminal_result(result, target_repository, sys.stderr)
     return 0 if result.succeeded else 1
 
 

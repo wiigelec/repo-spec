@@ -7,6 +7,8 @@ import json
 import subprocess
 import tempfile
 import unittest
+from types import SimpleNamespace
+from unittest import mock
 from pathlib import Path
 
 import initializer.cli as cli
@@ -88,6 +90,32 @@ class CliTests(unittest.TestCase):
                 rendered = stderr.getvalue()
                 for public_form in public_forms:
                     self.assertIn(public_form, rendered)
+
+
+    def test_upgrade_cli_uses_human_presentation_not_json(self) -> None:
+        result = SimpleNamespace(
+            terminal_result="promoted-success",
+            succeeded=True,
+            failure_reason=None,
+        )
+        with mock.patch(
+            "initializer.upgrade_orchestration.execute_repository_upgrade",
+            return_value=result,
+        ), mock.patch(
+            "initializer.human_presentation.present_upgrade_terminal_result"
+        ) as present:
+            rc = cli.main(
+                [
+                    "/path/to/cli.py",
+                    "/framework/root",
+                    "upgrade",
+                    "--repo",
+                    "/target/root",
+                ]
+            )
+
+        self.assertEqual(rc, 0)
+        present.assert_called_once_with(result, "/target/root", mock.ANY)
 
     def test_request_driven_staging_commands_are_unavailable(self) -> None:
         commands = (
