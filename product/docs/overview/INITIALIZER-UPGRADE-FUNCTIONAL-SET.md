@@ -111,7 +111,7 @@ Candidate derived-repository upgrade functional set. Directional and non-normati
 
 ## Overview
 
-This candidate functional set defines one coherent derived-repository upgrade capability within the Repo-Spec Initializer product. It turns the accepted upgrade analysis into a bounded directional unit without establishing exact interfaces, schemas, algorithms, compatibility policy, implementation architecture, or release readiness.
+This candidate functional set defines one coherent derived-repository upgrade capability within the Repo-Spec Initializer product. The capability is an in-place re-initialization of an already initialized target repository: it reconciles initializer-managed material from the target's currently accepted framework state to the supplying repo-spec framework state while preserving repository content outside the initializer-managed material universe. It turns the accepted upgrade analysis into a bounded directional unit without establishing exact interfaces, schemas, algorithms, compatibility policy, implementation architecture, or release readiness.
 
 The existing approved `INITIALIZER-FUNCTIONAL-SET.md` remains the approved directional authority for the original initializer scope. This candidate adds upgrade direction without demoting or rewriting that accepted functional set.
 

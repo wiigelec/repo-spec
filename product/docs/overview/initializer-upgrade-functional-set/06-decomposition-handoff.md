@@ -21,7 +21,7 @@ The accepted analysis identified U1-U8 as useful candidate decomposition boundar
 
 The downstream decomposition must preserve the directional lifecycle relationship:
 
-target/source identity -> managed-material selection -> staging -> managed application -> projection reconciliation -> framework re-anchoring -> repository validation -> promotion -> finalization.
+target/source identity -> initializer-managed eligibility -> managed-material delta/reconciliation selection -> existing-repository staging -> add/modify/remove/retarget managed application -> projection reconciliation -> framework re-anchoring -> repository validation -> promotion -> finalization.
 
 ## Approval gate
 
