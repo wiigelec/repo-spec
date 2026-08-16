@@ -106,7 +106,7 @@ Candidate migration analysis. Directional and non-normative.
       "coverage": ["candidate_groupings", "dependencies", "ambiguities", "candidate_functional_sets"]
     }
   ],
-  "successor_action": "Form the candidate functional set from this analysis, obtain explicit user approval, then use the approved functional set and analysis handoff as predecessor evidence for decomposition.",
+  "successor_action": "Use product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md as the candidate successor for the derived-repository upgrade analysis, obtain explicit user approval of that candidate, then use the approved upgrade functional set and analysis handoff as predecessor evidence for decomposition.",
   "schema_version": "1"
 }
 ```
@@ -129,7 +129,7 @@ The analysis is controlled by and succeeds [Repo-Spec Initializer whiteboard](./
 
 ## Next authorized action
 
-Form or update the candidate [Repo-Spec Initializer functional set](./INITIALIZER-FUNCTIONAL-SET.md) from this analysis and obtain explicit user approval before decomposition.
+Use the candidate [Repo-Spec Initializer Upgrade functional set](./INITIALIZER-UPGRADE-FUNCTIONAL-SET.md) as the successor for the derived-repository upgrade analysis and obtain explicit user approval before decomposition. The already approved [Repo-Spec Initializer functional set](./INITIALIZER-FUNCTIONAL-SET.md) remains the directional authority for the original initializer scope.
 
 ## Discoverability
 

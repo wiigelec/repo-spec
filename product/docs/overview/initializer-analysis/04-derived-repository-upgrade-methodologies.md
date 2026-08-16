@@ -22,9 +22,9 @@ Insufficient because it does not reconcile managed projections, exceptional vali
 
 Not preferred because it duplicates existing initializer inventory knowledge and risks drift.
 
-## Preferred methodology
+## Candidate methodology evidence
 
-Use a revision-aware material-key delta plus staged reconstruction of the existing target.
+One architecture-feasibility candidate is a revision-aware material-key delta plus staged reconstruction of the existing target. The following phases preserve the current analysis evidence and demonstrate architectural fit; they are not an accepted or required implementation architecture. Downstream decomposition, normative specification, and implementation planning retain authority to accept, revise, split, replace, or reject this candidate.
 
 ### Phase 1 — resolve identities
 
@@ -68,4 +68,4 @@ Promote only the validated complete target and emit deterministic recovery/prove
 
 ## Architectural fit
 
-This methodology reuses exact Git source resolution, stable material keys, output inventory, staging isolation, repository validation, promotion gating, and success finalization. Upgrade becomes a sibling Initializer workflow instead of a parallel migration engine.
+This candidate appears feasible because it can reuse exact Git source resolution, stable material keys, output inventory, staging isolation, repository validation, promotion gating, and success finalization. It is useful evidence that upgrade may fit as a sibling Initializer workflow rather than requiring a wholly parallel migration engine, but that architecture choice remains for later authorized lifecycle stages.
