@@ -670,3 +670,19 @@ def resolve_upgrade_set(
         excluded_material_keys=tuple(sorted(excluded)),
         deferred_material_keys=tuple(sorted(deferred)),
     )
+def serialize_upgrade_set_evidence(resolution: UpgradeSetResolution) -> bytes:
+    return (
+        json.dumps(
+            resolution.to_dict(),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def upgrade_set_evidence_fingerprint(resolution: UpgradeSetResolution) -> str:
+    import hashlib
+
+    return hashlib.sha256(serialize_upgrade_set_evidence(resolution)).hexdigest()
