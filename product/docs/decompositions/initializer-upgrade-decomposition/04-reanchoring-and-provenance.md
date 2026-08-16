@@ -12,13 +12,13 @@ Bound the transition from the target's prior accepted framework identity to the 
 
 ## Responsibilities
 
-Represent the staged repository's intended new accepted framework anchor, preserve evidence of the original initialization relationship and relevant prior accepted framework state, and record enough upgrade provenance for later validation and future upgrade eligibility.
+Represent the staged repository's intended new accepted framework anchor and maintain a durable ordered reconciliation lineage beginning with the exact repo-spec revision used for original initialization and appending every repo-spec revision whose reconciliation is subsequently accepted. Each accepted lineage entry must retain enough identity/provenance to resolve that revision's repo-spec initialization manifest for audit and future reconciliation.
 
 Ensure re-anchoring occurs before validation so validation evaluates the staged repository in the framework state it would claim after successful promotion.
 
 ## Boundaries
 
-This area covers framework-anchor transition, provenance continuity, accepted-target identity, and the relationship among original initialization provenance, prior accepted framework state, supplying framework state, and the staged candidate state.
+This area covers framework-anchor transition, provenance continuity, accepted-target identity, and the relationship among original initialization provenance, the ordered sequence of accepted reconciliation repo-spec revisions, the currently accepted active baseline, the supplying framework state, and the staged candidate state. Historical accepted entries remain durable provenance even though only the most recent accepted entry is the active baseline for the next reconciliation.
 
 It defines responsibility boundaries only; exact history representation and storage mechanics remain normative-specification work.
 
@@ -36,7 +36,7 @@ It does not erase or rewrite historical provenance merely to make the current fr
 
 ## Unresolved decisions
 
-Exact accepted-anchor representation, provenance record extension or companion specification, multi-upgrade history model, relationship to Git object identity, retention of prior framework identities, rollback evidence, and security/integrity requirements remain unresolved.
+Exact accepted-anchor representation, provenance/history record schema, manifest-resolution representation, relationship to Git object identity, rollback evidence, and security/integrity requirements remain unresolved. The requirement to retain original initialization identity plus every successfully accepted reconciliation identity is resolved at this decomposition level; only its exact representation remains open.
 
 Later specification work must determine whether current initializer provenance specifications can be extended compatibly or whether upgrade-specific normative records are required.
 

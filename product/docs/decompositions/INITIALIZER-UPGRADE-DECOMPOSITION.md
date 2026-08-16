@@ -91,11 +91,11 @@ The upgrade capability is decomposed into request/identity/eligibility, managed-
 
 The dependency direction is:
 
-request and framework identity -> managed-material eligibility and reconciliation selection -> staged managed application and projection reconciliation -> framework re-anchoring and provenance -> complete staged validation -> promotion or non-promotion outcome -> finalization.
+request and framework identity -> resolve the currently accepted baseline repo-spec initialization manifest and supplying reconciliation-target initialization manifest -> compare those initializer-managed inventories and select the legal reconciliation set -> staged managed application and projection reconciliation -> framework re-anchoring and durable accepted reconciliation lineage -> complete staged validation -> promotion or non-promotion outcome -> finalization.
 
 ## Cross-cutting concerns
 
-Cross-cutting concerns include preservation of product-owned work outside initializer-managed authority, local changes to initializer-managed material, compatibility across framework revisions, deterministic evidence, failure isolation, security-sensitive upgrade eligibility, and consistency between managed source material and managed projections. Their exact semantics remain unresolved until governed normative specification work.
+Cross-cutting concerns include preservation of product-owned work outside initializer-managed authority, local changes to initializer-managed material, compatibility across framework revisions, deterministic evidence, failure isolation, security-sensitive upgrade eligibility, consistency between managed source material and managed projections, and durable lineage from original initialization through every successfully accepted reconciliation. For a new reconciliation, the currently accepted repo-spec revision is the active baseline and its initialization manifest is compared with the supplying reconciliation-target revision's initialization manifest. Historical accepted lineage entries remain provenance evidence; failed or non-promoted attempts do not become accepted lineage entries. Exact schemas and mechanics remain unresolved until governed normative specification work.
 
 ## Downstream specification families
 

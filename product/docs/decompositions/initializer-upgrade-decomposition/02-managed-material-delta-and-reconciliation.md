@@ -12,15 +12,15 @@ Bound the product responsibility that determines which initializer-managed mater
 
 ## Responsibilities
 
-Relate old and new framework inventories through stable managed-material identity, classify managed material as unchanged, added, modified, removed, or retargeted where the later normative model supports those distinctions, and select the managed reconciliation set.
+Resolve the target's currently accepted repo-spec revision to its repo-spec initialization manifest, resolve the supplying reconciliation-target repo-spec revision to its repo-spec initialization manifest, compare those two initializer-managed inventories through stable managed-material identity, classify managed material as unchanged, added, modified, removed, or retargeted where the later normative model supports those distinctions, and select the managed reconciliation set.
 
 Preserve the approved authority boundary: upgrade may reconcile initializer-managed material but must not treat arbitrary repository paths or product-owned work outside that managed universe as upgrade-owned merely because files overlap operationally.
 
 ## Boundaries
 
-This area covers source-owned upgrade qualification, old/new managed inventory comparison, stable material identity, managed authority classification, delta/reconciliation selection, and evidence needed to explain why a managed item is or is not selected.
+This area covers source-owned upgrade qualification, baseline/target initialization-manifest resolution, old/new managed inventory comparison, stable material identity, managed authority classification, delta/reconciliation selection, and evidence needed to explain why a managed item is or is not selected. The baseline manifest is the initialization manifest for the target's currently accepted repo-spec revision; the target manifest is the initialization manifest for the supplying reconciliation repo-spec revision.
 
-The approved functional set permits a source-owned upgrade manifest direction, but this decomposition does not define its exact schema, revision-selection semantics, or algorithm.
+The approved functional set permits a source-owned upgrade manifest direction. That source-owned qualification may constrain which manifest-derived changes are legal or required, but it does not replace the two repo-spec initialization manifests as the managed-material inventory endpoints and does not create authority over material outside the initializer-managed universe. This decomposition does not define the upgrade-manifest schema, revision-selection semantics, dependency closure, or comparison algorithm.
 
 ## Dependencies
 

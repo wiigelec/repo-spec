@@ -12,7 +12,7 @@ Bound the terminal upgrade lifecycle from validation of the complete re-anchored
 
 ## Responsibilities
 
-Validate the complete staged repository after managed reconciliation and re-anchoring, prevent promotion when required validation fails, promote only a validated complete target, and produce deterministic terminal evidence describing success or failure.
+Validate the complete staged repository after managed reconciliation and re-anchoring, prevent promotion when required validation fails, promote only a validated complete target, append the reconciliation-target repo-spec revision to the target's accepted framework lineage only after successful validation/promotion, and produce deterministic terminal evidence describing success or failure. Failed or non-promoted attempts must not become accepted lineage entries.
 
 Define the stopping boundary for decomposition: after this area, remaining exact semantics belong to normative product specifications, and implementation planning remains blocked until those specifications are accepted.
 
