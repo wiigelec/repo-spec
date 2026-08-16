@@ -144,10 +144,29 @@ class UP2StagedManagedReconciliationTests(unittest.TestCase):
                 git(target, "status", "--porcelain=v1", "--untracked-files=all"),
                 original_status,
             )
+            second = stage_managed_reconciliation(resolution)
+            self.addCleanup(__import__("shutil").rmtree, second.staging_root, True)
+
+            self.assertNotEqual(result.staging_root, second.staging_root)
+            self.assertNotEqual(result.repository_path, second.repository_path)
+            self.assertEqual(
+                result.repository_content_digest,
+                second.repository_content_digest,
+            )
+            self.assertEqual(
+                result.canonical_evidence_dict(),
+                second.canonical_evidence_dict(),
+            )
             self.assertEqual(
                 staged_reconciliation_evidence_fingerprint(result),
-                staged_reconciliation_evidence_fingerprint(result),
+                staged_reconciliation_evidence_fingerprint(second),
             )
+            from initializer.upgrade_reconciliation import (
+                serialize_staged_reconciliation_evidence,
+            )
+            serialized = serialize_staged_reconciliation_evidence(result).decode("utf-8")
+            self.assertNotIn(result.staging_root, serialized)
+            self.assertNotIn(result.repository_path, serialized)
 
     def test_dirty_managed_state_conflicts_before_any_operation(self):
         btd, baseline = self.make_repo()

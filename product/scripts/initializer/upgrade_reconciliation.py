@@ -67,10 +67,23 @@ class StagedManagedReconciliation:
             "repository_content_digest": self.repository_content_digest,
         }
 
+    def canonical_evidence_dict(self) -> dict[str, object]:
+        return {
+            "status": self.status,
+            "operations": [item.to_dict() for item in self.operations],
+            "conflicts": [item.to_dict() for item in self.conflicts],
+            "repository_content_digest": self.repository_content_digest,
+        }
+
 
 def serialize_staged_reconciliation_evidence(result: StagedManagedReconciliation) -> bytes:
     return (
-        json.dumps(result.to_dict(), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        json.dumps(
+            result.canonical_evidence_dict(),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        )
         + "\n"
     ).encode("utf-8")
 
