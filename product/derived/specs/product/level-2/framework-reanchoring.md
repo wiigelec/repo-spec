@@ -40,9 +40,9 @@ Defines transition of a reconciled staged repository from its prior accepted fra
 ## Normative requirements
 
 - `UPG-ANC-001`: Framework re-anchoring shall occur only after the selected managed reconciliation set has been applied successfully to the staged repository and before complete staged repository validation.
-- `UPG-ANC-002`: The staged repository shall identify the supplying reconciliation-target repo-spec revision as its candidate current framework anchor for validation; the prior accepted active baseline shall remain represented in durable accepted lineage history.
+- `UPG-ANC-002`: The staged repository shall identify the supplying reconciliation-target repo-spec revision as its prospective current framework anchor for validation, and shall contain the reconciliation-target lineage entry in the exact serialized form intended for the prospective accepted repository; the prior accepted active baseline and older accepted lineage history shall remain preserved.
 - `UPG-ANC-003`: Re-anchoring shall preserve the original initialization framework identity and every prior accepted reconciliation identity defined by product.framework-reconciliation-lineage.
-- `UPG-ANC-004`: The reconciliation-target revision shall be represented as a candidate lineage entry during staging and shall not become an accepted lineage entry merely because re-anchoring data was written.
+- `UPG-ANC-004`: The reconciliation-target revision shall be represented in staging as a prospective lineage entry whose presence is not yet accepted lineage because the staged repository has not been promoted. Re-anchoring shall not require changing that entry's serialized repository content after successful validation in order for it to become accepted; acceptance occurs only when promotion commits the exact validated staged repository state.
 - `UPG-ANC-005`: The candidate anchor and lineage evidence shall retain enough immutable identity to resolve the reconciliation-target repo-spec initialization material/output inventory authority used for the reconciliation.
 - `UPG-ANC-006`: Re-anchoring shall fail closed when the staged candidate identity conflicts with the resolved reconciliation target, when accepted lineage history cannot be preserved, or when candidate provenance would become ambiguous.
 

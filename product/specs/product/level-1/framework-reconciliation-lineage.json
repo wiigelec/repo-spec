@@ -29,7 +29,7 @@
     },
     {
       "id": "UPG-LIN-005",
-      "text": "Appending an accepted reconciliation entry shall occur only as part of successful promotion/finalization of the complete reconciled repository; a staged candidate lineage entry is not accepted lineage."
+      "text": "The reconciliation-target lineage entry may be materialized in the staged repository in the exact serialized form intended for the prospective accepted repository so that complete staged validation covers the lineage-bearing candidate state. Presence in staging does not make the entry accepted. The entry becomes accepted only if promotion commits that exact validated staged repository state; successful acceptance shall not require a second post-promotion repository-content mutation."
     },
     {
       "id": "UPG-LIN-006",
