@@ -40,6 +40,7 @@ class UpgradeValidationResult:
     status: str
     repository_content_digest: str
     candidate_head: str
+    candidate_status_sha256: str
     returncode: int
     failure_reason: str | None
 
@@ -52,6 +53,7 @@ class UpgradeValidationResult:
             "status": self.status,
             "repository_content_digest": self.repository_content_digest,
             "candidate_head": self.candidate_head,
+            "candidate_status_sha256": self.candidate_status_sha256,
             "returncode": self.returncode,
             "failure_reason": self.failure_reason,
         }
@@ -390,6 +392,10 @@ def _candidate_git_state(repository: Path) -> tuple[str, bytes]:
         )
     return head, p.stdout
 
+
+def _candidate_status_sha256(status: bytes) -> str:
+    return hashlib.sha256(status).hexdigest()
+
 # END UP4 CORRECTION: COMMITTED CANDIDATE AUTHORITY
 
 def validate_reanchored_candidate(
@@ -407,6 +413,7 @@ def validate_reanchored_candidate(
         raise UpgradeValidationPromotionError(
             "candidate HEAD changed immediately after candidate commit"
         )
+    candidate_status_sha256 = _candidate_status_sha256(before_git[1])
 
     validator = repository / "scripts/validate"
     if not validator.is_file():
@@ -414,6 +421,7 @@ def validate_reanchored_candidate(
             status="fail",
             repository_content_digest=repository_content_digest(repository),
             candidate_head=candidate_head,
+            candidate_status_sha256=candidate_status_sha256,
             returncode=127,
             failure_reason="staged repository validation failed: scripts/validate is missing",
         )
@@ -442,6 +450,7 @@ def validate_reanchored_candidate(
             status="fail",
             repository_content_digest=after,
             candidate_head=after_git[0],
+            candidate_status_sha256=_candidate_status_sha256(after_git[1]),
             returncode=completed.returncode,
             failure_reason=(
                 "staged repository validation mutated candidate Git state "
@@ -454,6 +463,7 @@ def validate_reanchored_candidate(
             status="fail",
             repository_content_digest=after,
             candidate_head=candidate_head,
+            candidate_status_sha256=candidate_status_sha256,
             returncode=completed.returncode,
             failure_reason=(
                 "staged repository validation mutated the candidate repository "
@@ -470,6 +480,7 @@ def validate_reanchored_candidate(
             status="fail",
             repository_content_digest=before,
             candidate_head=candidate_head,
+            candidate_status_sha256=candidate_status_sha256,
             returncode=completed.returncode,
             failure_reason=(
                 "staged repository validation failed "
@@ -481,6 +492,7 @@ def validate_reanchored_candidate(
         status="pass",
         repository_content_digest=before,
         candidate_head=candidate_head,
+        candidate_status_sha256=candidate_status_sha256,
         returncode=0,
         failure_reason=None,
     )
@@ -525,7 +537,7 @@ def promote_validated_candidate(
         )
 
     try:
-        current_head, _current_status = _candidate_git_state(repository)
+        current_head, current_status = _candidate_git_state(repository)
     except UpgradeValidationPromotionError as exc:
         return UpgradePromotionResult(
             promotion_outcome="not-promoted",
@@ -542,6 +554,15 @@ def promote_validated_candidate(
             validated_repository_content_digest=validation.repository_content_digest,
             promoted_repository_content_digest=None,
             failure_reason="staged candidate HEAD changed after successful validation",
+            backup_path=None,
+        )
+    if _candidate_status_sha256(current_status) != validation.candidate_status_sha256:
+        return UpgradePromotionResult(
+            promotion_outcome="not-promoted",
+            completion_status="failed",
+            validated_repository_content_digest=validation.repository_content_digest,
+            promoted_repository_content_digest=None,
+            failure_reason="staged candidate Git status changed after successful validation",
             backup_path=None,
         )
 

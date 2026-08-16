@@ -388,6 +388,37 @@ class UP4ValidationPromotionTests(unittest.TestCase):
                 target_revision,
             )
 
+    def test_promotion_refuses_index_only_change_after_validation(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            target, _stage_root, staged, reanchoring = prepare_case(root)
+            repository = Path(staged.repository_path)
+
+            validation = validate_reanchored_candidate(
+                staged, reanchoring, str(target)
+            )
+            self.assertTrue(validation.promotion_eligible)
+
+            # Alter only index state after validation. HEAD and worktree bytes
+            # remain unchanged, so the Git-status guard must block promotion.
+            (repository / "index-only.txt").write_text(
+                "index-only\n", encoding="utf-8"
+            )
+            git(repository, "add", "index-only.txt")
+            (repository / "index-only.txt").unlink()
+
+            self.assertEqual(
+                git(repository, "rev-parse", "HEAD"),
+                validation.candidate_head,
+            )
+
+            promotion = promote_validated_candidate(
+                staged, reanchoring, validation, str(target)
+            )
+            self.assertEqual(promotion.promotion_outcome, "not-promoted")
+            self.assertIn("Git status changed", promotion.failure_reason or "")
+            self.assertEqual((target / "product.txt").read_text(), "old\n")
+
     def test_promotion_refuses_candidate_head_change_after_validation(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -418,6 +449,10 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             )
             evidence = serialize_up4_evidence(validation, promotion).decode("utf-8")
             self.assertNotIn(str(root), evidence)
+            parsed = json.loads(evidence)
+            self.assertEqual(
+                len(parsed["validation"]["candidate_status_sha256"]), 64
+            )
             self.assertEqual(
                 up4_evidence_fingerprint(validation, promotion),
                 up4_evidence_fingerprint(validation, promotion),
