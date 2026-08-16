@@ -20,19 +20,36 @@ Candidate migration analysis. Directional and non-normative.
   "governing_issue": "#374",
   "required_content_areas": {
     "source_evidence": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "product/docs/overview/initializer-analysis/03-derived-repository-upgrade-architecture-audit.md"
     ],
     "candidate_groupings": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "product/docs/overview/initializer-analysis/03-derived-repository-upgrade-architecture-audit.md",
+      "product/docs/overview/initializer-analysis/04-derived-repository-upgrade-methodologies.md",
+      "product/docs/overview/initializer-analysis/05-derived-repository-upgrade-handoff.md"
     ],
     "dependencies": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "product/docs/overview/initializer-analysis/03-derived-repository-upgrade-architecture-audit.md",
+      "product/docs/overview/initializer-analysis/04-derived-repository-upgrade-methodologies.md",
+      "product/docs/overview/initializer-analysis/05-derived-repository-upgrade-handoff.md"
     ],
     "ambiguities": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "product/docs/overview/initializer-analysis/03-derived-repository-upgrade-architecture-audit.md",
+      "product/docs/overview/initializer-analysis/04-derived-repository-upgrade-methodologies.md",
+      "product/docs/overview/initializer-analysis/05-derived-repository-upgrade-handoff.md"
     ],
     "candidate_functional_sets": [
-      "product/docs/overview/initializer-analysis/01-migration-analysis.md"
+      "product/docs/overview/initializer-analysis/01-migration-analysis.md",
+      "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "product/docs/overview/initializer-analysis/04-derived-repository-upgrade-methodologies.md",
+      "product/docs/overview/initializer-analysis/05-derived-repository-upgrade-handoff.md"
     ]
   },
   "controlling_documents": [
@@ -42,7 +59,8 @@ Candidate migration analysis. Directional and non-normative.
     "product/docs/overview/INITIALIZER-WHITEBOARD.md"
   ],
   "evidence": [
-    "product/docs/overview/initializer-whiteboard/01-migration-input.md"
+    "product/docs/overview/initializer-whiteboard/01-migration-input.md",
+    "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
   ],
   "subordinate_chunks": [
     {
@@ -56,20 +74,54 @@ Candidate migration analysis. Directional and non-normative.
         "ambiguities",
         "candidate_functional_sets"
       ]
+    },
+    {
+      "order": 2,
+      "path": "product/docs/overview/initializer-analysis/02-derived-repository-upgrade-analysis.md",
+      "title": "Derived-repository upgrade direction and evidence",
+      "coverage": [
+        "source_evidence",
+        "candidate_groupings",
+        "dependencies",
+        "ambiguities",
+        "candidate_functional_sets"
+      ]
+    },
+    {
+      "order": 3,
+      "path": "product/docs/overview/initializer-analysis/03-derived-repository-upgrade-architecture-audit.md",
+      "title": "Derived-repository upgrade architecture audit",
+      "coverage": ["source_evidence", "candidate_groupings", "dependencies", "ambiguities"]
+    },
+    {
+      "order": 4,
+      "path": "product/docs/overview/initializer-analysis/04-derived-repository-upgrade-methodologies.md",
+      "title": "Derived-repository upgrade methodology analysis",
+      "coverage": ["candidate_groupings", "dependencies", "ambiguities", "candidate_functional_sets"]
+    },
+    {
+      "order": 5,
+      "path": "product/docs/overview/initializer-analysis/05-derived-repository-upgrade-handoff.md",
+      "title": "Derived-repository upgrade decomposition handoff",
+      "coverage": ["candidate_groupings", "dependencies", "ambiguities", "candidate_functional_sets"]
     }
   ],
-  "successor_action": "Approve the faithful migrated direction recorded in product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md.",
+  "successor_action": "Form the candidate functional set from this analysis, obtain explicit user approval, then use the approved functional set and analysis handoff as predecessor evidence for decomposition.",
   "schema_version": "1"
 }
 ```
 
 ## Overview
 
-This analysis performs only the structural interpretation necessary to migrate maintained direction into the functional-set lifecycle.
+This analysis interprets accepted initializer direction together with observed repo-spec and generated-repository architecture into candidate upgrade capability boundaries, dependencies, shortcomings, methodology choices, and a decomposition-ready handoff. It remains directional and non-normative.
 
 ## Chunk index
 
 - [Migration analysis](initializer-analysis/01-migration-analysis.md)
+- [Derived-repository upgrade direction and evidence](initializer-analysis/02-derived-repository-upgrade-analysis.md)
+- [Derived-repository upgrade architecture audit](initializer-analysis/03-derived-repository-upgrade-architecture-audit.md)
+- [Derived-repository upgrade methodology analysis](initializer-analysis/04-derived-repository-upgrade-methodologies.md)
+- [Derived-repository upgrade decomposition handoff](initializer-analysis/05-derived-repository-upgrade-handoff.md)
 
 ## Relationships
 
@@ -77,7 +129,7 @@ The analysis is controlled by and succeeds [Repo-Spec Initializer whiteboard](./
 
 ## Next authorized action
 
-Proceed to [Repo-Spec Initializer functional set](./INITIALIZER-FUNCTIONAL-SET.md).
+Form or update the candidate [Repo-Spec Initializer functional set](./INITIALIZER-FUNCTIONAL-SET.md) from this analysis and obtain explicit user approval before decomposition.
 
 ## Discoverability
 
