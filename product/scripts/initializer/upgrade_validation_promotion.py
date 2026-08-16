@@ -39,6 +39,7 @@ _AMBIENT_VALIDATION_ENV_KEYS = (
 class UpgradeValidationResult:
     status: str
     repository_content_digest: str
+    candidate_head: str
     returncode: int
     failure_reason: str | None
 
@@ -50,6 +51,7 @@ class UpgradeValidationResult:
         return {
             "status": self.status,
             "repository_content_digest": self.repository_content_digest,
+            "candidate_head": self.candidate_head,
             "returncode": self.returncode,
             "failure_reason": self.failure_reason,
         }
@@ -178,6 +180,218 @@ def _validate_predecessor(
     return staging_root, repository, target
 
 
+
+# BEGIN UP4 CORRECTION: COMMITTED CANDIDATE AUTHORITY
+
+_CANDIDATE_COMMIT_AUTHOR_NAME = "Repo-Spec Initializer"
+_CANDIDATE_COMMIT_AUTHOR_EMAIL = "initializer@repo-spec.local"
+
+
+def _candidate_git(
+    repository: Path,
+    *args: str,
+    env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    effective_env = dict(os.environ) if env is None else dict(env)
+    for key in _AMBIENT_VALIDATION_ENV_KEYS:
+        effective_env.pop(key, None)
+    return subprocess.run(
+        ["git", "-C", str(repository), *args],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        env=effective_env,
+    )
+
+
+def _candidate_head(repository: Path) -> str:
+    p = _candidate_git(repository, "rev-parse", "--verify", "HEAD")
+    value = p.stdout.strip()
+    if p.returncode or len(value) != 40 or any(c not in "0123456789abcdef" for c in value):
+        raise UpgradeValidationPromotionError(
+            "staged candidate does not have one resolvable SHA-1 HEAD commit"
+        )
+    return value
+
+
+def _authorized_candidate_paths(
+    staged: StagedManagedReconciliation,
+    reanchoring: ProspectiveFrameworkReanchoring,
+) -> tuple[str, ...]:
+    repository = Path(staged.repository_path).resolve()
+    paths: set[str] = set()
+
+    lineage = Path(reanchoring.lineage_path).resolve()
+    try:
+        lineage_relative = lineage.relative_to(repository).as_posix()
+    except ValueError as exc:
+        raise UpgradeValidationPromotionError(
+            "UP3 lineage path is outside the staged repository"
+        ) from exc
+    paths.add(lineage_relative)
+
+    for operation in staged.operations:
+        for value in (operation.baseline_path, operation.target_path):
+            if value is None:
+                continue
+            path = Path(value)
+            if path.is_absolute() or not value or any(part in {"", ".", ".."} for part in path.parts):
+                raise UpgradeValidationPromotionError(
+                    f"UP2 operation contains invalid candidate commit path: {value!r}"
+                )
+            if path.parts and path.parts[0] == ".git":
+                raise UpgradeValidationPromotionError(
+                    "candidate commit may not target Git administrative state"
+                )
+            paths.add(path.as_posix())
+
+    return tuple(sorted(paths))
+
+
+def _commit_reanchored_candidate(
+    staged: StagedManagedReconciliation,
+    reanchoring: ProspectiveFrameworkReanchoring,
+) -> str:
+    repository = Path(staged.repository_path).resolve()
+
+    root = _candidate_git(repository, "rev-parse", "--show-toplevel")
+    if root.returncode or Path(root.stdout.strip()).resolve() != repository:
+        raise UpgradeValidationPromotionError(
+            "staged candidate must be the root of an existing local Git repository"
+        )
+
+    parent_head = _candidate_head(repository)
+    paths = _authorized_candidate_paths(staged, reanchoring)
+    if not paths:
+        raise UpgradeValidationPromotionError("candidate commit has no governed paths")
+
+    add = _candidate_git(repository, "add", "-A", "--", *paths)
+    if add.returncode:
+        raise UpgradeValidationPromotionError(
+            "cannot stage governed candidate paths: " + add.stderr.strip()
+        )
+
+    env = dict(os.environ)
+    for key in _AMBIENT_VALIDATION_ENV_KEYS:
+        env.pop(key, None)
+    env["GIT_AUTHOR_NAME"] = _CANDIDATE_COMMIT_AUTHOR_NAME
+    env["GIT_AUTHOR_EMAIL"] = _CANDIDATE_COMMIT_AUTHOR_EMAIL
+    env["GIT_COMMITTER_NAME"] = _CANDIDATE_COMMIT_AUTHOR_NAME
+    env["GIT_COMMITTER_EMAIL"] = _CANDIDATE_COMMIT_AUTHOR_EMAIL
+
+    message = (
+        "Repo-Spec framework upgrade to "
+        + reanchoring.prospective_entry.framework_revision.object_id
+    )
+    commit = _candidate_git(
+        repository,
+        "-c",
+        "commit.gpgSign=false",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "commit",
+        "--only",
+        "--no-verify",
+        "-m",
+        message,
+        "--",
+        *paths,
+        env=env,
+    )
+    if commit.returncode:
+        raise UpgradeValidationPromotionError(
+            "cannot commit governed staged candidate paths: "
+            + (commit.stderr.strip() or commit.stdout.strip())
+        )
+
+    candidate_head = _candidate_head(repository)
+    if candidate_head == parent_head:
+        raise UpgradeValidationPromotionError(
+            "candidate commit did not advance staged repository HEAD"
+        )
+
+    parent = _candidate_git(repository, "rev-parse", "--verify", "HEAD^")
+    if parent.returncode or parent.stdout.strip() != parent_head:
+        raise UpgradeValidationPromotionError(
+            "candidate commit does not directly extend prior accepted target HEAD"
+        )
+
+    diff = _candidate_git(repository, "diff", "--quiet", "HEAD", "--", *paths)
+    if diff.returncode not in {0, 1}:
+        raise UpgradeValidationPromotionError(
+            "cannot verify governed candidate worktree paths"
+        )
+    if diff.returncode != 0:
+        raise UpgradeValidationPromotionError(
+            "governed candidate paths do not match committed candidate HEAD"
+        )
+
+    cached = _candidate_git(
+        repository, "diff", "--cached", "--quiet", "HEAD", "--", *paths
+    )
+    if cached.returncode not in {0, 1}:
+        raise UpgradeValidationPromotionError(
+            "cannot verify governed candidate index paths"
+        )
+    if cached.returncode != 0:
+        raise UpgradeValidationPromotionError(
+            "governed candidate paths remain staged after candidate commit"
+        )
+
+    lineage_relative = Path(reanchoring.lineage_path).resolve().relative_to(
+        repository
+    ).as_posix()
+    committed_lineage = _candidate_git(
+        repository, "show", f"HEAD:{lineage_relative}"
+    )
+    if committed_lineage.returncode:
+        raise UpgradeValidationPromotionError(
+            "candidate HEAD does not contain the prospective lineage"
+        )
+    try:
+        worktree_lineage = (repository / lineage_relative).read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        raise UpgradeValidationPromotionError(
+            "cannot read staged prospective lineage after candidate commit"
+        ) from exc
+    if committed_lineage.stdout != worktree_lineage:
+        raise UpgradeValidationPromotionError(
+            "candidate HEAD lineage differs from staged prospective lineage"
+        )
+
+    return candidate_head
+
+
+def _candidate_git_state(repository: Path) -> tuple[str, bytes]:
+    head = _candidate_head(repository)
+    env = dict(os.environ)
+    for key in _AMBIENT_VALIDATION_ENV_KEYS:
+        env.pop(key, None)
+    p = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repository),
+            "status",
+            "--porcelain=v1",
+            "-z",
+            "--untracked-files=all",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        env=env,
+    )
+    if p.returncode:
+        raise UpgradeValidationPromotionError(
+            "cannot inspect staged candidate Git state: "
+            + p.stderr.decode("utf-8", errors="replace").strip()
+        )
+    return head, p.stdout
+
+# END UP4 CORRECTION: COMMITTED CANDIDATE AUTHORITY
+
 def validate_reanchored_candidate(
     staged: StagedManagedReconciliation,
     reanchoring: ProspectiveFrameworkReanchoring,
@@ -187,11 +401,19 @@ def validate_reanchored_candidate(
         staged, reanchoring, target_repository
     )
 
+    candidate_head = _commit_reanchored_candidate(staged, reanchoring)
+    before_git = _candidate_git_state(repository)
+    if before_git[0] != candidate_head:
+        raise UpgradeValidationPromotionError(
+            "candidate HEAD changed immediately after candidate commit"
+        )
+
     validator = repository / "scripts/validate"
     if not validator.is_file():
         return UpgradeValidationResult(
             status="fail",
             repository_content_digest=repository_content_digest(repository),
+            candidate_head=candidate_head,
             returncode=127,
             failure_reason="staged repository validation failed: scripts/validate is missing",
         )
@@ -214,10 +436,24 @@ def validate_reanchored_candidate(
     )
 
     after = repository_content_digest(repository)
+    after_git = _candidate_git_state(repository)
+    if after_git != before_git:
+        return UpgradeValidationResult(
+            status="fail",
+            repository_content_digest=after,
+            candidate_head=after_git[0],
+            returncode=completed.returncode,
+            failure_reason=(
+                "staged repository validation mutated candidate Git state "
+                f"(head_before={before_git[0]}, head_after={after_git[0]})"
+            ),
+        )
+
     if after != before:
         return UpgradeValidationResult(
             status="fail",
             repository_content_digest=after,
+            candidate_head=candidate_head,
             returncode=completed.returncode,
             failure_reason=(
                 "staged repository validation mutated the candidate repository "
@@ -233,6 +469,7 @@ def validate_reanchored_candidate(
         return UpgradeValidationResult(
             status="fail",
             repository_content_digest=before,
+            candidate_head=candidate_head,
             returncode=completed.returncode,
             failure_reason=(
                 "staged repository validation failed "
@@ -243,10 +480,10 @@ def validate_reanchored_candidate(
     return UpgradeValidationResult(
         status="pass",
         repository_content_digest=before,
+        candidate_head=candidate_head,
         returncode=0,
         failure_reason=None,
     )
-
 
 def _unique_backup(target: Path) -> Path:
     base = target.parent / f".repo-spec-upgrade-backup-{target.name}"
@@ -284,6 +521,27 @@ def promote_validated_candidate(
             validated_repository_content_digest=validation.repository_content_digest,
             promoted_repository_content_digest=None,
             failure_reason="promotion gate is closed because staged validation did not pass",
+            backup_path=None,
+        )
+
+    try:
+        current_head, _current_status = _candidate_git_state(repository)
+    except UpgradeValidationPromotionError as exc:
+        return UpgradePromotionResult(
+            promotion_outcome="not-promoted",
+            completion_status="failed",
+            validated_repository_content_digest=validation.repository_content_digest,
+            promoted_repository_content_digest=None,
+            failure_reason=f"staged candidate Git state cannot be verified: {exc}",
+            backup_path=None,
+        )
+    if current_head != validation.candidate_head:
+        return UpgradePromotionResult(
+            promotion_outcome="not-promoted",
+            completion_status="failed",
+            validated_repository_content_digest=validation.repository_content_digest,
+            promoted_repository_content_digest=None,
+            failure_reason="staged candidate HEAD changed after successful validation",
             backup_path=None,
         )
 
