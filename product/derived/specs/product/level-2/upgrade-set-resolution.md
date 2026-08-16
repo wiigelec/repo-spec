@@ -39,8 +39,8 @@ Defines deterministic resolution of the legal initializer-managed reconciliation
 
 ## Normative requirements
 
-- `UPG-SET-001`: Upgrade-set resolution shall validate the target's accepted framework lineage, select its most recent accepted entry as the active baseline, and resolve the exact supplying repo-spec framework revision from the executing upgrade instance.
-- `UPG-SET-002`: The component shall load the authoritative initialization material/output inventories from the baseline framework revision and the supplying reconciliation-target framework revision and shall fail closed if either endpoint cannot be resolved or validated.
+- `UPG-SET-001`: Upgrade-set resolution shall validate the target's accepted framework lineage and select its most recent accepted entry as the active baseline. If no accepted lineage entry exists because the target predates the accepted lineage representation, resolution shall establish the exact original initialization revision as the first-reconciliation baseline only through the valid, unambiguous product.provenance-record bootstrap permitted by product.framework-reconciliation-lineage. It shall then resolve the exact supplying repo-spec framework revision from the executing upgrade instance.
+- `UPG-SET-002`: The component shall load the authoritative initialization material/output inventories from the resolved baseline framework revision, including a baseline established by an authorized first-reconciliation provenance bootstrap, and from the supplying reconciliation-target framework revision, and shall fail closed if either endpoint cannot be resolved or validated.
 - `UPG-SET-003`: The component shall construct product.managed-material-delta by comparing the two inventory endpoints through stable managed-material identity rather than by raw repository Git diff.
 - `UPG-SET-004`: Source-owned upgrade qualification or transition metadata may remove, defer, order, or otherwise constrain manifest-derived transitions only when that qualification is itself supplied by the reconciliation-target framework authority; it shall not replace either inventory endpoint.
 - `UPG-SET-005`: Upgrade qualification shall never expand mutation authority to material absent from initializer-managed inventory authority and shall fail closed on an attempted qualification of unmanaged target content.
@@ -56,6 +56,7 @@ Defines deterministic resolution of the legal initializer-managed reconciliation
 - `product.source-revision-identity`
 - `product.material-manifest`
 - `product.initializer-output-inventory-v1`
+- `product.provenance-record`
 
 ## References
 

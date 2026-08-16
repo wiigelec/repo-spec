@@ -114,6 +114,9 @@
         "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$"
       }
     },
+    "applicable_accepted_specifications": {
+      "type": "array"
+    },
     "workstream_authority": {
       "type": "array"
     },

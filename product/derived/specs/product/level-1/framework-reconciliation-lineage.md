@@ -43,15 +43,17 @@ Defines the durable accepted repo-spec framework lineage retained by an initiali
 - `UPG-LIN-002`: Each accepted lineage entry shall contain or reference enough immutable framework identity to resolve the exact repo-spec commit and the corresponding initialization material/output inventory authority for that revision.
 - `UPG-LIN-003`: The most recent accepted lineage entry shall be the active baseline framework revision for the next reconciliation; older accepted entries remain durable historical provenance and audit evidence.
 - `UPG-LIN-004`: A failed, rejected, interrupted, or otherwise non-promoted reconciliation attempt shall not become an accepted lineage entry and shall not replace the active baseline.
-- `UPG-LIN-005`: Appending an accepted reconciliation entry shall occur only as part of successful promotion/finalization of the complete reconciled repository; a staged candidate lineage entry is not accepted lineage.
+- `UPG-LIN-005`: The reconciliation-target lineage entry may be materialized in the staged repository in the exact serialized form intended for the prospective accepted repository so that complete staged validation covers the lineage-bearing candidate state. Presence in staging does not make the entry accepted. The entry becomes accepted only if promotion commits that exact validated staged repository state; successful acceptance shall not require a second post-promotion repository-content mutation.
 - `UPG-LIN-006`: The lineage shall preserve original initialization identity even after one or more accepted reconciliations and shall not collapse history to only the latest framework revision.
 - `UPG-LIN-007`: The exact serialized storage representation may evolve under later governed specification revision, but any accepted representation shall preserve ordered accepted identities, active-baseline determination, and resolvability of each accepted framework inventory authority.
+- `UPG-LIN-008`: For the first reconciliation of a repo-spec-initialized target that predates the accepted framework-lineage representation and therefore has no accepted lineage entry, the exact original initialization framework revision shall be established from a valid product.provenance-record as the initial accepted baseline identity only when that provenance unambiguously identifies the original repo-spec revision and the corresponding initialization material/output inventory authority can be resolved and validated. Missing, ambiguous, invalid, or unresolvable provenance or inventory authority shall fail closed before staged reconciliation; the implementation shall not guess or infer an original framework revision.
 
 ## Dependencies
 
 - `product.initializer-level-0`
 - `product.git-object-identity`
 - `product.source-revision-identity`
+- `product.provenance-record`
 
 ## References
 

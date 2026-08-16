@@ -17,7 +17,7 @@
     },
     {
       "id": "UPG-ANC-002",
-      "text": "The staged repository shall identify the supplying reconciliation-target repo-spec revision as its candidate current framework anchor for validation; the prior accepted active baseline shall remain represented in durable accepted lineage history."
+      "text": "The staged repository shall identify the supplying reconciliation-target repo-spec revision as its prospective current framework anchor for validation, and shall contain the reconciliation-target lineage entry in the exact serialized form intended for the prospective accepted repository; the prior accepted active baseline and older accepted lineage history shall remain preserved."
     },
     {
       "id": "UPG-ANC-003",
@@ -25,7 +25,7 @@
     },
     {
       "id": "UPG-ANC-004",
-      "text": "The reconciliation-target revision shall be represented as a candidate lineage entry during staging and shall not become an accepted lineage entry merely because re-anchoring data was written."
+      "text": "The reconciliation-target revision shall be represented in staging as a prospective lineage entry whose presence is not yet accepted lineage because the staged repository has not been promoted. Re-anchoring shall not require changing that entry's serialized repository content after successful validation in order for it to become accepted; acceptance occurs only when promotion commits the exact validated staged repository state."
     },
     {
       "id": "UPG-ANC-005",

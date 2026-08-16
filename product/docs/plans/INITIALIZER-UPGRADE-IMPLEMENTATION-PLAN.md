@@ -40,6 +40,30 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
     "product/docs/decompositions/initializer-upgrade-decomposition/04-reanchoring-and-provenance.md",
     "product/docs/decompositions/initializer-upgrade-decomposition/05-validation-promotion-and-outcomes.md"
   ],
+  "applicable_accepted_specifications": [
+    "product.initializer-level-0",
+    "product.upgrade-request",
+    "product.framework-reconciliation-lineage",
+    "product.managed-material-delta",
+    "product.upgrade-set-resolution",
+    "product.git-object-identity",
+    "product.source-revision-identity",
+    "product.local-git-repository",
+    "product.material-classification",
+    "product.material-manifest",
+    "product.initializer-output-inventory-v1",
+    "product.source-material-resolution",
+    "product.staged-managed-reconciliation",
+    "product.staging-workspace",
+    "product.staging-state",
+    "product.framework-reanchoring",
+    "product.reconciliation-validation-promotion",
+    "product.repository-validation",
+    "product.validation-profile",
+    "product.validation-report",
+    "product.execution-report",
+    "product.derived-repository-upgrade"
+  ],
   "workstream_authority": [
     {
       "id": "UP1",
@@ -182,6 +206,8 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
 ## Planning basis
 
 The approved initializer-upgrade functional set and accepted initializer-upgrade decomposition provide controlling directional context. The accepted product specifications cited in `applicable_accepted_specifications` and in each `workstream_authority` entry are the normative product authority. This plan coordinates implementation only within those accepted semantics.
+
+This plan has been revalidated under governing Issue #449 after the accepted upgrade specifications were corrected for first-reconciliation legacy-lineage bootstrap and for validation/promotion/lineage acceptance atomicity. Those specification corrections do not alter the UP1-UP5 workstream boundaries or execution order; implementation remains constrained by the current accepted specifications listed in this metadata.
 
 The accepted base for this planning cycle is `0d72ad21d1628d4761dd89d2a931a6589d6090a7`. The historical `INITIALIZER-IMPLEMENTATION-PLAN.md` remains separate authority for the original initializer workflow and is not modified, superseded, or incorporated into this upgrade plan.
 

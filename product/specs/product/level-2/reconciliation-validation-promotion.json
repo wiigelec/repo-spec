@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "UPG-VAP-001",
-      "text": "The complete re-anchored staged repository shall undergo the repository validation required for the candidate accepted framework state before promotion may begin."
+      "text": "The complete re-anchored staged repository, including the prospective reconciliation-target framework anchor and prospective lineage entry in the exact serialized form intended for the accepted repository, shall undergo all repository validation required for that candidate accepted framework state before promotion may begin."
     },
     {
       "id": "UPG-VAP-002",
@@ -21,15 +21,15 @@
     },
     {
       "id": "UPG-VAP-003",
-      "text": "Promotion shall commit the complete validated staged repository as one governed transition whose success or failure is determinable; no partially reconciled repository may be reported as accepted success."
+      "text": "Promotion shall commit the exact complete validated staged repository state as one governed transition whose success or failure is determinable; promotion shall not require a post-validation maintained-repository content rewrite to complete the framework transition, and no partially reconciled repository may be reported as accepted success."
     },
     {
       "id": "UPG-VAP-004",
-      "text": "The reconciliation-target repo-spec revision shall be appended to product.framework-reconciliation-lineage only after promotion has successfully committed; after that append it becomes the active baseline for the next reconciliation."
+      "text": "If promotion successfully commits the exact validated staged repository state, the prospective reconciliation-target lineage entry contained in that state becomes an accepted lineage entry as a consequence of the committed transition and becomes the active baseline for the next reconciliation. No separate post-promotion append or other maintained-repository lineage mutation is required or authorized to establish that acceptance."
     },
     {
       "id": "UPG-VAP-005",
-      "text": "Rejected, failed, interrupted, indeterminate, or non-promoted attempts shall not append accepted lineage, even when candidate re-anchoring or candidate lineage evidence existed in staging."
+      "text": "Rejected, failed, interrupted, indeterminate, or non-promoted attempts shall not make a prospective lineage entry accepted, even when that entry and candidate re-anchoring evidence existed in staging; the previously accepted repository and accepted lineage shall remain authoritative unless promotion is known to have committed."
     },
     {
       "id": "UPG-VAP-006",
@@ -37,7 +37,7 @@
     },
     {
       "id": "UPG-VAP-007",
-      "text": "Post-promotion cleanup or finalization failure shall not falsely rewrite a committed promotion as unpromoted; terminal evidence and accepted lineage shall agree on whether the framework transition committed."
+      "text": "Post-promotion cleanup or finalization failure shall not falsely rewrite a committed promotion as unpromoted. Because accepted lineage is established by commitment of the exact validated lineage-bearing repository state, terminal evidence shall report whether that transition committed and shall not perform a later repository-content rewrite merely to synchronize lineage acceptance."
     },
     {
       "id": "UPG-VAP-008",

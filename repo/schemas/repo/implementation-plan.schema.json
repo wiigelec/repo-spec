@@ -11,6 +11,7 @@
       "required": [
         "artifact_type",
         "root_path",
+        "applicable_accepted_specifications",
         "required_content_areas"
       ],
       "properties": {
@@ -24,6 +25,15 @@
             "repo/docs/plans/",
             "product/docs/plans/"
           ]
+        },
+        "applicable_accepted_specifications": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?:repo|product)\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+          }
         },
         "workstream_authority": {
           "type": "array",

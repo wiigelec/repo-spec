@@ -41,6 +41,15 @@ This document is the controlling entry point for the accepted Issue Intake and G
     "repo/specs/repo/issue-routing-platform-validation.json",
     "repo/specs/repo/issue-intake-governance-routing.json"
   ],
+  "applicable_accepted_specifications": [
+    "repo.issue-routing-governance",
+    "repo.issue-routing-classification",
+    "repo.issue-authority-routing",
+    "repo.governed-work-provenance",
+    "repo.governed-work-promotion",
+    "repo.issue-routing-platform-validation",
+    "repo.issue-intake-governance-routing"
+  ],
   "workstream_authority": [
     {
       "id": "IRP-I1",
