@@ -1,0 +1,124 @@
+{
+  "spec_id": "product.derived-repository-upgrade",
+  "title": "Complete Derived Repository Upgrade",
+  "purpose": "Defines the complete local lifecycle for reconciling an already initialized repository from its currently accepted repo-spec framework revision to the framework revision supplied by the executing repo-spec upgrade instance.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 3,
+  "orchestrations": {
+    "workflows": [
+      "derived-repository-upgrade"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-FULL-001",
+      "text": "The complete derived-repository upgrade workflow shall compose, in dependency-respecting order, upgrade request validation, accepted baseline lineage resolution, supplying framework resolution, authoritative inventory endpoint comparison, legal upgrade-set resolution, isolated staged managed reconciliation, framework re-anchoring, complete staged validation, promotion/non-promotion, accepted lineage update, and terminal finalization."
+    },
+    {
+      "id": "UPG-FULL-002",
+      "text": "The active baseline for every reconciliation shall be the most recent accepted framework lineage revision and the reconciliation target shall be the exact framework revision supplied by the clean local repo-spec instance executing the upgrade."
+    },
+    {
+      "id": "UPG-FULL-003",
+      "text": "Managed reconciliation shall be derived from baseline and target repo-spec initialization inventories through stable managed-material identity; raw Git diff shall not define mutation authority."
+    },
+    {
+      "id": "UPG-FULL-004",
+      "text": "The workflow shall preserve target content outside initializer-managed authority and shall not silently overwrite unresolved local modifications inside managed authority."
+    },
+    {
+      "id": "UPG-FULL-005",
+      "text": "The workflow shall re-anchor the complete staged candidate to the reconciliation-target framework identity before validation so validation evaluates the exact framework state proposed for acceptance."
+    },
+    {
+      "id": "UPG-FULL-006",
+      "text": "The accepted target shall remain unchanged until the promotion gate is satisfied; required validation failure or unresolved conflict shall produce a non-promoted outcome."
+    },
+    {
+      "id": "UPG-FULL-007",
+      "text": "A successful promoted reconciliation shall append exactly one accepted framework lineage entry for the reconciliation-target revision and that entry shall become the active baseline for the next upgrade."
+    },
+    {
+      "id": "UPG-FULL-008",
+      "text": "A failed or non-promoted reconciliation shall not advance accepted lineage and shall not falsely present the target as reconciled to the supplying framework revision."
+    },
+    {
+      "id": "UPG-FULL-009",
+      "text": "Equivalent accepted target state, equivalent accepted baseline identity, and equivalent clean supplying framework revision shall produce equivalent selected managed reconciliation and equivalent promoted repository content except for explicitly governed variable terminal/provenance data."
+    },
+    {
+      "id": "UPG-FULL-010",
+      "text": "Remote framework retrieval, arbitrary caller-selected framework revision, generalized automatic conflict resolution, hosted orchestration, release policy, and automatic retry or rollback are outside this complete local workflow unless separately accepted by normative successor specifications."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "spec_id": "product.reconciliation-validation-promotion"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-3/derived-repository-upgrade.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

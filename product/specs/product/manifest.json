@@ -284,6 +284,54 @@
       "status": "candidate",
       "level": 3,
       "capability_group": "future-extension"
+    },
+    {
+      "spec_id": "product.upgrade-request",
+      "path": "product/specs/product/level-1/upgrade-request.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.framework-reconciliation-lineage",
+      "path": "product/specs/product/level-1/framework-reconciliation-lineage.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.managed-material-delta",
+      "path": "product/specs/product/level-1/managed-material-delta.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.upgrade-set-resolution",
+      "path": "product/specs/product/level-2/upgrade-set-resolution.json",
+      "status": "accepted",
+      "level": 2
+    },
+    {
+      "spec_id": "product.staged-managed-reconciliation",
+      "path": "product/specs/product/level-2/staged-managed-reconciliation.json",
+      "status": "accepted",
+      "level": 2
+    },
+    {
+      "spec_id": "product.framework-reanchoring",
+      "path": "product/specs/product/level-2/framework-reanchoring.json",
+      "status": "accepted",
+      "level": 2
+    },
+    {
+      "spec_id": "product.reconciliation-validation-promotion",
+      "path": "product/specs/product/level-2/reconciliation-validation-promotion.json",
+      "status": "accepted",
+      "level": 2
+    },
+    {
+      "spec_id": "product.derived-repository-upgrade",
+      "path": "product/specs/product/level-3/derived-repository-upgrade.json",
+      "status": "accepted",
+      "level": 3
     }
   ]
 }

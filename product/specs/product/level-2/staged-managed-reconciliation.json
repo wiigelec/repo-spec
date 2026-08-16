@@ -1,0 +1,106 @@
+{
+  "spec_id": "product.staged-managed-reconciliation",
+  "title": "Staged Managed Reconciliation",
+  "purpose": "Defines isolated reconciliation of selected initializer-managed material onto a staged copy of an existing initialized target while preserving content outside initializer-managed authority.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "staged-managed-reconciliation"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-SMR-001",
+      "text": "Staged managed reconciliation shall operate on an isolated staged copy or equivalent isolated staged representation of the existing target repository; the accepted target shall not be mutated while reconciliation is incomplete."
+    },
+    {
+      "id": "UPG-SMR-002",
+      "text": "Only material identities present in the resolved legal reconciliation set may be added, modified, removed, or retargeted by this component."
+    },
+    {
+      "id": "UPG-SMR-003",
+      "text": "Target content outside initializer-managed authority shall be preserved byte-for-byte or semantically unchanged according to its governing representation and shall not be deleted, replaced, or retargeted merely because the supplying framework lacks or differs at the same path."
+    },
+    {
+      "id": "UPG-SMR-004",
+      "text": "For selected managed material, add, modify, remove, and retarget operations shall realize the reconciliation-target inventory definition and exact source material from the supplying framework revision, subject to applicable material-manifest operation semantics."
+    },
+    {
+      "id": "UPG-SMR-005",
+      "text": "Initializer-managed generated or installed projections shall be reconciled consistently with the governing managed source material so the staged repository does not retain a stale managed projection after its source authority changes."
+    },
+    {
+      "id": "UPG-SMR-006",
+      "text": "A target-local modification to initializer-managed material that cannot be proven equivalent to the accepted baseline managed state shall be surfaced as a managed-state conflict and shall not be silently overwritten; absent a separately accepted automatic conflict policy, the reconciliation shall fail or defer before destructive replacement."
+    },
+    {
+      "id": "UPG-SMR-007",
+      "text": "The component shall preserve deterministic evidence of selected operations, conflicts, and resulting staged managed state for downstream re-anchoring and validation."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "spec_id": "product.staging-state"
+    },
+    {
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/staged-managed-reconciliation.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

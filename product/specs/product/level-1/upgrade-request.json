@@ -1,0 +1,96 @@
+{
+  "spec_id": "product.upgrade-request",
+  "title": "Derived Repository Upgrade Request",
+  "purpose": "Defines the canonical local request for reconciling an already initialized repository to the framework revision supplied by the repo-spec instance executing the upgrade.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "upgrade-request"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-REQ-001",
+      "text": "An upgrade request shall identify exactly one existing local target repository to reconcile; the target must already be a repo-spec-initialized repository whose accepted framework lineage can be resolved before reconciliation begins."
+    },
+    {
+      "id": "UPG-REQ-002",
+      "text": "The canonical user-facing operation shall be `repo-spec upgrade --repo <existing-repo>` or an equivalent interface carrying the same single target-repository choice; the request shall not allow the caller to select an arbitrary framework source repository or framework revision."
+    },
+    {
+      "id": "UPG-REQ-003",
+      "text": "The reconciliation-target framework repository and exact revision shall be execution provenance resolved from the local repo-spec instance executing the upgrade, subject to the same exact-local-commit and clean-source principles already governed by product.source-revision-identity and product.source-material-resolution where applicable."
+    },
+    {
+      "id": "UPG-REQ-004",
+      "text": "The target path shall identify a local filesystem repository and shall reject remote repository identities, URLs, or ambiguous targets."
+    },
+    {
+      "id": "UPG-REQ-005",
+      "text": "Request acceptance shall not itself authorize mutation; target initialization provenance, accepted framework lineage, baseline inventory resolution, and upgrade-set resolution must succeed before staged reconciliation may begin."
+    },
+    {
+      "id": "UPG-REQ-006",
+      "text": "The canonical upgrade request representation and fingerprint, if persisted, shall be deterministic and shall not be altered by execution-resolved framework provenance."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "spec_id": "product.local-git-repository"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/upgrade-request.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

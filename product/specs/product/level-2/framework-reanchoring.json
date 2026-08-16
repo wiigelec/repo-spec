@@ -1,0 +1,99 @@
+{
+  "spec_id": "product.framework-reanchoring",
+  "title": "Framework Re-Anchoring",
+  "purpose": "Defines transition of a reconciled staged repository from its prior accepted framework anchor to a candidate anchor for the supplying reconciliation-target framework while preserving accepted history.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "framework-reanchoring"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-ANC-001",
+      "text": "Framework re-anchoring shall occur only after the selected managed reconciliation set has been applied successfully to the staged repository and before complete staged repository validation."
+    },
+    {
+      "id": "UPG-ANC-002",
+      "text": "The staged repository shall identify the supplying reconciliation-target repo-spec revision as its candidate current framework anchor for validation; the prior accepted active baseline shall remain represented in durable accepted lineage history."
+    },
+    {
+      "id": "UPG-ANC-003",
+      "text": "Re-anchoring shall preserve the original initialization framework identity and every prior accepted reconciliation identity defined by product.framework-reconciliation-lineage."
+    },
+    {
+      "id": "UPG-ANC-004",
+      "text": "The reconciliation-target revision shall be represented as a candidate lineage entry during staging and shall not become an accepted lineage entry merely because re-anchoring data was written."
+    },
+    {
+      "id": "UPG-ANC-005",
+      "text": "The candidate anchor and lineage evidence shall retain enough immutable identity to resolve the reconciliation-target repo-spec initialization material/output inventory authority used for the reconciliation."
+    },
+    {
+      "id": "UPG-ANC-006",
+      "text": "Re-anchoring shall fail closed when the staged candidate identity conflicts with the resolved reconciliation target, when accepted lineage history cannot be preserved, or when candidate provenance would become ambiguous."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.git-object-identity"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/framework-reanchoring.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

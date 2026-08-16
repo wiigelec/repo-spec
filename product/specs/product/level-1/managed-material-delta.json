@@ -1,0 +1,100 @@
+{
+  "spec_id": "product.managed-material-delta",
+  "title": "Managed Material Delta",
+  "purpose": "Defines the normative classification of initializer-managed differences between accepted baseline and reconciliation-target framework inventories.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "managed-material-delta"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "UPG-DLT-001",
+      "text": "A managed-material delta shall be derived from two authoritative repo-spec initialization inventory endpoints: the material/output inventories associated with the target repository's active accepted baseline framework revision and the corresponding inventories associated with the supplying reconciliation-target framework revision."
+    },
+    {
+      "id": "UPG-DLT-002",
+      "text": "Stable `material_key` identity shall be the primary correspondence key between baseline and reconciliation-target inventories; raw Git path differences alone shall not establish managed-material identity or upgrade authority."
+    },
+    {
+      "id": "UPG-DLT-003",
+      "text": "Each material identity in the union of the two inventory endpoints shall receive exactly one deterministic directional classification applicable to the accepted inventory model: unchanged, added, modified, removed, or retargeted."
+    },
+    {
+      "id": "UPG-DLT-004",
+      "text": "An added classification means a managed material identity is absent from the baseline inventory and present in the reconciliation-target inventory; removed means present in baseline and absent from target; unchanged means the accepted material definition is equivalent across both endpoints."
+    },
+    {
+      "id": "UPG-DLT-005",
+      "text": "A modified classification means the same stable managed-material identity remains applicable but one or more authoritative material attributes or source content identities require reconciliation; a retargeted classification means stable identity is retained while its governed destination mapping changes."
+    },
+    {
+      "id": "UPG-DLT-006",
+      "text": "The delta shall not include arbitrary target-repository paths that are not represented within initializer-managed inventory authority, even when those paths differ from the supplying repo-spec checkout."
+    },
+    {
+      "id": "UPG-DLT-007",
+      "text": "Delta classification alone shall not authorize mutation; source-owned upgrade qualification, target-local managed-state checks, staging, and later validation gates may further restrict the legal reconciliation set."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "spec_id": "product.material-classification"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-UPGRADE-DECOMPOSITION.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/managed-material-delta.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
