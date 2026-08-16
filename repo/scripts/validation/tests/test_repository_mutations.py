@@ -6,7 +6,11 @@ import tempfile
 from pathlib import Path
 
 from repo_model import load_specs
-from root_validation import RootValidationError, validate_root_boundary
+from root_validation import (
+    RootValidationError,
+    validate_repo_tree_integrity,
+    validate_root_boundary,
+)
 from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from validation.generated_outputs import check_generated_document_write_behavior
 from validation.errors import fail
@@ -130,6 +134,224 @@ def run_repository_root_boundary_tests(repo_root: Path) -> None:
         )
 
     print("ok: repository root boundary")
+
+
+def _git_for_root_integrity(repo: Path, *args: str) -> str:
+    import subprocess
+
+    result = subprocess.run(
+        ["git", "-C", str(repo), *args],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode:
+        raise RuntimeError(result.stderr or result.stdout)
+    return result.stdout.strip()
+
+
+def _write_integrity_inventory(
+    framework: Path,
+    *,
+    content: str,
+) -> None:
+    source_path = "framework/repo-tool.py"
+    (framework / source_path).parent.mkdir(parents=True, exist_ok=True)
+    (framework / source_path).write_text(content, encoding="utf-8")
+
+    framework_inventory = framework / "product/scripts/initializer/framework-inventory.json"
+    framework_inventory.parent.mkdir(parents=True, exist_ok=True)
+    framework_inventory.write_text(
+        json.dumps(
+            {
+                "schema_version": "1",
+                "entries": [
+                    {
+                        "material_key": "repo-tool",
+                        "source_path": source_path,
+                        "role": "validation-utility",
+                        "operation": "copy-verbatim",
+                        "source_type": "blob",
+                        "mode": "100644",
+                    }
+                ],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    output_inventory = (
+        framework
+        / "product/specs/product/level-1/initializer-output-inventory-v1.json"
+    )
+    output_inventory.parent.mkdir(parents=True, exist_ok=True)
+    output_inventory.write_text(
+        json.dumps(
+            {
+                "spec_id": "product.initializer-output-inventory-v1",
+                "status": "accepted",
+                "schema_version": "1",
+                "material_index": [
+                    {
+                        "material_key": "repo-tool",
+                        "destination_path": "repo/scripts/tool.py",
+                        "producer": "framework-installation",
+                        "operation": "copy-verbatim",
+                        "mode": "100644",
+                        "required": True,
+                        "role": "validation-utility",
+                    }
+                ],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def _make_integrity_framework(root: Path) -> tuple[Path, str, str]:
+    framework = root / "framework"
+    framework.mkdir()
+    _git_for_root_integrity(framework, "init", "-q")
+    _git_for_root_integrity(framework, "config", "user.email", "validation@example.invalid")
+    _git_for_root_integrity(framework, "config", "user.name", "Validation")
+
+    _write_integrity_inventory(framework, content="baseline\n")
+    _git_for_root_integrity(framework, "add", "-A")
+    _git_for_root_integrity(framework, "commit", "-qm", "baseline")
+    baseline = _git_for_root_integrity(framework, "rev-parse", "HEAD")
+
+    _write_integrity_inventory(framework, content="current\n")
+    _git_for_root_integrity(framework, "add", "-A")
+    _git_for_root_integrity(framework, "commit", "-qm", "current")
+    current = _git_for_root_integrity(framework, "rev-parse", "HEAD")
+    return framework, baseline, current
+
+
+def _make_initialized_integrity_fixture(
+    root: Path,
+    name: str,
+    framework: Path,
+    baseline: str,
+    current: str,
+    *,
+    add_unmanaged_drift: bool = False,
+) -> Path:
+    repo = root / name
+    repo.mkdir()
+    _git_for_root_integrity(repo, "init", "-q")
+    _git_for_root_integrity(repo, "config", "user.email", "target@example.invalid")
+    _git_for_root_integrity(repo, "config", "user.name", "Target")
+
+    tool = repo / "repo/scripts/tool.py"
+    tool.parent.mkdir(parents=True)
+    tool.write_text("baseline\n", encoding="utf-8")
+    _git_for_root_integrity(repo, "add", "-A")
+    _git_for_root_integrity(repo, "commit", "-qm", "initialized baseline")
+
+    tool.write_text("current\n", encoding="utf-8")
+    lineage = repo / "repo/initializer/framework-lineage.json"
+    lineage.parent.mkdir(parents=True, exist_ok=True)
+    lineage.write_text(
+        json.dumps(
+            {
+                "schema_version": "1",
+                "entries": [
+                    {
+                        "framework_repository": str(framework.resolve()),
+                        "framework_revision": {
+                            "object_format": "sha1",
+                            "object_id": baseline,
+                        },
+                    },
+                    {
+                        "framework_repository": str(framework.resolve()),
+                        "framework_revision": {
+                            "object_format": "sha1",
+                            "object_id": current,
+                        },
+                    },
+                ],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    if add_unmanaged_drift:
+        (repo / "repo/unmanaged.txt").write_text("unauthorized\n", encoding="utf-8")
+    _git_for_root_integrity(repo, "add", "-A")
+    _git_for_root_integrity(repo, "commit", "-qm", "framework reconciliation")
+    return repo
+
+
+def run_repository_initialized_tree_integrity_tests(repo_root: Path) -> None:
+    del repo_root
+
+    def expect_integrity_failure(description: str, func, fragment: str) -> None:
+        try:
+            func()
+        except RootValidationError as exc:
+            if fragment not in str(exc):
+                fail(
+                    f"mutation test failed: {description} "
+                    f"(expected {fragment!r}, got {exc})"
+                )
+        else:
+            fail(f"mutation test failed: {description} did not fail")
+
+    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_name:
+        temp_root = Path(temp_name)
+        framework, baseline, current = _make_integrity_framework(temp_root)
+
+        legal = _make_initialized_integrity_fixture(
+            temp_root,
+            "legal-managed-transition",
+            framework,
+            baseline,
+            current,
+        )
+        validate_repo_tree_integrity(legal)
+
+        drift = _make_initialized_integrity_fixture(
+            temp_root,
+            "unmanaged-drift",
+            framework,
+            baseline,
+            current,
+            add_unmanaged_drift=True,
+        )
+        expect_integrity_failure(
+            "committed repo drift outside initializer-managed authority",
+            lambda: validate_repo_tree_integrity(drift),
+            "outside initializer-managed authority",
+        )
+
+        tampered = _make_initialized_integrity_fixture(
+            temp_root,
+            "tampered-managed-content",
+            framework,
+            baseline,
+            current,
+        )
+        (tampered / "repo/scripts/tool.py").write_text(
+            "tampered\n",
+            encoding="utf-8",
+        )
+        _git_for_root_integrity(tampered, "add", "-A")
+        _git_for_root_integrity(tampered, "commit", "-qm", "tamper managed material")
+        expect_integrity_failure(
+            "managed repo bytes outside accepted framework authority",
+            lambda: validate_repo_tree_integrity(tampered),
+            "does not match accepted framework authority",
+        )
+
+    print("ok: initialized repository tree integrity")
+
 
 def run_repository_development_document_compatibility_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:

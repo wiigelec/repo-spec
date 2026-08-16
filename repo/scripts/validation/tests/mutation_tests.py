@@ -21,6 +21,7 @@ from .test_reference_isolated_copy import run_reference_isolated_copy_tests
 from .test_repository_mutations import (
     run_repository_validation_phase_contract_tests,
     run_repository_root_boundary_tests,
+    run_repository_initialized_tree_integrity_tests,
     run_repository_development_document_compatibility_tests,
     run_repository_manifest_completeness_tests,
     run_repository_schema_conformance_tests,
@@ -50,6 +51,7 @@ def run_repository_mutation_tests(repo_root: Path) -> None:
     run_issue_routing_hosted_conformance_tests(repo_root)
     run_repository_validation_phase_contract_tests(repo_root)
     run_repository_root_boundary_tests(repo_root)
+    run_repository_initialized_tree_integrity_tests(repo_root)
     run_repository_development_document_compatibility_tests(repo_root)
     run_repository_manifest_completeness_tests(repo_root)
     run_repository_schema_conformance_tests(repo_root)

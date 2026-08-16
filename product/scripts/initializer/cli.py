@@ -24,11 +24,14 @@ from initializer.validation import (
 def main(argv: list[str]) -> int:
     if len(argv) == 5 and argv[2] == "init" and argv[3] == "--repo":
         return _cmd_init_repo(argv)
+    if len(argv) == 5 and argv[2] == "upgrade" and argv[3] == "--repo":
+        return _cmd_upgrade_repo(argv)
     if len(argv) >= 4 and argv[2] == "--request":
         return _cmd_initialize(argv)
 
     if len(argv) < 3:
         print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("       repo-spec upgrade --repo <existing-repo>", file=sys.stderr)
         print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         print("diagnostic commands:", file=sys.stderr)
         print("  validate-request    <request.json>", file=sys.stderr)
@@ -101,6 +104,20 @@ def _cmd_init_repo(argv: list[str]) -> int:
                 print("Cleaned failed bootstrap staging: " + ", ".join(removed), file=sys.stderr)
         except Exception as exc:
             print(f"Warning: failed bootstrap staging cleanup did not complete: {exc}", file=sys.stderr)
+    return 0 if result.succeeded else 1
+
+
+def _cmd_upgrade_repo(argv: list[str]) -> int:
+    target_repository = argv[4]
+    try:
+        from initializer.upgrade_orchestration import execute_repository_upgrade
+
+        result = execute_repository_upgrade(target_repository, argv[1])
+    except Exception as exc:
+        print(f"Repository upgrade failed before workflow completion: {exc}", file=sys.stderr)
+        return 1
+
+    print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
     return 0 if result.succeeded else 1
 
 
