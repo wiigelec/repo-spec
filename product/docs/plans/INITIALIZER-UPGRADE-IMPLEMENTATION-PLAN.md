@@ -44,6 +44,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
     "product.initializer-level-0",
     "product.upgrade-request",
     "product.framework-reconciliation-lineage",
+    "product.provenance-record",
     "product.managed-material-delta",
     "product.upgrade-set-resolution",
     "product.git-object-identity",
@@ -71,6 +72,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
         "product.initializer-level-0",
         "product.upgrade-request",
         "product.framework-reconciliation-lineage",
+        "product.provenance-record",
         "product.managed-material-delta",
         "product.upgrade-set-resolution",
         "product.git-object-identity",
@@ -125,6 +127,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
         "product.initializer-level-0",
         "product.upgrade-request",
         "product.framework-reconciliation-lineage",
+        "product.provenance-record",
         "product.managed-material-delta",
         "product.upgrade-set-resolution",
         "product.staged-managed-reconciliation",
@@ -207,7 +210,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
 
 The approved initializer-upgrade functional set and accepted initializer-upgrade decomposition provide controlling directional context. The accepted product specifications cited in `applicable_accepted_specifications` and in each `workstream_authority` entry are the normative product authority. This plan coordinates implementation only within those accepted semantics.
 
-This plan has been revalidated under governing Issue #449 after the accepted upgrade specifications were corrected for first-reconciliation legacy-lineage bootstrap and for validation/promotion/lineage acceptance atomicity. Those specification corrections do not alter the UP1-UP5 workstream boundaries or execution order; implementation remains constrained by the current accepted specifications listed in this metadata.
+This plan was revalidated under governing Issue #449 after the accepted upgrade specifications were corrected for first-reconciliation legacy-lineage bootstrap and for validation/promotion/lineage acceptance atomicity, and was synchronized under governing Issue #451 so the workstream authority and subordinate planning text fully reflect those corrected semantics. Those specification corrections do not alter the UP1-UP5 workstream boundaries or execution order; implementation remains constrained by the current accepted specifications listed in this metadata.
 
 The accepted base for this planning cycle is `0d72ad21d1628d4761dd89d2a931a6589d6090a7`. The historical `INITIALIZER-IMPLEMENTATION-PLAN.md` remains separate authority for the original initializer workflow and is not modified, superseded, or incorporated into this upgrade plan.
 
@@ -217,8 +220,8 @@ The accepted base for this planning cycle is `0d72ad21d1628d4761dd89d2a931a6589d
 | --- | --- | --- |
 | UP1 | Request, baseline, and upgrade-set resolution | None |
 | UP2 | Staged managed reconciliation | UP1 |
-| UP3 | Framework re-anchoring and lineage candidate | UP2 |
-| UP4 | Validation, promotion, and accepted-lineage commit | UP3 |
+| UP3 | Framework re-anchoring and prospective lineage state | UP2 |
+| UP4 | Validation, promotion, and lineage acceptance by commit | UP3 |
 | UP5 | End-to-end upgrade orchestration and conformance | UP4 |
 
 Canonical execution order: `UP1 -> UP2 -> UP3 -> UP4 -> UP5`.
