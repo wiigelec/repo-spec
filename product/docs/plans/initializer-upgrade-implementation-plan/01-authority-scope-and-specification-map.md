@@ -23,7 +23,7 @@ The upgrade implementation is specification-complete for the product behavior re
 - `product.reconciliation-validation-promotion`
 - `product.derived-repository-upgrade`
 
-Reusable accepted initializer specifications are cited per workstream in the controller metadata.
+Reusable accepted initializer specifications are cited per workstream in the controller metadata. `product.provenance-record` is exact reusable authority for the legacy first-reconciliation bootstrap owned by UP1 and exercised end to end by UP5; it is not added to UP2-UP4 merely as a transitive dependency.
 
 ## Implementation-authorized scope after plan acceptance
 

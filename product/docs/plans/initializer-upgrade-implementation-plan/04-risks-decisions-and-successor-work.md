@@ -14,6 +14,10 @@ Record implementation risks, bounded planning decisions, unresolved matters, and
 
 ## Risks
 
+### Legacy first-reconciliation provenance
+
+A target that predates accepted framework-lineage representation can enter its first reconciliation only when valid, unambiguous `product.provenance-record` evidence resolves the exact original repo-spec revision and corresponding initialization inventory authority. Implementation must fail closed without guessing when that evidence is invalid, incomplete, ambiguous, or unresolvable.
+
 ### Inventory-version availability
 
 Upgrade requires the target's accepted lineage entries to resolve framework inventory authority for historical repo-spec revisions. Implementation must fail closed if required historical inventory evidence cannot be resolved.
@@ -28,7 +32,7 @@ Managed projections must remain consistent with their governing source material.
 
 ### Promotion uncertainty
 
-An indeterminate or finalization-error promotion outcome must not be misreported. Accepted lineage state and terminal evidence must agree on whether promotion committed.
+An indeterminate or finalization-error promotion outcome must not be misreported. The prospective lineage entry is already part of the validated staged repository representation; accepted lineage state and terminal evidence must agree on whether promotion committed that exact state, and cleanup/finalization must not perform a later lineage mutation merely to synchronize acceptance.
 
 ### Specification drift
 

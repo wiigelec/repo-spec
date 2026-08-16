@@ -20,7 +20,7 @@ Requires isolated staged managed reconciliation with unmanaged-content preservat
 
 ### UP3 -> UP4
 
-Requires candidate re-anchor and lineage evidence that preserve accepted history while keeping the target revision non-accepted before promotion.
+Requires the prospective framework anchor and reconciliation-target lineage entry to be present in the staged repository in the exact serialized form intended for acceptance, while preserving accepted history; the prospective entry remains non-accepted until promotion commits the validated state.
 
 ### UP4 -> UP5
 
@@ -39,14 +39,16 @@ At minimum, whole-upgrade conformance shall cover:
 - valid existing initialized target request;
 - invalid/non-initialized target rejection;
 - clean supplying framework revision resolution;
+- accepted-lineage baseline resolution or, for the first reconciliation of a lineage-predating target, valid `product.provenance-record` bootstrap of the exact original framework/inventory authority;
+- invalid, incomplete, ambiguous, or unresolvable legacy provenance fails closed without guessing;
 - baseline and reconciliation-target inventory endpoint resolution;
 - unchanged/add/modify/remove/retarget managed-material classification;
 - source-owned qualification that constrains but does not expand authority;
 - unmanaged/product-owned preservation;
 - local managed conflict fail/defer behavior;
-- candidate re-anchoring before complete validation;
+- prospective re-anchoring and reconciliation-target lineage entry serialized in final intended form before complete validation;
 - required validation failure prevents promotion;
-- successful promotion appends exactly one accepted lineage entry;
+- successful promotion commits the exact validated lineage-bearing staged state and thereby makes exactly one prospective reconciliation-target lineage entry accepted, without a separate post-promotion maintained-repository lineage mutation;
 - failed/non-promoted attempts do not advance lineage;
 - second successful reconciliation uses the latest accepted lineage revision as baseline.
 
