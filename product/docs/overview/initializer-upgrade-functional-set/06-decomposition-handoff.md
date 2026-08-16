@@ -2,9 +2,9 @@
 
 ## Handoff readiness
 
-If explicitly approved, this functional set is intended to provide one bounded directional authority for product decomposition.
+This approved functional set provides one bounded directional authority for product decomposition.
 
-The accepted analysis identified U1-U8 as useful candidate decomposition boundaries. They remain predecessor evidence rather than an accepted decomposition at this stage.
+The accepted analysis identified U1-U8 as useful candidate decomposition boundaries. They remain predecessor evidence rather than an accepted decomposition; approval of the functional set does not itself accept that partition.
 
 ## Analysis-derived boundaries
 
@@ -25,6 +25,6 @@ target/source identity -> initializer-managed eligibility -> managed-material de
 
 ## Approval gate
 
-This artifact is currently `candidate`.
+This artifact is currently `approved`.
 
-No decomposition is authorized until the user explicitly approves this functional set and the approved lifecycle state is durably recorded.
+Product decomposition is now authorized as the next lifecycle step because the user approval has been durably recorded. This artifact still does not itself create or accept a decomposition.

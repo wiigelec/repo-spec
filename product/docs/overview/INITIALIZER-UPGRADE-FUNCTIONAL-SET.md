@@ -2,7 +2,7 @@
 
 ## Status
 
-Candidate derived-repository upgrade functional set. Directional and non-normative. Explicit user approval is required before decomposition.
+Approved derived-repository upgrade functional set. Directional and non-normative. Product decomposition is now the next authorized lifecycle step.
 
 ## Metadata
 
@@ -16,7 +16,7 @@ Candidate derived-repository upgrade functional set. Directional and non-normati
   "title": "Repo-Spec Initializer Upgrade Functional Set",
   "product_id": "repo-spec initializer",
   "authority_category": "directional",
-  "lifecycle_status": "candidate",
+  "lifecycle_status": "approved",
   "governing_issue": "#437",
   "required_content_areas": {
     "capability_boundary": [
@@ -104,16 +104,16 @@ Candidate derived-repository upgrade functional set. Directional and non-normati
       "coverage": ["dependencies", "decomposition_handoff"]
     }
   ],
-  "successor_action": "Obtain explicit user approval of this candidate functional set before any product decomposition work.",
+  "successor_action": "Proceed to product decomposition using this approved upgrade functional set as the controlling directional authority.",
   "schema_version": "1"
 }
 ```
 
 ## Overview
 
-This candidate functional set defines one coherent derived-repository upgrade capability within the Repo-Spec Initializer product. The capability is an in-place re-initialization of an already initialized target repository: it reconciles initializer-managed material from the target's currently accepted framework state to the supplying repo-spec framework state while preserving repository content outside the initializer-managed material universe. It turns the accepted upgrade analysis into a bounded directional unit without establishing exact interfaces, schemas, algorithms, compatibility policy, implementation architecture, or release readiness.
+This approved functional set defines one coherent derived-repository upgrade capability within the Repo-Spec Initializer product. The capability is an in-place re-initialization of an already initialized target repository: it reconciles initializer-managed material from the target's currently accepted framework state to the supplying repo-spec framework state while preserving repository content outside the initializer-managed material universe. It turns the accepted upgrade analysis into a bounded directional unit without establishing exact interfaces, schemas, algorithms, compatibility policy, implementation architecture, or release readiness.
 
-The existing approved `INITIALIZER-FUNCTIONAL-SET.md` remains the approved directional authority for the original initializer scope. This candidate adds upgrade direction without demoting or rewriting that accepted functional set.
+The existing approved `INITIALIZER-FUNCTIONAL-SET.md` remains the approved directional authority for the original initializer scope. This approved functional set adds upgrade direction without demoting or rewriting that accepted functional set.
 
 ## Chunk index
 
@@ -126,13 +126,13 @@ The existing approved `INITIALIZER-FUNCTIONAL-SET.md` remains the approved direc
 
 ## Relationships
 
-This candidate functional set is controlled by and succeeds [Repo-Spec Initializer analysis](./INITIALIZER-ANALYSIS.md).
+This approved functional set is controlled by and succeeds [Repo-Spec Initializer analysis](./INITIALIZER-ANALYSIS.md).
 
 It is separate from the already approved [Repo-Spec Initializer functional set](./INITIALIZER-FUNCTIONAL-SET.md).
 
 ## Next authorized action
 
-Review this candidate and obtain explicit user approval. Candidate status does not authorize decomposition.
+Use this approved functional set as the controlling directional authority for product decomposition. This document does not itself create or accept a decomposition.
 
 ## Discoverability
 
