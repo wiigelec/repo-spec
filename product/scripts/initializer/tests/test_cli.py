@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import contextlib
 import inspect
+import io
 import json
 import subprocess
 import tempfile
@@ -65,6 +67,27 @@ class CliTests(unittest.TestCase):
             proc = self.run_request([], Path(directory))
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("invalid-structure", proc.stderr)
+
+    def test_public_usage_is_consistent_for_empty_and_unknown_command_paths(self) -> None:
+        public_forms = (
+            "usage: repo-spec init --repo <destination>",
+            "repo-spec upgrade --repo <existing-repo>",
+        )
+        cases = (
+            ["/path/to/cli.py", "/framework/root"],
+            ["/path/to/cli.py", "/framework/root", "upgrade"],
+        )
+
+        for argv in cases:
+            with self.subTest(argv=argv):
+                stderr = io.StringIO()
+                with contextlib.redirect_stderr(stderr):
+                    rc = cli.main(argv)
+
+                self.assertEqual(rc, 1)
+                rendered = stderr.getvalue()
+                for public_form in public_forms:
+                    self.assertIn(public_form, rendered)
 
     def test_request_driven_staging_commands_are_unavailable(self) -> None:
         commands = (

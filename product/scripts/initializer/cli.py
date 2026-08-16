@@ -71,6 +71,7 @@ def main(argv: list[str]) -> int:
     if handler is None:
         print(f"unknown command: {command}", file=sys.stderr)
         print("usage: repo-spec init --repo <destination>", file=sys.stderr)
+        print("       repo-spec upgrade --repo <existing-repo>", file=sys.stderr)
         print("developer interface: repo-spec-init --request <request.json>", file=sys.stderr)
         return 1
     return handler(argv)
