@@ -39,8 +39,8 @@ Defines the complete local lifecycle for reconciling an already initialized repo
 
 ## Normative requirements
 
-- `UPG-FULL-001`: The complete derived-repository upgrade workflow shall compose, in dependency-respecting order, upgrade request validation, accepted baseline lineage resolution, supplying framework resolution, authoritative inventory endpoint comparison, legal upgrade-set resolution, isolated staged managed reconciliation, framework re-anchoring, complete staged validation, promotion/non-promotion, accepted lineage update, and terminal finalization.
-- `UPG-FULL-002`: The active baseline for every reconciliation shall be the most recent accepted framework lineage revision and the reconciliation target shall be the exact framework revision supplied by the clean local repo-spec instance executing the upgrade.
+- `UPG-FULL-001`: The complete derived-repository upgrade workflow shall compose, in dependency-respecting order, upgrade request validation, accepted baseline lineage resolution or authorized first-reconciliation baseline bootstrap from legacy initialization provenance, supplying framework resolution, authoritative inventory endpoint comparison, legal upgrade-set resolution, isolated staged managed reconciliation, framework re-anchoring, complete staged validation, promotion/non-promotion, accepted lineage update, and terminal finalization.
+- `UPG-FULL-002`: For a target with accepted framework lineage, the active baseline shall be the most recent accepted lineage revision. For the first reconciliation of an initialized target that predates lineage representation, the active baseline shall be the exact original framework revision established only through the valid provenance bootstrap governed by product.framework-reconciliation-lineage. The reconciliation target shall be the exact framework revision supplied by the clean local repo-spec instance executing the upgrade.
 - `UPG-FULL-003`: Managed reconciliation shall be derived from baseline and target repo-spec initialization inventories through stable managed-material identity; raw Git diff shall not define mutation authority.
 - `UPG-FULL-004`: The workflow shall preserve target content outside initializer-managed authority and shall not silently overwrite unresolved local modifications inside managed authority.
 - `UPG-FULL-005`: The workflow shall re-anchor the complete staged candidate to the reconciliation-target framework identity before validation so validation evaluates the exact framework state proposed for acceptance.
@@ -60,6 +60,7 @@ Defines the complete local lifecycle for reconciling an already initialized repo
 - `product.staged-managed-reconciliation`
 - `product.framework-reanchoring`
 - `product.reconciliation-validation-promotion`
+- `product.provenance-record`
 
 ## References
 

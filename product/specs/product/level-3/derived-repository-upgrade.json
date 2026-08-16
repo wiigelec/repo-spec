@@ -13,11 +13,11 @@
   "normative_requirements": [
     {
       "id": "UPG-FULL-001",
-      "text": "The complete derived-repository upgrade workflow shall compose, in dependency-respecting order, upgrade request validation, accepted baseline lineage resolution, supplying framework resolution, authoritative inventory endpoint comparison, legal upgrade-set resolution, isolated staged managed reconciliation, framework re-anchoring, complete staged validation, promotion/non-promotion, accepted lineage update, and terminal finalization."
+      "text": "The complete derived-repository upgrade workflow shall compose, in dependency-respecting order, upgrade request validation, accepted baseline lineage resolution or authorized first-reconciliation baseline bootstrap from legacy initialization provenance, supplying framework resolution, authoritative inventory endpoint comparison, legal upgrade-set resolution, isolated staged managed reconciliation, framework re-anchoring, complete staged validation, promotion/non-promotion, accepted lineage update, and terminal finalization."
     },
     {
       "id": "UPG-FULL-002",
-      "text": "The active baseline for every reconciliation shall be the most recent accepted framework lineage revision and the reconciliation target shall be the exact framework revision supplied by the clean local repo-spec instance executing the upgrade."
+      "text": "For a target with accepted framework lineage, the active baseline shall be the most recent accepted lineage revision. For the first reconciliation of an initialized target that predates lineage representation, the active baseline shall be the exact original framework revision established only through the valid provenance bootstrap governed by product.framework-reconciliation-lineage. The reconciliation target shall be the exact framework revision supplied by the clean local repo-spec instance executing the upgrade."
     },
     {
       "id": "UPG-FULL-003",
@@ -76,6 +76,9 @@
     },
     {
       "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "spec_id": "product.provenance-record"
     }
   ],
   "references": [

@@ -39,11 +39,11 @@ Defines the canonical local request for reconciling an already initialized repos
 
 ## Normative requirements
 
-- `UPG-REQ-001`: An upgrade request shall identify exactly one existing local target repository to reconcile; the target must already be a repo-spec-initialized repository whose accepted framework lineage can be resolved before reconciliation begins.
+- `UPG-REQ-001`: An upgrade request shall identify exactly one existing local target repository to reconcile; the target must already be a repo-spec-initialized repository for which either accepted framework lineage can be resolved or, for a first reconciliation of a target predating lineage representation, valid product.provenance-record evidence can establish the exact original framework baseline under product.framework-reconciliation-lineage.
 - `UPG-REQ-002`: The canonical user-facing operation shall be `repo-spec upgrade --repo <existing-repo>` or an equivalent interface carrying the same single target-repository choice; the request shall not allow the caller to select an arbitrary framework source repository or framework revision.
 - `UPG-REQ-003`: The reconciliation-target framework repository and exact revision shall be execution provenance resolved from the local repo-spec instance executing the upgrade, subject to the same exact-local-commit and clean-source principles already governed by product.source-revision-identity and product.source-material-resolution where applicable.
 - `UPG-REQ-004`: The target path shall identify a local filesystem repository and shall reject remote repository identities, URLs, or ambiguous targets.
-- `UPG-REQ-005`: Request acceptance shall not itself authorize mutation; target initialization provenance, accepted framework lineage, baseline inventory resolution, and upgrade-set resolution must succeed before staged reconciliation may begin.
+- `UPG-REQ-005`: Request acceptance shall not itself authorize mutation; target initialization provenance, accepted framework-lineage resolution or authorized first-reconciliation lineage bootstrap, baseline inventory resolution, and upgrade-set resolution must succeed before staged reconciliation may begin.
 - `UPG-REQ-006`: The canonical upgrade request representation and fingerprint, if persisted, shall be deterministic and shall not be altered by execution-resolved framework provenance.
 
 ## Dependencies
@@ -52,6 +52,8 @@ Defines the canonical local request for reconciling an already initialized repos
 - `product.source-revision-identity`
 - `product.git-object-identity`
 - `product.local-git-repository`
+- `product.framework-reconciliation-lineage`
+- `product.provenance-record`
 
 ## References
 

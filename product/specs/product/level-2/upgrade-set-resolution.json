@@ -13,11 +13,11 @@
   "normative_requirements": [
     {
       "id": "UPG-SET-001",
-      "text": "Upgrade-set resolution shall validate the target's accepted framework lineage, select its most recent accepted entry as the active baseline, and resolve the exact supplying repo-spec framework revision from the executing upgrade instance."
+      "text": "Upgrade-set resolution shall validate the target's accepted framework lineage and select its most recent accepted entry as the active baseline. If no accepted lineage entry exists because the target predates the accepted lineage representation, resolution shall establish the exact original initialization revision as the first-reconciliation baseline only through the valid, unambiguous product.provenance-record bootstrap permitted by product.framework-reconciliation-lineage. It shall then resolve the exact supplying repo-spec framework revision from the executing upgrade instance."
     },
     {
       "id": "UPG-SET-002",
-      "text": "The component shall load the authoritative initialization material/output inventories from the baseline framework revision and the supplying reconciliation-target framework revision and shall fail closed if either endpoint cannot be resolved or validated."
+      "text": "The component shall load the authoritative initialization material/output inventories from the resolved baseline framework revision, including a baseline established by an authorized first-reconciliation provenance bootstrap, and from the supplying reconciliation-target framework revision, and shall fail closed if either endpoint cannot be resolved or validated."
     },
     {
       "id": "UPG-SET-003",
@@ -61,6 +61,9 @@
     },
     {
       "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "spec_id": "product.provenance-record"
     }
   ],
   "references": [

@@ -13,7 +13,7 @@
   "normative_requirements": [
     {
       "id": "UPG-REQ-001",
-      "text": "An upgrade request shall identify exactly one existing local target repository to reconcile; the target must already be a repo-spec-initialized repository whose accepted framework lineage can be resolved before reconciliation begins."
+      "text": "An upgrade request shall identify exactly one existing local target repository to reconcile; the target must already be a repo-spec-initialized repository for which either accepted framework lineage can be resolved or, for a first reconciliation of a target predating lineage representation, valid product.provenance-record evidence can establish the exact original framework baseline under product.framework-reconciliation-lineage."
     },
     {
       "id": "UPG-REQ-002",
@@ -29,7 +29,7 @@
     },
     {
       "id": "UPG-REQ-005",
-      "text": "Request acceptance shall not itself authorize mutation; target initialization provenance, accepted framework lineage, baseline inventory resolution, and upgrade-set resolution must succeed before staged reconciliation may begin."
+      "text": "Request acceptance shall not itself authorize mutation; target initialization provenance, accepted framework-lineage resolution or authorized first-reconciliation lineage bootstrap, baseline inventory resolution, and upgrade-set resolution must succeed before staged reconciliation may begin."
     },
     {
       "id": "UPG-REQ-006",
@@ -48,6 +48,12 @@
     },
     {
       "spec_id": "product.local-git-repository"
+    },
+    {
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "spec_id": "product.provenance-record"
     }
   ],
   "references": [
