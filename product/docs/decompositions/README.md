@@ -6,3 +6,4 @@ This root holds product-owned initializer decompositions.
 
 - [Initializer decomposition](./INITIALIZER-DECOMPOSITION.md)
 - [Initializer upgrade decomposition](./INITIALIZER-UPGRADE-DECOMPOSITION.md)
+- [Initializer validation scaffolding decomposition](./INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md)
