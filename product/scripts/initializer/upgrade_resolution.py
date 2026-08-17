@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .inventory import InventoryError, ResolvedSourceMaterial, resolve_source_material
+from .framework_authority import AUTHORITY_ROOT, FrameworkAuthorityError, load_committed_framework_authority, materialize_bundle_repository
 from .models import InitializerError
 
 LINEAGE_RELATIVE_PATH = Path("repo/initializer/framework-lineage.json")
@@ -243,7 +244,44 @@ def _parse_provenance_bootstrap(raw: dict[str, Any]) -> FrameworkLineageEntry:
         framework_revision=revision,
     )
 
-def _resolve_entry_material(entry: FrameworkLineageEntry) -> ResolvedSourceMaterial:
+def _resolve_entry_material(
+    entry: FrameworkLineageEntry,
+    *,
+    target_repository: Path | None = None,
+    prefer_portable_authority: bool = False,
+) -> ResolvedSourceMaterial:
+    if prefer_portable_authority and target_repository is not None:
+        bundle_index = (
+            AUTHORITY_ROOT
+            / entry.framework_revision.object_id
+            / "bundle.json"
+        )
+        committed_index = _read_committed_regular_file(
+            target_repository,
+            bundle_index,
+            "framework-authority bundle index",
+        )
+        if committed_index is not None:
+            try:
+                bundle = load_committed_framework_authority(
+                    target_repository,
+                    entry.framework_revision.object_id,
+                )
+                repository = materialize_bundle_repository(bundle)
+                return resolve_source_material(
+                    repository,
+                    entry.framework_revision.object_id,
+                    (),
+                    require_full_connectivity=False,
+                )
+            except (FrameworkAuthorityError, InventoryError) as exc:
+                raise UpgradeResolutionError(
+                    f"repository-local framework authority cannot be resolved: {exc}"
+                ) from exc
+        # No committed bundle means this accepted lineage entry predates the
+        # transportable representation. Exact locally resolvable recorded
+        # authority remains eligible for governed backfill under UPG-TFA-009.
+
     repository = Path(entry.framework_repository).expanduser()
     try:
         repository = repository.resolve(strict=True)
@@ -280,6 +318,7 @@ def resolve_accepted_baseline(target_repository: str) -> BaselineResolution:
         )
         active = lineage[-1]
         source = "accepted-lineage"
+        portable = True
     else:
         provenance_raw = _read_committed_regular_file(
             target,
@@ -295,8 +334,13 @@ def resolve_accepted_baseline(target_repository: str) -> BaselineResolution:
         )
         lineage = (active,)
         source = "legacy-provenance-bootstrap"
+        portable = False
 
-    material = _resolve_entry_material(active)
+    material = _resolve_entry_material(
+        active,
+        target_repository=target,
+        prefer_portable_authority=portable,
+    )
     return BaselineResolution(
         request=request,
         lineage=lineage,

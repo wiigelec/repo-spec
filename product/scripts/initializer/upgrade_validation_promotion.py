@@ -232,6 +232,13 @@ def _authorized_candidate_paths(
             "UP3 lineage path is outside the staged repository"
         ) from exc
     paths.add(lineage_relative)
+    for authority_path in reanchoring.authority_paths:
+        path = Path(authority_path)
+        if path.is_absolute() or not authority_path or any(part in {"", ".", ".."} for part in path.parts):
+            raise UpgradeValidationPromotionError(
+                f"UP3 authority path is invalid: {authority_path!r}"
+            )
+        paths.add(path.as_posix())
 
     for operation in staged.operations:
         for value in (operation.baseline_path, operation.target_path):
