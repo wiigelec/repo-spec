@@ -19,3 +19,13 @@ def run_initializer_tests(repo_root: Path) -> None:
     if not result.wasSuccessful():
         raise AssertionError("initializer tests failed")
     print("ok: initializer tests")
+
+
+def main() -> int:
+    repo_root = Path(__file__).resolve().parents[4]
+    run_initializer_tests(repo_root)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

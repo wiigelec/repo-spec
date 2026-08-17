@@ -97,9 +97,9 @@ class ReferenceExclusionTests(unittest.TestCase):
                 source_root / "repo" / "scripts" / "validation" / "repository_checks.py"
             )
             fixture_validator.write_bytes(candidate_validator.read_bytes())
-            candidate_installed_validator = self.repo_root / "repo" / "scripts" / "validate_initialized_impl.py"
-            fixture_installed_validator = source_root / "repo" / "scripts" / "validate_initialized_impl.py"
-            fixture_installed_validator.write_bytes(candidate_installed_validator.read_bytes())
+            candidate_root_validation = self.repo_root / "repo" / "scripts" / "root_validation.py"
+            fixture_root_validation = source_root / "repo" / "scripts" / "root_validation.py"
+            fixture_root_validation.write_bytes(candidate_root_validation.read_bytes())
 
             subprocess.run(["git", "init", "-q"], cwd=source_root, check=True)
             subprocess.run(

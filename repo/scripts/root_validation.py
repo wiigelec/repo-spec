@@ -37,7 +37,7 @@ def _git(repo_root: Path, *args: str, check: bool = True) -> subprocess.Complete
 
 
 def _is_initialized(repo_root: Path) -> bool:
-    return not (repo_root / "reference").exists()
+    return (repo_root / "repo" / "initializer" / "provenance.json").is_file()
 
 
 def validate_root_boundary(repo_root: Path, initialized: bool) -> None:

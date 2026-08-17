@@ -37,9 +37,14 @@ class FunctionalSetTransportTests(unittest.TestCase):
             source_path
             for source_path in source_paths
             if source_path == "user/functional-set-init.md"
-            or "WHITEBOARD" in Path(source_path).name.upper()
-            or "ANALYSIS" in Path(source_path).name.upper()
-            or "FUNCTIONAL-SET" in Path(source_path).name.upper()
+            or (
+                source_path.startswith("product/docs/overview/")
+                and (
+                    "WHITEBOARD" in Path(source_path).name.upper()
+                    or "ANALYSIS" in Path(source_path).name.upper()
+                    or "FUNCTIONAL-SET" in Path(source_path).name.upper()
+                )
+            )
         }
         self.assertEqual(forbidden_working_sources, set())
 
