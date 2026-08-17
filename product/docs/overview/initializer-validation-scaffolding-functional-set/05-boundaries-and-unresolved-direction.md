@@ -2,7 +2,7 @@
 
 ## Preserved boundaries
 
-This candidate is separate from the already approved original initializer functional set. It adds no approval to that artifact and does not demote or rewrite its accepted direction.
+This approved functional set is separate from the already approved original initializer functional set. It adds no approval to that artifact and does not demote or rewrite its accepted direction.
 
 The capability is also distinct from derived-repository upgrade. Its demonstrated failure exists immediately after initial generation, although later upgrade work may need compatible propagation rules.
 
@@ -24,4 +24,4 @@ These questions belong to decomposition, specifications, planning, and implement
 
 ## Approval boundary
 
-Lifecycle status remains `candidate`. Neither this artifact nor its merge authorizes decomposition.
+Lifecycle status is `approved`. Product decomposition is now authorized as the next separately governed lifecycle step; this artifact does not itself create or accept decomposition.
