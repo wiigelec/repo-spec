@@ -4,7 +4,9 @@ import json
 import shutil
 import tempfile
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
+from unittest.mock import patch
 from types import SimpleNamespace
 
 from initializer.upgrade_reanchoring import (
@@ -76,6 +78,23 @@ def make_stage(root: Path, *, conflict: bool = False) -> StagedManagedReconcilia
         repository_content_digest="f" * 64,
     )
 
+@contextmanager
+def stub_authority_materialization():
+    def build(_repository: str, _revision: str, bundle_dir: Path) -> None:
+        bundle_dir.mkdir(parents=True, exist_ok=True)
+
+    with (
+        patch(
+            "initializer.upgrade_reanchoring.build_framework_authority_bundle",
+            side_effect=build,
+        ),
+        patch(
+            "initializer.upgrade_reanchoring.verify_bundle_directory",
+            return_value=None,
+        ),
+    ):
+        yield
+
 
 class UP3FrameworkReanchoringTests(unittest.TestCase):
     def test_first_reconciliation_materializes_final_form_prospective_lineage(self):
@@ -93,7 +112,8 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
                 str(target), (baseline,), str(source), B
             )
 
-            result = reanchor_staged_repository(resolution, stage)
+            with stub_authority_materialization():
+                result = reanchor_staged_repository(resolution, stage)
             lineage_path = Path(stage.repository_path) / LINEAGE_RELATIVE_PATH
             parsed = parse_framework_lineage(
                 json.loads(lineage_path.read_text(encoding="utf-8"))
@@ -126,7 +146,8 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
             resolution = make_resolution(
                 str(target), accepted, str(source), C
             )
-            result = reanchor_staged_repository(resolution, stage)
+            with stub_authority_materialization():
+                result = reanchor_staged_repository(resolution, stage)
             parsed = parse_framework_lineage(
                 json.loads(lineage_path.read_text(encoding="utf-8"))
             )
@@ -200,12 +221,13 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
                 str(target), accepted, str(source), B
             )
 
-            first = reanchor_staged_repository(
-                resolution, make_stage(root / "stage-a")
-            )
-            second = reanchor_staged_repository(
-                resolution, make_stage(root / "stage-b")
-            )
+            with stub_authority_materialization():
+                first = reanchor_staged_repository(
+                    resolution, make_stage(root / "stage-a")
+                )
+                second = reanchor_staged_repository(
+                    resolution, make_stage(root / "stage-b")
+                )
 
             self.assertNotEqual(first.repository_path, second.repository_path)
             self.assertEqual(

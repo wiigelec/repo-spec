@@ -219,6 +219,8 @@ def resolve_source_material(
     repository: str,
     revision_object_id: str,
     direction_material: tuple[str, ...] | list[str],
+    *,
+    require_full_connectivity: bool = True,
 ) -> ResolvedSourceMaterial:
     if not Path(repository).is_absolute():
         raise InventoryError("source repository must be the intake-resolved absolute path")
@@ -237,9 +239,10 @@ def resolve_source_material(
     if resolved != revision_object_id:
         raise InventoryError("source revision did not resolve directly to the exact commit object")
 
-    p = _git(repository, "fsck", "--connectivity-only", "--no-dangling", revision_object_id)
-    if p.returncode:
-        raise InventoryError("source commit tree is not fully available locally")
+    if require_full_connectivity:
+        p = _git(repository, "fsck", "--connectivity-only", "--no-dangling", revision_object_id)
+        if p.returncode:
+            raise InventoryError("source commit tree is not fully available locally")
 
     manifest_raw = _load_json_blob(repository, revision_object_id, MANIFEST_PATH)
     output_raw = _load_json_blob(repository, revision_object_id, OUTPUT_INVENTORY_SPEC_PATH)

@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import base64
+import hashlib
 import json
 import re
 import subprocess
@@ -136,7 +138,7 @@ def _read_json_at_revision(
     return value
 
 
-def _parse_lineage_endpoint(entry: object, context: str) -> tuple[Path, str]:
+def _parse_lineage_endpoint(entry: object, context: str) -> tuple[str, str]:
     if not isinstance(entry, dict) or set(entry) != {
         "framework_repository",
         "framework_revision",
@@ -144,7 +146,6 @@ def _parse_lineage_endpoint(entry: object, context: str) -> tuple[Path, str]:
         raise RootValidationError(
             f"repo tree integrity failed: {context} is invalid"
         )
-
     repository = entry.get("framework_repository")
     revision = entry.get("framework_revision")
     if not isinstance(repository, str) or not repository:
@@ -167,34 +168,9 @@ def _parse_lineage_endpoint(entry: object, context: str) -> tuple[Path, str]:
         raise RootValidationError(
             f"repo tree integrity failed: {context} object id is invalid"
         )
+    return repository, object_id
 
-    source = Path(repository).expanduser()
-    try:
-        source = source.resolve(strict=True)
-    except OSError as exc:
-        raise RootValidationError(
-            f"repo tree integrity failed: {context} framework repository cannot be resolved"
-        ) from exc
-    if not source.is_dir():
-        raise RootValidationError(
-            f"repo tree integrity failed: {context} framework repository is not a directory"
-        )
-
-    exact = _git(
-        source,
-        "rev-parse",
-        "--verify",
-        f"{object_id}^{{commit}}",
-        check=False,
-    )
-    if exact.returncode != 0 or exact.stdout.strip() != object_id:
-        raise RootValidationError(
-            f"repo tree integrity failed: {context} framework revision cannot be resolved exactly"
-        )
-    return source, object_id
-
-
-def _read_framework_lineage(repo_root: Path) -> list[tuple[Path, str]] | None:
+def _read_framework_lineage(repo_root: Path) -> list[tuple[str, str]] | None:
     tree = _git(
         repo_root,
         "ls-tree",
@@ -230,14 +206,14 @@ def _read_framework_lineage(repo_root: Path) -> list[tuple[Path, str]] | None:
             "repo tree integrity failed: framework lineage entries are invalid"
         )
 
-    endpoints: list[tuple[Path, str]] = []
+    endpoints: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for index, entry in enumerate(entries):
         endpoint = _parse_lineage_endpoint(
             entry,
             f"framework lineage entry {index}",
         )
-        identity = (str(endpoint[0]), endpoint[1])
+        identity = (endpoint[0], endpoint[1])
         if identity in seen:
             raise RootValidationError(
                 "repo tree integrity failed: framework lineage repeats an identity"
@@ -247,102 +223,277 @@ def _read_framework_lineage(repo_root: Path) -> list[tuple[Path, str]] | None:
     return endpoints
 
 
-def _inventory_by_key(
-    framework_repository: Path,
+
+AUTHORITY_ROOT = "repo/initializer/framework-authority"
+
+def _canonical_git_object_id(object_type: str, content: bytes) -> str:
+    header = f"{object_type} {len(content)}\0".encode("ascii")
+    return hashlib.sha1(header + content).hexdigest()
+
+def _parse_authority_tree(content: bytes) -> dict[str, tuple[str, str]]:
+    result: dict[str, tuple[str, str]] = {}
+    offset = 0
+    while offset < len(content):
+        space = content.find(b" ", offset)
+        nul = content.find(b"\0", space + 1)
+        if space < 0 or nul < 0 or nul + 21 > len(content):
+            raise RootValidationError("repo tree integrity failed: malformed retained Git tree object")
+        mode = content[offset:space].decode("ascii")
+        name = content[space + 1:nul].decode("utf-8", "surrogateescape")
+        oid = content[nul + 1:nul + 21].hex()
+        if name in result:
+            raise RootValidationError("repo tree integrity failed: retained Git tree repeats a name")
+        result[name] = (mode, oid)
+        offset = nul + 21
+    return result
+
+def _authority_commit_tree(content: bytes) -> str:
+    for line in content.splitlines():
+        if line.startswith(b"tree "):
+            oid = line[5:].decode("ascii")
+            if SHA1_RE.fullmatch(oid):
+                return oid
+            break
+    raise RootValidationError("repo tree integrity failed: retained framework commit has invalid tree identity")
+
+def _decode_authority_object(oid: str, raw: bytes) -> tuple[str, bytes]:
+    try:
+        record = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RootValidationError(
+            f"repo tree integrity failed: malformed retained Git object record {oid}"
+        ) from exc
+    if not isinstance(record, dict) or set(record) != {"content_base64", "object_type"}:
+        raise RootValidationError(
+            f"repo tree integrity failed: malformed retained Git object record {oid}"
+        )
+    object_type = record.get("object_type")
+    if object_type not in {"commit", "tree", "blob"}:
+        raise RootValidationError(
+            f"repo tree integrity failed: invalid retained Git object type {oid}"
+        )
+    try:
+        content = base64.b64decode(record.get("content_base64"), validate=True)
+    except Exception as exc:
+        raise RootValidationError(
+            f"repo tree integrity failed: invalid retained Git object bytes {oid}"
+        ) from exc
+    if _canonical_git_object_id(object_type, content) != oid:
+        raise RootValidationError(
+            f"repo tree integrity failed: retained Git object identity mismatch {oid}"
+        )
+    return object_type, content
+
+def _authority_resolve_path(
+    objects: dict[str, tuple[str, bytes]],
+    commit_oid: str,
+    relative_path: str,
+) -> tuple[str, bytes, str, set[str]]:
+    commit = objects.get(commit_oid)
+    if commit is None or commit[0] != "commit":
+        raise RootValidationError(
+            "repo tree integrity failed: accepted lineage commit object is missing from authority"
+        )
+    current = _authority_commit_tree(commit[1])
+    visited = {commit_oid, current}
+    parts = Path(relative_path).parts
+    if (
+        not parts
+        or Path(relative_path).is_absolute()
+        or any(part in {"", ".", ".."} for part in parts)
+    ):
+        raise RootValidationError(
+            f"repo tree integrity failed: invalid authority path {relative_path}"
+        )
+    for index, name in enumerate(parts):
+        tree = objects.get(current)
+        if tree is None or tree[0] != "tree":
+            raise RootValidationError(
+                f"repo tree integrity failed: required authority tree object is missing {current}"
+            )
+        entries = _parse_authority_tree(tree[1])
+        if name not in entries:
+            raise RootValidationError(
+                f"repo tree integrity failed: required authority path is missing {relative_path}"
+            )
+        mode, oid = entries[name]
+        visited.add(oid)
+        if index < len(parts) - 1:
+            current = oid
+        else:
+            obj = objects.get(oid)
+            if obj is None or obj[0] != "blob":
+                raise RootValidationError(
+                    f"repo tree integrity failed: authority path is not a retained blob {relative_path}"
+                )
+            return mode, obj[1], oid, visited
+    raise RootValidationError("repo tree integrity failed: unreachable authority path")
+
+def _read_committed_authority_bundle(
+    repo_root: Path,
     framework_revision: str,
     context: str,
-) -> tuple[dict[str, dict], dict[str, dict]]:
-    framework = _read_json_at_revision(
-        framework_repository,
-        framework_revision,
-        FRAMEWORK_INVENTORY_PATH,
-        f"{context} framework inventory",
+) -> dict:
+    prefix = f"{AUTHORITY_ROOT}/{framework_revision}"
+    listing = _git(
+        repo_root,
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "HEAD",
+        "--",
+        prefix,
+        check=False,
     )
-    output = _read_json_at_revision(
-        framework_repository,
-        framework_revision,
-        OUTPUT_INVENTORY_PATH,
-        f"{context} output inventory",
-    )
+    if listing.returncode != 0:
+        raise RootValidationError(
+            f"repo tree integrity failed: cannot inspect {context} framework authority"
+        )
+    files = [line for line in listing.stdout.splitlines() if line]
+    index_path = f"{prefix}/bundle.json"
+    if index_path not in files:
+        raise RootValidationError(
+            f"repo tree integrity failed: required {context} framework authority bundle is missing"
+        )
 
-    framework_entries = framework.get("entries")
+    objects: dict[str, tuple[str, bytes]] = {}
+    bundle_paths = set(files)
+    marker = f"{prefix}/objects/"
+    for path in files:
+        if path == index_path:
+            continue
+        if not path.startswith(marker):
+            raise RootValidationError(
+                f"repo tree integrity failed: unexpected {context} framework authority path {path}"
+            )
+        oid = path[len(marker):]
+        if "/" in oid or not SHA1_RE.fullmatch(oid):
+            raise RootValidationError(
+                f"repo tree integrity failed: invalid {context} authority object path"
+            )
+        raw = _git_bytes(repo_root, "show", f"HEAD:{path}").stdout
+        objects[oid] = _decode_authority_object(oid, raw)
+
+    used: set[str] = set()
+
+    def read(path: str) -> tuple[str, bytes, str]:
+        mode, content, oid, visited = _authority_resolve_path(
+            objects, framework_revision, path
+        )
+        used.update(visited)
+        return mode, content, oid
+
+    _m_mode, manifest_bytes, _m_oid = read(FRAMEWORK_INVENTORY_PATH)
+    _o_mode, output_bytes, _o_oid = read(OUTPUT_INVENTORY_PATH)
+    try:
+        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        output = json.loads(output_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RootValidationError(
+            f"repo tree integrity failed: invalid inventory JSON in {context} authority"
+        ) from exc
+    if not isinstance(manifest, dict) or not isinstance(output, dict):
+        raise RootValidationError(
+            f"repo tree integrity failed: invalid inventory shape in {context} authority"
+        )
+
+    framework_entries = manifest.get("entries")
     output_entries = output.get("material_index")
     if not isinstance(framework_entries, list) or not isinstance(output_entries, list):
         raise RootValidationError(
-            f"repo tree integrity failed: {context} inventory shape is invalid"
+            f"repo tree integrity failed: invalid inventory arrays in {context} authority"
         )
 
-    def keyed(entries: list, label: str) -> dict[str, dict]:
-        result: dict[str, dict] = {}
-        for entry in entries:
-            if not isinstance(entry, dict):
-                raise RootValidationError(
-                    f"repo tree integrity failed: {context} {label} entry is invalid"
-                )
-            key = entry.get("material_key")
-            if not isinstance(key, str) or not key or key in result:
-                raise RootValidationError(
-                    f"repo tree integrity failed: {context} {label} material identity is invalid"
-                )
-            result[key] = entry
-        return result
-
-    return keyed(framework_entries, "framework"), keyed(output_entries, "output")
-
-
-def _repo_managed_destinations(
-    framework_repository: Path,
-    framework_revision: str,
-    context: str,
-) -> dict[str, tuple[str, str]]:
-    framework, output = _inventory_by_key(
-        framework_repository,
-        framework_revision,
-        context,
-    )
-    managed: dict[str, tuple[str, str]] = {}
-
-    for key, output_entry in output.items():
-        destination = output_entry.get("destination_path")
-        if not isinstance(destination, str) or not destination.startswith("repo/"):
-            continue
-
-        source_entry = framework.get(key)
-        if source_entry is None:
+    source_by_key: dict[str, dict] = {}
+    for entry in framework_entries:
+        if not isinstance(entry, dict):
             raise RootValidationError(
-                f"repo tree integrity failed: {context} managed repo material {key} "
-                "has no framework source entry"
+                f"repo tree integrity failed: invalid framework entry in {context} authority"
             )
-        source_path = source_entry.get("source_path")
-        if not isinstance(source_path, str) or not source_path:
-            raise RootValidationError(
-                f"repo tree integrity failed: {context} managed repo material {key} "
-                "has an invalid source path"
-            )
+        key = entry.get("material_key")
+        source_path = entry.get("source_path")
         if (
-            source_entry.get("operation") != "copy-verbatim"
-            or source_entry.get("source_type") != "blob"
-            or output_entry.get("operation") != "copy-verbatim"
+            not isinstance(key, str)
+            or not key
+            or key in source_by_key
+            or not isinstance(source_path, str)
+            or not source_path
         ):
             raise RootValidationError(
-                f"repo tree integrity failed: {context} managed repo material {key} "
-                "uses unsupported integrity semantics"
+                f"repo tree integrity failed: invalid framework material identity in {context} authority"
             )
-        mode = output_entry.get("mode")
-        if mode not in {"100644", "100755"}:
+        source_by_key[key] = entry
+        source_mode, _source_bytes, _source_oid = read(source_path)
+        if source_mode != entry.get("mode"):
             raise RootValidationError(
-                f"repo tree integrity failed: {context} managed repo material {key} "
-                "has an invalid destination mode"
+                f"repo tree integrity failed: source mode mismatch in {context} authority: {source_path}"
+            )
+
+    if set(objects) != used:
+        raise RootValidationError(
+            f"repo tree integrity failed: {context} framework authority closure is not minimal"
+        )
+
+    raw_index = _git_bytes(repo_root, "show", f"HEAD:{index_path}").stdout
+    try:
+        index = json.loads(raw_index.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RootValidationError(
+            f"repo tree integrity failed: malformed {context} framework authority index"
+        ) from exc
+    expected_index = {
+        "schema_version": "1",
+        "framework_revision": framework_revision,
+        "required_paths": sorted(
+            {FRAMEWORK_INVENTORY_PATH, OUTPUT_INVENTORY_PATH}
+            | {entry["source_path"] for entry in framework_entries}
+        ),
+        "object_ids": sorted(objects),
+    }
+    if index != expected_index:
+        raise RootValidationError(
+            f"repo tree integrity failed: inconsistent {context} framework authority index"
+        )
+
+    managed: dict[str, tuple[str, str]] = {}
+    for item in output_entries:
+        if not isinstance(item, dict):
+            raise RootValidationError(
+                f"repo tree integrity failed: invalid output entry in {context} authority"
+            )
+        key = item.get("material_key")
+        destination = item.get("destination_path")
+        if not isinstance(destination, str) or not destination.startswith("repo/"):
+            continue
+        source = source_by_key.get(key)
+        if source is None:
+            raise RootValidationError(
+                f"repo tree integrity failed: {context} managed material lacks source entry {key}"
+            )
+        if (
+            source.get("operation") != "copy-verbatim"
+            or source.get("source_type") != "blob"
+            or item.get("operation") != "copy-verbatim"
+        ):
+            raise RootValidationError(
+                f"repo tree integrity failed: {context} managed material uses unsupported integrity semantics {key}"
+            )
+        mode = item.get("mode")
+        if mode not in {"100644", "100755"} or mode != source.get("mode"):
+            raise RootValidationError(
+                f"repo tree integrity failed: {context} managed material has invalid mode {key}"
             )
         if destination in managed:
             raise RootValidationError(
-                f"repo tree integrity failed: {context} duplicates managed repo destination "
-                f"{destination}"
+                f"repo tree integrity failed: {context} duplicates managed destination {destination}"
             )
-        managed[destination] = (source_path, mode)
+        managed[destination] = (source["source_path"], mode)
 
-    return managed
-
+    return {
+        "managed": managed,
+        "paths": bundle_paths,
+        "read": read,
+    }
 
 def _tree_entry(
     repository: Path,
@@ -372,14 +523,11 @@ def _tree_entry(
     mode, object_type, _object_id, _path = fields
     return mode, object_type
 
-
-def _verify_current_managed_repo_content(
+def _verify_current_managed_repo_content_from_authority(
     repo_root: Path,
-    framework_repository: Path,
-    framework_revision: str,
-    current_managed: dict[str, tuple[str, str]],
+    bundle: dict,
 ) -> None:
-    for destination, (source_path, expected_mode) in sorted(current_managed.items()):
+    for destination, (source_path, expected_mode) in sorted(bundle["managed"].items()):
         target_entry = _tree_entry(repo_root, "HEAD", destination)
         if target_entry is None:
             raise RootValidationError(
@@ -388,36 +536,18 @@ def _verify_current_managed_repo_content(
         target_mode, target_type = target_entry
         if target_type != "blob" or target_mode != expected_mode:
             raise RootValidationError(
-                f"repo tree integrity failed: managed repo material mode/type mismatch: "
-                f"{destination}"
+                f"repo tree integrity failed: managed repo material mode/type mismatch: {destination}"
             )
-
-        source_entry = _tree_entry(
-            framework_repository,
-            framework_revision,
-            source_path,
-        )
-        if source_entry is None or source_entry[1] != "blob":
+        source_mode, source_bytes, _source_oid = bundle["read"](source_path)
+        if source_mode != expected_mode:
             raise RootValidationError(
-                f"repo tree integrity failed: framework source blob is missing: {source_path}"
+                f"repo tree integrity failed: framework source mode mismatch: {source_path}"
             )
-
-        source_bytes = _git_bytes(
-            framework_repository,
-            "show",
-            f"{framework_revision}:{source_path}",
-        ).stdout
-        target_bytes = _git_bytes(
-            repo_root,
-            "show",
-            f"HEAD:{destination}",
-        ).stdout
+        target_bytes = _git_bytes(repo_root, "show", f"HEAD:{destination}").stdout
         if target_bytes != source_bytes:
             raise RootValidationError(
-                f"repo tree integrity failed: managed repo material does not match "
-                f"accepted framework authority: {destination}"
+                f"repo tree integrity failed: managed repo material does not match accepted framework authority: {destination}"
             )
-
 
 def validate_repo_tree_integrity(repo_root: Path) -> None:
     if not (repo_root / ".git").exists():
@@ -472,22 +602,23 @@ def validate_repo_tree_integrity(repo_root: Path) -> None:
                 "repo tree integrity failed: committed repo/ tree differs from initialized baseline"
             )
     else:
-        baseline_repository, baseline_revision = lineage[0]
-        current_repository, current_revision = lineage[-1]
+        bundles: list[dict] = []
+        authority_paths: set[str] = set()
+        for index, (_recorded_repository, framework_revision) in enumerate(lineage):
+            bundle = _read_committed_authority_bundle(
+                repo_root,
+                framework_revision,
+                f"lineage entry {index}",
+            )
+            bundles.append(bundle)
+            authority_paths.update(bundle["paths"])
 
-        baseline_managed = _repo_managed_destinations(
-            baseline_repository,
-            baseline_revision,
-            "baseline",
-        )
-        current_managed = _repo_managed_destinations(
-            current_repository,
-            current_revision,
-            "active framework",
-        )
+        baseline_managed = bundles[0]["managed"]
+        current_managed = bundles[-1]["managed"]
         allowed_changed = (
             set(baseline_managed)
             | set(current_managed)
+            | authority_paths
             | {LINEAGE_RELATIVE_PATH}
         )
 
@@ -510,11 +641,9 @@ def validate_repo_tree_integrity(repo_root: Path) -> None:
                 + ", ".join(unauthorized)
             )
 
-        _verify_current_managed_repo_content(
+        _verify_current_managed_repo_content_from_authority(
             repo_root,
-            current_repository,
-            current_revision,
-            current_managed,
+            bundles[-1],
         )
 
         for removed in sorted(set(baseline_managed) - set(current_managed)):

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .upgrade_reconciliation import StagedManagedReconciliation
+from .framework_authority import AUTHORITY_ROOT, FrameworkAuthorityError, build_framework_authority_bundle, verify_bundle_directory
 from .upgrade_resolution import (
     FrameworkLineageEntry,
     GitObjectIdentity,
@@ -27,6 +28,7 @@ class ProspectiveFrameworkReanchoring:
     prior_accepted_entries: tuple[FrameworkLineageEntry, ...]
     prospective_entry: FrameworkLineageEntry
     serialized_lineage_sha256: str
+    authority_paths: tuple[str, ...] = ()
 
     def canonical_evidence_dict(self) -> dict[str, object]:
         return {
@@ -154,6 +156,43 @@ def reanchor_staged_repository(
                 "staged accepted lineage does not exactly match resolved accepted history"
             )
 
+    authority_paths: list[str] = []
+    for entry in prior:
+        bundle_dir = repository / AUTHORITY_ROOT / entry.framework_revision.object_id
+        if bundle_dir.exists():
+            try:
+                verify_bundle_directory(bundle_dir, entry.framework_revision.object_id)
+            except FrameworkAuthorityError as exc:
+                raise FrameworkReanchoringError(
+                    f"existing historical framework authority is invalid: {exc}"
+                ) from exc
+        else:
+            try:
+                build_framework_authority_bundle(
+                    entry.framework_repository,
+                    entry.framework_revision.object_id,
+                    bundle_dir,
+                )
+            except FrameworkAuthorityError as exc:
+                raise FrameworkReanchoringError(
+                    f"required historical framework authority cannot be backfilled: {exc}"
+                ) from exc
+        authority_paths.append(bundle_dir.relative_to(repository).as_posix())
+
+    target_bundle = repository / AUTHORITY_ROOT / prospective.framework_revision.object_id
+    try:
+        build_framework_authority_bundle(
+            resolution.reconciliation_target.repository,
+            prospective.framework_revision.object_id,
+            target_bundle,
+        )
+        verify_bundle_directory(target_bundle, prospective.framework_revision.object_id)
+    except FrameworkAuthorityError as exc:
+        raise FrameworkReanchoringError(
+            f"prospective framework authority cannot be materialized: {exc}"
+        ) from exc
+    authority_paths.append(target_bundle.relative_to(repository).as_posix())
+
     entries = prior + (prospective,)
     serialized = serialize_framework_lineage(entries)
 
@@ -180,4 +219,5 @@ def reanchor_staged_repository(
         prior_accepted_entries=prior,
         prospective_entry=prospective,
         serialized_lineage_sha256=hashlib.sha256(serialized).hexdigest(),
+        authority_paths=tuple(sorted(authority_paths)),
     )

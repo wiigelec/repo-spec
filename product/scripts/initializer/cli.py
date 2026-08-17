@@ -120,6 +120,7 @@ def _cmd_upgrade_repo(argv: list[str]) -> int:
 
     from initializer.human_presentation import present_upgrade_terminal_result
 
+    print(json.dumps(result.to_dict(), sort_keys=True, ensure_ascii=False))
     present_upgrade_terminal_result(result, target_repository, sys.stderr)
     return 0 if result.succeeded else 1
 
