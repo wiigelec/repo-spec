@@ -51,6 +51,7 @@ Defines the complete bounded local repository-bootstrap workflow from a minimal 
 - `INIT-FIN-010`: An indeterminate promotion shall never be reported as success and requires external diagnosis before retry or cleanup.
 - `INIT-FIN-011`: A cleanup failure after committed promotion is distinct from pre-promotion failure and shall preserve the fact that the repository was promoted while reporting finalization failure.
 - `INIT-FIN-012`: Overview collection, analysis, and functional-set approval are governed successor work performed only after repository bootstrap; bootstrap does not authorize or synthesize them.
+- `INIT-FIN-013`: A promoted initialization success shall require executable-reference closure for the transported common validation workflow before promotion: every governed repository-relative validation/test command shall resolve through installed output and required portable support material, external/platform dependencies shall be explicitly classified, and the generic `product/scripts/test-product` surface shall remain resolvable even when its governed lifecycle reports an honest zero-applicable product-test state.
 
 ## Dependencies
 
@@ -81,6 +82,7 @@ Defines the complete bounded local repository-bootstrap workflow from a minimal 
 - `product.git-bootstrap-profile`
 - `product.staging-state`
 - `product.execution-report`
+- `product.executable-reference-closure`
 
 ## References
 

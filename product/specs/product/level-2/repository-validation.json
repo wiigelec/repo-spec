@@ -30,6 +30,10 @@
     {
       "id": "INIT-RVA-005",
       "text": "Authority validation in Version 1 is limited to exact authority propagation: the initializer shall verify that authority.granted_by is present in the request, that the provenance record request_identifier equals the same value, and that the handoff manifest records the required linkage. The initializer shall not authenticate the governing issue, consult an external authority source, or validate authority values against an undefined execution-context source."
+    },
+    {
+      "id": "INIT-RVA-006",
+      "text": "Before promotion, staged repository validation shall establish `product.executable-reference-closure` for the transported common validation requirement set. Failure to resolve a required repository-relative command, required executable capability, or required portable support closure shall be a required Phase 2 failure and shall prevent promotion; explicitly governed external/platform-provided dependencies remain classified outside repository-relative installation."
     }
   ],
   "dependencies": [
@@ -50,6 +54,9 @@
     },
     {
       "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "spec_id": "product.executable-reference-closure"
     }
   ],
   "references": [

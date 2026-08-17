@@ -42,6 +42,10 @@
     {
       "id": "INIT-FIN-008",
       "text": "The component shall not interpret any material-manifest entry as a source subtree to be expanded into multiple output paths. Every entry produces exactly one output path from exactly one source blob or supported symlink. Entries with role development-only in the output inventory shall not be installed."
+    },
+    {
+      "id": "INIT-FIN-009",
+      "text": "Framework installation shall not be considered complete for a validation-ready initialized repository until the installed result can satisfy `product.executable-reference-closure`. Required repository-relative validation/test interfaces and their portable support material shall therefore be represented through accepted output-inventory/material-manifest authority before implementation may claim closure; missing closure shall fail rather than be repaired manually after initialization."
     }
   ],
   "dependencies": [
@@ -59,6 +63,9 @@
     },
     {
       "spec_id": "product.source-revision-identity"
+    },
+    {
+      "spec_id": "product.executable-reference-closure"
     }
   ],
   "references": [

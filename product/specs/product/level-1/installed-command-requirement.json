@@ -1,0 +1,98 @@
+{
+  "spec_id": "product.installed-command-requirement",
+  "title": "Installed Command Requirement",
+  "purpose": "Defines the governed identity and classification of commands and executable capabilities that transported common validation requires from an initialized repository.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "installed-command-requirement"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-ICR-001",
+      "text": "The product shall define `installed-command-requirement` as a governed validation-workflow dependency classified either as a repository-relative command/capability that must resolve from initialized output or as an explicitly external/platform-provided dependency."
+    },
+    {
+      "id": "INIT-ICR-002",
+      "text": "Every repository-relative command invoked directly or indirectly as a required stable entry point by transported common validation shall have an installed-command requirement. A repository-relative requirement shall identify the stable repository-relative path and required executable capability."
+    },
+    {
+      "id": "INIT-ICR-003",
+      "text": "The required stable validation/test surfaces governed by `product.validation-test-surface`, including `repo/scripts/test-validation`, `product/scripts/test-validation`, and `product/scripts/test-product`, shall be repository-relative installed-command requirements whenever common validation requires them."
+    },
+    {
+      "id": "INIT-ICR-004",
+      "text": "Production-validation entry points required by transported common validation shall likewise be represented as repository-relative installed-command requirements rather than assumed to exist because they exist in repo-spec."
+    },
+    {
+      "id": "INIT-ICR-005",
+      "text": "An external/platform-provided dependency shall be identified explicitly by accepted authority and shall not be represented as a repository-relative installed path. Absence of explicit external/platform classification shall not permit a missing repository-relative command to be treated as external."
+    },
+    {
+      "id": "INIT-ICR-006",
+      "text": "Repository-relative installed-command requirements shall be stable interface obligations and shall not require transport of repo-spec source-development-only tests, fixtures, or internal helper topology unless those materials are separately proven necessary to satisfy an installed stable interface."
+    },
+    {
+      "id": "INIT-ICR-007",
+      "text": "Installed-command requirement identity shall be deterministic for equivalent accepted validation-workflow authority and repository state."
+    },
+    {
+      "id": "INIT-ICR-008",
+      "text": "This contract shall not prescribe the concrete output-inventory representation, material-manifest entry shape beyond existing authority, wrapper implementation, support-library layout, closure algorithm, diagnostic wording, or upgrade propagation mechanics."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-VALIDATION-SCAFFOLDING-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/04-initialized-output-closure-and-installation.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/installed-command-requirement.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

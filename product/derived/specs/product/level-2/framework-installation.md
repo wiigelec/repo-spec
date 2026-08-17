@@ -47,6 +47,7 @@ Defines the framework installation component that selects and installs reusable 
 - `INIT-FIN-006`: The component shall install each material item in its declared destination_path, shall not modify the normative semantics of reusable framework material beyond the declared operation, and shall ensure that no output path is produced by more than one manifest entry.
 - `INIT-FIN-007`: The component shall validate every installed path against the output inventory (product.initializer-output-inventory-v1): every installed path with producer framework-installation must have a matching material_index entry, the operation must match, and the mode must match the material-manifest entry. No installed path shall match a fixed worktree file entry or another dynamic family path.
 - `INIT-FIN-008`: The component shall not interpret any material-manifest entry as a source subtree to be expanded into multiple output paths. Every entry produces exactly one output path from exactly one source blob or supported symlink. Entries with role development-only in the output inventory shall not be installed.
+- `INIT-FIN-009`: Framework installation shall not be considered complete for a validation-ready initialized repository until the installed result can satisfy `product.executable-reference-closure`. Required repository-relative validation/test interfaces and their portable support material shall therefore be represented through accepted output-inventory/material-manifest authority before implementation may claim closure; missing closure shall fail rather than be repaired manually after initialization.
 
 ## Dependencies
 
@@ -55,6 +56,7 @@ Defines the framework installation component that selects and installs reusable 
 - `product.material-classification`
 - `product.material-manifest`
 - `product.source-revision-identity`
+- `product.executable-reference-closure`
 
 ## References
 
