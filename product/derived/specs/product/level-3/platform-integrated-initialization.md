@@ -83,4 +83,3 @@ Defines the platform-integrated initialization workflow that applies hosting-pla
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/platform-integrated-initialization.md`
-

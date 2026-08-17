@@ -70,4 +70,3 @@ Defines the durable accepted repo-spec framework lineage retained by an initiali
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/framework-reconciliation-lineage.md`
-

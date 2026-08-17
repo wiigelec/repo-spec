@@ -68,4 +68,3 @@ Defines same-filesystem staging transaction with isolated repository content, va
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/transactional-staging.md`
-

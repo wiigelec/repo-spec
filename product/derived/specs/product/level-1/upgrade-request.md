@@ -68,4 +68,3 @@ Defines the canonical local request for reconciling an already initialized repos
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/upgrade-request.md`
-

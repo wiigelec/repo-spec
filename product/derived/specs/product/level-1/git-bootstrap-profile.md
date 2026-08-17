@@ -63,4 +63,3 @@ Defines the versioned bootstrap profile and initialization-time metadata rules f
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/git-bootstrap-profile.md`
-

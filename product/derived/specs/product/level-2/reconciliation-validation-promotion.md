@@ -73,4 +73,3 @@ Defines complete staged validation, promotion gating, accepted-lineage advanceme
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/reconciliation-validation-promotion.md`
-

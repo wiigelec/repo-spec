@@ -70,4 +70,3 @@ Defines validation performed against the staged repository and transaction recor
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/repository-validation.md`
-

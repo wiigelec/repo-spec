@@ -63,4 +63,3 @@ Defines the canonical Git object identity representation used by every initializ
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/git-object-identity.md`
-

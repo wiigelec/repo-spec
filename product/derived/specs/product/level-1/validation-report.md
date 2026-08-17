@@ -91,4 +91,3 @@ Defines the canonical validation report that the repository validation component
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/validation-report.md`
-

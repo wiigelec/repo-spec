@@ -69,4 +69,3 @@ Defines the boundary that keeps product direction and product foundations out of
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/foundation-seeding.md`
-

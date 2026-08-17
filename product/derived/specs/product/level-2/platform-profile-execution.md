@@ -60,4 +60,3 @@ Defines the platform profile executor component that loads and executes platform
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/platform-profile-execution.md`
-

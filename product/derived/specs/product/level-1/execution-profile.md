@@ -62,4 +62,3 @@ Defines the atomic execution profile mode selector for the initializer.
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/execution-profile.md`
-

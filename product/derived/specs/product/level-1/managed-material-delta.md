@@ -67,4 +67,3 @@ Defines the normative classification of initializer-managed differences between 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/managed-material-delta.md`
-

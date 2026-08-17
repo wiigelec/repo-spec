@@ -62,4 +62,3 @@ Defines deterministic local Git establishment within the complete staging worksp
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/local-git-initialization.md`
-

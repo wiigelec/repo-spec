@@ -69,4 +69,3 @@ Defines isolated reconciliation of selected initializer-managed material onto a 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/staged-managed-reconciliation.md`
-

@@ -68,4 +68,3 @@ Defines the exact commit identity of reusable framework material already present
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/source-revision-identity.md`
-

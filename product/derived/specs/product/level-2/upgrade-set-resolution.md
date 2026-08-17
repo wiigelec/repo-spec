@@ -71,4 +71,3 @@ Defines deterministic resolution of the legal initializer-managed reconciliation
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/upgrade-set-resolution.md`
-

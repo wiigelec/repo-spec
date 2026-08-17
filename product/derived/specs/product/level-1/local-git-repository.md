@@ -63,4 +63,3 @@ Defines the atomic local Git repository state produced by the bounded initializa
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/local-git-repository.md`
-

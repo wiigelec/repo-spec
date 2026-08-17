@@ -60,4 +60,3 @@ Defines the atomic platform profile interface contract for hosting-platform-spec
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/platform-profile-interface.md`
-

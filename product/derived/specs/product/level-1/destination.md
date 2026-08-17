@@ -61,4 +61,3 @@ Defines the absent-only local destination for the bounded initialization workflo
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/destination.md`
-

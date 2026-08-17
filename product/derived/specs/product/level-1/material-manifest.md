@@ -70,4 +70,3 @@ Defines the versioned material-manifest format that declares every source path e
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/material-manifest.md`
-

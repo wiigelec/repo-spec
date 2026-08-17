@@ -71,4 +71,3 @@ Defines durable repository-local Git-object evidence that allows an initialized 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/transportable-framework-authority.md`
-

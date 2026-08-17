@@ -69,4 +69,3 @@ Defines transition of a reconciled staged repository from its prior accepted fra
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/framework-reanchoring.md`
-

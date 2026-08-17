@@ -77,4 +77,3 @@ Defines the complete local lifecycle for reconciling an already initialized repo
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/derived-repository-upgrade.md`
-

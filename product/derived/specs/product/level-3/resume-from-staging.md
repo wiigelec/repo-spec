@@ -68,4 +68,3 @@ Defines the resume-from-staging workflow that recovers and completes an initiali
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/resume-from-staging.md`
-

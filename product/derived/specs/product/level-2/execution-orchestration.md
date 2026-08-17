@@ -60,4 +60,3 @@ Defines the generic execution orchestration component that sequences stage execu
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/execution-orchestration.md`
-

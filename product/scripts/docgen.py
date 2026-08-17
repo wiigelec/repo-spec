@@ -441,7 +441,7 @@ def render_spec_projection(title: str, source_path: str, spec: dict, include_aut
     lines.extend(render_list_section("Dependencies", render_dependencies(spec)))
     lines.extend(render_list_section("References", render_references(spec)))
     lines.extend(render_list_section("Derived artifacts", render_derived_artifacts(spec)))
-    return "\n".join(lines) + "\n"
+    return "\n".join(lines).rstrip("\n") + "\n"
 
 
 SPECIAL_RENDERERS = {

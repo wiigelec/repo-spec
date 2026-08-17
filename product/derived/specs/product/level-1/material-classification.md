@@ -61,4 +61,3 @@ Defines the atomic material role classification taxonomy for the initializer.
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/material-classification.md`
-
