@@ -1,0 +1,98 @@
+{
+  "spec_id": "product.product-test-applicability",
+  "title": "Product Test Applicability",
+  "purpose": "Defines the governed applicability state used to determine whether generic product implementation tests are expected for a repository state and whether zero applicable tests is legitimate.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "product-test-applicability"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-PTA-001",
+      "text": "The product shall define `product-test-applicability` as the governed repository-state determination of which product implementation-test obligations are applicable to `product/scripts/test-product`."
+    },
+    {
+      "id": "INIT-PTA-002",
+      "text": "Product-test applicability shall be derived from accepted repository-local product authority and test obligation evidence, not inferred solely from the presence or absence of discovered test files."
+    },
+    {
+      "id": "INIT-PTA-003",
+      "text": "A repository may have a legitimate zero-applicable product-test state only when accepted repository-local authority establishes that no governed product implementation-test obligation applies to the current repository state."
+    },
+    {
+      "id": "INIT-PTA-004",
+      "text": "Legitimate zero-applicable state shall be represented by deterministic evidence sufficient to distinguish intentional absence of governed product implementation tests from accidental absence, missing registration, broken discovery, or incomplete installation."
+    },
+    {
+      "id": "INIT-PTA-005",
+      "text": "If accepted repository-local authority establishes that one or more governed product implementation-test obligations apply, failure to resolve all expected applicable obligations shall not be classified as zero applicable."
+    },
+    {
+      "id": "INIT-PTA-006",
+      "text": "The applicability state shall distinguish at minimum: zero-applicable, applicable-and-resolved, and applicability-invalid. Applicability-invalid shall include contradictory, incomplete, malformed, or otherwise insufficient governing evidence."
+    },
+    {
+      "id": "INIT-PTA-007",
+      "text": "Applicability-invalid shall fail closed and shall not be normalized to zero-applicable or successful product testing."
+    },
+    {
+      "id": "INIT-PTA-008",
+      "text": "Transition from zero-applicable to applicable product tests shall occur through governed repository authority that establishes one or more applicable product-test obligations; the stable `product/scripts/test-product` interface identity shall not change as a consequence of that transition."
+    },
+    {
+      "id": "INIT-PTA-009",
+      "text": "This applicability contract shall not prescribe a registry file format, discovery path layout, activation trigger representation, product-specific test semantics, test framework, or exact user-facing wording."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-VALIDATION-SCAFFOLDING-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/03-product-test-lifecycle.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/product-test-applicability.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "spec_id": "product.product-test-lifecycle",
+  "title": "Product Test Lifecycle",
+  "purpose": "Defines deterministic lifecycle resolution for the generic product implementation-test surface, including honest zero-applicable behavior and failure distinction.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "product-test-lifecycle",
+      "zero-applicable-resolution"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-PTL-001",
+      "text": "`product/scripts/test-product` shall resolve product implementation-test lifecycle state from `product-test-applicability` before reporting product-test success."
+    },
+    {
+      "id": "INIT-PTL-002",
+      "text": "When applicability is zero-applicable, `product/scripts/test-product` may complete successfully only after validating the deterministic evidence that establishes legitimate zero-applicable state."
+    },
+    {
+      "id": "INIT-PTL-003",
+      "text": "A successful zero-applicable result shall mean that no governed applicable product implementation-test obligation exists for the current repository state. It shall not mean that expected tests were unavailable, undiscovered, uninstalled, unexecutable, or skipped because of an execution failure."
+    },
+    {
+      "id": "INIT-PTL-004",
+      "text": "When applicability is applicable-and-resolved, `product/scripts/test-product` shall execute every governed applicable product implementation-test obligation selected by the accepted applicability evidence and shall fail if any required applicable obligation fails."
+    },
+    {
+      "id": "INIT-PTL-005",
+      "text": "When accepted authority indicates applicable product-test obligations but the corresponding governed tests cannot be resolved, lifecycle resolution shall fail with a distinct expected-but-undiscovered or unresolved-applicable classification rather than report zero applicable."
+    },
+    {
+      "id": "INIT-PTL-006",
+      "text": "Missing stable interface capability, missing required runtime dependency, broken discovery or registration processing, malformed applicability evidence, and test execution failure shall remain failure classes distinct from legitimate zero-applicable state."
+    },
+    {
+      "id": "INIT-PTL-007",
+      "text": "The product-test lifecycle shall produce deterministic obligation selection and execution ordering for equivalent accepted authority and repository state. The exact ordering algorithm is not prescribed by this contract."
+    },
+    {
+      "id": "INIT-PTL-008",
+      "text": "The lifecycle result shall provide enough machine-usable classification to distinguish successful zero-applicable, successful applicable execution, failed applicable tests, unresolved expected tests, applicability-invalid evidence, interface/dependency failure, and execution infrastructure failure. Exact serialization and diagnostic wording remain implementation-defined."
+    },
+    {
+      "id": "INIT-PTL-009",
+      "text": "Changing from zero-applicable to one or more applicable governed product tests shall not require redesign or repository-class-specific modification of common validation orchestration; common orchestration shall continue invoking `product/scripts/test-product`."
+    },
+    {
+      "id": "INIT-PTL-010",
+      "text": "This lifecycle contract shall not define concrete product test suites, exact registration or discovery architecture, activation event syntax, test runner or framework selection, exact exit-code numbering beyond success versus failure, or product-specific test semantics."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "spec_id": "product.validation-test-orchestration"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-VALIDATION-SCAFFOLDING-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/03-product-test-lifecycle.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/product-test-lifecycle.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}
