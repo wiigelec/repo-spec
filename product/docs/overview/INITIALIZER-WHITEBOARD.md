@@ -21,15 +21,18 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
   "required_content_areas": {
     "collected_input": [
       "product/docs/overview/initializer-whiteboard/01-migration-input.md",
-      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
+      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md",
+      "product/docs/overview/initializer-whiteboard/03-product-validation-scaffolding-intake.md"
     ],
     "provenance": [
       "product/docs/overview/initializer-whiteboard/01-migration-input.md",
-      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
+      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md",
+      "product/docs/overview/initializer-whiteboard/03-product-validation-scaffolding-intake.md"
     ],
     "unresolved_intent": [
       "product/docs/overview/initializer-whiteboard/01-migration-input.md",
-      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md"
+      "product/docs/overview/initializer-whiteboard/02-derived-repository-upgrade-intake.md",
+      "product/docs/overview/initializer-whiteboard/03-product-validation-scaffolding-intake.md"
     ]
   },
   "controlling_documents": [],
@@ -57,6 +60,16 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
         "provenance",
         "unresolved_intent"
       ]
+    },
+    {
+      "order": 3,
+      "path": "product/docs/overview/initializer-whiteboard/03-product-validation-scaffolding-intake.md",
+      "title": "Product validation scaffolding intake",
+      "coverage": [
+        "collected_input",
+        "provenance",
+        "unresolved_intent"
+      ]
     }
   ],
   "successor_action": "Interpret this migration scaffold in product/docs/overview/INITIALIZER-ANALYSIS.md.",
@@ -72,6 +85,7 @@ This document provides the minimal collection-stage artifact required for migrat
 
 - [Migration input](initializer-whiteboard/01-migration-input.md)
 - [Derived-repository upgrade intake](initializer-whiteboard/02-derived-repository-upgrade-intake.md)
+- [Product validation scaffolding intake](initializer-whiteboard/03-product-validation-scaffolding-intake.md)
 
 ## Relationships
 
