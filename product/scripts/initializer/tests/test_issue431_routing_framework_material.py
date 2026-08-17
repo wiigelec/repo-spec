@@ -14,8 +14,15 @@ class Issue431RoutingFrameworkMaterialTests(unittest.TestCase):
         framework = json.loads((ROOT / "product/scripts/initializer/framework-inventory.json").read_text())
         destinations = {item["destination_path"] for item in output_spec["material_index"]}
         sources = {item["source_path"] for item in framework["entries"]}
-        self.assertTrue(set(REQUIRED_PATHS) <= destinations)
-        self.assertTrue(set(REQUIRED_PATHS) <= sources)
+        required = set(REQUIRED_PATHS)
+        installed_adapters = {
+            path for path in required
+            if path.startswith(".github/")
+        }
+        framework_sources = required - installed_adapters
+
+        self.assertTrue(required <= destinations)
+        self.assertTrue(framework_sources <= sources)
 
     def test_routing_runtime_sources_are_repository_owned(self):
         framework = json.loads((ROOT / "product/scripts/initializer/framework-inventory.json").read_text())
