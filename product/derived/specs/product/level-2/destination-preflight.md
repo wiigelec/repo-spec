@@ -60,4 +60,3 @@ Defines the destination preflight component that validates destination state com
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/destination-preflight.md`
-

@@ -72,4 +72,3 @@ Defines the dry-run validation workflow that validates an initialization request
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/dry-run-validation.md`
-

@@ -34,6 +34,10 @@
     {
       "id": "UPG-ANC-006",
       "text": "Re-anchoring shall fail closed when the staged candidate identity conflicts with the resolved reconciliation target, when accepted lineage history cannot be preserved, or when candidate provenance would become ambiguous."
+    },
+    {
+      "id": "UPG-ANC-007",
+      "text": "Before complete staged validation, re-anchoring shall materialize the prospective reconciliation-target transportable framework-authority bundle and any exact historical bundle backfill required for accepted lineage portability. The staged authority shall be cryptographically anchored to the corresponding exact lineage Git identities and shall not become accepted unless the exact validated staged state is promoted."
     }
   ],
   "dependencies": [
@@ -51,6 +55,9 @@
     },
     {
       "spec_id": "product.git-object-identity"
+    },
+    {
+      "spec_id": "product.transportable-framework-authority"
     }
   ],
   "references": [

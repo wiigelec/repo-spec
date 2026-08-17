@@ -185,4 +185,3 @@ Defines the canonical lifecycle stage identifiers used by workflows, execution r
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/lifecycle-stages.md`
-

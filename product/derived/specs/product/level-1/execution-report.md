@@ -92,4 +92,3 @@ Defines the atomic failure-diagnostic execution report artifact format for the i
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/execution-report.md`
-

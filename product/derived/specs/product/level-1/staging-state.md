@@ -95,4 +95,3 @@ Defines the staging-transaction state record that captures initialization identi
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/staging-state.md`
-

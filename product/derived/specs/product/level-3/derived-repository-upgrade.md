@@ -49,6 +49,7 @@ Defines the complete local lifecycle for reconciling an already initialized repo
 - `UPG-FULL-008`: A failed or non-promoted reconciliation shall not advance accepted lineage and shall not falsely present the target as reconciled to the supplying framework revision.
 - `UPG-FULL-009`: Equivalent accepted target state, equivalent accepted baseline identity, and equivalent clean supplying framework revision shall produce equivalent selected managed reconciliation and equivalent promoted repository content except for explicitly governed variable terminal/provenance data.
 - `UPG-FULL-010`: Remote framework retrieval, arbitrary caller-selected framework revision, generalized automatic conflict resolution, hosted orchestration, release policy, and automatic retry or rollback are outside this complete local workflow unless separately accepted by normative successor specifications.
+- `UPG-FULL-011`: The complete upgrade workflow shall produce and validate transportable repository-local framework authority for the reconciliation-target revision, and shall backfill any required pre-representation accepted lineage authority only from exact locally resolvable recorded framework identities. A promoted upgraded repository shall thereafter support routine framework-managed repository integrity validation without the originating repo-spec checkout and without remote framework retrieval.
 
 ## Dependencies
 
@@ -61,6 +62,7 @@ Defines the complete local lifecycle for reconciling an already initialized repo
 - `product.framework-reanchoring`
 - `product.reconciliation-validation-promotion`
 - `product.provenance-record`
+- `product.transportable-framework-authority`
 
 ## References
 
@@ -75,4 +77,3 @@ Defines the complete local lifecycle for reconciling an already initialized repo
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/derived-repository-upgrade.md`
-

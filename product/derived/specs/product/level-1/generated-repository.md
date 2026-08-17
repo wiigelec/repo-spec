@@ -70,4 +70,3 @@ Defines the complete repository-framework output tree produced by local bootstra
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/generated-repository.md`
-

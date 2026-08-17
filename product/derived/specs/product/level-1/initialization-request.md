@@ -68,4 +68,3 @@ Defines the minimal canonical repository-bootstrap request used by the bounded l
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/initialization-request.md`
-

@@ -68,4 +68,3 @@ Defines the recovery and cleanup workflow that handles initialization failures, 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/recovery-and-cleanup.md`
-

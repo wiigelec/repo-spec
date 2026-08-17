@@ -1033,4 +1033,3 @@ Complete closed inventory of repository-framework paths produced by local bootst
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/initializer-output-inventory-v1.md`
-

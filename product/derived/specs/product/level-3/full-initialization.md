@@ -94,4 +94,3 @@ Defines the complete bounded local repository-bootstrap workflow from a minimal 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-3/full-initialization.md`
-

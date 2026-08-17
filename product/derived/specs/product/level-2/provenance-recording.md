@@ -63,4 +63,3 @@ Defines the provenance recording component that captures and writes provenance d
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/provenance-recording.md`
-

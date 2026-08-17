@@ -78,4 +78,3 @@ Defines the canonicalization and equivalence relation for the bounded local init
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/content-equivalence.md`
-

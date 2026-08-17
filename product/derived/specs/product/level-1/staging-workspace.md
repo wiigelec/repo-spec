@@ -63,4 +63,3 @@ Defines the physical staging transaction directory layout that isolates reposito
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/staging-workspace.md`
-

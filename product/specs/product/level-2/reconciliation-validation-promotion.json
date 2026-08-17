@@ -42,6 +42,10 @@
     {
       "id": "UPG-VAP-008",
       "text": "Automatic rollback, retry, or resume after an indeterminate promotion is not authorized by this contract and requires separate accepted semantics."
+    },
+    {
+      "id": "UPG-VAP-009",
+      "text": "Complete staged validation shall verify all transportable framework-authority evidence required by the prospective accepted lineage state using repository-local Git-object identity traversal. Missing, incomplete, unanchored, or tampered required authority shall prevent promotion; successful promotion accepts exactly the validated lineage and framework-authority state together."
     }
   ],
   "dependencies": [
@@ -65,6 +69,9 @@
     },
     {
       "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "spec_id": "product.transportable-framework-authority"
     }
   ],
   "references": [

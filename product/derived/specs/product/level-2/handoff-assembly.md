@@ -59,4 +59,3 @@ Defines assembly of the handoff manifest inside the staged repository.
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/handoff-assembly.md`
-

@@ -86,4 +86,3 @@ Defines the atomic repository-bootstrap handoff manifest.
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/handoff-manifest.md`
-

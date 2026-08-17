@@ -70,4 +70,3 @@ Defines deterministic local resolution and inventory of framework material from 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/source-material-resolution.md`
-

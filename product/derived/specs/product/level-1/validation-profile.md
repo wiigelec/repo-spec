@@ -300,4 +300,3 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/validation-profile.md`
-

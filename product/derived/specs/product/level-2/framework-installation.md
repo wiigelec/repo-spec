@@ -71,4 +71,3 @@ Defines the framework installation component that selects and installs reusable 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/framework-installation.md`
-

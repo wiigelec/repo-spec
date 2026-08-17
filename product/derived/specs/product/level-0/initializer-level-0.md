@@ -74,4 +74,3 @@ Defines the product-wide kernel foundations for the repo-spec initializer, inclu
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-0/initializer-level-0.md`
-

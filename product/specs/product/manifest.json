@@ -298,6 +298,12 @@
       "level": 1
     },
     {
+      "spec_id": "product.transportable-framework-authority",
+      "path": "product/specs/product/level-1/transportable-framework-authority.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
       "spec_id": "product.managed-material-delta",
       "path": "product/specs/product/level-1/managed-material-delta.json",
       "status": "accepted",

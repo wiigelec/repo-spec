@@ -164,6 +164,10 @@
     {
       "id": "REPO-VAL-040",
       "text": "The applicable leaf validation entry point shall reject a functional-set artifact whose lifecycle status is neither candidate nor approved, shall reject an overview-whiteboard artifact that claims approval, shall require overview analysis to trace to whiteboard evidence, shall require a functional set to trace to analysis, and shall reject candidate functional sets as decomposition authority."
+    },
+    {
+      "id": "REPO-VAL-041",
+      "text": "When repository-owned production validation enforces initialized-repository framework integrity that is anchored to an external source framework identity, the proof used by routine validation shall be committed repository-local authority that is independently verifiable against that immutable identity. Routine validation shall not require the originating developer-machine checkout and shall not retrieve validation authority from a network or remote repository; missing required local authority shall fail cleanly."
     }
   ],
   "dependencies": [

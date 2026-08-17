@@ -64,4 +64,3 @@ Defines the canonical product identifier format, constraints, and semantics for 
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/product-identity.md`
-

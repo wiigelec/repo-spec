@@ -61,4 +61,3 @@ Defines intake and validation of the minimal repository-bootstrap JSON request.
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-2/request-intake.md`
-

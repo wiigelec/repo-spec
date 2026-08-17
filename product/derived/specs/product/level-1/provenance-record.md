@@ -80,4 +80,3 @@ Defines the atomic framework-provenance record output artifact format for reposi
 ## Derived artifacts
 
 - `markdown`: `product/derived/specs/product/level-1/provenance-record.md`
-
