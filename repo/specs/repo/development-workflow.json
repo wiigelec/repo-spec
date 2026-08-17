@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-WF-002",
-      "text": "Before any repository mutation, the chatbot shall initialize by reading README.md, discovering the authoritative manifest, reading the accepted development-workflow specification, discovering an existing governing issue or creating one when authorized by REPO-WF-003, then identifying and reading the resulting governing issue, loading only relevant overview, decomposition, plan, specification, and predecessor records, inspecting the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state, verifying that the branch recorded in the accepted default-branch base is the repository's actual current default branch, reporting the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and unresolved authority conflicts, stopping when controlling authority is missing or conflicting except that absence of a governing issue shall follow the explicit discovery-or-create procedure in REPO-WF-003, and withholding mutation until initialization is complete."
+      "text": "Before any repository mutation, the chatbot shall complete workflow initialization by satisfying REPO-WF-017 through REPO-WF-024 together with the governing-issue procedure in REPO-WF-003; initialization is a mandatory pre-mutation gate."
     },
     {
       "id": "REPO-WF-003",
@@ -68,6 +68,38 @@
     {
       "id": "REPO-WF-016",
       "text": "A product-artifact governing issue that creates or modifies maintained product artifacts shall cite the accepted implementation plan, identify one or more stable workstream or stage identifiers from that plan for its bounded implementation scope, cite the applicable accepted product specifications equal to the union of the selected workstreams' or stages' controlling sets, cite the exact accepted default-branch base, and cite predecessor implementation evidence."
+    },
+    {
+      "id": "REPO-WF-017",
+      "text": "Before any repository mutation, workflow initialization shall read README.md, discover the authoritative manifest, and read the accepted development-workflow specification."
+    },
+    {
+      "id": "REPO-WF-018",
+      "text": "Before any repository mutation, workflow initialization shall discover an existing governing issue or create one only when authorized by REPO-WF-003, then identify and read the resulting governing issue."
+    },
+    {
+      "id": "REPO-WF-019",
+      "text": "Before any repository mutation, workflow initialization shall load only the relevant overview, decomposition, plan, specification, and predecessor records needed to establish controlling authority and bounded work context."
+    },
+    {
+      "id": "REPO-WF-020",
+      "text": "Before any repository mutation, workflow initialization shall inspect the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state."
+    },
+    {
+      "id": "REPO-WF-021",
+      "text": "Before any repository mutation, workflow initialization shall verify that the branch recorded in the accepted default-branch base is the repository's actual current default branch."
+    },
+    {
+      "id": "REPO-WF-022",
+      "text": "Before any repository mutation, workflow initialization shall report the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and unresolved authority conflicts."
+    },
+    {
+      "id": "REPO-WF-023",
+      "text": "Workflow initialization shall stop when controlling authority is missing or conflicting, except that absence of a governing issue shall follow the explicit discovery-or-create procedure in REPO-WF-003."
+    },
+    {
+      "id": "REPO-WF-024",
+      "text": "The chatbot shall withhold repository mutation until workflow initialization is complete and all applicable pre-mutation initialization requirements have been satisfied."
     }
   ],
   "dependencies": [
