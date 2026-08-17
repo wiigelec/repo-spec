@@ -23,6 +23,23 @@ _PROGRESS = {
     "promotion": "Promoting prepared repository to destination...",
 }
 
+_UPGRADE_PROGRESS = {
+    "resolution": "Resolving accepted baseline and upgrade set...",
+    "reconciliation": "Preparing staged managed reconciliation...",
+    "reanchoring": "Materializing framework authority and preparing lineage...",
+    "validation": "Validating staged repository...",
+    "promotion": "Promoting validated repository...",
+}
+
+
+def present_upgrade_progress(phase: str, stream: TextIO) -> None:
+    try:
+        message = _UPGRADE_PROGRESS[phase]
+    except KeyError as exc:
+        raise ValueError(f"unsupported upgrade progress phase: {phase}") from exc
+    print(message, file=stream)
+
+
 
 def with_human_progress(
     actions: FullInitializationActions,

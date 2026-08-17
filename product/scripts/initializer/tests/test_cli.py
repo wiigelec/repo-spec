@@ -92,18 +92,32 @@ class CliTests(unittest.TestCase):
                     self.assertIn(public_form, rendered)
 
 
-    def test_upgrade_cli_uses_human_presentation_not_json(self) -> None:
+    def test_upgrade_cli_streams_human_progress_and_keeps_stdout_empty(self) -> None:
         result = SimpleNamespace(
             terminal_result="promoted-success",
             succeeded=True,
             failure_reason=None,
         )
+        phases = (
+            "resolution",
+            "reconciliation",
+            "reanchoring",
+            "validation",
+            "promotion",
+        )
+
+        def execute(_target, _framework, *, progress=None):
+            self.assertIsNotNone(progress)
+            for phase in phases:
+                progress(phase)
+            return result
+
+        stdout = io.StringIO()
+        stderr = io.StringIO()
         with mock.patch(
             "initializer.upgrade_orchestration.execute_repository_upgrade",
-            return_value=result,
-        ), mock.patch(
-            "initializer.human_presentation.present_upgrade_terminal_result"
-        ) as present:
+            side_effect=execute,
+        ), contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             rc = cli.main(
                 [
                     "/path/to/cli.py",
@@ -115,7 +129,20 @@ class CliTests(unittest.TestCase):
             )
 
         self.assertEqual(rc, 0)
-        present.assert_called_once_with(result, "/target/root", mock.ANY)
+        self.assertEqual(stdout.getvalue(), "")
+        rendered = stderr.getvalue()
+        expected = (
+            "Repository upgrade started.",
+            "Resolving accepted baseline and upgrade set...",
+            "Preparing staged managed reconciliation...",
+            "Materializing framework authority and preparing lineage...",
+            "Validating staged repository...",
+            "Promoting validated repository...",
+            "Upgrade complete: /target/root",
+            "Repository was promoted successfully.",
+        )
+        positions = [rendered.index(message) for message in expected]
+        self.assertEqual(positions, sorted(positions))
 
     def test_request_driven_staging_commands_are_unavailable(self) -> None:
         commands = (

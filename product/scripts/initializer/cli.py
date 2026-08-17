@@ -112,15 +112,20 @@ def _cmd_upgrade_repo(argv: list[str]) -> int:
     target_repository = argv[4]
     try:
         from initializer.upgrade_orchestration import execute_repository_upgrade
+        from initializer.human_presentation import present_upgrade_progress
 
-        result = execute_repository_upgrade(target_repository, argv[1])
+        print("Repository upgrade started.", file=sys.stderr)
+        result = execute_repository_upgrade(
+            target_repository,
+            argv[1],
+            progress=lambda phase: present_upgrade_progress(phase, sys.stderr),
+        )
     except Exception as exc:
         print(f"Repository upgrade failed before workflow completion: {exc}", file=sys.stderr)
         return 1
 
     from initializer.human_presentation import present_upgrade_terminal_result
 
-    print(json.dumps(result.to_dict(), sort_keys=True, ensure_ascii=False))
     present_upgrade_terminal_result(result, target_repository, sys.stderr)
     return 0 if result.succeeded else 1
 
