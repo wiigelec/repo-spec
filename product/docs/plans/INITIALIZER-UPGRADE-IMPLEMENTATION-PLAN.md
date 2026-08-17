@@ -44,6 +44,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
     "product.initializer-level-0",
     "product.upgrade-request",
     "product.framework-reconciliation-lineage",
+    "product.transportable-framework-authority",
     "product.provenance-record",
     "product.managed-material-delta",
     "product.upgrade-set-resolution",
@@ -72,6 +73,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
         "product.initializer-level-0",
         "product.upgrade-request",
         "product.framework-reconciliation-lineage",
+        "product.transportable-framework-authority",
         "product.provenance-record",
         "product.managed-material-delta",
         "product.upgrade-set-resolution",
@@ -102,6 +104,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
       "controlling_product_specifications": [
         "product.initializer-level-0",
         "product.framework-reconciliation-lineage",
+        "product.transportable-framework-authority",
         "product.staged-managed-reconciliation",
         "product.framework-reanchoring",
         "product.source-revision-identity",
@@ -113,6 +116,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
       "controlling_product_specifications": [
         "product.initializer-level-0",
         "product.framework-reconciliation-lineage",
+        "product.transportable-framework-authority",
         "product.framework-reanchoring",
         "product.reconciliation-validation-promotion",
         "product.repository-validation",
@@ -127,6 +131,7 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
         "product.initializer-level-0",
         "product.upgrade-request",
         "product.framework-reconciliation-lineage",
+        "product.transportable-framework-authority",
         "product.provenance-record",
         "product.managed-material-delta",
         "product.upgrade-set-resolution",
@@ -210,9 +215,9 @@ This plan sequences implementation of the accepted Repo-Spec Initializer derived
 
 The approved initializer-upgrade functional set and accepted initializer-upgrade decomposition provide controlling directional context. The accepted product specifications cited in `applicable_accepted_specifications` and in each `workstream_authority` entry are the normative product authority. This plan coordinates implementation only within those accepted semantics.
 
-This plan was revalidated under governing Issue #449 after the accepted upgrade specifications were corrected for first-reconciliation legacy-lineage bootstrap and for validation/promotion/lineage acceptance atomicity, and was synchronized under governing Issue #451 so the workstream authority and subordinate planning text fully reflect those corrected semantics. Those specification corrections do not alter the UP1-UP5 workstream boundaries or execution order; implementation remains constrained by the current accepted specifications listed in this metadata.
+This plan was revalidated under governing Issue #449 after the accepted upgrade specifications were corrected for first-reconciliation legacy-lineage bootstrap and for validation/promotion/lineage acceptance atomicity, and was synchronized under governing Issue #451 so the workstream authority and subordinate planning text fully reflect those corrected semantics. It was subsequently revalidated and synchronized under governing Issue #470 after `product.transportable-framework-authority` became accepted authority for portable accepted-lineage resolution, staged authority materialization/backfill, complete staged authority validation, and end-to-end transported-repository conformance. These specification corrections do not alter the UP1-UP5 workstream boundaries or execution order; UP1 mutation authority and UP2 authority remain unchanged, and implementation remains constrained by the current accepted specifications listed in this metadata.
 
-The accepted base for this planning cycle is `0d72ad21d1628d4761dd89d2a931a6589d6090a7`. The historical `INITIALIZER-IMPLEMENTATION-PLAN.md` remains separate authority for the original initializer workflow and is not modified, superseded, or incorporated into this upgrade plan.
+The accepted base for this planning cycle is `62da82c09f48300c3af90c4394268a3bfc2238f7`. The historical `INITIALIZER-IMPLEMENTATION-PLAN.md` remains separate authority for the original initializer workflow and is not modified, superseded, or incorporated into this upgrade plan.
 
 ## Workstreams
 

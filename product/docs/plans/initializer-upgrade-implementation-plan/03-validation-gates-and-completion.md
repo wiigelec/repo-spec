@@ -12,7 +12,7 @@ No UP1-UP5 Product-artifact implementation issue is authorized until this plan i
 
 ### UP1 -> UP2
 
-Requires deterministic accepted baseline/target inventory endpoint evidence and a legal reconciliation set. Ambiguous identity or invalid qualification blocks transition.
+Requires deterministic accepted baseline/target inventory endpoint evidence, exact repository-local accepted-lineage authority when governed by the transportable representation, exact legacy authority/backfill eligibility when applicable, and a legal reconciliation set. Ambiguous, missing, unanchored, or unresolvable authority/identity or invalid qualification blocks transition.
 
 ### UP2 -> UP3
 
@@ -20,11 +20,11 @@ Requires isolated staged managed reconciliation with unmanaged-content preservat
 
 ### UP3 -> UP4
 
-Requires the prospective framework anchor and reconciliation-target lineage entry to be present in the staged repository in the exact serialized form intended for acceptance, while preserving accepted history; the prospective entry remains non-accepted until promotion commits the validated state.
+Requires the prospective framework anchor and reconciliation-target lineage entry to be present in the staged repository in the exact serialized form intended for acceptance, while preserving accepted history, together with the prospective target framework-authority bundle and any required exact historical backfill anchored to their lineage Git identities; the prospective lineage/authority state remains non-accepted until promotion commits the validated state.
 
 ### UP4 -> UP5
 
-Requires focused validation/promotion conformance and deterministic accepted-lineage behavior.
+Requires focused validation/promotion conformance, deterministic accepted-lineage and accepted framework-authority behavior, and proof that the promoted repository can perform routine framework-managed integrity validation from committed repository-local authority without the originating repo-spec checkout or remote retrieval.
 
 ### Completion gate
 
@@ -39,18 +39,21 @@ At minimum, whole-upgrade conformance shall cover:
 - valid existing initialized target request;
 - invalid/non-initialized target rejection;
 - clean supplying framework revision resolution;
-- accepted-lineage baseline resolution or, for the first reconciliation of a lineage-predating target, valid `product.provenance-record` bootstrap of the exact original framework/inventory authority;
-- invalid, incomplete, ambiguous, or unresolvable legacy provenance fails closed without guessing;
+- accepted-lineage baseline resolution through exact repository-local framework-authority evidence when governed by the transportable representation or, for the first reconciliation of a lineage-predating target, valid `product.provenance-record` bootstrap of the exact original framework/inventory authority plus exact locally resolvable historical backfill eligibility;
+- invalid, incomplete, ambiguous, unanchored, tampered, or unresolvable accepted/legacy authority or provenance fails closed without guessing;
 - baseline and reconciliation-target inventory endpoint resolution;
 - unchanged/add/modify/remove/retarget managed-material classification;
 - source-owned qualification that constrains but does not expand authority;
 - unmanaged/product-owned preservation;
 - local managed conflict fail/defer behavior;
 - prospective re-anchoring and reconciliation-target lineage entry serialized in final intended form before complete validation;
+- prospective target framework-authority bundle and any required exact historical backfill are materialized deterministically and cryptographically anchored before complete validation;
+- complete staged validation verifies required framework-authority Git objects by repository-local identity traversal and rejects missing, incomplete, inconsistent, unanchored, or tampered authority;
 - required validation failure prevents promotion;
-- successful promotion commits the exact validated lineage-bearing staged state and thereby makes exactly one prospective reconciliation-target lineage entry accepted, without a separate post-promotion maintained-repository lineage mutation;
-- failed/non-promoted attempts do not advance lineage;
-- second successful reconciliation uses the latest accepted lineage revision as baseline.
+- successful promotion commits the exact validated lineage-and-framework-authority staged state and thereby makes exactly one prospective reconciliation-target lineage entry and its required authority accepted, without a separate post-promotion maintained-repository lineage/authority mutation;
+- failed/non-promoted attempts do not advance lineage or accepted framework-authority state;
+- a promoted repository performs routine framework-managed integrity validation after the originating repo-spec checkout is unavailable and without remote retrieval;
+- second successful reconciliation uses the latest accepted lineage revision and repository-local framework-authority bundle as baseline.
 
 ## Completion evidence
 
