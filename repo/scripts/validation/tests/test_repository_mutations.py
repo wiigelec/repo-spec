@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import sys
 import tempfile
 from pathlib import Path
 
@@ -232,6 +233,28 @@ def _make_integrity_framework(root: Path) -> tuple[Path, str, str]:
     return framework, baseline, current
 
 
+def _materialize_integrity_authority_bundle(
+    repo: Path,
+    framework: Path,
+    revision: str,
+) -> None:
+    product_scripts = Path(__file__).resolve().parents[4] / "product/scripts"
+    if str(product_scripts) not in sys.path:
+        sys.path.insert(0, str(product_scripts))
+    from initializer.framework_authority import build_framework_authority_bundle
+
+    bundle_dir = (
+        repo
+        / "repo/initializer/framework-authority"
+        / revision
+    )
+    build_framework_authority_bundle(
+        str(framework),
+        revision,
+        bundle_dir,
+    )
+
+
 def _make_initialized_integrity_fixture(
     root: Path,
     name: str,
@@ -282,6 +305,8 @@ def _make_initialized_integrity_fixture(
         + "\n",
         encoding="utf-8",
     )
+    _materialize_integrity_authority_bundle(repo, framework, baseline)
+    _materialize_integrity_authority_bundle(repo, framework, current)
     if add_unmanaged_drift:
         (repo / "repo/unmanaged.txt").write_text("unauthorized\n", encoding="utf-8")
     _git_for_root_integrity(repo, "add", "-A")
