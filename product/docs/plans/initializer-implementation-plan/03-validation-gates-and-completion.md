@@ -63,7 +63,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | Requirement | Evidence |
 | --- | --- |
 | Patch 1 portable-runtime authority correction is the exact predecessor | Governing issue #350 and local history identify the accepted Patch 1 commit; no unrelated functional correction intervenes |
-| Future Product-artifact implementation issue selects stable workstream `VA1` | Governing issue cites `VA1` and exactly `product.initializer-output-inventory-v1`, `product.framework-installation`, and `product.repository-validation` as controlling accepted product specifications |
+| Future Product-artifact implementation issue selects stable workstream `VA1` | Governing issue cites `VA1` and exactly `product.initializer-output-inventory-v1`, `product.framework-installation`, `product.repository-validation`, and `product.executable-reference-closure` as controlling accepted product specifications |
 | Shared-module extraction remains semantic-preserving | Planned implementation changes ownership/dependency direction only; repository policy remains repository-owned, product policy remains product-owned, public validator behavior is unchanged |
 | Portable runtime stays closed | Any new maintained shared runtime module is reflected by accepted inventory authority and installed by the existing framework/materialization contract |
 | Self-test consolidation is not pulled into VA1 | Diff and issue scope exclude the separately authorized validation self-test ownership correction |
@@ -74,7 +74,7 @@ Each gate passes before successor increment work may be authorized. Evidence is 
 | Requirement | Evidence |
 | --- | --- |
 | Patch 2 VA1 authority is the exact predecessor | Governing issue #350 and local history identify the accepted Patch 2 commit; no fourth functional correction intervenes |
-| Future Product-artifact implementation issue selects stable workstream `VA2` | Governing issue cites `VA2` and exactly `product.repository-validation` as the controlling accepted product specification |
+| Future Product-artifact implementation issue selects stable workstream `VA2` | Governing issue cites `VA2` and exactly `product.repository-validation`, `product.validation-test-surface`, and `product.validation-test-orchestration` as controlling accepted product specifications |
 | Focused ownership replaces duplicate catch-all ownership without coverage loss | Planned case-by-case mapping identifies the focused owner for each retained invariant and distinguishes genuinely integrative cases |
 | Production validation remains separate | VA2 implementation diff is limited to validation self-test ownership/consolidation and does not change production validator behavior |
 | VA1 implementation is not silently bundled into VA2 | Shared-module extraction or production dependency-direction refactor requires the separately governed VA1 implementation scope |
