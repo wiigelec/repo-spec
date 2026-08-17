@@ -2,7 +2,7 @@
 
 ## Status
 
-Candidate initializer validation-scaffolding functional set. Directional and non-normative. Explicit user approval is required before decomposition.
+Approved initializer validation-scaffolding functional set. Directional and non-normative. Product decomposition is the next authorized lifecycle step.
 
 ## Metadata
 
@@ -16,7 +16,7 @@ Candidate initializer validation-scaffolding functional set. Directional and non
   "title": "Repo-Spec Initializer Validation Scaffolding Functional Set",
   "product_id": "repo-spec initializer",
   "authority_category": "directional",
-  "lifecycle_status": "candidate",
+  "lifecycle_status": "approved",
   "governing_issue": "#483",
   "required_content_areas": {
     "capability_boundary": [
@@ -101,14 +101,14 @@ Candidate initializer validation-scaffolding functional set. Directional and non
       "coverage": ["dependencies", "decomposition_handoff"]
     }
   ],
-  "successor_action": "Obtain explicit user approval or rejection/modification of this candidate functional set. Candidate status does not authorize decomposition.",
+  "successor_action": "Proceed to separately governed product decomposition using this approved functional set as directional predecessor authority.",
   "schema_version": "1"
 }
 ```
 
 ## Overview
 
-This candidate defines one coherent initializer capability: a newly generated repository should contain a usable common validation/test workflow and the stable local interfaces needed to execute it without manual repair.
+This approved functional set defines one coherent initializer capability: a newly generated repository should contain a usable common validation/test workflow and the stable local interfaces needed to execute it without manual repair.
 
 It carries forward the accepted analysis direction for common CI, repository/product test ownership, generic `product/scripts/test-product`, honest zero-applicable product-test state, and initialized-output executable closure. It remains non-normative about exact runtime mechanics.
 
@@ -125,13 +125,13 @@ The existing approved [Repo-Spec Initializer functional set](./INITIALIZER-FUNCT
 
 ## Relationships
 
-This candidate is controlled by and succeeds [Repo-Spec Initializer analysis](./INITIALIZER-ANALYSIS.md), specifically the accepted product-validation-scaffolding analysis.
+This approved functional set is controlled by and succeeds [Repo-Spec Initializer analysis](./INITIALIZER-ANALYSIS.md), specifically the accepted product-validation-scaffolding analysis.
 
 It is separate from the already approved [Repo-Spec Initializer functional set](./INITIALIZER-FUNCTIONAL-SET.md) and from the approved [Repo-Spec Initializer Upgrade functional set](./INITIALIZER-UPGRADE-FUNCTIONAL-SET.md).
 
 ## Next authorized action
 
-Review this candidate and obtain explicit user approval, rejection, or requested modification. Do not create or modify decomposition artifacts until approval establishes the directional handoff.
+Proceed to separately governed product decomposition. This approved functional set is directional predecessor authority for that stage; decomposition content is not created by this approval patch.
 
 ## Discoverability
 

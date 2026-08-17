@@ -1,8 +1,8 @@
 # Decomposition handoff
 
-## Candidate decomposition concerns
+## Decomposition concerns
 
-If explicitly approved, decomposition should assign responsibilities for:
+The approved functional set hands product decomposition these responsibilities:
 
 - common CI orchestration versus stable installed interfaces;
 - repository validation self-test ownership;
@@ -21,8 +21,8 @@ Decomposition should preserve the distinction between production validation (`re
 
 Later product specifications should make exact command contracts, zero-applicable semantics, installation requirements, failure diagnostics, and closure rules normative before implementation begins.
 
-## Approval gate
+## Approved handoff
 
-The next lifecycle action after this candidate is available on `main` is explicit user approval or rejection/modification of the candidate functional set.
+The functional set is explicitly approved. Product decomposition is the next authorized lifecycle step and must occur under separate governing authority.
 
-No decomposition mutation is authorized until that explicit decision.
+This approval does not itself create decomposition, product specifications, implementation planning, or implementation authority.
