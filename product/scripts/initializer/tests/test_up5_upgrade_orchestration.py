@@ -217,14 +217,19 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
                 0,
                 "stdout:\n" + proc.stdout + "\nstderr:\n" + proc.stderr,
             )
-            result = json.loads(proc.stdout)
-            self.assertEqual(result["terminal_result"], "promoted-success")
-            self.assertTrue(result["succeeded"])
-            self.assertTrue(result["accepted"])
-            self.assertEqual(
-                result["reconciliation_target_revision"],
-                current_revision,
+            self.assertEqual(proc.stdout, "")
+            expected_progress = (
+                "Repository upgrade started.",
+                "Resolving accepted baseline and upgrade set...",
+                "Preparing staged managed reconciliation...",
+                "Materializing framework authority and preparing lineage...",
+                "Validating staged repository...",
+                "Promoting validated repository...",
+                f"Upgrade complete: {target}",
+                "Repository was promoted successfully.",
             )
+            positions = [proc.stderr.index(message) for message in expected_progress]
+            self.assertEqual(positions, sorted(positions))
 
             accepted = resolve_accepted_baseline(str(target))
             self.assertEqual(accepted.baseline_source, "accepted-lineage")
@@ -311,8 +316,23 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
 
             write_inventory(framework, {"managed": ("managed.txt", "two\n")})
             first_target = commit(framework, "first upgrade target")
-            first = execute_repository_upgrade(str(target), str(framework))
+            progress_phases = []
+            first = execute_repository_upgrade(
+                str(target),
+                str(framework),
+                progress=progress_phases.append,
+            )
 
+            self.assertEqual(
+                progress_phases,
+                [
+                    "resolution",
+                    "reconciliation",
+                    "reanchoring",
+                    "validation",
+                    "promotion",
+                ],
+            )
             self.assertTrue(first.succeeded)
             self.assertTrue(first.accepted)
             self.assertEqual(first.terminal_result, "promoted-success")
@@ -480,7 +500,11 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
                 ])
 
         self.assertEqual(rc, 0)
-        execute.assert_called_once_with("/target/root", "/framework/root")
+        execute.assert_called_once()
+        args, kwargs = execute.call_args
+        self.assertEqual(args, ("/target/root", "/framework/root"))
+        self.assertEqual(set(kwargs), {"progress"})
+        self.assertTrue(callable(kwargs["progress"]))
 
 
 if __name__ == "__main__":

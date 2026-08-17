@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from typing import Callable
 
 from .upgrade_reanchoring import (
     FrameworkReanchoringError,
@@ -148,7 +149,14 @@ def _failure(
 def execute_repository_upgrade(
     target_repository: str,
     executing_framework_repository: str,
+    *,
+    progress: Callable[[str], None] | None = None,
 ) -> DerivedRepositoryUpgradeResult:
+    def emit_progress(phase: str) -> None:
+        if progress is not None:
+            progress(phase)
+
+    emit_progress("resolution")
     try:
         resolution = resolve_upgrade_set(
             target_repository,
@@ -157,6 +165,7 @@ def execute_repository_upgrade(
     except UpgradeResolutionError as exc:
         return _failure("pre-promotion-failure", str(exc))
 
+    emit_progress("reconciliation")
     try:
         staged = stage_managed_reconciliation(resolution)
     except StagedReconciliationError as exc:
@@ -170,6 +179,7 @@ def execute_repository_upgrade(
             staged=staged,
         )
 
+    emit_progress("reanchoring")
     try:
         reanchoring = reanchor_staged_repository(resolution, staged)
     except FrameworkReanchoringError as exc:
@@ -180,6 +190,7 @@ def execute_repository_upgrade(
             staged=staged,
         )
 
+    emit_progress("validation")
     try:
         validation = validate_reanchored_candidate(
             staged,
@@ -205,6 +216,7 @@ def execute_repository_upgrade(
             validation=validation,
         )
 
+    emit_progress("promotion")
     try:
         promotion = promote_validated_candidate(
             staged,
