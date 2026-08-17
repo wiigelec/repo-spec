@@ -1,0 +1,107 @@
+{
+  "spec_id": "product.validation-test-surface",
+  "title": "Validation and Test Surface Identity",
+  "purpose": "Defines the stable repository-relative validation/test surface identities and ownership roles used by common validation orchestration across repo-spec and initialized repositories.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 1,
+  "primitives": {
+    "concepts": [
+      "validation-test-surface"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-VTS-001",
+      "text": "The product shall define `validation-test-surface` as the stable repository-relative interface identity used to distinguish production validation, validation self-tests, and generic product implementation tests without making repository class part of the external interface name."
+    },
+    {
+      "id": "INIT-VTS-002",
+      "text": "`repo/scripts/test-validation` shall be the stable repository-owned validation self-test surface. Its ownership is the repository/framework validation domain, and its role is to exercise that domain's installed validation responsibility rather than to perform ordinary production validation."
+    },
+    {
+      "id": "INIT-VTS-003",
+      "text": "`product/scripts/test-validation` shall be the stable product-owned validation self-test surface. Its ownership is the product validation domain, and its role is to exercise that domain's installed validation responsibility rather than to perform ordinary production validation or product implementation testing."
+    },
+    {
+      "id": "INIT-VTS-004",
+      "text": "`product/scripts/test-product` shall be the stable product-owned generic implementation-test surface. This specification defines its identity and ownership only; product-test applicability, zero-applicable state, discovery, activation, and expected-suite semantics are governed separately."
+    },
+    {
+      "id": "INIT-VTS-005",
+      "text": "Production validation surfaces, including `repo/scripts/validate` and `product/scripts/validate`, shall remain semantically distinct from `repo/scripts/test-validation`, `product/scripts/test-validation`, and `product/scripts/test-product`; successful execution of one class shall not stand in for required execution of another class."
+    },
+    {
+      "id": "INIT-VTS-006",
+      "text": "The stable validation/test surface paths shall have the same external repository-relative identity in repo-spec and initialized repositories. Repository-class-specific alternate path names shall not be required by common validation orchestration."
+    },
+    {
+      "id": "INIT-VTS-007",
+      "text": "A stable validation/test surface may delegate to internal libraries, dispatchers, wrappers, or additional source-development tests, but those internal choices shall not redefine the stable surface path, ownership role, or required observable success/failure meaning."
+    },
+    {
+      "id": "INIT-VTS-008",
+      "text": "When a stable validation/test surface is required by accepted orchestration for a repository state, absence of the path, lack of executable capability, or inability to start the surface shall be an interface failure and shall not be interpreted as a successful skip or as zero applicable product tests."
+    },
+    {
+      "id": "INIT-VTS-009",
+      "text": "Repo-spec source-development-only test trees and fixtures shall not be part of the stable surface identity contract merely because repo-spec may dispatch additional tests behind a stable surface."
+    },
+    {
+      "id": "INIT-VTS-010",
+      "text": "This surface-identity contract shall not define product-specific test suites, product-test applicability rules, exact workflow YAML, invocation ordering, wrapper language, dispatcher topology, or exact diagnostic text."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-VALIDATION-SCAFFOLDING-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/01-validation-workflow-and-interface-ownership.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/02-validation-self-test-ownership.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-1/validation-test-surface.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

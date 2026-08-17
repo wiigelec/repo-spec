@@ -338,6 +338,18 @@
       "path": "product/specs/product/level-3/derived-repository-upgrade.json",
       "status": "accepted",
       "level": 3
+    },
+    {
+      "spec_id": "product.validation-test-surface",
+      "path": "product/specs/product/level-1/validation-test-surface.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.validation-test-orchestration",
+      "path": "product/specs/product/level-2/validation-test-orchestration.json",
+      "status": "accepted",
+      "level": 2
     }
   ]
 }
