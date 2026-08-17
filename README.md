@@ -26,6 +26,24 @@ Repository initialization establishes the governed repository framework only. It
 
 The initializer fails closed when the destination is unsafe or the executing repo-spec checkout cannot provide accurate, unambiguous framework provenance.
 
+## Upgrade an existing repository
+
+From a repo-spec checkout, upgrade an existing initialized repository with:
+
+```text
+product/scripts/repo-spec upgrade --repo /path/to/existing/repository
+```
+
+If the `repo-spec` wrapper from this checkout has been placed on `PATH`, the equivalent command is:
+
+```text
+repo-spec upgrade --repo /path/to/existing/repository
+```
+
+Upgrade resolves the repository's accepted framework baseline and the supplying repo-spec framework revision, reconciles initializer-managed material in staging, reanchors framework authority and provenance for the accepted transition, validates the staged result, and promotes only a successful reconciliation. Ambiguous authority, unmanaged mutation, reconciliation conflicts, or validation failure reject the upgrade without promoting the candidate state.
+
+For the accepted upgrade contracts and implementation-oriented detail, see the [initializer upgrade overview](product/docs/overview/INITIALIZER-UPGRADE-FUNCTIONAL-SET.md).
+
 ### Web-chat-assisted workflow
 
 A web chat agent does not need access to your local Git checkout to resolve Git plumbing. Tell it the local repo-spec command path you intend to use and the destination repository path. The command you run locally resolves framework provenance itself.
@@ -49,6 +67,7 @@ For lifecycle behavior and lower-level diagnostic/developer interfaces, see the 
 ## Quick commands
 
 - `product/scripts/repo-spec init --repo /path/to/new/repo` - normal local repository bootstrap
+- `product/scripts/repo-spec upgrade --repo /path/to/existing/repo` - upgrade an existing initialized repository
 - `product/scripts/repo-spec-init --request request.json` - lower-level/developer request interface
 - `scripts/validate` - repository-wide validation
 - `repo/scripts/validate` - focused repository validator
