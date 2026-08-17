@@ -249,7 +249,11 @@ def _verify_loaded(objects: dict[str, GitObject], commit_oid: str) -> FrameworkA
     def read(path: str):
         mode, oid, visited = _resolve_path(objects, commit_oid, path)
         used.update(visited)
-        obj = objects[oid]
+        obj = objects.get(oid)
+        if obj is None:
+            raise FrameworkAuthorityError(
+                f"cryptographically linked authority object is missing: {oid}"
+            )
         if obj.object_type != "blob":
             raise FrameworkAuthorityError(f"authority path is not a blob: {path}")
         return mode, obj.content, oid

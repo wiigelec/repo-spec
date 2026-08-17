@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -232,6 +233,27 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
                 current_revision,
             )
 
+            shutil.rmtree(baseline_framework)
+            shutil.rmtree(current_framework)
+            transported = resolve_accepted_baseline(str(target))
+            self.assertEqual(
+                transported.active_baseline.framework_revision.object_id,
+                current_revision,
+            )
+            validation = subprocess.run(
+                [str(target / "repo/scripts/validate")],
+                cwd=target,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            self.assertEqual(
+                validation.returncode,
+                0,
+                "stdout:\n" + validation.stdout + "\nstderr:\n" + validation.stderr,
+            )
+
     def test_equivalent_inputs_produce_equivalent_reconciliation_and_content(self):
         from initializer.upgrade_validation_promotion import repository_content_digest
 
@@ -299,6 +321,9 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             self.assertEqual(first.reconciliation_target_revision, first_target)
             self.assertEqual((target / "managed.txt").read_text(), "two\n")
             self.assertEqual((target / "user-owned.txt").read_text(), "preserve\n")
+            authority_root = target / "repo/initializer/framework-authority"
+            self.assertTrue((authority_root / baseline / "bundle.json").is_file())
+            self.assertTrue((authority_root / first_target / "bundle.json").is_file())
 
             after_first = resolve_accepted_baseline(str(target))
             self.assertEqual(after_first.baseline_source, "accepted-lineage")
@@ -316,6 +341,9 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             self.assertEqual(second.baseline_revision, first_target)
             self.assertEqual(second.reconciliation_target_revision, second_target)
             self.assertEqual((target / "managed.txt").read_text(), "three\n")
+            self.assertTrue((authority_root / baseline / "bundle.json").is_file())
+            self.assertTrue((authority_root / first_target / "bundle.json").is_file())
+            self.assertTrue((authority_root / second_target / "bundle.json").is_file())
 
             after_second = resolve_accepted_baseline(str(target))
             self.assertEqual(

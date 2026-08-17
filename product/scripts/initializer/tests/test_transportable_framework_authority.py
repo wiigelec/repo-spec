@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import base64
+import hashlib
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -91,3 +94,68 @@ def test_bundle_tamper_fails_closed(tmp_path: Path):
     obj.write_text(json.dumps(raw))
     with pytest.raises(FrameworkAuthorityError):
         verify_bundle_directory(bundle_dir, sha)
+
+
+def _blob_oid(content: bytes) -> str:
+    return hashlib.sha1(f"blob {len(content)}\0".encode("ascii") + content).hexdigest()
+
+
+def test_subordinate_index_cannot_reauthorize_forged_source_blob(tmp_path: Path):
+    source, sha = _fixture_framework(tmp_path)
+    bundle_dir = tmp_path / "bundle" / sha
+    build_framework_authority_bundle(str(source), sha, bundle_dir)
+    bundle = verify_bundle_directory(bundle_dir, sha)
+    _mode, _content, source_oid = bundle.read_path("repo/scripts/x")
+
+    forged = b"forged authority\n"
+    forged_oid = _blob_oid(forged)
+    forged_record = {
+        "content_base64": base64.b64encode(forged).decode("ascii"),
+        "object_type": "blob",
+    }
+    (bundle_dir / "objects" / source_oid).unlink()
+    (bundle_dir / "objects" / forged_oid).write_text(
+        json.dumps(forged_record, sort_keys=True, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+
+    index_path = bundle_dir / "bundle.json"
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    index["object_ids"] = [
+        forged_oid if oid == source_oid else oid
+        for oid in index["object_ids"]
+    ]
+    index["object_ids"] = sorted(index["object_ids"])
+    index_path.write_text(
+        json.dumps(index, sort_keys=True, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(FrameworkAuthorityError):
+        verify_bundle_directory(bundle_dir, sha)
+
+
+def test_missing_or_incomplete_bundle_fails_closed(tmp_path: Path):
+    source, sha = _fixture_framework(tmp_path)
+    bundle_dir = tmp_path / "bundle" / sha
+    build_framework_authority_bundle(str(source), sha, bundle_dir)
+
+    (bundle_dir / "bundle.json").unlink()
+    with pytest.raises(FrameworkAuthorityError):
+        verify_bundle_directory(bundle_dir, sha)
+
+    build_framework_authority_bundle(str(source), sha, bundle_dir)
+    obj = next((bundle_dir / "objects").iterdir())
+    obj.unlink()
+    with pytest.raises(FrameworkAuthorityError):
+        verify_bundle_directory(bundle_dir, sha)
+
+
+def test_bundle_directory_must_be_anchored_to_exact_commit_identity(tmp_path: Path):
+    source, sha = _fixture_framework(tmp_path)
+    correct = tmp_path / "bundle" / sha
+    wrong = tmp_path / "bundle" / ("0" * 40)
+    build_framework_authority_bundle(str(source), sha, correct)
+    shutil.copytree(correct, wrong)
+    with pytest.raises(FrameworkAuthorityError):
+        verify_bundle_directory(wrong, sha)
