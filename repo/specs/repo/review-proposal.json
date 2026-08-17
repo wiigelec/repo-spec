@@ -32,7 +32,7 @@
       "label": "Validation",
       "required": true,
       "input_type": "textarea",
-      "description": "List the validation commands run and the results observed.",
+      "description": "List the validation commands run and the results observed. Exact-revision evidence may be supplied by GitHub metadata or linked validation records. If the review-proposal body states a revision-specific fact such as a head SHA, commit count, or exact-head status, that claim shall describe the current proposed revision and shall be refreshed or removed after any new commit before acceptance.",
       "placeholder": "scripts/validate\nResults and any noteworthy revision evidence.",
       "validation": {
         "kind": "meaningful"
@@ -126,6 +126,10 @@
     {
       "id": "REPO-RP-016",
       "text": "The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content."
+    },
+    {
+      "id": "REPO-RP-017",
+      "text": "Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance."
     }
   ],
   "dependencies": [

@@ -11,7 +11,7 @@
 
 ## Validation
 
-<!-- List the validation commands run and the results observed. -->
+<!-- List the validation commands run and the results observed. Exact-revision evidence may be supplied by GitHub metadata or linked validation records. If the review-proposal body states a revision-specific fact such as a head SHA, commit count, or exact-head status, that claim shall describe the current proposed revision and shall be refreshed or removed after any new commit before acceptance. -->
 
 ## Review focus
 

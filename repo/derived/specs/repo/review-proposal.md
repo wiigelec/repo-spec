@@ -56,7 +56,7 @@ Validation metadata:
 - Required: yes
 - Input type: `textarea`
 
-List the validation commands run and the results observed.
+List the validation commands run and the results observed. Exact-revision evidence may be supplied by GitHub metadata or linked validation records. If the review-proposal body states a revision-specific fact such as a head SHA, commit count, or exact-head status, that claim shall describe the current proposed revision and shall be refreshed or removed after any new commit before acceptance.
 
 Placeholder:
 > scripts/validate
@@ -115,6 +115,7 @@ Validation metadata:
 - `REPO-RP-014`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions.
 - `REPO-RP-015`: The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere.
 - `REPO-RP-016`: The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content.
+- `REPO-RP-017`: Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance.
 
 ## Dependencies
 
