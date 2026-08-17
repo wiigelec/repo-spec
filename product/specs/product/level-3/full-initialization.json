@@ -58,6 +58,10 @@
     {
       "id": "INIT-FIN-012",
       "text": "Overview collection, analysis, and functional-set approval are governed successor work performed only after repository bootstrap; bootstrap does not authorize or synthesize them."
+    },
+    {
+      "id": "INIT-FIN-013",
+      "text": "A promoted initialization success shall require executable-reference closure for the transported common validation workflow before promotion: every governed repository-relative validation/test command shall resolve through installed output and required portable support material, external/platform dependencies shall be explicitly classified, and the generic `product/scripts/test-product` surface shall remain resolvable even when its governed lifecycle reports an honest zero-applicable product-test state."
     }
   ],
   "dependencies": [
@@ -141,6 +145,9 @@
     },
     {
       "spec_id": "product.execution-report"
+    },
+    {
+      "spec_id": "product.executable-reference-closure"
     }
   ],
   "references": [

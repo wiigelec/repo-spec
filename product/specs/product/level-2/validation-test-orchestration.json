@@ -1,0 +1,111 @@
+{
+  "spec_id": "product.validation-test-orchestration",
+  "title": "Validation and Test Orchestration",
+  "purpose": "Defines common validation/test orchestration through stable repository-relative interfaces, including portable repository/framework and product validation self-test responsibility.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "validation-test-orchestration",
+      "portable-validation-self-tests"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-VTO-001",
+      "text": "The common repository validation workflow used by repo-spec and initialized repositories shall consume stable repository-relative validation/test surfaces rather than require repository-class-specific workflow forks. Hosting-platform adapters may differ only in mechanics that do not change the required surface set or its semantic result."
+    },
+    {
+      "id": "INIT-VTO-002",
+      "text": "Common validation orchestration shall preserve separate participation by production validation, repository/framework validation self-tests through `repo/scripts/test-validation`, product validation self-tests through `product/scripts/test-validation`, and generic product implementation tests through `product/scripts/test-product`; one responsibility shall not silently substitute for another."
+    },
+    {
+      "id": "INIT-VTO-003",
+      "text": "`repo/scripts/test-validation` shall exercise the installed repository/framework validation responsibility owned by the repository validation domain, and `product/scripts/test-validation` shall exercise the installed product validation responsibility owned by the product validation domain."
+    },
+    {
+      "id": "INIT-VTO-004",
+      "text": "An initialized repository's repository/framework and product validation self-test surfaces shall be capable of exercising their installed validation responsibilities using the portable material installed for that repository. Satisfying this requirement shall not require transport of repo-spec's complete source-development-only test tree."
+    },
+    {
+      "id": "INIT-VTO-005",
+      "text": "Repo-spec may execute additional source-development-only validation tests behind its stable self-test surfaces, but the stable surfaces shall continue to exercise at least the portable validation responsibilities applicable to initialized repositories and shall not expose source-only path names as common-workflow requirements."
+    },
+    {
+      "id": "INIT-VTO-006",
+      "text": "Each required stable validation or test surface shall terminate with process exit status zero only when its governed required scope is satisfied and shall terminate nonzero when the surface is missing a required dependency, cannot execute, encounters an execution error, or detects a failed required check. Exact output wording and result serialization are not defined by this contract."
+    },
+    {
+      "id": "INIT-VTO-007",
+      "text": "Failure diagnostics from common orchestration shall identify the stable surface that failed and a meaningful failure class sufficient to distinguish interface absence or execution failure from a test-reported failure; exact diagnostic wording remains implementation-defined."
+    },
+    {
+      "id": "INIT-VTO-008",
+      "text": "A required stable surface that is absent, non-executable, or unable to start shall cause common orchestration to fail closed. Such failure shall not be converted into a skipped-success result or a zero-applicable product-test result."
+    },
+    {
+      "id": "INIT-VTO-009",
+      "text": "The common workflow shall report success only when required production validation and both required validation self-test surfaces succeed and the generic product implementation-test surface succeeds according to its separately governed applicability/lifecycle contract."
+    },
+    {
+      "id": "INIT-VTO-010",
+      "text": "This orchestration contract shall not require a particular GitHub Actions YAML shape, job topology, total invocation order, parallelism strategy, shell or Python wrapper, dispatcher architecture, internal test framework, or product-specific test suite, provided the required stable surfaces participate and the governed success/failure semantics are preserved."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-VALIDATION-SCAFFOLDING-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/01-validation-workflow-and-interface-ownership.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/02-validation-self-test-ownership.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/validation-test-orchestration.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

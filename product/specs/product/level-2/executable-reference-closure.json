@@ -1,0 +1,122 @@
+{
+  "spec_id": "product.executable-reference-closure",
+  "title": "Executable Reference Closure",
+  "purpose": "Defines deterministic fail-closed proof that transported common validation can resolve every governed repository-relative command through initialized output while treating external/platform dependencies explicitly.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "components": {
+    "contracts": [
+      "executable-reference-closure",
+      "installed-validation-command-closure"
+    ]
+  },
+  "normative_requirements": [
+    {
+      "id": "INIT-ERC-001",
+      "text": "Executable-reference closure shall be established over the complete governed installed-command requirement set for transported common validation before a fresh initialized repository may be treated as validation-ready."
+    },
+    {
+      "id": "INIT-ERC-002",
+      "text": "For every repository-relative installed-command requirement, closure shall prove that the required path is authorized by the accepted initializer output inventory and material installation authority and that the initialized output provides the required executable capability at that stable path."
+    },
+    {
+      "id": "INIT-ERC-003",
+      "text": "For every external/platform-provided dependency, closure shall prove that accepted authority explicitly classifies the dependency as external/platform-provided and shall not silently substitute external availability for a repository-relative installation obligation."
+    },
+    {
+      "id": "INIT-ERC-004",
+      "text": "Closure shall include the stable repository/framework validation self-test, product validation self-test, and generic product implementation-test surfaces required by common validation. `product/scripts/test-product` shall remain a resolvable installed surface even when `product.product-test-lifecycle` resolves an honest zero-applicable product-test state."
+    },
+    {
+      "id": "INIT-ERC-005",
+      "text": "The installed material needed to satisfy a stable repository-relative command shall be closed over that command's required portable support capability. Repo-spec source-development-only test trees and fixtures shall not be required merely because repo-spec executes additional source-only tests behind the same stable surface."
+    },
+    {
+      "id": "INIT-ERC-006",
+      "text": "Closure proof shall fail when a required repository-relative path is absent from accepted installation authority, is absent from initialized output, lacks required executable capability, depends on required portable support material that is not installed, or is misclassified as external/platform-provided."
+    },
+    {
+      "id": "INIT-ERC-007",
+      "text": "Closure proof shall be deterministic for equivalent accepted product authority, validation-workflow authority, installation inventory/material authority, and staged repository state, and shall provide machine-usable evidence identifying each requirement and its resolution classification."
+    },
+    {
+      "id": "INIT-ERC-008",
+      "text": "A closure failure shall be a pre-promotion failure and shall not be deferred to first push, converted into a successful skip, or repaired by manual post-initialization repository edits."
+    },
+    {
+      "id": "INIT-ERC-009",
+      "text": "Concrete output-inventory entries, material-manifest source mappings, wrapper implementation, support-library selection, exact closure-check algorithm, exact diagnostics, and upgrade propagation mechanics are implementation/planning concerns that must conform to this contract but are not defined here."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "spec_id": "product.product-test-lifecycle"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-levels.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-spec-base.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/product-manifest.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/specs/repo/repository-structure.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/overview/INITIALIZER-VALIDATION-SCAFFOLDING-FUNCTIONAL-SET.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/INITIALIZER-VALIDATION-SCAFFOLDING-DECOMPOSITION.md"
+    },
+    {
+      "type": "artifact",
+      "path": "product/docs/decompositions/initializer-validation-scaffolding-decomposition/04-initialized-output-closure-and-installation.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/level-2/executable-reference-closure.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [],
+    "tests": [],
+    "conformance": []
+  }
+}

@@ -338,6 +338,42 @@
       "path": "product/specs/product/level-3/derived-repository-upgrade.json",
       "status": "accepted",
       "level": 3
+    },
+    {
+      "spec_id": "product.validation-test-surface",
+      "path": "product/specs/product/level-1/validation-test-surface.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.validation-test-orchestration",
+      "path": "product/specs/product/level-2/validation-test-orchestration.json",
+      "status": "accepted",
+      "level": 2
+    },
+    {
+      "spec_id": "product.product-test-applicability",
+      "path": "product/specs/product/level-1/product-test-applicability.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.product-test-lifecycle",
+      "path": "product/specs/product/level-2/product-test-lifecycle.json",
+      "status": "accepted",
+      "level": 2
+    },
+    {
+      "spec_id": "product.installed-command-requirement",
+      "path": "product/specs/product/level-1/installed-command-requirement.json",
+      "status": "accepted",
+      "level": 1
+    },
+    {
+      "spec_id": "product.executable-reference-closure",
+      "path": "product/specs/product/level-2/executable-reference-closure.json",
+      "status": "accepted",
+      "level": 2
     }
   ]
 }
