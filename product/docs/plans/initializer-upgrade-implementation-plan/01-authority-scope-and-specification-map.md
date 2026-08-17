@@ -16,6 +16,7 @@ The upgrade implementation is specification-complete for the product behavior re
 
 - `product.upgrade-request`
 - `product.framework-reconciliation-lineage`
+- `product.transportable-framework-authority`
 - `product.managed-material-delta`
 - `product.upgrade-set-resolution`
 - `product.staged-managed-reconciliation`
@@ -23,7 +24,7 @@ The upgrade implementation is specification-complete for the product behavior re
 - `product.reconciliation-validation-promotion`
 - `product.derived-repository-upgrade`
 
-Reusable accepted initializer specifications are cited per workstream in the controller metadata. `product.provenance-record` is exact reusable authority for the legacy first-reconciliation bootstrap owned by UP1 and exercised end to end by UP5; it is not added to UP2-UP4 merely as a transitive dependency.
+Reusable accepted initializer specifications are cited per workstream in the controller metadata. `product.provenance-record` is exact reusable authority for the legacy first-reconciliation bootstrap owned by UP1 and exercised end to end by UP5; it is not added to UP2-UP4 merely as a transitive dependency. `product.transportable-framework-authority` is direct controlling authority for UP1 baseline/accepted-lineage authority resolution and exact legacy backfill eligibility, UP3 prospective authority materialization/backfill, UP4 complete staged authority validation/promotion, and UP5 portable end-to-end conformance. It is not added to UP2, and its UP1 role does not broaden UP1 mutation authority.
 
 ## Implementation-authorized scope after plan acceptance
 
