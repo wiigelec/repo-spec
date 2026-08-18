@@ -1,6 +1,6 @@
 # Validation-scaffolding risks and decisions
 
-Status: accepted-plan amendment candidate under issue #491; planning-authoritative only after governed acceptance; non-normative with respect to product semantics.
+Status: accepted; planning-authoritative; non-normative with respect to product semantics.
 
 ## Validation-scaffolding risks
 
@@ -15,7 +15,14 @@ Status: accepted-plan amendment candidate under issue #491; planning-authoritati
 
 | Decision | Description | Constraints from accepted specs | Status and closure condition |
 | --- | --- | --- | --- |
-| U8: Stable-surface internal architecture | Wrapper/dispatcher/module layout and delegation of repo-spec extra source tests. | VTS/VTO prescribe stable paths/roles/portable behavior, not internal topology. | VS1 implementation decides with portable evidence. |
+| U8: Stable-surface internal architecture | Wrapper/dispatcher/module layout and delegation of repo-spec extra source tests. | VTS/VTO prescribe stable paths/roles/portable behavior, not internal topology. | Closed by accepted VS1 implementation: stable wrappers delegate to portable installed self-tests first and lazy-load repo-spec source-development extras only when those source trees exist; accepted through PRs #499-#501 and issues #493-#495. |
 | U9: Product-test applicability evidence representation | Concrete registry/evidence format and discovery mechanism. | PTA/PTL require deterministic accepted-authority evidence but do not prescribe registry format/framework. | VS2 implementation decides with positive/negative lifecycle evidence. |
 | U10: Closure algorithm and support representation | Exact closure algorithm, inventory/material keys, wrappers/support libraries, evidence format. | ICR/ERC require deterministic fail-closed closure while leaving concrete mechanics to implementation; existing one-to-one inventory/material authority remains binding. | VS3 implementation decides with clean-room closure proof. |
 | U11: VA1-before-VS3 runtime convergence | Whether VA1 lands before VS3 and changes portable support. | VA1 and VS3 stay separately governed; ERC closes over the actual accepted installed support set. | Conditional: VS3 consumes the then-current accepted support set; no silent bundling. |
+
+
+## Post-VS1 decision status under issue #502
+
+U8 is closed by accepted VS1 evidence. U9 remains the next validation-scaffolding implementation
+decision under VS2. U10 remains VS3-owned, and U11 remains conditional on the separately governed
+VA1/VS3 ordering. No authority set is changed by this status synchronization.

@@ -1,6 +1,6 @@
 # Validation-scaffolding authority impact
 
-Status: accepted-plan amendment candidate under issue #491; planning-authoritative only after governed acceptance; non-normative with respect to product semantics.
+Status: accepted; planning-authoritative; non-normative with respect to product semantics.
 
 ## PR #490 validation-scaffolding authority extension
 
@@ -59,3 +59,12 @@ identities and portable self-test responsibility split, the minimum output-inven
 synchronization needed to install those existing surfaces may be accepted before VS2. Broader
 product-test lifecycle semantics remain VS2-owned, and broader installed-command/reference
 closure remains VS3-owned.
+
+
+### Post-VS1 completion synchronization under issue #502
+
+Issues #493, #494, and #495 are complete on accepted `main`. VS1 is therefore completed
+historical validation-scaffolding work under the unchanged exact controlling set above.
+This status synchronization does not reassign requirement ownership or alter VS2, VS3,
+VA1, or VA2 authority. VS2 is the next normal validation-scaffolding implementation stage
+and still requires its own separately governed Product-artifact implementation issue.
