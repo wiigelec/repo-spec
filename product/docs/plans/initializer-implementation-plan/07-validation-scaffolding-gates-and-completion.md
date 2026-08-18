@@ -35,6 +35,11 @@ common orchestration, and minimum installation correspondence have been accepted
 | Common orchestration observes governed product-test result | Stable `product/scripts/test-product` composes without repository-class redesign |
 | VS3 authority is explicit | Governing issue selects VS3 and exact controlling set |
 
+VS2 predecessor status: satisfied on accepted `main` after issue #505 and the governed
+#507/#510/#511 closure chain. The first three gate rows have accepted evidence. The final row
+remains an entry requirement for the separately governed VS3 Product-artifact implementation
+issue; this Maintenance lifecycle does not select VS3.
+
 ### VS3 closure / completion gate
 
 | Requirement | Evidence |
@@ -70,36 +75,26 @@ After manual merge and post-merge planning audit, closing #491 authorizes only l
 of separately governed Product-artifact implementation issues selecting explicit stage IDs.
 
 
-## Post-VS1 successor status under issue #502
+## Post-VS2 successor status under issue #514
 
-VS1 is completed historical work. The VS1 -> VS2 gate was satisfied, VS2 implementation was
-accepted through issue #505 / PR #506, and the U9 decision was accepted through issue #507 /
-PR #508. VS2 closure now depends only on the separately governed correspondence/orchestration
-follow-up and the resulting exact-main completion audit. VS3 remains gated on successful VS2
-lifecycle evidence.
+VS1 and VS2 are completed historical validation-scaffolding work. The VS1 -> VS2 gate was
+satisfied before issue #505. VS2 implementation landed through PR #506; issue #507 / PRs
+#508-#509 resolved U9; issue #511 / PR #512 repaired the bounded requirement-ID schema conflict;
+and issue #510 / PR #513 completed the 49-spec/392-requirement current-state correspondence
+evidence plus common `product/scripts/test-product` orchestration.
 
-## Issue #507 VS2 closure gate refinement
+The user validated exact merged `main`, and a fresh final issue-#505 audit confirmed:
+- zero/applicable/invalid and all required failure classes remain distinguishable;
+- honest zero cannot mask missing, broken, or expected-but-undiscovered obligations;
+- current accepted state is deterministic `successful-zero-applicable`;
+- common orchestration observes the stable product-test lifecycle result.
 
-Issue #505 / PR #506 supplies the generic VS2 applicability/lifecycle implementation, but VS2
-is not complete merely because that implementation merged.
+The predecessor evidence for VS3 is therefore satisfied. VS3 is the next normal
+validation-scaffolding implementation stage. Entry still requires a separately governed
+Product-artifact implementation issue selecting `VS3` and citing the exact VS3 controlling
+specification set.
 
-The remaining VS2 closure sequence is:
-
-1. accepted product-spec correspondence supplies complete current-state applicability evidence
-   under the issue-#507 U9 decision;
-2. every accepted normative requirement has exactly one requirement-level conformance record;
-3. every `covered` record resolves to reachable governed test mappings, while every
-   `not-applicable` record carries its required rationale;
-4. no incomplete/contradictory/malformed correspondence can normalize to zero;
-5. `product/scripts/test-product` produces a valid governed success/failure result from that
-   complete authority; and
-6. common `scripts/test-validation` invokes the stable `product/scripts/test-product` surface so
-   aggregate success/failure observes the governed product-test lifecycle.
-
-Repo-spec after PR #506 is still `applicability-invalid` because accepted correspondence is not
-yet complete for the later PTA/PTL lifecycle gate. This is the expected fail-closed state, not a
-VS2 failure to preserve zero semantics.
-
-Only a separately governed Product-artifact implementation issue subordinate to #505 and #507
-may supply the correspondence and orchestration closure. VS3 entry remains blocked until that
-follow-up merges, exact-main validation succeeds, and a fresh VS2 completion audit passes.
+VA1 has already landed under separate governance. For current VS3 entry, the conditional VA1
+row is satisfied by consuming the then-current accepted portable runtime/inventory state; VA1
+is not bundled into VS3. No VS3 closure condition is satisfied merely by this status
+synchronization.

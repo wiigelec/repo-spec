@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507, #514",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -397,7 +397,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "B0 through I5, H1, and VS1 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 implementation is accepted through issue #505 / PR #506, and the U9 applicability-evidence decision is accepted through issue #507 / PR #508. VS2 closure remains blocked only on the separately governed correspondence/orchestration implementation follow-up. VS3 remains unauthorized until VS2 closes.",
+  "successor_action": "B0 through I5, H1, VS1, and VS2 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 completion is accepted through issue #505, including the U9 decision and correspondence/common-orchestration closure chain. VS3 is the next normal validation-scaffolding implementation stage and requires a separately governed Product-artifact implementation issue selecting VS3 and its exact controlling set.",
   "schema_version": "1"
 }
 ```
@@ -428,8 +428,8 @@ The accepted plan records six completed historical increments plus the separatel
 | VA1 | Validation-ownership successor | Production-validation ownership correction under the exact VA1 accepted-spec set; separately governed implementation scope |
 | VA2 | Validation-self-test successor | Validation self-test ownership/consolidation under the exact VA2 accepted-spec set; separately governed implementation scope |
 | VS1 | Validation-scaffolding interfaces | Stable validation/test interfaces, portable validation self-tests, and common orchestration; completed historical work |
-| VS2 | Generic product-test lifecycle | Deterministic applicability/lifecycle with honest zero-applicable behavior |
-| VS3 | Installed validation closure | Installed-command/executable-reference closure and initializer integration |
+| VS2 | Generic product-test lifecycle | Completed historical work; deterministic applicability/lifecycle with honest zero-applicable behavior |
+| VS3 | Installed validation closure | Next normal validation-scaffolding stage; installed-command/executable-reference closure and initializer integration |
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
@@ -481,19 +481,20 @@ PR #317, and issue #318 completed bounded post-H1 conformance correction.
 
 H1 completion itself authorizes no implicit successor. Separately accepted amendments represented
 in this plan identify H2, VA1, and VA2 as bounded successor workstreams under their own exact
-authority mappings and entry conditions. VS1 is now completed historical work after the governed
-issues #493-#495 sequence. The next normal validation-scaffolding implementation stage is VS2,
-which still requires a separately governed Product-artifact implementation issue selecting VS2
-and its exact controlling set. None of these entries combine scopes or authorize unrelated
-initializer capability.
+authority mappings and entry conditions. VS1 and VS2 are now completed historical
+validation-scaffolding work. The next normal validation-scaffolding implementation stage is VS3,
+which requires a separately governed Product-artifact implementation issue selecting VS3 and its
+exact controlling set. The separately governed VA1 work landed before VS3 entry, so VS3 consumes
+the current accepted portable runtime/inventory state without bundling VA1. None of these entries
+combine scopes or authorize unrelated initializer capability.
 
 ## Discoverability
 
 This is the canonical initializer implementation-plan entry point. Its
 subordinate chunks are listed above. The Workstreams summary indexes the canonical
-machine-readable authority data, records VS1 as completed historical work, and identifies
-VS2 as the next normal validation-scaffolding implementation stage alongside the separately
-governed H2, VA1, and VA2 successor scopes.
+machine-readable authority data, records VS1 and VS2 as completed historical work, and
+identifies VS3 as the next normal validation-scaffolding implementation stage alongside the
+separately governed H2, VA1, and VA2 successor scopes.
 
 
 ## H2 — Repository bootstrap UX simplification
