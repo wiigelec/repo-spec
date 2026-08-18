@@ -250,6 +250,17 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - Order: `130`
 - Pass Condition: `The SHA-256 content digest of the repository/ subtree (excluding .git/) matches the expected digest recorded in the staging-state record.`
 - Applies To: `repository-worktree`
+- Check Id: `output.executable-reference-closure`
+- Classification: `required`
+- Failure Codes:
+  - `installed-authority-missing`
+  - `installed-path-missing`
+  - `executable-capability-missing`
+  - `portable-support-missing`
+  - `dependency-classification-invalid`
+- Order: `135`
+- Pass Condition: `Every governed installed-command requirement required by transported common validation is deterministically classified as repository-relative or explicitly external/platform-provided. Every repository-relative requirement resolves through accepted output-inventory and material installation authority to its stable staged path, provides the required executable capability, and closes over required portable support material. External/platform-provided requirements are accepted only when their classification is explicit in accepted authority.`
+- Applies To: `repository-worktree`
 - Check Id: `provenance.consistent`
 - Classification: `required`
 - Failure Codes:
@@ -340,6 +351,7 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - `product.initialization-request`
 - `product.initializer-output-inventory-v1`
 - `product.material-manifest`
+- `product.installed-command-requirement`
 
 ## References
 
@@ -349,6 +361,7 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 - artifact: `product/specs/product/level-1/initializer-output-inventory-v1.json`
 - artifact: `product/specs/product/level-1/material-manifest.json`
 - artifact: `product/specs/product/level-1/validation-report.json`
+- artifact: `product/specs/product/level-1/installed-command-requirement.json`
 - artifact: `repo/specs/repo/validation.json`
 
 ## Derived artifacts
