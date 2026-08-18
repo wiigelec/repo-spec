@@ -240,7 +240,10 @@ def parse_selected_workstream_ids(value: str) -> list[str]:
     return selected
 
 
-def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
+ATOMIC_CHANGE_TYPE = "Atomic authority transition"
+
+
+def issue_classification(sections: dict[str, str], fields: list[dict]) -> str:
     change_type_field = next(
         (field for field in fields if field.get("id") == "change_type"),
         None,
@@ -248,11 +251,15 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path,
     if change_type_field is None:
         raise PolicyError("canonical governing issue lacks change_type field")
     change_type = require_section(sections, change_type_field["label"])
-    classification = parse_change_type(
+    return parse_change_type(
         change_type_field["label"],
         change_type,
         change_type_field["validation"]["values"],
     )
+
+
+def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
+    classification = issue_classification(sections, fields)
     if classification != "Product-artifact implementation":
         return
 
@@ -295,6 +302,66 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path,
     if not ISSUE_RE.search(predecessor) or not SHA_RE.search(predecessor.lower()):
         raise PolicyError("missing predecessor implementation issue and revision evidence")
 
+
+
+def require_atomic_transition_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
+    classification = issue_classification(sections, fields)
+    if classification != ATOMIC_CHANGE_TYPE:
+        return
+
+    governing = require_section(sections, "Governing specifications")
+    plan_paths = IMPLEMENTATION_PLAN_RE.findall(governing)
+    if not plan_paths:
+        raise PolicyError("missing canonical implementation-plan citation in Governing specifications")
+    if len(set(plan_paths)) != 1:
+        raise PolicyError("expected exactly one canonical implementation-plan citation in Governing specifications")
+
+    selected_ids = parse_selected_workstream_ids(
+        require_section(sections, "Implementation-plan workstreams/stages")
+    )
+    accepted_specs = load_accepted_product_specs(repo_root)
+    cited_specs = {
+        spec_id
+        for spec_id in SPEC_RE.findall(governing)
+        if spec_id.startswith("product.") and spec_id != "product.manifest"
+    }
+    if not cited_specs or not cited_specs.issubset(accepted_specs):
+        raise PolicyError("missing manifest-listed accepted product specification in Governing specifications")
+
+    authority = load_plan_controlling_spec_sets(repo_root, plan_paths[0], accepted_specs)
+    unknown = [workstream_id for workstream_id in selected_ids if workstream_id not in authority]
+    if unknown:
+        raise PolicyError(
+            "unknown implementation-plan workstream/stage identifier: " + ", ".join(unknown)
+        )
+
+    current_union: set[str] = set()
+    for workstream_id in selected_ids:
+        current_union.update(authority[workstream_id])
+    if not current_union.issubset(cited_specs):
+        raise PolicyError(
+            "atomic transition cited product specifications do not contain the current controlling union"
+        )
+    transition_specs = cited_specs - current_union
+    if not transition_specs:
+        raise PolicyError(
+            "atomic transition must cite at least one additional accepted transition specification"
+        )
+
+    predecessor = require_section(sections, "Dependencies and predecessor evidence")
+    if not ISSUE_RE.search(predecessor) or not SHA_RE.search(predecessor.lower()):
+        raise PolicyError("missing predecessor implementation issue and revision evidence")
+
+    evidence = require_section(sections, "Atomic transition evidence")
+    require_meaningful("Atomic transition evidence", evidence)
+    required_lines = {
+        "Invariant": r"(?mi)^\s*Invariant:\s*\S.+$",
+        "No valid intermediate revision": r"(?mi)^\s*No valid intermediate revision:\s*\S.+$",
+        "Plan impact": r"(?mi)^\s*Plan impact:\s*(?:revise|reaffirm)\b.+$",
+    }
+    for label, pattern in required_lines.items():
+        if re.search(pattern, evidence) is None:
+            raise PolicyError(f"missing atomic transition evidence item: {label}")
 
 
 def validate_field_definition(field: dict, spec_path: str) -> None:
@@ -373,6 +440,7 @@ def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
         value = require_section(sections, field["label"])
         validate_field_value(field, value)
     require_product_artifact_evidence(sections, repo_root, fields)
+    require_atomic_transition_evidence(sections, repo_root, fields)
 
 
 def check_pr(body: str, fields: list[dict]) -> None:

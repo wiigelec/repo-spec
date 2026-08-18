@@ -26,7 +26,7 @@ Defines the canonical repository-generic governing issue structure and its subor
 - Required: yes
 - Input type: `input`
 
-Use one canonical bounded change classification. Product-artifact implementation is reserved for changes that create or modify maintained product artifacts.
+Use one canonical bounded change classification. Product-artifact implementation is reserved for ordinary changes that create or modify maintained product artifacts. Atomic authority transition is reserved for a narrowly governed inseparable specification/plan/artifact transition.
 
 Placeholder:
 > Maintenance
@@ -91,6 +91,24 @@ For Product-artifact implementation, list one or more stable workstream/stage ID
 Placeholder:
 > I1
 > I2
+
+Validation metadata:
+
+- Kind: `meaningful`
+- Allows `None`: yes
+
+### Atomic transition evidence
+
+- Field ID: `atomic_transition_evidence`
+- Required: no
+- Input type: `textarea`
+
+Required only for Atomic authority transition. State the accepted invariant that makes the change inseparable, why no valid intermediate accepted revision exists, and how affected implementation-plan sections will be revised or explicitly reaffirmed before maintained implementation is treated as authorized in the exact proposed revision.
+
+Placeholder:
+> Invariant: ...
+> No valid intermediate revision: ...
+> Plan impact: revise/reaffirm ...
 
 Validation metadata:
 
@@ -278,8 +296,10 @@ Validation metadata:
 - `REPO-GI-009`: The Markdown projection and GitHub issue form shall be adapters subordinate to the canonical repository specification.
 - `REPO-GI-010`: The GitHub issue form shall represent every required canonical field.
 - `REPO-GI-011`: The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure and its structured field definitions.
-- `REPO-GI-012`: The canonical Change type field shall use a constrained repository-owned classification. Product-artifact implementation is the exact classification for governing issues that create or modify maintained product artifacts and shall activate the stricter product-artifact evidence gate; descriptive prose shall not activate that gate.
+- `REPO-GI-012`: The canonical Change type field shall use a constrained repository-owned classification. Product-artifact implementation is the exact classification for ordinary governing issues that create or modify maintained product artifacts and shall activate the stricter product-artifact evidence gate. Atomic authority transition is the exact classification only when an accepted-state invariant makes a normative specification revision, required plan-impact handling, and maintained-artifact synchronization inseparable across accepted default-branch revisions. Descriptive prose shall not activate either gate.
 - `REPO-GI-013`: A governing issue declared as Product-artifact implementation shall identify one or more stable workstream or stage identifiers from its cited accepted implementation plan; those selected identifiers define the bounded plan scope whose controlling accepted product specifications are enforced by issue-body field policy.
+- `REPO-GI-014`: A governing issue declared as Atomic authority transition shall be eligible only when it identifies a specific accepted-state invariant that would make every ordinary sequential ordering produce an invalid intermediate accepted revision, and when the issue scope is limited to the minimum normative revision, affected implementation-plan revision or explicit reaffirmation, mechanically inseparable maintained-artifact synchronization, and directly required validation/policy support. If a valid intermediate accepted revision exists, the ordinary sequential lifecycle shall be used instead.
+- `REPO-GI-015`: A governing issue declared as Atomic authority transition shall cite exactly one accepted implementation plan, identify one or more stable workstream or stage identifiers, cite all currently controlling accepted product specifications for the selected identifiers plus at least one additional accepted product specification whose normative revision participates in the transition, provide predecessor issue and exact revision evidence, and provide Atomic transition evidence stating the governing invariant, why no valid intermediate accepted revision exists, and how affected plan sections will be revised or explicitly reaffirmed before maintained implementation is treated as authorized in the exact proposed revision.
 
 ## Dependencies
 

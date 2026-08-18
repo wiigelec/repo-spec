@@ -12,7 +12,7 @@ body:
     id: change_type
     attributes:
       label: "Change type"
-      description: "Use one canonical bounded change classification. Product-artifact implementation is reserved for changes that create or modify maintained product artifacts."
+      description: "Use one canonical bounded change classification. Product-artifact implementation is reserved for ordinary changes that create or modify maintained product artifacts. Atomic authority transition is reserved for a narrowly governed inseparable specification/plan/artifact transition."
       placeholder: "Maintenance"
     validations:
       required: true
@@ -46,6 +46,14 @@ body:
       label: "Implementation-plan workstreams/stages"
       description: "For Product-artifact implementation, list one or more stable workstream/stage IDs from the cited accepted implementation plan, one per line."
       placeholder: "I1\nI2"
+    validations:
+      required: false
+  - type: textarea
+    id: atomic_transition_evidence
+    attributes:
+      label: "Atomic transition evidence"
+      description: "Required only for Atomic authority transition. State the accepted invariant that makes the change inseparable, why no valid intermediate accepted revision exists, and how affected implementation-plan sections will be revised or explicitly reaffirmed before maintained implementation is treated as authorized in the exact proposed revision."
+      placeholder: "Invariant: ...\nNo valid intermediate revision: ...\nPlan impact: revise/reaffirm ..."
     validations:
       required: false
   - type: input
