@@ -6,7 +6,17 @@ import sys
 from pathlib import Path
 
 from validation.errors import ValidationFailure
-from validation_tests.mutation_tests import run_product_mutation_tests
+from product_validation.portable_self_tests import run_product_portable_self_tests
+
+
+def _run_source_development_tests(repo_root: Path) -> None:
+    source_suite = repo_root / "product/scripts/validation_tests/mutation_tests.py"
+    if not source_suite.is_file():
+        return
+
+    from validation_tests.mutation_tests import run_product_mutation_tests
+
+    run_product_mutation_tests(repo_root)
 
 
 def main(argv: list[str]) -> int:
@@ -15,7 +25,8 @@ def main(argv: list[str]) -> int:
         print(f"validation test error: unknown mode: {argv[2]}", file=sys.stderr)
         return 1
     try:
-        run_product_mutation_tests(repo_root)
+        run_product_portable_self_tests(repo_root)
+        _run_source_development_tests(repo_root)
         return 0
     except ValidationFailure as exc:
         print(f"validation test error: {exc}", file=sys.stderr)

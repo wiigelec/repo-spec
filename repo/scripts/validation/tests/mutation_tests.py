@@ -38,6 +38,7 @@ from .test_mutation_support import run_mutation_support_tests
 from .test_repository_projection_boundary import run_repository_projection_boundary_test
 from .test_schema_mutations import run_schema_mutations
 from .test_validation_entry_points import run_validation_entry_point_tests
+from .test_validation_portable_split import run_validation_portable_split_tests
 
 
 def run_repository_mutation_tests(repo_root: Path) -> None:
@@ -70,3 +71,4 @@ def run_repository_mutation_tests(repo_root: Path) -> None:
     run_generation_mutations(repo_root)
     run_reference_isolated_copy_tests(repo_root)
     run_validation_entry_point_tests(repo_root)
+    run_validation_portable_split_tests(repo_root)
