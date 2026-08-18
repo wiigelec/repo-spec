@@ -31,6 +31,12 @@ Exclusions: no product-test applicability/zero-state semantics, no VS3 concrete 
 closure, no VA1 production-ownership refactor, no VA2 source-development test consolidation,
 no product-specific suite, no semantic weakening.
 
+Atomic bridge under issue #495: once the VS1 stable surfaces and portable responsibility split
+exist, the minimum accepted output-inventory/material synchronization required to make those
+same surfaces installable may land atomically before VS2. This is installation correspondence
+for already-owned VS1 identities, not VS2 lifecycle implementation and not completion of the
+broader VS3 installed-command/executable-reference closure.
+
 ## VS2 - Generic product-test applicability and lifecycle
 
 Purpose: implement generic `product/scripts/test-product` applicability/lifecycle behavior,
@@ -99,7 +105,13 @@ upgrade propagation, VA1/VA2 bundling, or semantic change to accepted specs.
 
 ## Validation-scaffolding implementation DAG
 
-Minimum unconditional order: `VS1 -> VS2 -> VS3`.
+Normal successor order: `VS1 -> VS2 -> VS3`.
+
+Issue #495 is the sole accepted bounded bridge to that order: the minimum closed
+output-inventory/material correspondence for the already-defined VS1 stable surfaces may be
+synchronized after VS1 and before VS2 because neither a spec-only nor material-only intermediate
+revision is valid. The bridge does not mark VS2 complete, does not mark VS3 complete, and does
+not authorize broader executable-reference closure.
 
 `VA1` and `VA2` remain separate issue-#350 workstreams. VS3 has only the conditional VA1
 dependency described above. A later Product-artifact issue may select multiple adjacent VS

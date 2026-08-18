@@ -1189,6 +1189,78 @@
       "mode": "100644",
       "required": true,
       "role": "documentation-support"
+    },
+    {
+      "material_key": "repo-test-validation",
+      "destination_path": "repo/scripts/test-validation",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-test-validation-impl-py",
+      "destination_path": "repo/scripts/test_validation_impl.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "repo-validation-portable-self-tests-py",
+      "destination_path": "repo/scripts/validation/portable_self_tests.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-test-validation",
+      "destination_path": "product/scripts/test-validation",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-test-validation-impl-py",
+      "destination_path": "product/scripts/test_validation_impl.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-validation-portable-self-tests-py",
+      "destination_path": "product/scripts/product_validation/portable_self_tests.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100644",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-test-product",
+      "destination_path": "product/scripts/test-product",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-test-product-impl-py",
+      "destination_path": "product/scripts/test_product_impl.py",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
     }
   ],
   "dynamic_path_families": [],
@@ -1306,6 +1378,9 @@
     },
     {
       "spec_id": "product.handoff-manifest"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
     }
   ],
   "references": [
@@ -1344,6 +1419,14 @@
     {
       "type": "artifact",
       "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-1/validation-test-surface.json"
+    },
+    {
+      "type": "artifact",
+      "path": "product/specs/product/level-2/validation-test-orchestration.json"
     }
   ],
   "supersedes": [],

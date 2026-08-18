@@ -53,7 +53,10 @@ class FunctionalSetTransportTests(unittest.TestCase):
             for source_path in source_paths
             if source_path.startswith("repo/scripts/validation/")
         }
-        self.assertEqual(transported_repo_validation, set())
+        self.assertEqual(
+            transported_repo_validation,
+            {"repo/scripts/validation/portable_self_tests.py"},
+        )
 
 
 if __name__ == "__main__":
