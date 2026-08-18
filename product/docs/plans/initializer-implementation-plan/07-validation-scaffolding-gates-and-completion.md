@@ -23,7 +23,7 @@ common orchestration, and minimum installation correspondence have been accepted
 | Requirement | Evidence |
 | --- | --- |
 | VS1 interface/orchestration foundation is present | Stable paths and common-orchestration evidence pass |
-| VS2 authority is explicit | Governing issue selects VS2; if VS1 is not separately complete it explicitly selects both |
+| VS2 authority is explicit | Governing issue selects VS2 explicitly and cites the exact VS2 controlling set |
 | No lifecycle semantics are invented by VS1 | Applicability/zero/discovery behavior comes only from accepted PTA/PTL authority |
 
 ### VS2 -> VS3 gate
