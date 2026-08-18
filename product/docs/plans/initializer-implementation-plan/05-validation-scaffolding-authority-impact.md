@@ -61,10 +61,11 @@ product-test lifecycle semantics remain VS2-owned, and broader installed-command
 closure remains VS3-owned.
 
 
-### Post-VS1 completion synchronization under issue #502
+### Post-VS2 completion synchronization under issue #514
 
-Issues #493, #494, and #495 are complete on accepted `main`. VS1 is therefore completed
+Issues #505, #507, #510, and #511 are complete on accepted `main`. VS2 is therefore completed
 historical validation-scaffolding work under the unchanged exact controlling set above.
-This status synchronization does not reassign requirement ownership or alter VS2, VS3,
-VA1, or VA2 authority. VS2 is the next normal validation-scaffolding implementation stage
-and still requires its own separately governed Product-artifact implementation issue.
+This status synchronization does not reassign requirement ownership or alter VS1, VS2, VS3,
+H2, VA1, or VA2 authority. VS3 is the next normal validation-scaffolding implementation stage
+and still requires its own separately governed Product-artifact implementation issue selecting
+VS3 and the exact controlling set above.

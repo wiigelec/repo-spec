@@ -41,6 +41,8 @@ broader VS3 installed-command/executable-reference closure.
 
 ## VS2 - Generic product-test applicability and lifecycle
 
+Status: completed historical work after issue #505 and its governed #507/#510/#511 closure chain.
+
 Purpose: implement generic `product/scripts/test-product` applicability/lifecycle behavior,
 including deterministic honest zero-applicable evidence and distinct failure classes.
 
@@ -51,9 +53,11 @@ Controlling accepted product specifications: `product.initializer-level-0`,
 Owned PR-#490 requirements: `product.product-test-applicability::INIT-PTA-001-009` and
 `product.product-test-lifecycle::INIT-PTL-001-010`.
 
-Predecessor: VS1, now completed historical work. VS2 implementation was authorized by issue
-#505 with the exact VS2 controlling set and accepted through PR #506. The issue-#507 / PR-#508
-U9 decision now governs the remaining correspondence/orchestration closure follow-up.
+Predecessor: VS1, completed historical work. VS2 was authorized by issue #505 with the exact
+VS2 controlling set and accepted through PR #506. Issue #507 / PRs #508-#509 resolved U9,
+issue #511 / PR #512 repaired the bounded requirement-ID schema conflict, and issue #510 /
+PR #513 completed current-state correspondence and common orchestration. Exact-main validation
+and the final fresh #505 audit then satisfied the VS2 exit gate.
 
 Scope: deterministic accepted-authority-based applicability evidence; zero-applicable,
 applicable-and-resolved, invalid applicability; execution of every governed applicable
@@ -108,10 +112,12 @@ upgrade propagation, VA1/VA2 bundling, or semantic change to accepted specs.
 
 ## Validation-scaffolding implementation DAG
 
-Normal successor order remains `VS1 -> VS2 -> VS3`. VS1 is complete; VS2 implementation has
-landed through issue #505 / PR #506, and its U9 decision has landed through issue #507 / PR
-#508. VS2 is not yet closed because the separately governed correspondence/orchestration
-follow-up remains outstanding; VS3 therefore remains blocked.
+Normal successor order remains `VS1 -> VS2 -> VS3`. VS1 and VS2 are complete historical work.
+The VS2 implementation, U9 decision, bounded schema repair, correspondence/common-orchestration
+closure, exact-main validation, and final fresh parent audit have all landed. The predecessor
+portion of the VS2 -> VS3 gate is therefore satisfied. VS3 is the next normal
+validation-scaffolding stage but still requires a separately governed Product-artifact
+implementation issue selecting VS3 and its exact controlling set.
 
 Issue #495 is the sole accepted bounded bridge to that order: the minimum closed
 output-inventory/material correspondence for the already-defined VS1 stable surfaces may be
@@ -119,10 +125,12 @@ synchronized after VS1 and before VS2 because neither a spec-only nor material-o
 revision is valid. The bridge does not mark VS2 complete, does not mark VS3 complete, and does
 not authorize broader executable-reference closure.
 
-`VA1` and `VA2` remain separate issue-#350 workstreams. VS3 has only the conditional VA1
-dependency described above. A later Product-artifact issue may select multiple adjacent VS
-stages only when every selected ID and the union of exact controlling specification sets are
-explicit in the issue. Selecting one stage never implicitly authorizes another workstream.
+`VA1` and `VA2` remain separate issue-#350 workstreams. VA1 landed before current VS3 entry,
+so VS3 must consume the current accepted portable runtime/inventory state without bundling VA1;
+the general conditional dependency remains the rule for any future reordering. A later
+Product-artifact issue may select multiple adjacent VS stages only when every selected ID and
+the union of exact controlling specification sets are explicit in the issue. Selecting one
+stage never implicitly authorizes another workstream.
 
 ## Issue #507 U9 applicability-evidence decision
 
@@ -149,17 +157,14 @@ conformance merely for acceptance. Instead, incomplete accepted correspondence m
 `product/scripts/test-product` remains `applicability-invalid` until a separately governed
 implementation supplies complete current-state evidence.
 
-Repo-spec's accepted state after PR #506 therefore remains intentionally
-`applicability-invalid`; issue #507 does not declare honest zero and does not select any
+Repo-spec's state immediately after PR #506 was intentionally
+`applicability-invalid`; issue #507 did not itself declare honest zero or select a
 product-specific test suite.
 
-A separately governed Product-artifact implementation follow-up is required to:
-1. audit every accepted product specification's normative requirements;
-2. add only review-supported `covered` or `not-applicable` correspondence needed to make the
-   current applicability state complete;
-3. preserve the accepted false-zero protections; and
-4. only once the stable product-test surface can produce a valid governed result, add
-   `product/scripts/test-product` to common `scripts/test-validation` orchestration.
-
-Parent issue #505 remains open until that follow-up is merged, exact-main validation passes, and
-a fresh VS2 completion audit confirms the VS2 exit conditions. VS3 remains unauthorized.
+That historical follow-up is now complete. Issue #510 / PR #513 supplied one
+`not-applicable` conformance record for every accepted normative requirement under the
+reviewed current-state decision, preserved false-zero protections, and composed
+`product/scripts/test-product` into common `scripts/test-validation`. Exact-main validation
+and the final fresh issue-#505 parent audit confirmed deterministic `successful-zero-applicable`
+behavior, complete 49-spec/392-requirement conformance evidence, and common-orchestration
+participation. VS2 is therefore complete. This completion does not implement VS3.
