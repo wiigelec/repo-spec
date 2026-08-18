@@ -51,9 +51,9 @@ Controlling accepted product specifications: `product.initializer-level-0`,
 Owned PR-#490 requirements: `product.product-test-applicability::INIT-PTA-001-009` and
 `product.product-test-lifecycle::INIT-PTL-001-010`.
 
-Predecessor: VS1, now completed historical work. A later Product-artifact implementation issue
-for the next normal validation-scaffolding stage selects VS2 explicitly and cites the exact
-VS2 controlling set.
+Predecessor: VS1, now completed historical work. VS2 implementation was authorized by issue
+#505 with the exact VS2 controlling set and accepted through PR #506. The issue-#507 / PR-#508
+U9 decision now governs the remaining correspondence/orchestration closure follow-up.
 
 Scope: deterministic accepted-authority-based applicability evidence; zero-applicable,
 applicable-and-resolved, invalid applicability; execution of every governed applicable
@@ -108,8 +108,10 @@ upgrade propagation, VA1/VA2 bundling, or semantic change to accepted specs.
 
 ## Validation-scaffolding implementation DAG
 
-Normal successor order: `VS1 -> VS2 -> VS3`. VS1 is complete; VS2 is the next normal
-validation-scaffolding implementation stage.
+Normal successor order remains `VS1 -> VS2 -> VS3`. VS1 is complete; VS2 implementation has
+landed through issue #505 / PR #506, and its U9 decision has landed through issue #507 / PR
+#508. VS2 is not yet closed because the separately governed correspondence/orchestration
+follow-up remains outstanding; VS3 therefore remains blocked.
 
 Issue #495 is the sole accepted bounded bridge to that order: the minimum closed
 output-inventory/material correspondence for the already-defined VS1 stable surfaces may be

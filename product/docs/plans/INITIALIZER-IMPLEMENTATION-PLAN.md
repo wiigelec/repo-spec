@@ -397,7 +397,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "B0 through I5, H1, and VS1 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 implementation is accepted through issue #505 / PR #506 but VS2 closure remains blocked pending the issue-#507 U9 applicability-evidence decision and its separately governed implementation follow-up. VS3 remains unauthorized until VS2 closes.",
+  "successor_action": "B0 through I5, H1, and VS1 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 implementation is accepted through issue #505 / PR #506, and the U9 applicability-evidence decision is accepted through issue #507 / PR #508. VS2 closure remains blocked only on the separately governed correspondence/orchestration implementation follow-up. VS3 remains unauthorized until VS2 closes.",
   "schema_version": "1"
 }
 ```
