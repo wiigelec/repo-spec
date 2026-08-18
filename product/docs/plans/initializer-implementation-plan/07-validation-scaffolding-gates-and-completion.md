@@ -72,10 +72,11 @@ of separately governed Product-artifact implementation issues selecting explicit
 
 ## Post-VS1 successor status under issue #502
 
-VS1 is completed historical work. The VS1 -> VS2 gate's predecessor condition is satisfied;
-VS2 remains unimplemented and requires a separately governed Product-artifact implementation
-issue selecting VS2 and its exact controlling accepted specification set. VS3 remains gated on
-successful VS2 lifecycle evidence.
+VS1 is completed historical work. The VS1 -> VS2 gate was satisfied, VS2 implementation was
+accepted through issue #505 / PR #506, and the U9 decision was accepted through issue #507 /
+PR #508. VS2 closure now depends only on the separately governed correspondence/orchestration
+follow-up and the resulting exact-main completion audit. VS3 remains gated on successful VS2
+lifecycle evidence.
 
 ## Issue #507 VS2 closure gate refinement
 

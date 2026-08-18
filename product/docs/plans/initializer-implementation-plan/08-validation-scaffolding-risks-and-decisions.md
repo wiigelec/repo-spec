@@ -23,9 +23,10 @@ Status: accepted; planning-authoritative; non-normative with respect to product 
 
 ## Post-VS1 decision status under issue #502
 
-U8 is closed by accepted VS1 evidence. U9 remains the next validation-scaffolding implementation
-decision under VS2. U10 remains VS3-owned, and U11 remains conditional on the separately governed
-VA1/VS3 ordering. No authority set is changed by this status synchronization.
+U8 is closed by accepted VS1 evidence. U9 is closed by the accepted issue-#507 / PR-#508
+planning decision and now awaits only its separately governed implementation follow-up under
+parent VS2 issue #505. U10 remains VS3-owned, and U11 remains conditional on the separately
+governed VA1/VS3 ordering. No authority set is changed by this status synchronization.
 
 ## Issue #507 U9 closure decision
 
