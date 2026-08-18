@@ -307,23 +307,52 @@ def run_product_development_document_tests(repo_root: Path) -> None:
         expect_failure("plan without controlling decomposition", lambda: validate_product_phases(temp_repo, ('product development documents',)), "unresolved controlling document path")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
-        plan_chunk_path = temp_repo / "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md"
-        plan_chunk_path.write_text("# Validation addendum\n")
         plan_path = temp_repo / "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"
         plan_text = plan_path.read_text()
-        plan_text = plan_text.replace(
-            '    "workstreams_and_dependencies": [\n      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md"\n    ],',
-            '    "workstreams_and_dependencies": [\n      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md",\n      "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md"\n    ],',
-            1,
+        metadata_prefix, metadata_rest = plan_text.split("```json\n", 1)
+        metadata_text, metadata_suffix = metadata_rest.split("\n```", 1)
+        metadata = json.loads(metadata_text)
+        existing_chunks = metadata["subordinate_chunks"]
+        next_order = max(chunk["order"] for chunk in existing_chunks) + 1
+        previous_last = existing_chunks[-1]
+        plan_chunk_rel = (
+            "product/docs/plans/initializer-implementation-plan/"
+            f"{next_order:02d}-validation-addendum.md"
         )
-        plan_text = plan_text.replace(
-            '      "title": "Risks and unresolved decisions",\n      "coverage": [\n        "risks_and_unresolved_decisions"\n      ]\n    }\n  ],\n  "successor_action":',
-            '      "title": "Risks and unresolved decisions",\n      "coverage": [\n        "risks_and_unresolved_decisions"\n      ]\n    },\n    {\n      "order": 5,\n      "path": "product/docs/plans/initializer-implementation-plan/05-validation-addendum.md",\n      "title": "Validation addendum",\n      "coverage": [\n        "workstreams_and_dependencies"\n      ]\n    }\n  ],\n  "successor_action":',
-            1,
+        plan_chunk_path = temp_repo / plan_chunk_rel
+        plan_chunk_path.write_text("# Validation addendum\n")
+        metadata["required_content_areas"]["workstreams_and_dependencies"].append(
+            plan_chunk_rel
         )
+        metadata["subordinate_chunks"].append(
+            {
+                "order": next_order,
+                "path": plan_chunk_rel,
+                "title": "Validation addendum",
+                "coverage": ["workstreams_and_dependencies"],
+            }
+        )
+        plan_text = (
+            metadata_prefix
+            + "```json\n"
+            + json.dumps(metadata, indent=2)
+            + "\n```"
+            + metadata_suffix
+        )
+        previous_rel = Path(previous_last["path"]).relative_to(
+            "product/docs/plans"
+        ).as_posix()
+        index_anchor = f'- [{previous_last["title"]}](./{previous_rel})\n'
+        if plan_text.count(index_anchor) != 1:
+            raise AssertionError(
+                f"implementation-plan chunk index anchor mismatch: {index_anchor!r}"
+            )
+        next_rel = Path(plan_chunk_rel).relative_to(
+            "product/docs/plans"
+        ).as_posix()
         plan_text = plan_text.replace(
-            '- [Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)',
-            '- [Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)\n- [Validation addendum](./initializer-implementation-plan/05-validation-addendum.md)',
+            index_anchor,
+            index_anchor + f"- [Validation addendum](./{next_rel})\n",
             1,
         )
         plan_path.write_text(plan_text)

@@ -104,7 +104,8 @@ implementation while preserving all accepted validation behavior and the establi
 repository/product validation entry points.
 
 Controlling accepted product specifications: `product.initializer-output-inventory-v1`,
-`product.framework-installation`, `product.repository-validation`.
+`product.framework-installation`, `product.repository-validation`,
+`product.executable-reference-closure`.
 
 Predecessor: issue #350 Patch 1 portable-runtime authority correction. Entry: a separate
 Product-artifact implementation governing issue selects stable workstream `VA1`, cites
@@ -132,9 +133,9 @@ historical B0/I1-I5/H1 requirement ownership.
 
 ## VA2 - Validation self-test ownership correction
 
-Purpose: authorize bounded self-test ownership consolidation without changing production validation semantics. Controlling accepted product specification: `product.repository-validation`.
+Purpose: authorize bounded self-test ownership consolidation without changing production validation semantics. Controlling accepted product specifications: `product.repository-validation`, `product.validation-test-surface`, and `product.validation-test-orchestration`.
 
-Predecessor/entry: issue #350 Patch 2; a separate Product-artifact implementation issue must select `VA2`, cite exactly `product.repository-validation`, use the then-current accepted base, and keep VA1 implementation separate.
+Predecessor/entry: issue #350 Patch 2 plus the issue-#491 impact review; a separate Product-artifact implementation issue must select `VA2`, cite exactly `product.repository-validation`, `product.validation-test-surface`, and `product.validation-test-orchestration`, use the then-current accepted base, and keep VA1 and VS1 implementation separate.
 
 Scope/exit: consolidate duplicate or catch-all product validation self-tests into function-owned focused coverage, retain genuinely integrative cases, remove literal duplicates, preserve dependency-direction and every distinct accepted invariant, and require product/aggregate validation plus the complete product validation self-test runner to pass.
 

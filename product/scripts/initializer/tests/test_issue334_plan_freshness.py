@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -19,10 +20,13 @@ class Issue334PlanFreshnessTests(unittest.TestCase):
         cls.all_text = cls.plan + "\n" + cls.chunk_text
 
     def test_h1_machine_authority_mapping_is_unchanged(self) -> None:
-        block = self.plan[
-            self.plan.index('"id": "H1"'):
-            self.plan.index('  ],\n  "required_content_areas"')
-        ]
+        metadata_text = self.plan.split("```json\n", 1)[1].split("\n```", 1)[0]
+        metadata = json.loads(metadata_text)
+        h1 = next(
+            authority
+            for authority in metadata["workstream_authority"]
+            if authority["id"] == "H1"
+        )
         expected = [
             "product.initializer-level-0",
             "product.initialization-request",
@@ -35,9 +39,7 @@ class Issue334PlanFreshnessTests(unittest.TestCase):
             "product.request-intake",
             "product.full-initialization",
         ]
-        for spec_id in expected:
-            self.assertIn(f'"{spec_id}"', block)
-        self.assertEqual(block.count('"product.'), len(expected))
+        self.assertEqual(h1["controlling_product_specifications"], expected)
 
     def test_completed_h1_history_is_recorded(self) -> None:
         self.assertIn("#311", self.plan)

@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -85,7 +85,13 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
     "product.staging-workspace",
     "product.transactional-staging",
     "product.validation-profile",
-    "product.validation-report"
+    "product.validation-report",
+    "product.validation-test-surface",
+    "product.validation-test-orchestration",
+    "product.product-test-applicability",
+    "product.product-test-lifecycle",
+    "product.installed-command-requirement",
+    "product.executable-reference-closure"
   ],
   "workstream_authority": [
     {
@@ -203,13 +209,16 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       "controlling_product_specifications": [
         "product.initializer-output-inventory-v1",
         "product.framework-installation",
-        "product.repository-validation"
+        "product.repository-validation",
+        "product.executable-reference-closure"
       ]
     },
     {
       "id": "VA2",
       "controlling_product_specifications": [
-        "product.repository-validation"
+        "product.repository-validation",
+        "product.validation-test-surface",
+        "product.validation-test-orchestration"
       ]
     },
     {
@@ -243,32 +252,75 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
         "product.request-intake",
         "product.full-initialization"
       ]
+    },
+    {
+      "id": "VS1",
+      "controlling_product_specifications": [
+        "product.initializer-level-0",
+        "product.validation-test-surface",
+        "product.validation-test-orchestration"
+      ]
+    },
+    {
+      "id": "VS2",
+      "controlling_product_specifications": [
+        "product.initializer-level-0",
+        "product.validation-test-surface",
+        "product.validation-test-orchestration",
+        "product.product-test-applicability",
+        "product.product-test-lifecycle"
+      ]
+    },
+    {
+      "id": "VS3",
+      "controlling_product_specifications": [
+        "product.initializer-level-0",
+        "product.validation-test-surface",
+        "product.validation-test-orchestration",
+        "product.product-test-applicability",
+        "product.product-test-lifecycle",
+        "product.installed-command-requirement",
+        "product.executable-reference-closure",
+        "product.initializer-output-inventory-v1",
+        "product.material-manifest",
+        "product.framework-installation",
+        "product.repository-validation",
+        "product.full-initialization"
+      ]
     }
   ],
   "required_content_areas": {
     "authority_and_basis": [
-      "product/docs/plans/initializer-implementation-plan/01-authority-scope-and-specification-map.md"
+      "product/docs/plans/initializer-implementation-plan/01-authority-scope-and-specification-map.md",
+      "product/docs/plans/initializer-implementation-plan/05-validation-scaffolding-authority-impact.md"
     ],
     "scope_and_exclusions": [
-      "product/docs/plans/initializer-implementation-plan/01-authority-scope-and-specification-map.md"
+      "product/docs/plans/initializer-implementation-plan/01-authority-scope-and-specification-map.md",
+      "product/docs/plans/initializer-implementation-plan/06-validation-scaffolding-stages-and-dependencies.md"
     ],
     "workstreams_and_dependencies": [
-      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md"
+      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md",
+      "product/docs/plans/initializer-implementation-plan/06-validation-scaffolding-stages-and-dependencies.md"
     ],
     "entry_and_exit_conditions": [
-      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md"
+      "product/docs/plans/initializer-implementation-plan/02-increments-and-dependencies.md",
+      "product/docs/plans/initializer-implementation-plan/06-validation-scaffolding-stages-and-dependencies.md"
     ],
     "transition_gates": [
-      "product/docs/plans/initializer-implementation-plan/03-validation-gates-and-completion.md"
+      "product/docs/plans/initializer-implementation-plan/03-validation-gates-and-completion.md",
+      "product/docs/plans/initializer-implementation-plan/07-validation-scaffolding-gates-and-completion.md"
     ],
     "validation_strategy": [
-      "product/docs/plans/initializer-implementation-plan/03-validation-gates-and-completion.md"
+      "product/docs/plans/initializer-implementation-plan/03-validation-gates-and-completion.md",
+      "product/docs/plans/initializer-implementation-plan/07-validation-scaffolding-gates-and-completion.md"
     ],
     "risks_and_unresolved_decisions": [
-      "product/docs/plans/initializer-implementation-plan/04-risks-and-unresolved-decisions.md"
+      "product/docs/plans/initializer-implementation-plan/04-risks-and-unresolved-decisions.md",
+      "product/docs/plans/initializer-implementation-plan/08-validation-scaffolding-risks-and-decisions.md"
     ],
     "completion_and_successor_work": [
-      "product/docs/plans/initializer-implementation-plan/03-validation-gates-and-completion.md"
+      "product/docs/plans/initializer-implementation-plan/03-validation-gates-and-completion.md",
+      "product/docs/plans/initializer-implementation-plan/07-validation-scaffolding-gates-and-completion.md"
     ]
   },
   "subordinate_chunks": [
@@ -307,9 +359,45 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       "coverage": [
         "risks_and_unresolved_decisions"
       ]
+    },
+    {
+      "order": 5,
+      "path": "product/docs/plans/initializer-implementation-plan/05-validation-scaffolding-authority-impact.md",
+      "title": "Validation-scaffolding authority impact",
+      "coverage": [
+        "authority_and_basis"
+      ]
+    },
+    {
+      "order": 6,
+      "path": "product/docs/plans/initializer-implementation-plan/06-validation-scaffolding-stages-and-dependencies.md",
+      "title": "Validation-scaffolding stages and dependencies",
+      "coverage": [
+        "scope_and_exclusions",
+        "workstreams_and_dependencies",
+        "entry_and_exit_conditions"
+      ]
+    },
+    {
+      "order": 7,
+      "path": "product/docs/plans/initializer-implementation-plan/07-validation-scaffolding-gates-and-completion.md",
+      "title": "Validation-scaffolding gates and completion",
+      "coverage": [
+        "transition_gates",
+        "validation_strategy",
+        "completion_and_successor_work"
+      ]
+    },
+    {
+      "order": 8,
+      "path": "product/docs/plans/initializer-implementation-plan/08-validation-scaffolding-risks-and-decisions.md",
+      "title": "Validation-scaffolding risks and decisions",
+      "coverage": [
+        "risks_and_unresolved_decisions"
+      ]
     }
   ],
-  "successor_action": "H1 remains completed historical work: No new successor implementation scope is authorized by the completed H1 work itself. Separately, issue #342 authorizes H2 as the bounded successor workstream to simplify local repository bootstrap so the normal user supplies only a destination, the executing local repo-spec instance resolves exact framework provenance, and product definition is deferred to governed successor work after bootstrap. No unrelated initializer capability is authorized.",
+  "successor_action": "B0 through I5 and H1 remain completed historical work. H2, VA1, and VA2 retain their separately governed scopes. Issue #491 adds planning authority only for VS1, VS2, and VS3 under the exact accepted-specification sets in workstream_authority. Maintained product-artifact implementation requires a later separately governed Product-artifact implementation issue selecting explicit stage IDs.",
   "schema_version": "1"
 }
 ```
@@ -339,6 +427,9 @@ The accepted plan records six completed historical increments plus the separatel
 | H2 | Repository-bootstrap successor | Destination-only repository bootstrap UX simplification using the existing H2 authority mapping; separately governed by its H2 planning/implementation authority |
 | VA1 | Validation-ownership successor | Production-validation ownership correction under the exact VA1 accepted-spec set; separately governed implementation scope |
 | VA2 | Validation-self-test successor | Validation self-test ownership/consolidation under the exact VA2 accepted-spec set; separately governed implementation scope |
+| VS1 | Validation-scaffolding interfaces | Stable validation/test interfaces, portable validation self-tests, and common orchestration |
+| VS2 | Generic product-test lifecycle | Deterministic applicability/lifecycle with honest zero-applicable behavior |
+| VS3 | Installed validation closure | Installed-command/executable-reference closure and initializer integration |
 
 Issue #255 repaired the accepted provenance and handoff specification conflicts that
 previously blocked I3-I5. The B0→I1→I2→I3→I4→I5 dependency order remains
@@ -354,6 +445,10 @@ product semantics.
 - [Implementation increments and dependencies](./initializer-implementation-plan/02-increments-and-dependencies.md)
 - [Validation, gates, and completion](./initializer-implementation-plan/03-validation-gates-and-completion.md)
 - [Risks and unresolved decisions](./initializer-implementation-plan/04-risks-and-unresolved-decisions.md)
+- [Validation-scaffolding authority impact](./initializer-implementation-plan/05-validation-scaffolding-authority-impact.md)
+- [Validation-scaffolding stages and dependencies](./initializer-implementation-plan/06-validation-scaffolding-stages-and-dependencies.md)
+- [Validation-scaffolding gates and completion](./initializer-implementation-plan/07-validation-scaffolding-gates-and-completion.md)
+- [Validation-scaffolding risks and decisions](./initializer-implementation-plan/08-validation-scaffolding-risks-and-decisions.md)
 
 ## Relationships
 
@@ -415,3 +510,34 @@ work after bootstrap.
 
 H2 does not authorize hosted repository creation, migration/overwrite, resume/dry-run/status
 features, unrelated convenience flags, or product semantics.
+
+## Validation-scaffolding successor planning — VS1 / VS2 / VS3
+
+Issue #491 performs the `REPO-IPL-011` impact review required after PR #490 materially
+changed accepted product authority. The historical B0/I1-I5 34-spec/291-key baseline remains
+historical evidence and is not rewritten. PR #490 adds exactly six accepted specifications
+with 56 requirements plus three new requirements in existing initializer specifications:
+59 newly introduced requirements requiring successor planning.
+
+`VA1` remains the issue-#350 production-validation ownership/extraction workstream. Its
+controlling set is minimally extended with `product.executable-reference-closure` so any
+portable shared-support material changed by VA1 remains closed under the accepted installed
+support contract. This does not move VS1/VS2/VS3 scope into VA1.
+
+`VA2` remains the issue-#350 source-development validation-self-test consolidation workstream.
+Its controlling set is minimally extended with `product.validation-test-surface` and
+`product.validation-test-orchestration`, which now govern the self-test ownership and
+stable-surface boundary VA2 must preserve. This does not authorize VS1 implementation in VA2.
+
+The new planning stages are `VS1` (stable interfaces/portable validation self-tests/common
+orchestration), `VS2` (generic product-test applicability/lifecycle), and `VS3`
+(installed-command/executable-reference closure and initializer integration). The minimum
+unconditional new-stage order is `VS1 -> VS2 -> VS3`.
+
+`VA1` and `VA2` remain separate issue-#350 scopes. If VA1 changes portable support material
+before VS3, VS3 must consume that accepted resulting runtime set; this is a conditional entry
+dependency, not authorization to bundle VA1 into VS3.
+
+Acceptance of this plan amendment authorizes only later governing-issue creation. Maintained
+product artifacts may change only under a separately governed Product-artifact implementation
+issue selecting explicit accepted stage IDs and their exact controlling specification sets.
