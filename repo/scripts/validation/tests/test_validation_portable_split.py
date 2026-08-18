@@ -5,7 +5,6 @@ from pathlib import Path
 
 from validation.errors import fail
 from validation.portable_self_tests import run_repository_portable_self_tests
-from product_validation.portable_self_tests import run_product_portable_self_tests
 
 
 def _top_level_imports(path: Path) -> set[str]:
@@ -44,6 +43,8 @@ def run_validation_portable_split_tests(repo_root: Path) -> None:
     if any(module.startswith("validation_tests") for module in product_portable_imports):
         fail("portable split failed: product portable layer imports source test tree")
 
+    # Keep this repo-owned source-development regression test independent of
+    # product implementation imports. product/scripts/test-validation executes
+    # the product portable self-test under the product-owned environment.
     run_repository_portable_self_tests(repo_root)
-    run_product_portable_self_tests(repo_root)
     print("ok: validation portable/source split")
