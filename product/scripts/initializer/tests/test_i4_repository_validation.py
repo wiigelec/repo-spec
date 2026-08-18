@@ -44,6 +44,7 @@ class I4RepositoryValidationContractTests(unittest.TestCase):
                 "output.generated-records-valid",
                 "output.generated-templates-match",
                 "output.repository-digest-match",
+                "output.executable-reference-closure",
                 "provenance.consistent",
                 "handoff.consistent",
                 "git.initial-branch",

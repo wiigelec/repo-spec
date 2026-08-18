@@ -42,8 +42,9 @@ Exact controlling set: `product.repository-validation`, `product.validation-test
   `product.validation-test-orchestration`.
 - `VS2`: VS1 authority plus `product.product-test-applicability`,
   `product.product-test-lifecycle`.
-- `VS3`: VS2 authority plus `product.installed-command-requirement`,
-  `product.executable-reference-closure`, `product.initializer-output-inventory-v1`,
+- `VS3`: VS2 authority plus `product.validation-profile`,
+  `product.installed-command-requirement`, `product.executable-reference-closure`,
+  `product.initializer-output-inventory-v1`,
   `product.material-manifest`, `product.framework-installation`,
   `product.repository-validation`, `product.full-initialization`.
 

@@ -463,6 +463,12 @@ from .inventory import (
     validate_material_manifest as _validate_material_manifest,
 )
 from .staging import StagingWorkspace as _StagingWorkspace, validate_staging_workspace as _validate_staging_workspace
+from .executable_closure import (
+    CLOSURE_SATISFIED as _CLOSURE_SATISFIED,
+    ExecutableClosureError as _ExecutableClosureError,
+    closure_failure_code as _closure_failure_code,
+    evaluate_executable_reference_closure as _evaluate_executable_reference_closure,
+)
 
 
 _I4_PROFILE_SPEC = "product/specs/product/level-1/validation-profile.json"
@@ -990,6 +996,26 @@ def _i4_check_digest(check, inputs):
 
 
 
+def _i4_check_executable_reference_closure(check, inputs):
+    try:
+        result = _evaluate_executable_reference_closure(
+            _i4_repo_root(),
+            inputs.repository_root,
+        )
+    except _ExecutableClosureError as exc:
+        return _i4_fail(check, "installed-authority-missing", str(exc))
+
+    failure_code = _closure_failure_code(result)
+    if result.get("classification") == _CLOSURE_SATISFIED and failure_code is None:
+        return _i4_pass(check, closure=result)
+    return _i4_fail(
+        check,
+        failure_code or "installed-authority-missing",
+        "installed validation executable-reference closure is not satisfied",
+        closure=result,
+    )
+
+
 def _i4_check_provenance(check, inputs):
     path = inputs.repository_root / "repo/initializer/provenance.json"
     try:
@@ -1125,6 +1151,7 @@ _I4_CHECK_HANDLERS: dict[str, _Callable] = {
     "output.generated-records-valid": _i4_check_generated_records,
     "output.generated-templates-match": _i4_check_generated_templates,
     "output.repository-digest-match": _i4_check_digest,
+    "output.executable-reference-closure": _i4_check_executable_reference_closure,
     "provenance.consistent": _i4_check_provenance,
     "handoff.consistent": _i4_check_handoff,
     "git.initial-branch": _i4_check_git_branch,

@@ -279,6 +279,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
         "product.validation-test-orchestration",
         "product.product-test-applicability",
         "product.product-test-lifecycle",
+        "product.validation-profile",
         "product.installed-command-requirement",
         "product.executable-reference-closure",
         "product.initializer-output-inventory-v1",
