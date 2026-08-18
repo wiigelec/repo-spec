@@ -76,3 +76,29 @@ VS1 is completed historical work. The VS1 -> VS2 gate's predecessor condition is
 VS2 remains unimplemented and requires a separately governed Product-artifact implementation
 issue selecting VS2 and its exact controlling accepted specification set. VS3 remains gated on
 successful VS2 lifecycle evidence.
+
+## Issue #507 VS2 closure gate refinement
+
+Issue #505 / PR #506 supplies the generic VS2 applicability/lifecycle implementation, but VS2
+is not complete merely because that implementation merged.
+
+The remaining VS2 closure sequence is:
+
+1. accepted product-spec correspondence supplies complete current-state applicability evidence
+   under the issue-#507 U9 decision;
+2. every accepted normative requirement has exactly one requirement-level conformance record;
+3. every `covered` record resolves to reachable governed test mappings, while every
+   `not-applicable` record carries its required rationale;
+4. no incomplete/contradictory/malformed correspondence can normalize to zero;
+5. `product/scripts/test-product` produces a valid governed success/failure result from that
+   complete authority; and
+6. common `scripts/test-validation` invokes the stable `product/scripts/test-product` surface so
+   aggregate success/failure observes the governed product-test lifecycle.
+
+Repo-spec after PR #506 is still `applicability-invalid` because accepted correspondence is not
+yet complete for the later PTA/PTL lifecycle gate. This is the expected fail-closed state, not a
+VS2 failure to preserve zero semantics.
+
+Only a separately governed Product-artifact implementation issue subordinate to #505 and #507
+may supply the correspondence and orchestration closure. VS3 entry remains blocked until that
+follow-up merges, exact-main validation succeeds, and a fresh VS2 completion audit passes.
