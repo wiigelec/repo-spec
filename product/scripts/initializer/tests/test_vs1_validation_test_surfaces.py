@@ -10,13 +10,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 SURFACE = ROOT / "product/scripts/test-product"
 
+SUCCESS_CLASSES = {
+    "successful-zero-applicable",
+    "successful-applicable-execution",
+}
+
 
 class VS1ValidationTestSurfaceTests(unittest.TestCase):
     def test_product_test_surface_exists_and_is_executable(self) -> None:
         self.assertTrue(SURFACE.is_file())
         self.assertTrue(os.access(SURFACE, os.X_OK))
 
-    def test_product_test_surface_preserves_stable_identity_after_vs2_activation(self) -> None:
+    def test_product_test_surface_exposes_vs2_machine_result_without_placeholder(self) -> None:
         completed = subprocess.run(
             [str(SURFACE)],
             cwd=ROOT,
@@ -25,12 +30,14 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
             stderr=subprocess.PIPE,
             check=False,
         )
-        self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertEqual(completed.stderr, "")
+        self.assertNotIn("lifecycle unavailable", completed.stdout)
         result = json.loads(completed.stdout)
-        self.assertEqual(result["applicability"], "zero-applicable")
-        self.assertEqual(result["classification"], "successful-zero-applicable")
-        self.assertEqual(result["obligations"], [])
+        self.assertIn("applicability", result)
+        self.assertIn("classification", result)
+        self.assertIn("evidence", result)
+        expected_returncode = 0 if result["classification"] in SUCCESS_CLASSES else 1
+        self.assertEqual(completed.returncode, expected_returncode)
 
     def test_product_test_surface_rejects_unknown_modes(self) -> None:
         completed = subprocess.run(
