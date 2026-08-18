@@ -261,6 +261,91 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": []
+    "conformance": [
+      {
+        "requirement_id": "INIT-LCS-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-009",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-010",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-011",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-LCS-012",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      }
+    ]
   }
 }

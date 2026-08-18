@@ -30,7 +30,85 @@ Defines common validation/test orchestration through stable repository-relative 
 
 ### Conformance
 
-- None
+- `INIT-VTO-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-005`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-006`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-008`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-009`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VTO-010`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
 
 ## Components
 

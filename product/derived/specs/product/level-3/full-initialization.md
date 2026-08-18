@@ -30,7 +30,109 @@ Defines the complete bounded local repository-bootstrap workflow from a minimal 
 
 ### Conformance
 
-- None
+- `INIT-FIN-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-005`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-006`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-008`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-009`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-010`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-011`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-012`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-FIN-013`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
 
 ## Orchestrations
 

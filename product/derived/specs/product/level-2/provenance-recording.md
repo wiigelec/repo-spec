@@ -30,7 +30,21 @@ Defines the provenance recording component that captures and writes provenance d
 
 ### Conformance
 
-- None
+- `INIT-PRC-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-PRC-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
 
 ## Components
 

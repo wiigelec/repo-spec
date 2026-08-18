@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 SURFACE = ROOT / "product/scripts/test-product"
+COMMON = ROOT / "scripts/test-validation"
 
 SUCCESS_CLASSES = {
     "successful-zero-applicable",
@@ -38,6 +39,12 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
         self.assertIn("evidence", result)
         expected_returncode = 0 if result["classification"] in SUCCESS_CLASSES else 1
         self.assertEqual(completed.returncode, expected_returncode)
+
+    def test_common_validation_invokes_generic_product_test_surface(self) -> None:
+        text = COMMON.read_text(encoding="utf-8")
+        self.assertIn('"$root/repo/scripts/test-validation"', text)
+        self.assertIn('"$root/product/scripts/test-validation"', text)
+        self.assertIn('"$root/product/scripts/test-product"', text)
 
     def test_product_test_surface_rejects_unknown_modes(self) -> None:
         completed = subprocess.run(

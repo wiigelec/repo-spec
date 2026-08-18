@@ -12,6 +12,16 @@ import test_product_impl
 
 
 class VS2ProductTestLifecycleTests(unittest.TestCase):
+    def test_repo_spec_current_state_is_explicit_honest_zero(self) -> None:
+        root = Path(__file__).resolve().parents[4]
+        result = test_product_impl.run_product_tests(root)
+
+        self.assertEqual(result["classification"], "successful-zero-applicable")
+        self.assertEqual(result["applicability"], "zero-applicable")
+        self.assertEqual(result["evidence"]["accepted_spec_count"], 49)
+        self.assertTrue(result["evidence"]["conformance_complete"])
+        self.assertEqual(result["obligations"], [])
+
     def _empty_repo(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
         td = tempfile.TemporaryDirectory()
         root = Path(td.name)

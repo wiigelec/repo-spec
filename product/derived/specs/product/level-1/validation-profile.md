@@ -30,7 +30,61 @@ Defines the stable ordered set of Version 1 validation checks, each with a stabl
 
 ### Conformance
 
-- None
+- `INIT-VP-001`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VP-002`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VP-003`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VP-004`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VP-005`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VP-006`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
+
+- `INIT-VP-007`
+  - Implementation Ids:
+    - None
+  - Test Ids:
+    - None
+  - Status: `not-applicable`
+  - Rationale: `Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update.`
 
 ## Checks
 

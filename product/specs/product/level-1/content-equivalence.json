@@ -46,7 +46,7 @@
     },
     {
       "id": "INIT-EQV-015",
-      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry (each independently inventoried — no tree-valued entries), every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository."
+      "text": "Repository content equivalence shall include every path declared in the output inventory (product.initializer-output-inventory-v1): every fixed worktree file, every material_index entry (each independently inventoried \u2014 no tree-valued entries), every resolved dynamic family path, and no prohibited path. Equivalence shall be evaluated on the full inventory-defined path set. Git administrative state equivalence is governed separately by product.local-git-repository."
     },
     {
       "id": "INIT-EQV-013",
@@ -137,6 +137,112 @@
   "correspondence": {
     "implementations": [],
     "tests": [],
-    "conformance": []
+    "conformance": [
+      {
+        "requirement_id": "INIT-EQV-001",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-002",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-003",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-004",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-005",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-006",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-007",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-012",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-015",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-013",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-008",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-009",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-010",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-011",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      },
+      {
+        "requirement_id": "INIT-EQV-014",
+        "implementation_ids": [],
+        "test_ids": [],
+        "status": "not-applicable",
+        "rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+      }
+    ]
   }
 }
