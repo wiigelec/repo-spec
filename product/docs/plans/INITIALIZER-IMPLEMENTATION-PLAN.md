@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -531,8 +531,13 @@ stable-surface boundary VA2 must preserve. This does not authorize VS1 implement
 
 The new planning stages are `VS1` (stable interfaces/portable validation self-tests/common
 orchestration), `VS2` (generic product-test applicability/lifecycle), and `VS3`
-(installed-command/executable-reference closure and initializer integration). The minimum
-unconditional new-stage order is `VS1 -> VS2 -> VS3`.
+(installed-command/executable-reference closure and initializer integration). The normal
+successor order remains `VS1 -> VS2 -> VS3`. Issue #495 records one bounded atomic bridge:
+after the VS1 stable interfaces and portable self-test responsibilities exist, the minimum
+closed output/material authority required to install those already-defined surfaces may be
+synchronized before VS2. That bridge does not implement VS2 applicability/lifecycle semantics,
+does not complete broader VS3 executable-reference closure, and does not change any stage's
+machine-readable controlling specification set.
 
 `VA1` and `VA2` remain separate issue-#350 scopes. If VA1 changes portable support material
 before VS3, VS3 must consume that accepted resulting runtime set; this is a conditional entry

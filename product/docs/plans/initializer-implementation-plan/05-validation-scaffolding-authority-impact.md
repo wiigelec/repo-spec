@@ -49,3 +49,13 @@ Exact controlling set: `product.repository-validation`, `product.validation-test
 
 These are planning authority sets only; accepted product specifications retain semantic
 authority and candidate future extensions remain excluded.
+
+### Issue #495 atomic installation bridge
+
+Issue #495 does not reassign any normative requirement key or alter the machine-readable
+VS1, VS2, or VS3 controlling specification sets. It records a sequencing exception required
+to resolve the accepted closed-output deadlock: after VS1 establishes the three stable surface
+identities and portable self-test responsibility split, the minimum output-inventory/material
+synchronization needed to install those existing surfaces may be accepted before VS2. Broader
+product-test lifecycle semantics remain VS2-owned, and broader installed-command/reference
+closure remains VS3-owned.

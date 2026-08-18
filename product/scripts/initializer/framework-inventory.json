@@ -1048,6 +1048,70 @@
       "operation": "copy-verbatim",
       "source_type": "blob",
       "mode": "100644"
+    },
+    {
+      "material_key": "repo-test-validation",
+      "source_path": "repo/scripts/test-validation",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "repo-test-validation-impl-py",
+      "source_path": "repo/scripts/test_validation_impl.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "repo-validation-portable-self-tests-py",
+      "source_path": "repo/scripts/validation/portable_self_tests.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-test-validation",
+      "source_path": "product/scripts/test-validation",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "product-test-validation-impl-py",
+      "source_path": "product/scripts/test_validation_impl.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "product-validation-portable-self-tests-py",
+      "source_path": "product/scripts/product_validation/portable_self_tests.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100644"
+    },
+    {
+      "material_key": "product-test-product",
+      "source_path": "product/scripts/test-product",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
+    },
+    {
+      "material_key": "product-test-product-impl-py",
+      "source_path": "product/scripts/test_product_impl.py",
+      "role": "validation-utility",
+      "operation": "copy-verbatim",
+      "source_type": "blob",
+      "mode": "100755"
     }
   ]
 }
