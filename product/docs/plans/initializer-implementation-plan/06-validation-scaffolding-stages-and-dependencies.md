@@ -121,3 +121,43 @@ not authorize broader executable-reference closure.
 dependency described above. A later Product-artifact issue may select multiple adjacent VS
 stages only when every selected ID and the union of exact controlling specification sets are
 explicit in the issue. Selecting one stage never implicitly authorizes another workstream.
+
+## Issue #507 U9 applicability-evidence decision
+
+U9 is resolved without changing normative product semantics or the machine-readable VS2
+controlling set.
+
+The canonical VS2 applicability-evidence carrier is the existing correspondence envelope owned
+by each accepted product specification under `repo.product-correspondence`:
+
+- `correspondence.tests` declares stable governed test mappings and their repository-relative paths;
+- `correspondence.conformance` declares one requirement-level applicability record as either
+  `covered` or `not-applicable`;
+- `covered` records select the governed product-test mappings that must resolve and execute;
+- `not-applicable` records explicitly establish that no product implementation-test obligation
+  applies to that normative requirement and require the existing non-empty rationale;
+- for VS2 lifecycle evaluation, every normative requirement of every accepted product
+  specification must have exactly one conformance record before applicability can be considered
+  complete.
+
+This is a later completion rule supplied by accepted PTA/PTL authority. It does not revise the
+ordinary correspondence lifecycle: accepted product specifications may still exist before
+correspondence is complete, and ordinary repository validation must not require undeclared
+conformance merely for acceptance. Instead, incomplete accepted correspondence means
+`product/scripts/test-product` remains `applicability-invalid` until a separately governed
+implementation supplies complete current-state evidence.
+
+Repo-spec's accepted state after PR #506 therefore remains intentionally
+`applicability-invalid`; issue #507 does not declare honest zero and does not select any
+product-specific test suite.
+
+A separately governed Product-artifact implementation follow-up is required to:
+1. audit every accepted product specification's normative requirements;
+2. add only review-supported `covered` or `not-applicable` correspondence needed to make the
+   current applicability state complete;
+3. preserve the accepted false-zero protections; and
+4. only once the stable product-test surface can produce a valid governed result, add
+   `product/scripts/test-product` to common `scripts/test-validation` orchestration.
+
+Parent issue #505 remains open until that follow-up is merged, exact-main validation passes, and
+a fresh VS2 completion audit confirms the VS2 exit conditions. VS3 remains unauthorized.

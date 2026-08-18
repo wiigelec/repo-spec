@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -397,7 +397,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "B0 through I5, H1, and VS1 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 is the next normal validation-scaffolding implementation stage and requires a separately governed Product-artifact implementation issue selecting VS2 and its exact accepted-specification set. VS3 remains successor work after VS2.",
+  "successor_action": "B0 through I5, H1, and VS1 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 implementation is accepted through issue #505 / PR #506 but VS2 closure remains blocked pending the issue-#507 U9 applicability-evidence decision and its separately governed implementation follow-up. VS3 remains unauthorized until VS2 closes.",
   "schema_version": "1"
 }
 ```
