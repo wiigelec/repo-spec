@@ -1,6 +1,6 @@
 # Validation-scaffolding gates and completion
 
-Status: accepted-plan amendment candidate under issue #491; planning-authoritative only after governed acceptance; non-normative with respect to product semantics.
+Status: accepted; planning-authoritative; non-normative with respect to product semantics.
 
 ## Validation-scaffolding transition and authorization gates
 
@@ -13,6 +13,10 @@ Status: accepted-plan amendment candidate under issue #491; planning-authoritati
 | Installed validator self-tests are portable | Clean portable evidence does not require the complete repo-spec source-development test tree |
 | Required surfaces fail closed | Missing/non-executable/unstartable cases remain failures, not skip/zero |
 | Common orchestration consumes stable interfaces | No repository-class-specific alternate interface is required |
+
+VS1 completion status: satisfied on accepted `main` after issues #493-#495 and PRs #499-#501.
+The stable interfaces, portable/source-development responsibility split, fail-closed behavior,
+common orchestration, and minimum installation correspondence have been accepted and freshly audited.
 
 ### VS1 -> VS2 gate
 
@@ -64,3 +68,11 @@ DAG/gates/validation strategy, risks/decisions, and no maintained implementation
 
 After manual merge and post-merge planning audit, closing #491 authorizes only later creation
 of separately governed Product-artifact implementation issues selecting explicit stage IDs.
+
+
+## Post-VS1 successor status under issue #502
+
+VS1 is completed historical work. The VS1 -> VS2 gate's predecessor condition is satisfied;
+VS2 remains unimplemented and requires a separately governed Product-artifact implementation
+issue selecting VS2 and its exact controlling accepted specification set. VS3 remains gated on
+successful VS2 lifecycle evidence.

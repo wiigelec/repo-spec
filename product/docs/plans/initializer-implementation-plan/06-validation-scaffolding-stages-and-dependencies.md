@@ -1,8 +1,10 @@
 # Validation-scaffolding stages and dependencies
 
-Status: accepted-plan amendment candidate under issue #491; planning-authoritative only after governed acceptance; non-normative with respect to product semantics.
+Status: accepted; planning-authoritative; non-normative with respect to product semantics.
 
 ## VS1 - Stable validation/test interfaces and portable self-tests
+
+Status: completed historical work after issues #493-#495 and PRs #499-#501.
 
 Purpose: implement stable validation/test surface identity, portable repository/framework and
 product validation self-tests, and common orchestration without changing production-validation
@@ -49,8 +51,9 @@ Controlling accepted product specifications: `product.initializer-level-0`,
 Owned PR-#490 requirements: `product.product-test-applicability::INIT-PTA-001-009` and
 `product.product-test-lifecycle::INIT-PTL-001-010`.
 
-Predecessor: VS1. If VS1 is not separately complete, one later Product-artifact issue may
-explicitly select both VS1 and VS2 and cite the union of their exact controlling sets.
+Predecessor: VS1, now completed historical work. A later Product-artifact implementation issue
+for the next normal validation-scaffolding stage selects VS2 explicitly and cites the exact
+VS2 controlling set.
 
 Scope: deterministic accepted-authority-based applicability evidence; zero-applicable,
 applicable-and-resolved, invalid applicability; execution of every governed applicable
@@ -105,7 +108,8 @@ upgrade propagation, VA1/VA2 bundling, or semantic change to accepted specs.
 
 ## Validation-scaffolding implementation DAG
 
-Normal successor order: `VS1 -> VS2 -> VS3`.
+Normal successor order: `VS1 -> VS2 -> VS3`. VS1 is complete; VS2 is the next normal
+validation-scaffolding implementation stage.
 
 Issue #495 is the sole accepted bounded bridge to that order: the minimum closed
 output-inventory/material correspondence for the already-defined VS1 stable surfaces may be

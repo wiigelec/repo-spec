@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -397,7 +397,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "B0 through I5 and H1 remain completed historical work. H2, VA1, and VA2 retain their separately governed scopes. Issue #491 adds planning authority only for VS1, VS2, and VS3 under the exact accepted-specification sets in workstream_authority. Maintained product-artifact implementation requires a later separately governed Product-artifact implementation issue selecting explicit stage IDs.",
+  "successor_action": "B0 through I5, H1, and VS1 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 is the next normal validation-scaffolding implementation stage and requires a separately governed Product-artifact implementation issue selecting VS2 and its exact accepted-specification set. VS3 remains successor work after VS2.",
   "schema_version": "1"
 }
 ```
@@ -427,7 +427,7 @@ The accepted plan records six completed historical increments plus the separatel
 | H2 | Repository-bootstrap successor | Destination-only repository bootstrap UX simplification using the existing H2 authority mapping; separately governed by its H2 planning/implementation authority |
 | VA1 | Validation-ownership successor | Production-validation ownership correction under the exact VA1 accepted-spec set; separately governed implementation scope |
 | VA2 | Validation-self-test successor | Validation self-test ownership/consolidation under the exact VA2 accepted-spec set; separately governed implementation scope |
-| VS1 | Validation-scaffolding interfaces | Stable validation/test interfaces, portable validation self-tests, and common orchestration |
+| VS1 | Validation-scaffolding interfaces | Stable validation/test interfaces, portable validation self-tests, and common orchestration; completed historical work |
 | VS2 | Generic product-test lifecycle | Deterministic applicability/lifecycle with honest zero-applicable behavior |
 | VS3 | Installed validation closure | Installed-command/executable-reference closure and initializer integration |
 
@@ -479,19 +479,21 @@ completed historical work. Issue #311 authorized the bounded H1 planning amendme
 issue #313 completed its separately governed Product-artifact implementation, merged by
 PR #317, and issue #318 completed bounded post-H1 conformance correction.
 
-H1 completion itself authorizes no successor. Separately accepted amendments represented
-in this plan now identify H2, VA1, and VA2 as bounded successor workstreams under their
-own exact authority mappings and entry conditions. Their presence in this controlling
-index does not combine those scopes, change their authority sets, or authorize unrelated
-initializer capability; each remains subject to its separately governed implementation
-conditions.
+H1 completion itself authorizes no implicit successor. Separately accepted amendments represented
+in this plan identify H2, VA1, and VA2 as bounded successor workstreams under their own exact
+authority mappings and entry conditions. VS1 is now completed historical work after the governed
+issues #493-#495 sequence. The next normal validation-scaffolding implementation stage is VS2,
+which still requires a separately governed Product-artifact implementation issue selecting VS2
+and its exact controlling set. None of these entries combine scopes or authorize unrelated
+initializer capability.
 
 ## Discoverability
 
 This is the canonical initializer implementation-plan entry point. Its
 subordinate chunks are listed above. The Workstreams summary indexes the canonical
-machine-readable authority data and the accepted successor scopes described by this
-composite document, including H2, VA1, and VA2.
+machine-readable authority data, records VS1 as completed historical work, and identifies
+VS2 as the next normal validation-scaffolding implementation stage alongside the separately
+governed H2, VA1, and VA2 successor scopes.
 
 
 ## H2 — Repository bootstrap UX simplification
