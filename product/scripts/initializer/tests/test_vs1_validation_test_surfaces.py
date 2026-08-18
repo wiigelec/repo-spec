@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import unittest
@@ -15,7 +16,7 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
         self.assertTrue(SURFACE.is_file())
         self.assertTrue(os.access(SURFACE, os.X_OK))
 
-    def test_product_test_surface_fails_closed_until_vs2_lifecycle_exists(self) -> None:
+    def test_product_test_surface_preserves_stable_identity_after_vs2_activation(self) -> None:
         completed = subprocess.run(
             [str(SURFACE)],
             cwd=ROOT,
@@ -24,10 +25,12 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
             stderr=subprocess.PIPE,
             check=False,
         )
-        self.assertNotEqual(completed.returncode, 0)
-        self.assertEqual(completed.stdout, "")
-        self.assertIn("product test error: lifecycle unavailable", completed.stderr)
-        self.assertIn("separately governed VS2 implementation", completed.stderr)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertEqual(completed.stderr, "")
+        result = json.loads(completed.stdout)
+        self.assertEqual(result["applicability"], "zero-applicable")
+        self.assertEqual(result["classification"], "successful-zero-applicable")
+        self.assertEqual(result["obligations"], [])
 
     def test_product_test_surface_rejects_unknown_modes(self) -> None:
         completed = subprocess.run(
