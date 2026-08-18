@@ -74,16 +74,18 @@ implementation, no unrelated workflow redesign.
 
 ## VS3 - Installed validation executable-reference closure
 
+Status: completed historical work after issues #516-#517 and PR #518.
+
 Purpose: implement installed-command/executable-reference closure and concrete initializer
 installation, staged-validation, and full-initialization correspondence.
 
 Controlling accepted product specifications: `product.initializer-level-0`,
 `product.validation-test-surface`, `product.validation-test-orchestration`,
 `product.product-test-applicability`, `product.product-test-lifecycle`,
-`product.installed-command-requirement`, `product.executable-reference-closure`,
-`product.initializer-output-inventory-v1`, `product.material-manifest`,
-`product.framework-installation`, `product.repository-validation`,
-`product.full-initialization`.
+`product.validation-profile`, `product.installed-command-requirement`,
+`product.executable-reference-closure`, `product.initializer-output-inventory-v1`,
+`product.material-manifest`, `product.framework-installation`,
+`product.repository-validation`, `product.full-initialization`.
 
 Owned PR-#490 requirements: `product.installed-command-requirement::INIT-ICR-001-008`,
 `product.executable-reference-closure::INIT-ERC-001-009`,
@@ -91,9 +93,11 @@ Owned PR-#490 requirements: `product.installed-command-requirement::INIT-ICR-001
 `product.repository-validation::INIT-RVA-006`,
 `product.full-initialization::INIT-FIN-013`.
 
-Predecessor: VS2. Conditional entry dependency: if separately governed VA1 implementation
-changes portable validation support first, VS3 consumes that resulting accepted runtime and
-inventory state; VA1 is not bundled.
+Predecessor: VS2, completed before VS3 entry. The conditional VA1 dependency resolved in the
+accepted order: separately governed VA1 implementation landed first, and VS3 consumed that
+accepted portable runtime/inventory state without bundling VA1. Issue #516 selected VS3 with
+the exact controlling set; issue #517 / PR #518 supplied the required Atomic authority
+transition and final maintained closure integration.
 
 Scope: determine governed installed-command requirements; classify repository-relative versus
 explicit external/platform dependencies; add concrete output-inventory/material-manifest/
@@ -112,12 +116,11 @@ upgrade propagation, VA1/VA2 bundling, or semantic change to accepted specs.
 
 ## Validation-scaffolding implementation DAG
 
-Normal successor order remains `VS1 -> VS2 -> VS3`. VS1 and VS2 are complete historical work.
-The VS2 implementation, U9 decision, bounded schema repair, correspondence/common-orchestration
-closure, exact-main validation, and final fresh parent audit have all landed. The predecessor
-portion of the VS2 -> VS3 gate is therefore satisfied. VS3 is the next normal
-validation-scaffolding stage but still requires a separately governed Product-artifact
-implementation issue selecting VS3 and its exact controlling set.
+Normal validation-scaffolding order `VS1 -> VS2 -> VS3` is completed historical work.
+VS1 completed through issues #493-#495 and PRs #499-#501. VS2 completed through issue #505
+and the governed #507/#510/#511 closure chain. VS3 completed through issues #516-#517 and
+PR #518, followed by exact-main validation and fresh completion audit. The complete
+validation-scaffolding DAG has therefore satisfied its accepted entry and exit gates.
 
 Issue #495 is the sole accepted bounded bridge to that order: the minimum closed
 output-inventory/material correspondence for the already-defined VS1 stable surfaces may be
@@ -125,12 +128,11 @@ synchronized after VS1 and before VS2 because neither a spec-only nor material-o
 revision is valid. The bridge does not mark VS2 complete, does not mark VS3 complete, and does
 not authorize broader executable-reference closure.
 
-`VA1` and `VA2` remain separate issue-#350 workstreams. VA1 landed before current VS3 entry,
-so VS3 must consume the current accepted portable runtime/inventory state without bundling VA1;
-the general conditional dependency remains the rule for any future reordering. A later
-Product-artifact issue may select multiple adjacent VS stages only when every selected ID and
-the union of exact controlling specification sets are explicit in the issue. Selecting one
-stage never implicitly authorizes another workstream.
+`VA1` and `VA2` remain separate issue-#350 workstreams. VA1 landed before VS3 entry, and VS3
+consumed that accepted portable runtime/inventory state without bundling VA1. The general
+conditional dependency remains historical planning guidance for any future lifecycle that
+materially changes the same support boundary. Completion of VS3 does not select H2 or any
+other remaining workstream; successor selection requires a fresh governed audit.
 
 ## Issue #507 U9 applicability-evidence decision
 
