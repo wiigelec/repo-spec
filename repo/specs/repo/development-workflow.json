@@ -47,7 +47,7 @@
     },
     {
       "id": "REPO-WF-011",
-      "text": "Before any source mutation that creates or modifies maintained artifacts, workflow initialization shall verify that the applicable accepted owner-appropriate normative specifications exist for the planned implementation scope. Initialization shall stop before source mutation when applicable specifications are missing or their acceptance status conflicts with the planned work."
+      "text": "Before any source mutation that creates or modifies maintained artifacts, workflow initialization shall verify that the applicable accepted owner-appropriate normative specifications exist for the planned implementation scope. Initialization shall stop before source mutation when applicable specifications are missing or their acceptance status conflicts with the planned work. The sole exception is an eligible Atomic authority transition governed by REPO-WF-025 and REPO-WF-026, where the branch may carry the complete normative revision and required plan-impact revision or explicit reaffirmation before the mechanically inseparable maintained-artifact synchronization is performed, with acceptance applying only to the final exact transition revision."
     },
     {
       "id": "REPO-WF-012",
@@ -100,6 +100,14 @@
     {
       "id": "REPO-WF-024",
       "text": "The chatbot shall withhold repository mutation until workflow initialization is complete and all applicable pre-mutation initialization requirements have been satisfied."
+    },
+    {
+      "id": "REPO-WF-025",
+      "text": "An Atomic authority transition is permitted only when an accepted-state invariant makes the normative specification revision, affected implementation-plan impact handling, and maintained-artifact synchronization mechanically inseparable across accepted default-branch revisions and no valid intermediate accepted revision exists. Within the isolated transition branch, the logical order shall remain normative specification revision first, affected implementation-plan revision or explicit reaffirmation second, and maintained-artifact synchronization third. Code, tests, or prior implementation behavior shall not supply missing normative semantics. The complete exact proposed revision is the acceptance unit; ordinary separable changes shall continue to use the sequential lifecycle."
+    },
+    {
+      "id": "REPO-WF-026",
+      "text": "Before mutating an Atomic authority transition branch, workflow initialization shall verify the canonical Atomic authority transition change type, the accepted base, exactly one cited accepted implementation plan, selected stable workstream or stage identifiers, the complete current controlling-specification union, at least one additional accepted transition specification, predecessor issue and exact revision evidence, and the required Atomic transition evidence. Before review, validation shall prove the exact proposed revision contains the complete normative revision, plan-impact revision or explicit reaffirmation, and only the mechanically inseparable maintained-artifact synchronization authorized by the issue."
     }
   ],
   "dependencies": [

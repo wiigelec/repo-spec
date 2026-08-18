@@ -373,10 +373,10 @@ def check_change_type_validation() -> None:
         for value in values:
             body_path.write_text(body.replace("Maintenance", value, 1))
             result = run_policy("issue", REPO_ROOT, body_path)
-            if value == "Product-artifact implementation":
+            if value in {"Product-artifact implementation", "Atomic authority transition"}:
                 if result.returncode == 0 or "missing canonical implementation-plan citation" not in result.stderr:
                     raise SystemExit(
-                        f"product-artifact classification did not activate the stricter gate: {result.stderr.strip()}"
+                        f"strict change classification did not activate its evidence gate: {value}: {result.stderr.strip()}"
                     )
             elif result.returncode != 0:
                 raise SystemExit(f"canonical change type was rejected: {value}: {result.stderr.strip()}")
@@ -415,12 +415,98 @@ def check_change_type_validation() -> None:
                 raise SystemExit(f"invalid change type was not rejected: {invalid}: {result.stderr.strip()}")
 
 
+
+def check_atomic_transition_evidence_validation() -> None:
+    sha = head_sha()
+    spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
+    body = render_body(spec, "issue_fields", sha)
+
+    import importlib.util
+    policy_spec = importlib.util.spec_from_file_location("field_policy_atomic", POLICY_SCRIPT)
+    if policy_spec is None or policy_spec.loader is None:
+        raise SystemExit("cannot load field policy for atomic-transition fixture")
+    module = importlib.util.module_from_spec(policy_spec)
+    policy_spec.loader.exec_module(module)
+
+    accepted_specs = module.load_accepted_product_specs(REPO_ROOT)
+    authority = module.load_plan_controlling_spec_sets(
+        REPO_ROOT,
+        "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
+        accepted_specs,
+    )
+    stage = sorted(authority)[0]
+    current_union = set(authority[stage])
+    extra_candidates = sorted(accepted_specs - current_union)
+    if not extra_candidates:
+        raise SystemExit("atomic-transition fixture requires an accepted transition spec outside current stage union")
+    transition_spec = extra_candidates[0]
+    cited_specs = sorted(current_union | {transition_spec})
+    specs_text = "\n".join(f"- {spec_id}" for spec_id in cited_specs)
+
+    body = body.replace("Maintenance", "Atomic authority transition", 1)
+    body = body.replace(
+        "repo.manifest",
+        "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md\n\n" + specs_text,
+        1,
+    )
+    body = body.replace(
+        "Substantive response for Dependencies and predecessor evidence.",
+        f"Issue #495 at {sha}.",
+        1,
+    )
+    body = body.rstrip() + (
+        "\n\n## Implementation-plan workstreams/stages\n\n"
+        f"{stage}\n"
+        "\n## Atomic transition evidence\n\n"
+        "Invariant: accepted correspondence requires specification and maintained artifact key sets to remain synchronized.\n"
+        "No valid intermediate revision: either ordinary ordering violates the accepted correspondence invariant.\n"
+        "Plan impact: reaffirm the affected stage against the revised accepted authority before maintained implementation is treated as authorized.\n"
+    )
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        body_path = Path(tmpdir) / "issue.md"
+        body_path.write_text(body)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode != 0:
+            raise SystemExit(f"atomic transition evidence was rejected: {result.stderr.strip()}")
+
+        without_extra = body.replace(f"- {transition_spec}\n", "")
+        body_path.write_text(without_extra)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "at least one additional accepted transition specification" not in result.stderr:
+            raise SystemExit(f"atomic transition without extra transition spec was not rejected correctly: {result.stderr.strip()}")
+
+        missing_evidence = re.sub(r"\n## Atomic transition evidence\n.*\Z", "", body, flags=re.S)
+        body_path.write_text(missing_evidence)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "missing section: Atomic transition evidence" not in result.stderr:
+            raise SystemExit(f"atomic transition without evidence was not rejected correctly: {result.stderr.strip()}")
+
+        bad_intermediate = body.replace(
+            "No valid intermediate revision: either ordinary ordering violates the accepted correspondence invariant.\n",
+            "",
+        )
+        body_path.write_text(bad_intermediate)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "missing atomic transition evidence item: No valid intermediate revision" not in result.stderr:
+            raise SystemExit(f"atomic transition missing intermediate-revision evidence was not rejected correctly: {result.stderr.strip()}")
+
+        bad_plan = body.replace(
+            "Plan impact: reaffirm the affected stage against the revised accepted authority before maintained implementation is treated as authorized.\n",
+            "Plan impact: postpone consideration until later.\n",
+        )
+        body_path.write_text(bad_plan)
+        result = run_policy("issue", REPO_ROOT, body_path)
+        if result.returncode == 0 or "missing atomic transition evidence item: Plan impact" not in result.stderr:
+            raise SystemExit(f"atomic transition without revise/reaffirm plan impact was not rejected correctly: {result.stderr.strip()}")
+
 def main() -> int:
     check_default_branch_base_validation()
     check_product_artifact_evidence_validation()
     mutate_and_expect_failure("issue", "repo/specs/repo/governing-issue.json", "issue_fields")
     mutate_and_expect_failure("pr", "repo/specs/repo/review-proposal.json", "review_fields")
     check_multi_workstream_product_artifact_evidence()
+    check_atomic_transition_evidence_validation()
     check_change_type_validation()
     return 0
 
