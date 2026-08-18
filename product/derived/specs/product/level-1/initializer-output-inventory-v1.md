@@ -200,6 +200,27 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
+- Destination Path: `repo/scripts/test-validation`
+- Material Key: `repo-test-validation`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/test-validation`
+- Material Key: `product-test-validation`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
+- Destination Path: `product/scripts/test-product`
+- Material Key: `product-test-product`
+- Mode: `100755`
+- Operation: `copy-verbatim`
+- Producer: `framework-installation`
+- Required: `True`
+- Role: `validation-utility`
 - Destination Path: `repo/scripts/repo_model.py`
 - Material Key: `repo-repo-model`
 - Mode: `100644`
@@ -1017,6 +1038,7 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - `product.initializer-level-0`
 - `product.provenance-record`
 - `product.handoff-manifest`
+- `product.validation-test-surface`
 
 ## References
 
@@ -1029,6 +1051,7 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - artifact: `repo/specs/repo/product-spec-base.json`
 - artifact: `repo/specs/repo/product-manifest.json`
 - artifact: `repo/specs/repo/validation.json`
+- specification: `product.validation-test-surface`
 
 ## Derived artifacts
 

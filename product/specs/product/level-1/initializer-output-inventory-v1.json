@@ -192,6 +192,33 @@
       "role": "validation-utility"
     },
     {
+      "material_key": "repo-test-validation",
+      "destination_path": "repo/scripts/test-validation",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-test-validation",
+      "destination_path": "product/scripts/test-validation",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
+      "material_key": "product-test-product",
+      "destination_path": "product/scripts/test-product",
+      "producer": "framework-installation",
+      "operation": "copy-verbatim",
+      "mode": "100755",
+      "required": true,
+      "role": "validation-utility"
+    },
+    {
       "material_key": "repo-repo-model",
       "destination_path": "repo/scripts/repo_model.py",
       "producer": "framework-installation",
@@ -1306,6 +1333,9 @@
     },
     {
       "spec_id": "product.handoff-manifest"
+    },
+    {
+      "spec_id": "product.validation-test-surface"
     }
   ],
   "references": [
@@ -1344,6 +1374,11 @@
     {
       "type": "artifact",
       "path": "repo/specs/repo/validation.json"
+    },
+    {
+      "type": "specification",
+      "spec_id": "product.validation-test-surface",
+      "kind": "normative"
     }
   ],
   "supersedes": [],
