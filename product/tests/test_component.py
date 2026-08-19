@@ -1,1 +1,0 @@
-"""Component product test placeholder."""

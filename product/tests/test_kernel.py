@@ -1,1 +1,0 @@
-"""Kernel product test placeholder."""
