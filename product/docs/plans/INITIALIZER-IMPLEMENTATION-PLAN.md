@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507, #514",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507, #514, #519",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -398,7 +398,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "B0 through I5, H1, VS1, and VS2 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS2 completion is accepted through issue #505, including the U9 decision and correspondence/common-orchestration closure chain. VS3 is the next normal validation-scaffolding implementation stage and requires a separately governed Product-artifact implementation issue selecting VS3 and its exact controlling set.",
+  "successor_action": "B0 through I5, H1, VS1, VS2, and VS3 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS3 completion is accepted through issues #516 and #517 and PR #518 on main at 2e51069b4215d71f7eba6417e0b19b2353b6f91c. No remaining implementation workstream is selected by this status declaration; a fresh successor audit is required before any separately governed successor lifecycle is created.",
   "schema_version": "1"
 }
 ```

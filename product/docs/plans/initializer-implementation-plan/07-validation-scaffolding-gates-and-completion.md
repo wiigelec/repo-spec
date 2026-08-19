@@ -35,10 +35,11 @@ common orchestration, and minimum installation correspondence have been accepted
 | Common orchestration observes governed product-test result | Stable `product/scripts/test-product` composes without repository-class redesign |
 | VS3 authority is explicit | Governing issue selects VS3 and exact controlling set |
 
-VS2 predecessor status: satisfied on accepted `main` after issue #505 and the governed
-#507/#510/#511 closure chain. The first three gate rows have accepted evidence. The final row
-remains an entry requirement for the separately governed VS3 Product-artifact implementation
-issue; this Maintenance lifecycle does not select VS3.
+VS2 -> VS3 gate status: satisfied on accepted `main`. The first three rows were established
+by issue #505 and the governed #507/#510/#511 closure chain. The final explicit-authority row
+was satisfied when issue #516 selected VS3 and cited its exact controlling set. The later
+#517 / PR #518 Atomic transition did not replace that selection; it synchronized required
+validation-profile authority and the mechanically inseparable maintained closure handler.
 
 ### VS3 closure / completion gate
 
@@ -50,6 +51,14 @@ issue; this Maintenance lifecycle does not select VS3.
 | Closure fails pre-promotion | Missing path/mode/support/misclassification is a required Phase-2 failure |
 | Full initialization cannot succeed without closure | End-to-end evidence establishes closure before promotion |
 | Conditional VA1 dependency is respected | If VA1 changed portable support first, VS3 uses that accepted state without bundling VA1 |
+
+VS3 closure/completion status: satisfied on accepted `main`
+`2e51069b4215d71f7eba6417e0b19b2353b6f91c` after issues #516-#517 and PR #518.
+Fresh exact-main validation and the final issue-#516 completion audit confirmed deterministic
+installed-command identity/classification, accepted installation authority for all required
+repository-relative command/support paths, portable support closure, fail-closed Phase 2
+integration, installed honest-zero `product/scripts/test-product`, and successful clean
+initialization only with closure satisfied.
 
 ## Validation-scaffolding validation strategy
 
@@ -75,26 +84,20 @@ After manual merge and post-merge planning audit, closing #491 authorizes only l
 of separately governed Product-artifact implementation issues selecting explicit stage IDs.
 
 
-## Post-VS2 successor status under issue #514
+## Post-VS3 completion status under issue #519
 
-VS1 and VS2 are completed historical validation-scaffolding work. The VS1 -> VS2 gate was
-satisfied before issue #505. VS2 implementation landed through PR #506; issue #507 / PRs
-#508-#509 resolved U9; issue #511 / PR #512 repaired the bounded requirement-ID schema conflict;
-and issue #510 / PR #513 completed the 49-spec/392-requirement current-state correspondence
-evidence plus common `product/scripts/test-product` orchestration.
+VS1, VS2, and VS3 are completed historical validation-scaffolding work. VS1 supplied the
+stable portable test surfaces, VS2 supplied governed product-test applicability/lifecycle and
+common orchestration, and VS3 closed every installed common-validation command/support
+reference over accepted installation authority.
 
-The user validated exact merged `main`, and a fresh final issue-#505 audit confirmed:
-- zero/applicable/invalid and all required failure classes remain distinguishable;
-- honest zero cannot mask missing, broken, or expected-but-undiscovered obligations;
-- current accepted state is deterministic `successful-zero-applicable`;
-- common orchestration observes the stable product-test lifecycle result.
+Issue #516 selected VS3 under the exact accepted controlling set. Issue #517 / PR #518
+performed the required Atomic validation-profile/handler synchronization and landed the
+deterministic executable-reference-closure implementation. Exact merged-main validation and
+the fresh #516 completion audit then confirmed every VS3 exit condition with no remaining
+functional correction or authority conflict.
 
-The predecessor evidence for VS3 is therefore satisfied. VS3 is the next normal
-validation-scaffolding implementation stage. Entry still requires a separately governed
-Product-artifact implementation issue selecting `VS3` and citing the exact VS3 controlling
-specification set.
-
-VA1 has already landed under separate governance. For current VS3 entry, the conditional VA1
-row is satisfied by consuming the then-current accepted portable runtime/inventory state; VA1
-is not bundled into VS3. No VS3 closure condition is satisfied merely by this status
-synchronization.
+The validation-scaffolding sequence is therefore complete. VA1 and VA2 remain separately
+governed historical work, H2 remains a separate workstream, and this status synchronization
+does not select any successor implementation. A fresh successor audit is required after issue
+#519 is accepted.
