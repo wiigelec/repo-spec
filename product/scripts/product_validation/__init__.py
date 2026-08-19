@@ -1,1 +1,0 @@
-"""Product-owned validation package."""

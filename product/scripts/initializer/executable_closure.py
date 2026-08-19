@@ -27,7 +27,7 @@ INSTALLED_COMMAND_REQUIREMENTS = (
             "repo/scripts/validate",
             "repo/scripts/root_validation.py",
             "product/scripts/validate",
-            "product/scripts/validate_impl.py",
+            "product/validation/runners/validate_impl.py",
         ),
     ),
     InstalledCommandRequirement(
@@ -38,7 +38,7 @@ INSTALLED_COMMAND_REQUIREMENTS = (
     InstalledCommandRequirement(
         "product-validation-self-test",
         "product/scripts/test-validation",
-        portable_support=("product/scripts/test_validation_impl.py",),
+        portable_support=("product/validation/runners/test_validation_impl.py",),
     ),
     InstalledCommandRequirement(
         "generic-product-implementation-test",

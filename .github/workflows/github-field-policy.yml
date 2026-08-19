@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - run: repo/scripts/github-field-policy --mode issue --event-path "$GITHUB_EVENT_PATH"
+      - run: python3 repo/validation/github/github_field_policy.py --mode issue --event-path "$GITHUB_EVENT_PATH"
 
   pr-policy:
     if: github.event_name == 'pull_request_target'
@@ -25,4 +25,4 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           persist-credentials: false
-      - run: repo/scripts/github-field-policy --mode pr --event-path "$GITHUB_EVENT_PATH"
+      - run: python3 repo/validation/github/github_field_policy.py --mode pr --event-path "$GITHUB_EVENT_PATH"

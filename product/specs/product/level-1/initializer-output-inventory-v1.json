@@ -670,7 +670,7 @@
     },
     {
       "material_key": "product-validate-impl",
-      "destination_path": "product/scripts/validate_impl.py",
+      "destination_path": "product/validation/runners/validate_impl.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",
@@ -679,7 +679,7 @@
     },
     {
       "material_key": "product-validation-package",
-      "destination_path": "product/scripts/product_validation/__init__.py",
+      "destination_path": "product/validation/checks/__init__.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -688,7 +688,7 @@
     },
     {
       "material_key": "product-validation-product-checks",
-      "destination_path": "product/scripts/product_validation/product_checks.py",
+      "destination_path": "product/validation/checks/product_checks.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -697,7 +697,7 @@
     },
     {
       "material_key": "product-validation-context",
-      "destination_path": "product/scripts/product_validation/context.py",
+      "destination_path": "product/validation/core/context.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "producer": "framework-installation",
@@ -706,7 +706,7 @@
     },
     {
       "material_key": "product-validation-development-documents",
-      "destination_path": "product/scripts/product_validation/development_documents.py",
+      "destination_path": "product/validation/checks/development_documents.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "producer": "framework-installation",
@@ -715,7 +715,7 @@
     },
     {
       "material_key": "product-validation-product-development-documents",
-      "destination_path": "product/scripts/product_validation/product_development_documents.py",
+      "destination_path": "product/validation/checks/product_development_documents.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "producer": "framework-installation",
@@ -724,7 +724,7 @@
     },
     {
       "material_key": "product-validation-product-lifecycle",
-      "destination_path": "product/scripts/product_validation/product_lifecycle.py",
+      "destination_path": "product/validation/checks/product_lifecycle.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "producer": "framework-installation",
@@ -733,7 +733,7 @@
     },
     {
       "material_key": "product-validation-schema-subset",
-      "destination_path": "product/scripts/product_validation/schema_subset.py",
+      "destination_path": "product/validation/core/schema_subset.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "producer": "framework-installation",
@@ -751,7 +751,7 @@
     },
     {
       "material_key": "product-validation-errors",
-      "destination_path": "product/scripts/validation/errors.py",
+      "destination_path": "product/validation/core/errors.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -1228,7 +1228,7 @@
     },
     {
       "material_key": "product-test-validation-impl-py",
-      "destination_path": "product/scripts/test_validation_impl.py",
+      "destination_path": "product/validation/runners/test_validation_impl.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",
@@ -1237,7 +1237,7 @@
     },
     {
       "material_key": "product-validation-portable-self-tests-py",
-      "destination_path": "product/scripts/product_validation/portable_self_tests.py",
+      "destination_path": "product/validation/tests/portable_self_tests.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",

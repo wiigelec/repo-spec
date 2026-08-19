@@ -15,7 +15,7 @@ class RoutingOwnershipBoundaryTests(unittest.TestCase):
         ).read_text()
         cls.correspondence_validator = (
             cls.repo_root
-            / "product/scripts/product_validation/product_correspondence.py"
+            / "product/validation/checks/product_correspondence.py"
         ).read_text()
 
     def test_plan_requires_product_owned_correspondence_evidence(self):
