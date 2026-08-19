@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
+
+if (($#)); then
+    exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/product:$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}"         python3 -m unittest "$@"
+fi
+
+exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/product:$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}"     python3 -m unittest discover -s "$root/product/validation/tests" -t "$root/product"
