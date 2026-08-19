@@ -211,7 +211,7 @@
     },
     {
       "material_key": "repo-github-field-policy",
-      "source_path": "repo/scripts/github-field-policy",
+      "source_path": "repo/validation/github/github-field-policy",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -219,7 +219,7 @@
     },
     {
       "material_key": "repo-github-field-policy-py",
-      "source_path": "repo/scripts/github_field_policy.py",
+      "source_path": "repo/validation/github/github_field_policy.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",

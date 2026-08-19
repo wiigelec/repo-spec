@@ -247,7 +247,7 @@
     },
     {
       "material_key": "repo-github-field-policy",
-      "destination_path": "repo/scripts/github-field-policy",
+      "destination_path": "repo/validation/github/github-field-policy",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",
@@ -256,7 +256,7 @@
     },
     {
       "material_key": "repo-github-field-policy-py",
-      "destination_path": "repo/scripts/github_field_policy.py",
+      "destination_path": "repo/validation/github/github_field_policy.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",

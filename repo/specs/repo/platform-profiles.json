@@ -38,19 +38,19 @@
           "profile_id": "github"
         },
         {
-          "path": "repo/scripts/github-field-policy",
+          "path": "repo/validation/github/github-field-policy",
           "classification": "bootstrap-infrastructure",
           "authority_category": "implementation",
           "profile_id": "github"
         },
         {
-          "path": "repo/scripts/github_field_policy.py",
+          "path": "repo/validation/github/github_field_policy.py",
           "classification": "bootstrap-infrastructure",
           "authority_category": "implementation",
           "profile_id": "github"
         },
         {
-          "path": "repo/scripts/github_field_policy_mutation_test.py",
+          "path": "repo/validation/tests/github_field_policy_mutation_test.py",
           "classification": "bootstrap-infrastructure",
           "authority_category": "implementation",
           "profile_id": "github"
@@ -241,11 +241,11 @@
     },
     {
       "type": "artifact",
-      "path": "repo/scripts/github-field-policy"
+      "path": "repo/validation/github/github-field-policy"
     },
     {
       "type": "artifact",
-      "path": "repo/scripts/github_field_policy.py"
+      "path": "repo/validation/github/github_field_policy.py"
     }
   ],
   "derived_artifacts": [
