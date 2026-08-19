@@ -1,0 +1,21 @@
+{
+  "spec_id": "product.manifest",
+  "title": "Product Manifest",
+  "purpose": "Registry of governed product specifications.",
+  "status": "accepted",
+  "schema_version": "1",
+  "product_specifications": [
+    {
+      "spec_id": "product.kernel",
+      "path": "product/specs/product/level-0/kernel.json",
+      "status": "candidate",
+      "level": 0
+    },
+    {
+      "spec_id": "product.kernel",
+      "path": "product/specs/product/level-1/primitive.json",
+      "status": "accepted",
+      "level": 1
+    }
+  ]
+}

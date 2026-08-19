@@ -1,0 +1,26 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "test-product-instance",
+  "entries": [
+    {
+      "path": "repo/specs/repo/",
+      "classification": "framework-authoritative",
+      "authoritative": true,
+      "installable": true
+    },
+    {
+      "path": "docs/overview/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "product-specific content"
+    },
+    {
+      "path": "docs/plans/",
+      "classification": "product-instance",
+      "authoritative": false,
+      "installable": false,
+      "exclusion_rationale": "product-specific content"
+    }
+  ]
+}

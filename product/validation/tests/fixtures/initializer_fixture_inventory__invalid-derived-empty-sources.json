@@ -1,0 +1,13 @@
+{
+  "schema_version": "1",
+  "inventory_scope": "test",
+  "entries": [
+    {
+      "path": "derived/",
+      "classification": "derived",
+      "authoritative": false,
+      "installable": true,
+      "derived_from": []
+    }
+  ]
+}
