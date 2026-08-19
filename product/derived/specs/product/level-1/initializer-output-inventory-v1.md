@@ -360,14 +360,14 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/github-field-policy`
+- Destination Path: `repo/validation/github/github-field-policy`
 - Material Key: `repo-github-field-policy`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/github_field_policy.py`
+- Destination Path: `repo/validation/github/github_field_policy.py`
 - Material Key: `repo-github-field-policy-py`
 - Mode: `100755`
 - Operation: `copy-verbatim`

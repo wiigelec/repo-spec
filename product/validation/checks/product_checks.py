@@ -14,8 +14,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from validation.core.errors import fail
-from .context import ExternalRepositoryValidationContext, ValidationContext, load_repo_specs
-from .schema_subset import load_repo_schemas
+from validation.core.context import ExternalRepositoryValidationContext, ValidationContext, load_repo_specs
+from validation.core.schema_subset import load_repo_schemas
 from .product_development_documents import check_product_development_documents
 from .product_lifecycle import check_product_lifecycle_readiness
 

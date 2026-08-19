@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 from validation.core.errors import expect, fail
-from .context import ValidationContext
-from .paths import resolve_repo_path
+from validation.core.context import ValidationContext
+from validation.core.paths import resolve_repo_path
 
 
 def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:

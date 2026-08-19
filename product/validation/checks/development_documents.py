@@ -9,9 +9,9 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .context import ValidationContext
+from validation.core.context import ValidationContext
 from validation.core.errors import expect, fail
-from .schema_subset import validate_instance
+from validation.core.schema_subset import validate_instance
 
 
 DEVELOPMENT_DOCUMENT_ROOTS = {

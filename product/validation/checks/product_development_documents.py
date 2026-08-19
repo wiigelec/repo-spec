@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .context import ValidationContext
+from validation.core.context import ValidationContext
 from .development_documents import DEVELOPMENT_DOCUMENT_ROOTS, check_development_documents_phase, load_development_document_compatibility_registry
 
 

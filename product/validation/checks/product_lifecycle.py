@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from validation.core.errors import fail
-from .context import ValidationContext
+from validation.core.context import ValidationContext
 from validation.core.errors import expect
 from .development_documents import get_development_document_records
 

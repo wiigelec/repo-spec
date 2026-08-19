@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from validation.core.errors import expect
-from .context import ValidationContext
-from .paths import resolve_repo_path
+from validation.core.context import ValidationContext
+from validation.core.paths import resolve_repo_path
 
 
 @dataclass(frozen=True)
