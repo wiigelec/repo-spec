@@ -11,7 +11,7 @@ from pathlib import Path
 import re
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 POLICY_SCRIPT = REPO_ROOT / "repo/validation/github/github_field_policy.py"
 SYNTHETIC_FIELD = {
     "id": "synthetic_required_field",

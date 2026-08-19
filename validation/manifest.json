@@ -1,0 +1,266 @@
+{
+  "schema_version": "1",
+  "reference_id": "validation-reference",
+  "purpose": "Provides a non-normative common validation-structure reference for root/whole-checkout, repository-owned, and product-owned validation implementation; accepted repository specifications remain controlling authority.",
+  "scope": {
+    "applies_to": [
+      "validation",
+      "repo/validation",
+      "product/validation"
+    ],
+    "reference_only": true,
+    "public_entry_points_location": "scripts for root validation; <domain>/scripts for leaf validation"
+  },
+  "directories": [
+    {
+      "role_id": "validation.checks",
+      "path": "checks",
+      "purpose": "Production validation rule implementation and domain-specific validation policy.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.core",
+      "path": "core",
+      "purpose": "Shared validation infrastructure used by checks, runners, and tests.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.runners",
+      "path": "runners",
+      "purpose": "Internal orchestration invoked by public validation and validation-test script entry points.",
+      "required": true,
+      "extension_point": false
+    },
+    {
+      "role_id": "validation.tests",
+      "path": "tests",
+      "purpose": "Root for validation-domain test implementation and test material.",
+      "required": true,
+      "extension_point": false
+    },
+    {
+      "role_id": "validation.tests.unit",
+      "path": "tests/unit",
+      "purpose": "Ordinary automatically discovered unit tests.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.tests.self",
+      "path": "tests/self",
+      "purpose": "Validation-framework self-tests and their support code.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.tests.fixtures",
+      "path": "tests/fixtures",
+      "purpose": "Non-executable test inputs and fixture data.",
+      "required": true,
+      "extension_point": true
+    }
+  ],
+  "files": [
+    {
+      "role_id": "validation.checks.domain",
+      "path": "checks/domain.py",
+      "purpose": "Aggregates production validation checks owned by the validation domain.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.checks.specifications",
+      "path": "checks/specifications.py",
+      "purpose": "Contains specification, manifest, reference, lifecycle-lineage, and specification-root validation owned by the domain.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.checks.development-documents",
+      "path": "checks/development_documents.py",
+      "purpose": "Contains validation for governed development-document structure, metadata, correspondence, and chunk constraints.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.checks.generated-outputs",
+      "path": "checks/generated_outputs.py",
+      "purpose": "Contains validation for generated-artifact correspondence and freshness.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.checks.policy",
+      "path": "checks/policy.py",
+      "purpose": "Contains domain-specific production validation policy that does not belong to another standard check role.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.core.context",
+      "path": "core/context.py",
+      "purpose": "Defines validation context objects and authority/domain loading mechanics.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.core.errors",
+      "path": "core/errors.py",
+      "purpose": "Defines shared validation failure and expectation helpers.",
+      "required": true,
+      "extension_point": false
+    },
+    {
+      "role_id": "validation.core.invariants",
+      "path": "core/invariants.py",
+      "purpose": "Defines reusable invariant and structural-validation helpers.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.core.paths",
+      "path": "core/paths.py",
+      "purpose": "Defines repository-relative validation path utilities.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.core.schema-subset",
+      "path": "core/schema_subset.py",
+      "purpose": "Defines JSON loading and supported schema-validation mechanics.",
+      "required": true,
+      "extension_point": false
+    },
+    {
+      "role_id": "validation.runners.validate",
+      "path": "runners/validate_impl.py",
+      "purpose": "Runs production validation for the owning validation domain.",
+      "required": true,
+      "extension_point": false
+    },
+    {
+      "role_id": "validation.runners.test-validation",
+      "path": "runners/test_validation_impl.py",
+      "purpose": "Runs validation-framework self-tests independently from ordinary unit tests.",
+      "required": true,
+      "extension_point": false
+    },
+    {
+      "role_id": "validation.tests.self.portable",
+      "path": "tests/self/portable_self_tests.py",
+      "purpose": "Contains portable validation-framework self-tests.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.tests.self.mutation-support",
+      "path": "tests/self/mutation_support.py",
+      "purpose": "Provides reusable support for mutation-oriented validation self-tests.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.tests.self.mutation-tests",
+      "path": "tests/self/mutation_tests.py",
+      "purpose": "Contains mutation-oriented validation-framework self-tests invoked explicitly by the validation self-test runner.",
+      "required": true,
+      "extension_point": true
+    }
+  ],
+  "unittest": {
+    "framework": "python-unittest",
+    "test_root": "tests/unit",
+    "discovery": {
+      "enabled": true,
+      "pattern": "test_*.py",
+      "recursive": true,
+      "registry_required": false,
+      "custom_aggregator_required": false
+    },
+    "rules": [
+      "Ordinary unit tests belong under tests/unit/.",
+      "Discoverable unit-test modules use the test_*.py filename convention.",
+      "Adding a conforming unit-test module does not require editing a central registry or custom run_tests.py aggregator.",
+      "Validation-framework self-tests belong under tests/self/ and are invoked independently from ordinary unittest discovery.",
+      "Non-executable fixture data belongs under tests/fixtures/."
+    ]
+  },
+  "placement_rules": [
+    {
+      "category": "production-validation-check",
+      "place_under": "checks/",
+      "do_not_place_under": [
+        "core/",
+        "runners/",
+        "tests/"
+      ]
+    },
+    {
+      "category": "shared-validation-infrastructure",
+      "place_under": "core/",
+      "do_not_place_under": [
+        "checks/",
+        "runners/",
+        "tests/"
+      ]
+    },
+    {
+      "category": "internal-validation-orchestration",
+      "place_under": "runners/",
+      "do_not_place_under": [
+        "checks/",
+        "core/",
+        "tests/"
+      ]
+    },
+    {
+      "category": "ordinary-unit-test",
+      "place_under": "tests/unit/",
+      "filename_pattern": "test_*.py"
+    },
+    {
+      "category": "validation-framework-self-test",
+      "place_under": "tests/self/"
+    },
+    {
+      "category": "test-fixture",
+      "place_under": "tests/fixtures/"
+    },
+    {
+      "category": "public-executable-entry-point",
+      "place_under": "scripts/ for root validation; <domain>/scripts/ for leaf validation",
+      "do_not_place_under": [
+        "validation/",
+        "<domain>/validation/",
+        "user/user/validation_reference/"
+      ]
+    }
+  ],
+  "extension_rules": [
+    "The common baseline files remain present even when a domain currently has no specialized logic for a role.",
+    "Domain-specific specialization directories may be added only when the concern does not fit an existing standard directory role.",
+    "A domain-specific addition does not become part of validation_reference unless it is intentionally adopted as common baseline structure.",
+    "The logical roles in this manifest are authoritative over historical file placement.",
+    "Creating a new non-test validation file outside the canonical baseline is exceptional; ordinary new validation logic must be placed in an existing canonical file role whenever that role can reasonably own the responsibility.",
+    "A new non-test domain-specific validation file requires a clearly justified specialization boundary that cannot be represented cleanly by an existing canonical file role.",
+    "Test modules and fixture files may be added under tests/unit, tests/self, or tests/fixtures according to their declared test role without requiring a non-test specialization justification.",
+    "The checks/ directory is an exact mirror of the canonical reference check-file set; additional domain-specific check modules are not permitted."
+  ],
+  "directory_file_constraints": [
+    {
+      "path": "checks",
+      "mirror_reference_files": true,
+      "additional_files_allowed": false,
+      "allowed_files": [
+        "development_documents.py",
+        "domain.py",
+        "generated_outputs.py",
+        "policy.py",
+        "specifications.py"
+      ],
+      "purpose": "The live validation checks directory mirrors the reference check-file set exactly. Domain-specific check behavior is folded into the canonical role files rather than creating additional check modules."
+    }
+  ]
+}

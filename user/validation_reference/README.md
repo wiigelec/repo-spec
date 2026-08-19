@@ -1,6 +1,8 @@
 # Validation Reference
 
-`validation_reference/` defines the neutral common baseline for validation implementation in initialized repositories.
+`user/validation_reference/` is non-normative convenience/reference material under the governed `user/` namespace. Accepted repository specifications remain controlling authority for validation semantics.
+
+`user/validation_reference/` defines the neutral common baseline for validation implementation in initialized repositories.
 
 It is a reference structure, not an executable validation domain. The same logical structure applies to top-level `validation/`, `repo/validation/`, and `product/validation/`.
 

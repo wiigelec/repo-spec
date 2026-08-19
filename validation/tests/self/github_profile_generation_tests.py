@@ -4,9 +4,9 @@ import tempfile
 from pathlib import Path
 
 from github_profile import render_profile_adapters, write_profile_adapters
-from validation.checks.repository_checks import validate_repository_phase
+from repo.validation.checks.domain import validate_repository_phase
 
-from validation.tests.mutation_support import create_repo_fixture, expect_failure
+from repo.validation.tests.self.mutation_support import create_repo_fixture, expect_failure
 
 
 def snapshot_profile_files(repo_root: Path) -> dict[str, str]:

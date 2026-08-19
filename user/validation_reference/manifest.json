@@ -1,7 +1,7 @@
 {
   "schema_version": "1",
   "reference_id": "validation-reference",
-  "purpose": "Defines the canonical common structure, file roles, and placement rules for root/whole-checkout, repository-owned, and product-owned validation implementation.",
+  "purpose": "Provides a non-normative common validation-structure reference for root/whole-checkout, repository-owned, and product-owned validation implementation; accepted repository specifications remain controlling authority.",
   "scope": {
     "applies_to": [
       "validation",
@@ -234,7 +234,7 @@
       "do_not_place_under": [
         "validation/",
         "<domain>/validation/",
-        "validation_reference/"
+        "user/validation_reference/"
       ]
     }
   ],
