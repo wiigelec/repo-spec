@@ -20,7 +20,7 @@ def _top_level_imports(path: Path) -> set[str]:
 
 def run_validation_portable_split_tests(repo_root: Path) -> None:
     repo_impl = repo_root / "repo/validation/runners/test_validation_impl.py"
-    repo_portable = repo_root / "repo/validation/runners/portable_self_tests.py"
+    repo_portable = repo_root / "repo/validation/tests/self/portable_self_tests.py"
 
     repo_imports = _top_level_imports(repo_impl)
     if "validation.tests.self.mutation_tests" in repo_imports:

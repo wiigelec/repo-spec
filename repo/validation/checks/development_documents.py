@@ -69,6 +69,7 @@ MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
 
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
+@dataclass(frozen=True)
 class DevelopmentDocumentRecord:
     path: str
     root_rel: str
