@@ -19,7 +19,7 @@ The request is preserved here as product intent. Collection does not select a va
 - Source request: GitHub issue #433, `propagate product validation scaffolding`.
 - Product context: the approved Repo-Spec Initializer functional set already identifies validation as a major initializer capability and expects initialized repositories to validate locally and remain ready for subsequent governed development.
 - Decomposition context: the accepted `generation-validation-and-handoff` area covers validation and maintained-project handoff while leaving later product work explicitly governable.
-- Current implementation evidence: `product/scripts/product_validation/product_checks.py` exposes the product-owned `validate_product` entry boundary and states that future governed product development may extend or reorganize active product validation behind that boundary.
+- Current implementation evidence: `product/validation/checks/product_checks.py` exposes the product-owned `validate_product` entry boundary and states that future governed product development may extend or reorganize active product validation behind that boundary.
 - Current installation evidence: the initializer framework inventory propagates the portable product validation entry implementation and product-validation support needed by freshly initialized repositories.
 
 These repository artifacts are evidence about the current state. They do not decide the requested future scaffolding semantics.
