@@ -5,22 +5,10 @@ import json
 import shutil
 from pathlib import Path
 
-from validation.errors import ValidationFailure, fail
-from validation.development_documents import extract_document_metadata
+from validation.core.errors import ValidationFailure, fail
+from validation.checks.development_documents import extract_document_metadata
 
 
-def deactivate_product_plans(repo_root: Path) -> None:
-    """Make copied product plans non-active for fixtures that replace the product registry."""
-    plans_root = repo_root / "product/docs/plans"
-    if not plans_root.is_dir():
-        return
-    for plan_path in sorted(plans_root.glob("*.md")):
-        text = plan_path.read_text()
-        accepted = '"lifecycle_status": "accepted"'
-        if accepted in text:
-            plan_path.write_text(
-                text.replace(accepted, '"lifecycle_status": "candidate"', 1)
-            )
 
 
 def expect_failure(description: str, func, fragment: str) -> None:
@@ -43,6 +31,7 @@ def expect_render_change(description: str, renderer, spec: dict, mutate) -> None
 
 def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
     manifest = json.loads((repo_root / "repo/specs/repo/manifest.json").read_text())
+
     required_paths = [
         "repo/specs/repo/manifest.json",
         "repo/schemas/repo-manifest.schema.json",
@@ -54,17 +43,19 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
         "repo/schemas/repo/architecture-plan.schema.json",
-        "product/schemas/product/product-manifest.schema.json",
-        "product/schemas/product/product-spec-base.schema.json",
-        "product/schemas/product/product-level-0.schema.json",
-        "product/schemas/product/product-level-1.schema.json",
-        "product/schemas/product/product-level-2.schema.json",
-        "product/schemas/product/product-level-3.schema.json",
         "repo/docs/development-document-compatibility.json",
     ]
-    for root_rel in ("repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/", "repo/docs/architecture/"):
-        root = repo_root / root_rel
-        for path in sorted(root.glob("*.md")):
+
+    for root_rel in (
+        "repo/docs/overview/",
+        "repo/docs/decompositions/",
+        "repo/docs/plans/",
+        "repo/docs/architecture/",
+    ):
+        docs_root = repo_root / root_rel
+        if not docs_root.exists():
+            continue
+        for path in sorted(docs_root.glob("*.md")):
             required_paths.append(path.relative_to(repo_root).as_posix())
             if path.name == "README.md":
                 continue
@@ -76,73 +67,41 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
                 path.relative_to(repo_root).as_posix(),
             )
             for ref_paths in metadata.get("required_content_areas", {}).values():
-                for ref_path in ref_paths:
-                    required_paths.append(ref_path)
+                required_paths.extend(ref_paths)
             for chunk in metadata.get("subordinate_chunks", []):
                 required_paths.append(chunk["path"])
             required_paths.extend(metadata.get("evidence", []))
+
     for entry in manifest["authoritative_specs"]:
-        path = entry["path"]
-        required_paths.append(path)
-        spec = json.loads((repo_root / path).read_text())
+        relative_path = entry["path"]
+        required_paths.append(relative_path)
+        spec = json.loads((repo_root / relative_path).read_text())
+
         for ref in spec.get("references", []):
             if ref.get("type") == "artifact":
                 required_paths.append(ref["path"])
+
         for artifact in spec.get("derived_artifacts", []):
             required_paths.append(artifact["path"])
 
-    for root_name in ("product/src", "product/tests"):
-        root = repo_root / root_name
-        if root.exists():
-            required_paths.extend(
-                path.relative_to(repo_root).as_posix()
-                for path in root.rglob("*")
-                if path.is_file()
-            )
-
-    product_docs_root = repo_root / "product/docs"
-    if product_docs_root.exists():
-        product_doc_paths = [
-            path for path in product_docs_root.rglob("*") if path.is_file()
-        ]
+    profiles_root = repo_root / "repo/profiles"
+    if profiles_root.exists():
         required_paths.extend(
-            path.relative_to(repo_root).as_posix() for path in product_doc_paths
+            path.relative_to(repo_root).as_posix()
+            for path in profiles_root.rglob("*")
+            if path.is_file()
         )
-        for path in product_doc_paths:
-            if path.suffix != ".md":
-                continue
-            document_text = path.read_text()
-            if "## Metadata" not in document_text:
-                continue
-            document_metadata = extract_document_metadata(
-                document_text,
-                path.relative_to(repo_root).as_posix(),
-            )
-            required_paths.extend(document_metadata.get("evidence", []))
 
-    for root_name in ("repo/profiles", ".github"):
-        root = repo_root / root_name
-        if root.exists():
-            required_paths.extend(
-                path.relative_to(repo_root).as_posix()
-                for path in root.rglob("*")
-                if path.is_file()
-            )
-
-    product_manifest_path = repo_root / "product/specs/product/manifest.json"
-    if product_manifest_path.exists():
-        product_manifest = json.loads(product_manifest_path.read_text())
-        for entry in product_manifest.get("product_specifications", []):
-            spec = json.loads((repo_root / entry["path"]).read_text())
-            correspondence = spec.get("correspondence", {})
-            for collection_name in ("implementations", "tests"):
-                for mapping in correspondence.get(collection_name, []):
-                    required_paths.extend(mapping.get("paths", []))
-    return tuple(dict.fromkeys(required_paths))
+    repo_only = [
+        path
+        for path in required_paths
+        if path == "repo" or path.startswith("repo/")
+    ]
+    return tuple(dict.fromkeys(repo_only))
 
 
-REQUIRED_FIXTURE_ROOT_FILES = (".gitignore", "AGENTS.md", "LICENSE", "README.md")
-REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "product", "reference", "repo", "scripts", "user")
+REQUIRED_FIXTURE_ROOT_FILES: tuple[str, ...] = ()
+REQUIRED_FIXTURE_ROOT_DIRECTORIES = ("repo",)
 
 
 def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:

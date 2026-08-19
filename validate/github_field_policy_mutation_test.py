@@ -11,8 +11,8 @@ from pathlib import Path
 import re
 
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-POLICY_SCRIPT = REPO_ROOT / "repo/scripts/github_field_policy.py"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+POLICY_SCRIPT = REPO_ROOT / "repo/validation/github/github_field_policy.py"
 SYNTHETIC_FIELD = {
     "id": "synthetic_required_field",
     "label": "Synthetic required field",
@@ -48,7 +48,7 @@ def render_value(field: dict, sha: str) -> str:
     if kind == "spec-reference":
         return "repo.manifest"
     if kind == "path-list":
-        return "repo/scripts/github_field_policy.py"
+        return "repo/validation/github/github_field_policy.py"
     if kind == "numbered-steps":
         return "1. First check\n2. Second check"
     if kind == "checklist":

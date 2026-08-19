@@ -4,7 +4,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from github_field_policy import (
+from validation.github.github_field_policy import (
     PolicyError,
     check_issue,
     load_body_from_event,
@@ -39,7 +39,7 @@ def _issue_body(fields: list[dict], change_type: str) -> str:
         elif kind == "spec-reference":
             value = "repo.validation"
         elif kind == "path-list":
-            value = "repo/scripts/github_field_policy.py"
+            value = "repo/validation/github/github_field_policy.py"
         elif kind == "numbered-steps":
             value = "1. Validate the exact Change type boundary."
         elif kind == "checklist":

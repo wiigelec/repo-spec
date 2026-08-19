@@ -9,10 +9,6 @@ if [[ $# -gt 0 ]]; then
     exit 1
 fi
 
-env PYTHONDONTWRITEBYTECODE=1 python3 "$root/repo/validation/checks/root_validation.py" "$root"
 
-if [[ ! -d "$root/reference" ]]; then
-    exit 0
-fi
 
 exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}" python3 "$root/repo/validation/runners/validate_impl.py" "$root"

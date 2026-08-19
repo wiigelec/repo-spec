@@ -8,7 +8,7 @@ from typing import Any
 
 from repo_model import RepositoryError, load_specs as load_repo_specs_impl
 
-from .errors import fail
+from ..core.errors import fail
 
 
 @dataclass(frozen=True)

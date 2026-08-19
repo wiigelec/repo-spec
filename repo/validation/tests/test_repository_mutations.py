@@ -7,16 +7,11 @@ import tempfile
 from pathlib import Path
 
 from repo_model import load_specs
-from root_validation import (
-    RootValidationError,
-    validate_repo_tree_integrity,
-    validate_root_boundary,
-)
-from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
-from validation.generated_outputs import check_generated_document_write_behavior
-from validation.errors import fail
-from validation.paths import resolve_repo_path
-from validation.repository_checks import (
+from validation.checks.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
+from validation.checks.generated_outputs import check_generated_document_write_behavior
+from validation.core.errors import fail
+from validation.core.paths import resolve_repo_path
+from validation.checks.repository_checks import (
     REPOSITORY_LEAF_VALIDATION_PHASES,
     validate_repo,
     validate_repository_phase,
@@ -32,7 +27,6 @@ def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
         "unique specification IDs",
         "unique item properties",
         "platform profile boundary",
-        "GitHub profile freshness",
         "unique derived artifact paths",
         "dependency target lifecycle",
         "resolvable references",
@@ -152,66 +146,6 @@ def _git_for_root_integrity(repo: Path, *args: str) -> str:
     return result.stdout.strip()
 
 
-def _write_integrity_inventory(
-    framework: Path,
-    *,
-    content: str,
-) -> None:
-    source_path = "framework/repo-tool.py"
-    (framework / source_path).parent.mkdir(parents=True, exist_ok=True)
-    (framework / source_path).write_text(content, encoding="utf-8")
-
-    framework_inventory = framework / "product/scripts/initializer/framework-inventory.json"
-    framework_inventory.parent.mkdir(parents=True, exist_ok=True)
-    framework_inventory.write_text(
-        json.dumps(
-            {
-                "schema_version": "1",
-                "entries": [
-                    {
-                        "material_key": "repo-tool",
-                        "source_path": source_path,
-                        "role": "validation-utility",
-                        "operation": "copy-verbatim",
-                        "source_type": "blob",
-                        "mode": "100644",
-                    }
-                ],
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-
-    output_inventory = (
-        framework
-        / "product/specs/product/level-1/initializer-output-inventory-v1.json"
-    )
-    output_inventory.parent.mkdir(parents=True, exist_ok=True)
-    output_inventory.write_text(
-        json.dumps(
-            {
-                "spec_id": "product.initializer-output-inventory-v1",
-                "status": "accepted",
-                "schema_version": "1",
-                "material_index": [
-                    {
-                        "material_key": "repo-tool",
-                        "destination_path": "repo/scripts/tool.py",
-                        "producer": "framework-installation",
-                        "operation": "copy-verbatim",
-                        "mode": "100644",
-                        "required": True,
-                        "role": "validation-utility",
-                    }
-                ],
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
 
 
 def _make_integrity_framework(root: Path) -> tuple[Path, str, str]:
@@ -238,7 +172,7 @@ def _materialize_integrity_authority_bundle(
     framework: Path,
     revision: str,
 ) -> None:
-    product_scripts = Path(__file__).resolve().parents[4] / "product/scripts"
+    product_scripts = Path(__file__).resolve().parents[3] / "product/scripts"
     if str(product_scripts) not in sys.path:
         sys.path.insert(0, str(product_scripts))
     from initializer.framework_authority import build_framework_authority_bundle
@@ -501,58 +435,9 @@ def run_repository_dependency_lifecycle_tests(repo_root: Path) -> None:
     print("ok: repository dependency lifecycle")
 
 
-def _check_transported_repository_artifact_reference_closure(
-    repo_root: Path,
-) -> None:
-    output_inventory = json.loads(
-        (
-            repo_root
-            / "product/specs/product/level-1/initializer-output-inventory-v1.json"
-        ).read_text()
-    )
-
-    installed_paths: set[str] = set()
-
-    def collect(value) -> None:
-        if isinstance(value, dict):
-            destination = value.get("destination_path")
-            if isinstance(destination, str):
-                installed_paths.add(destination)
-            for child in value.values():
-                collect(child)
-        elif isinstance(value, list):
-            for child in value:
-                collect(child)
-
-    collect(output_inventory)
-
-    transported_specs = sorted(
-        path
-        for path in installed_paths
-        if path.startswith("repo/specs/repo/")
-        and path.endswith(".json")
-    )
-
-    unresolved: list[str] = []
-    for rel in transported_specs:
-        spec = json.loads((repo_root / rel).read_text())
-        for ref in spec.get("references", []):
-            if not isinstance(ref, dict) or ref.get("type") != "artifact":
-                continue
-            target = ref.get("path")
-            if isinstance(target, str) and target not in installed_paths:
-                unresolved.append(f"{rel}: {target}")
-
-    if unresolved:
-        fail(
-            "initialized repository artifact-reference closure failed: "
-            "unresolved retained artifact references: "
-            + "; ".join(unresolved)
-        )
 
 
 def run_repository_reference_tests(repo_root: Path) -> None:
-    _check_transported_repository_artifact_reference_closure(repo_root)
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

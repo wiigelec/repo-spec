@@ -55,21 +55,11 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
     },
 }
 
-for product_root, framework_root in (
-    ("product/docs/overview/", "repo/docs/overview/"),
-    ("product/docs/decompositions/", "repo/docs/decompositions/"),
-    ("product/docs/plans/", "repo/docs/plans/"),
-):
-    DEVELOPMENT_DOCUMENT_ROOTS[product_root] = DEVELOPMENT_DOCUMENT_ROOTS[framework_root]
-
-COVERAGE_DOCUMENT_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "repo/docs/architecture/", "product/docs/overview/", "product/docs/plans/"}
-DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "product/docs/decompositions/"}
+COVERAGE_DOCUMENT_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "repo/docs/architecture/"}
+DECOMPOSITION_ROOTS = {"repo/docs/decompositions/"}
 
 DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
-DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS = {
-    "product/docs/decompositions/initializer-decomposition/": "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md",
-    "product/docs/plans/initializer-implementation-plan/": "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md",
-}
+DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS: dict[str, str] = {}
 
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
@@ -379,21 +369,23 @@ def check_development_document_relationships(
                     target_path, records, compatibility_registry, chunk_owner_paths
                 )
             except KeyError:
-                evidence_path = repo_root / target_path
-                expect(
-                    evidence_path.exists(),
-                    f"development document evidence failed: missing evidence path {path} -> {target_path}",
-                )
+                if target_path == "repo" or target_path.startswith("repo/"):
+                    evidence_path = repo_root / target_path
+                    expect(
+                        evidence_path.exists(),
+                        f"development document evidence failed: missing evidence path {path} -> {target_path}",
+                    )
                 continue
 
             if resolved_record is not None:
                 continue
 
-            evidence_path = repo_root / resolved_path
-            expect(
-                evidence_path.exists(),
-                f"development document evidence failed: missing evidence path {path} -> {target_path}",
-            )
+            if resolved_path == "repo" or resolved_path.startswith("repo/"):
+                evidence_path = repo_root / resolved_path
+                expect(
+                    evidence_path.exists(),
+                    f"development document evidence failed: missing evidence path {path} -> {target_path}",
+                )
 
     visiting: list[str] = []
     visited: set[str] = set()

@@ -331,7 +331,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--canonical-body-file", type=Path, required=True)
     parser.add_argument(
         "--policy-command",
-        default="repo/scripts/github-field-policy",
+        default="repo/validation/github/github-field-policy",
     )
     parser.add_argument("--token-env", default="GITHUB_TOKEN")
     parser.add_argument("--apply", action="store_true")

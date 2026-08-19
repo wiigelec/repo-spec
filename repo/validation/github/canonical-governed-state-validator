@@ -40,8 +40,8 @@ def main() -> int:
     if revision != request["observed_revision"]:
         return fail("canonical validation subject revision mismatch")
 
-    repo_root = Path(__file__).resolve().parents[2]
-    policy = repo_root / "repo" / "scripts" / "github-field-policy"
+    repo_root = Path(__file__).resolve().parents[3]
+    policy = repo_root / "repo" / "validation" / "github" / "github-field-policy"
     result = subprocess.run(
         [str(policy), "--mode", "issue", "--body-file", str(subject)],
         text=True,

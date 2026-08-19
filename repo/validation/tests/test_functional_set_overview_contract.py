@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from validation.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
+from validation.checks.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from .mutation_support import expect_failure
 
 WHITEBOARD = "repo/docs/overview/TEST-WHITEBOARD.md"

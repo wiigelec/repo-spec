@@ -3,8 +3,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from validation.errors import ValidationFailure
-from validation.repository_checks import validate_repo
+from validation.core.errors import ValidationFailure
+from validation.checks.repository_checks import validate_repo
 
 
 def run_repository_portable_self_tests(repo_root: Path) -> None:

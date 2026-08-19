@@ -13,8 +13,8 @@ from github_profile import GitHubProfileError, check_profile_freshness
 
 from ..core.errors import expect, fail
 from ..core.context import RepositoryValidationContext, ValidationContext, load_repo_specs
-from .development_documents import DEVELOPMENT_DOCUMENT_ROOTS, check_development_documents_phase, get_development_document_records, load_development_document_compatibility_registry
-from .generated_outputs import check_generated_document_freshness
+from ..checks.development_documents import DEVELOPMENT_DOCUMENT_ROOTS, check_development_documents_phase, get_development_document_records, load_development_document_compatibility_registry
+from ..checks.generated_outputs import check_generated_document_freshness
 from ..core.invariants import check_supersession_acyclicity, check_supersession_pairs, check_unique_item_properties
 from ..core.paths import resolve_repo_path
 from ..core.schema_subset import load_repo_schemas, validate_instance
@@ -177,20 +177,41 @@ def check_lineage_relations(specs: dict[str, dict[str, Any]]) -> None:
     check_supersession_acyclicity(specs, "supersession relations")
 
 
-def check_resolvable_references(repo_root: Path, specs: dict[str, dict[str, Any]]) -> None:
+def check_resolvable_references(
+    repo_root: Path,
+    specs: dict[str, dict[str, Any]],
+) -> None:
     for spec_id, spec in specs.items():
         for ref in spec["references"]:
             if ref["type"] == "specification":
                 target_spec = specs.get(ref["spec_id"])
-                expect(target_spec is not None, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+                expect(
+                    target_spec is not None,
+                    f"resolvable references failed: {spec_id} -> {ref['spec_id']}",
+                )
                 kind = ref.get("kind", "normative")
                 if kind == "historical":
-                    expect(target_spec["status"] in {"superseded", "retired"}, f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
+                    expect(
+                        target_spec["status"] in {"superseded", "retired"},
+                        f"resolvable references failed: {spec_id} -> {ref['spec_id']}",
+                    )
                 else:
-                    expect(kind == "normative", f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
-                    expect(target_spec["status"] == "accepted", f"resolvable references failed: {spec_id} -> {ref['spec_id']}")
-            else:
-                expect(resolve_repo_path(repo_root, ref["path"]).exists(), f"resolvable references failed: missing artifact {ref['path']}")
+                    expect(
+                        kind == "normative",
+                        f"resolvable references failed: {spec_id} -> {ref['spec_id']}",
+                    )
+                    expect(
+                        target_spec["status"] == "accepted",
+                        f"resolvable references failed: {spec_id} -> {ref['spec_id']}",
+                    )
+                continue
+
+            relative_path = ref["path"]
+            if relative_path == "repo" or relative_path.startswith("repo/"):
+                expect(
+                    resolve_repo_path(repo_root, relative_path).exists(),
+                    f"resolvable references failed: missing artifact {relative_path}",
+                )
 
 
 def check_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
@@ -335,11 +356,6 @@ def check_platform_profile_boundary(context: ValidationContext) -> None:
     check_github_bootstrap_conformance(github_profile)
 
 
-def check_github_profile_freshness_phase(context: ValidationContext) -> None:
-    try:
-        check_profile_freshness(context.repo_root)
-    except GitHubProfileError as exc:
-        fail(f"github profile freshness failed: {exc}")
 
 
 def check_resolvable_references_phase(context: ValidationContext) -> None:
@@ -454,6 +470,16 @@ def _check_repository_generated_freshness(
 
         for artifact in spec.get("derived_artifacts", []):
             relative_path = artifact["path"]
+
+            # Repository validation owns only generated outputs under repo/.
+            # Cross-domain adapters remain declared and are validated later by
+            # root/aggregate validation.
+            if not (
+                relative_path == "repo"
+                or relative_path.startswith("repo/")
+            ):
+                continue
+
             path = resolve_repo_path(context.repo_root, relative_path)
             renderer_id = artifact.get("renderer")
 
@@ -518,7 +544,6 @@ REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("unique specification IDs", check_unique_spec_ids_phase),
     ("unique item properties", check_unique_item_properties_phase),
     ("platform profile boundary", check_platform_profile_boundary),
-    ("GitHub profile freshness", check_github_profile_freshness_phase),
     ("unique derived artifact paths", check_unique_derived_artifact_paths_phase),
     ("dependency target lifecycle", check_dependency_targets_phase),
     ("resolvable references", check_resolvable_references_phase),

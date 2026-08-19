@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 REPO_SCRIPTS = REPO_ROOT / "repo" / "scripts"
 if str(REPO_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(REPO_SCRIPTS))
@@ -35,7 +35,7 @@ from issue_intake_governance_routing import (
 
 
 MANAGED_CANONICAL_PRODUCER = (
-    REPO_ROOT / "repo/scripts/canonical-governed-state-validator"
+    REPO_ROOT / "repo/validation/github/canonical-governed-state-validator"
 )
 
 
@@ -406,12 +406,6 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertNotIn("PRODUCT_SCRIPTS", live_promotion)
         self.assertNotIn(' / "product" / "scripts"', live_promotion)
 
-        stale_product_routing_tests = (
-            "product/scripts/validation_tests/test_issue_routing_correspondence.py",
-            "product/scripts/validation_tests/test_issue_routing_hosted_conformance.py",
-        )
-        for relative_path in stale_product_routing_tests:
-            self.assertFalse((REPO_ROOT / relative_path).exists(), relative_path)
 
 
 def run_issue_intake_governance_routing_tests(repo_root: pathlib.Path) -> None:

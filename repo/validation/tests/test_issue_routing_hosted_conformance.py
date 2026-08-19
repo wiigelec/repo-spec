@@ -13,12 +13,12 @@ import tempfile
 import unittest
 from unittest import mock
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 HELPER_PATH = REPO_ROOT / "repo/scripts/github_issue_promotion.py"
-POLICY = REPO_ROOT / "repo/scripts/github-field-policy"
-CANONICAL_PRODUCER = REPO_ROOT / "repo/scripts/canonical-governed-state-validator"
+POLICY = REPO_ROOT / "repo/validation/github/github-field-policy"
+CANONICAL_PRODUCER = REPO_ROOT / "repo/validation/github/canonical-governed-state-validator"
 AUTHORIZATION_PRODUCER = (
-    REPO_ROOT / "repo/scripts/repository-governance-authorization-validator"
+    REPO_ROOT / "repo/validation/github/repository-governance-authorization-validator"
 )
 SOURCE_WORKFLOW = REPO_ROOT / "repo/profiles/github/workflows/governed-work-promotion.yml"
 INSTALLED_WORKFLOW = REPO_ROOT / ".github/workflows/governed-work-promotion.yml"

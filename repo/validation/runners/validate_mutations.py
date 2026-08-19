@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from validation.errors import ValidationFailure
+from validation.core.errors import ValidationFailure
 from validation.tests.mutation_tests import run_complete_validation_tests
 
 

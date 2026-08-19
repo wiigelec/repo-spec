@@ -4,5 +4,6 @@ set -euo pipefail
 
 root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 
+"$root/validate/root_validation.py" "$root"
 "$root/repo/scripts/validate"
 "$root/product/scripts/validate"

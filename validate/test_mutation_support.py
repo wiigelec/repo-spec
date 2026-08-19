@@ -3,9 +3,9 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from validation.errors import ValidationFailure
+from validation.core.errors import ValidationFailure
 
-from .mutation_support import create_repo_fixture, declared_repo_fixture_paths
+from validation.tests.mutation_support import create_repo_fixture, declared_repo_fixture_paths
 
 I5_EVIDENCE = "product/evidence/i5/full-initialization-exit.json"
 PLAN = "product/docs/plans/INITIALIZER-IMPLEMENTATION-PLAN.md"

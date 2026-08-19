@@ -3,7 +3,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from .errors import expect
+from ..core.errors import expect
 
 
 def check_generate_docs_cli_contract(repo_root: Path) -> None:
@@ -21,13 +21,9 @@ def check_validate_cli_contract(repo_root: Path) -> None:
     test_launcher = (repo_root / "repo/scripts/test-validation").read_text()
     expect("$root/product/scripts" not in validate_launcher, "repository validate launcher depends on product scripts")
     expect("$root/product/scripts" not in test_launcher, "repository validation-test launcher depends on product scripts")
-    expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
-    expect('PYTHONPATH="$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
 
-    expect(
-        'python3 "$root/repo/scripts/root_validation.py" "$root"' in validate_launcher,
-        "repository validate launcher omits transportable root validation",
-    )
     expect(
         "repo_tree_sha" not in validate_launcher,
         "repository validate launcher still carries mutable repo-tree SHA state",

@@ -7,8 +7,8 @@ from pathlib import Path
 
 from docgen import render_issue_form, render_review_template, render_spec_projection
 from repo_model import load_specs
-from validation.generated_outputs import check_generated_document_freshness, check_generated_document_write_behavior
-from validation.repository_checks import validate_repository_phase
+from validation.checks.generated_outputs import check_generated_document_freshness, check_generated_document_write_behavior
+from validation.checks.repository_checks import validate_repository_phase
 
 from .mutation_support import create_repo_fixture, expect_failure, expect_render_change, mutate_json
 

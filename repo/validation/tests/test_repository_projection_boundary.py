@@ -3,8 +3,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from validation.errors import ValidationFailure, fail
-from validation.repository_checks import validate_repository_phase
+from validation.core.errors import ValidationFailure, fail
+from validation.checks.repository_checks import validate_repository_phase
 
 from .mutation_support import create_repo_fixture, mutate_json
 

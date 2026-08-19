@@ -5,12 +5,12 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from validation.errors import ValidationFailure
-from validation.portable_self_tests import run_repository_portable_self_tests
+from validation.core.errors import ValidationFailure
+from validation.runners.portable_self_tests import run_repository_portable_self_tests
 
 
 def _run_source_development_tests(repo_root: Path) -> None:
-    source_suite = repo_root / "repo/scripts/validation/tests/mutation_tests.py"
+    source_suite = repo_root / "repo/validation/tests/mutation_tests.py"
     if not source_suite.is_file():
         return
 

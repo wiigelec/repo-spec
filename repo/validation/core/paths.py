@@ -6,7 +6,7 @@ from pathlib import Path
 
 from repo_model import RepositoryError, resolve_repo_path as resolve_repo_path_impl
 
-from .errors import fail
+from ..core.errors import fail
 
 
 def resolve_repo_path(repo_root: Path, value: str) -> Path:
