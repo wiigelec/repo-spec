@@ -33,9 +33,9 @@ Defines the normative boundary between Git-generic framework behavior and hostin
   - `.github/PULL_REQUEST_TEMPLATE.md` -> `installed-adapter` / `profile-specific` / `github`
   - `.github/workflows/github-field-policy.yml` -> `installed-adapter` / `profile-specific` / `github`
   - `.github/workflows/validation.yml` -> `installed-adapter` / `profile-specific` / `github`
-  - `repo/scripts/github-field-policy` -> `bootstrap-infrastructure` / `implementation` / `github`
-  - `repo/scripts/github_field_policy.py` -> `bootstrap-infrastructure` / `implementation` / `github`
-  - `repo/scripts/github_field_policy_mutation_test.py` -> `bootstrap-infrastructure` / `implementation` / `github`
+  - `repo/validation/github/github-field-policy` -> `bootstrap-infrastructure` / `implementation` / `github`
+  - `repo/validation/github/github_field_policy.py` -> `bootstrap-infrastructure` / `implementation` / `github`
+  - `repo/validation/tests/github_field_policy_mutation_test.py` -> `bootstrap-infrastructure` / `implementation` / `github`
 
 - Remote state kinds:
   - branch protection
@@ -136,8 +136,8 @@ Defines the normative boundary between Git-generic framework behavior and hostin
 - artifact: `.github/PULL_REQUEST_TEMPLATE.md`
 - artifact: `.github/workflows/github-field-policy.yml`
 - artifact: `.github/workflows/validation.yml`
-- artifact: `repo/scripts/github-field-policy`
-- artifact: `repo/scripts/github_field_policy.py`
+- artifact: `repo/validation/github/github-field-policy`
+- artifact: `repo/validation/github/github_field_policy.py`
 
 ## Derived artifacts
 

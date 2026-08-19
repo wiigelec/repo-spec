@@ -82,7 +82,7 @@ Defines ownership, scope, and aggregate orchestration for repository and product
 - specification: `repo.product-correspondence`
 - artifact: `repo/scripts/validate`
 - artifact: `repo/scripts/generate-docs`
-- artifact: `repo/scripts/github_field_policy.py`
+- artifact: `repo/validation/github/github_field_policy.py`
 
 ## Derived artifacts
 

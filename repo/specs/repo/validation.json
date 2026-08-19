@@ -231,7 +231,7 @@
     },
     {
       "type": "artifact",
-      "path": "repo/scripts/github_field_policy.py"
+      "path": "repo/validation/github/github_field_policy.py"
     }
   ],
   "derived_artifacts": [

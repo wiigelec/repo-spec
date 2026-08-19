@@ -906,7 +906,7 @@ Stage 6 integrated ownership matrix:
 | Workflow adapters | `repo/profiles/github/workflows/` | Source-authoritative installed/generated workflow family |
 | Remote-state deployment contract | `repo/profiles/github/manifest.json` and `repo.platform-profiles` | Desired-state, inspection, apply, rollback, verification |
 | Freshness validation | `repo/scripts/github_profile.py` plus `repo.validation` | Confirms source/adapter sync and orphan detection |
-| Bootstrap scripts | `repo/scripts/github-field-policy`, `repo/scripts/github_field_policy.py`, `repo/scripts/github_field_policy_mutation_test.py` | Remain bootstrap-owned support infrastructure |
+| Bootstrap scripts | `repo/validation/github/github-field-policy`, `repo/validation/github/github_field_policy.py`, `repo/validation/tests/github_field_policy_mutation_test.py` | Remain bootstrap-owned support infrastructure |
 | Reference repository base | `main at f7fa9c51a88771599f9e908249a61d4353a436e9` | First accepted reference-repository base |
 
 Candidate outputs:

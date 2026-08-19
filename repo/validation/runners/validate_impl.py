@@ -9,8 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from repo_model import RepositoryError, load_specs as load_repo_specs, resolve_repo_path as resolve_repo_path_impl
-from validation.errors import ValidationFailure, fail
-from validation.repository_checks import validate_repo
+from validation.core.errors import ValidationFailure, fail
+from validation.checks.repository_checks import validate_repo
 
 
 def resolve_repo_path(repo_root: Path, value: str) -> Path:

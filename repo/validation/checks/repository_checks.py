@@ -11,13 +11,13 @@ from repo_model import load_json as load_repo_json
 from repo_model import RepositoryError
 from github_profile import GitHubProfileError, check_profile_freshness
 
-from .errors import expect, fail
-from .context import RepositoryValidationContext, ValidationContext, load_repo_specs
+from ..core.errors import expect, fail
+from ..core.context import RepositoryValidationContext, ValidationContext, load_repo_specs
 from .development_documents import DEVELOPMENT_DOCUMENT_ROOTS, check_development_documents_phase, get_development_document_records, load_development_document_compatibility_registry
 from .generated_outputs import check_generated_document_freshness
-from .invariants import check_supersession_acyclicity, check_supersession_pairs, check_unique_item_properties
-from .paths import resolve_repo_path
-from .schema_subset import load_repo_schemas, validate_instance
+from ..core.invariants import check_supersession_acyclicity, check_supersession_pairs, check_unique_item_properties
+from ..core.paths import resolve_repo_path
+from ..core.schema_subset import load_repo_schemas, validate_instance
 
 
 def repository_reference_specs(context: ValidationContext) -> dict[str, dict[str, Any]]:
@@ -77,9 +77,9 @@ EXPECTED_GITHUB_ARTIFACT_INVENTORY = {
     ".github/PULL_REQUEST_TEMPLATE.md": ("installed-adapter", "profile-specific"),
     ".github/workflows/github-field-policy.yml": ("installed-adapter", "profile-specific"),
     ".github/workflows/validation.yml": ("installed-adapter", "profile-specific"),
-    "repo/scripts/github-field-policy": ("bootstrap-infrastructure", "implementation"),
-    "repo/scripts/github_field_policy.py": ("bootstrap-infrastructure", "implementation"),
-    "repo/scripts/github_field_policy_mutation_test.py": ("bootstrap-infrastructure", "implementation"),
+    "repo/validation/github/github-field-policy": ("bootstrap-infrastructure", "implementation"),
+    "repo/validation/github/github_field_policy.py": ("bootstrap-infrastructure", "implementation"),
+    "repo/validation/tests/github_field_policy_mutation_test.py": ("bootstrap-infrastructure", "implementation"),
 }
 
 EXPECTED_GITHUB_REMOTE_STATE_KINDS = {
@@ -295,7 +295,7 @@ def check_github_bootstrap_conformance(profile: dict[str, Any]) -> None:
         if item.get("classification") == "installed-adapter":
             expect(path.startswith(".github/"), f"platform profile boundary failed: installed adapter path mismatch for {path}")
         else:
-            expect(path.startswith("repo/scripts/"), f"platform profile boundary failed: bootstrap infrastructure path mismatch for {path}")
+            expect(path.startswith("repo/validation/"), f"platform profile boundary failed: bootstrap infrastructure path mismatch for {path}")
 
     deployment_state = profile.get("deployment_state")
     expect(isinstance(deployment_state, dict), "platform profile boundary failed: missing GitHub deployment state contract")

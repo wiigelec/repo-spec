@@ -5,7 +5,7 @@ from pathlib import Path
 from docgen import check_generated_outputs, render_all, write_all
 from repo_model import RepositoryError
 
-from .errors import fail
+from ..core.errors import fail
 
 
 def check_generated_document_freshness(repo_root: Path) -> None:

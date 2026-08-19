@@ -31,7 +31,7 @@ not authority for the desired architecture.
   "predecessor_documents": [],
   "evidence": [
     "repo/specs/repo/validation.json",
-    "repo/scripts/validation/repository_checks.py"
+    "repo/validation/checks/repository_checks.py"
   ],
   "required_content_areas": {
     "authority_and_basis": [
