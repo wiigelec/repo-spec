@@ -47,7 +47,7 @@
       {
         "id": "test.primitive",
         "paths": [
-          "product/tests/test_primitive.py"
+          "product/src/test_primitive.py"
         ],
         "requirements": [
           "PRIMITIVE-001"

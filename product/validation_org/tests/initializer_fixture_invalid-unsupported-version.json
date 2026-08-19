@@ -1,7 +1,0 @@
-{
-  "schema_version": "999",
-  "destination": "/tmp/test-dest",
-  "authority": {
-    "granted_by": "issue-189"
-  }
-}

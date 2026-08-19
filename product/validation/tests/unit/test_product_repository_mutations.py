@@ -5,13 +5,13 @@ import json
 import tempfile
 from pathlib import Path
 
-from .generation_support import check_generated_document_write_behavior
+from ..self.generation_support import check_generated_document_write_behavior
 from validation.core.errors import fail
 from validation.checks.development_documents import DevelopmentDocumentRecord, check_development_document_relationships
 from validation.core.paths import resolve_repo_path
-from validation.checks.product_checks import validate_product_phases
+from validation.checks.domain import validate_product_phases
 
-from .mutation_support import add_lifecycle_spec, create_repo_fixture, declared_repo_fixture_paths, expect_failure, mutate_json
+from ..self.mutation_support import add_lifecycle_spec, create_repo_fixture, declared_repo_fixture_paths, expect_failure, mutate_json
 
 
 def run_product_development_document_tests(repo_root: Path) -> None:

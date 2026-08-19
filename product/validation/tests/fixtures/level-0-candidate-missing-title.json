@@ -26,7 +26,7 @@
     "tests": [
       {
         "id": "test.kernel",
-        "paths": ["product/tests/test_kernel.py"],
+        "paths": ["product/src/test_kernel.py"],
         "requirements": ["KERNEL-001"]
       }
     ],

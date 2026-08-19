@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[4]
-SURFACE = ROOT / "product/scripts/test-product"
+SURFACE = ROOT / "product/scripts/test-validation"
 COMMON = ROOT / "scripts/test-validation"
 
 SUCCESS_CLASSES = {
@@ -24,7 +24,7 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
 
     def test_product_test_surface_exposes_vs2_machine_result_without_placeholder(self) -> None:
         completed = subprocess.run(
-            [str(SURFACE)],
+            [str(SURFACE), "--product"],
             cwd=ROOT,
             text=True,
             stdout=subprocess.PIPE,
@@ -44,7 +44,7 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
         text = COMMON.read_text(encoding="utf-8")
         self.assertIn('"$root/repo/scripts/test-validation"', text)
         self.assertIn('"$root/product/scripts/test-validation"', text)
-        self.assertIn('"$root/product/scripts/test-product"', text)
+        self.assertNotIn('"$root/product/scripts/test-product"', text)
 
     def test_product_test_surface_rejects_unknown_modes(self) -> None:
         completed = subprocess.run(
@@ -56,7 +56,7 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
             check=False,
         )
         self.assertNotEqual(completed.returncode, 0)
-        self.assertIn("product test error: unknown mode: unexpected-mode", completed.stderr)
+        self.assertIn("validation test error: unknown mode: unexpected-mode", completed.stderr)
 
 
 if __name__ == "__main__":

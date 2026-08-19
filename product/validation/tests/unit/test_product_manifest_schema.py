@@ -4,12 +4,12 @@ import json
 from pathlib import Path
 
 from validation.core.schema_subset import validate_instance
-from validation.checks.product_state import load_product_schemas
+from validation.checks.specifications import load_product_schemas
 
-from .mutation_support import expect_failure
+from ..self.mutation_support import expect_failure
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent
+FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
 def load_fixture(name: str) -> dict:
@@ -17,13 +17,13 @@ def load_fixture(name: str) -> dict:
 
 
 def assert_valid(schema: dict, name: str) -> None:
-        validate_instance(load_fixture(name), schema, f"repo/scripts/validation/tests/fixtures/product-manifest/{name}", schema)
+        validate_instance(load_fixture(name), schema, f"product/validation/tests/fixtures/{name}", schema)
 
 
 def assert_invalid(schema: dict, name: str, fragment: str) -> None:
     expect_failure(
         name,
-            lambda: validate_instance(load_fixture(name), schema, f"repo/scripts/validation/tests/fixtures/product-manifest/{name}", schema),
+            lambda: validate_instance(load_fixture(name), schema, f"product/validation/tests/fixtures/{name}", schema),
         fragment,
     )
 

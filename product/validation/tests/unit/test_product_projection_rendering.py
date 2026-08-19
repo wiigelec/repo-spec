@@ -5,10 +5,10 @@ import json
 from pathlib import Path
 
 from docgen import render_spec_projection
-from .mutation_support import expect_render_change
+from ..self.mutation_support import expect_render_change
 
 
-FIXTURE_PATH = Path(__file__).resolve().parent / "level-1-accepted.json"
+FIXTURE_PATH = Path(__file__).resolve().parent.parent / "fixtures" / 'level-1-accepted.json'
 
 
 def run_product_projection_rendering_tests(repo_root: Path) -> None:

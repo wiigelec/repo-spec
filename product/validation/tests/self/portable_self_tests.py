@@ -6,7 +6,7 @@ import tempfile
 from pathlib import Path
 
 from validation.core.errors import ValidationFailure
-from validation.checks.product_checks import validate_product
+from validation.checks.domain import validate_product
 
 
 def run_product_portable_self_tests(repo_root: Path) -> None:

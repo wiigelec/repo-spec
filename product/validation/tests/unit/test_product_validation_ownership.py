@@ -44,24 +44,44 @@ def run_product_validation_ownership_tests(repo_root: Path) -> None:
             "product validation ownership failed: validate_impl missing stable "
             "ValidationFailure contract"
         )
-    if (
-        "from validation.checks.product_checks import validate_product"
-        not in validate_text
-    ):
+    if "from validation.checks.domain import validate_product" not in validate_text:
         raise AssertionError(
-            "product validation ownership failed: validate_impl missing stable "
-            "product_checks entry point"
+            "product validation ownership failed: validate_impl missing canonical "
+            "domain entry point"
         )
 
-    product_checks = validation_root / "checks/product_checks.py"
-    checks_text = product_checks.read_text()
-    if "Future governed product development" not in checks_text:
+    expected_check_files = {
+        "development_documents.py",
+        "domain.py",
+        "generated_outputs.py",
+        "policy.py",
+        "specifications.py",
+    }
+    actual_check_files = {
+        path.name
+        for path in (validation_root / "checks").glob("*.py")
+        if path.is_file()
+    }
+    if actual_check_files != expected_check_files:
         raise AssertionError(
-            "product validation ownership failed: future expansion note missing"
+            "product validation ownership failed: checks directory does not mirror "
+            "canonical reference file set: "
+            + ", ".join(sorted(actual_check_files))
         )
-    if "from .active_product_checks import" not in checks_text:
+
+    domain = validation_root / "checks/domain.py"
+    domain_text = domain.read_text()
+    if "def validate_product(" not in domain_text:
         raise AssertionError(
-            "product validation ownership failed: active validation is not deferred"
+            "product validation ownership failed: domain.py does not own validate_product"
+        )
+    if "PRODUCT_VALIDATION_PHASES" not in domain_text:
+        raise AssertionError(
+            "product validation ownership failed: domain.py missing aggregate phase ownership"
+        )
+    if (validation_root / "checks/active_product_checks.py").exists():
+        raise AssertionError(
+            "product validation ownership failed: retired active_product_checks.py remains"
         )
 
     forbidden: list[str] = []

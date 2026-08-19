@@ -46,7 +46,7 @@
       {
         "id": "test.orchestration",
         "paths": [
-          "product/tests/test_orchestration.py"
+          "product/src/test_orchestration.py"
         ],
         "requirements": [
           "ORCH-001"

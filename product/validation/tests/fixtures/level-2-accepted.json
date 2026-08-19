@@ -57,7 +57,7 @@
       {
         "id": "test.component",
         "paths": [
-          "product/tests/test_component.py"
+          "product/src/test_component.py"
         ],
         "requirements": [
           "COMPONENT-001"

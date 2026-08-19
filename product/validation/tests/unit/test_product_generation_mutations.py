@@ -5,16 +5,11 @@ import tempfile
 from pathlib import Path
 
 from docgen import write_all
-from validation.checks.product_checks import validate_product_phases
-from .mutation_support import (
-    create_repo_fixture,
-    deactivate_product_plans,
-    expect_failure,
-    mutate_json,
-)
+from validation.checks.domain import validate_product_phases
+from ..self.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent
+FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
@@ -53,7 +48,7 @@ def accept_kernel(temp_repo: Path) -> None:
                     "tests": [
                         {
                             "id": "test.kernel",
-                            "paths": ["product/tests/test_kernel.py"],
+                            "paths": ["product/src/test_kernel.py"],
                             "requirements": ["KERNEL-001"],
                         }
                     ],

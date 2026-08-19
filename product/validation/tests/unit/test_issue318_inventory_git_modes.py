@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-TARGET = "repo/scripts/github_field_policy.py"
+TARGET = "repo/validation/github/github_field_policy.py"
 SPEC = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json"
 FRAMEWORK = ROOT / "product/scripts/initializer/framework-inventory.json"
 

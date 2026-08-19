@@ -4,13 +4,13 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from .generation_support import check_generated_document_write_behavior
-from validation.checks.product_checks import validate_product_phases
+from ..self.generation_support import check_generated_document_write_behavior
+from validation.checks.domain import validate_product_phases
 
-from .mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
+from ..self.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent
+FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
@@ -124,7 +124,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                     "correspondence",
                     {
                         "implementations": [{"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}],
-                        "tests": [{"id": "test.kernel", "paths": ["product/tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}],
                         "conformance": [
                             {
                                 "requirement_id": "KERNEL-001",
@@ -174,7 +174,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                     "correspondence",
                     {
                         "implementations": [{"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}],
-                        "tests": [{"id": "test.kernel", "paths": ["product/tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}],
                         "conformance": [
                             {
                                 "requirement_id": "KERNEL-001",
@@ -227,7 +227,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                     "correspondence",
                     {
                         "implementations": [{"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}],
-                        "tests": [{"id": "test.kernel", "paths": ["product/tests/test_kernel.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}],
                         "conformance": [
                             {
                                 "requirement_id": "KERNEL-001",

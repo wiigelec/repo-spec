@@ -34,8 +34,8 @@ def check_product_validate_cli_contract(repo_root: Path) -> None:
         "product validate implementation missing stable ValidationFailure contract",
     )
     expect(
-        "from validation.checks.product_checks import validate_product" in validate_impl,
-        "product validate implementation missing stable product_checks entry point",
+        "from validation.checks.domain import validate_product" in validate_impl,
+        "product validate implementation missing stable domain entry point",
     )
 
     proc = subprocess.run(

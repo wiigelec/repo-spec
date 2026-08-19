@@ -51,11 +51,14 @@ class FunctionalSetTransportTests(unittest.TestCase):
         transported_repo_validation = {
             source_path
             for source_path in source_paths
-            if source_path.startswith("repo/scripts/validation/")
+            if source_path.startswith("repo/validation/")
         }
         self.assertEqual(
             transported_repo_validation,
-            {"repo/scripts/validation/portable_self_tests.py"},
+            {
+                "repo/validation/github/github-field-policy",
+                "repo/validation/github/github_field_policy.py",
+            },
         )
 
 

@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import test_product_impl
+from validation.runners import test_validation_impl as test_product_impl
 
 
 class VS2ProductTestLifecycleTests(unittest.TestCase):

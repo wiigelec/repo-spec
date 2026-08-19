@@ -20,8 +20,43 @@ from .generated_outputs import check_product_generated_freshness
 
 from validation.core.context import ExternalRepositoryValidationContext, ValidationContext, load_repo_specs
 from validation.core.schema_subset import load_repo_schemas
-from validation.core.errors import expect
+from validation.core.errors import expect, fail
 from validation.core.invariants import check_supersession_acyclicity, check_supersession_pairs, check_unique_item_properties
+
+
+
+def _validate_inactive_product(repo_root: Path) -> None:
+    """Validate the inactive product boundary without requiring repository material."""
+    product_root = repo_root / "product/specs/product"
+    if not product_root.exists():
+        return
+    if not product_root.is_dir():
+        fail("product specification root failed: product/specs/product must be a directory")
+
+    undeclared_json = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in product_root.rglob("*.json")
+        if path.is_file()
+    )
+    if undeclared_json:
+        fail(
+            "product specification root failed: inactive product specification system "
+            "contains JSON material: "
+            + ", ".join(undeclared_json)
+        )
+
+    _manifest, repo_specs, _source_paths, _actual_paths = load_repo_specs(repo_root)
+    context = ValidationContext(
+        repo_root,
+        None,
+        None,
+        ExternalRepositoryValidationContext(repo_specs, load_repo_schemas(repo_root)),
+    )
+    check_product_development_documents(context)
+    print("ok: product development documents")
+    check_product_lifecycle_readiness(context)
+    print("ok: product lifecycle authority sequence")
+
 
 
 def _load_product_only_context(repo_root: Path) -> ValidationContext:
@@ -154,13 +189,13 @@ def validate_product_phases(repo_root: Path, phase_labels: tuple[str, ...]) -> N
 
 
 def validate_product(repo_root: Path) -> None:
-    context = _load_product_only_context(repo_root)
-    if context.product is not None:
-        for label, check in PRODUCT_VALIDATION_PHASES:
-            check(context)
-            print(f"ok: {label}")
-    else:
+    manifest = repo_root / "product/specs/product/manifest.json"
+    if not manifest.exists():
+        _validate_inactive_product(repo_root)
         print("ok: product specification system inactive")
-        for label, check in PRODUCT_VALIDATION_PHASES[len(PRODUCT_LEAF_VALIDATION_PHASES):]:
-            check(context)
-            print(f"ok: {label}")
+        return
+
+    context = _load_product_only_context(repo_root)
+    for label, check in PRODUCT_VALIDATION_PHASES:
+        check(context)
+        print(f"ok: {label}")

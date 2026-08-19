@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from validation.core.errors import ValidationFailure
-from validation.checks.product_checks import validate_product
+from validation.checks.domain import validate_product
 
 
 def main(argv: list[str]) -> int:

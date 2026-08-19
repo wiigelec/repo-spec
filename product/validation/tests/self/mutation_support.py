@@ -92,7 +92,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         for artifact in spec.get("derived_artifacts", []):
             required_paths.append(artifact["path"])
 
-    for root_name in ("product/src", "product/tests"):
+    for root_name in ("product/src",):
         root = repo_root / root_name
         if root.exists():
             required_paths.extend(
@@ -168,6 +168,17 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
         target = fixture_root / relative_path
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
+    synthetic_correspondence_test_paths = (
+        "product/src/test_component.py",
+        "product/src/test_kernel.py",
+        "product/src/test_orchestration.py",
+        "product/src/test_primitive.py",
+    )
+    for relative_path in synthetic_correspondence_test_paths:
+        synthetic_path = fixture_root / relative_path
+        if not synthetic_path.exists():
+            synthetic_path.parent.mkdir(parents=True, exist_ok=True)
+            synthetic_path.write_text("# synthetic product correspondence test fixture\n", encoding="utf-8")
     return fixture_root
 
 

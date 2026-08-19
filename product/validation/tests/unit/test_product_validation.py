@@ -4,13 +4,13 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from .generation_support import check_generated_document_write_behavior
-from validation.checks.product_checks import validate_product_phases
+from ..self.generation_support import check_generated_document_write_behavior
+from validation.checks.domain import validate_product_phases
 
-from .mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
+from ..self.mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent
+FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
@@ -41,7 +41,7 @@ def accept_kernel(temp_repo: Path) -> None:
                         {"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "tests": [
-                        {"id": "test.kernel", "paths": ["product/tests/test_kernel.py"], "requirements": ["KERNEL-001"]}
+                        {"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "conformance": [
                         {
@@ -429,10 +429,20 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
                 spec["correspondence"]["implementations"].append({"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}),
-                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/tests/test_kernel.py"], "requirements": ["KERNEL-001"]}),
+                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}),
                 spec,
             )[-1],
         )
+        # Make the declared correspondence paths real so this mutation reaches
+        # the intended conformance-reachability check rather than failing earlier
+        # on path existence.
+        implementation_path = temp_repo / "product/src/kernel.py"
+        implementation_path.parent.mkdir(parents=True, exist_ok=True)
+        implementation_path.write_text("# fixture implementation\n", encoding="utf-8")
+        test_path = temp_repo / "product/src/test_kernel.py"
+        test_path.parent.mkdir(parents=True, exist_ok=True)
+        test_path.write_text("# fixture test\n", encoding="utf-8")
+
         deactivate_product_plans(temp_repo)
         expect_failure(
             "candidate unreachable correspondence mappings",
@@ -716,11 +726,11 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         install_fixture(temp_repo, "level-0-candidate.json", "product/specs/product/level-0/kernel.json")
         install_fixture(temp_repo, "level-1-accepted.json", "product/specs/product/level-1/primitive.json")
         accept_kernel(temp_repo)
-        (temp_repo / "product/tests/test_unused.py").parent.mkdir(parents=True, exist_ok=True)
-        (temp_repo / "product/tests/test_unused.py").write_text("pass\n")
+        (temp_repo / "product/src/test_unused.py").parent.mkdir(parents=True, exist_ok=True)
+        (temp_repo / "product/src/test_unused.py").write_text("pass\n")
         mutate_json(
             temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/tests/test_unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/src/test_unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
         )
         deactivate_product_plans(temp_repo)
         expect_failure("unused test mapping", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "unreachable test mappings")
