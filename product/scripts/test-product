@@ -3,4 +3,4 @@
 set -euo pipefail
 
 root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
-exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}" python3 "$root/product/scripts/test_product_impl.py" "$root" "$@"
+exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}" python3 "$root/product/validation/runners/test_product_impl.py" "$root" "$@"
