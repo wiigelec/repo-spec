@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 SOURCE_REQUIRED_FILES = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
-SOURCE_REQUIRED_DIRS = {".github", "product", "reference", "repo", "scripts", "user"}
+SOURCE_REQUIRED_DIRS = {".github", "product", "reference", "repo", "scripts", "user", "validation"}
 INITIALIZED_REQUIRED_FILES = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
 INITIALIZED_REQUIRED_DIRS = {".github", "product", "repo", "scripts", "user"}
 IGNORED_ROOT_ENTRIES = {".git"}

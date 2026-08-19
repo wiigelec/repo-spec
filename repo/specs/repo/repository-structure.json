@@ -43,7 +43,7 @@
     },
     {
       "id": "REPO-STR-010",
-      "text": "The maintained source-repository root shall contain exactly the following governed entries: directories `.github/`, `product/`, `reference/`, `repo/`, `scripts/`, and `user/`; files `.gitignore`, `AGENTS.md`, `LICENSE`, and `README.md`. Root `docs/` is not a maintained source-repository namespace. No other maintained root entry is permitted without governed revision of this specification."
+      "text": "The maintained source-repository root shall contain exactly the following governed entries: directories `.github/`, `product/`, `reference/`, `repo/`, `scripts/`, `user/`, and `validation/`; files `.gitignore`, `AGENTS.md`, `LICENSE`, and `README.md`. Root `docs/` is not a maintained source-repository namespace. No other maintained root entry is permitted without governed revision of this specification."
     },
     {
       "id": "REPO-STR-011",
