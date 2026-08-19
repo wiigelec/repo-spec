@@ -1,0 +1,81 @@
+{
+  "spec_id": "product.orchestration",
+  "title": "Orchestration",
+  "purpose": "Orchestration product specification.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 3,
+  "normative_requirements": [
+    {
+      "id": "ORCH-001",
+      "text": "Orchestration requirement."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.kernel"
+    },
+    {
+      "spec_id": "product.primitive"
+    },
+    {
+      "spec_id": "product.component"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/orchestration.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.orchestration",
+        "paths": [
+          "product/src/orchestration.py"
+        ],
+        "requirements": [
+          "ORCH-001"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.orchestration",
+        "paths": [
+          "product/src/test_orchestration.py"
+        ],
+        "requirements": [
+          "ORCH-001"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "ORCH-001",
+        "implementation_ids": [
+          "impl.orchestration"
+        ],
+        "test_ids": [
+          "test.orchestration"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "orchestrations": {
+    "workflows": [
+      "end-to-end use case",
+      "release flow"
+    ]
+  }
+}

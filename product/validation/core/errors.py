@@ -1,3 +1,5 @@
+"""Shared validation failure helpers."""
+
 from __future__ import annotations
 
 

@@ -1,0 +1,84 @@
+{
+  "spec_id": "product.component",
+  "title": {
+    "value": "Component"
+  },
+  "purpose": "Component product specification.",
+  "status": "accepted",
+  "schema_version": "1",
+  "level": 2,
+  "normative_requirements": [
+    {
+      "id": "COMPONENT-001",
+      "text": "Component requirement."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "product.kernel"
+    }
+  ],
+  "references": [
+    {
+      "type": "artifact",
+      "path": "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/overview/repository-functional-set/05-development-and-specifications-part-2.md"
+    },
+    {
+      "type": "artifact",
+      "path": "repo/docs/overview/repository-functional-set/06-development-and-specifications-part-3.md"
+    }
+  ],
+  "supersedes": [],
+  "superseded_by": [],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "product/derived/specs/product/component.md"
+    }
+  ],
+  "correspondence": {
+    "implementations": [
+      {
+        "id": "impl.component",
+        "paths": [
+          "product/src/component.py"
+        ],
+        "requirements": [
+          "COMPONENT-001"
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "id": "test.component",
+        "paths": [
+          "product/src/test_component.py"
+        ],
+        "requirements": [
+          "COMPONENT-001"
+        ]
+      }
+    ],
+    "conformance": [
+      {
+        "requirement_id": "COMPONENT-001",
+        "implementation_ids": [
+          "impl.component"
+        ],
+        "test_ids": [
+          "test.component"
+        ],
+        "status": "covered"
+      }
+    ]
+  },
+  "components": {
+    "contracts": [
+      "component contract"
+    ]
+  }
+}

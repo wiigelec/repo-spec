@@ -1,3 +1,5 @@
+"""Reusable validation invariant extension point."""
+
 # Invariant-neutral validation mechanics shared across validation domains.
 
 from __future__ import annotations

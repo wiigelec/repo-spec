@@ -1,3 +1,5 @@
+"""JSON and supported schema-validation mechanics."""
+
 from __future__ import annotations
 
 import copy

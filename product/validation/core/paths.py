@@ -1,3 +1,5 @@
+"""Repository-relative validation path helpers."""
+
 # Product-owned repository-relative path mechanics.
 
 from __future__ import annotations

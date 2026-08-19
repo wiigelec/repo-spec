@@ -1,3 +1,5 @@
+"""Validation context and domain-loading extension point."""
+
 # Product-owned validation context and external repository-authority loading.
 
 from __future__ import annotations
