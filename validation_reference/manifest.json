@@ -1,14 +1,15 @@
 {
   "schema_version": "1",
   "reference_id": "validation-reference",
-  "purpose": "Defines the canonical common structure, file roles, and placement rules for repository-owned and product-owned validation implementation.",
+  "purpose": "Defines the canonical common structure, file roles, and placement rules for root/whole-checkout, repository-owned, and product-owned validation implementation.",
   "scope": {
     "applies_to": [
+      "validation",
       "repo/validation",
       "product/validation"
     ],
     "reference_only": true,
-    "public_entry_points_location": "<domain>/scripts"
+    "public_entry_points_location": "scripts for root validation; <domain>/scripts for leaf validation"
   },
   "directories": [
     {
@@ -229,8 +230,9 @@
     },
     {
       "category": "public-executable-entry-point",
-      "place_under": "<domain>/scripts/",
+      "place_under": "scripts/ for root validation; <domain>/scripts/ for leaf validation",
       "do_not_place_under": [
+        "validation/",
         "<domain>/validation/",
         "validation_reference/"
       ]
