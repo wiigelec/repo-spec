@@ -10,9 +10,9 @@ with `repo/validation/` and `product/validation/`:
 
 - `checks/` — root-owned production validation roles.
 - `core/` — shared root validation infrastructure.
-- `runners/` — internal production and validation-self-test orchestration.
-- `tests/unit/` — ordinary root-owned Python `unittest` modules.
-- `tests/self/` — root validation framework/integration self-tests.
+- `runners/` — internal production and validation-test orchestration.
+- `tests/unit/` — root-owned Python `unittest` modules, including integration and mutation coverage.
+- `tests/self/` — reserved structural role; root executable tests are not hosted here.
 - `tests/fixtures/` — non-executable root validation fixture material.
 
 Domain ownership remains strict:

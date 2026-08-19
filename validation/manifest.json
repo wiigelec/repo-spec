@@ -143,28 +143,42 @@
     {
       "role_id": "validation.runners.test-validation",
       "path": "runners/test_validation_impl.py",
-      "purpose": "Runs validation-framework self-tests independently from ordinary unit tests.",
+      "purpose": "Runs root validation tests through Python unittest discovery.",
       "required": true,
       "extension_point": false
     },
     {
-      "role_id": "validation.tests.self.portable",
-      "path": "tests/self/portable_self_tests.py",
-      "purpose": "Contains portable validation-framework self-tests.",
+      "role_id": "validation.tests.unit.github-field-policy",
+      "path": "tests/unit/test_github_field_policy.py",
+      "purpose": "Root GitHub field-policy unittest coverage.",
       "required": true,
       "extension_point": true
     },
     {
-      "role_id": "validation.tests.self.mutation-support",
-      "path": "tests/self/mutation_support.py",
-      "purpose": "Provides reusable support for mutation-oriented validation self-tests.",
+      "role_id": "validation.tests.unit.github-profile",
+      "path": "tests/unit/test_github_profile_generation.py",
+      "purpose": "Root GitHub profile unittest coverage.",
       "required": true,
       "extension_point": true
     },
     {
-      "role_id": "validation.tests.self.mutation-tests",
-      "path": "tests/self/mutation_tests.py",
-      "purpose": "Contains mutation-oriented validation-framework self-tests invoked explicitly by the validation self-test runner.",
+      "role_id": "validation.tests.unit.mutation",
+      "path": "tests/unit/test_mutation.py",
+      "purpose": "Root mutation unittest coverage.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.tests.unit.mutation-support",
+      "path": "tests/unit/test_mutation_support.py",
+      "purpose": "Root mutation support unittest coverage.",
+      "required": true,
+      "extension_point": true
+    },
+    {
+      "role_id": "validation.tests.unit.portable",
+      "path": "tests/unit/test_portable_validation.py",
+      "purpose": "Root portable/reference unittest coverage.",
       "required": true,
       "extension_point": true
     }
@@ -183,8 +197,8 @@
       "Ordinary unit tests belong under tests/unit/.",
       "Discoverable unit-test modules use the test_*.py filename convention.",
       "Adding a conforming unit-test module does not require editing a central registry or custom run_tests.py aggregator.",
-      "Validation-framework self-tests belong under tests/self/ and are invoked independently from ordinary unittest discovery.",
-      "Non-executable fixture data belongs under tests/fixtures/."
+      "Non-executable fixture data belongs under tests/fixtures/.",
+      "Root validation executable tests, including integration and mutation coverage, belong under tests/unit/ and use unittest discovery."
     ]
   },
   "placement_rules": [

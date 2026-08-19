@@ -5,7 +5,7 @@ from pathlib import Path
 
 from github_profile import GitHubProfileError, check_profile_freshness, render_profile_adapters, write_profile_adapters
 
-from repo.validation.tests.self.mutation_support import create_repo_fixture
+from mutation_support import create_repo_fixture
 
 
 
@@ -108,3 +108,16 @@ def run_github_profile_mutation_tests(repo_root: Path) -> None:
         )
 
     print("ok: github profile mutation tests")
+
+
+import unittest
+
+
+class GitHubProfileTests(unittest.TestCase):
+    def test_profile_generation(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        run_github_profile_generation_tests(repo_root)
+
+    def test_profile_mutations(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        run_github_profile_mutation_tests(repo_root)
