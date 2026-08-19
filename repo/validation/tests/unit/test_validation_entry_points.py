@@ -29,7 +29,7 @@ def run_validation_entry_point_tests(repo_root: Path) -> None:
     )
 
     expect(
-        'python3 -m unittest discover -s "$root/repo/validation/tests" -t "$root/repo"' in unit_test_launcher,
+        'python3 -m unittest discover -s "$root/repo/validation/tests/unit" -t "$root/repo"' in unit_test_launcher,
         "repository unittest entry point omits repo-only unittest discovery",
     )
     expect(

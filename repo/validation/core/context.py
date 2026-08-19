@@ -1,4 +1,4 @@
-"""Shared validation context and repository loading mechanics."""
+"""Validation context and domain-loading extension point."""
 
 from __future__ import annotations
 

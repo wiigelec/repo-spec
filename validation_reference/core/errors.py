@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 
-class ValidationFailure(Exception):
-    pass
+class ValidationFailure(RuntimeError):
+    """Raised when validation fails cleanly."""
 
 
 def fail(message: str) -> None:

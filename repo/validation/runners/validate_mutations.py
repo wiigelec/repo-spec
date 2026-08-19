@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from validation.core.errors import ValidationFailure
-from validation.tests.mutation_tests import run_complete_validation_tests
+from validation.tests.self.mutation_tests import run_complete_validation_tests
 
 
 def main(argv: list[str]) -> int:

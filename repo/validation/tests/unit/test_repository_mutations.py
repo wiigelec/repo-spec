@@ -11,13 +11,13 @@ from validation.checks.development_documents import DevelopmentDocumentRecord, c
 from validation.checks.generated_outputs import check_generated_document_write_behavior
 from validation.core.errors import fail
 from validation.core.paths import resolve_repo_path
-from validation.checks.repository_checks import (
+from validation.checks.domain import (
     REPOSITORY_LEAF_VALIDATION_PHASES,
     validate_repo,
     validate_repository_phase,
 )
 
-from .mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
+from ..self.mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
 
 def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
     labels = [label for label, _check in REPOSITORY_LEAF_VALIDATION_PHASES]
@@ -172,7 +172,7 @@ def _materialize_integrity_authority_bundle(
     framework: Path,
     revision: str,
 ) -> None:
-    product_scripts = Path(__file__).resolve().parents[3] / "product/scripts"
+    product_scripts = Path(__file__).resolve().parents[4] / "product/scripts"
     if str(product_scripts) not in sys.path:
         sys.path.insert(0, str(product_scripts))
     from initializer.framework_authority import build_framework_authority_bundle
@@ -620,5 +620,3 @@ def run_repository_path_helper_tests(repo_root: Path) -> None:
         expect_failure("repository-relative path helper", lambda: resolve_repo_path(temp_repo, "../../etc/passwd"), "invalid repository-relative path")
 
     print("ok: repository path helper")
-
-

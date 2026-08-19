@@ -5,10 +5,10 @@ from pathlib import Path
 
 from docgen import render_issue_form, render_review_template, render_spec_projection
 from repo_model import load_specs
-from validation.checks.repository_checks import check_acyclic_dependencies
+from validation.checks.specifications import check_acyclic_dependencies
 from validation.core.schema_subset import ensure_schema_keywords, load_repo_schemas, validate_instance
 
-from .mutation_support import expect_failure, expect_render_change
+from ..self.mutation_support import expect_failure, expect_render_change
 
 
 def run_schema_mutations(repo_root: Path) -> None:

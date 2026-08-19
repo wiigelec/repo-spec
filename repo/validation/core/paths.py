@@ -1,3 +1,5 @@
+"""Repository-relative validation path helpers."""
+
 # Repository-relative path mechanics shared across validation domains.
 
 from __future__ import annotations

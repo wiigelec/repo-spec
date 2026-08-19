@@ -5,7 +5,7 @@ from pathlib import Path
 
 from validation.core.errors import ValidationFailure
 
-from .mutation_support import create_repo_fixture, declared_repo_fixture_paths
+from ..self.mutation_support import create_repo_fixture, declared_repo_fixture_paths
 
 
 SYNTHETIC_DOC = "repo/docs/plans/SYNTHETIC-IMPLEMENTATION-PLAN.md"

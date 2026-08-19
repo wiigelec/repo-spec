@@ -12,7 +12,7 @@ _PUBLIC_WRAPPERS = (
     "repo/scripts/test-validation",
 )
 
-_SELF = "repo/validation/tests/test_repo_validation_boundary.py"
+_SELF = "repo/validation/tests/unit/test_repo_validation_boundary.py"
 
 _FORBIDDEN_IMPORT_PREFIXES = (
     "product",

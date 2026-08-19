@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 
-POLICY_PATH = pathlib.Path(__file__).resolve().parents[1] / "github/github_field_policy.py"
+POLICY_PATH = pathlib.Path(__file__).resolve().parents[2] / "github/github_field_policy.py"
 SPEC = importlib.util.spec_from_file_location("github_field_policy", POLICY_PATH)
 POLICY = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -17,7 +17,7 @@ SPEC.loader.exec_module(POLICY)
 class IssueFieldPolicyActivationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.repo_root = pathlib.Path(__file__).resolve().parents[3]
+        cls.repo_root = pathlib.Path(__file__).resolve().parents[4]
         cls.fields = POLICY.load_fields(
             cls.repo_root,
             "repo/specs/repo/governing-issue.json",

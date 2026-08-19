@@ -1,4 +1,4 @@
-"""Shared development-document validation mechanics."""
+"""Governed development-document validation extension point."""
 
 from __future__ import annotations
 
@@ -8,11 +8,13 @@ import os
 import re
 from pathlib import Path
 from typing import Any
-
 from ..core.context import ValidationContext
 from ..core.errors import expect, fail
 from ..core.schema_subset import validate_instance
 
+from typing import Any
+
+from ..core.context import ValidationContext
 
 DEVELOPMENT_DOCUMENT_ROOTS = {
     "repo/docs/overview/": {
@@ -56,14 +58,16 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
 }
 
 COVERAGE_DOCUMENT_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "repo/docs/architecture/"}
+
 DECOMPOSITION_ROOTS = {"repo/docs/decompositions/"}
 
 DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
+
 DEVELOPMENT_DOCUMENT_LEGACY_COMPOSITE_PREFIX_OWNERS: dict[str, str] = {}
 
 MAX_DEVELOPMENT_DOCUMENT_CHUNK_LINES = 180
-MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
+MAX_DEVELOPMENT_DOCUMENT_CHUNK_BYTES = 24_576
 
 @dataclass(frozen=True)
 class DevelopmentDocumentRecord:
@@ -73,13 +77,11 @@ class DevelopmentDocumentRecord:
     metadata: dict[str, Any]
     chunk_paths: list[str]
 
-
 def development_document_schemas(context: ValidationContext) -> dict[str, dict[str, Any]]:
     if context.repository is not None:
         return context.repository.schemas
     expect(context.external_repository is not None, "validation context missing external repository schema state")
     return context.external_repository.schemas
-
 
 def markdown_headings(text: str) -> set[str]:
     headings: set[str] = set()
@@ -88,17 +90,14 @@ def markdown_headings(text: str) -> set[str]:
             headings.add(line.removeprefix("## ").strip())
     return headings
 
-
 def markdown_links(text: str) -> list[tuple[str, str]]:
     return re.findall(r"\[([^\]]+)\]\(([^)]+)\)", text)
-
 
 def resolve_markdown_link_target(source_path: str, target: str) -> str:
     target = target.split("#", 1)[0]
     if not target:
         return target
     return os.path.normpath((Path(source_path).parent / target).as_posix())
-
 
 def markdown_section(text: str, heading: str) -> str:
     lines = text.splitlines()
@@ -116,7 +115,6 @@ def markdown_section(text: str, heading: str) -> str:
             break
     return "\n".join(lines[start:end])
 
-
 def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
     match = re.search(r"## Metadata\s*\n\s*```json\s*\n(.*?)\n```", text, re.S)
     expect(match is not None, f"development document metadata failed: missing metadata block in {source}")
@@ -126,7 +124,6 @@ def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
         fail(f"development document metadata failed: invalid JSON in {source}: {exc.msg}")
     expect(isinstance(metadata, dict), f"development document metadata failed: {source} metadata must be an object")
     return metadata
-
 
 def load_development_document_compatibility_registry(
     repo_root: Path,
@@ -168,7 +165,6 @@ def load_development_document_compatibility_registry(
 
     return registry
 
-
 def resolve_development_document_artifact(
     path: str,
     records: dict[str, DevelopmentDocumentRecord],
@@ -187,7 +183,6 @@ def resolve_development_document_artifact(
             expect(owner_path in compatibility_registry, f"development document relationship failed: unresolved legacy composite owner for {path}")
             return owner_path, None
     raise KeyError(path)
-
 
 def check_development_document_relationships(
     repo_root: Path,
@@ -406,7 +401,6 @@ def check_development_document_relationships(
     for node in basis_graph:
         visit(node)
 
-
 def check_development_documents_phase(
     context: ValidationContext,
     *,
@@ -588,7 +582,6 @@ def check_development_documents_phase(
     expect(unmarked_docs == owned_compatibility_paths, f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(owned_compatibility_paths)}")
     check_development_document_relationships(context.repo_root, records, compatibility_registry, chunk_owner_paths)
 
-
 def get_development_document_records(
     context: ValidationContext,
     *,
@@ -629,3 +622,35 @@ def get_development_document_records(
                 chunk_owner_paths[chunk_path] = rel_path
 
     return records
+
+def _repository_development_roots() -> dict[str, dict[str, Any]]:
+    return {
+        root_rel: info
+        for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items()
+        if not root_rel.startswith("product/")
+    }
+
+def chunk_dir_for_metadata(metadata: dict[str, Any]) -> str:
+    return f"{metadata['root_path']}{metadata['document_slug']}/"
+
+def _check_repository_development_documents(
+    context: ValidationContext,
+) -> None:
+    selected_roots = _repository_development_roots()
+    full_registry = load_development_document_compatibility_registry(
+        context.repo_root,
+        development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
+    )
+    prefixes = tuple(selected_roots)
+    owned_compatibility_paths = {
+        path for path in full_registry if path.startswith(prefixes)
+    }
+    check_development_documents_phase(
+        context,
+        development_roots=selected_roots,
+        compatibility_registry=full_registry,
+        owned_compatibility_paths=owned_compatibility_paths,
+    )
+
+def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
+    return [chunk["path"] for chunk in metadata["subordinate_chunks"]]

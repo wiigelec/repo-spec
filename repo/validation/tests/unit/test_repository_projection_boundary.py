@@ -4,9 +4,9 @@ import tempfile
 from pathlib import Path
 
 from validation.core.errors import ValidationFailure, fail
-from validation.checks.repository_checks import validate_repository_phase
+from validation.checks.domain import validate_repository_phase
 
-from .mutation_support import create_repo_fixture, mutate_json
+from ..self.mutation_support import create_repo_fixture, mutate_json
 
 
 def run_repository_projection_boundary_test(repo_root: Path) -> None:
