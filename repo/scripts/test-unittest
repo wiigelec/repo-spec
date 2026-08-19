@@ -8,4 +8,4 @@ if (($#)); then
     exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"         python3 -m unittest "$@"
 fi
 
-exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"     python3 -m unittest discover -s "$root/repo/validation/tests" -t "$root/repo"
+exec env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"     python3 -m unittest discover -s "$root/repo/validation/tests/unit" -t "$root/repo"
