@@ -9,7 +9,7 @@ from validation.checks.product_state import load_product_schemas
 from .mutation_support import expect_failure
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
+FIXTURE_DIR = Path(__file__).resolve().parent
 
 
 def load_fixture(name: str) -> dict:

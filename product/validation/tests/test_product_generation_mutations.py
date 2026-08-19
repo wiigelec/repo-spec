@@ -14,7 +14,7 @@ from .mutation_support import (
 )
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
+FIXTURE_DIR = Path(__file__).resolve().parent
 
 
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:

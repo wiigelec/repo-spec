@@ -10,7 +10,7 @@ def check_product_validate_cli_contract(repo_root: Path) -> None:
     validate_launcher = (repo_root / "product/scripts/validate").read_text()
     test_launcher = (repo_root / "product/scripts/test-validation").read_text()
     expected_pythonpath = (
-        'PYTHONPATH="$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}"'
+        'PYTHONPATH="$root/product:$root/product/scripts${PYTHONPATH:+:$PYTHONPATH}"'
     )
     expect(
         expected_pythonpath in validate_launcher,

@@ -10,7 +10,7 @@ from validation.checks.product_checks import validate_product_phases
 from .mutation_support import create_repo_fixture, deactivate_product_plans, expect_failure, mutate_json
 
 
-FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures" / "product-validation"
+FIXTURE_DIR = Path(__file__).resolve().parent
 
 
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
