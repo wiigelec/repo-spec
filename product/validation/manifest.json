@@ -243,6 +243,22 @@
     "The logical roles in this manifest are authoritative over historical file placement.",
     "Creating a new non-test validation file outside the canonical baseline is exceptional; ordinary new validation logic must be placed in an existing canonical file role whenever that role can reasonably own the responsibility.",
     "A new non-test domain-specific validation file requires a clearly justified specialization boundary that cannot be represented cleanly by an existing canonical file role.",
-    "Test modules and fixture files may be added under tests/unit, tests/self, or tests/fixtures according to their declared test role without requiring a non-test specialization justification."
+    "Test modules and fixture files may be added under tests/unit, tests/self, or tests/fixtures according to their declared test role without requiring a non-test specialization justification.",
+    "The checks/ directory is an exact mirror of the canonical reference check-file set; additional domain-specific check modules are not permitted."
+  ],
+  "directory_file_constraints": [
+    {
+      "path": "checks",
+      "mirror_reference_files": true,
+      "additional_files_allowed": false,
+      "allowed_files": [
+        "development_documents.py",
+        "domain.py",
+        "generated_outputs.py",
+        "policy.py",
+        "specifications.py"
+      ],
+      "purpose": "The live validation checks directory mirrors the reference check-file set exactly. Domain-specific check behavior is folded into the canonical role files rather than creating additional check modules."
+    }
   ]
 }
