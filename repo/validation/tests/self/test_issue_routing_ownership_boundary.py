@@ -5,7 +5,7 @@ import unittest
 class RoutingOwnershipBoundaryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.repo_root = pathlib.Path(__file__).resolve().parents[2]
+        cls.repo_root = pathlib.Path(__file__).resolve().parents[4]
         cls.plan_root = (
             cls.repo_root / "repo/docs/plans/REPOSITORY-IMPLEMENTATION-PLAN.md"
         ).read_text()

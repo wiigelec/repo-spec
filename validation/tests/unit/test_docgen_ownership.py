@@ -21,7 +21,7 @@ def find_material(entries: list[dict], material_key: str) -> dict:
 
 
 def run_docgen_ownership_tests(repo_root: Path) -> None:
-    repo_docgen = (repo_root / "repo/scripts/docgen.py").read_text()
+    repo_docgen = (repo_root / "repo/src/docgen.py").read_text()
     product_docgen = (repo_root / "product/scripts/docgen.py").read_text()
     root_entrypoint = (repo_root / "scripts/generate-docs").read_text()
     repo_entrypoint = (repo_root / "repo/scripts/generate-docs").read_text()
@@ -30,7 +30,7 @@ def run_docgen_ownership_tests(repo_root: Path) -> None:
     assert "load_product_specs" not in repo_docgen
     assert "product/derived" not in repo_docgen
     assert "product/scripts/docgen.py" not in repo_entrypoint
-    assert 'repo/scripts/docgen.py' in repo_entrypoint
+    assert 'repo/src/docgen.py' in repo_entrypoint
 
     assert "from repo_model" not in product_docgen
     assert 'repo/derived/specs/' not in product_docgen

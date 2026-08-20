@@ -11,9 +11,9 @@ import unittest
 from unittest import mock
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
-REPO_SCRIPTS = REPO_ROOT / "repo" / "scripts"
-if str(REPO_SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(REPO_SCRIPTS))
+REPO_SRC = REPO_ROOT / "repo" / "src"
+if str(REPO_SRC) not in sys.path:
+    sys.path.insert(0, str(REPO_SRC))
 
 import issue_intake_governance_routing.promotion as promotion_module
 from issue_intake_governance_routing import (
@@ -397,12 +397,12 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                     )
 
     def test_repository_owned_implementation_has_no_product_runtime_dependency(self):
-        package = REPO_SCRIPTS / "issue_intake_governance_routing"
+        package = REPO_SRC / "issue_intake_governance_routing"
         for path in package.glob("*.py"):
             text = path.read_text()
             self.assertNotIn("product/scripts", text, path.name)
 
-        live_promotion = (REPO_SCRIPTS / "github_issue_promotion.py").read_text()
+        live_promotion = (REPO_SRC / "github_issue_promotion.py").read_text()
         self.assertNotIn("PRODUCT_SCRIPTS", live_promotion)
         self.assertNotIn(' / "product" / "scripts"', live_promotion)
 

@@ -7,7 +7,7 @@ from pathlib import Path
 
 class FunctionalSetTransportTests(unittest.TestCase):
     def test_framework_transport_boundary(self) -> None:
-        repo_root = Path(__file__).resolve().parents[4]
+        repo_root = Path(__file__).resolve().parents[3]
         inventory_path = repo_root / "product/scripts/initializer/framework-inventory.json"
         inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
         source_paths = {entry["source_path"] for entry in inventory["entries"]}
@@ -56,8 +56,13 @@ class FunctionalSetTransportTests(unittest.TestCase):
         self.assertEqual(
             transported_repo_validation,
             {
+                "repo/validation/github/canonical-governed-state-validator",
                 "repo/validation/github/github-field-policy",
                 "repo/validation/github/github_field_policy.py",
+                "repo/validation/github/repository-governance-authorization-validator",
+                "repo/validation/runners/root_validation.py",
+                "repo/validation/runners/test_validation_impl.py",
+                "repo/validation/tests/self/portable_self_tests.py",
             },
         )
 

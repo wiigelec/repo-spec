@@ -12,8 +12,8 @@ import tempfile
 import unittest
 from unittest import mock
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
-MODULE_PATH = REPO_ROOT / "repo/scripts/github_issue_promotion.py"
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
+MODULE_PATH = REPO_ROOT / "repo/src/github_issue_promotion.py"
 
 spec = importlib.util.spec_from_file_location("github_issue_promotion", MODULE_PATH)
 assert spec and spec.loader
@@ -66,7 +66,7 @@ def governed_authority_body(extra=""):
 
 
 MANAGED_AUTHORIZATION_PRODUCER = (
-    REPO_ROOT / 'repo/scripts/repository-governance-authorization-validator'
+    REPO_ROOT / 'repo/validation/github/repository-governance-authorization-validator'
 )
 
 
@@ -170,7 +170,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                     governing_issue=34,
                     governed_operation="operation-34",
                     routing_labels=("bug-fix",),
-                    policy_command="repo/scripts/github-field-policy",
+                    policy_command="repo/validation/github/github-field-policy",
                     producer_id="repository-governance-authority",
                 )
 

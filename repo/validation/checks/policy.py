@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 
 from pathlib import Path
@@ -51,6 +52,33 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
 
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "repo/validation", require_github=True, label="repo")
+
+
+def check_repository_source_layout(context: ValidationContext) -> None:
+    repo_root = context.repo_root
+    scripts_root = repo_root / "repo/scripts"
+    source_root = repo_root / "repo/src"
+
+    expect(source_root.is_dir(), "repository source layout failed: missing repo/src")
+    expect(scripts_root.is_dir(), "repository source layout failed: missing repo/scripts")
+    expect(
+        not (source_root / "validation").exists(),
+        "repository source layout failed: validation must remain under repo/validation",
+    )
+
+    for path in sorted(scripts_root.iterdir(), key=lambda item: item.name):
+        expect(
+            path.is_file(),
+            f"repository source layout failed: repo/scripts contains non-entry-point path {path.name}",
+        )
+        expect(
+            path.suffix != ".py",
+            f"repository source layout failed: repo/scripts contains Python implementation module {path.name}",
+        )
+        expect(
+            os.access(path, os.X_OK),
+            f"repository source layout failed: repo/scripts entry point is not executable: {path.name}",
+        )
 
 def check_platform_profile_boundary(context: ValidationContext) -> None:
     spec = context.repository.specs.get("repo.platform-profiles")
@@ -271,8 +299,8 @@ def check_validate_cli_contract(repo_root: Path) -> None:
     test_launcher = (repo_root / "repo/scripts/test-validation").read_text()
     expect("$root/product/scripts" not in validate_launcher, "repository validate launcher depends on product scripts")
     expect("$root/product/scripts" not in test_launcher, "repository validation-test launcher depends on product scripts")
-    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
-    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo/src:$root/repo${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo/src:$root/repo${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
 
     expect(
         "repo_tree_sha" not in validate_launcher,

@@ -68,7 +68,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          python3 repo/scripts/github_issue_promotion.py \
+          python3 repo/src/github_issue_promotion.py \
             --repository "${{ github.repository }}" \
             --intake-issue "${{ inputs.intake_issue }}" \
             --governing-issue "${{ inputs.governing_issue }}" \

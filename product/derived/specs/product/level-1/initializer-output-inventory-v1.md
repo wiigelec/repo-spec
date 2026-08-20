@@ -318,7 +318,7 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/repo_model.py`
+- Destination Path: `repo/src/repo_model.py`
 - Material Key: `repo-repo-model`
 - Mode: `100644`
 - Operation: `copy-verbatim`
@@ -353,7 +353,7 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `documentation-support`
-- Destination Path: `repo/scripts/github_profile.py`
+- Destination Path: `repo/src/github_profile.py`
 - Material Key: `repo-github-profile`
 - Mode: `100644`
 - Operation: `copy-verbatim`
@@ -682,7 +682,7 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/root_validation.py`
+- Destination Path: `repo/validation/runners/root_validation.py`
 - Material Key: `repo-root-validation`
 - Mode: `100644`
 - Operation: `copy-verbatim`
@@ -857,70 +857,70 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `generated-reference`
-- Destination Path: `repo/scripts/github_issue_promotion.py`
+- Destination Path: `repo/src/github_issue_promotion.py`
 - Material Key: `repo-routing-live-promotion`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/canonical-governed-state-validator`
+- Destination Path: `repo/validation/github/canonical-governed-state-validator`
 - Material Key: `repo-routing-canonical-producer`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/repository-governance-authorization-validator`
+- Destination Path: `repo/validation/github/repository-governance-authorization-validator`
 - Material Key: `repo-routing-authorization-producer`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/__init__.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/__init__.py`
 - Material Key: `repo-routing-runtime--init-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/authority.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/authority.py`
 - Material Key: `repo-routing-runtime-authority-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/classification.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/classification.py`
 - Material Key: `repo-routing-runtime-classification-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/hosted_validation.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/hosted_validation.py`
 - Material Key: `repo-routing-runtime-hosted-validation-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/orchestration.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/orchestration.py`
 - Material Key: `repo-routing-runtime-orchestration-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/promotion.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/promotion.py`
 - Material Key: `repo-routing-runtime-promotion-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `runtime-framework`
-- Destination Path: `repo/scripts/issue_intake_governance_routing/provenance.py`
+- Destination Path: `repo/src/issue_intake_governance_routing/provenance.py`
 - Material Key: `repo-routing-runtime-provenance-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
@@ -1102,14 +1102,14 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/test_validation_impl.py`
+- Destination Path: `repo/validation/runners/test_validation_impl.py`
 - Material Key: `repo-test-validation-impl-py`
 - Mode: `100755`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/scripts/validation/portable_self_tests.py`
+- Destination Path: `repo/validation/tests/self/portable_self_tests.py`
 - Material Key: `repo-validation-portable-self-tests-py`
 - Mode: `100644`
 - Operation: `copy-verbatim`
