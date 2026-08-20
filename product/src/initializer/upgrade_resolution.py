@@ -350,7 +350,7 @@ def resolve_accepted_baseline(target_repository: str) -> BaselineResolution:
     )
 
 OUTPUT_INVENTORY_SPEC_PATH = "product/specs/product/level-1/initializer-output-inventory-v1.json"
-UPGRADE_QUALIFICATION_PATH = "product/scripts/initializer/upgrade-qualification.json"
+UPGRADE_QUALIFICATION_PATH = "product/src/initializer/upgrade-qualification.json"
 DELTA_CLASSIFICATIONS = frozenset({"unchanged", "added", "modified", "removed", "retargeted"})
 
 
