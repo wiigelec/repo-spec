@@ -56,11 +56,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Run repository validator self-tests
-        run: repo/scripts/test-validation
+      - name: Run validation self-tests
+        run: scripts/test-validation
 
-      - name: Run product validator self-tests
-        run: product/scripts/test-validation
-
-      - name: Run initializer implementation tests
-        run: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$GITHUB_WORKSPACE/product/scripts" python3 -m initializer.tests.run_tests
+      - name: Run product unit tests
+        run: product/scripts/test-unittest
