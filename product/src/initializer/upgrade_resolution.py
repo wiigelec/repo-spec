@@ -556,7 +556,7 @@ def _build_inventory_endpoint(source: ResolvedSourceMaterial) -> InventoryEndpoi
         manifest_blob_id=_commit_blob_id(
             source.repository,
             source.commit_id,
-            "product/scripts/initializer/framework-inventory.json",
+            "product/src/initializer/framework-inventory.json",
         ),
         output_inventory_blob_id=_commit_blob_id(
             source.repository,
