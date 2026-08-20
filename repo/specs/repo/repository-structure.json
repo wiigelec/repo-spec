@@ -52,6 +52,14 @@
     {
       "id": "REPO-STR-012",
       "text": "The repository shall reserve `user/` for non-normative user-facing convenience and session-support artifacts; content under `user/` shall remain subordinate to accepted repository and product authority and shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
+    },
+    {
+      "id": "REPO-STR-013",
+      "text": "The reusable repository/framework tree shall use `repo/scripts/` as its canonical user-executable wrapper and entry-point surface and `repo/src/` as its canonical maintained implementation source root. In the final conforming state both directories shall exist, `repo/scripts/` shall contain only user-executable wrappers or entry points, and all other maintained repository/framework implementation code shall reside under `repo/src/`. A `src/` hierarchy that exists only within derived or generated output is non-governing and shall not establish, constrain, or substitute for the maintained `repo/src/` hierarchy."
+    },
+    {
+      "id": "REPO-STR-014",
+      "text": "Until the governed migration to the REPO-STR-013 final layout is complete, implementation code that already exists outside `repo/src/` at accepted default-branch base `e2c7a6563e4361e41145a92ca8a966b8e8402178` may remain temporarily in its pre-existing maintained location solely as legacy transition state. This allowance shall not authorize new non-wrapper implementation in `repo/scripts/`, shall not authorize expansion of other legacy implementation locations, shall not make those locations canonical, and shall be removed through governed successor work after the pre-existing implementation is migrated to `repo/src/` and the final boundary can be enforced."
     }
   ],
   "dependencies": [
