@@ -160,3 +160,12 @@ def run_github_field_policy_tests(repo_root: Path) -> None:
             raise AssertionError(f"exact Product-artifact implementation did not reach evidence gate: {exc}") from exc
     else:
         raise AssertionError("exact Product-artifact implementation did not activate stricter evidence gate")
+
+
+import unittest
+
+
+class GitHubFieldPolicyTests(unittest.TestCase):
+    def test_github_field_policy(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        run_github_field_policy_tests(repo_root)

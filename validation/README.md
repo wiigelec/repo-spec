@@ -1,15 +1,29 @@
 # Root validation
 
-This directory owns validation and tests whose subject intentionally crosses
-top-level repository domains.
+This directory is the root/whole-checkout validation domain. It owns validation
+whose subject is inherently cross-domain or repository-wide, including concerns
+that span `repo/`, `product/`, `.github/`, `reference/`, initializer-installed
+output, or top-level checkout structure.
 
-Examples include integration across `repo/`, `product/`, `.github/`,
-`reference/`, initializer-installed output, and top-level aggregate validation.
+The common logical structure is defined by `user/validation_reference/` and is shared
+with `repo/validation/` and `product/validation/`:
 
-Domain-specific validators remain independently owned:
+- `checks/` — root-owned production validation roles.
+- `core/` — shared root validation infrastructure.
+- `runners/` — internal production and validation-test orchestration.
+- `tests/unit/` — root-owned Python `unittest` modules, including integration and mutation coverage.
+- `tests/self/` — reserved structural role; root executable tests are not hosted here.
+- `tests/fixtures/` — non-executable root validation fixture material.
 
-- `repo/validation/` validates and tests `repo/`.
-- product-owned validation validates and tests `product/`.
-- `validate/` owns cross-domain and aggregate integration validation.
+Domain ownership remains strict:
 
-The public aggregate entry points remain under `scripts/`.
+- `repo/validation/` validates and tests repository-owned `repo/` concerns.
+- `product/validation/` validates and tests product-owned `product/` concerns.
+- `validation/` owns only inherently cross-domain and whole-checkout concerns.
+
+`github/` is a justified root specialization for hosting-platform policy behavior
+that crosses repository/product and top-level `.github/` boundaries.
+
+Public aggregate entry points remain under top-level `scripts/`; leaf public
+entry points remain under their owning `repo/scripts/` and `product/scripts/`
+directories.

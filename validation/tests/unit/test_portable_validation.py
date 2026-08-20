@@ -179,3 +179,12 @@ def run_reference_isolated_copy_tests(repo_root: Path) -> None:
         )
 
     print("ok: reference isolated copy tests")
+
+
+import unittest
+
+
+class PortableValidationTests(unittest.TestCase):
+    def test_reference_isolated_copy(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        run_reference_isolated_copy_tests(repo_root)

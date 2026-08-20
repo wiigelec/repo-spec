@@ -11,8 +11,8 @@ from pathlib import Path
 import re
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-POLICY_SCRIPT = REPO_ROOT / "repo/validation/github/github_field_policy.py"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+POLICY_SCRIPT = REPO_ROOT / "validation/github/github_field_policy.py"
 SYNTHETIC_FIELD = {
     "id": "synthetic_required_field",
     "label": "Synthetic required field",
@@ -513,3 +513,23 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+import unittest
+
+
+class RootMutationTests(unittest.TestCase):
+    def test_atomic_transition_evidence_validation(self) -> None:
+        check_atomic_transition_evidence_validation()
+
+    def test_change_type_validation(self) -> None:
+        check_change_type_validation()
+
+    def test_default_branch_base_validation(self) -> None:
+        check_default_branch_base_validation()
+
+    def test_multi_workstream_product_artifact_evidence(self) -> None:
+        check_multi_workstream_product_artifact_evidence()
+
+    def test_product_artifact_evidence_validation(self) -> None:
+        check_product_artifact_evidence_validation()
