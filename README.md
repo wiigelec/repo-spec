@@ -1,6 +1,6 @@
 # repo-spec
 
-`repo-spec` is a specification-governed repository bootstrap framework for long-running human and AI-assisted software development. It establishes a repository structure in which accepted repository and product specifications remain explicit authority, while generated documentation, implementation artifacts, tests, and prior behavior remain subordinate evidence.
+`repo-spec` is a specification-governed repository bootstrap framework for long-running human and AI-assisted software development. Accepted repository specifications define the repository-local authority model and repository-generic governance; within the product authority domain they establish, accepted product specifications define product-specific normative semantics. Validation enforces only delegated accepted requirements, human semantic review remains distinct from validation and acceptance, and generated documentation, implementation artifacts, tests, adapters, and prior behavior remain subordinate evidence rather than independent authority. See [`repo.authority-model`](repo/specs/repo/authority-model.json) for the canonical authority rules.
 
 Supported runtime: Python 3.10-3.14
 
@@ -56,6 +56,7 @@ For lifecycle behavior and lower-level diagnostic/developer interfaces, see the 
 
 ## Start here
 
+- [Repository authority model](repo/specs/repo/authority-model.json)
 - [Repository chatbot initialization](AGENTS.md)
 - [functional-set lifecycle](repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md)
 - [Initializer overview](product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md)

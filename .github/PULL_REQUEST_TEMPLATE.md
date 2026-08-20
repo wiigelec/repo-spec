@@ -15,7 +15,7 @@
 
 ## Review focus
 
-<!-- Ask reviewers to inspect the areas where judgment is most needed. -->
+<!-- Direct human semantic review to the areas where judgment is needed, including whether the proposed change preserves controlling authority and whether relevant validation behavior under-enforces, overreaches, or enforces semantics that conflict with controlling authority. -->
 
 ## Scope notes
 

@@ -21,6 +21,7 @@ Identifies the complete repository-spec JSON set.
 ## Authoritative specs
 
 - `repo.manifest` -> `repo/specs/repo/manifest.json`
+- `repo.authority-model` -> `repo/specs/repo/authority-model.json`
 - `repo.governing-issue` -> `repo/specs/repo/governing-issue.json`
 - `repo.review-proposal` -> `repo/specs/repo/review-proposal.json`
 - `repo.repository-structure` -> `repo/specs/repo/repository-structure.json`
@@ -54,6 +55,7 @@ Identifies the complete repository-spec JSON set.
 
 ## References
 
+- specification: `repo.authority-model`
 - specification: `repo.repository-structure`
 - specification: `repo.governing-issue`
 - specification: `repo.review-proposal`

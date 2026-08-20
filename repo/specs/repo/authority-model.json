@@ -1,0 +1,89 @@
+{
+  "spec_id": "repo.authority-model",
+  "title": "Repository Authority Model",
+  "purpose": "Defines repository-local supremacy, scoped normative authority, delegated validation authority, semantic review responsibility, and the subordinate status of non-authoritative evidence and mechanisms.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-AUTH-001",
+      "text": "Accepted repository specifications listed by repo.manifest shall constitute the highest repository-local normative authority for repository-generic structure, governance, workflow, validation, review, acceptance, and authority-domain rules. Repository-local artifacts, processes, tools, adapters, implementation state, or historical behavior shall not override conflicting accepted repository specifications."
+    },
+    {
+      "id": "REPO-AUTH-002",
+      "text": "Accepted repository specifications shall establish the authority domains in which subordinate normative systems operate. Accepted product specifications shall provide product-specific normative semantics only within the product authority domain established by accepted repository specifications, and product specifications shall not redefine repository-generic governance, workflow, validation ownership, review, acceptance, or repository structure unless an accepted repository specification explicitly delegates that authority."
+    },
+    {
+      "id": "REPO-AUTH-003",
+      "text": "Within the product authority domain, accepted product specifications shall govern maintained product semantics according to the accepted Level 0-3 model and applicable repository contracts. Development documents, decompositions, implementation plans, governing issues, and other planning or coordination artifacts may organize, trace, authorize, or explain work only to the extent granted by accepted authority and shall not invent missing normative product or repository semantics."
+    },
+    {
+      "id": "REPO-AUTH-004",
+      "text": "Validation shall exercise only enforcement responsibilities assigned by accepted repository or product authority. A validation rule may mechanically test conformance, structure, correspondence, lifecycle state, or behavior only within its delegated validation domain and shall not create, infer, or elevate normative semantics merely because a check, test, fixture, schema, implementation, or generated artifact encodes them."
+    },
+    {
+      "id": "REPO-AUTH-005",
+      "text": "Human semantic review shall remain a distinct governed responsibility from mechanical validation and from acceptance. Semantic review shall determine, using controlling accepted authority, whether a proposed change preserves governing intent where mechanical validation is insufficient, and shall review relevant validation behavior for under-enforcement, overreach, or enforcement that conflicts with controlling authority."
+    },
+    {
+      "id": "REPO-AUTH-006",
+      "text": "Passing validation shall provide evidence of conformance only for the requirements and conditions actually enforced at the exact validated revision. Passing validation shall not establish semantic correctness, supply missing authority, resolve an authority conflict, or substitute for required human semantic review or acceptance."
+    },
+    {
+      "id": "REPO-AUTH-007",
+      "text": "Code, tests, schemas, templates, generated artifacts, platform adapters, implementation plans, development notes, historical records, prior behavior, and other non-authoritative artifacts shall remain mechanisms, coordination material, projections, or evidence according to their accepted classifications. Their existence, age, successful execution, or prior acceptance of a repository revision shall not independently convert them into controlling normative authority."
+    },
+    {
+      "id": "REPO-AUTH-008",
+      "text": "When two accepted authorities appear to conflict, interpretation shall first respect their accepted authority domains, dependencies, lifecycle state, and explicit delegation rules rather than applying an undifferentiated flat precedence list. A material conflict that cannot be resolved from accepted authority shall block affected mutation or acceptance until the controlling authority is clarified through the governed process."
+    },
+    {
+      "id": "REPO-AUTH-009",
+      "text": "Repository authority shall be changed only through the accepted governed change and acceptance process applicable to repository specifications. Neither implementation drift, validator behavior, generated output, human convenience material, review custom, nor repeated historical practice shall amend accepted repository authority implicitly."
+    },
+    {
+      "id": "REPO-AUTH-010",
+      "text": "Governmental, constitutional, legislative, executive, judicial, or similar institutional analogies may be used as non-normative explanatory aids, but such analogies shall not establish repository semantics, expand or limit delegated authority, or replace the precise requirements of accepted repository and product specifications."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.repository-structure"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.review-proposal"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-levels"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-spec-base"
+    },
+    {
+      "type": "artifact",
+      "path": "AGENTS.md"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/authority-model.md"
+    }
+  ]
+}

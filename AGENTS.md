@@ -5,6 +5,7 @@ Before any repository mutation, initialize against the accepted repository workf
 Read, in order:
 - `README.md`
 - `repo/specs/repo/manifest.json`
+- `repo/specs/repo/authority-model.json`
 - `repo/specs/repo/development-workflow.json`
 - discover an existing governing issue for the current bounded change, or create one only when the accepted development workflow explicitly authorizes that no-existing-issue bootstrap
 - the resulting governing issue
@@ -12,6 +13,8 @@ Read, in order:
 - the actual Git branch, open pull requests, accepted base, working tree, remote state, and hosting-platform state
 
 Verify that the branch recorded in the accepted default-branch base is the repository's actual current default branch. Report the governing issue, controlling authority, accepted base, intended branch, scope, exclusions, dependencies, next authorized action, and any unresolved authority conflicts, along with the inspected branch, open PR, working-tree, remote, and hosting-platform state.
+
+Use `repo.authority-model` to establish repository-spec supremacy, scoped product authority, delegated validation authority, and the distinct role of human semantic review before interpreting subordinate plans, implementation, tests, generated artifacts, adapters, or prior behavior. Governmental or constitutional analogies may help explain the model but are non-normative and never replace the accepted specifications.
 
 If controlling authority is missing or conflicts, stop and ask, except that absence of a governing issue shall follow the explicit discovery-or-create procedure in `REPO-WF-003`.
 
