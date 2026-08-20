@@ -3,12 +3,12 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from repo.validation.checks.development_documents import (
+from validation.checks.development_documents import (
     check_development_document_chunk_entries,
     check_development_document_namespace,
     check_development_document_root_entries,
 )
-from repo.validation.core.errors import ValidationFailure
+from validation.core.errors import ValidationFailure
 
 
 def _expect_failure(label: str, action, fragment: str) -> None:
