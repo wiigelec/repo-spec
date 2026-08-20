@@ -9,7 +9,7 @@ from typing import Any
 
 from .models import InitializerError, SourceSelection
 
-MANIFEST_PATH = "product/scripts/initializer/framework-inventory.json"
+MANIFEST_PATH = "product/src/initializer/framework-inventory.json"
 OUTPUT_INVENTORY_SPEC_PATH = "product/specs/product/level-1/initializer-output-inventory-v1.json"
 ROOT_FIELDS = frozenset({"schema_version", "entries"})
 ENTRY_FIELDS = frozenset({
