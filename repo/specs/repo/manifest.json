@@ -10,6 +10,10 @@
       "path": "repo/specs/repo/manifest.json"
     },
     {
+      "spec_id": "repo.authority-model",
+      "path": "repo/specs/repo/authority-model.json"
+    },
+    {
       "spec_id": "repo.governing-issue",
       "path": "repo/specs/repo/governing-issue.json"
     },
@@ -106,6 +110,10 @@
   ],
   "dependencies": [],
   "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.authority-model"
+    },
     {
       "type": "specification",
       "spec_id": "repo.repository-structure"
