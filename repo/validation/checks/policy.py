@@ -271,8 +271,8 @@ def check_validate_cli_contract(repo_root: Path) -> None:
     test_launcher = (repo_root / "repo/scripts/test-validation").read_text()
     expect("$root/product/scripts" not in validate_launcher, "repository validate launcher depends on product scripts")
     expect("$root/product/scripts" not in test_launcher, "repository validation-test launcher depends on product scripts")
-    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
-    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo/src:$root/repo${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo/src:$root/repo${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
 
     expect(
         "repo_tree_sha" not in validate_launcher,

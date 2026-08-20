@@ -163,7 +163,7 @@
     },
     {
       "material_key": "repo-repo-model",
-      "source_path": "repo/scripts/repo_model.py",
+      "source_path": "repo/src/repo_model.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -203,7 +203,7 @@
     },
     {
       "material_key": "repo-github-profile",
-      "source_path": "repo/scripts/github_profile.py",
+      "source_path": "repo/src/github_profile.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -579,7 +579,7 @@
     },
     {
       "material_key": "repo-root-validation",
-      "source_path": "repo/scripts/root_validation.py",
+      "source_path": "repo/validation/runners/root_validation.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -779,7 +779,7 @@
     },
     {
       "material_key": "repo-routing-live-promotion",
-      "source_path": "repo/scripts/github_issue_promotion.py",
+      "source_path": "repo/src/github_issue_promotion.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -787,7 +787,7 @@
     },
     {
       "material_key": "repo-routing-canonical-producer",
-      "source_path": "repo/scripts/canonical-governed-state-validator",
+      "source_path": "repo/validation/github/canonical-governed-state-validator",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -795,7 +795,7 @@
     },
     {
       "material_key": "repo-routing-authorization-producer",
-      "source_path": "repo/scripts/repository-governance-authorization-validator",
+      "source_path": "repo/validation/github/repository-governance-authorization-validator",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -803,7 +803,7 @@
     },
     {
       "material_key": "repo-routing-runtime--init-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/__init__.py",
+      "source_path": "repo/src/issue_intake_governance_routing/__init__.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -811,7 +811,7 @@
     },
     {
       "material_key": "repo-routing-runtime-authority-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/authority.py",
+      "source_path": "repo/src/issue_intake_governance_routing/authority.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -819,7 +819,7 @@
     },
     {
       "material_key": "repo-routing-runtime-classification-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/classification.py",
+      "source_path": "repo/src/issue_intake_governance_routing/classification.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -827,7 +827,7 @@
     },
     {
       "material_key": "repo-routing-runtime-hosted-validation-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/hosted_validation.py",
+      "source_path": "repo/src/issue_intake_governance_routing/hosted_validation.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -835,7 +835,7 @@
     },
     {
       "material_key": "repo-routing-runtime-orchestration-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/orchestration.py",
+      "source_path": "repo/src/issue_intake_governance_routing/orchestration.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -843,7 +843,7 @@
     },
     {
       "material_key": "repo-routing-runtime-promotion-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/promotion.py",
+      "source_path": "repo/src/issue_intake_governance_routing/promotion.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -851,7 +851,7 @@
     },
     {
       "material_key": "repo-routing-runtime-provenance-py",
-      "source_path": "repo/scripts/issue_intake_governance_routing/provenance.py",
+      "source_path": "repo/src/issue_intake_governance_routing/provenance.py",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -1059,7 +1059,7 @@
     },
     {
       "material_key": "repo-test-validation-impl-py",
-      "source_path": "repo/scripts/test_validation_impl.py",
+      "source_path": "repo/validation/runners/test_validation_impl.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -1067,7 +1067,7 @@
     },
     {
       "material_key": "repo-validation-portable-self-tests-py",
-      "source_path": "repo/scripts/validation/portable_self_tests.py",
+      "source_path": "repo/validation/tests/self/portable_self_tests.py",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",

@@ -193,7 +193,7 @@
     },
     {
       "material_key": "repo-repo-model",
-      "destination_path": "repo/scripts/repo_model.py",
+      "destination_path": "repo/src/repo_model.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -238,7 +238,7 @@
     },
     {
       "material_key": "repo-github-profile",
-      "destination_path": "repo/scripts/github_profile.py",
+      "destination_path": "repo/src/github_profile.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -661,7 +661,7 @@
     },
     {
       "material_key": "repo-root-validation",
-      "destination_path": "repo/scripts/root_validation.py",
+      "destination_path": "repo/validation/runners/root_validation.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -886,7 +886,7 @@
     },
     {
       "material_key": "repo-routing-live-promotion",
-      "destination_path": "repo/scripts/github_issue_promotion.py",
+      "destination_path": "repo/src/github_issue_promotion.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -895,7 +895,7 @@
     },
     {
       "material_key": "repo-routing-canonical-producer",
-      "destination_path": "repo/scripts/canonical-governed-state-validator",
+      "destination_path": "repo/validation/github/canonical-governed-state-validator",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",
@@ -904,7 +904,7 @@
     },
     {
       "material_key": "repo-routing-authorization-producer",
-      "destination_path": "repo/scripts/repository-governance-authorization-validator",
+      "destination_path": "repo/validation/github/repository-governance-authorization-validator",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",
@@ -913,7 +913,7 @@
     },
     {
       "material_key": "repo-routing-runtime--init-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/__init__.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/__init__.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -922,7 +922,7 @@
     },
     {
       "material_key": "repo-routing-runtime-authority-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/authority.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/authority.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -931,7 +931,7 @@
     },
     {
       "material_key": "repo-routing-runtime-classification-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/classification.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/classification.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -940,7 +940,7 @@
     },
     {
       "material_key": "repo-routing-runtime-hosted-validation-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/hosted_validation.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/hosted_validation.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -949,7 +949,7 @@
     },
     {
       "material_key": "repo-routing-runtime-orchestration-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/orchestration.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/orchestration.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -958,7 +958,7 @@
     },
     {
       "material_key": "repo-routing-runtime-promotion-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/promotion.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/promotion.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -967,7 +967,7 @@
     },
     {
       "material_key": "repo-routing-runtime-provenance-py",
-      "destination_path": "repo/scripts/issue_intake_governance_routing/provenance.py",
+      "destination_path": "repo/src/issue_intake_governance_routing/provenance.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
@@ -1201,7 +1201,7 @@
     },
     {
       "material_key": "repo-test-validation-impl-py",
-      "destination_path": "repo/scripts/test_validation_impl.py",
+      "destination_path": "repo/validation/runners/test_validation_impl.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100755",
@@ -1210,7 +1210,7 @@
     },
     {
       "material_key": "repo-validation-portable-self-tests-py",
-      "destination_path": "repo/scripts/validation/portable_self_tests.py",
+      "destination_path": "repo/validation/tests/self/portable_self_tests.py",
       "producer": "framework-installation",
       "operation": "copy-verbatim",
       "mode": "100644",
