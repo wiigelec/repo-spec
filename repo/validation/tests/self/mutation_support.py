@@ -118,6 +118,20 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
 
     # Repository validation is itself part of the exact validated structure.
     # Every mutation fixture must start with a canonical repo/validation tree.
+    source_root = fixture_root / "repo/src"
+    source_root.mkdir(parents=True, exist_ok=True)
+
+    source_scripts = repo_root / "repo/scripts"
+    target_scripts = fixture_root / "repo/scripts"
+    if not source_scripts.is_dir():
+        fail("repository mutation fixture failed: source repo/scripts is missing")
+    shutil.copytree(
+        source_scripts,
+        target_scripts,
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
+    )
+
     source_validation = repo_root / "repo/validation"
     target_validation = fixture_root / "repo/validation"
     if not source_validation.is_dir():
