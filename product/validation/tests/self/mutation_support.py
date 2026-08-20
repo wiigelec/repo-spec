@@ -55,7 +55,6 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo/functional-set-process.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
-        "repo/schemas/repo/architecture-plan.schema.json",
         "product/schemas/product/product-manifest.schema.json",
         "product/schemas/product/product-spec-base.schema.json",
         "product/schemas/product/product-level-0.schema.json",
@@ -63,7 +62,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "product/schemas/product/product-level-2.schema.json",
         "product/schemas/product/product-level-3.schema.json",
     ]
-    for root_rel in ("repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/", "repo/docs/architecture/"):
+    for root_rel in ("repo/docs/overview/", "repo/docs/decompositions/", "repo/docs/plans/"):
         root = repo_root / root_rel
         for path in sorted(root.glob("*.md")):
             required_paths.append(path.relative_to(repo_root).as_posix())
@@ -157,11 +156,6 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
         shutil.copy2(repo_root / name, fixture_root / name)
     if required_paths is None:
         required_paths = declared_repo_fixture_paths(repo_root)
-
-    compatibility_registry = "repo/docs/development-document-compatibility.json"
-    required_paths = tuple(
-        dict.fromkeys((*required_paths, compatibility_registry))
-    )
 
     for relative_path in required_paths:
         source = repo_root / relative_path
