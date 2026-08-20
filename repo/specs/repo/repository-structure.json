@@ -7,11 +7,11 @@
   "normative_requirements": [
     {
       "id": "REPO-STR-001",
-      "text": "The repository shall separate repository-spec source, product-spec source, schemas, derived docs, and tooling into distinct top-level areas."
+      "text": "The maintained source repository shall use a default-deny structural authorization model. Repository specification source, product specification source, schemas, derived artifacts, tooling, implementation, validation, profiles, reference material, installed adapters, and user-convenience material shall remain within the accepted namespaces and ownership boundaries that authorize them. Every maintained file or directory shall be permitted by an explicit accepted structural rule, an accepted registry or declaration, or an explicitly extensible namespace contract; absence of an explicit prohibition shall not constitute permission."
     },
     {
       "id": "REPO-STR-002",
-      "text": "The repository-specification root shall be `repo/specs/repo/`, the product-specification root shall be `product/specs/product/`, and the two roots shall remain distinct authoritative domains."
+      "text": "The repository-specification root shall be `repo/specs/repo/`, the product-specification root shall be `product/specs/product/`, and the two roots shall remain distinct authoritative domains. The direct contents of `repo/specs/` shall consist exactly of the `repo/` directory, and the direct contents of `product/specs/` shall consist exactly of the `product/` directory. Content beneath each authoritative specification root shall be admitted only by the registry and lifecycle contract applicable to that domain."
     },
     {
       "id": "REPO-STR-003",
@@ -27,7 +27,7 @@
     },
     {
       "id": "REPO-STR-006",
-      "text": "The repository shall use `repo/profiles/github/` as the populated reusable GitHub profile source location, `.github/` as the installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications."
+      "text": "The repository shall use `repo/profiles/github/` as the populated reusable GitHub profile source location, `.github/` as the installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications. `repo/profiles/` and installed adapter namespaces shall be explicitly profile-governed extension points: profile source, managed adapter paths, and profile-specific bootstrap infrastructure shall be permitted only through the applicable accepted platform-profile contract or its accepted profile-owned declaration mechanism."
     },
     {
       "id": "REPO-STR-007",
@@ -39,7 +39,7 @@
     },
     {
       "id": "REPO-STR-009",
-      "text": "The target one-repository layout shall place reusable framework and repository material under `repo/` and product-owned material under `product/`, while preserving explicit authority and discovery boundaries between those trees."
+      "text": "The maintained `repo/` and `product/` ownership trees shall be closed at their direct-child boundary. `repo/` shall contain exactly the direct child directories `derived/`, `docs/`, `profiles/`, `schemas/`, `scripts/`, `specs/`, `src/`, and `validation/`. `product/` shall contain exactly the direct child directories `derived/`, `docs/`, `schemas/`, `scripts/`, `specs/`, `src/`, and `validation/`. No other direct file or directory is permitted beneath either ownership tree without governed revision of this specification. Reusable framework and repository material shall remain under `repo/`, and product-owned material shall remain under `product/`, subject to the more specific accepted contracts governing each authorized child namespace."
     },
     {
       "id": "REPO-STR-010",
@@ -47,23 +47,27 @@
     },
     {
       "id": "REPO-STR-011",
-      "text": "The `reference/` tree shall remain a separately classified reference boundary and shall not be treated as either the reusable `repo/` tree or the product-owned `product/` tree."
+      "text": "The `reference/` tree shall remain a separately classified isolated reference-fixture boundary and shall not be treated as either the reusable `repo/` tree or the product-owned `product/` tree. Similar path names beneath `reference/` shall not inherit authorization from source-repository namespaces. Maintained reference content shall be authorized only by the accepted reference-fixture, isolated-copy, or reference-validation contract applicable to that boundary and shall not grant structural permission elsewhere in the maintained source repository."
     },
     {
       "id": "REPO-STR-012",
-      "text": "The repository shall reserve `user/` for non-normative user-facing convenience and session-support artifacts; content under `user/` shall remain subordinate to accepted repository and product authority and shall not establish or override repository, product, workflow, planning, validation, or implementation semantics. `user/archive/docs/` may preserve historical or reference material displaced from `repo/docs/` or `product/docs/`; such archived material shall remain non-normative and shall not satisfy current development-document discovery, relationship, lifecycle, planning, or authority requirements."
+      "text": "The repository shall reserve `user/` as an explicitly extensible non-normative boundary for user-facing convenience, session-support, reference, and archive artifacts. Content under `user/` shall remain subordinate to accepted repository and product authority and shall not establish, override, or satisfy repository, product, workflow, planning, validation, implementation, or maintained-artifact requirements unless an accepted specification explicitly delegates that role. `user/archive/` may preserve historical or displaced material, including material removed from maintained governed namespaces; archived material shall remain non-normative and shall not satisfy current discovery, relationship, lifecycle, planning, validation, implementation, or authority requirements."
     },
     {
       "id": "REPO-STR-013",
-      "text": "The reusable repository/framework tree shall use `repo/scripts/` as its canonical user-executable wrapper and entry-point surface and `repo/src/` as its canonical maintained implementation source root. In the final conforming state both directories shall exist, `repo/scripts/` shall contain only user-executable wrappers or entry points, and all other maintained repository/framework implementation code shall reside under `repo/src/`. A `src/` hierarchy that exists only within derived or generated output is non-governing and shall not establish, constrain, or substitute for the maintained `repo/src/` hierarchy."
+      "text": "The reusable repository/framework tree shall use `repo/scripts/` as its canonical user-executable wrapper and entry-point surface and `repo/src/` as its canonical maintained implementation source root. Both directories shall exist. `repo/scripts/` is an explicitly extensible shallow role-governed namespace whose direct entries shall be executable files serving only as user-callable wrappers or entry points; nested implementation hierarchies and general maintained implementation modules are not permitted there. `repo/src/` is an explicitly extensible recursive role-governed namespace for maintained repository/framework implementation code. All other maintained repository/framework implementation code shall reside under `repo/src/`. A `src/` hierarchy that exists only within derived or generated output is non-governing and shall not establish, constrain, or substitute for the maintained `repo/src/` hierarchy."
     },
     {
       "id": "REPO-STR-014",
-      "text": "The product-owned tree shall use `product/scripts/` as its canonical user-executable wrapper and entry-point surface and `product/src/` as its canonical maintained product implementation source root. In the final conforming state both directories shall exist, `product/scripts/` shall contain only user-executable wrappers or entry points, and all other maintained product implementation code other than validation implementation shall reside under `product/src/`. Product-owned validation implementation shall reside under `product/validation/`, while inherently cross-domain or whole-checkout validation shall reside under root `validation/`. A `src/` hierarchy that exists only within derived or generated output is non-governing and shall not establish, constrain, or substitute for the maintained `product/src/` hierarchy."
+      "text": "The product-owned tree shall use `product/scripts/` as its canonical user-executable wrapper and entry-point surface and `product/src/` as its canonical maintained product implementation source root. Both directories shall exist. `product/scripts/` is an explicitly extensible shallow role-governed namespace whose direct entries shall be executable files serving only as user-callable wrappers or entry points; nested implementation hierarchies and general maintained implementation modules are not permitted there. `product/src/` is an explicitly extensible recursive role-governed namespace for maintained product implementation code other than validation implementation. Product-owned validation implementation shall reside under `product/validation/`, while inherently cross-domain or whole-checkout validation shall reside under root `validation/`. A `src/` hierarchy that exists only within derived or generated output is non-governing and shall not establish, constrain, or substitute for the maintained `product/src/` hierarchy."
     },
     {
       "id": "REPO-STR-015",
       "text": "The maintained source-repository documentation namespaces shall be closed. `repo/docs/` shall contain exactly the direct child directories `overview/`, `decompositions/`, and `plans/`, and `product/docs/` shall contain exactly the direct child directories `overview/`, `decompositions/`, and `plans/`. No other direct file or directory is permitted beneath either documentation namespace. Material that does not conform to the governed development-document model shall be removed from these namespaces or, when preservation is useful, retained only in an authority-appropriate location outside them."
+    },
+    {
+      "id": "REPO-STR-016",
+      "text": "The maintained schema and derived-specification structural envelopes shall be closed. `repo/schemas/` shall contain exactly the direct child directory `repo/`, and `product/schemas/` shall contain exactly the direct child directory `product/`; schema files beneath those domain roots shall be permitted only where authorized by the accepted schema-owning repository or product contract. `repo/derived/` and `product/derived/` shall each contain exactly the direct child directory `specs/`; `repo/derived/specs/` shall contain exactly the direct child directory `repo/`, and `product/derived/specs/` shall contain exactly the direct child directory `product/`. Files beneath the final derived-specification domain roots shall be permitted only when declared by their accepted authoritative source contract and shall remain subordinate generated projections."
     }
   ],
   "dependencies": [
