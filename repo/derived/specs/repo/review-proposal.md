@@ -72,10 +72,10 @@ Validation metadata:
 - Required: yes
 - Input type: `textarea`
 
-Ask reviewers to inspect the areas where judgment is most needed.
+Direct human semantic review to the areas where judgment is needed, including whether the proposed change preserves controlling authority and whether relevant validation behavior under-enforces, overreaches, or enforces semantics that conflict with controlling authority.
 
 Placeholder:
-> Call out the review focus areas.
+> Identify semantic-review focus, authority-sensitive judgment, and any validation behavior requiring human review.
 
 Validation metadata:
 
@@ -116,10 +116,15 @@ Validation metadata:
 - `REPO-RP-015`: The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere.
 - `REPO-RP-016`: The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content.
 - `REPO-RP-017`: Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance.
+- `REPO-RP-018`: Human semantic review shall evaluate the exact proposed revision against controlling accepted authority for matters that mechanical validation cannot establish, including governing intent, semantic completeness, authority-domain correctness, and materially relevant ambiguity.
+- `REPO-RP-019`: When a proposed change creates, modifies, relies upon, or exposes materially relevant validation behavior, human semantic review shall evaluate whether that behavior enforces the controlling authority without under-enforcement, overreach, or creation of normative semantics not granted by accepted authority.
+- `REPO-RP-020`: A reviewer shall not treat existing implementation, tests, generated artifacts, prior behavior, validator behavior, or a passing validation result as authority that overrides conflicting controlling accepted specifications.
+- `REPO-RP-021`: A material authority conflict or semantic-review finding that cannot be resolved from controlling accepted authority shall block acceptance of the affected proposed revision until the conflict is resolved through the governed process.
 
 ## Dependencies
 
 - `repo.manifest`
+- `repo.authority-model`
 - `repo.repository-structure`
 - `repo.development-workflow`
 - `repo.governing-issue`
@@ -128,6 +133,7 @@ Validation metadata:
 ## References
 
 - specification: `repo.manifest`
+- specification: `repo.authority-model`
 - specification: `repo.repository-structure`
 - specification: `repo.development-workflow`
 - specification: `repo.governing-issue`
