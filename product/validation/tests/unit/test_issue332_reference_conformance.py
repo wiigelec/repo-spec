@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[4]
-REFERENCE = ROOT / "product/docs/initializer/README.md"
+REFERENCE = ROOT / "user/archive/docs/product-initializer/README.md"
 LAUNCHER = ROOT / "product/scripts/repo-spec-init"
 
 

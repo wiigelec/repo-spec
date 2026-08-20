@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 ROOT_README = ROOT / "README.md"
-INIT_README = ROOT / "product/docs/initializer/README.md"
+INIT_README = ROOT / "user/archive/docs/product-initializer/README.md"
 NORMAL_COMMAND = "product/scripts/repo-spec init --repo /path/to/new/repository-name"
 LOWER_LEVEL = "product/scripts/repo-spec-init --request request.json"
 

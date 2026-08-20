@@ -11,7 +11,6 @@ SPEC = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.jso
 FRAMEWORK = ROOT / "product/src/initializer/framework-inventory.json"
 
 EXPECTED = {
-    "repo/schemas/repo/architecture-plan.schema.json",
     "repo/schemas/repo/development-document-base.schema.json",
     "repo/schemas/repo/functional-set-process.schema.json",
     "repo/schemas/repo/product-decomposition.schema.json",
