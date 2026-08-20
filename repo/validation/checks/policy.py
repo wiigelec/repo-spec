@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import subprocess
+
+from pathlib import Path
+
 from typing import Any
 
 from ..core.context import ValidationContext
@@ -10,6 +14,43 @@ from .development_documents import (
     _repository_development_roots,
     get_development_document_records,
 )
+
+
+def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, label: str) -> None:
+    expected_top={"README.md","manifest.json","checks","core","runners","tests"}
+    if require_github: expected_top.add("github")
+    expect(domain_root.is_dir(), f"{label} validation layout failed: missing validation domain")
+    actual={p.name:p for p in domain_root.iterdir()}
+    missing=sorted(expected_top-set(actual)); extra=sorted(set(actual)-expected_top)
+    expect(not missing, f"{label} validation layout failed: missing top-level entries: {', '.join(missing)}")
+    expect(not extra, f"{label} validation layout failed: unexpected top-level entries: {', '.join(extra)}")
+    for n in ("README.md","manifest.json"):
+        expect(actual[n].is_file(), f"{label} validation layout failed: {n} must be a file")
+    for n in ("checks","core","runners","tests"):
+        expect(actual[n].is_dir(), f"{label} validation layout failed: {n} must be a directory")
+    if require_github: expect(actual["github"].is_dir(), f"{label} validation layout failed: github must be a directory")
+    fixed={
+      "checks":{"development_documents.py","domain.py","generated_outputs.py","policy.py","specifications.py"},
+      "core":{"context.py","errors.py","invariants.py","paths.py","schema_subset.py"},
+      "runners":{"validate_impl.py","test_validation_impl.py"},
+    }
+    for dirname,expected in fixed.items():
+        got={p.name:p for p in (domain_root/dirname).iterdir()}
+        missing=sorted(expected-set(got)); extra=sorted(set(got)-expected)
+        expect(not missing, f"{label} validation layout failed: missing {dirname} entries: {', '.join(missing)}")
+        expect(not extra, f"{label} validation layout failed: unexpected {dirname} entries: {', '.join(extra)}")
+        wrong=sorted(n for n,p in got.items() if not p.is_file())
+        expect(not wrong, f"{label} validation layout failed: non-file {dirname} entries: {', '.join(wrong)}")
+    tests={p.name:p for p in (domain_root/"tests").iterdir()}
+    expected_tests={"unit","self","fixtures"}
+    missing=sorted(expected_tests-set(tests)); extra=sorted(set(tests)-expected_tests)
+    expect(not missing, f"{label} validation layout failed: missing tests entries: {', '.join(missing)}")
+    expect(not extra, f"{label} validation layout failed: unexpected tests entries: {', '.join(extra)}")
+    wrong=sorted(n for n,p in tests.items() if not p.is_dir())
+    expect(not wrong, f"{label} validation layout failed: non-directory tests entries: {', '.join(wrong)}")
+
+def check_validation_layout(context: ValidationContext) -> None:
+    _check_exact_validation_layout(context.repo_root / "repo/validation", require_github=True, label="repo")
 
 def check_platform_profile_boundary(context: ValidationContext) -> None:
     spec = context.repository.specs.get("repo.platform-profiles")
@@ -214,3 +255,39 @@ EXPECTED_GITHUB_DEPLOYMENT_STATE = {
         "Post-change verification must state the exact checks used after apply.",
     ],
 }
+
+def check_generate_docs_cli_contract(repo_root: Path) -> None:
+    proc = subprocess.run([str(repo_root / "repo/scripts/generate-docs")], cwd=repo_root, capture_output=True, text=True)
+    expect(proc.returncode == 0, "generate-docs launcher failed")
+    expect(proc.stdout.strip() == "", "generate-docs launcher wrote stdout")
+    expect(proc.stderr.strip() == "", "generate-docs launcher wrote stderr")
+
+    proc = subprocess.run([str(repo_root / "repo/scripts/generate-docs"), "--unknown-mode"], cwd=repo_root, capture_output=True, text=True)
+    expect(proc.returncode != 0, "generate-docs unknown mode succeeded")
+
+
+def check_validate_cli_contract(repo_root: Path) -> None:
+    validate_launcher = (repo_root / "repo/scripts/validate").read_text()
+    test_launcher = (repo_root / "repo/scripts/test-validation").read_text()
+    expect("$root/product/scripts" not in validate_launcher, "repository validate launcher depends on product scripts")
+    expect("$root/product/scripts" not in test_launcher, "repository validation-test launcher depends on product scripts")
+    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in validate_launcher, "repository validate launcher runtime boundary mismatch")
+    expect('PYTHONPATH="$root/repo:$root/repo/scripts${PYTHONPATH:+:$PYTHONPATH}"' in test_launcher, "repository validation-test launcher runtime boundary mismatch")
+
+    expect(
+        "repo_tree_sha" not in validate_launcher,
+        "repository validate launcher still carries mutable repo-tree SHA state",
+    )
+
+    proc = subprocess.run(
+        [str(repo_root / "repo/scripts/validate"), "--unknown-mode"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    expect(proc.returncode != 0, "repository validate unknown argument succeeded")
+    expect(proc.stdout.strip() == "", "repository validate unknown argument wrote stdout")
+    expect(
+        proc.stderr.strip() == "validation error: unknown argument: --unknown-mode",
+        "repository validate unknown-argument stderr mismatch",
+    )

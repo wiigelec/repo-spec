@@ -36,11 +36,6 @@ def run_validation_entry_point_tests(repo_root: Path) -> None:
         'python3 -m unittest "$@"' in unit_test_launcher,
         "repository unittest entry point omits focused unittest execution",
     )
-    expect(
-        (repo_root / "repo/validation/tests/__init__.py").is_file(),
-        "repository unittest package marker is missing",
-    )
-
     proc = subprocess.run(
         [str(validate_path)],
         cwd=repo_root,

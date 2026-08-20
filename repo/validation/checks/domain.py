@@ -10,7 +10,7 @@ from ..core.errors import fail
 from ..core.schema_subset import load_repo_schemas
 from .development_documents import _check_repository_development_documents
 from .generated_outputs import _check_repository_generated_freshness
-from .policy import _check_repository_lifecycle, check_platform_profile_boundary
+from .policy import _check_repository_lifecycle, check_platform_profile_boundary, check_validation_layout
 from .specifications import (
     check_acyclic_dependencies_phase,
     check_dependency_targets_phase,
@@ -50,6 +50,7 @@ def validate_repo(repo_root: Path) -> None:
         print(f"ok: {label}")
 
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("repository validation layout", check_validation_layout),
     ("repository JSON Schema conformance", check_schema_conformance),
     ("manifest completeness", check_manifest_phase),
     ("unique specification IDs", check_unique_spec_ids_phase),

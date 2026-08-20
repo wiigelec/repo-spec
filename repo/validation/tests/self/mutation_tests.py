@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from validation.checks.cli_contracts import (
+from validation.checks.policy import (
     check_generate_docs_cli_contract,
     check_validate_cli_contract,
 )
