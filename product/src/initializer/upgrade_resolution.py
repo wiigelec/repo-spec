@@ -350,7 +350,7 @@ def resolve_accepted_baseline(target_repository: str) -> BaselineResolution:
     )
 
 OUTPUT_INVENTORY_SPEC_PATH = "product/specs/product/level-1/initializer-output-inventory-v1.json"
-UPGRADE_QUALIFICATION_PATH = "product/scripts/initializer/upgrade-qualification.json"
+UPGRADE_QUALIFICATION_PATH = "product/src/initializer/upgrade-qualification.json"
 DELTA_CLASSIFICATIONS = frozenset({"unchanged", "added", "modified", "removed", "retargeted"})
 
 
@@ -556,7 +556,7 @@ def _build_inventory_endpoint(source: ResolvedSourceMaterial) -> InventoryEndpoi
         manifest_blob_id=_commit_blob_id(
             source.repository,
             source.commit_id,
-            "product/scripts/initializer/framework-inventory.json",
+            "product/src/initializer/framework-inventory.json",
         ),
         output_inventory_blob_id=_commit_blob_id(
             source.repository,

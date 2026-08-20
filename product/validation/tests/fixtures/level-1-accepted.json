@@ -43,7 +43,7 @@
       {
         "id": "impl.primitive",
         "paths": [
-          "product/src/primitive.py"
+          "product/src/initializer/cli.py"
         ],
         "requirements": [
           "PRIMITIVE-001"
@@ -54,7 +54,7 @@
       {
         "id": "test.primitive",
         "paths": [
-          "product/src/test_primitive.py"
+          "product/validation/tests/unit/test_destination_promotion.py"
         ],
         "requirements": [
           "PRIMITIVE-001"

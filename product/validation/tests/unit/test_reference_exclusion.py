@@ -19,7 +19,7 @@ class ReferenceExclusionTests(unittest.TestCase):
         framework_path = (
             self.repo_root
             / "product"
-            / "scripts"
+            / "src"
             / "initializer"
             / "framework-inventory.json"
         )

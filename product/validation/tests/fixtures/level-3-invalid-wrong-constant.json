@@ -35,7 +35,7 @@
       {
         "id": "impl.orchestration",
         "paths": [
-          "product/src/orchestration.py"
+          "product/src/initializer/executable_closure.py"
         ],
         "requirements": [
           "ORCH-001"
@@ -46,7 +46,7 @@
       {
         "id": "test.orchestration",
         "paths": [
-          "product/src/test_orchestration.py"
+          "product/validation/tests/unit/test_git.py"
         ],
         "requirements": [
           "ORCH-001"

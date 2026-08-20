@@ -31,7 +31,7 @@ def _write_framework_inventory(framework: Path, content: str) -> None:
     source = framework / "repo/scripts/tool.py"
     source.parent.mkdir(parents=True, exist_ok=True)
     source.write_text(content, encoding="utf-8")
-    manifest = framework / "product/scripts/initializer/framework-inventory.json"
+    manifest = framework / "product/src/initializer/framework-inventory.json"
     manifest.parent.mkdir(parents=True, exist_ok=True)
     manifest.write_text(json.dumps({"schema_version":"1","entries":[{
         "material_key":"repo-tool","source_path":"repo/scripts/tool.py",
@@ -59,17 +59,17 @@ def _make_framework(root: Path):
     return framework, baseline, current
 
 def _build_bundle(source_checkout: Path, repo: Path, framework: Path, revision: str) -> None:
-    product_scripts = source_checkout / "product/scripts"
-    inserted = str(product_scripts) not in sys.path
+    product_src = source_checkout / "product/src"
+    inserted = str(product_src) not in sys.path
     if inserted:
-        sys.path.insert(0, str(product_scripts))
+        sys.path.insert(0, str(product_src))
     try:
         from initializer.framework_authority import build_framework_authority_bundle
         build_framework_authority_bundle(str(framework), revision,
             repo / "repo/initializer/framework-authority" / revision)
     finally:
         if inserted:
-            sys.path.remove(str(product_scripts))
+            sys.path.remove(str(product_src))
 
 def _make_initialized_fixture(source_checkout: Path, root: Path, name: str,
                               framework: Path, baseline: str, current: str,

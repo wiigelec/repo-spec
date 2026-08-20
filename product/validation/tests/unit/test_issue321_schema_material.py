@@ -8,7 +8,7 @@ from initializer.inventory import validate_material_manifest
 
 ROOT = Path(__file__).resolve().parents[4]
 SPEC = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json"
-FRAMEWORK = ROOT / "product/scripts/initializer/framework-inventory.json"
+FRAMEWORK = ROOT / "product/src/initializer/framework-inventory.json"
 
 EXPECTED = {
     "repo/schemas/repo/architecture-plan.schema.json",

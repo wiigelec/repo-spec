@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 TARGET = "repo/validation/github/github_field_policy.py"
 SPEC = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json"
-FRAMEWORK = ROOT / "product/scripts/initializer/framework-inventory.json"
+FRAMEWORK = ROOT / "product/src/initializer/framework-inventory.json"
 
 def target_mode(path: Path) -> str:
     data = json.loads(path.read_text())

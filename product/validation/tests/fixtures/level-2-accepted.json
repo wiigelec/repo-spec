@@ -46,7 +46,7 @@
       {
         "id": "impl.component",
         "paths": [
-          "product/src/component.py"
+          "product/src/initializer/destination.py"
         ],
         "requirements": [
           "COMPONENT-001"
@@ -57,7 +57,7 @@
       {
         "id": "test.component",
         "paths": [
-          "product/src/test_component.py"
+          "product/validation/tests/unit/test_foundations.py"
         ],
         "requirements": [
           "COMPONENT-001"

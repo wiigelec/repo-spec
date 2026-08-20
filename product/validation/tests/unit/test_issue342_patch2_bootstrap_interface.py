@@ -49,7 +49,7 @@ class Issue342Patch2BootstrapInterfaceTests(unittest.TestCase):
         wrapper = ROOT / "product/scripts/repo-spec"
         self.assertTrue(wrapper.exists())
         self.assertIn("initializer/cli.py", wrapper.read_text())
-        cli = (ROOT / "product/scripts/initializer/cli.py").read_text()
+        cli = (ROOT / "product/src/initializer/cli.py").read_text()
         self.assertIn('argv[2] == "init"', cli)
         self.assertIn('argv[3] == "--repo"', cli)
         self.assertIn('{"schema_version": "2", "destination": destination}', cli)

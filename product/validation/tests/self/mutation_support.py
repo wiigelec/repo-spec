@@ -169,10 +169,10 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
     synthetic_correspondence_test_paths = (
-        "product/src/test_component.py",
-        "product/src/test_kernel.py",
-        "product/src/test_orchestration.py",
-        "product/src/test_primitive.py",
+        "product/validation/tests/unit/test_foundations.py",
+        "product/validation/tests/unit/test_product_validation.py",
+        "product/validation/tests/unit/test_git.py",
+        "product/validation/tests/unit/test_destination_promotion.py",
     )
     for relative_path in synthetic_correspondence_test_paths:
         synthetic_path = fixture_root / relative_path

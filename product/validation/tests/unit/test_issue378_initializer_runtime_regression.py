@@ -13,7 +13,7 @@ class Issue378InitializerRuntimeRegressionTests(unittest.TestCase):
         repo_root = Path(__file__).resolve().parents[4]
         env = os.environ.copy()
         env["PYTHONDONTWRITEBYTECODE"] = "1"
-        env["PYTHONPATH"] = str(repo_root / "product/scripts")
+        env["PYTHONPATH"] = str(repo_root / "product/src")
         proc = subprocess.run(
             [sys.executable, "-c", "import initializer.validation"],
             cwd=repo_root,

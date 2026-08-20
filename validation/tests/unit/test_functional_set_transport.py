@@ -8,7 +8,7 @@ from pathlib import Path
 class FunctionalSetTransportTests(unittest.TestCase):
     def test_framework_transport_boundary(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
-        inventory_path = repo_root / "product/scripts/initializer/framework-inventory.json"
+        inventory_path = repo_root / "product/src/initializer/framework-inventory.json"
         inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
         source_paths = {entry["source_path"] for entry in inventory["entries"]}
 
@@ -29,7 +29,7 @@ class FunctionalSetTransportTests(unittest.TestCase):
             "repo/derived/specs/repo/product-decomposition.md",
             "repo/derived/specs/repo/validation.md",
             "AGENTS.md",
-            "product/scripts/initializer/templates/initialized-repository-README.md",
+            "product/src/initializer/templates/initialized-repository-README.md",
         }
         self.assertTrue(required_framework_sources <= source_paths)
 

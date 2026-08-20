@@ -3,7 +3,7 @@
   "entries": [
     {
       "material_key": "root-readme",
-      "source_path": "product/scripts/initializer/templates/initialized-repository-README.md",
+      "source_path": "product/src/initializer/templates/initialized-repository-README.md",
       "role": "runtime-framework",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -171,7 +171,7 @@
     },
     {
       "material_key": "repo-generate-docs",
-      "source_path": "product/scripts/initializer/stubs/repo-generate-docs",
+      "source_path": "product/src/initializer/stubs/repo-generate-docs",
       "role": "documentation-support",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -187,7 +187,7 @@
     },
     {
       "material_key": "product-docgen",
-      "source_path": "product/scripts/docgen.py",
+      "source_path": "product/src/docgen.py",
       "role": "documentation-support",
       "operation": "copy-verbatim",
       "source_type": "blob",

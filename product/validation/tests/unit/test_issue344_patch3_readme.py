@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-TEMPLATE = ROOT / "product/scripts/initializer/templates/initialized-repository-README.md"
-FRAMEWORK = ROOT / "product/scripts/initializer/framework-inventory.json"
+TEMPLATE = ROOT / "product/src/initializer/templates/initialized-repository-README.md"
+FRAMEWORK = ROOT / "product/src/initializer/framework-inventory.json"
 OUTPUT = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json"
 
 
@@ -31,7 +31,7 @@ class Issue344Patch3ReadmeTests(unittest.TestCase):
         self.assertEqual(len(framework_matches), 1)
         self.assertEqual(
             framework_matches[0]["source_path"],
-            "product/scripts/initializer/templates/initialized-repository-README.md",
+            "product/src/initializer/templates/initialized-repository-README.md",
         )
 
     def test_neutral_readme_has_only_destination_discovery_surface(self) -> None:
@@ -57,7 +57,7 @@ class Issue344Patch3ReadmeTests(unittest.TestCase):
             "repo/docs/",
             "product/scripts/repo-spec",
             "product/scripts/repo-spec-init",
-            "product/scripts/initializer/",
+            "product/src/initializer/",
             "INITIALIZER-OVERVIEW",
             "INITIALIZER-IMPLEMENTATION-PLAN",
         ]
