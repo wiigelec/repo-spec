@@ -4,9 +4,9 @@ import tempfile
 from pathlib import Path
 import unittest
 
-from repo.validation.checks.policy import check_repository_source_layout
-from repo.validation.core.context import ValidationContext
-from repo.validation.core.errors import ValidationError
+from validation.checks.policy import check_repository_source_layout
+from validation.core.context import ValidationContext
+from validation.core.errors import ValidationFailure
 
 
 class RepositorySourceLayoutTests(unittest.TestCase):
@@ -34,7 +34,7 @@ class RepositorySourceLayoutTests(unittest.TestCase):
             impl = root / "repo/scripts/helper.py"
             impl.write_text("pass\n", encoding="utf-8")
             impl.chmod(0o755)
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(ValidationFailure):
                 check_repository_source_layout(self._context(root))
 
     def test_rejects_directory_in_scripts(self):
@@ -42,7 +42,7 @@ class RepositorySourceLayoutTests(unittest.TestCase):
             root = Path(tmp)
             self._make_valid_layout(root)
             (root / "repo/scripts/helpers").mkdir()
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(ValidationFailure):
                 check_repository_source_layout(self._context(root))
 
     def test_rejects_non_executable_entry_point(self):
@@ -52,7 +52,7 @@ class RepositorySourceLayoutTests(unittest.TestCase):
             wrapper = root / "repo/scripts/generate-docs"
             wrapper.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
             wrapper.chmod(0o644)
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(ValidationFailure):
                 check_repository_source_layout(self._context(root))
 
     def test_rejects_validation_under_src(self):
@@ -60,7 +60,7 @@ class RepositorySourceLayoutTests(unittest.TestCase):
             root = Path(tmp)
             self._make_valid_layout(root)
             (root / "repo/src/validation").mkdir()
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(ValidationFailure):
                 check_repository_source_layout(self._context(root))
 
 
