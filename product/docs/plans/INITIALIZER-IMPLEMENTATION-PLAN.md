@@ -30,7 +30,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
   "product_id": "repo-spec initializer",
   "authority_category": "planning",
   "lifecycle_status": "accepted",
-  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507, #514, #519",
+  "governing_issue": "#243, #253, #255, #257, #259, #261, #301, #303, #311, #313, #318, #342, #350, #491, #495, #502, #507, #514, #519, #542",
   "controlling_documents": [
     "product/docs/overview/INITIALIZER-FUNCTIONAL-SET.md",
     "product/docs/decompositions/INITIALIZER-DECOMPOSITION.md"
@@ -288,6 +288,18 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
         "product.repository-validation",
         "product.full-initialization"
       ]
+    },
+    {
+      "id": "SL1",
+      "controlling_product_specifications": [
+        "product.initializer-output-inventory-v1",
+        "product.framework-installation",
+        "product.material-manifest",
+        "product.repository-validation",
+        "product.validation-test-surface",
+        "product.installed-command-requirement",
+        "product.executable-reference-closure"
+      ]
     }
   ],
   "required_content_areas": {
@@ -398,10 +410,29 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
       ]
     }
   ],
-  "successor_action": "B0 through I5, H1, VS1, VS2, and VS3 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS3 completion is accepted through issues #516 and #517 and PR #518 on main at 2e51069b4215d71f7eba6417e0b19b2353b6f91c. No remaining implementation workstream is selected by this status declaration; a fresh successor audit is required before any separately governed successor lifecycle is created.",
+  "successor_action": "B0 through I5, H1, VS1, VS2, and VS3 are completed historical work. H2, VA1, and VA2 retain their separately governed scopes. VS3 completion is accepted through issues #516 and #517 and PR #518 on main at 2e51069b4215d71f7eba6417e0b19b2353b6f91c. Issue #542 selects bounded successor workstream SL1 for maintained product source-layout conformance after the governing repository-structure revision is accepted. No other remaining implementation workstream is selected by this status declaration.",
   "schema_version": "1"
 }
 ```
+
+## Issue #542 source-layout governance impact review
+
+Issue #542 selects a bounded successor workstream, `SL1`, for maintained product
+source-layout conformance. The governing source-layout semantics are repository-generic
+and are established by `repo.repository-structure`; this planning amendment does not
+create or alter product semantics.
+
+The accepted product specifications mapped to `SL1` are reaffirmed as behavioral and
+artifact-contract guardrails for the relocation. They do not establish the internal
+`product/scripts/` versus `product/src/` implementation boundary. `SL1` may begin only
+after the repository-structure authority defining that boundary is accepted.
+
+`SL1` scope is limited to relocating existing maintained implementation according to
+the accepted boundary, deleting the obsolete `product/src/` placeholder stubs, updating
+direct consumers without compatibility shims, preserving product validation ownership
+under `product/validation/`, relocating inherently cross-domain validation to root
+`validation/`, and restoring validation to green. No unrelated product capability,
+semantic redesign, or speculative refactor is authorized.
 
 ## Planning basis
 
