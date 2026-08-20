@@ -87,7 +87,7 @@
     },
     {
       "id": "REPO-VAL-021",
-      "text": "Each leaf validation entry point shall classify every non-README top-level Markdown file in governed development-document roots within its owned tree and shall require each file either to conform to the applicable document contract or to appear in the governed development-document compatibility registry when that registry applies to the owned root."
+      "text": "Each leaf validation entry point shall classify every non-README top-level Markdown file in governed development-document roots within its owned tree and shall require every such file to conform to the applicable development-document contract. Compatibility, exemption, grandfathering, or registry entries shall not satisfy development-document conformance."
     },
     {
       "id": "REPO-VAL-022",
@@ -184,6 +184,10 @@
     {
       "id": "REPO-VAL-045",
       "text": "Each public leaf validation entry point shall enforce the exact canonical structure of its owned validation domain, and aggregate `scripts/validate` shall therefore enforce all three maintained validation-domain structures. Aggregate `scripts/test-validation` shall exercise root, repository, and product validation self-test responsibilities, while repository and product leaf self-test entry points remain independently runnable. Continuous integration validation self-tests shall use the canonical aggregate self-test surface."
+    },
+    {
+      "id": "REPO-VAL-046",
+      "text": "Each leaf validation entry point shall perform an executive documentation-namespace check for the owned `repo/docs/` or `product/docs/` tree before deeper per-document validation. The check shall enforce the exact owner-appropriate direct child roots, reject every undeclared direct file or directory, enforce the closed direct-entry model of each canonical development-document root, require every subordinate chunk directory to be owned by exactly one valid controlling document, and reject every undeclared file, nested directory, orphan directory, or other content within a chunk directory."
     }
   ],
   "dependencies": [

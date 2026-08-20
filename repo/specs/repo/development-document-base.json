@@ -44,6 +44,14 @@
     {
       "id": "REPO-DDB-010",
       "text": "Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven."
+    },
+    {
+      "id": "REPO-DDB-011",
+      "text": "Each canonical governed development-document root shall be a closed composite-document namespace. Its direct entries shall consist only of `README.md`, applicable top-level controlling Markdown documents, and subordinate chunk directories declared by those controlling documents. Every direct child directory shall be the `document_slug` directory of exactly one valid controlling document in the same root, and every controlling document shall own exactly one such directory. No other direct file or directory is permitted."
+    },
+    {
+      "id": "REPO-DDB-012",
+      "text": "Each subordinate chunk directory shall itself be closed: its direct files shall exactly equal the `subordinate_chunks` inventory declared by its owning controlling document, every declared chunk shall be a direct Markdown file in that directory, and no additional files, nested directories, or undeclared content are permitted. Compatibility, exemption, grandfathering, or registry entries shall not make nonconforming content valid within a governed development-document root."
     }
   ],
   "dependencies": [
