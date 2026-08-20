@@ -116,6 +116,19 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
     if required_paths is None:
         required_paths = declared_repo_fixture_paths(repo_root)
 
+    # Repository validation is itself part of the exact validated structure.
+    # Every mutation fixture must start with a canonical repo/validation tree.
+    source_validation = repo_root / "repo/validation"
+    target_validation = fixture_root / "repo/validation"
+    if not source_validation.is_dir():
+        fail("repository mutation fixture failed: source repo/validation is missing")
+    shutil.copytree(
+        source_validation,
+        target_validation,
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
+    )
+
     compatibility_registry = "repo/docs/development-document-compatibility.json"
     required_paths = tuple(
         dict.fromkeys((*required_paths, compatibility_registry))

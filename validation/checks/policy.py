@@ -18,6 +18,45 @@ INITIALIZED_REQUIRED_DIRS = {".github", "product", "repo", "scripts", "user"}
 IGNORED_ROOT_ENTRIES = {".git"}
 
 
+def _layout_expect(condition: bool, message: str) -> None:
+    if not condition:
+        raise RootValidationError(message)
+
+
+def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, label: str) -> None:
+    expected_top={"README.md","manifest.json","checks","core","runners","tests"}
+    if require_github: expected_top.add("github")
+    _layout_expect(domain_root.is_dir(), f"{label} validation layout failed: missing validation domain")
+    actual={p.name:p for p in domain_root.iterdir()}
+    missing=sorted(expected_top-set(actual)); extra=sorted(set(actual)-expected_top)
+    _layout_expect(not missing, f"{label} validation layout failed: missing top-level entries: {', '.join(missing)}")
+    _layout_expect(not extra, f"{label} validation layout failed: unexpected top-level entries: {', '.join(extra)}")
+    for n in ("README.md","manifest.json"):
+        _layout_expect(actual[n].is_file(), f"{label} validation layout failed: {n} must be a file")
+    for n in ("checks","core","runners","tests"):
+        _layout_expect(actual[n].is_dir(), f"{label} validation layout failed: {n} must be a directory")
+    if require_github: _layout_expect(actual["github"].is_dir(), f"{label} validation layout failed: github must be a directory")
+    fixed={
+      "checks":{"development_documents.py","domain.py","generated_outputs.py","policy.py","specifications.py"},
+      "core":{"context.py","errors.py","invariants.py","paths.py","schema_subset.py"},
+      "runners":{"validate_impl.py","test_validation_impl.py"},
+    }
+    for dirname,expected in fixed.items():
+        got={p.name:p for p in (domain_root/dirname).iterdir()}
+        missing=sorted(expected-set(got)); extra=sorted(set(got)-expected)
+        _layout_expect(not missing, f"{label} validation layout failed: missing {dirname} entries: {', '.join(missing)}")
+        _layout_expect(not extra, f"{label} validation layout failed: unexpected {dirname} entries: {', '.join(extra)}")
+        wrong=sorted(n for n,p in got.items() if not p.is_file())
+        _layout_expect(not wrong, f"{label} validation layout failed: non-file {dirname} entries: {', '.join(wrong)}")
+    tests={p.name:p for p in (domain_root/"tests").iterdir()}
+    expected_tests={"unit","self","fixtures"}
+    missing=sorted(expected_tests-set(tests)); extra=sorted(set(tests)-expected_tests)
+    _layout_expect(not missing, f"{label} validation layout failed: missing tests entries: {', '.join(missing)}")
+    _layout_expect(not extra, f"{label} validation layout failed: unexpected tests entries: {', '.join(extra)}")
+    wrong=sorted(n for n,p in tests.items() if not p.is_dir())
+    _layout_expect(not wrong, f"{label} validation layout failed: non-directory tests entries: {', '.join(wrong)}")
+
+
 class RootValidationError(RuntimeError):
     pass
 
@@ -679,6 +718,9 @@ def validate_repo_tree_integrity(repo_root: Path) -> None:
 def validate(repo_root: Path) -> bool:
     initialized = _is_initialized(repo_root)
     validate_root_boundary(repo_root, initialized)
+    if not initialized:
+        _check_exact_validation_layout(repo_root / "validation", require_github=True, label="root")
+        print("ok: root validation layout")
     if initialized:
         validate_repo_tree_integrity(repo_root)
     return initialized

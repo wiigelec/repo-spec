@@ -5,6 +5,7 @@ from typing import Any
 
 from .specifications import load_product_validation_context
 from .policy import (
+    check_validation_layout,
     check_dependency_directions_phase,
     check_product_acyclic_dependencies_phase,
     check_product_completeness_phase,
@@ -145,6 +146,7 @@ def _check_product_lineage(context: ValidationContext) -> None:
 
 
 PRODUCT_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("product validation layout", check_validation_layout),
     ("product unique specification IDs", _check_product_unique_spec_ids),
     ("product unique item properties", _check_product_unique_item_properties),
     (
