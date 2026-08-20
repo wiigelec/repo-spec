@@ -31,7 +31,7 @@ def _write_framework_inventory(framework: Path, content: str) -> None:
     source = framework / "repo/scripts/tool.py"
     source.parent.mkdir(parents=True, exist_ok=True)
     source.write_text(content, encoding="utf-8")
-    manifest = framework / "product/scripts/initializer/framework-inventory.json"
+    manifest = framework / "product/src/initializer/framework-inventory.json"
     manifest.parent.mkdir(parents=True, exist_ok=True)
     manifest.write_text(json.dumps({"schema_version":"1","entries":[{
         "material_key":"repo-tool","source_path":"repo/scripts/tool.py",

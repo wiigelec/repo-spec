@@ -22,7 +22,7 @@ def find_material(entries: list[dict], material_key: str) -> dict:
 
 def run_docgen_ownership_tests(repo_root: Path) -> None:
     repo_docgen = (repo_root / "repo/src/docgen.py").read_text()
-    product_docgen = (repo_root / "product/scripts/docgen.py").read_text()
+    product_docgen = (repo_root / "product/src/docgen.py").read_text()
     root_entrypoint = (repo_root / "scripts/generate-docs").read_text()
     repo_entrypoint = (repo_root / "repo/scripts/generate-docs").read_text()
     product_entrypoint = (repo_root / "product/scripts/generate-docs").read_text()
@@ -35,13 +35,13 @@ def run_docgen_ownership_tests(repo_root: Path) -> None:
     assert "from repo_model" not in product_docgen
     assert 'repo/derived/specs/' not in product_docgen
     assert "repo/scripts/docgen.py" not in product_entrypoint
-    assert 'product/scripts/docgen.py' in product_entrypoint
+    assert 'product/src/docgen.py' in product_entrypoint
 
     assert '"$root/repo/scripts/generate-docs" "$mode"' in root_entrypoint
     assert '"$root/product/scripts/generate-docs" "$mode"' in root_entrypoint
 
     framework = json.loads(
-        (repo_root / "product/scripts/initializer/framework-inventory.json").read_text()
+        (repo_root / "product/src/initializer/framework-inventory.json").read_text()
     )
     output = json.loads(
         (repo_root / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text()
@@ -61,7 +61,7 @@ def run_docgen_ownership_tests(repo_root: Path) -> None:
 
     expected = {
         "repo-generate-docs": (
-            "product/scripts/initializer/stubs/repo-generate-docs",
+            "product/src/initializer/stubs/repo-generate-docs",
             "repo/scripts/generate-docs",
         ),
         "root-generate-docs": (
@@ -69,7 +69,7 @@ def run_docgen_ownership_tests(repo_root: Path) -> None:
             "scripts/generate-docs",
         ),
         "product-docgen": (
-            "product/scripts/docgen.py",
+            "product/src/docgen.py",
             "product/scripts/docgen.py",
         ),
         "product-generate-docs": (
@@ -87,7 +87,7 @@ def run_docgen_ownership_tests(repo_root: Path) -> None:
         assert material["mode"] == installed["mode"]
         assert material["role"] == installed["role"] == "documentation-support"
 
-    stub = repo_root / "product/scripts/initializer/stubs/repo-generate-docs"
+    stub = repo_root / "product/src/initializer/stubs/repo-generate-docs"
     before = tree_digest(repo_root / "repo")
     for mode in ("--write", "--check"):
         completed = subprocess.run(

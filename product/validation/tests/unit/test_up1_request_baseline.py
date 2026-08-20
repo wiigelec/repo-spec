@@ -31,7 +31,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
         git(repo, "init", "-q")
         git(repo, "config", "user.email", "test@example.invalid")
         git(repo, "config", "user.name", "Test")
-        (repo / "product/scripts/initializer").mkdir(parents=True)
+        (repo / "product/src/initializer").mkdir(parents=True)
         (repo / "product/specs/product/level-1").mkdir(parents=True)
         (repo / "README.md").write_text("framework-v1\n", encoding="utf-8")
         output = {"material_index": [{
@@ -54,7 +54,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
         (repo / "product/specs/product/level-1/initializer-output-inventory-v1.json").write_text(
             json.dumps(output) + "\n", encoding="utf-8"
         )
-        (repo / "product/scripts/initializer/framework-inventory.json").write_text(
+        (repo / "product/src/initializer/framework-inventory.json").write_text(
             json.dumps(manifest) + "\n", encoding="utf-8"
         )
         git(repo, "add", ".")

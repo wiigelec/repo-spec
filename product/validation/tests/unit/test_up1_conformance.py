@@ -39,7 +39,7 @@ class UP1ConformanceTests(unittest.TestCase):
         git(repo, "init", "-q")
         git(repo, "config", "user.email", "test@example.invalid")
         git(repo, "config", "user.name", "Test")
-        (repo / "product/scripts/initializer").mkdir(parents=True)
+        (repo / "product/src/initializer").mkdir(parents=True)
         (repo / "product/specs/product/level-1").mkdir(parents=True)
         return td, repo
 
@@ -67,7 +67,7 @@ class UP1ConformanceTests(unittest.TestCase):
                 "required": True,
                 "role": "runtime-framework",
             })
-        (repo / "product/scripts/initializer/framework-inventory.json").write_text(
+        (repo / "product/src/initializer/framework-inventory.json").write_text(
             json.dumps({"schema_version": "1", "entries": manifest}, indent=2) + "\n",
             encoding="utf-8",
         )
@@ -190,7 +190,7 @@ class UP1ConformanceTests(unittest.TestCase):
                     "modified": ("modified.txt", "after\n"),
                     "retargeted": ("new/path.txt", "same\n"),
                 })
-                (framework / "product/scripts/initializer/upgrade-qualification.json").write_text(
+                (framework / "product/src/initializer/upgrade-qualification.json").write_text(
                     json.dumps({
                         "schema_version": "1",
                         "transitions": [

@@ -71,9 +71,9 @@ def write_inventory(repo: Path, definitions: dict[str, tuple[str, str]]) -> None
             "role": "runtime-framework",
         })
 
-    (repo / "product/scripts/initializer").mkdir(parents=True, exist_ok=True)
+    (repo / "product/src/initializer").mkdir(parents=True, exist_ok=True)
     (repo / "product/specs/product/level-1").mkdir(parents=True, exist_ok=True)
-    (repo / "product/scripts/initializer/framework-inventory.json").write_text(
+    (repo / "product/src/initializer/framework-inventory.json").write_text(
         json.dumps({"schema_version": "1", "entries": manifest}, indent=2) + "\n",
         encoding="utf-8",
     )

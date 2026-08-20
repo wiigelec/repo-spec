@@ -38,10 +38,10 @@ def accept_kernel(temp_repo: Path) -> None:
                 "correspondence",
                 {
                     "implementations": [
-                        {"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}
+                        {"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "tests": [
-                        {"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}
+                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "conformance": [
                         {
@@ -428,18 +428,18 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         mutate_json(
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
-                spec["correspondence"]["implementations"].append({"id": "impl.kernel", "paths": ["product/src/kernel.py"], "requirements": ["KERNEL-001"]}),
-                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/src/test_kernel.py"], "requirements": ["KERNEL-001"]}),
+                spec["correspondence"]["implementations"].append({"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}),
+                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}),
                 spec,
             )[-1],
         )
         # Make the declared correspondence paths real so this mutation reaches
         # the intended conformance-reachability check rather than failing earlier
         # on path existence.
-        implementation_path = temp_repo / "product/src/kernel.py"
+        implementation_path = temp_repo / "product/src/docgen.py"
         implementation_path.parent.mkdir(parents=True, exist_ok=True)
         implementation_path.write_text("# fixture implementation\n", encoding="utf-8")
-        test_path = temp_repo / "product/src/test_kernel.py"
+        test_path = temp_repo / "product/validation/tests/unit/test_product_validation.py"
         test_path.parent.mkdir(parents=True, exist_ok=True)
         test_path.write_text("# fixture test\n", encoding="utf-8")
 
@@ -678,7 +678,7 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         accept_kernel(temp_repo)
         mutate_json(
             temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: spec["correspondence"]["implementations"].append({"id": "impl.duplicate", "paths": ["product/src/primitive.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+            lambda spec: spec["correspondence"]["implementations"].append({"id": "impl.duplicate", "paths": ["product/src/initializer/cli.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
         )
         deactivate_product_plans(temp_repo)
         expect_failure("duplicate implementation path", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "duplicate correspondence path")

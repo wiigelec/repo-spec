@@ -35,7 +35,7 @@ def _fixture_framework(root: Path) -> tuple[Path, str]:
     _run(repo, "init", "-q")
     _run(repo, "config", "user.name", "Test")
     _run(repo, "config", "user.email", "test@example.invalid")
-    (repo / "product/scripts/initializer").mkdir(parents=True)
+    (repo / "product/src/initializer").mkdir(parents=True)
     (repo / "product/specs/product/level-1").mkdir(parents=True)
     (repo / "repo/scripts").mkdir(parents=True)
     manifest = {
@@ -60,7 +60,7 @@ def _fixture_framework(root: Path) -> tuple[Path, str]:
             "role": "runtime-framework",
         }],
     }
-    (repo / "product/scripts/initializer/framework-inventory.json").write_text(json.dumps(manifest) + "\n")
+    (repo / "product/src/initializer/framework-inventory.json").write_text(json.dumps(manifest) + "\n")
     (repo / "product/specs/product/level-1/initializer-output-inventory-v1.json").write_text(json.dumps(output) + "\n")
     (repo / "repo/scripts/x").write_text("authority\n")
     _run(repo, "add", ".")

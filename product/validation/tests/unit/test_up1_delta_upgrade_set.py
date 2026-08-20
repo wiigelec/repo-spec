@@ -27,7 +27,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
         git(repo, "init", "-q")
         git(repo, "config", "user.email", "test@example.invalid")
         git(repo, "config", "user.name", "Test")
-        (repo / "product/scripts/initializer").mkdir(parents=True)
+        (repo / "product/src/initializer").mkdir(parents=True)
         (repo / "product/specs/product/level-1").mkdir(parents=True)
         return td, repo
 
@@ -56,7 +56,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
                 "required": True,
                 "role": "runtime-framework",
             })
-        (repo / "product/scripts/initializer/framework-inventory.json").write_text(
+        (repo / "product/src/initializer/framework-inventory.json").write_text(
             json.dumps({"schema_version": "1", "entries": manifest_entries}, indent=2) + "\n",
             encoding="utf-8",
         )
@@ -158,7 +158,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
                     "b": ("b.txt", "new-b\n"),
                     "c": ("c.txt", "new-c\n"),
                 })
-                (framework / "product/scripts/initializer/upgrade-qualification.json").write_text(
+                (framework / "product/src/initializer/upgrade-qualification.json").write_text(
                     json.dumps({
                         "schema_version": "1",
                         "transitions": [
@@ -187,7 +187,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
             ttd, target = self.make_target(framework, baseline)
             with ttd:
                 self.write_inventory(framework, {"same": ("same.txt", "same\n")})
-                qpath = framework / "product/scripts/initializer/upgrade-qualification.json"
+                qpath = framework / "product/src/initializer/upgrade-qualification.json"
                 qpath.write_text(
                     json.dumps({
                         "schema_version": "1",

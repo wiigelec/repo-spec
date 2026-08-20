@@ -120,7 +120,7 @@ def validate_root_boundary(repo_root: Path, initialized: bool) -> None:
 
 
 LINEAGE_RELATIVE_PATH = "repo/initializer/framework-lineage.json"
-FRAMEWORK_INVENTORY_PATH = "product/scripts/initializer/framework-inventory.json"
+FRAMEWORK_INVENTORY_PATH = "product/src/initializer/framework-inventory.json"
 OUTPUT_INVENTORY_PATH = "product/specs/product/level-1/initializer-output-inventory-v1.json"
 SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 

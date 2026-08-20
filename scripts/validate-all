@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+./scripts/validate &&
+./scripts/test-validation &&
+./repo/scripts/test-unittest &&
+./product/scripts/test-unittest &&
+./scripts/test-unittest

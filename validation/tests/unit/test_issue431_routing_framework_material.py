@@ -11,7 +11,7 @@ REQUIRED_PATHS = ['repo/specs/repo/issue-routing-governance.json', 'repo/derived
 class Issue431RoutingFrameworkMaterialTests(unittest.TestCase):
     def test_routing_framework_material_is_closed_over_initializer_output(self):
         output_spec = json.loads((ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text())
-        framework = json.loads((ROOT / "product/scripts/initializer/framework-inventory.json").read_text())
+        framework = json.loads((ROOT / "product/src/initializer/framework-inventory.json").read_text())
         destinations = {item["destination_path"] for item in output_spec["material_index"]}
         sources = {item["source_path"] for item in framework["entries"]}
         required = set(REQUIRED_PATHS)
@@ -25,7 +25,7 @@ class Issue431RoutingFrameworkMaterialTests(unittest.TestCase):
         self.assertTrue(framework_sources <= sources)
 
     def test_routing_runtime_sources_are_repository_owned(self):
-        framework = json.loads((ROOT / "product/scripts/initializer/framework-inventory.json").read_text())
+        framework = json.loads((ROOT / "product/src/initializer/framework-inventory.json").read_text())
         routing_sources = [
             item["source_path"] for item in framework["entries"]
             if item["material_key"].startswith("repo-routing-")

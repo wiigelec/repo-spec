@@ -41,14 +41,14 @@ def accept_kernel(temp_repo: Path) -> None:
                     "implementations": [
                         {
                             "id": "impl.kernel",
-                            "paths": ["product/src/kernel.py"],
+                            "paths": ["product/src/docgen.py"],
                             "requirements": ["KERNEL-001"],
                         }
                     ],
                     "tests": [
                         {
                             "id": "test.kernel",
-                            "paths": ["product/src/test_kernel.py"],
+                            "paths": ["product/validation/tests/unit/test_product_validation.py"],
                             "requirements": ["KERNEL-001"],
                         }
                     ],

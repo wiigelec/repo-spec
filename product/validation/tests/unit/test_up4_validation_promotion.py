@@ -114,7 +114,7 @@ def make_framework(root: Path) -> tuple[Path, str, str]:
     git(framework, "init", "-q")
     git(framework, "config", "user.email", "framework@example.invalid")
     git(framework, "config", "user.name", "Framework")
-    (framework / "product/scripts/initializer").mkdir(parents=True)
+    (framework / "product/src/initializer").mkdir(parents=True)
     (framework / "product/specs/product/level-1").mkdir(parents=True)
     (framework / "materials").mkdir()
     inventory = {
@@ -146,7 +146,7 @@ def make_framework(root: Path) -> tuple[Path, str, str]:
             }
         ],
     }
-    (framework / "product/scripts/initializer/framework-inventory.json").write_text(
+    (framework / "product/src/initializer/framework-inventory.json").write_text(
         json.dumps(inventory, indent=2) + "\n",
         encoding="utf-8",
     )
