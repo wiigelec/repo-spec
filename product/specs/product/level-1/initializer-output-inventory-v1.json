@@ -444,15 +444,6 @@
       "role": "validation-utility"
     },
     {
-      "material_key": "repo-schema-architecture-plan",
-      "destination_path": "repo/schemas/repo/architecture-plan.schema.json",
-      "operation": "copy-verbatim",
-      "mode": "100644",
-      "required": true,
-      "producer": "framework-installation",
-      "role": "validation-utility"
-    },
-    {
       "material_key": "validator-schema-repo-manifest",
       "destination_path": "repo/schemas/repo-manifest.schema.json",
       "operation": "copy-verbatim",

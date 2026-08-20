@@ -46,19 +46,126 @@ def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
     print("ok: repository validation phase contract")
 
 
-def run_repository_development_document_compatibility_tests(repo_root: Path) -> None:
-    with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
-        temp_root = Path(temp_root_name)
-        clone_index = 0
-        temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
-        clone_index += 1
-        mutate_json(
-            temp_repo / "repo/docs/development-document-compatibility.json",
-            lambda registry: registry["entries"].__delitem__(0) or registry,
-        )
-        expect_failure("legacy development document without registry entry", lambda: validate_repository_phase(temp_repo, "repository development documents"), "compatibility registry mismatch")
+def run_repository_development_document_namespace_tests(repo_root: Path) -> None:
+    from validation.checks.development_documents import (
+        check_development_document_chunk_entries,
+        check_development_document_namespace,
+        check_development_document_root_entries,
+    )
 
-    print("ok: repository development document compatibility")
+    with tempfile.TemporaryDirectory(prefix="repo-spec-doc-namespace-") as temp_root_name:
+        temp_root = Path(temp_root_name)
+        namespace = temp_root / "repo/docs"
+        for root_name in ("overview", "decompositions", "plans"):
+            root = namespace / root_name
+            root.mkdir(parents=True, exist_ok=True)
+            (root / "README.md").write_text("# Index\n")
+
+        check_development_document_namespace(
+            temp_root,
+            "repo/docs/",
+            ("overview", "decompositions", "plans"),
+        )
+
+        rogue = namespace / "architecture"
+        rogue.mkdir()
+        expect_failure(
+            "rogue repository docs root",
+            lambda: check_development_document_namespace(
+                temp_root,
+                "repo/docs/",
+                ("overview", "decompositions", "plans"),
+            ),
+            "direct entries must be exactly",
+        )
+        rogue.rmdir()
+
+        loose = namespace / "compatibility.json"
+        loose.write_text("{}\n")
+        expect_failure(
+            "loose repository docs file",
+            lambda: check_development_document_namespace(
+                temp_root,
+                "repo/docs/",
+                ("overview", "decompositions", "plans"),
+            ),
+            "direct entries must be exactly",
+        )
+        loose.unlink()
+
+        overview = namespace / "overview"
+        controller = overview / "TEST-FUNCTIONAL-SET.md"
+        controller.write_text("# Test\n")
+        chunk_dir = overview / "test-functional-set"
+        chunk_dir.mkdir()
+        chunk = chunk_dir / "01-test.md"
+        chunk.write_text("# Test\n")
+        check_development_document_root_entries(
+            overview,
+            "repo/docs/overview/",
+            {controller.name},
+            {chunk_dir.name},
+        )
+        check_development_document_chunk_entries(
+            temp_root,
+            chunk_dir,
+            ["repo/docs/overview/test-functional-set/01-test.md"],
+        )
+
+        orphan = overview / "orphan"
+        orphan.mkdir()
+        expect_failure(
+            "orphan chunk directory",
+            lambda: check_development_document_root_entries(
+                overview,
+                "repo/docs/overview/",
+                {controller.name},
+                {chunk_dir.name},
+            ),
+            "closed root mismatch",
+        )
+        orphan.rmdir()
+
+        rogue_root_file = overview / "notes.txt"
+        rogue_root_file.write_text("x")
+        expect_failure(
+            "rogue file in canonical root",
+            lambda: check_development_document_root_entries(
+                overview,
+                "repo/docs/overview/",
+                {controller.name},
+                {chunk_dir.name},
+            ),
+            "closed root mismatch",
+        )
+        rogue_root_file.unlink()
+
+        undeclared = chunk_dir / "02-undeclared.md"
+        undeclared.write_text("# Undeclared\n")
+        expect_failure(
+            "undeclared chunk",
+            lambda: check_development_document_chunk_entries(
+                temp_root,
+                chunk_dir,
+                ["repo/docs/overview/test-functional-set/01-test.md"],
+            ),
+            "inventory mismatch",
+        )
+        undeclared.unlink()
+
+        nested = chunk_dir / "nested"
+        nested.mkdir()
+        expect_failure(
+            "nested chunk content",
+            lambda: check_development_document_chunk_entries(
+                temp_root,
+                chunk_dir,
+                ["repo/docs/overview/test-functional-set/01-test.md"],
+            ),
+            "non-Markdown or nested content",
+        )
+
+    print("ok: repository development document namespace")
 
 
 def run_repository_manifest_completeness_tests(repo_root: Path) -> None:

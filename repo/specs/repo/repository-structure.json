@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-STR-005",
-      "text": "The repository manifest shall govern discovery of repository specifications only. Repository/framework governed directional and planning documents maintained by this source repository shall use `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`; product-owned development documents maintained by this source repository shall use `product/docs/`. Initialized-repository product development-document outputs are governed separately by the accepted initializer output contracts. None of these documents becomes repository-workflow authority."
+      "text": "The repository manifest shall govern discovery of repository specifications only. Repository/framework governed directional and planning documents maintained by this source repository shall use `repo/docs/overview/`, `repo/docs/decompositions/`, and `repo/docs/plans/`; product-owned governed development documents maintained by this source repository shall use `product/docs/overview/`, `product/docs/decompositions/`, and `product/docs/plans/`. Initialized-repository product development-document outputs are governed separately by the accepted initializer output contracts. None of these documents becomes repository-workflow authority."
     },
     {
       "id": "REPO-STR-006",
@@ -51,7 +51,7 @@
     },
     {
       "id": "REPO-STR-012",
-      "text": "The repository shall reserve `user/` for non-normative user-facing convenience and session-support artifacts; content under `user/` shall remain subordinate to accepted repository and product authority and shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
+      "text": "The repository shall reserve `user/` for non-normative user-facing convenience and session-support artifacts; content under `user/` shall remain subordinate to accepted repository and product authority and shall not establish or override repository, product, workflow, planning, validation, or implementation semantics. `user/archive/docs/` may preserve historical or reference material displaced from `repo/docs/` or `product/docs/`; such archived material shall remain non-normative and shall not satisfy current development-document discovery, relationship, lifecycle, planning, or authority requirements."
     },
     {
       "id": "REPO-STR-013",
@@ -60,6 +60,10 @@
     {
       "id": "REPO-STR-014",
       "text": "The product-owned tree shall use `product/scripts/` as its canonical user-executable wrapper and entry-point surface and `product/src/` as its canonical maintained product implementation source root. In the final conforming state both directories shall exist, `product/scripts/` shall contain only user-executable wrappers or entry points, and all other maintained product implementation code other than validation implementation shall reside under `product/src/`. Product-owned validation implementation shall reside under `product/validation/`, while inherently cross-domain or whole-checkout validation shall reside under root `validation/`. A `src/` hierarchy that exists only within derived or generated output is non-governing and shall not establish, constrain, or substitute for the maintained `product/src/` hierarchy."
+    },
+    {
+      "id": "REPO-STR-015",
+      "text": "The maintained source-repository documentation namespaces shall be closed. `repo/docs/` shall contain exactly the direct child directories `overview/`, `decompositions/`, and `plans/`, and `product/docs/` shall contain exactly the direct child directories `overview/`, `decompositions/`, and `plans/`. No other direct file or directory is permitted beneath either documentation namespace. Material that does not conform to the governed development-document model shall be removed from these namespaces or, when preservation is useful, retained only in an authority-appropriate location outside them."
     }
   ],
   "dependencies": [

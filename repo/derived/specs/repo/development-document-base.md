@@ -30,6 +30,8 @@ Defines the canonical composite-document envelope shared by overview-process art
 - `REPO-DDB-008`: A governed development chunk shall cover one coherent concern, avoid unrelated lifecycle stages or authority domains, and remain small enough for direct human and AI inspection.
 - `REPO-DDB-009`: Mechanically enforceable validation shall cover root containment, top-level filename pattern, subordinate directory naming, declared chunk inventory, chunk ordering, duplicate detection, missing or undeclared chunks, and declared chunk-size limits.
 - `REPO-DDB-010`: Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven.
+- `REPO-DDB-011`: Each canonical governed development-document root shall be a closed composite-document namespace. Its direct entries shall consist only of `README.md`, applicable top-level controlling Markdown documents, and subordinate chunk directories declared by those controlling documents. Every direct child directory shall be the `document_slug` directory of exactly one valid controlling document in the same root, and every controlling document shall own exactly one such directory. No other direct file or directory is permitted.
+- `REPO-DDB-012`: Each subordinate chunk directory shall itself be closed: its direct files shall exactly equal the `subordinate_chunks` inventory declared by its owning controlling document, every declared chunk shall be a direct Markdown file in that directory, and no additional files, nested directories, or undeclared content are permitted. Compatibility, exemption, grandfathering, or registry entries shall not make nonconforming content valid within a governed development-document root.
 
 ## Dependencies
 

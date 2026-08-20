@@ -80,7 +80,7 @@ class Issue342Patch3AlignmentTests(unittest.TestCase):
         self.assertIn('usage: repo-spec init --repo <destination>', cli)
 
     def test_normal_docs_use_repo_spec_init(self) -> None:
-        for path in ("README.md", "product/docs/initializer/README.md"):
+        for path in ("README.md", "user/archive/docs/product-initializer/README.md"):
             text = (ROOT / path).read_text()
             self.assertIn("repo-spec init --repo", text)
 

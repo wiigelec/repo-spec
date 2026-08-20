@@ -44,15 +44,12 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo/functional-set-process.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
-        "repo/schemas/repo/architecture-plan.schema.json",
-        "repo/docs/development-document-compatibility.json",
     ]
 
     for root_rel in (
         "repo/docs/overview/",
         "repo/docs/decompositions/",
         "repo/docs/plans/",
-        "repo/docs/architecture/",
     ):
         docs_root = repo_root / root_rel
         if not docs_root.exists():
@@ -141,11 +138,6 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
         target_validation,
         dirs_exist_ok=True,
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
-    )
-
-    compatibility_registry = "repo/docs/development-document-compatibility.json"
-    required_paths = tuple(
-        dict.fromkeys((*required_paths, compatibility_registry))
     )
 
     for relative_path in required_paths:

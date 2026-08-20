@@ -40,11 +40,15 @@ def _record(
 
 def run_architecture_document_contract_tests(repo_root: Path) -> None:
     architecture = _record(ARCHITECTURE_PATH, "architecture-plan", [])
-    check_development_document_relationships(
-        repo_root,
-        {ARCHITECTURE_PATH: architecture},
-        {},
-        {},
+    expect_failure(
+        "retired architecture-plan relationship type",
+        lambda: check_development_document_relationships(
+            repo_root,
+            {ARCHITECTURE_PATH: architecture},
+            {},
+            {},
+        ),
+        "unsupported artifact type architecture-plan",
     )
 
     whiteboard = _record(

@@ -45,14 +45,6 @@ DEVELOPMENT_DOCUMENT_ROOTS = {
         "filename_suffix": "-IMPLEMENTATION-PLAN.md",
         "chunk_dir_suffix": "/",
     },
-    "repo/docs/architecture/": {
-        "artifact_type": "architecture-plan",
-        "schema_key": "repo.architecture-plan",
-        "required_headings": ["Status", "Metadata", "Architecture basis", "Desired state", "Chunk index", "Relationships", "Next authorized action", "Discoverability"],
-        "required_content_area_keys": ["authority_and_basis", "scope_and_boundaries", "target_architecture", "portability_and_ownership", "validation_strategy", "risks_and_unresolved_decisions", "audit_and_successor_work"],
-        "filename_suffix": "-ARCHITECTURE.md",
-        "chunk_dir_suffix": "/",
-    },
 }
 
 for product_root, framework_root in (
@@ -62,7 +54,7 @@ for product_root, framework_root in (
 ):
     DEVELOPMENT_DOCUMENT_ROOTS[product_root] = DEVELOPMENT_DOCUMENT_ROOTS[framework_root]
 
-COVERAGE_DOCUMENT_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "repo/docs/architecture/", "product/docs/overview/", "product/docs/plans/"}
+COVERAGE_DOCUMENT_ROOTS = {"repo/docs/overview/", "repo/docs/plans/", "product/docs/overview/", "product/docs/plans/"}
 DECOMPOSITION_ROOTS = {"repo/docs/decompositions/", "product/docs/decompositions/"}
 
 DEVELOPMENT_DOCUMENT_COMPATIBILITY_REGISTRY_PATH = "repo/docs/development-document-compatibility.json"
@@ -219,14 +211,18 @@ def check_development_document_relationships(
         source_type = metadata["artifact_type"]
         source_product = metadata["product_id"]
         source_status = metadata["lifecycle_status"]
-        allowed_types = {
+        allowed_types_by_source = {
             "overview-whiteboard": {"overview-whiteboard"},
             "overview-analysis": {"overview-whiteboard", "overview-analysis"},
             "functional-set": {"overview-whiteboard", "overview-analysis", "functional-set"},
             "product-decomposition": {"functional-set"},
             "implementation-plan": {"functional-set", "product-decomposition", "implementation-plan"},
-            "architecture-plan": {"functional-set", "architecture-plan"},
-        }[source_type]
+        }
+        expect(
+            source_type in allowed_types_by_source,
+            f"development document relationship failed: unsupported artifact type {source_type} in {path}",
+        )
+        allowed_types = allowed_types_by_source[source_type]
 
         controlling_documents = metadata["controlling_documents"]
         predecessor_documents = metadata["predecessor_documents"]
@@ -415,6 +411,82 @@ def check_development_document_relationships(
         visit(node)
 
 
+
+def check_development_document_namespace(
+    repo_root: Path,
+    namespace_rel: str,
+    expected_root_names: tuple[str, ...],
+) -> None:
+    namespace = repo_root / namespace_rel
+    expect(namespace.exists(), f"development document namespace failed: missing {namespace_rel}")
+    expect(namespace.is_dir(), f"development document namespace failed: not a directory {namespace_rel}")
+    actual_entries = {entry.name: entry for entry in namespace.iterdir()}
+    expect(
+        set(actual_entries) == set(expected_root_names),
+        f"development document namespace failed: {namespace_rel} direct entries must be exactly "
+        f"{sorted(expected_root_names)}; observed={sorted(actual_entries)}",
+    )
+    for root_name in expected_root_names:
+        entry = actual_entries[root_name]
+        expect(
+            entry.is_dir(),
+            f"development document namespace failed: canonical root must be a directory "
+            f"{namespace_rel}{root_name}",
+        )
+
+
+def check_development_document_root_entries(
+    root: Path,
+    root_rel: str,
+    controller_names: set[str],
+    chunk_dir_names: set[str],
+) -> None:
+    expected_names = {"README.md", *controller_names, *chunk_dir_names}
+    actual_names = {entry.name for entry in root.iterdir()}
+    expect(
+        actual_names == expected_names,
+        f"development document root failed: closed root mismatch {root_rel}; "
+        f"expected={sorted(expected_names)}; observed={sorted(actual_names)}",
+    )
+    expect((root / "README.md").is_file(), f"development document root failed: README.md must be a file in {root_rel}")
+    for controller_name in controller_names:
+        expect(
+            (root / controller_name).is_file(),
+            f"development document root failed: controller must be a file {root_rel}{controller_name}",
+        )
+    for chunk_dir_name in chunk_dir_names:
+        expect(
+            (root / chunk_dir_name).is_dir(),
+            f"development document root failed: subordinate chunk root must be a directory "
+            f"{root_rel}{chunk_dir_name}",
+        )
+
+
+def check_development_document_chunk_entries(
+    repo_root: Path,
+    chunk_dir: Path,
+    declared_paths: list[str],
+) -> list[Path]:
+    actual_entries = sorted(chunk_dir.iterdir(), key=lambda path: path.name)
+    unexpected = [
+        entry.relative_to(repo_root).as_posix()
+        for entry in actual_entries
+        if not entry.is_file() or entry.suffix != ".md"
+    ]
+    expect(
+        not unexpected,
+        f"development document chunk inventory failed: chunk directory contains non-Markdown or nested content "
+        f"{unexpected}",
+    )
+    actual_chunks = [entry for entry in actual_entries if entry.is_file() and entry.suffix == ".md"]
+    actual_paths = {entry.relative_to(repo_root).as_posix() for entry in actual_chunks}
+    expect(
+        actual_paths == set(declared_paths),
+        f"development document chunk inventory failed: inventory mismatch in "
+        f"{chunk_dir.relative_to(repo_root).as_posix()}",
+    )
+    return actual_chunks
+
 def check_development_documents_phase(
     context: ValidationContext,
     *,
@@ -425,15 +497,9 @@ def check_development_documents_phase(
     if development_roots is None:
         development_roots = DEVELOPMENT_DOCUMENT_ROOTS
     if compatibility_registry is None:
-        compatibility_registry = load_development_document_compatibility_registry(
-            context.repo_root,
-            development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
-        )
+        compatibility_registry = {}
     if owned_compatibility_paths is None:
-        prefixes = tuple(development_roots)
-        owned_compatibility_paths = {
-            path for path in compatibility_registry if path.startswith(prefixes)
-        }
+        owned_compatibility_paths = set()
     unmarked_docs: set[str] = set()
     records: dict[str, DevelopmentDocumentRecord] = {}
     chunk_owner_paths: dict[str, str] = {}
@@ -491,15 +557,15 @@ def check_development_documents_phase(
             expect(chunk_dir.exists(), f"development document path failed: missing chunk directory {chunk_dir.relative_to(context.repo_root)}")
             expect(chunk_dir.is_dir(), f"development document path failed: chunk directory is not a directory {chunk_dir.relative_to(context.repo_root)}")
 
-            actual_chunks = sorted(path for path in chunk_dir.glob("*.md") if path.is_file())
-            nested_chunks = sorted(path for path in chunk_dir.rglob("*.md") if path.is_file() and path.parent != chunk_dir)
-            expect(not nested_chunks, f"development document path failed: nested chunk directories are not permitted in {chunk_dir.relative_to(context.repo_root)}")
-
             declared_chunks = metadata["subordinate_chunks"]
             declared_paths = [chunk["path"] for chunk in declared_chunks]
             expect(len(declared_paths) == len(set(declared_paths)), f"development document chunk inventory failed: duplicate paths in {rel_path}")
+            actual_chunks = check_development_document_chunk_entries(
+                context.repo_root,
+                chunk_dir,
+                declared_paths,
+            )
             expect(len(declared_chunks) == len(actual_chunks), f"development document chunk inventory failed: chunk count mismatch in {rel_path}")
-            expect(set(declared_paths) == {chunk.relative_to(context.repo_root).as_posix() for chunk in actual_chunks}, f"development document chunk inventory failed: inventory mismatch in {rel_path}")
 
             required_content_areas = metadata.get("required_content_areas")
             expect(isinstance(required_content_areas, dict), f"development document content inventory failed: required content areas must be an object in {rel_path}")
@@ -593,7 +659,20 @@ def check_development_documents_phase(
             canonical_links = {resolve_markdown_link_target(f"{root_rel}README.md", target) for _label, target in markdown_links(markdown_section(readme_text, "Canonical documents"))}
             expect(rel_path in canonical_links, f"development document discovery failed: README does not link to {rel_path}")
 
-    expect(unmarked_docs == owned_compatibility_paths, f"development document classification failed: compatibility registry mismatch; unmarked={sorted(unmarked_docs)}; registered={sorted(owned_compatibility_paths)}")
+    expect(
+        not unmarked_docs,
+        f"development document classification failed: nonconforming top-level Markdown {sorted(unmarked_docs)}",
+    )
+    for root_rel in development_roots:
+        root_records = [record for record in records.values() if record.root_rel == root_rel]
+        controller_names = {Path(record.path).name for record in root_records}
+        chunk_dir_names = {record.metadata["document_slug"] for record in root_records}
+        check_development_document_root_entries(
+            context.repo_root / root_rel,
+            root_rel,
+            controller_names,
+            chunk_dir_names,
+        )
     check_development_document_relationships(context.repo_root, records, compatibility_registry, chunk_owner_paths)
 
 
@@ -649,17 +728,14 @@ def _product_development_roots() -> dict[str, dict[str, Any]]:
 
 def check_product_development_documents(context: ValidationContext) -> None:
     selected_roots = _product_development_roots()
-    full_registry = load_development_document_compatibility_registry(
+    check_development_document_namespace(
         context.repo_root,
-        development_roots=DEVELOPMENT_DOCUMENT_ROOTS,
+        "product/docs/",
+        ("overview", "decompositions", "plans"),
     )
-    prefixes = tuple(selected_roots)
-    owned_compatibility_paths = {
-        path for path in full_registry if path.startswith(prefixes)
-    }
     check_development_documents_phase(
         context,
         development_roots=selected_roots,
-        compatibility_registry=full_registry,
-        owned_compatibility_paths=owned_compatibility_paths,
+        compatibility_registry={},
+        owned_compatibility_paths=set(),
     )

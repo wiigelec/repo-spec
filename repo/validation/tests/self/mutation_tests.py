@@ -16,7 +16,7 @@ from ..unit.test_issue_intake_governance_routing import run_issue_intake_governa
 from ..unit.test_issue_routing_hosted_conformance import run_issue_routing_hosted_conformance_tests
 from ..unit.test_repository_mutations import (
     run_repository_validation_phase_contract_tests,
-    run_repository_development_document_compatibility_tests,
+    run_repository_development_document_namespace_tests,
     run_repository_manifest_completeness_tests,
     run_repository_schema_conformance_tests,
     run_repository_derived_artifact_tests,
@@ -45,7 +45,7 @@ def run_repository_mutation_tests(repo_root: Path) -> None:
     run_issue_intake_governance_routing_tests(repo_root)
     run_issue_routing_hosted_conformance_tests(repo_root)
     run_repository_validation_phase_contract_tests(repo_root)
-    run_repository_development_document_compatibility_tests(repo_root)
+    run_repository_development_document_namespace_tests(repo_root)
     run_repository_manifest_completeness_tests(repo_root)
     run_repository_schema_conformance_tests(repo_root)
     run_repository_derived_artifact_tests(repo_root)
