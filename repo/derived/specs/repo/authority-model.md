@@ -66,4 +66,3 @@ Defines repository-local supremacy, scoped normative authority, delegated valida
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/authority-model.md`
-

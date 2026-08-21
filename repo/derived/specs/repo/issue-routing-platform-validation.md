@@ -60,4 +60,3 @@ Reusable platform-validation boundary that keeps hosted field validation subordi
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/issue-routing-platform-validation.md`
-

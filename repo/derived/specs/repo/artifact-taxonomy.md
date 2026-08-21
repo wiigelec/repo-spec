@@ -415,4 +415,3 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/artifact-taxonomy.md`
-

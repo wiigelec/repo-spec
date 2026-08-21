@@ -42,4 +42,3 @@ Issue-intake and governance-routing foundations defining shared meanings, author
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/issue-routing-governance.md`
-

@@ -29,6 +29,7 @@ Identifies the complete repository-spec JSON set.
 - `repo.platform-profiles` -> `repo/specs/repo/platform-profiles.json`
 - `repo.development-workflow` -> `repo/specs/repo/development-workflow.json`
 - `repo.validation` -> `repo/specs/repo/validation.json`
+- `repo.validation-correspondence` -> `repo/specs/repo/validation-correspondence.json`
 - `repo.product-manifest` -> `repo/specs/repo/product-manifest.json`
 - `repo.development-document-base` -> `repo/specs/repo/development-document-base.json`
 - `repo.functional-set-process` -> `repo/specs/repo/functional-set-process.json`
@@ -69,4 +70,3 @@ Identifies the complete repository-spec JSON set.
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/manifest.md`
-

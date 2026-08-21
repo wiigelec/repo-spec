@@ -202,4 +202,3 @@ Semantic preservation from normalized predecessor requirements:
 
 - `markdown`: `repo/derived/specs/repo/review-proposal.md`
 - `markdown`: `.github/PULL_REQUEST_TEMPLATE.md` (renderer: `review-template`)
-

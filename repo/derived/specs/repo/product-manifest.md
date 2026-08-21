@@ -82,4 +82,3 @@ Defines the normative contract for the product-specification manifest.
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/product-manifest.md`
-

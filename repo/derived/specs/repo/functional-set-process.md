@@ -43,4 +43,3 @@ Defines the repository-generic collection, analysis, candidate-functional-set, a
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/functional-set-process.md`
-

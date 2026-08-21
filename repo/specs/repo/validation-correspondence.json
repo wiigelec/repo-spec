@@ -1,0 +1,107 @@
+{
+  "spec_id": "repo.validation-correspondence",
+  "title": "Normative Requirement Validation Correspondence Contract",
+  "purpose": "Defines the canonical repository-generic semantic contract relating active normative requirements to validation-correspondence packages, validation tasks, source-local validation-callable roles, lifecycle state, and subordinate validation evidence.",
+  "status": "accepted",
+  "schema_version": "1",
+  "normative_requirements": [
+    {
+      "id": "REPO-VC-001",
+      "text": "The repository shall define `repo.validation-correspondence` as the single controlling repository-generic normative owner for normative-requirement validation-correspondence semantics. Validation correspondence shall remain subordinate to the normative requirement whose conformance it records or enforces and shall not restate, amend, infer, or replace that requirement's semantics."
+    },
+    {
+      "id": "REPO-VC-002",
+      "text": "A canonical normative reference used by validation correspondence shall unambiguously identify both the owning accepted specification and one stable normative requirement identifier within that specification. This contract shall not require bare normative requirement identifiers to be repository-global; exact reference serialization is delegated to later governed representation work."
+    },
+    {
+      "id": "REPO-VC-003",
+      "text": "Every active normative requirement owned by an accepted repository specification registered by `repo.manifest`, and every active normative requirement owned by an accepted governed product specification registered by `repo.product-manifest`, shall have exactly one active validation-correspondence package relationship. Candidate or other non-normative specification state may prepare non-active correspondence without satisfying or changing active completeness. Withdrawn or historical requirements shall not retain active package ownership."
+    },
+    {
+      "id": "REPO-VC-004",
+      "text": "Each active validation-correspondence package relationship shall identify exactly one canonical normative reference, shall carry an explicit validation disposition, and may contain zero or more validation tasks. Package completeness and validation-task population are distinct: the existence of an active package relationship shall not imply that every requirement is mechanically provable or that any minimum task count exists. Exact package representation and disposition vocabulary are delegated to later governed representation work."
+    },
+    {
+      "id": "REPO-VC-005",
+      "text": "Each externally identified validation task shall have stable identity within its accepted correspondence scope, shall resolve to a maintained source location and validation-task callable, and shall belong through exactly one validation-correspondence package relationship to exactly one canonical normative reference. Shared internal helpers may support multiple tasks or normative requirements but shall not thereby acquire validation-task ownership or normative-requirement ownership. Exact task-identifier format, uniqueness scope, task granularity, and source-reference serialization are delegated to later governed representation work."
+    },
+    {
+      "id": "REPO-VC-006",
+      "text": "Every maintained callable defined in governed validation implementation source shall be source-locally classifiable as exactly one mutually exclusive role: validation-task callable or helper. A validation-task callable shall expose source-local machine-readable correspondence to exactly one canonical normative reference. A helper shall expose its non-owning helper role and shall not simultaneously claim validation-task or normative-requirement ownership. A validation-task callable is a source-level correspondence concept distinct from a public validation entry point governed by `repo.validation`; a public validation entry point may invoke one or more validation-task callables and shall not acquire validation-task correspondence solely by acting as an orchestration or externally exposed validation surface. Exact source-local syntax is delegated to later governed representation and implementation work."
+    },
+    {
+      "id": "REPO-VC-007",
+      "text": "Canonical package correspondence and source-local validation-callable correspondence shall mechanically agree. The canonical package relationship is the correspondence source model; source-local role and normative-reference metadata are subordinate traceability metadata and shall not become a second independently maintained requirement-to-validation registry."
+    },
+    {
+      "id": "REPO-VC-008",
+      "text": "Validation-task purpose or coverage intent and validation-task execution level shall be separate classification dimensions. This contract shall not define their exact controlled vocabularies."
+    },
+    {
+      "id": "REPO-VC-009",
+      "text": "Repository-defined validation-correspondence invariants shall apply uniformly to active product-owned normative requirements without transferring product semantic ownership into repository validation authority. Product correspondence may retain product implementation, test-artifact, and conformance records, but normative requirement association for product test-artifact mappings shall resolve through applicable canonical validation-correspondence package relationships rather than through an independently maintained requirement-to-test registry."
+    },
+    {
+      "id": "REPO-VC-010",
+      "text": "Validation-correspondence integrity shall preserve active-package uniqueness, stable validation-task identity within its accepted correspondence scope, validation-task source-location and callable resolution, task-to-package uniqueness, source/package agreement, non-active treatment of withdrawn requirements, and deterministic subordinate projections. Generated or materialized correspondence views shall remain subordinate to their authoritative source according to `repo.authority-model`; exact projection inventory, physical materialization, enforcement implementation, and migration mechanics are delegated to later governed work."
+    }
+  ],
+  "dependencies": [
+    {
+      "spec_id": "repo.manifest"
+    },
+    {
+      "spec_id": "repo.authority-model"
+    },
+    {
+      "spec_id": "repo.product-manifest"
+    },
+    {
+      "spec_id": "repo.product-spec-base"
+    }
+  ],
+  "references": [
+    {
+      "type": "specification",
+      "spec_id": "repo.manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.authority-model"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-manifest"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-spec-base"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.product-correspondence"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.development-workflow"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.repository-structure"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
+    }
+  ],
+  "derived_artifacts": [
+    {
+      "type": "markdown",
+      "path": "repo/derived/specs/repo/validation-correspondence.md"
+    }
+  ]
+}
