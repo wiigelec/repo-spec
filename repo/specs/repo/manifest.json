@@ -42,6 +42,10 @@
       "path": "repo/specs/repo/validation.json"
     },
     {
+      "spec_id": "repo.validation-correspondence",
+      "path": "repo/specs/repo/validation-correspondence.json"
+    },
+    {
       "spec_id": "repo.product-manifest",
       "path": "repo/specs/repo/product-manifest.json"
     },

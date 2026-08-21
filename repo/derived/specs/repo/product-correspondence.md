@@ -16,7 +16,7 @@ Do not edit directly.
 `repo/scripts/generate-docs`
 ## Purpose
 
-Defines the normative contract for correspondence declarations linking accepted product specifications to maintained implementation, test, and conformance artifacts.
+Defines the normative contract for product-owned correspondence declarations linking accepted product specifications to maintained implementation, test-artifact, and conformance evidence while using canonical validation-correspondence package relationships for normative requirement association of product test mappings.
 
 ## Withdrawn Requirements
 
@@ -28,17 +28,19 @@ Defines the normative contract for correspondence declarations linking accepted 
 
 ## Normative requirements
 
-- `REPO-PC-001`: The repository shall define exactly one canonical product correspondence contract for bounded product-specification work.
+- `REPO-PC-001`: The repository shall define exactly one canonical product correspondence contract for bounded product-specification implementation, test-artifact, and conformance evidence. Canonical normative-requirement validation correspondence is owned by `repo.validation-correspondence` and shall not be independently redefined by this specification.
 - `REPO-PC-002`: Each product specification shall own its own correspondence declaration, and the product manifest shall not independently author or override correspondence declarations.
-- `REPO-PC-003`: The correspondence declaration shall be a common-envelope field named `correspondence` containing `implementations`, `tests`, and `conformance` collections.
+- `REPO-PC-003`: The correspondence declaration shall be a common-envelope field named `correspondence` containing `implementations`, `tests`, and `conformance` collections. The `tests` collection shall remain the canonical product test-artifact correspondence surface; its normative-requirement association shall be established through applicable canonical validation-correspondence package relationships rather than through an independently maintained product requirement-to-test registry. Exact serialized representation of those package relationships is delegated to later governed schema and migration work.
 - `REPO-PC-004`: Each implementation mapping record shall use a stable local identifier, repository-relative implementation paths, and an explicit requirement list; implementation paths shall remain repository-relative and shall not require source-symbol extraction.
-- `REPO-PC-005`: Each test mapping record shall use a stable local identifier, repository-relative test paths, and an explicit requirement list; test paths shall remain repository-relative and shall not use external mutable run identifiers or CI URLs.
+- `REPO-PC-005`: Each test mapping record shall use a stable local identifier and repository-relative test paths, and shall identify the applicable canonical validation-correspondence package relationships through which its normative-requirement association is derived. Test paths shall remain repository-relative and shall not use external mutable run identifiers or CI URLs. A product test mapping shall not independently author a normative-requirement list, validation-task identity, or validation-task callable ownership. Exact package-reference field names and serialization are delegated to later governed schema and migration work.
 - `REPO-PC-006`: Each conformance record shall identify exactly one requirement, reference implementation and test mapping identifiers declared by the same source specification, and use the status vocabulary `covered` or `not-applicable`; a `not-applicable` record shall include a non-empty rationale.
 
 Semantic preservation from normalized predecessor requirements:
 - REPO-PC-008: For correspondence records that are declared, every requirement reference shall match a normative requirement in the owning specification, no requirement shall have more than one conformance record, every covered record shall reference at least one implementation mapping and at least one test mapping, every not-applicable record shall reference none of those mappings and shall include a non-empty rationale, and every declared mapping identifier shall be reachable from at least one conformance record. Repository validation shall not require undeclared requirements to have conformance records solely because the owning product specification is accepted.
-- `REPO-PC-007`: Correspondence declarations shall participate according to lifecycle: accepted specifications may exist before implementation and test artifacts and therefore are not required to declare complete correspondence merely to become accepted; candidate specifications may declare correspondence; and superseded or retired specifications may retain correspondence for historical continuity.
-- `REPO-PC-009`: Correspondence validation shall prove structural ownership, identifier reachability, declared-record consistency, and lifecycle boundaries only; semantic correctness, runtime satisfaction, and the decision that implementation coverage is complete shall remain review-owned unless a separate governing contract defines a later completion gate.
+
+For a covered conformance record, each referenced test mapping used as evidence for that requirement shall resolve through at least one applicable canonical validation-correspondence package relationship whose canonical normative reference identifies that same product requirement. This requirement does not make the product conformance record or test mapping a second owner of validation-task correspondence.
+- `REPO-PC-007`: Correspondence declarations shall participate according to lifecycle: accepted specifications may exist before implementation and test artifacts and therefore are not required to declare complete product implementation/test correspondence merely to become accepted; candidate specifications may declare correspondence; and superseded or retired specifications may retain correspondence for historical continuity. Active normative-requirement validation-correspondence completeness is controlled separately by `repo.validation-correspondence`.
+- `REPO-PC-009`: Product correspondence validation shall prove structural ownership, identifier reachability, declared-record consistency, lifecycle boundaries, and agreement between product test mappings and their applicable canonical validation-correspondence package relationships. Semantic correctness and runtime satisfaction remain review-owned unless another accepted contract delegates mechanical enforcement. Canonical validation-package completeness, validation-task identity, source-callable ownership, and validation-task-to-requirement correspondence are controlled by `repo.validation-correspondence`.
 
 ## Dependencies
 
@@ -49,6 +51,7 @@ Semantic preservation from normalized predecessor requirements:
 - `repo.product-spec-base`
 - `repo.product-levels`
 - `repo.validation`
+- `repo.validation-correspondence`
 
 ## References
 
@@ -59,6 +62,7 @@ Semantic preservation from normalized predecessor requirements:
 - specification: `repo.product-spec-base`
 - specification: `repo.product-levels`
 - specification: `repo.validation`
+- specification: `repo.validation-correspondence`
 
 ## Derived artifacts
 
