@@ -56,7 +56,7 @@ Non-mechanical or incomplete mechanical validation should remain explainable rat
 
 The correspondence model needs stable identity for maintained validation tasks that are represented as correspondence evidence.
 
-It does not require every fixture, parameter case, assertion, or internal implementation unit to become a separately registered task. Maintained validation callables that are relevant to source auditing must, however, be source-locally classified as either validation-task entry points or helpers.
+It does not require every fixture, parameter case, assertion, or non-callable internal implementation unit to become a separately registered task. Every maintained validation callable defined in governed validation implementation source must, however, carry exactly one source-local role classification: validation-task callable or helper.
 
 An externally identified validation task should be a maintained executable validation responsibility that downstream tooling can identify, resolve, and report.
 
@@ -72,18 +72,18 @@ Each externally identified validation task should:
 - thereby correspond to exactly one canonical normative-requirement reference;
 - avoid duplicate registration in an independent aggregate registry.
 
-Shared helpers may support many tasks or requirements without becoming independent correspondence entries, but their helper role must be explicitly identifiable from source-local metadata. A helper does not independently claim normative-requirement ownership unless it is deliberately exposed as a validation-task entry point.
+Shared helpers may support many tasks or requirements without becoming independent correspondence entries, but their helper role must be explicitly identifiable from source-local metadata. At any exact revision, helper and validation-task-callable roles are mutually exclusive; promoting a helper into a task requires an explicit source-role change rather than simultaneous classification.
 
 ## Source-local auditability
 
-Opening a maintained validation source file should be sufficient for a human or machine to classify each auditable validation callable by role.
+Opening any governed maintained validation source file should be sufficient for a human or machine to classify every maintained validation callable defined in that file by role.
 
-The directional source roles are:
+At an exact revision, every such callable has exactly one mutually exclusive source role:
 
-- **validation-task entry point** — a maintained validation responsibility that carries source-local machine-readable correspondence to exactly one canonical normative requirement;
+- **validation-task callable** — a maintained validation responsibility that carries source-local machine-readable correspondence to exactly one canonical normative requirement;
 - **helper** — a maintained callable explicitly identified as supporting validation implementation without independently owning normative-requirement correspondence.
 
-For a validation-task entry point, the source file itself must expose the canonical normative-requirement correspondence without requiring lookup in a separate package, manifest, generated artifact, or registry merely to determine ownership.
+For a validation-task callable, the source file itself must expose the canonical normative-requirement correspondence without requiring lookup in a separate package, manifest, generated artifact, or registry merely to determine ownership.
 
 The exact source syntax remains downstream specification work. It may use a decorator, attribute, structured annotation, or another single canonical mechanism.
 
@@ -113,13 +113,15 @@ The exact vocabulary, multiplicity, and cardinality of each dimension remain dow
 
 A validation task may legitimately be, for example, both negative in coverage intent and integration-level in execution.
 
-## Entry-point correspondence
+## Validation-task callable correspondence
 
-Machine-readable entry-point metadata must be source-local and must agree with package ownership.
+Machine-readable validation-task-callable metadata must be source-local and must agree with package ownership.
 
-The directional invariant is that every validation-task entry point identifies exactly one canonical normative requirement directly from its source while the canonical package remains the authoritative correspondence model.
+The directional invariant is that every validation-task callable identifies exactly one canonical normative requirement directly from its source while the canonical package remains the authoritative correspondence model.
 
 A separate manifest, generated adapter, or aggregate registry may consume or project that information but may not substitute for source-local task correspondence.
+
+A validation-task callable is a source-level correspondence concept and is distinct from a public validation entry point governed by `repo.validation`; the latter is an externally exposed validation surface and may invoke one or more source-level validation-task callables.
 
 The exact source-local syntax remains downstream specification work.
 

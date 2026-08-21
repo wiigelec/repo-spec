@@ -97,7 +97,7 @@ The functional set does not require every surface to use the same physical path 
 
 ## Evidence and decision provenance
 
-Parts 1–3 primarily carry forward the capability boundary identified by merged analysis chunk 03.
+Parts 1–3 primarily carry forward the capability boundary identified by merged analysis chunk 03. Part 2 additionally incorporates post-analysis user clarification requiring complete source-local role classification for maintained validation callables and direct source-local normative-requirement correspondence for validation-task callables.
 
 Part 4 incorporates later user clarification that repository validation law applies constitutionally across repository-owned, product-owned, and whole-checkout validation domains. That clarification is constrained by accepted `repo.authority-model`, `repo.repository-structure`, `repo.validation`, `repo.product-spec-base`, and `repo.product-correspondence` authority and is a functional-set directional decision rather than a claim that analysis chunk 03 already resolved the question.
 

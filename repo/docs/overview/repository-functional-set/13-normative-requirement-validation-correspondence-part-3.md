@@ -15,9 +15,9 @@ Directional integrity expectations include:
 - referenced task source locations and entry points resolve;
 - every externally identified task belongs to exactly one package;
 - task entry-point metadata agrees with package ownership;
-- every auditable maintained validation callable is source-locally classified as validation-task or helper;
-- every validation-task entry point source-locally identifies exactly one canonical normative requirement;
-- helpers are explicitly source-locally identifiable and do not claim independent normative ownership;
+- every maintained validation callable defined in governed validation implementation source has exactly one source-local role: validation-task callable or helper;
+- every validation-task callable source-locally identifies exactly one canonical normative requirement;
+- helpers are explicitly source-locally identifiable and are mutually exclusive with validation-task ownership at the same revision;
 - withdrawn requirements do not retain active package ownership;
 - deterministic projections reproduce the canonical source model;
 - stale or divergent projections are rejected.
@@ -137,7 +137,7 @@ At minimum, decomposition should separate responsibilities for:
 
 1. normative-reference identity and active requirement scope;
 2. validation-correspondence package ownership, cardinality, lifecycle, and disposition;
-3. validation-task identity, source-local task/helper role classification, task dimensions, and executable entry-point correspondence;
+3. validation-task identity, source-local task/helper role classification, task dimensions, validation-task callable correspondence, and distinction from public validation entry points;
 4. correspondence propagation/materialization across the repo-spec `product/` tree and derived/initialized repository `repo/` and `product/` trees;
 5. correspondence integrity, deterministic projections, and migration/conformance.
 
@@ -154,8 +154,8 @@ Later governed work must decide, without treating this functional set as exact t
 - disposition definitions and transition rules;
 - task identity granularity;
 - task metadata vocabulary and cardinalities;
-- exact source-local task/helper classification and normative-requirement annotation mechanism;
-- entry-point tagging or registration mechanism;
+- exact source-local task/helper representation and normative-requirement annotation mechanism;
+- validation-task-callable tagging or registration mechanism;
 - shared-helper and parameterized-test treatment;
 - withdrawn/superseded correspondence retention;
 - generated projection paths and formats;
