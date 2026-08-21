@@ -56,7 +56,7 @@ Non-mechanical or incomplete mechanical validation should remain explainable rat
 
 The correspondence model needs stable identity for maintained validation tasks that are represented as correspondence evidence.
 
-It does not require every helper function, fixture, parameter case, assertion, or internal implementation unit to become a separately registered task.
+It does not require every fixture, parameter case, assertion, or internal implementation unit to become a separately registered task. Maintained validation callables that are relevant to source auditing must, however, be source-locally classified as either validation-task entry points or helpers.
 
 An externally identified validation task should be a maintained executable validation responsibility that downstream tooling can identify, resolve, and report.
 
@@ -72,7 +72,24 @@ Each externally identified validation task should:
 - thereby correspond to exactly one canonical normative-requirement reference;
 - avoid duplicate registration in an independent aggregate registry.
 
-Shared helpers may support many tasks without becoming independent correspondence entries unless they themselves are deliberately exposed as maintained validation responsibilities.
+Shared helpers may support many tasks or requirements without becoming independent correspondence entries, but their helper role must be explicitly identifiable from source-local metadata. A helper does not independently claim normative-requirement ownership unless it is deliberately exposed as a validation-task entry point.
+
+## Source-local auditability
+
+Opening a maintained validation source file should be sufficient for a human or machine to classify each auditable validation callable by role.
+
+The directional source roles are:
+
+- **validation-task entry point** — a maintained validation responsibility that carries source-local machine-readable correspondence to exactly one canonical normative requirement;
+- **helper** — a maintained callable explicitly identified as supporting validation implementation without independently owning normative-requirement correspondence.
+
+For a validation-task entry point, the source file itself must expose the canonical normative-requirement correspondence without requiring lookup in a separate package, manifest, generated artifact, or registry merely to determine ownership.
+
+The exact source syntax remains downstream specification work. It may use a decorator, attribute, structured annotation, or another single canonical mechanism.
+
+Source-local role and requirement metadata remain subordinate traceability metadata. The canonical correspondence package remains the source model, and mechanical validation must reject disagreement between package ownership and source-local task metadata.
+
+Helpers may be used by tasks for multiple normative requirements. Their explicit helper classification prevents human or machine auditors from mistaking shared implementation for an independently owned validation obligation.
 
 ## Task classification dimensions
 
@@ -98,13 +115,13 @@ A validation task may legitimately be, for example, both negative in coverage in
 
 ## Entry-point correspondence
 
-Machine-readable entry-point metadata should agree with package ownership.
+Machine-readable entry-point metadata must be source-local and must agree with package ownership.
 
-The directional invariant is that executable validation entry points are resolvable from the canonical correspondence model without creating a second independently maintained mapping of requirements to tasks.
+The directional invariant is that every validation-task entry point identifies exactly one canonical normative requirement directly from its source while the canonical package remains the authoritative correspondence model.
 
-The exact realization may use source annotations, decorators, manifests, generated adapters, or another mechanism selected downstream.
+A separate manifest, generated adapter, or aggregate registry may consume or project that information but may not substitute for source-local task correspondence.
 
-This functional set does not select that syntax.
+The exact source-local syntax remains downstream specification work.
 
 ## Source-of-truth boundary
 
