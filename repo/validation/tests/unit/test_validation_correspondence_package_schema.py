@@ -8,11 +8,13 @@ from validation.core.schema_subset import load_repo_schemas, validate_instance
 
 
 class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls) -> None:
         cls.repo_root = Path(__file__).resolve().parents[4]
         cls.schema = load_repo_schemas(cls.repo_root)["validation-correspondence-package"]
 
+    # validation-metadata: {"role": "helper"}
     def assert_valid(self, instance: object) -> None:
         validate_instance(
             instance,
@@ -21,10 +23,12 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             self.schema,
         )
 
+    # validation-metadata: {"role": "helper"}
     def assert_invalid(self, instance: object) -> None:
         with self.assertRaises(ValidationFailure):
             self.assert_valid(instance)
 
+    # validation-metadata: {"role": "helper"}
     def test_mechanical_package_may_have_zero_tasks_without_rationale(self) -> None:
         self.assert_valid(
             {
@@ -37,6 +41,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_partial_package_accepts_task_traceability_metadata(self) -> None:
         self.assert_valid(
             {
@@ -58,6 +63,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_non_mechanical_disposition_requires_rationale(self) -> None:
         self.assert_invalid(
             {
@@ -70,6 +76,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_bare_requirement_identity_is_rejected(self) -> None:
         self.assert_invalid(
             {
@@ -79,6 +86,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_unknown_package_field_is_rejected(self) -> None:
         self.assert_invalid(
             {
@@ -92,6 +100,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_task_source_must_be_repository_relative(self) -> None:
         self.assert_invalid(
             {
@@ -110,6 +119,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_task_classification_vocabularies_are_closed(self) -> None:
         self.assert_invalid(
             {
@@ -129,6 +139,7 @@ class ValidationCorrespondencePackageSchemaTests(unittest.TestCase):
             }
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_task_unknown_field_is_rejected(self) -> None:
         self.assert_invalid(
             {

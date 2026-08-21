@@ -23,28 +23,34 @@ spec.loader.exec_module(promotion)
 
 
 class FakeClient:
+    # validation-metadata: {"role": "helper"}
     def __init__(self, issues):
         self.repository = "wiigelec/repo-spec"
         self.issues = issues
         self.operations = []
 
+    # validation-metadata: {"role": "helper"}
     def get_issue(self, number):
         return json.loads(json.dumps(self.issues[number]))
 
+    # validation-metadata: {"role": "helper"}
     def add_comment(self, number, body):
         self.operations.append(("comment", number, body))
         return {"id": 1, "body": body}
 
+    # validation-metadata: {"role": "helper"}
     def update_issue_body(self, number, body):
         self.operations.append(("body", number, body))
         self.issues[number]["body"] = body
         return self.get_issue(number)
 
+    # validation-metadata: {"role": "helper"}
     def add_labels(self, number, labels):
         self.operations.append(("labels", number, tuple(labels)))
         return []
 
 
+# validation-metadata: {"role": "helper"}
 def governed_authority_body(extra=""):
     return (
         "## Change type\nProduct-artifact implementation\n\n"
@@ -71,6 +77,7 @@ MANAGED_AUTHORIZATION_PRODUCER = (
 
 
 class ProducerFixture:
+    # validation-metadata: {"role": "helper"}
     def __init__(
         self,
         *,
@@ -102,6 +109,7 @@ class ProducerFixture:
             encoding="utf-8",
         )
 
+    # validation-metadata: {"role": "helper"}
     def __enter__(self):
         self.patch = mock.patch.dict(
             os.environ,
@@ -115,12 +123,14 @@ class ProducerFixture:
         self.patch.start()
         return self
 
+    # validation-metadata: {"role": "helper"}
     def __exit__(self, exc_type, exc, tb):
         self.patch.stop()
         self.tmp.cleanup()
 
 
 class GitHubIssuePromotionTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_issues(self, classification="bug-fix", authority_governed=True, extra=""):
         return {
             12: {
@@ -140,8 +150,10 @@ class GitHubIssuePromotionTests(unittest.TestCase):
             },
         }
 
+    # validation-metadata: {"role": "helper"}
     @mock.patch("subprocess.run")
     def test_self_attested_issue_body_is_not_authority(self, run):
+        # validation-metadata: {"role": "helper"}
         def dispatch(cmd, *args, **kwargs):
             if cmd and str(cmd[0]).endswith("github-field-policy"):
                 result = mock.Mock()
@@ -174,6 +186,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                     producer_id="repository-governance-authority",
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_bug_fix_accepts_trusted_audit_producer(self):
         client = FakeClient(self.make_issues())
         with (
@@ -195,6 +208,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
             "audit-run:accepted:56",
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_feature_request_accepts_trusted_feature_development_producer(self):
         client = FakeClient(self.make_issues(classification="feature-request"))
         with ProducerFixture(
@@ -213,6 +227,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
             )
         self.assertEqual(authorization.authority_path, "feature-development")
 
+    # validation-metadata: {"role": "helper"}
     def test_unrecognized_producer_fails_closed(self):
         client = FakeClient(self.make_issues())
         with self.assertRaisesRegex(promotion.PromotionError, "unrecognized"):
@@ -226,6 +241,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                 producer_id="caller-supplied-authority",
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_producer_result_must_match_target_classification_operation_and_path(self):
         cases = (
             ({"governing_issue": 99}, "governing issue mismatch"),
@@ -256,6 +272,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                             producer_id="repository-governance-authority",
                         )
 
+    # validation-metadata: {"role": "helper"}
     def test_same_name_substituted_authorization_producer_fails_identity(self):
         client = FakeClient(self.make_issues())
         with tempfile.TemporaryDirectory() as tmp:
@@ -300,6 +317,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                         producer_id="repository-governance-authority",
                     )
 
+    # validation-metadata: {"role": "helper"}
     def test_authority_issue_must_be_governed_before_producer_is_invoked(self):
         client = FakeClient(self.make_issues(authority_governed=False))
         with ProducerFixture():
@@ -316,6 +334,7 @@ class GitHubIssuePromotionTests(unittest.TestCase):
                     producer_id="repository-governance-authority",
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_hosted_helper_has_no_issue_body_authorization_parser(self):
         source = MODULE_PATH.read_text()
         self.assertNotIn("parse_repository_governance_authorization", source)

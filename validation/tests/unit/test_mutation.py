@@ -26,18 +26,22 @@ SYNTHETIC_FIELD = {
 }
 
 
+# validation-metadata: {"role": "helper"}
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
+# validation-metadata: {"role": "helper"}
 def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2) + "\n")
 
 
+# validation-metadata: {"role": "helper"}
 def head_sha() -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip()
 
 
+# validation-metadata: {"role": "helper"}
 def render_value(field: dict, sha: str) -> str:
     validation = field.get("validation", {})
     kind = validation.get("kind", "meaningful")
@@ -62,6 +66,7 @@ def render_value(field: dict, sha: str) -> str:
     return f"Substantive response for {field['label']}."
 
 
+# validation-metadata: {"role": "helper"}
 def render_body(spec: dict, collection_key: str, sha: str) -> str:
     lines: list[str] = []
     for field in spec[collection_key]:
@@ -76,6 +81,7 @@ def render_body(spec: dict, collection_key: str, sha: str) -> str:
     return "\n".join(lines)
 
 
+# validation-metadata: {"role": "helper"}
 def run_policy(mode: str, repo_root: Path, body_path: Path) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [sys.executable, str(POLICY_SCRIPT), str(repo_root), "--mode", mode, "--body-file", str(body_path)],
@@ -84,6 +90,7 @@ def run_policy(mode: str, repo_root: Path, body_path: Path) -> subprocess.Comple
     )
 
 
+# validation-metadata: {"role": "helper"}
 def create_policy_fixture(temp_root: Path) -> Path:
     repo_root = temp_root / "repo-root"
     shutil.copytree(REPO_ROOT / "repo/specs/repo", repo_root / "repo/specs/repo")
@@ -94,6 +101,7 @@ def create_policy_fixture(temp_root: Path) -> Path:
     return repo_root
 
 
+# validation-metadata: {"role": "helper"}
 def mutate_and_expect_failure(mode: str, spec_path: str, collection_key: str) -> None:
     sha = head_sha()
     source_spec = load_json(REPO_ROOT / spec_path)
@@ -119,6 +127,7 @@ def mutate_and_expect_failure(mode: str, spec_path: str, collection_key: str) ->
             )
 
 
+# validation-metadata: {"role": "helper"}
 def check_default_branch_base_validation() -> None:
     sha = head_sha()
     spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
@@ -148,6 +157,7 @@ def check_default_branch_base_validation() -> None:
                 raise SystemExit(f"issue policy accepted invalid default-branch base: {invalid_base}")
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_artifact_evidence_validation() -> None:
     sha = head_sha()
     spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
@@ -292,6 +302,7 @@ def check_product_artifact_evidence_validation() -> None:
             raise SystemExit(f"issue policy rejected a candidate plan for the wrong reason: {result.stderr.strip()}")
 
 
+# validation-metadata: {"role": "helper"}
 def check_multi_workstream_product_artifact_evidence() -> None:
     sha = head_sha()
     spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
@@ -357,6 +368,7 @@ def check_multi_workstream_product_artifact_evidence() -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def check_change_type_validation() -> None:
     sha = head_sha()
     spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
@@ -416,6 +428,7 @@ def check_change_type_validation() -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def check_atomic_transition_evidence_validation() -> None:
     sha = head_sha()
     spec = load_json(REPO_ROOT / "repo/specs/repo/governing-issue.json")
@@ -500,6 +513,7 @@ def check_atomic_transition_evidence_validation() -> None:
         if result.returncode == 0 or "missing atomic transition evidence item: Plan impact" not in result.stderr:
             raise SystemExit(f"atomic transition without revise/reaffirm plan impact was not rejected correctly: {result.stderr.strip()}")
 
+# validation-metadata: {"role": "helper"}
 def main() -> int:
     check_default_branch_base_validation()
     check_product_artifact_evidence_validation()
@@ -519,17 +533,22 @@ import unittest
 
 
 class RootMutationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_atomic_transition_evidence_validation(self) -> None:
         check_atomic_transition_evidence_validation()
 
+    # validation-metadata: {"role": "helper"}
     def test_change_type_validation(self) -> None:
         check_change_type_validation()
 
+    # validation-metadata: {"role": "helper"}
     def test_default_branch_base_validation(self) -> None:
         check_default_branch_base_validation()
 
+    # validation-metadata: {"role": "helper"}
     def test_multi_workstream_product_artifact_evidence(self) -> None:
         check_multi_workstream_product_artifact_evidence()
 
+    # validation-metadata: {"role": "helper"}
     def test_product_artifact_evidence_validation(self) -> None:
         check_product_artifact_evidence_validation()

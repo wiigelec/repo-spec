@@ -3,6 +3,7 @@ import unittest
 
 
 class RoutingOwnershipBoundaryTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls):
         cls.repo_root = pathlib.Path(__file__).resolve().parents[4]
@@ -18,6 +19,7 @@ class RoutingOwnershipBoundaryTests(unittest.TestCase):
             / "product/validation/checks/product_correspondence.py"
         ).read_text()
 
+    # validation-metadata: {"role": "helper"}
     def test_plan_requires_product_owned_correspondence_evidence(self):
         self.assertIn(
             "Portable implementation, test, and conformance artifacts used as maintained "
@@ -30,6 +32,7 @@ class RoutingOwnershipBoundaryTests(unittest.TestCase):
             self.scope_chunk,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_plan_preserves_repository_profile_adapter_boundary(self):
         self.assertIn(
             "Repository/framework helpers and hosting-profile source or installed adapters "
@@ -41,6 +44,7 @@ class RoutingOwnershipBoundaryTests(unittest.TestCase):
             self.scope_chunk,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_existing_correspondence_validator_still_rejects_repo_scripts(self):
         self.assertIn(
             '"repo/scripts/"',

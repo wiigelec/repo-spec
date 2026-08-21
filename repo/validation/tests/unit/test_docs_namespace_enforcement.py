@@ -11,6 +11,7 @@ from validation.checks.development_documents import (
 from validation.core.errors import ValidationFailure
 
 
+# validation-metadata: {"role": "helper"}
 def _expect_failure(label: str, action, fragment: str) -> None:
     try:
         action()
@@ -21,6 +22,7 @@ def _expect_failure(label: str, action, fragment: str) -> None:
     raise AssertionError(f"{label}: expected validation failure")
 
 
+# validation-metadata: {"role": "helper"}
 def run_phase2_docs_namespace_tests() -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-phase2-docs-") as temp_name:
         root = Path(temp_name)

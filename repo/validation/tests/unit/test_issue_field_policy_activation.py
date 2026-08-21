@@ -15,6 +15,7 @@ SPEC.loader.exec_module(POLICY)
 
 
 class IssueFieldPolicyActivationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls):
         cls.repo_root = pathlib.Path(__file__).resolve().parents[4]
@@ -24,6 +25,7 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
             "issue_fields",
         )
 
+    # validation-metadata: {"role": "helper"}
     def write_event(self, body, labels):
         payload = {
             "issue": {
@@ -36,6 +38,7 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
         handle.close()
         return pathlib.Path(handle.name)
 
+    # validation-metadata: {"role": "helper"}
     def test_ordinary_unformatted_intake_bypasses_governed_field_policy(self):
         path = self.write_event("plain intake prose", ["bug-fix"])
         try:
@@ -46,6 +49,7 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
         finally:
             path.unlink()
 
+    # validation-metadata: {"role": "helper"}
     def test_governed_work_requires_canonical_fields(self):
         path = self.write_event("plain intake prose", ["governed-work"])
         try:
@@ -56,6 +60,7 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
         finally:
             path.unlink()
 
+    # validation-metadata: {"role": "helper"}
     def test_non_governed_issue_with_unrelated_labels_still_bypasses(self):
         path = self.write_event("plain intake prose", ["documentation", "feature-request"])
         try:
@@ -65,10 +70,12 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
         finally:
             path.unlink()
 
+    # validation-metadata: {"role": "helper"}
     def test_explicit_body_validation_remains_strict(self):
         with self.assertRaises(POLICY.PolicyError):
             POLICY.check_issue("plain intake prose", self.fields, self.repo_root)
 
+    # validation-metadata: {"role": "helper"}
     def test_pr_event_loader_behavior_is_unchanged(self):
         payload = {"pull_request": {"body": "## Governing issue\n#410"}}
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False) as handle:
@@ -83,6 +90,7 @@ class IssueFieldPolicyActivationTests(unittest.TestCase):
             path.unlink()
 
 
+    # validation-metadata: {"role": "helper"}
     def test_profile_workflow_validates_governed_label_transition(self):
         source = self.repo_root / "repo/profiles/github/workflows/github-field-policy.yml"
         installed = self.repo_root / ".github/workflows/github-field-policy.yml"

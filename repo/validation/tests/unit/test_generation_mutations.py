@@ -13,6 +13,7 @@ from validation.checks.domain import validate_repository_phase
 from ..self.mutation_support import create_repo_fixture, expect_failure, expect_render_change, mutate_json
 
 
+# validation-metadata: {"role": "helper"}
 def run_generation_mutations(repo_root: Path) -> None:
     _manifest, specs, paths, _ = load_specs(repo_root)
 

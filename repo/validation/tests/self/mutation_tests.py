@@ -35,6 +35,7 @@ from ..unit.test_validation_entry_points import run_validation_entry_point_tests
 from ..unit.test_validation_portable_split import run_validation_portable_split_tests
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_mutation_tests(repo_root: Path) -> None:
     check_validate_cli_contract(repo_root)
     check_generate_docs_cli_contract(repo_root)

@@ -13,6 +13,7 @@ ARCHITECTURE_PATH = "repo/docs/architecture/TEST-ARCHITECTURE.md"
 PLAN_PATH = "repo/docs/plans/TEST-IMPLEMENTATION-PLAN.md"
 
 
+# validation-metadata: {"role": "helper"}
 def _record(
     path: str,
     artifact_type: str,
@@ -38,6 +39,7 @@ def _record(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def run_architecture_document_contract_tests(repo_root: Path) -> None:
     architecture = _record(ARCHITECTURE_PATH, "architecture-plan", [])
     expect_failure(

@@ -13,6 +13,7 @@ from validation.github.github_field_policy import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def _expect_policy_error(label: str, action, expected: str | None = None) -> None:
     try:
         action()
@@ -23,6 +24,7 @@ def _expect_policy_error(label: str, action, expected: str | None = None) -> Non
     raise AssertionError(f"{label}: expected PolicyError")
 
 
+# validation-metadata: {"role": "helper"}
 def _issue_body(fields: list[dict], change_type: str) -> str:
     sections: list[str] = []
     for field in fields:
@@ -53,6 +55,7 @@ def _issue_body(fields: list[dict], change_type: str) -> str:
 
 
 
+# validation-metadata: {"role": "helper"}
 def _check_unlabeled_issue_workflow_policy(repo_root: Path, fields: list[dict]) -> None:
     workflow = (repo_root / ".github/workflows/github-field-policy.yml").read_text()
 
@@ -114,6 +117,7 @@ def _check_unlabeled_issue_workflow_policy(repo_root: Path, fields: list[dict]) 
             "missing section: Problem statement",
         )
 
+# validation-metadata: {"role": "helper"}
 def run_github_field_policy_tests(repo_root: Path) -> None:
     fields = load_fields(repo_root, "repo/specs/repo/governing-issue.json", "issue_fields")
     _check_unlabeled_issue_workflow_policy(repo_root, fields)
@@ -166,6 +170,7 @@ import unittest
 
 
 class GitHubFieldPolicyTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_github_field_policy(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
         run_github_field_policy_tests(repo_root)

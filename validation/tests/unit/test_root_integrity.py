@@ -14,6 +14,7 @@ from validation.checks.policy import RootValidationError, validate_repo_tree_int
 SOURCE_REQUIRED_FILES = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
 SOURCE_REQUIRED_DIRS = {".github", "product", "reference", "repo", "scripts", "user", "validation"}
 
+# validation-metadata: {"role": "helper"}
 def _git(repo: Path, *args: str) -> str:
     p = subprocess.run(["git", "-C", str(repo), *args], text=True,
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
@@ -21,12 +22,14 @@ def _git(repo: Path, *args: str) -> str:
         raise RuntimeError(p.stderr or p.stdout)
     return p.stdout.strip()
 
+# validation-metadata: {"role": "helper"}
 def _write_source_root(root: Path) -> None:
     for name in SOURCE_REQUIRED_FILES:
         (root / name).write_text(name + "\n", encoding="utf-8")
     for name in SOURCE_REQUIRED_DIRS:
         (root / name).mkdir()
 
+# validation-metadata: {"role": "helper"}
 def _write_framework_inventory(framework: Path, content: str) -> None:
     source = framework / "repo/scripts/tool.py"
     source.parent.mkdir(parents=True, exist_ok=True)
@@ -44,6 +47,7 @@ def _write_framework_inventory(framework: Path, content: str) -> None:
         "producer":"framework-installation","operation":"copy-verbatim",
         "mode":"100644","required":True,"role":"validation-utility"}]}, indent=2)+"\n", encoding="utf-8")
 
+# validation-metadata: {"role": "helper"}
 def _make_framework(root: Path):
     framework = root / "framework"
     framework.mkdir()
@@ -58,6 +62,7 @@ def _make_framework(root: Path):
     current = _git(framework,"rev-parse","HEAD")
     return framework, baseline, current
 
+# validation-metadata: {"role": "helper"}
 def _build_bundle(source_checkout: Path, repo: Path, framework: Path, revision: str) -> None:
     product_src = source_checkout / "product/src"
     inserted = str(product_src) not in sys.path
@@ -71,6 +76,7 @@ def _build_bundle(source_checkout: Path, repo: Path, framework: Path, revision: 
         if inserted:
             sys.path.remove(str(product_src))
 
+# validation-metadata: {"role": "helper"}
 def _make_initialized_fixture(source_checkout: Path, root: Path, name: str,
                               framework: Path, baseline: str, current: str,
                               *, add_unmanaged_drift=False) -> Path:
@@ -98,24 +104,29 @@ def _make_initialized_fixture(source_checkout: Path, root: Path, name: str,
     return repo
 
 class RootBoundaryTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_valid_source_root(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-boundary-") as td:
             repo=Path(td); _write_source_root(repo); validate_root_boundary(repo, initialized=False)
+    # validation-metadata: {"role": "helper"}
     def test_rejects_undeclared_file(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-boundary-") as td:
             repo=Path(td); _write_source_root(repo); (repo/"extra.txt").write_text("x\n")
             with self.assertRaisesRegex(RootValidationError,"undeclared top-level entries: extra.txt"):
                 validate_root_boundary(repo, initialized=False)
+    # validation-metadata: {"role": "helper"}
     def test_rejects_legacy_docs(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-boundary-") as td:
             repo=Path(td); _write_source_root(repo); (repo/"docs").mkdir()
             with self.assertRaisesRegex(RootValidationError,"undeclared top-level entries: docs"):
                 validate_root_boundary(repo, initialized=False)
+    # validation-metadata: {"role": "helper"}
     def test_rejects_missing_required_root(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-boundary-") as td:
             repo=Path(td); _write_source_root(repo); (repo/"README.md").unlink()
             with self.assertRaisesRegex(RootValidationError,"missing required top-level entries: README.md"):
                 validate_root_boundary(repo, initialized=False)
+    # validation-metadata: {"role": "helper"}
     def test_rejects_wrong_kind(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-boundary-") as td:
             repo=Path(td); _write_source_root(repo); shutil.rmtree(repo/"user"); (repo/"user").write_text("x\n")
@@ -123,20 +134,24 @@ class RootBoundaryTests(unittest.TestCase):
                 validate_root_boundary(repo, initialized=False)
 
 class InitializedTreeIntegrityTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls):
         cls.source_checkout = Path(__file__).resolve().parents[3]
+    # validation-metadata: {"role": "helper"}
     def test_accepts_legal_managed_transition(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-integrity-") as td:
             root=Path(td); framework,baseline,current=_make_framework(root)
             repo=_make_initialized_fixture(self.source_checkout,root,"legal",framework,baseline,current)
             validate_repo_tree_integrity(repo)
+    # validation-metadata: {"role": "helper"}
     def test_rejects_unmanaged_drift(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-integrity-") as td:
             root=Path(td); framework,baseline,current=_make_framework(root)
             repo=_make_initialized_fixture(self.source_checkout,root,"drift",framework,baseline,current,add_unmanaged_drift=True)
             with self.assertRaisesRegex(RootValidationError,"outside initializer-managed authority"):
                 validate_repo_tree_integrity(repo)
+    # validation-metadata: {"role": "helper"}
     def test_rejects_managed_tampering(self):
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-integrity-") as td:
             root=Path(td); framework,baseline,current=_make_framework(root)

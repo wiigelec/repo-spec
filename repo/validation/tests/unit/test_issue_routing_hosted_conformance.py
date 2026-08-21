@@ -43,6 +43,7 @@ ALL_REPO_SPECS = (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def canonical_governed_body() -> str:
     specs = ", ".join(ALL_REPO_SPECS)
     return (
@@ -81,6 +82,7 @@ class FakeClient:
     instances = []
     classification = "bug-fix"
 
+    # validation-metadata: {"role": "helper"}
     def __init__(self, repository: str, token: str):
         self.repository = repository
         self.operations = []
@@ -103,18 +105,22 @@ class FakeClient:
         }
         self.__class__.instances.append(self)
 
+    # validation-metadata: {"role": "helper"}
     def get_issue(self, number):
         return json.loads(json.dumps(self.issues[number]))
 
+    # validation-metadata: {"role": "helper"}
     def add_comment(self, number, body):
         self.operations.append(("comment", number, body))
         return {"id": 1, "body": body}
 
+    # validation-metadata: {"role": "helper"}
     def update_issue_body(self, number, body):
         self.operations.append(("body", number, body))
         self.issues[number]["body"] = body
         return self.get_issue(number)
 
+    # validation-metadata: {"role": "helper"}
     def add_labels(self, number, labels):
         self.operations.append(("labels", number, tuple(labels)))
         existing = {
@@ -129,6 +135,7 @@ class FakeClient:
 
 
 class ManagedProducerEnvironment:
+    # validation-metadata: {"role": "helper"}
     def __init__(
         self,
         *,
@@ -160,6 +167,7 @@ class ManagedProducerEnvironment:
         self.lifecycle = self.dir / "lifecycle-authority.json"
         self.lifecycle.write_text(json.dumps(lifecycle), encoding="utf-8")
 
+    # validation-metadata: {"role": "helper"}
     def __enter__(self):
         self.patch = mock.patch.dict(
             os.environ,
@@ -173,16 +181,19 @@ class ManagedProducerEnvironment:
         self.patch.start()
         return self
 
+    # validation-metadata: {"role": "helper"}
     def __exit__(self, exc_type, exc, tb):
         self.patch.stop()
         self.tmp.cleanup()
 
 
 class HostedRoutingConformanceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         FakeClient.instances.clear()
         FakeClient.classification = "bug-fix"
 
+    # validation-metadata: {"role": "helper"}
     def invoke_apply(
         self,
         *,
@@ -239,6 +250,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         self.assertEqual(len(FakeClient.instances), 1)
         return rc, FakeClient.instances[0], result, errors.getvalue()
 
+    # validation-metadata: {"role": "helper"}
     def test_bug_fix_uses_managed_producers_before_mutation(self):
         rc, client, result, error = self.invoke_apply()
         self.assertEqual(rc, 0, error)
@@ -257,6 +269,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
             "audit",
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_feature_request_uses_managed_feature_authority(self):
         rc, client, result, error = self.invoke_apply(classification="feature-request")
         self.assertEqual(rc, 0, error)
@@ -269,6 +282,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
             ["comment", "body", "labels"],
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_wrong_lifecycle_target_fails_before_mutation(self):
         rc, client, result, error = self.invoke_apply(lifecycle_governing_issue=99)
         self.assertEqual(rc, 1)
@@ -276,6 +290,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         self.assertIn("governing issue mismatch", error)
         self.assertEqual(client.operations, [])
 
+    # validation-metadata: {"role": "helper"}
     def test_substituted_canonical_producer_fails_before_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:
             fake = pathlib.Path(tmp) / "canonical-governed-state-validator"
@@ -292,6 +307,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         self.assertIn("artifact identity mismatch", error)
         self.assertEqual(client.operations, [])
 
+    # validation-metadata: {"role": "helper"}
     def test_substituted_authorization_producer_fails_before_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:
             fake = pathlib.Path(tmp) / "repository-governance-authorization-validator"
@@ -308,6 +324,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         self.assertIn("artifact identity mismatch", error)
         self.assertEqual(client.operations, [])
 
+    # validation-metadata: {"role": "helper"}
     def test_both_promotion_forms_remain_supported(self):
         for form in ("successor", "in-place"):
             with self.subTest(form=form):
@@ -319,6 +336,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
                     ["comment", "body", "labels"],
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_workflow_wires_managed_producers_and_lifecycle_artifact(self):
         source = SOURCE_WORKFLOW.read_text()
         installed = INSTALLED_WORKFLOW.read_text()
@@ -333,6 +351,7 @@ class HostedRoutingConformanceTests(unittest.TestCase):
         self.assertIn("CanonicalGovernedStateObservation(", helper)
 
 
+# validation-metadata: {"role": "helper"}
 def run_issue_routing_hosted_conformance_tests(repo_root: pathlib.Path) -> None:
     if repo_root.resolve() != REPO_ROOT.resolve():
         raise AssertionError(

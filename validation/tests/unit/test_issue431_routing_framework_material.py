@@ -9,6 +9,7 @@ REQUIRED_PATHS = ['repo/specs/repo/issue-routing-governance.json', 'repo/derived
 
 
 class Issue431RoutingFrameworkMaterialTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_routing_framework_material_is_closed_over_initializer_output(self):
         output_spec = json.loads((ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json").read_text())
         framework = json.loads((ROOT / "product/src/initializer/framework-inventory.json").read_text())
@@ -24,6 +25,7 @@ class Issue431RoutingFrameworkMaterialTests(unittest.TestCase):
         self.assertTrue(required <= destinations)
         self.assertTrue(framework_sources <= sources)
 
+    # validation-metadata: {"role": "helper"}
     def test_routing_runtime_sources_are_repository_owned(self):
         framework = json.loads((ROOT / "product/src/initializer/framework-inventory.json").read_text())
         routing_sources = [

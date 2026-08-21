@@ -11,6 +11,7 @@ FUNCTIONAL_SET = "repo/docs/overview/TEST-FUNCTIONAL-SET.md"
 DECOMPOSITION = "repo/docs/decompositions/TEST-DECOMPOSITION.md"
 
 
+# validation-metadata: {"role": "helper"}
 def _record(path: str, artifact_type: str, status: str, controlling: list[str]) -> DevelopmentDocumentRecord:
     metadata = {
         "artifact_id": path.lower().replace("/", ".").replace("-", ".").removesuffix(".md"),
@@ -30,6 +31,7 @@ def _record(path: str, artifact_type: str, status: str, controlling: list[str]) 
     )
 
 
+# validation-metadata: {"role": "helper"}
 def run_functional_set_overview_contract_tests(repo_root: Path) -> None:
     whiteboard = _record(WHITEBOARD, "overview-whiteboard", "active", [])
     analysis = _record(ANALYSIS, "overview-analysis", "candidate", [WHITEBOARD])

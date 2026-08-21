@@ -18,6 +18,7 @@ from validation.checks.domain import (
 
 from ..self.mutation_support import add_lifecycle_spec, create_repo_fixture, expect_failure, mutate_json
 
+# validation-metadata: {"role": "helper"}
 def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
     labels = [label for label, _check in REPOSITORY_LEAF_VALIDATION_PHASES]
     expected_labels = [
@@ -47,6 +48,7 @@ def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
     print("ok: repository validation phase contract")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_development_document_namespace_tests(repo_root: Path) -> None:
     from validation.checks.development_documents import (
         check_development_document_chunk_entries,
@@ -169,6 +171,7 @@ def run_repository_development_document_namespace_tests(repo_root: Path) -> None
     print("ok: repository development document namespace")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_manifest_completeness_tests(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
@@ -202,6 +205,7 @@ def run_repository_manifest_completeness_tests(repo_root: Path) -> None:
     print("ok: repository manifest completeness")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_schema_conformance_tests(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
@@ -228,6 +232,7 @@ def run_repository_schema_conformance_tests(repo_root: Path) -> None:
     print("ok: repository schema conformance")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_derived_artifact_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -250,6 +255,7 @@ def run_repository_derived_artifact_tests(repo_root: Path) -> None:
     print("ok: repository derived artifact")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_dependency_lifecycle_tests(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
@@ -279,6 +285,7 @@ def run_repository_dependency_lifecycle_tests(repo_root: Path) -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_reference_tests(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
@@ -313,6 +320,7 @@ def run_repository_reference_tests(repo_root: Path) -> None:
     print("ok: repository reference")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_lineage_tests(repo_root: Path) -> None:
     _manifest, specs, _, _ = load_specs(repo_root)
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
@@ -335,6 +343,7 @@ def run_repository_lineage_tests(repo_root: Path) -> None:
     print("ok: repository lineage")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_unique_item_property_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -392,6 +401,7 @@ def run_repository_unique_item_property_tests(repo_root: Path) -> None:
     print("ok: repository unique item property")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_platform_profile_boundary_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -453,6 +463,7 @@ def run_repository_platform_profile_boundary_tests(repo_root: Path) -> None:
     print("ok: repository platform profile boundary")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_path_helper_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

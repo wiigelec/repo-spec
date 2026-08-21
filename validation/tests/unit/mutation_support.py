@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 
+# validation-metadata: {"role": "helper"}
 def expect_failure(description: str, action, fragment: str) -> None:
     try:
         action()
@@ -16,6 +17,7 @@ def expect_failure(description: str, action, fragment: str) -> None:
     raise AssertionError(f"{description}: expected failure")
 
 
+# validation-metadata: {"role": "helper"}
 def create_repo_fixture(
     repo_root: Path,
     temp_root: Path,

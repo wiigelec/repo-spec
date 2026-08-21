@@ -9,6 +9,7 @@ from validation.checks.domain import validate_repository_phase
 from ..self.mutation_support import create_repo_fixture, mutate_json
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_projection_boundary_test(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

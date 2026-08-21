@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 
 
+# validation-metadata: {"role": "helper"}
 def minimal_env(cwd: Path) -> dict[str, str]:
     return {
         "PATH": os.environ.get("PATH", ""),
@@ -18,11 +19,13 @@ def minimal_env(cwd: Path) -> dict[str, str]:
     }
 
 
+# validation-metadata: {"role": "helper"}
 def run_command(command: list[str], cwd: Path) -> None:
     env = minimal_env(cwd)
     subprocess.run(command, cwd=cwd, env=env, check=True)
 
 
+# validation-metadata: {"role": "helper"}
 def expect_command_failure(description: str, command: list[str], cwd: Path, fragment: str) -> None:
     env = minimal_env(cwd)
     result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, text=True)
@@ -31,6 +34,7 @@ def expect_command_failure(description: str, command: list[str], cwd: Path, frag
     assert fragment in output, f"reference isolated copy failed: {description} (expected {fragment!r}, got {output!r})"
 
 
+# validation-metadata: {"role": "helper"}
 def expect_assertion_failure(description: str, func, fragment: str) -> None:
     try:
         func()
@@ -40,6 +44,7 @@ def expect_assertion_failure(description: str, func, fragment: str) -> None:
         raise AssertionError(f"reference isolated copy failed: {description} did not fail")
 
 
+# validation-metadata: {"role": "helper"}
 def tree_fingerprint(root: Path) -> tuple[tuple[str, str], str]:
     inventory: list[tuple[str, str]] = []
     hasher = hashlib.sha256()
@@ -58,6 +63,7 @@ def tree_fingerprint(root: Path) -> tuple[tuple[str, str], str]:
     return tuple(inventory), hasher.hexdigest()
 
 
+# validation-metadata: {"role": "helper"}
 def assert_no_parent_checkout_references(root: Path, parent_root: Path) -> None:
     parent_text = parent_root.resolve().as_posix()
     for path in sorted(root.rglob("*")):
@@ -70,6 +76,7 @@ def assert_no_parent_checkout_references(root: Path, parent_root: Path) -> None:
         assert parent_text not in contents, f"reference isolated copy failed: parent checkout reference in {path.relative_to(root).as_posix()}"
 
 
+# validation-metadata: {"role": "helper"}
 def run_reference_isolated_copy_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-reference-copy-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -185,6 +192,7 @@ import unittest
 
 
 class PortableValidationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_reference_isolated_copy(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
         run_reference_isolated_copy_tests(repo_root)
