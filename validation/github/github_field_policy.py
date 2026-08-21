@@ -35,15 +35,18 @@ SUPPORTED_VALIDATION_KINDS = {
 }
 
 
+# validation-metadata: {"role": "helper"}
 def fail(message: str) -> int:
     print(f"policy error: {message}", file=sys.stderr)
     return 1
 
 
+# validation-metadata: {"role": "helper"}
 def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+# validation-metadata: {"role": "helper"}
 def parse_sections(body: str) -> dict[str, str]:
     sections: dict[str, list[str]] = {}
     current: str | None = None
@@ -58,11 +61,13 @@ def parse_sections(body: str) -> dict[str, str]:
     return {name: "\n".join(lines).strip() for name, lines in sections.items()}
 
 
+# validation-metadata: {"role": "helper"}
 def is_placeholder(text: str) -> bool:
     value = normalize(text).lower()
     return value in {"", ".", "n/a", "na", "none", "todo", "tbd", "placeholder", "unchanged placeholder-style text"} or bool(re.fullmatch(r"[._\- ]+", value))
 
 
+# validation-metadata: {"role": "helper"}
 def require_section(sections: dict[str, str], name: str) -> str:
     value = sections.get(name, "")
     if not value:
@@ -70,6 +75,7 @@ def require_section(sections: dict[str, str], name: str) -> str:
     return value
 
 
+# validation-metadata: {"role": "helper"}
 def require_meaningful(name: str, value: str) -> None:
     if is_placeholder(value):
         raise PolicyError(f"placeholder response in {name}")
@@ -77,36 +83,43 @@ def require_meaningful(name: str, value: str) -> None:
         raise PolicyError(f"too little content in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def require_sha(name: str, value: str, count: int = 1) -> None:
     matches = SHA_RE.findall(normalize(value).lower())
     if len(matches) != count:
         raise PolicyError(f"expected exactly {count} SHA{'s' if count != 1 else ''} in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def require_issue_link(name: str, value: str) -> None:
     if not ISSUE_RE.search(normalize(value)):
         raise PolicyError(f"invalid issue linkage in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def require_spec_reference(name: str, value: str) -> None:
     if not SPEC_RE.search(value):
         raise PolicyError(f"missing specification reference in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def require_path_list(name: str, value: str) -> None:
     if not PATH_RE.search(value):
         raise PolicyError(f"missing path inventory in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def require_numbered_steps(name: str, value: str) -> None:
     if not re.search(r"^\s*1\.\s+", value, re.M):
         raise PolicyError(f"missing ordered steps in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def is_none_response(value: str) -> bool:
     return re.sub(r"[\s\.,:;!?]+$", "", normalize(value).lower()) == "none"
 
 
+# validation-metadata: {"role": "helper"}
 def require_checklist(name: str, value: str, items: list[str]) -> None:
     lines = [normalize(line) for line in value.splitlines()]
     missing = []
@@ -118,6 +131,7 @@ def require_checklist(name: str, value: str, items: list[str]) -> None:
         raise PolicyError(f"missing checklist items in {name}: {', '.join(missing)}")
 
 
+# validation-metadata: {"role": "helper"}
 def is_valid_branch_name(branch: str) -> bool:
     if branch in {"", "@", "HEAD"} or branch.startswith(("-", "/")) or branch.endswith(("/", ".")):
         return False
@@ -128,22 +142,26 @@ def is_valid_branch_name(branch: str) -> bool:
     return all(part and not part.startswith(".") and not part.endswith(".lock") for part in branch.split("/"))
 
 
+# validation-metadata: {"role": "helper"}
 def parse_change_type(name: str, value: str, values: list[str]) -> str:
     if value in values:
         return value
     raise PolicyError(f"invalid change type in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def require_change_type(name: str, value: str, values: list[str]) -> None:
     parse_change_type(name, value, values)
 
 
+# validation-metadata: {"role": "helper"}
 def require_default_branch_base(name: str, value: str) -> None:
     match = re.fullmatch(r"([^\s]+) at ([0-9a-fA-F]{40})", normalize(value))
     if match is None or not is_valid_branch_name(match.group(1)):
         raise PolicyError(f"invalid default-branch base in {name}")
 
 
+# validation-metadata: {"role": "helper"}
 def load_accepted_product_specs(repo_root: Path) -> set[str]:
     manifest_path = repo_root / "product/specs/product/manifest.json"
     try:
@@ -158,6 +176,7 @@ def load_accepted_product_specs(repo_root: Path) -> set[str]:
     }
 
 
+# validation-metadata: {"role": "helper"}
 def read_repo_text(repo_root: Path, relative_path: str) -> str:
     root = repo_root.resolve()
     path = (root / relative_path).resolve()
@@ -168,6 +187,7 @@ def read_repo_text(repo_root: Path, relative_path: str) -> str:
         raise PolicyError(f"invalid policy source: {relative_path}") from exc
 
 
+# validation-metadata: {"role": "helper"}
 def load_document_metadata(text: str, relative_path: str) -> dict:
     match = re.search(r"^## Metadata\s*$\s*^```json\s*$\n(.*?)^```\s*$", text, re.M | re.S)
     if match is None:
@@ -181,6 +201,7 @@ def load_document_metadata(text: str, relative_path: str) -> dict:
     return metadata
 
 
+# validation-metadata: {"role": "helper"}
 def load_plan_controlling_spec_sets(
     repo_root: Path,
     plan_path: str,
@@ -221,6 +242,7 @@ def load_plan_controlling_spec_sets(
 
 
 
+# validation-metadata: {"role": "helper"}
 def parse_selected_workstream_ids(value: str) -> list[str]:
     selected: list[str] = []
     for raw_line in value.splitlines():
@@ -243,6 +265,7 @@ def parse_selected_workstream_ids(value: str) -> list[str]:
 ATOMIC_CHANGE_TYPE = "Atomic authority transition"
 
 
+# validation-metadata: {"role": "helper"}
 def issue_classification(sections: dict[str, str], fields: list[dict]) -> str:
     change_type_field = next(
         (field for field in fields if field.get("id") == "change_type"),
@@ -258,6 +281,7 @@ def issue_classification(sections: dict[str, str], fields: list[dict]) -> str:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
     classification = issue_classification(sections, fields)
     if classification != "Product-artifact implementation":
@@ -304,6 +328,7 @@ def require_product_artifact_evidence(sections: dict[str, str], repo_root: Path,
 
 
 
+# validation-metadata: {"role": "helper"}
 def require_atomic_transition_evidence(sections: dict[str, str], repo_root: Path, fields: list[dict]) -> None:
     classification = issue_classification(sections, fields)
     if classification != ATOMIC_CHANGE_TYPE:
@@ -364,6 +389,7 @@ def require_atomic_transition_evidence(sections: dict[str, str], repo_root: Path
             raise PolicyError(f"missing atomic transition evidence item: {label}")
 
 
+# validation-metadata: {"role": "helper"}
 def validate_field_definition(field: dict, spec_path: str) -> None:
     validation = field.get("validation")
     if validation is None:
@@ -392,6 +418,7 @@ def validate_field_definition(field: dict, spec_path: str) -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[dict]:
     try:
         spec = json.loads((repo_root / spec_path).read_text())
@@ -403,6 +430,7 @@ def load_fields(repo_root: Path, spec_path: str, collection_key: str) -> list[di
     return fields
 
 
+# validation-metadata: {"role": "helper"}
 def validate_field_value(field: dict, value: str) -> None:
     validation = field.get("validation", {"kind": "meaningful"})
     if validation.get("allow_none") and is_none_response(value):
@@ -432,6 +460,7 @@ def validate_field_value(field: dict, value: str) -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
     sections = parse_sections(body)
     for field in fields:
@@ -443,6 +472,7 @@ def check_issue(body: str, fields: list[dict], repo_root: Path) -> None:
     require_atomic_transition_evidence(sections, repo_root, fields)
 
 
+# validation-metadata: {"role": "helper"}
 def check_pr(body: str, fields: list[dict]) -> None:
     sections = parse_sections(body)
     for field in fields:
@@ -452,6 +482,7 @@ def check_pr(body: str, fields: list[dict]) -> None:
         validate_field_value(field, value)
 
 
+# validation-metadata: {"role": "helper"}
 def load_issue_from_event(event_path: Path) -> tuple[str, bool]:
     try:
         payload = json.loads(event_path.read_text())
@@ -468,12 +499,14 @@ def load_issue_from_event(event_path: Path) -> tuple[str, bool]:
     return issue.get("body", ""), "governed-work" in label_names
 
 
+# validation-metadata: {"role": "helper"}
 def check_issue_event(body: str, governed_work: bool, fields: list[dict], repo_root: Path) -> None:
     if not governed_work:
         return
     check_issue(body, fields, repo_root)
 
 
+# validation-metadata: {"role": "helper"}
 def load_body_from_event(event_path: Path, mode: str) -> str:
     try:
         payload = json.loads(event_path.read_text())
@@ -486,6 +519,7 @@ def load_body_from_event(event_path: Path, mode: str) -> str:
     raise PolicyError(f"unknown mode: {mode}")
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("repo_root")

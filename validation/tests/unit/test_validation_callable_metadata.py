@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 DOMAIN_ROOTS = (Path("validation"), Path("repo/validation"))
-IMPLEMENTATION_PARTS = {"checks", "core", "runners"}
+IMPLEMENTATION_PARTS = {"checks", "core", "runners", "github"}
 TEST_PARTS = {("tests", "unit"), ("tests", "self")}
 PREFIX = "# validation-metadata: "
 
