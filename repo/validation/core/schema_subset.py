@@ -39,6 +39,7 @@ SUPPORTED_SCHEMA_KEYS = {
 SUPPORTED_SCHEMA_TYPES = {"object", "array", "string", "boolean", "integer"}
 
 
+# validation-metadata: {"role": "helper"}
 def load_json(path: Path) -> Any:
     try:
         return json.loads(path.read_text())
@@ -46,19 +47,19 @@ def load_json(path: Path) -> Any:
         fail(f"missing required file: {path}")
     except json.JSONDecodeError as exc:
         fail(f"invalid JSON: {path}: {exc.msg}")
-load_json.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def instance_location(source: str, path: str) -> str:
     return source if not path else f"{source} {path}"
-instance_location.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def schema_location(source: str, path: str) -> str:
     return source if not path else f"{source}{path}"
-schema_location.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def resolve_ref(root_schema: dict[str, Any], ref: str, source: str) -> Any:
     expect(ref.startswith("#/$defs/"), f"schema loading failed: {source} unsupported ref {ref}")
     parts = ref.removeprefix("#/").split("/")
@@ -67,9 +68,9 @@ def resolve_ref(root_schema: dict[str, Any], ref: str, source: str) -> Any:
         expect(isinstance(node, dict) and part in node, f"schema loading failed: {source} unresolved ref {ref}")
         node = node[part]
     return node
-resolve_ref.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema: Any | None = None) -> None:
     expect(isinstance(schema, dict), f"schema loading failed: {schema_location(source, path)} must be an object")
     if root_schema is None:
@@ -142,9 +143,9 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
     if "$ref" in schema:
         expect(isinstance(schema["$ref"], str), f"schema loading failed: {schema_location(source, path)} $ref must be a string")
         resolve_ref(root_schema, schema["$ref"], source)
-ensure_schema_keywords.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def validate_instance(
     instance: Any,
     schema: dict[str, Any],
@@ -154,9 +155,9 @@ def validate_instance(
     ref_stack: tuple[str, ...] = (),
 ) -> None:
     validate_instance_with_evaluation(instance, schema, source, root_schema, path, ref_stack)
-validate_instance.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def validate_instance_with_evaluation(
     instance: Any,
     schema: dict[str, Any],
@@ -263,21 +264,22 @@ def validate_instance_with_evaluation(
                 validate_instance_with_evaluation(instance[key], schema["unevaluatedProperties"], source, root_schema, f"{path}.{key}" if path else key, ref_stack)
 
     return evaluated_keys
-validate_instance_with_evaluation.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def schema_matches(instance: Any, schema: dict[str, Any], source: str, root_schema: dict[str, Any], path: str, ref_stack: tuple[str, ...]) -> bool:
     try:
         validate_instance(instance, schema, source, root_schema, path, ref_stack)
         return True
     except ValidationFailure:
         return False
-schema_matches.__validation_metadata__ = {"role": "helper"}
 
 
+# validation-metadata: {"role": "helper"}
 def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     base_document_schema = load_json(repo_root / "repo/schemas/repo/development-document-base.schema.json")
 
+    # validation-metadata: {"role": "helper"}
     def materialize_document_schema(schema: dict[str, Any]) -> dict[str, Any]:
         schema = copy.deepcopy(schema)
         defs = schema.setdefault("$defs", {})
@@ -291,7 +293,6 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
                     inline_base.pop("$defs", None)
                     all_of[index] = inline_base
         return schema
-    materialize_document_schema.__validation_metadata__ = {"role": "helper"}
 
     schemas = {
         "repo.manifest": load_json(repo_root / "repo/schemas/repo/repo-manifest.schema.json"),
@@ -314,4 +315,3 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.product-decomposition"], "repo/schemas/repo/product-decomposition.schema.json")
     ensure_schema_keywords(schemas["repo.implementation-plan"], "repo/schemas/repo/implementation-plan.schema.json")
     return schemas
-load_repo_schemas.__validation_metadata__ = {"role": "helper"}

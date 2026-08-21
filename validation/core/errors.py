@@ -2,6 +2,6 @@
 class ValidationFailure(RuntimeError):
     pass
 
+# validation-metadata: {"role": "helper"}
 def fail(message: str) -> None:
     raise ValidationFailure(message)
-fail.__validation_metadata__ = {"role": "helper"}

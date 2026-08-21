@@ -1,31 +1,14 @@
 from __future__ import annotations
 
 import ast
+import json
 import unittest
 from pathlib import Path
 
 
 DOMAIN_ROOTS = (Path("validation"), Path("repo/validation"))
 IMPLEMENTATION_PARTS = {"checks", "core", "runners"}
-METADATA_ATTR = "__validation_metadata__"
-
-
-def _function_key(path: Path, node: ast.AST, parents: dict[ast.AST, ast.AST]) -> tuple[str, str]:
-    parts = [node.name]
-    current = parents.get(node)
-    while current is not None:
-        if isinstance(current, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            parts.append(current.name)
-        current = parents.get(current)
-    return path.as_posix(), ".".join(reversed(parts))
-
-
-def _literal_metadata(node: ast.AST) -> dict | None:
-    try:
-        value = ast.literal_eval(node)
-    except Exception:
-        return None
-    return value if isinstance(value, dict) else None
+PREFIX = "# validation-metadata: "
 
 
 class ValidationCallableMetadataTests(unittest.TestCase):
@@ -50,67 +33,40 @@ class ValidationCallableMetadataTests(unittest.TestCase):
                     continue
 
                 rel = source.relative_to(self.repo_root)
-                tree = ast.parse(source.read_text(encoding="utf-8"), filename=rel.as_posix())
-                parents: dict[ast.AST, ast.AST] = {}
-                for parent in ast.walk(tree):
-                    for child in ast.iter_child_nodes(parent):
-                        parents[child] = parent
-
-                functions = {
-                    _function_key(rel, node, parents): node
-                    for node in ast.walk(tree)
-                    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-                }
-                metadata: dict[tuple[str, str], list[dict]] = {key: [] for key in functions}
+                text = source.read_text(encoding="utf-8")
+                lines = text.splitlines()
+                tree = ast.parse(text, filename=rel.as_posix())
 
                 for node in ast.walk(tree):
-                    if not isinstance(node, ast.Assign) or len(node.targets) != 1:
+                    if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                         continue
-                    target = node.targets[0]
-                    if (
-                        not isinstance(target, ast.Attribute)
-                        or target.attr != METADATA_ATTR
-                        or not isinstance(target.value, ast.Name)
-                    ):
-                        continue
-                    value = _literal_metadata(node.value)
-                    self.assertIsNotNone(value, f"{rel}:{node.lineno}: metadata must be a literal object")
-
-                    candidates = [
-                        key for key in functions
-                        if key[0] == rel.as_posix() and key[1].split(".")[-1] == target.value.id
-                    ]
-                    self.assertTrue(candidates, f"{rel}:{node.lineno}: metadata target not found")
-
-                    owner = parents.get(node)
-                    owner_names: list[str] = []
-                    while owner is not None:
-                        if isinstance(owner, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-                            owner_names.append(owner.name)
-                        owner = parents.get(owner)
-                    owner_prefix = ".".join(reversed(owner_names))
-                    matching = [
-                        key for key in candidates
-                        if ".".join(key[1].split(".")[:-1]) == owner_prefix
-                    ]
-                    self.assertEqual(1, len(matching), f"{rel}:{node.lineno}: ambiguous metadata target")
-                    metadata[matching[0]].append(value)
-
-                for key in functions:
                     callable_count += 1
-                    records = metadata[key]
                     self.assertEqual(
-                        1,
-                        len(records),
-                        f"{key[0]}:{key[1]} must have exactly one source-local validation role",
+                        [],
+                        node.decorator_list,
+                        f"{rel}:{node.lineno}: VCP-I2 metadata is a source annotation, not a runtime decorator",
                     )
-                    record = records[0]
+                    self.assertGreater(node.lineno, 1, f"{rel}:{node.lineno}: missing metadata line")
+                    metadata_line = lines[node.lineno - 2]
+                    expected_indent = lines[node.lineno - 1][
+                        : len(lines[node.lineno - 1]) - len(lines[node.lineno - 1].lstrip())
+                    ]
+                    self.assertTrue(
+                        metadata_line.startswith(expected_indent + PREFIX),
+                        f"{rel}:{node.lineno}: metadata must be immediately before def",
+                    )
+                    payload = metadata_line[len(expected_indent + PREFIX):]
+                    record = json.loads(payload)
+
                     if record.get("role") == "helper":
                         self.assertEqual({"role"}, set(record))
                         continue
 
                     self.assertEqual("task", record.get("role"))
-                    self.assertEqual({"role", "task_id", "normative_reference"}, set(record))
+                    self.assertEqual(
+                        {"role", "task_id", "normative_reference"},
+                        set(record),
+                    )
                     task_count += 1
                     self.assertIsInstance(record["task_id"], str)
                     self.assertTrue(record["task_id"])
@@ -119,7 +75,13 @@ class ValidationCallableMetadataTests(unittest.TestCase):
                     self.assertTrue(ref["spec_id"])
                     self.assertTrue(ref["requirement_id"])
                     self.assertNotIn(record["task_id"], seen_task_ids)
-                    seen_task_ids[record["task_id"]] = key
+                    seen_task_ids[record["task_id"]] = (rel.as_posix(), node.name)
+
+                self.assertNotIn(
+                    ".__validation_metadata__",
+                    text,
+                    f"{rel}: post-definition metadata assignment remains",
+                )
 
         self.assertEqual(113, callable_count)
         self.assertEqual(18, task_count)
@@ -128,7 +90,10 @@ class ValidationCallableMetadataTests(unittest.TestCase):
         product_root = self.repo_root / "product/validation"
         tagged = []
         for source in product_root.rglob("*.py"):
-            if source.is_file() and METADATA_ATTR in source.read_text(encoding="utf-8"):
+            if not source.is_file():
+                continue
+            text = source.read_text(encoding="utf-8")
+            if PREFIX in text or ".__validation_metadata__" in text:
                 tagged.append(source.relative_to(self.repo_root).as_posix())
         self.assertEqual([], tagged)
 

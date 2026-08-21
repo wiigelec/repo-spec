@@ -11,13 +11,14 @@ from ..core.context import ValidationContext
 from ..core.errors import expect, fail
 from ..core.paths import resolve_repo_path
 
+# validation-metadata: {"role": "helper"}
 def check_generated_document_freshness(repo_root: Path) -> None:
     try:
         check_generated_outputs(repo_root)
     except (RepositoryError, ValueError) as exc:
         fail(f"generated-document freshness failed: {exc}")
-check_generated_document_freshness.__validation_metadata__ = {"role": "helper"}
 
+# validation-metadata: {"role": "helper"}
 def check_generated_document_write_behavior(repo_root: Path) -> None:
     try:
         render_all(repo_root)
@@ -25,12 +26,12 @@ def check_generated_document_write_behavior(repo_root: Path) -> None:
         check_generated_outputs(repo_root)
     except (RepositoryError, ValueError) as exc:
         fail(f"generated-document write failed: {exc}")
-check_generated_document_write_behavior.__validation_metadata__ = {"role": "helper"}
 
+# validation-metadata: {"role": "helper"}
 def check_generated_document_freshness_phase(context: ValidationContext) -> None:
     check_generated_document_freshness(context.repo_root)
-check_generated_document_freshness_phase.__validation_metadata__ = {"role": "helper"}
 
+# validation-metadata: {"role": "task", "task_id": "repo.validation.generated-document-freshness", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-008"}}
 def _check_repository_generated_freshness(
     context: ValidationContext,
 ) -> None:
@@ -113,4 +114,3 @@ def _check_repository_generated_freshness(
         if extra:
             parts.append(f"orphaned derived markdown: {', '.join(extra)}")
         fail("generated-document freshness failed: " + "; ".join(parts))
-_check_repository_generated_freshness.__validation_metadata__ = {"role": "task", "task_id": "repo.validation.generated-document-freshness", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-008"}}

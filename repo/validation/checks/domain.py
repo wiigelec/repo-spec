@@ -29,6 +29,7 @@ from .specifications import (
     check_unique_spec_ids_phase,
 )
 
+# validation-metadata: {"role": "helper"}
 def validate_repository_phase(repo_root: Path, phase_label: str) -> None:
     context = _load_repository_only_context(repo_root)
     for label, check in REPOSITORY_VALIDATION_PHASES:
@@ -36,8 +37,8 @@ def validate_repository_phase(repo_root: Path, phase_label: str) -> None:
             check(context)
             return
     fail(f"unknown repository validation phase: {phase_label}")
-validate_repository_phase.__validation_metadata__ = {"role": "helper"}
 
+# validation-metadata: {"role": "helper"}
 def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
@@ -49,14 +50,13 @@ def _load_repository_only_context(repo_root: Path) -> ValidationContext:
         schemas,
     )
     return ValidationContext(repo_root, repository, None, None)
-_load_repository_only_context.__validation_metadata__ = {"role": "helper"}
 
+# validation-metadata: {"role": "helper"}
 def validate_repo(repo_root: Path) -> None:
     context = _load_repository_only_context(repo_root)
     for label, check in REPOSITORY_VALIDATION_PHASES:
         check(context)
         print(f"ok: {label}")
-validate_repo.__validation_metadata__ = {"role": "helper"}
 
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository structural envelopes", check_repository_structural_envelopes),

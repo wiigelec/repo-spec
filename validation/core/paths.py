@@ -1,6 +1,7 @@
 """Repository-relative path helpers for root validation."""
 from pathlib import Path
 
+# validation-metadata: {"role": "helper"}
 def resolve_repo_path(repo_root: Path, relative_path: str) -> Path:
     path = (repo_root / relative_path).resolve()
     try:
@@ -8,4 +9,3 @@ def resolve_repo_path(repo_root: Path, relative_path: str) -> Path:
     except ValueError as exc:
         raise ValueError(f"path escapes repository root: {relative_path}") from exc
     return path
-resolve_repo_path.__validation_metadata__ = {"role": "helper"}
