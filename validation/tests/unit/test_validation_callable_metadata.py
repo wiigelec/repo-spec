@@ -26,7 +26,20 @@ class ValidationCallableMetadataTests(unittest.TestCase):
 
         for domain_root in DOMAIN_ROOTS:
             absolute_domain = self.repo_root / domain_root
-            for source in sorted(absolute_domain.rglob("*.py")):
+            for source in sorted(absolute_domain.rglob("*")):
+                if not source.is_file():
+                    continue
+                is_python_source = source.suffix == ".py"
+                if not is_python_source:
+                    try:
+                        probe_text = source.read_text(encoding="utf-8")
+                        probe_lines = probe_text.splitlines()
+                        first_line = probe_lines[0] if probe_lines else ""
+                    except (OSError, UnicodeDecodeError):
+                        continue
+                    is_python_source = first_line.startswith("#!") and "python" in first_line.lower()
+                if not is_python_source:
+                    continue
                 relative_to_domain = source.relative_to(absolute_domain)
                 parts = relative_to_domain.parts
                 in_implementation = len(parts) >= 2 and parts[0] in IMPLEMENTATION_PARTS

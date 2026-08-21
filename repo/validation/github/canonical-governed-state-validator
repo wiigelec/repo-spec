@@ -10,11 +10,13 @@ from pathlib import Path
 PRODUCER_ID = "repository-canonical-validator"
 
 
+# validation-metadata: {"role": "helper"}
 def fail(message: str) -> int:
     print(message, file=sys.stderr)
     return 1
 
 
+# validation-metadata: {"role": "helper"}
 def main() -> int:
     try:
         request = json.load(sys.stdin)

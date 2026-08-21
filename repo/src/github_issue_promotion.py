@@ -115,7 +115,7 @@ class GitHubClient:
 TRUSTED_REPOSITORY_AUTHORIZATION_PRODUCERS = {
     "repository-governance-authority": {
         "command_env": "REPO_SPEC_AUTHORIZATION_VALIDATOR",
-        "sha256": "d53e2cf3eb841e00b2ee3cef5b233a1e178615ef6fc45e2b14f3600ef85bee27",
+        "sha256": "6d808295837295784c0cc9fc1fc0b90b5ad8ad5eaec44b9027d61da770daf267",
     },
 }
 

@@ -16,7 +16,7 @@ from .provenance import IntakeProvenance
 TRUSTED_CANONICAL_VALIDATION_PRODUCERS = {
     "repository-canonical-validator": {
         "command_env": "REPO_SPEC_CANONICAL_VALIDATOR",
-        "sha256": "713f36924bede7aa1a635b90743245661f3d1db805b36ee0e96a33b2d66a572a",
+        "sha256": "0ba70cc66ebf9e517edc095ac0846f46ed812f46e34026a861e0d6414f244881",
     },
 }
 
