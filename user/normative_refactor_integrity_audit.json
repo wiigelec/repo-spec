@@ -1,0 +1,3731 @@
+{
+  "dependency_audit": {
+    "acyclic": true,
+    "cycle_members_if_any": [],
+    "topological_order": [
+      "repo.issue-routing-governance",
+      "repo.manifest",
+      "repo.governed-work-provenance",
+      "repo.issue-routing-classification",
+      "repo.repository-structure",
+      "repo.issue-authority-routing",
+      "repo.authority-model",
+      "repo.development-workflow",
+      "repo.governed-work-promotion",
+      "repo.artifact-taxonomy",
+      "repo.governing-issue",
+      "repo.issue-routing-platform-validation",
+      "repo.platform-profiles",
+      "repo.issue-intake-governance-routing",
+      "repo.validation",
+      "repo.development-document-base",
+      "repo.product-manifest",
+      "repo.review-proposal",
+      "repo.functional-set-process",
+      "repo.product-decomposition",
+      "repo.product-spec-base",
+      "repo.product-levels",
+      "repo.implementation-plan",
+      "repo.product-correspondence"
+    ],
+    "unresolved_dependencies": []
+  },
+  "governing_issue": 548,
+  "kind": "normative-refactor-integrity-audit",
+  "new_active_requirement_ids": [
+    "REPO-AUTH-011",
+    "REPO-AUTH-012",
+    "REPO-AUTH-013",
+    "REPO-AUTH-014",
+    "REPO-AUTH-015",
+    "REPO-MAN-002",
+    "REPO-STR-017"
+  ],
+  "normative_authority": false,
+  "notes": [
+    "This report is non-normative audit evidence.",
+    "For every withdrawn original requirement, Phase 2 preserved predecessor text inside the surviving canonical owner before reserving the original ID.",
+    "Generated documentation and validator implementation may remain stale relative to the normalized authority and are not used as acceptance authority for this audit."
+  ],
+  "original_accepted_base": "ae7bd5422cd3402d66a633be25edc6a2d436a776",
+  "phase2_revision": "6ced7b910166e7e9c5aaed704be4dc6ea4cb04ec",
+  "repository": "wiigelec/repo-spec",
+  "requirement_transition_ledger": [
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-003A",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-003A"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-AT-005; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-AT-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-AT-005"
+        ]
+      },
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-AT-005",
+          "spec_id": "repo.artifact-taxonomy"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AT-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        "REPO-AT-008"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-AT-008; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-AT-009",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-AT-008"
+        ]
+      },
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-AT-008",
+          "spec_id": "repo.artifact-taxonomy"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-AT-006; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-AT-010",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-AT-006"
+        ]
+      },
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-AT-006",
+          "spec_id": "repo.artifact-taxonomy"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-AT-007; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-AT-011",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-AT-007"
+        ]
+      },
+      "spec_id": "repo.artifact-taxonomy",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-AT-007",
+          "spec_id": "repo.artifact-taxonomy"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-AUTH-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.authority-model",
+      "surviving_requirements": [
+        "REPO-AUTH-010"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-005"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-DDB-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-DDB-006",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-DDB-003"
+        ]
+      },
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-DDB-003",
+          "spec_id": "repo.development-document-base"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-008"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-DDB-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-DDB-009",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-DDB-003"
+        ]
+      },
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-DDB-003",
+          "spec_id": "repo.development-document-base"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-DDB-008; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-DDB-010",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-DDB-008"
+        ]
+      },
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-DDB-008",
+          "spec_id": "repo.development-document-base"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-011"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-DDB-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-document-base",
+      "surviving_requirements": [
+        "REPO-DDB-012"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-001"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-WF-024; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-WF-002",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-WF-024"
+        ]
+      },
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-WF-024",
+          "spec_id": "repo.development-workflow"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-007"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-WF-007; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-WF-008",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-WF-007"
+        ]
+      },
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-WF-007",
+          "spec_id": "repo.development-workflow"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-010"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-011"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-WF-017; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-WF-012",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-WF-017"
+        ]
+      },
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-WF-017",
+          "spec_id": "repo.development-workflow"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-013",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-013"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-014",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-014"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-015",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-015"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-016",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-016"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-017",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-017"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-018",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-018"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-019",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-019"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-020",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-020"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-021",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-021"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-022",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-022"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-023",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-023"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-024",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-024"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-025",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-025"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-WF-026",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.development-workflow",
+      "surviving_requirements": [
+        "REPO-WF-026"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-FSP-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.functional-set-process",
+      "surviving_requirements": [
+        "REPO-FSP-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PROM-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governed-work-promotion",
+      "surviving_requirements": [
+        "IRG-PROM-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PROM-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governed-work-promotion",
+      "surviving_requirements": [
+        "IRG-PROM-002"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PROM-001; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PROM-003",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PROM-001"
+        ]
+      },
+      "spec_id": "repo.governed-work-promotion",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PROM-001",
+          "spec_id": "repo.governed-work-promotion"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PROM-001; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PROM-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PROM-001"
+        ]
+      },
+      "spec_id": "repo.governed-work-promotion",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PROM-001",
+          "spec_id": "repo.governed-work-promotion"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PROM-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governed-work-promotion",
+      "surviving_requirements": [
+        "IRG-PROM-005"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PROV-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PROV-001",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PROV-002"
+        ]
+      },
+      "spec_id": "repo.governed-work-provenance",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PROV-002",
+          "spec_id": "repo.governed-work-provenance"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PROV-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governed-work-provenance",
+      "surviving_requirements": [
+        "IRG-PROV-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PROV-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governed-work-provenance",
+      "surviving_requirements": [
+        "IRG-PROV-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PROV-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PROV-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PROV-002"
+        ]
+      },
+      "spec_id": "repo.governed-work-provenance",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PROV-002",
+          "spec_id": "repo.governed-work-provenance"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PROV-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governed-work-provenance",
+      "surviving_requirements": [
+        "IRG-PROV-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-002"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-GI-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-GI-003",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-GI-002"
+        ]
+      },
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-GI-002",
+          "spec_id": "repo.governing-issue"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-009"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-GI-009; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-GI-010",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-GI-009"
+        ]
+      },
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-GI-009",
+          "spec_id": "repo.governing-issue"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-GI-009; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-GI-011",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-GI-009"
+        ]
+      },
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-GI-009",
+          "spec_id": "repo.governing-issue"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-012"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-013",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-013"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-GI-012; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-GI-014",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-GI-012"
+        ]
+      },
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-GI-012",
+          "spec_id": "repo.governing-issue"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-GI-015",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.governing-issue",
+      "surviving_requirements": [
+        "REPO-GI-015"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-IPL-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-IPL-001",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-IPL-002"
+        ]
+      },
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-IPL-002",
+          "spec_id": "repo.implementation-plan"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-IPL-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-IPL-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-IPL-002"
+        ]
+      },
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-IPL-002",
+          "spec_id": "repo.implementation-plan"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-IPL-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        "REPO-IPL-009"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-IPL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-IPL-010",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-IPL-003"
+        ]
+      },
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-IPL-003",
+          "spec_id": "repo.implementation-plan"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-IPL-008; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-IPL-011",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-IPL-008"
+        ]
+      },
+      "spec_id": "repo.implementation-plan",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-IPL-008",
+          "spec_id": "repo.implementation-plan"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-ROUTE-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-authority-routing",
+      "surviving_requirements": [
+        "IRG-ROUTE-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-ROUTE-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-authority-routing",
+      "surviving_requirements": [
+        "IRG-ROUTE-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-ROUTE-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-authority-routing",
+      "surviving_requirements": [
+        "IRG-ROUTE-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-ROUTE-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-ROUTE-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-ROUTE-002"
+        ]
+      },
+      "spec_id": "repo.issue-authority-routing",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-ROUTE-002",
+          "spec_id": "repo.issue-authority-routing"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-ROUTE-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-authority-routing",
+      "surviving_requirements": [
+        "IRG-ROUTE-005"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-ROUTE-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-ROUTE-006",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-ROUTE-002"
+        ]
+      },
+      "spec_id": "repo.issue-authority-routing",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-ROUTE-002",
+          "spec_id": "repo.issue-authority-routing"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-E2E-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-E2E-001",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-E2E-002"
+        ]
+      },
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-E2E-002",
+          "spec_id": "repo.issue-intake-governance-routing"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-E2E-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        "IRG-E2E-002"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-E2E-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-E2E-003",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-E2E-002"
+        ]
+      },
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-E2E-002",
+          "spec_id": "repo.issue-intake-governance-routing"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-E2E-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-E2E-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-E2E-002"
+        ]
+      },
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-E2E-002",
+          "spec_id": "repo.issue-intake-governance-routing"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-E2E-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        "IRG-E2E-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-E2E-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        "IRG-E2E-006"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-E2E-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-E2E-007",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-E2E-002"
+        ]
+      },
+      "spec_id": "repo.issue-intake-governance-routing",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-E2E-002",
+          "spec_id": "repo.issue-intake-governance-routing"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-CLS-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-classification",
+      "surviving_requirements": [
+        "IRG-CLS-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-CLS-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-classification",
+      "surviving_requirements": [
+        "IRG-CLS-002"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-CLS-001; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-CLS-003",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-CLS-001"
+        ]
+      },
+      "spec_id": "repo.issue-routing-classification",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-CLS-001",
+          "spec_id": "repo.issue-routing-classification"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-CLS-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-classification",
+      "surviving_requirements": [
+        "IRG-CLS-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-CLS-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-classification",
+      "surviving_requirements": [
+        "IRG-CLS-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-L0-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-governance",
+      "surviving_requirements": [
+        "IRG-L0-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-L0-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-governance",
+      "surviving_requirements": [
+        "IRG-L0-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-L0-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-governance",
+      "surviving_requirements": [
+        "IRG-L0-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-L0-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-governance",
+      "surviving_requirements": [
+        "IRG-L0-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-L0-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-governance",
+      "surviving_requirements": [
+        "IRG-L0-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-L0-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-governance",
+      "surviving_requirements": [
+        "IRG-L0-006"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PVAL-001",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PVAL-003"
+        ]
+      },
+      "spec_id": "repo.issue-routing-platform-validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PVAL-003",
+          "spec_id": "repo.issue-routing-platform-validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PVAL-002",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PVAL-003"
+        ]
+      },
+      "spec_id": "repo.issue-routing-platform-validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PVAL-003",
+          "spec_id": "repo.issue-routing-platform-validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PVAL-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-platform-validation",
+      "surviving_requirements": [
+        "IRG-PVAL-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "IRG-PVAL-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "IRG-PVAL-003"
+        ]
+      },
+      "spec_id": "repo.issue-routing-platform-validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "IRG-PVAL-003",
+          "spec_id": "repo.issue-routing-platform-validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "IRG-PVAL-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.issue-routing-platform-validation",
+      "surviving_requirements": [
+        "IRG-PVAL-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-MAN-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.manifest",
+      "surviving_requirements": [
+        "REPO-MAN-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-002"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PP-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PP-003",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PP-002"
+        ]
+      },
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PP-002",
+          "spec_id": "repo.platform-profiles"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-006"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PP-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PP-007",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PP-002"
+        ]
+      },
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PP-002",
+          "spec_id": "repo.platform-profiles"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-008"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PP-004; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PP-009",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PP-004"
+        ]
+      },
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PP-004",
+          "spec_id": "repo.platform-profiles"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PP-004; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PP-010",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PP-004"
+        ]
+      },
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PP-004",
+          "spec_id": "repo.platform-profiles"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-011"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-012"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-013",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-013"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-014",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-014"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PP-006; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PP-015",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PP-006"
+        ]
+      },
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PP-006",
+          "spec_id": "repo.platform-profiles"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PP-016",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.platform-profiles",
+      "surviving_requirements": [
+        "REPO-PP-016"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-007"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PC-006; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PC-008",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PC-006"
+        ]
+      },
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PC-006",
+          "spec_id": "repo.product-correspondence"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PC-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-correspondence",
+      "surviving_requirements": [
+        "REPO-PC-009"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PDC-001",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PDC-002"
+        ]
+      },
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PDC-002",
+          "spec_id": "repo.product-decomposition"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PDC-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        "REPO-PDC-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PDC-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        "REPO-PDC-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PDC-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PDC-002"
+        ]
+      },
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PDC-002",
+          "spec_id": "repo.product-decomposition"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PDC-005",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PDC-002"
+        ]
+      },
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PDC-002",
+          "spec_id": "repo.product-decomposition"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PDC-006",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PDC-002"
+        ]
+      },
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PDC-002",
+          "spec_id": "repo.product-decomposition"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PDC-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-decomposition",
+      "surviving_requirements": [
+        "REPO-PDC-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-007"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-010"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-011"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-012"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-013",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-011"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-011",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-014",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-002"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-002",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-015",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-003"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-003",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-004; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-016",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-004"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-004",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-005; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-017",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-005"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-005",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-022",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-011"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-011",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-023",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-011"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-011",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-024",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-011"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-011",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PL-025",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PL-011"
+        ]
+      },
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PL-011",
+          "spec_id": "repo.product-levels"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-026",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-026"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PL-027",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-levels",
+      "surviving_requirements": [
+        "REPO-PL-027"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-006"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PM-007",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PM-002"
+        ]
+      },
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PM-002",
+          "spec_id": "repo.product-manifest"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-009"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PM-010",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PM-002"
+        ]
+      },
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PM-002",
+          "spec_id": "repo.product-manifest"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PM-011",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PM-002"
+        ]
+      },
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PM-002",
+          "spec_id": "repo.product-manifest"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PM-012",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PM-002"
+        ]
+      },
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PM-002",
+          "spec_id": "repo.product-manifest"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PM-013",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PM-002"
+        ]
+      },
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PM-002",
+          "spec_id": "repo.product-manifest"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PM-014",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        "REPO-PM-014"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PM-015",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PM-002"
+        ]
+      },
+      "spec_id": "repo.product-manifest",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PM-002",
+          "spec_id": "repo.product-manifest"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-004"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-006"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-007",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-007"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PSB-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PSB-008",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PSB-003"
+        ]
+      },
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PSB-003",
+          "spec_id": "repo.product-spec-base"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-010"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-011"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PSB-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PSB-012",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PSB-002"
+        ]
+      },
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PSB-002",
+          "spec_id": "repo.product-spec-base"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-PSB-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-PSB-013",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-PSB-003"
+        ]
+      },
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-PSB-003",
+          "spec_id": "repo.product-spec-base"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-014",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-014"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-015",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-015"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-016",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-016"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-PSB-017",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.product-spec-base",
+      "surviving_requirements": [
+        "REPO-PSB-017"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-STR-002; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-STR-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-STR-002"
+        ]
+      },
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-STR-002",
+          "spec_id": "repo.repository-structure"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-005",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-005"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-006",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-006"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-STR-006; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-STR-007",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-STR-006"
+        ]
+      },
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-STR-006",
+          "spec_id": "repo.repository-structure"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-010"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-011"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-012"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-013",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-013"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-014",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-014"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-015",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-015"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-STR-016",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.repository-structure",
+      "surviving_requirements": [
+        "REPO-STR-016"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-003"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-004",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-004"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-005",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-004"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-004",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-006",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-003"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-003",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-007",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-003"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-003",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-008",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-004"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-004",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-010"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-011",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-011"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-012"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-013",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-013"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-012; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-014",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-012"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-012",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-012; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-015",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-012"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-012",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-RP-016",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        "REPO-RP-016"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-017",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-004"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-004",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-018",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-003"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-003",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-019",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-003"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-003",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-001; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-020",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-001"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-001",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-RP-001; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-RP-021",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-RP-001"
+        ]
+      },
+      "spec_id": "repo.review-proposal",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-RP-001",
+          "spec_id": "repo.review-proposal"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-001",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-001"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-002",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-002"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-003",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-003"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-004",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-003"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-003",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-005",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-003"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-003",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-006",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-003"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-003",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-007",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-003"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-003",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-008",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-008"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-009",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-009"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-010",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-010"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-012; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-011",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-012"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-012",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-012",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-012"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-013",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-013"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-013; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-014",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-013"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-013",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-015",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-015"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-015; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-016",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-015"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-015",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-017",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-017"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-015; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-018",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-015"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-015",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-019",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-019"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-020",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-021",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-022",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-023",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-024",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-025",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-026",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-027",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-027"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-028",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-029",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-030",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-031",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-032",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-033",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-034",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-035",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-035"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-036",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-036"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-008; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-037",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-008"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-008",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-038",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-027"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-027",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-039",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-039"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-040",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-041",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-041"
+      ]
+    },
+    {
+      "disposition": "active",
+      "requirement_id": "REPO-VAL-042",
+      "semantic_evidence": "same published requirement ID remains active",
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        "REPO-VAL-042"
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-039; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-043",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-039"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-039",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-039; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-044",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-039"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-039",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-001; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-045",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-001"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-001",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-046",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-019"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-019",
+          "spec_id": "repo.validation"
+        }
+      ]
+    },
+    {
+      "disposition": "merged",
+      "rationale": "Normalized into canonical owner REPO-VAL-039; predecessor semantics were folded into the surviving requirement before withdrawal.",
+      "requirement_id": "REPO-VAL-047",
+      "semantic_evidence": {
+        "old_text_preserved_in_survivor": true,
+        "survivors_with_predecessor_trace": [
+          "REPO-VAL-039"
+        ]
+      },
+      "spec_id": "repo.validation",
+      "surviving_requirements": [
+        {
+          "requirement_id": "REPO-VAL-039",
+          "spec_id": "repo.validation"
+        }
+      ]
+    }
+  ],
+  "schema_version": "1.0",
+  "summary": {
+    "all_original_requirement_ids_accounted_for": true,
+    "all_withdrawn_requirements_have_explicit_predecessor_semantic_trace": true,
+    "all_withdrawn_requirements_have_live_surviving_owners": true,
+    "new_active_requirement_ids": 7,
+    "normalized_active_requirements": 208,
+    "original_active_requirements": 304,
+    "original_requirements_remaining_active": 201,
+    "original_requirements_withdrawn_and_reserved": 103,
+    "repository_spec_dependencies_resolve": true,
+    "repository_spec_dependency_graph_acyclic": true
+  }
+}
