@@ -2,13 +2,13 @@
 
 ## Status
 
-Candidate implementation plan; non-normative with respect to repository and product semantics.
+Accepted implementation plan; non-normative with respect to repository and product semantics.
 
 Issue #568 governs creation, correction, and later explicit acceptance of this plan. The completed normative-specification stage is recorded by issue #561 and final accepted specification-stage revision `21577021da0187d2310b808079a1ec573ea54b0a`.
 
-Merging this candidate revision does **not** make the plan accepted. Durable planning authority exists only after a separate bounded acceptance revision changes this document's status and machine-readable `lifecycle_status` to `accepted`, that exact revision is reviewed and validated, and the user manually merges it.
+This revision is the explicit plan-acceptance transition governed by #568. Durable planning authority begins only after this exact revision is reviewed, validated, manually merged, and verified on `main`.
 
-This candidate plan does not authorize maintained implementation mutation.
+Acceptance of this plan authorizes creation of separately governed successor implementation issues within the exact workstream and authority boundaries declared below. It does not itself mutate maintained implementation artifacts or authorize product-owned mutation outside the separately governed product authority path.
 
 ## Metadata
 
@@ -22,7 +22,7 @@ This candidate plan does not authorize maintained implementation mutation.
   "title": "Validation Correspondence Implementation Plan",
   "product_id": "repo-spec",
   "authority_category": "planning",
-  "lifecycle_status": "candidate",
+  "lifecycle_status": "accepted",
   "governing_issue": "#568",
   "controlling_documents": [
     "repo/docs/overview/REPOSITORY-FUNCTIONAL-SET.md",
@@ -194,7 +194,7 @@ This candidate plan does not authorize maintained implementation mutation.
       ]
     }
   ],
-  "successor_action": "This candidate revision does not authorize implementation issues, even if merged. After candidate content is reviewed and merged, #568 must govern a separate explicit acceptance revision that changes this plan's durable lifecycle state to accepted. Only after that accepted revision is manually merged and verified may separately governed repository-generic implementation issues cite VCP-I1 through VCP-I6. Product-owned package population, product-specification correspondence mutation, and product-specific materialization require separately governed product-owned planning and implementation authority with exact applicable accepted product specifications.",
+  "successor_action": "After this accepted revision is manually merged and verified, separately governed repository-generic implementation issues may cite VCP-I1 through VCP-I6 in dependency order. Each implementation issue must cite this accepted plan, its exact selected workstream ID or IDs, and the exact controlling accepted repository specifications for those workstreams. Product-owned package population, product-specification correspondence mutation, and product-specific materialization continue to require separately governed product-owned planning and implementation authority with exact applicable accepted product specifications.",
   "schema_version": "1"
 }
 ```
@@ -242,16 +242,11 @@ If implementation planning or execution discovers a required semantic decision n
 
 No Atomic transition is pre-authorized. A later governed implementation issue may use Atomic only if `repo.development-workflow` proves the existing no-valid-intermediate eligibility condition for the exact proposed transition.
 
-## Candidate-to-accepted transition
+## Acceptance transition
 
-The lifecycle is explicit:
+This revision is the bounded acceptance transition required by #568. It changes only durable plan lifecycle status and successor authorization language; it does not change workstream semantics, authority sets, dependencies, migration mechanics, or implementation scope.
 
-1. review and merge candidate planning content without treating the candidate artifact as accepted authority;
-2. keep #568 open;
-3. perform a separate bounded acceptance revision that changes the durable status prose and `lifecycle_status` from `candidate` to `accepted`, without changing implementation semantics;
-4. validate and manually merge that exact acceptance revision;
-5. verify merged `main` and perform a final read-only acceptance audit;
-6. only then create successor implementation issues.
+After this exact revision is manually merged, merged `main` must be verified and a final read-only acceptance audit must pass before #568 closes and successor implementation issues are created.
 
 ## Chunk index
 
@@ -272,7 +267,7 @@ The lifecycle is explicit:
 
 ## Next authorized action
 
-Review and merge corrected candidate planning content only. Candidate merge is not plan acceptance and does not authorize implementation. The next action after candidate merge is the explicit acceptance revision governed by #568.
+Review this acceptance-only revision. After manual merge, verify merged `main` and perform the final read-only plan-acceptance audit required by #568. Only after that audit passes may #568 close and separately governed successor implementation issues be created.
 
 ## Discoverability
 
