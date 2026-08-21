@@ -23,11 +23,11 @@
     },
     {
       "id": "REPO-VC-005",
-      "text": "Each validation task shall belong through exactly one validation-correspondence package relationship to exactly one canonical normative reference. Shared internal helpers may support multiple tasks or normative requirements but shall not thereby acquire validation-task ownership or normative-requirement ownership."
+      "text": "Each externally identified validation task shall have stable identity within its accepted correspondence scope, shall resolve to a maintained source location and validation-task callable, and shall belong through exactly one validation-correspondence package relationship to exactly one canonical normative reference. Shared internal helpers may support multiple tasks or normative requirements but shall not thereby acquire validation-task ownership or normative-requirement ownership. Exact task-identifier format, uniqueness scope, task granularity, and source-reference serialization are delegated to later governed representation work."
     },
     {
       "id": "REPO-VC-006",
-      "text": "Every maintained callable defined in governed validation implementation source shall be source-locally classifiable as exactly one mutually exclusive role: validation-task callable or helper. A validation-task callable shall expose source-local machine-readable correspondence to exactly one canonical normative reference. A helper shall expose its non-owning helper role and shall not simultaneously claim validation-task or normative-requirement ownership. Exact source-local syntax is delegated to later governed representation and implementation work."
+      "text": "Every maintained callable defined in governed validation implementation source shall be source-locally classifiable as exactly one mutually exclusive role: validation-task callable or helper. A validation-task callable shall expose source-local machine-readable correspondence to exactly one canonical normative reference. A helper shall expose its non-owning helper role and shall not simultaneously claim validation-task or normative-requirement ownership. A validation-task callable is a source-level correspondence concept distinct from a public validation entry point governed by `repo.validation`; a public validation entry point may invoke one or more validation-task callables and shall not acquire validation-task correspondence solely by acting as an orchestration or externally exposed validation surface. Exact source-local syntax is delegated to later governed representation and implementation work."
     },
     {
       "id": "REPO-VC-007",
@@ -43,7 +43,7 @@
     },
     {
       "id": "REPO-VC-010",
-      "text": "Validation-correspondence integrity shall preserve active-package uniqueness, task-to-package uniqueness, source/package agreement, non-active treatment of withdrawn requirements, and deterministic subordinate projections. Generated or materialized correspondence views shall remain subordinate to their authoritative source according to `repo.authority-model`; exact projection inventory, physical materialization, enforcement implementation, and migration mechanics are delegated to later governed work."
+      "text": "Validation-correspondence integrity shall preserve active-package uniqueness, stable validation-task identity within its accepted correspondence scope, validation-task source-location and callable resolution, task-to-package uniqueness, source/package agreement, non-active treatment of withdrawn requirements, and deterministic subordinate projections. Generated or materialized correspondence views shall remain subordinate to their authoritative source according to `repo.authority-model`; exact projection inventory, physical materialization, enforcement implementation, and migration mechanics are delegated to later governed work."
     }
   ],
   "dependencies": [
