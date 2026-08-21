@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "IRG-PROV-002",
-      "text": "When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring.\n\nSemantic preservation from normalized predecessor requirements:\n- IRG-PROV-001: `governed-work` shall represent governance state rather than routing classification.\n- IRG-PROV-004: Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion."
+      "text": "When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring."
     },
     {
       "id": "IRG-PROV-003",
@@ -54,19 +54,19 @@
   "withdrawn_requirements": [
     {
       "id": "IRG-PROV-001",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PROV-002"
+        "IRG-L0-001"
       ],
-      "rationale": "Normalized into canonical owner IRG-PROV-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-001; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-provenance."
     },
     {
       "id": "IRG-PROV-004",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PROV-002"
+        "IRG-L0-004"
       ],
-      "rationale": "Normalized into canonical owner IRG-PROV-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-004; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-provenance."
     }
   ]
 }

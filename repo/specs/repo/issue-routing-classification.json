@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "IRG-CLS-001",
-      "text": "The routing classification vocabulary shall include `bug-fix` for reported behavior believed to violate already accepted authority and `feature-request` for requested new or changed direction.\n\nSemantic preservation from normalized predecessor requirements:\n- IRG-CLS-003: A routing classification shall remain distinct from `governed-work` governance state."
+      "text": "The routing classification vocabulary shall include `bug-fix` for reported behavior believed to violate already accepted authority and `feature-request` for requested new or changed direction."
     },
     {
       "id": "IRG-CLS-002",
@@ -58,11 +58,11 @@
   "withdrawn_requirements": [
     {
       "id": "IRG-CLS-003",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-CLS-001"
+        "IRG-L0-001"
       ],
-      "rationale": "Normalized into canonical owner IRG-CLS-001; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-001; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-classification."
     }
   ]
 }

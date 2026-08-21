@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-PM-002",
-      "text": "The product manifest is the authoritative registry of governed product specifications. Projection mechanics and common specification-envelope semantics are owned by repo.product-spec-base.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PM-007: A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`.\n- REPO-PM-010: Each registered product specification shall reside under exactly one reserved Level root: `product/specs/product/level-0/`, `product/specs/product/level-1/`, `product/specs/product/level-2/`, or `product/specs/product/level-3/`.\n- REPO-PM-011: Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value.\n- REPO-PM-012: Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries.\n- REPO-PM-013: Declared derived product projections shall be registered by the product specification itself in its `derived_artifacts` collection, shall use repository-relative Markdown paths under `product/derived/specs/product/`, and shall remain subordinate to the authoritative product specification.\n- REPO-PM-015: Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest."
+      "text": "The product manifest is the authoritative registry of governed product specifications. Projection mechanics and common specification-envelope semantics are owned by repo.product-spec-base."
     },
     {
       "id": "REPO-PM-003",
@@ -87,51 +87,52 @@
   "withdrawn_requirements": [
     {
       "id": "REPO-PM-007",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PM-002"
+        "REPO-PSB-004"
       ],
-      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-004; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest."
     },
     {
       "id": "REPO-PM-010",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PM-002"
+        "REPO-PL-010"
       ],
-      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-010; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest."
     },
     {
       "id": "REPO-PM-011",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PM-002"
+        "REPO-PSB-006",
+        "REPO-PL-010"
       ],
-      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-006, REPO-PL-010; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest."
     },
     {
       "id": "REPO-PM-012",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PM-002"
+        "REPO-PL-001"
       ],
-      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-001; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest."
     },
     {
       "id": "REPO-PM-013",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PM-002"
+        "REPO-PSB-011"
       ],
-      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-011; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest."
     },
     {
       "id": "REPO-PM-015",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PM-002"
+        "REPO-AUTH-002"
       ],
-      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-002; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest."
     }
   ]
 }

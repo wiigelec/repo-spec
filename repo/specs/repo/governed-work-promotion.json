@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "IRG-PROM-001",
-      "text": "Promotion into `governed-work` shall occur only when the target issue carries the canonical governed-issue structure required for the bounded operation.\n\nSemantic preservation from normalized predecessor requirements:\n- IRG-PROM-003: Promotion into governed-work shall establish entry into the bounded governed-change lifecycle and shall not itself bypass that lifecycle's branch, validation, review, or acceptance gates.\n- IRG-PROM-004: A promoted governed operation shall remain traceable to the intake classification and preserved intake evidence that caused or informed its authority routing."
+      "text": "Promotion into `governed-work` shall occur only when the target issue carries the canonical governed-issue structure required for the bounded operation."
     },
     {
       "id": "IRG-PROM-002",
@@ -60,19 +60,20 @@
   "withdrawn_requirements": [
     {
       "id": "IRG-PROM-003",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PROM-001"
+        "IRG-L0-002",
+        "REPO-WF-001"
       ],
-      "rationale": "Normalized into canonical owner IRG-PROM-001; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-002, REPO-WF-001; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-promotion."
     },
     {
       "id": "IRG-PROM-004",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PROM-001"
+        "IRG-L0-004"
       ],
-      "rationale": "Normalized into canonical owner IRG-PROM-001; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-004; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-promotion."
     }
   ]
 }

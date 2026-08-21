@@ -19,7 +19,7 @@
     },
     {
       "id": "REPO-WF-005",
-      "text": "The chatbot shall report whether the issue and branch were reused or created, along with the issue number, accepted base, current branch, scope, exclusions, and next authorized action, and shall not mutate repository source until the governing issue and issue branch have been discovered or created and verified."
+      "text": "The chatbot shall report whether the issue and branch were reused or created, along with the issue number, accepted base, current branch, scope, exclusions, and next authorized action."
     },
     {
       "id": "REPO-WF-006",
@@ -59,7 +59,7 @@
     },
     {
       "id": "REPO-WF-017",
-      "text": "Before any governed repository mutation, the actor shall read the repository README, discover the authoritative repository-spec manifest, read repo.authority-model and repo.development-workflow, and then load every additional accepted specification applicable to the planned change.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-WF-012: Code, tests, schemas, templates, generated output, and prior implementation behavior shall not become normative authority merely because they exist. Accepted repository specifications define repository-generic normative semantics, and accepted product specifications define product-specific normative semantics within their respective authority domains."
+      "text": "Before any governed repository mutation, the actor shall read the repository README, discover the authoritative repository-spec manifest, read repo.authority-model and repo.development-workflow, and then load every additional accepted specification applicable to the planned change."
     },
     {
       "id": "REPO-WF-018",
@@ -157,11 +157,11 @@
     },
     {
       "id": "REPO-WF-012",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-WF-017"
+        "REPO-AUTH-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-WF-017; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.development-workflow."
     }
   ]
 }

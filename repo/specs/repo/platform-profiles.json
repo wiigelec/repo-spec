@@ -137,7 +137,7 @@
     },
     {
       "id": "REPO-PP-002",
-      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall use populated reusable GitHub profile source under `repo/profiles/github/` as the source for managed installed adapters under `.github/`, while GitHub bootstrap scripts remain implementation infrastructure subordinate to accepted repository specifications.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PP-003: The repository shall use `repo/profiles/github/` for reusable GitHub profile source material and `.github/` for installed GitHub adapters.\n- REPO-PP-007: The current GitHub-specific repository artifacts shall be classifiable under one GitHub profile identity as profile-source material, installed adapters, or bootstrap infrastructure according to their role; bootstrap infrastructure shall use implementation authority classification and shall not supersede accepted profile-source authority."
+      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall use populated reusable GitHub profile source under `repo/profiles/github/` as the source for managed installed adapters under `.github/`, while GitHub bootstrap scripts remain implementation infrastructure subordinate to accepted repository specifications."
     },
     {
       "id": "REPO-PP-004",
@@ -261,19 +261,20 @@
     },
     {
       "id": "REPO-PP-003",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PP-002"
+        "REPO-STR-006"
       ],
-      "rationale": "Normalized into canonical owner REPO-PP-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-006; the predecessor text is not retained as an independent normative restatement inside repo.platform-profiles."
     },
     {
       "id": "REPO-PP-007",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
+        "REPO-AT-008",
         "REPO-PP-002"
       ],
-      "rationale": "Normalized into canonical owner REPO-PP-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AT-008, REPO-PP-002; the predecessor text is not retained as an independent normative restatement inside repo.platform-profiles."
     }
   ]
 }

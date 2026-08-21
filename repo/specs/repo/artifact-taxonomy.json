@@ -362,19 +362,19 @@
     },
     {
       "id": "REPO-AT-005",
-      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-004: An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority."
+      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized."
     },
     {
       "id": "REPO-AT-006",
-      "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-010: The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
+      "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority."
     },
     {
       "id": "REPO-AT-007",
-      "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-011: The overview-whiteboard class shall remain evidentiary, the overview-analysis class shall remain directional synthesis, and a functional-set artifact shall distinguish candidate from approved lifecycle status; only an approved functional set may act as the directional predecessor authority for decomposition."
+      "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release."
     },
     {
       "id": "REPO-AT-008",
-      "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-009: Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
+      "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority."
     }
   ],
   "dependencies": [
@@ -415,35 +415,39 @@
   "withdrawn_requirements": [
     {
       "id": "REPO-AT-004",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-AT-005"
+        "REPO-AUTH-003",
+        "REPO-AUTH-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-AT-005; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-003, REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
     },
     {
       "id": "REPO-AT-009",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-AT-008"
+        "REPO-PP-004",
+        "REPO-AUTH-014"
       ],
-      "rationale": "Normalized into canonical owner REPO-AT-008; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PP-004, REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
     },
     {
       "id": "REPO-AT-010",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-AT-006"
+        "REPO-STR-012",
+        "REPO-AUTH-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-AT-006; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-012, REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
     },
     {
       "id": "REPO-AT-011",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-AT-007"
+        "REPO-FSP-005",
+        "REPO-AT-003"
       ],
-      "rationale": "Normalized into canonical owner REPO-AT-007; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-FSP-005, REPO-AT-003; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
     }
   ]
 }

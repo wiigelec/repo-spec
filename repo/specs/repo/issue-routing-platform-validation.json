@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "IRG-PVAL-003",
-      "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state.\n\nSemantic preservation from normalized predecessor requirements:\n- IRG-PVAL-001: Hosting-platform labels, comments, body updates, issue events, and hosted field-policy realization shall remain subordinate to repository-generic routing and governance authority.\n- IRG-PVAL-002: Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent.\n- IRG-PVAL-004: Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance."
+      "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state."
     },
     {
       "id": "IRG-PVAL-005",
@@ -56,27 +56,29 @@
   "withdrawn_requirements": [
     {
       "id": "IRG-PVAL-001",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PVAL-003"
+        "REPO-AUTH-007",
+        "IRG-L0-005"
       ],
-      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007, IRG-L0-005; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-platform-validation."
     },
     {
       "id": "IRG-PVAL-002",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PVAL-003"
+        "IRG-L0-003",
+        "IRG-L0-005"
       ],
-      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-003, IRG-L0-005; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-platform-validation."
     },
     {
       "id": "IRG-PVAL-004",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "IRG-PVAL-003"
+        "IRG-L0-002"
       ],
-      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-002; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-platform-validation."
     }
   ]
 }

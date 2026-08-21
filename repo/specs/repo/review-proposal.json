@@ -65,7 +65,7 @@
   "normative_requirements": [
     {
       "id": "REPO-RP-001",
-      "text": "The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-RP-020: A reviewer shall not treat existing implementation, tests, generated artifacts, prior behavior, validator behavior, or a passing validation result as authority that overrides conflicting controlling accepted specifications.\n- REPO-RP-021: A material authority conflict or semantic-review finding that cannot be resolved from controlling accepted authority shall block acceptance of the affected proposed revision until the conflict is resolved through the governed process."
+      "text": "The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes."
     },
     {
       "id": "REPO-RP-002",
@@ -73,7 +73,7 @@
     },
     {
       "id": "REPO-RP-003",
-      "text": "The canonical review-proposal contract shall distinguish reviewer-facing PR-body content from metadata and linked evidence.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-RP-006: Passing validation shall not be treated as semantic review.\n- REPO-RP-007: Review shall not be treated as acceptance.\n- REPO-RP-018: Human semantic review shall evaluate the exact proposed revision against controlling accepted authority for matters that mechanical validation cannot establish, including governing intent, semantic completeness, authority-domain correctness, and materially relevant ambiguity.\n- REPO-RP-019: When a proposed change creates, modifies, relies upon, or exposes materially relevant validation behavior, human semantic review shall evaluate whether that behavior enforces the controlling authority without under-enforcement, overreach, or creation of normative semantics not granted by accepted authority."
+      "text": "The canonical review-proposal contract shall distinguish reviewer-facing PR-body content from metadata and linked evidence."
     },
     {
       "id": "REPO-RP-004",
@@ -90,10 +90,6 @@
     {
       "id": "REPO-RP-011",
       "text": "Empty placeholders shall not satisfy required review-proposal fields."
-    },
-    {
-      "id": "REPO-RP-012",
-      "text": "Installed review or pull-request presentation adapters shall be faithful generated projections of this specification's canonical review-field contract under repo.authority-model and shall contain no independently authoritative review semantics.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-RP-014: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions.\n- REPO-RP-015: The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere."
     },
     {
       "id": "REPO-RP-013",
@@ -196,67 +192,76 @@
     },
     {
       "id": "REPO-RP-014",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-012"
+        "REPO-AUTH-014"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-012; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-015",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-012"
+        "REPO-AUTH-014"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-012; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-006",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-003"
+        "REPO-AUTH-005",
+        "REPO-AUTH-006"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005, REPO-AUTH-006; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-007",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-003"
+        "REPO-AUTH-005"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-018",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-003"
+        "REPO-AUTH-005"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-019",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-003"
+        "REPO-AUTH-005"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-020",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-001"
+        "REPO-AUTH-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-001; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
     },
     {
       "id": "REPO-RP-021",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-RP-001"
+        "REPO-AUTH-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-RP-001; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-008; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-012",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-014."
     }
   ]
 }

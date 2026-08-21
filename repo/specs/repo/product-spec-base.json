@@ -15,7 +15,7 @@
     },
     {
       "id": "REPO-PSB-003",
-      "text": "A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, `derived_artifacts`, and `correspondence` as its common base envelope.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PSB-008: The `dependencies` collection shall contain dependency records with `spec_id` fields; candidate product specifications may depend on candidate or accepted product specifications, while accepted product specifications shall depend only on accepted product specifications.\n- REPO-PSB-013: Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields."
+      "text": "A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, `derived_artifacts`, and `correspondence` as its common base envelope."
     },
     {
       "id": "REPO-PSB-004",
@@ -126,19 +126,19 @@
     },
     {
       "id": "REPO-PSB-008",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PSB-003"
+        "REPO-PL-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-PSB-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-008; the predecessor text is not retained as an independent normative restatement inside repo.product-spec-base."
     },
     {
       "id": "REPO-PSB-013",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PSB-003"
+        "REPO-PL-011"
       ],
-      "rationale": "Normalized into canonical owner REPO-PSB-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-011; the predecessor text is not retained as an independent normative restatement inside repo.product-spec-base."
     }
   ]
 }

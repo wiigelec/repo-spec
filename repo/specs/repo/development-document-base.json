@@ -15,7 +15,7 @@
     },
     {
       "id": "REPO-DDB-003",
-      "text": "Each governed development document shall have a top-level controlling Markdown file directly under its root and a subordinate chunk directory with the same lower-case slug as the top-level file stem.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-DDB-006: A governed development document shall be invalid if its top-level file, chunk directory, or chunk inventory does not match the declared metadata.\n- REPO-DDB-009: Mechanically enforceable validation shall cover root containment, top-level filename pattern, subordinate directory naming, declared chunk inventory, chunk ordering, duplicate detection, missing or undeclared chunks, and declared chunk-size limits."
+      "text": "Each governed development document shall have a top-level controlling Markdown file directly under its root and a subordinate chunk directory with the same lower-case slug as the top-level file stem."
     },
     {
       "id": "REPO-DDB-004",
@@ -93,17 +93,20 @@
       "id": "REPO-DDB-006",
       "disposition": "merged",
       "surviving_requirements": [
-        "REPO-DDB-003"
+        "REPO-DDB-003",
+        "REPO-DDB-007",
+        "REPO-DDB-011",
+        "REPO-DDB-012"
       ],
-      "rationale": "Normalized into canonical owner REPO-DDB-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-003, REPO-DDB-007, REPO-DDB-011, REPO-DDB-012; the predecessor text is not retained as an independent normative restatement inside repo.development-document-base."
     },
     {
       "id": "REPO-DDB-009",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-DDB-003"
+        "REPO-VAL-019"
       ],
-      "rationale": "Normalized into canonical owner REPO-DDB-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-VAL-019; the predecessor text is not retained as an independent normative restatement inside repo.development-document-base."
     }
   ]
 }

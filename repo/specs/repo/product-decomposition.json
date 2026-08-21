@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-PDC-002",
-      "text": "A product decomposition shall record the controlling approved functional set, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PDC-001: A product decomposition shall be stored under the owner-specific decomposition root defined by `repo.development-document-base`: repository/framework-owned decompositions under `repo/docs/decompositions/` and product-owned decompositions under `product/docs/decompositions/`. It shall use the canonical top-level `*-DECOMPOSITION.md` controlling document plus subordinate chunks.\n- REPO-PDC-004: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the decomposition composite document.\n- REPO-PDC-005: A product decomposition shall keep each bounded area coherent and shall not mix unrelated lifecycle stages or authority domains within one area.\n- REPO-PDC-006: A product decomposition shall make the next authorized planning action explicit so later work does not have to infer it from conversation history."
+      "text": "A product decomposition shall record the controlling approved functional set, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PDC-006: A product decomposition shall make the next authorized planning action explicit so later work does not have to infer it from conversation history."
     },
     {
       "id": "REPO-PDC-003",
@@ -59,27 +59,28 @@
   "withdrawn_requirements": [
     {
       "id": "REPO-PDC-001",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PDC-002"
+        "REPO-DDB-002",
+        "REPO-DDB-003"
       ],
-      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-002, REPO-DDB-003; the predecessor text is not retained as an independent normative restatement inside repo.product-decomposition."
     },
     {
       "id": "REPO-PDC-004",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PDC-002"
+        "REPO-DDB-005"
       ],
-      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-005; the predecessor text is not retained as an independent normative restatement inside repo.product-decomposition."
     },
     {
       "id": "REPO-PDC-005",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PDC-002"
+        "REPO-DDB-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-008; the predecessor text is not retained as an independent normative restatement inside repo.product-decomposition."
     },
     {
       "id": "REPO-PDC-006",

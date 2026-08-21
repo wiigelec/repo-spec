@@ -47,7 +47,7 @@
     },
     {
       "id": "REPO-PL-011",
-      "text": "Future Level-specific schemas shall extend the common product-specification envelope through explicit governed extension boundaries and shall not redefine common fields or lower-Level semantics.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PL-013: Product projection declarations shall be declaration-driven rather than mandatory, and any declared product projection shall remain within the repository-relative `product/derived/specs/product/` root and subordinate to the owning product specification.\n- REPO-PL-022: Level-specific schema extension fields shall be declared in the second `allOf` object subschema after the common product-specification base reference.\n- REPO-PL-023: Level-specific schemas shall narrow the common `level` field to their declared Level and shall not redefine other common envelope fields.\n- REPO-PL-024: Level-specific schemas shall reject undeclared root properties through `unevaluatedProperties: false`, and nested Level extension objects shall reject undeclared properties through `additionalProperties: false`.\n- REPO-PL-025: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics."
+      "text": "Future Level-specific schemas shall extend the common product-specification envelope through explicit governed extension boundaries and shall not redefine common fields or lower-Level semantics.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PL-025: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics."
     },
     {
       "id": "REPO-PL-012",
@@ -149,35 +149,37 @@
     },
     {
       "id": "REPO-PL-013",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PL-011"
+        "REPO-PSB-011"
       ],
-      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-011; the predecessor text is not retained as an independent normative restatement inside repo.product-levels."
     },
     {
       "id": "REPO-PL-022",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PL-011"
+        "REPO-PSB-014",
+        "REPO-PSB-015"
       ],
-      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-014, REPO-PSB-015; the predecessor text is not retained as an independent normative restatement inside repo.product-levels."
     },
     {
       "id": "REPO-PL-023",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PL-011"
+        "REPO-PSB-015"
       ],
-      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-015; the predecessor text is not retained as an independent normative restatement inside repo.product-levels."
     },
     {
       "id": "REPO-PL-024",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-PL-011"
+        "REPO-PSB-016",
+        "REPO-PSB-017"
       ],
-      "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-016, REPO-PSB-017; the predecessor text is not retained as an independent normative restatement inside repo.product-levels."
     },
     {
       "id": "REPO-PL-025",
