@@ -24,7 +24,8 @@ Approved functional set migrated from the maintained directional overview. Direc
       "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
       "repo/docs/overview/repository-functional-set/11-normative-requirement-validation-correspondence-part-1.md",
       "repo/docs/overview/repository-functional-set/12-normative-requirement-validation-correspondence-part-2.md",
-      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md"
+      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md",
+      "repo/docs/overview/repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md"
     ],
     "included_intent": [
       "repo/docs/overview/repository-functional-set/01-product-direction.md",
@@ -33,7 +34,8 @@ Approved functional set migrated from the maintained directional overview. Direc
       "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
       "repo/docs/overview/repository-functional-set/11-normative-requirement-validation-correspondence-part-1.md",
       "repo/docs/overview/repository-functional-set/12-normative-requirement-validation-correspondence-part-2.md",
-      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md"
+      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md",
+      "repo/docs/overview/repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md"
     ],
     "exclusions": [
       "repo/docs/overview/repository-functional-set/01-product-direction.md",
@@ -49,7 +51,8 @@ Approved functional set migrated from the maintained directional overview. Direc
       "repo/docs/overview/repository-functional-set/07-git-and-change-workflow.md",
       "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
       "repo/docs/overview/repository-functional-set/11-normative-requirement-validation-correspondence-part-1.md",
-      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md"
+      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md",
+      "repo/docs/overview/repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md"
     ],
     "integration_foundation": [
       "repo/docs/overview/repository-functional-set/04-development-and-specifications-part-1.md",
@@ -59,7 +62,8 @@ Approved functional set migrated from the maintained directional overview. Direc
       "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",
       "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
       "repo/docs/overview/repository-functional-set/12-normative-requirement-validation-correspondence-part-2.md",
-      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md"
+      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md",
+      "repo/docs/overview/repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md"
     ],
     "end_to_end_usability": [
       "repo/docs/overview/repository-functional-set/01-product-direction.md",
@@ -70,7 +74,8 @@ Approved functional set migrated from the maintained directional overview. Direc
       "repo/docs/overview/repository-functional-set/03-decomposition-model-part-2.md",
       "repo/docs/overview/repository-functional-set/09-governance-and-evolution.md",
       "repo/docs/overview/repository-functional-set/10-issue-intake-and-governance-routing.md",
-      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md"
+      "repo/docs/overview/repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md",
+      "repo/docs/overview/repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md"
     ]
   },
   "controlling_documents": [
@@ -214,6 +219,18 @@ Approved functional set migrated from the maintained directional overview. Direc
         "integration_foundation",
         "decomposition_handoff"
       ]
+    },
+    {
+      "order": 14,
+      "path": "repo/docs/overview/repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md",
+      "title": "functional-set lifecycle: Normative Requirement Validation Correspondence \u2014 Part 4",
+      "coverage": [
+        "capability_boundary",
+        "included_intent",
+        "dependencies",
+        "integration_foundation",
+        "decomposition_handoff"
+      ]
     }
   ],
   "successor_action": "Proceed to separately governed repository decomposition for the approved Normative Requirement Validation Correspondence capability before specification, planning, validation-package implementation, or other downstream mutation.",
@@ -240,6 +257,7 @@ This functional set is the canonical capability-oriented replacement for the mai
 - [functional-set lifecycle: Normative Requirement Validation Correspondence — Part 1](repository-functional-set/11-normative-requirement-validation-correspondence-part-1.md)
 - [functional-set lifecycle: Normative Requirement Validation Correspondence — Part 2](repository-functional-set/12-normative-requirement-validation-correspondence-part-2.md)
 - [functional-set lifecycle: Normative Requirement Validation Correspondence — Part 3](repository-functional-set/13-normative-requirement-validation-correspondence-part-3.md)
+- [functional-set lifecycle: Normative Requirement Validation Correspondence — Part 4](repository-functional-set/14-normative-requirement-validation-correspondence-part-4.md)
 
 ## Relationships
 

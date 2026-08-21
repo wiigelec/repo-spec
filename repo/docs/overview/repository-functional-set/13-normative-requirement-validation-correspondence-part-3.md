@@ -59,7 +59,7 @@ The collected proposal illustrated `validation/packages/<spec-id>/<requirement-i
 Downstream decomposition must determine:
 
 - which repository authority owns the correspondence contract;
-- how repository-owned, product-owned, or whole-checkout correspondence is represented;
+- how the repository-defined common correspondence contract is represented within repository-owned, product-owned, and whole-checkout validation domains;
 - whether one physical namespace can correctly represent multiple ownership domains;
 - where schemas and generated projections belong;
 - which structure changes are required before package files can exist.

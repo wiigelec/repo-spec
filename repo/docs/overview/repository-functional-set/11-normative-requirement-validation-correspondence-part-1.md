@@ -21,7 +21,7 @@ The framework should support a canonical correspondence model in which:
 - machine-readable correspondence can drive deterministic coverage and documentation views;
 - integrity validation can detect missing, duplicated, stale, or conflicting correspondence.
 
-The capability applies to repository-owned normative requirements and may support other owner domains only where downstream authority explicitly defines the ownership and namespace rules.
+The capability applies to every in-scope active normative requirement governed by the repository framework, including both repository-owned and product-owned normative requirements. Repository ownership determines the semantic authority domain; it does not determine whether validation correspondence is required.
 
 ## Relationship to normative authority
 
