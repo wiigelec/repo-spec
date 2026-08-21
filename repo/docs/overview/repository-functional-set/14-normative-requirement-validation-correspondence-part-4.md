@@ -102,7 +102,7 @@ Accordingly:
 - repo-spec `repo/` requirements use the repository-owned correspondence domain;
 - repo-spec `product/` requirements use the product-owned correspondence domain;
 - derived or initialized repositories remain governed by the same repository-generic correspondence rules, with any framework materialization preserving canonical ownership;
-- their own product requirements are governed by the same product correspondence contract;
+- their own product normative requirements are governed by the same repository-defined normative validation-correspondence contract;
 - whole-checkout correspondence remains governed by the repository-defined root validation domain.
 
 The framework must not produce initialized repositories with weaker correspondence obligations than the repo-spec source repository unless accepted repository authority explicitly defines such a lifecycle distinction.
@@ -126,7 +126,7 @@ Neither mechanism permits a product specification or generated artifact to redef
 
 This functional set establishes the required symmetry and applicability direction but does not itself mutate the validation-domain structure.
 
-Downstream repository decomposition and specification must define the exact accepted structure revision that introduces `packages/` consistently across the applicable validation domains.
+If downstream accepted authority selects a `packages/` structural role, repository decomposition and specification must define the accepted structure revision that introduces that role consistently across the applicable validation domains, subject to explicitly authorized domain-specific differences.
 
 That downstream work must also reconcile the new common package role with the current default-deny validation envelopes and their domain-specific differences.
 
