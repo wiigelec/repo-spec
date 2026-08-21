@@ -63,6 +63,7 @@ The normative requirement identifier is the canonical join key between accepted 
 
 A conceptual package shape is:
 
+```json
 {
   "$schema": "<validation-package-schema>",
   "spec_id": "repo.authority-model",
@@ -83,6 +84,7 @@ A conceptual package shape is:
     }
   ]
 }
+```
 
 The exact schema, path rules, and field names remain subject to audit and later normative definition.
 
@@ -185,17 +187,68 @@ Every validation task shall have a stable repository-unique validation task iden
 
 A conceptual task reference is:
 
+```json
 {
   "task_id": "REPO-AUTH-004-negative-001",
   "source": "repo/validation/authority.py",
   "entry_point": "test_undelegated_validation_is_rejected"
 }
+```
 
 The validation task identifier represents the validation evidence relationship and shall remain stable across implementation movement when practical.
 
 Source paths and functional entry points may change through implementation refactoring without requiring the task identity itself to change.
 
 Validation task identifiers shall never be reused for unrelated validation behavior.
+
+## Validation Function Requirement Tagging
+
+Every externally identified validation function entry point shall carry an explicit machine-readable tag identifying the normative requirement it tests.
+
+The tag shall contain exactly one active normative requirement identifier.
+
+A conceptual Python form is:
+
+```python
+@validates_requirement("REPO-AUTH-004")
+def test_undelegated_validation_is_rejected():
+    ...
+```
+
+An equivalent attribute-based form may also be used where decorators are not appropriate:
+
+```python
+def test_undelegated_validation_is_rejected():
+    ...
+
+test_undelegated_validation_is_rejected.normative_requirement_id = "REPO-AUTH-004"
+```
+
+The repository shall define one canonical tagging mechanism for maintained validation entry points. Multiple competing tagging conventions should not be used.
+
+The requirement tag is subordinate traceability metadata. It shall not restate, redefine, or extend the semantics of the normative requirement.
+
+The tagged normative requirement identifier shall agree with the validation package that references the function entry point.
+
+Mechanical validation should establish that:
+
+- every referenced validation function entry point carries exactly one normative requirement tag;
+- the tagged normative requirement exists and is active;
+- the tagged normative requirement matches the `normative_requirement_id` of the validation package containing the corresponding task reference;
+- no validation function entry point is tagged with multiple normative requirement identifiers;
+- no maintained validation function entry point is referenced by validation packages for different normative requirements.
+
+This creates a directly verifiable correspondence:
+
+```text
+validation package
+    -> validation task reference
+        -> source file
+        -> functional entry point
+            -> normative requirement tag
+```
+
+and requires the tag to resolve back to the same normative requirement identified by the owning validation package.
 
 ## Task-to-Requirement Cardinality
 
