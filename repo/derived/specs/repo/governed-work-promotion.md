@@ -18,12 +18,24 @@ Do not edit directly.
 
 Reusable capability for transitioning routed intake into a bounded governed operation while preserving provenance and allowing either in-place or successor-issue realization when the governing lifecycle requires it.
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `IRG-PROM-003`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-002, REPO-WF-001; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-promotion.`
+- Surviving Requirements:
+  - `IRG-L0-002`
+  - `REPO-WF-001`
+- Disposition: `moved`
+- Id: `IRG-PROM-004`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-004; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-promotion.`
+- Surviving Requirements:
+  - `IRG-L0-004`
+
 ## Normative requirements
 
 - `IRG-PROM-001`: Promotion into `governed-work` shall occur only when the target issue carries the canonical governed-issue structure required for the bounded operation.
-- `IRG-PROM-002`: Promotion shall preserve the provenance requirements defined by `repo.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content.
-- `IRG-PROM-003`: Promotion into governed-work shall establish entry into the bounded governed-change lifecycle and shall not itself bypass that lifecycle's branch, validation, review, or acceptance gates.
-- `IRG-PROM-004`: A promoted governed operation shall remain traceable to the intake classification and preserved intake evidence that caused or informed its authority routing.
+- `IRG-PROM-002`: Before destructive restructuring of intake content during promotion, the provenance contract in repo.governed-work-provenance shall be satisfied. Promotion does not independently redefine provenance payload semantics.
 - `IRG-PROM-005`: Promotion may occur in place on the original intake issue or through a successor governed issue when lifecycle separation or bounded-work scoping requires it; neither form is universally mandatory. The selected form shall preserve intake provenance and maintain a unique traceable governing issue for the bounded mutation. Post-promotion retention of live routing labels is not required by this repository-generic contract.
 
 ## Dependencies

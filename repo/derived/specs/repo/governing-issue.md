@@ -283,23 +283,50 @@ Validation metadata:
 - Kind: `meaningful`
 - Allows `None`: yes
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-GI-003`
+- Rationale: `Normalized into canonical owner REPO-GI-002; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-GI-002`
+- Disposition: `moved`
+- Id: `REPO-GI-010`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.governing-issue.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+- Disposition: `moved`
+- Id: `REPO-GI-011`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.governing-issue.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+- Disposition: `moved`
+- Id: `REPO-GI-014`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-WF-025; the predecessor text is not retained as an independent normative restatement inside repo.governing-issue.`
+- Surviving Requirements:
+  - `REPO-WF-025`
+- Disposition: `withdrawn`
+- Id: `REPO-GI-005`
+- Rationale: `Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-WF-003.`
+- Surviving Requirements:
+  - `REPO-WF-003`
+- Disposition: `withdrawn`
+- Id: `REPO-GI-009`
+- Rationale: `Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-014.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+
 ## Normative requirements
 
 - `REPO-GI-001`: The repository shall define exactly one canonical governing-issue contract for bounded governed work.
-- `REPO-GI-002`: The canonical governing-issue contract shall include structured field definitions for the required fields change type, problem statement, intended outcome, governing specifications, accepted default-branch base, in-scope behavior and paths, explicit exclusions, dependencies and predecessor evidence, ordered patch plan, validation plan, acceptance criteria, completion gate, open decisions or authority conflicts, and successor work explicitly not authorized, plus any optional fields the canonical contract permits.
-- `REPO-GI-003`: The canonical governing-issue contract shall distinguish required fields from optional fields.
+- `REPO-GI-002`: The canonical governing-issue field collection in this specification is normative structured contract data under repo.authority-model. Requiredness, validation kind, and field meaning shall be taken directly from those field definitions.
 - `REPO-GI-004`: Empty placeholders shall not satisfy required governing-issue fields.
-- `REPO-GI-005`: A governing issue shall exist before its implementation branch is created.
 - `REPO-GI-006`: Material scope changes shall be recorded in the governing issue before they are treated as authorized scope.
 - `REPO-GI-007`: A governing issue shall not be closed until its completion gate is satisfied.
 - `REPO-GI-008`: Completion of a governing issue shall not authorize unrelated successor work.
-- `REPO-GI-009`: The Markdown projection and GitHub issue form shall be adapters subordinate to the canonical repository specification.
-- `REPO-GI-010`: The GitHub issue form shall represent every required canonical field.
-- `REPO-GI-011`: The Markdown projection shall provide a deterministic human-readable template for the canonical governing issue structure and its structured field definitions.
 - `REPO-GI-012`: The canonical Change type field shall use a constrained repository-owned classification. Product-artifact implementation is the exact classification for ordinary governing issues that create or modify maintained product artifacts and shall activate the stricter product-artifact evidence gate. Atomic authority transition is the exact classification only when an accepted-state invariant makes a normative specification revision, required plan-impact handling, and maintained-artifact synchronization inseparable across accepted default-branch revisions. Descriptive prose shall not activate either gate.
 - `REPO-GI-013`: A governing issue declared as Product-artifact implementation shall identify one or more stable workstream or stage identifiers from its cited accepted implementation plan; those selected identifiers define the bounded plan scope whose controlling accepted product specifications are enforced by issue-body field policy.
-- `REPO-GI-014`: A governing issue declared as Atomic authority transition shall be eligible only when it identifies a specific accepted-state invariant that would make every ordinary sequential ordering produce an invalid intermediate accepted revision, and when the issue scope is limited to the minimum normative revision, affected implementation-plan revision or explicit reaffirmation, mechanically inseparable maintained-artifact synchronization, and directly required validation/policy support. If a valid intermediate accepted revision exists, the ordinary sequential lifecycle shall be used instead.
-- `REPO-GI-015`: A governing issue declared as Atomic authority transition shall cite exactly one accepted implementation plan, identify one or more stable workstream or stage identifiers, cite all currently controlling accepted product specifications for the selected identifiers plus at least one additional accepted product specification whose normative revision participates in the transition, provide predecessor issue and exact revision evidence, and provide Atomic transition evidence stating the governing invariant, why no valid intermediate accepted revision exists, and how affected plan sections will be revised or explicitly reaffirmed before maintained implementation is treated as authorized in the exact proposed revision.
+- `REPO-GI-015`: When Change type is Atomic authority transition, the governing issue shall contain the Atomic-transition evidence fields defined by this specification. Lifecycle eligibility and sequencing are owned by repo.development-workflow.
 
 ## Dependencies
 

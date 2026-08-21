@@ -97,29 +97,86 @@ Validation metadata:
 - Kind: `meaningful`
 - Allows `None`: yes
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-RP-005`
+- Rationale: `Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-RP-004`
+- Disposition: `merged`
+- Id: `REPO-RP-008`
+- Rationale: `Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-RP-004`
+- Disposition: `merged`
+- Id: `REPO-RP-017`
+- Rationale: `Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-RP-004`
+- Disposition: `moved`
+- Id: `REPO-RP-014`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+- Disposition: `moved`
+- Id: `REPO-RP-015`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+- Disposition: `moved`
+- Id: `REPO-RP-006`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005, REPO-AUTH-006; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-005`
+  - `REPO-AUTH-006`
+- Disposition: `moved`
+- Id: `REPO-RP-007`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-005`
+- Disposition: `moved`
+- Id: `REPO-RP-018`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-005`
+- Disposition: `moved`
+- Id: `REPO-RP-019`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-005`
+- Disposition: `moved`
+- Id: `REPO-RP-020`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-007`
+- Disposition: `moved`
+- Id: `REPO-RP-021`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-008; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal.`
+- Surviving Requirements:
+  - `REPO-AUTH-008`
+- Disposition: `withdrawn`
+- Id: `REPO-RP-012`
+- Rationale: `Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-014.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+
 ## Normative requirements
 
 - `REPO-RP-001`: The repository shall define exactly one canonical review-proposal contract for bounded reviewed changes.
-- `REPO-RP-002`: The canonical review-proposal contract shall include structured field definitions for the reviewer-facing fields governing issue, summary, validation, review focus, and scope notes, while allowing evidence that is already captured by GitHub metadata, automated checks, the governing issue, or linked validation records to remain outside the visible PR body.
+- `REPO-RP-002`: The canonical `review_fields` collection in this specification is normative structured contract data under repo.authority-model. Evidence already captured by GitHub metadata, automated checks, the governing issue, or linked validation records may remain outside the visible PR body.
 - `REPO-RP-003`: The canonical review-proposal contract shall distinguish reviewer-facing PR-body content from metadata and linked evidence.
-- `REPO-RP-004`: Validation evidence in a review proposal shall identify the exact revision tested, either directly or through GitHub metadata and linked records.
-- `REPO-RP-005`: New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated.
-- `REPO-RP-006`: Passing validation shall not be treated as semantic review.
-- `REPO-RP-007`: Review shall not be treated as acceptance.
-- `REPO-RP-008`: Acceptance shall apply only to the exact proposed revision.
+- `REPO-RP-004`: Acceptance evidence is revision-specific: review conclusions, approval state, required evidence, and any freshness-sensitive claims used for acceptance shall correspond to the exact revision proposed for merge; a later material revision invalidates stale acceptance evidence until it is re-established for that revision.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-RP-005: New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated.
+- REPO-RP-008: Acceptance shall apply only to the exact proposed revision.
+- REPO-RP-017: Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance.
 - `REPO-RP-009`: Merge shall not be treated as proof of successful post-merge validation.
 - `REPO-RP-010`: The review proposal shall not use automatic issue-closing syntax when the governing issue requires post-merge validation before closure.
 - `REPO-RP-011`: Empty placeholders shall not satisfy required review-proposal fields.
-- `REPO-RP-012`: GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification.
 - `REPO-RP-013`: When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract.
-- `REPO-RP-014`: The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions.
-- `REPO-RP-015`: The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere.
 - `REPO-RP-016`: The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content.
-- `REPO-RP-017`: Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance.
-- `REPO-RP-018`: Human semantic review shall evaluate the exact proposed revision against controlling accepted authority for matters that mechanical validation cannot establish, including governing intent, semantic completeness, authority-domain correctness, and materially relevant ambiguity.
-- `REPO-RP-019`: When a proposed change creates, modifies, relies upon, or exposes materially relevant validation behavior, human semantic review shall evaluate whether that behavior enforces the controlling authority without under-enforcement, overreach, or creation of normative semantics not granted by accepted authority.
-- `REPO-RP-020`: A reviewer shall not treat existing implementation, tests, generated artifacts, prior behavior, validator behavior, or a passing validation result as authority that overrides conflicting controlling accepted specifications.
-- `REPO-RP-021`: A material authority conflict or semantic-review finding that cannot be resolved from controlling accepted authority shall block acceptance of the affected proposed revision until the conflict is resolved through the governed process.
 
 ## Dependencies
 

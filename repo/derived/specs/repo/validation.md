@@ -18,55 +18,213 @@ Do not edit directly.
 
 Defines ownership, scope, and aggregate orchestration for repository and product validation during repo-spec formation.
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-VAL-045`
+- Rationale: `Normalized into canonical owner REPO-VAL-001; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-VAL-001`
+- Disposition: `moved`
+- Id: `REPO-VAL-004`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-MAN-001, REPO-PM-014; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-MAN-001`
+  - `REPO-PM-014`
+- Disposition: `moved`
+- Id: `REPO-VAL-005`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-MAN-002, REPO-PM-009; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-MAN-002`
+  - `REPO-PM-009`
+- Disposition: `moved`
+- Id: `REPO-VAL-006`
+- Rationale: `Phase-6 semantic-preservation correction: the predecessor semantics are now owned by REPO-MAN-003, REPO-PSB-009; repo.validation retains delegated enforcement responsibility only.`
+- Surviving Requirements:
+  - `REPO-MAN-003`
+  - `REPO-PSB-009`
+- Disposition: `moved`
+- Id: `REPO-VAL-007`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PL-006, REPO-PL-007, REPO-PL-008, REPO-PL-009; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-PL-006`
+  - `REPO-PL-007`
+  - `REPO-PL-008`
+  - `REPO-PL-009`
+- Disposition: `moved`
+- Id: `REPO-VAL-037`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-004, REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.validation.`
+- Surviving Requirements:
+  - `REPO-AUTH-004`
+  - `REPO-AUTH-014`
+- Disposition: `moved`
+- Id: `REPO-VAL-011`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-010; the predecessor text is not retained as an independent normative restatement inside repo.validation.`
+- Surviving Requirements:
+  - `REPO-PSB-010`
+- Disposition: `moved`
+- Id: `REPO-VAL-014`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-STR-002; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-STR-002`
+- Disposition: `moved`
+- Id: `REPO-VAL-016`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PP-006; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-PP-006`
+- Disposition: `moved`
+- Id: `REPO-VAL-018`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PP-013, REPO-PP-014, REPO-PP-016; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-PP-013`
+  - `REPO-PP-014`
+  - `REPO-PP-016`
+- Disposition: `moved`
+- Id: `REPO-VAL-020`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-004, REPO-FSP-001, REPO-PDC-002, REPO-IPL-002; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-DDB-004`
+  - `REPO-FSP-001`
+  - `REPO-PDC-002`
+  - `REPO-IPL-002`
+- Disposition: `moved`
+- Id: `REPO-VAL-021`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-011, REPO-DDB-012; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-DDB-011`
+  - `REPO-DDB-012`
+- Disposition: `moved`
+- Id: `REPO-VAL-022`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-FSP-002, REPO-FSP-003, REPO-FSP-004, REPO-PDC-002, REPO-IPL-002; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-FSP-002`
+  - `REPO-FSP-003`
+  - `REPO-FSP-004`
+  - `REPO-PDC-002`
+  - `REPO-IPL-002`
+- Disposition: `moved`
+- Id: `REPO-VAL-023`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-004, REPO-FSP-006, REPO-WF-007; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-DDB-004`
+  - `REPO-FSP-006`
+  - `REPO-WF-007`
+- Disposition: `moved`
+- Id: `REPO-VAL-024`
+- Rationale: `Phase-6 semantic-preservation correction: the predecessor semantics are now owned by REPO-MAN-004, REPO-PSB-010; repo.validation retains delegated enforcement responsibility only.`
+- Surviving Requirements:
+  - `REPO-MAN-004`
+  - `REPO-PSB-010`
+- Disposition: `moved`
+- Id: `REPO-VAL-025`
+- Rationale: `Phase-6 semantic-preservation correction: the predecessor semantics are now owned by REPO-DDB-013; repo.validation retains delegated enforcement responsibility only.`
+- Surviving Requirements:
+  - `REPO-DDB-013`
+- Disposition: `moved`
+- Id: `REPO-VAL-026`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-008; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-DDB-008`
+- Disposition: `moved`
+- Id: `REPO-VAL-034`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PDC-007; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-PDC-007`
+- Disposition: `moved`
+- Id: `REPO-VAL-040`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-FSP-002, REPO-FSP-003, REPO-FSP-005, REPO-FSP-007; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-FSP-002`
+  - `REPO-FSP-003`
+  - `REPO-FSP-005`
+  - `REPO-FSP-007`
+- Disposition: `moved`
+- Id: `REPO-VAL-046`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-STR-015, REPO-DDB-011, REPO-DDB-012; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-STR-015`
+  - `REPO-DDB-011`
+  - `REPO-DDB-012`
+- Disposition: `moved`
+- Id: `REPO-VAL-028`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-IPL-008`
+- Disposition: `moved`
+- Id: `REPO-VAL-029`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-IPL-008`
+- Disposition: `moved`
+- Id: `REPO-VAL-030`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-IPL-008`
+- Disposition: `moved`
+- Id: `REPO-VAL-031`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008, REPO-PL-006, REPO-PL-007; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-IPL-008`
+  - `REPO-PL-006`
+  - `REPO-PL-007`
+- Disposition: `moved`
+- Id: `REPO-VAL-032`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-IPL-008`
+- Disposition: `moved`
+- Id: `REPO-VAL-033`
+- Rationale: `Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility.`
+- Surviving Requirements:
+  - `REPO-IPL-008`
+- Disposition: `moved`
+- Id: `REPO-VAL-038`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-009; the predecessor text is not retained as an independent normative restatement inside repo.validation.`
+- Surviving Requirements:
+  - `REPO-PL-009`
+- Disposition: `moved`
+- Id: `REPO-VAL-043`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-017; the predecessor text is not retained as an independent normative restatement inside repo.validation.`
+- Surviving Requirements:
+  - `REPO-STR-017`
+- Disposition: `moved`
+- Id: `REPO-VAL-044`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-017; the predecessor text is not retained as an independent normative restatement inside repo.validation.`
+- Surviving Requirements:
+  - `REPO-STR-017`
+- Disposition: `moved`
+- Id: `REPO-VAL-047`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-013, REPO-STR-014; the predecessor text is not retained as an independent normative restatement inside repo.validation.`
+- Surviving Requirements:
+  - `REPO-STR-013`
+  - `REPO-STR-014`
+- Disposition: `withdrawn`
+- Id: `REPO-VAL-035`
+- Rationale: `Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-WF-015.`
+- Surviving Requirements:
+  - `REPO-WF-015`
+
 ## Normative requirements
 
-- `REPO-VAL-001`: The repository shall provide `repo/scripts/validate` as the repository-owned leaf validation entry point, `product/scripts/validate` as the product-owned leaf validation entry point, and `scripts/validate` as the aggregate repository-wide production validation entry point. Each leaf validation entry point shall validate only its owned tree, and the aggregate production validation entry point shall run both leaf validators. Repository-owned and product-owned validation mutation/self-test suites shall remain independently runnable through an explicit validation self-test entry point and shall not be inseparable from routine production validation. Product validation self-tests shall not implicitly own or execute the initializer implementation/unit-test suite; initializer tests remain independently runnable under initializer ownership.
+- `REPO-VAL-001`: Repository validation shall expose the declared validation entry points, assign each mechanical validation domain exactly one implementation owner, and provide portable self-tests for those entry points. Validation enforces accepted source contracts but does not become an independent semantic authority.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-VAL-045: Each public leaf validation entry point shall enforce the exact canonical structure of its owned validation domain, and aggregate `scripts/validate` shall therefore enforce all three maintained validation-domain structures. Aggregate `scripts/test-validation` shall exercise root, repository, and product validation self-test responsibilities, while repository and product leaf self-test entry points remain independently runnable. Continuous integration validation self-tests shall use the canonical aggregate self-test surface.
 - `REPO-VAL-002`: Each public validation entry point shall be a shell script wrapper, and the implementation it invokes shall not rely on third-party packages.
-- `REPO-VAL-003`: Each leaf validation entry point shall enforce conformance to the repository's JSON Schemas for artifacts within its owned validation domain.
-- `REPO-VAL-004`: Each leaf validation entry point shall enforce manifest completeness for manifests and authoritative content within its owned validation domain.
-- `REPO-VAL-005`: Each leaf validation entry point shall enforce unique specification IDs within its owned validation domain.
-- `REPO-VAL-006`: Each leaf validation entry point shall enforce resolvable references within its owned validation domain according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository.
-- `REPO-VAL-007`: The product leaf validation entry point shall enforce allowed product dependency directions, product completeness rules, acyclic dependencies, and shall allow candidate product specifications to depend on candidate or accepted product specifications while allowing accepted product specifications to depend only on accepted product specifications.
-- `REPO-VAL-008`: Each leaf validation entry point shall enforce generated-document freshness for generated artifacts owned by its validation domain.
+- `REPO-VAL-003`: Core repository validation shall mechanically enforce the accepted manifest, repository-structure, authority, taxonomy, reference-resolution, and product-specification structural contracts delegated to it without restating their source semantics as independent rules.
+- `REPO-VAL-008`: Validation shall verify declared generated projections and adapters for deterministic faithful correspondence to their authoritative sources as required by repo.authority-model, without treating generated artifacts as independent authority.
 - `REPO-VAL-009`: Each public validation entry point shall enforce clean failure behavior.
 - `REPO-VAL-010`: Leaf validation entry points shall not check formatting, prose quality, Git workflow, hosting-platform behavior, product-spec definitions, or source-code behavior except where an accepted validation requirement explicitly assigns a repository-local structural contract to that leaf.
-- `REPO-VAL-011`: The repository shall represent replacement lineage with explicit supersedes and superseded_by relations.
 - `REPO-VAL-012`: Each leaf validation entry point shall enforce that replacement-lineage relations within its owned validation domain resolve to manifest-listed specifications and do not self-reference.
-- `REPO-VAL-013`: The leaf validation entry points shall enforce separation between repository-specification and product-specification roots within their owned trees and shall reject undeclared specification JSON content under an owned specification root when that root is governed by a manifest.
-- `REPO-VAL-014`: The repository leaf validation entry point shall reject product specifications placed under `repo/specs/repo/`, and the product leaf validation entry point shall reject repository specifications placed under `product/specs/product/`, where those placements are detectable from repository-local JSON files.
-- `REPO-VAL-015`: The repository leaf validation entry point shall enforce repository-local platform-profile classification consistency, including the accepted GitHub profile boundary, installed adapter ownership, and declared remote-state kinds.
-- `REPO-VAL-016`: The repository leaf validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification fields.
+- `REPO-VAL-013`: Repository and product leaf validation shall mechanically enforce the specification-root separation and registry/default-deny boundaries defined by the controlling repository-structure and manifest contracts.
+- `REPO-VAL-015`: Platform validation shall mechanically enforce the active platform profile's declared source, adapter, inventory, desired-state, mutation-evidence, and remote-state contracts; repo.platform-profiles remains the source of those semantics.
 - `REPO-VAL-017`: The product leaf validation entry point shall enforce product projection declaration shape, repository-relative `product/derived/specs/product/` path boundaries, and declaration ownership by the source product specification.
-- `REPO-VAL-018`: The repository leaf validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations.
-- `REPO-VAL-019`: Each leaf validation entry point shall enforce, for governed development-document roots within its owned tree, the owner-appropriate canonical roots, top-level controlling-document filename patterns, subordinate chunk-directory naming, chunk inventory correspondence, and contiguous chunk numbering.
-- `REPO-VAL-020`: Each leaf validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview-process, decomposition, and planning artifacts within its owned tree.
-- `REPO-VAL-021`: Each leaf validation entry point shall classify every non-README top-level Markdown file in governed development-document roots within its owned tree and shall require every such file to conform to the applicable development-document contract. Compatibility, exemption, grandfathering, or registry entries shall not satisfy development-document conformance.
-- `REPO-VAL-022`: Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview whiteboards, overview analyses, functional sets, decompositions, and planning artifacts within its owned tree so the declared chunk coverage matches the artifact contract.
-- `REPO-VAL-023`: Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, lifecycle-state eligibility, no predecessor cycles, analysis traceability to whiteboard evidence, functional-set traceability to analysis, and approved functional-set eligibility when a functional set governs decomposition.
-- `REPO-VAL-024`: The repository and product leaf validation entry points shall each enforce reciprocal and acyclic supersession relationships for specifications within their owned validation domains that declare supersedes or superseded_by relations.
-- `REPO-VAL-025`: Each applicable leaf validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical.
-- `REPO-VAL-026`: Each applicable leaf validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks within its owned tree so chunk manageability remains deterministic without relying on token counts.
-- `REPO-VAL-027`: The applicable leaf validation entry point shall enforce that an accepted implementation plan exposes canonical machine-readable workstream or stage authority entries with stable unique identifiers and non-empty unique controlling product-specification sets, and that every referenced controlling product specification is accepted, structurally valid, registered in the product manifest, and not mutually contradictory with other referenced specifications.
-- `REPO-VAL-028`: The applicable leaf validation entry point shall reject an implementation plan that references a product specification that is absent from the product manifest or whose lifecycle status has not reached the minimum required state.
-- `REPO-VAL-029`: The applicable leaf validation entry point shall reject an implementation plan that references only placeholder specification roots or scaffolding instead of substantive accepted product specifications for any planned workstream that would produce maintained product artifacts.
-- `REPO-VAL-030`: The applicable leaf validation entry point shall reject an implementation plan that references candidate product specifications where accepted specifications are required by the governing scope.
-- `REPO-VAL-031`: The applicable leaf validation entry point shall reject an implementation plan that references product specifications with invalid upward or circular dependency chains as defined by repo.product-levels.
-- `REPO-VAL-032`: The applicable leaf validation entry point shall reject an implementation plan that references mutually contradictory product specifications where the contradiction is machine-detectable (e.g., overlapping normative requirement identifiers, incompatible Level-participation requirements).
-- `REPO-VAL-033`: The applicable leaf validation entry point shall reject an implementation plan that claims specification-complete scope for any workstream whose referenced product specifications are missing required correspondence or dependency declarations.
-- `REPO-VAL-034`: The applicable leaf validation entry point shall enforce that a product decomposition identifies expected Level 0-3 specification families, responsibility boundaries, and intended dependency directions, and shall reject a decomposition that lacks this identification when the decomposition declares readiness for specification work.
-- `REPO-VAL-035`: The applicable leaf validation entry point shall enforce that exploratory experiment classifications are explicitly non-product, isolated from maintained product paths where practical, and include disposal, archival, or adoption criteria.
+- `REPO-VAL-019`: Development-document validation shall mechanically enforce objective repository-structure, document-base, lifecycle, lineage, type-specific content, traceability, chunk-boundary, and namespace constraints delegated by the controlling development-document specifications without redefining those semantics.
+- `REPO-VAL-027`: Implementation-plan validation shall mechanically enforce objective plan structure, controlling-authority references, dependency closure, and acceptance preconditions delegated by repo.implementation-plan and the applicable product authority without independently defining plan validity.
 - `REPO-VAL-036`: The hosting-platform issue-body field-policy boundary, rather than either repository-tree leaf validation entry point, shall reject a governing issue declared as product-artifact implementation when the issue does not cite one canonical accepted implementation-plan path, identify one or more stable workstream or stage identifiers from that plan, cite a product-specification set that is manifest-listed and accepted and exactly equals the deterministic union of the controlling accepted product-specification sets declared for the selected workstreams or stages, cite the exact accepted default-branch base, and cite predecessor implementation issue and revision evidence. Repository and product leaf validation shall remain repository-local and shall not inspect remote issue bodies.
-- `REPO-VAL-037`: Each leaf validation entry point shall enforce that no validation rule within its owned validation domain treats generated Markdown as authoritative over source specifications. Generated artifacts remain subordinate to their declared source artifacts.
-- `REPO-VAL-038`: The product leaf validation entry point shall enforce that a higher-Level product specification may depend directly on an accepted lower-Level specification without requiring intermediate-Level specifications, consistent with repo.product-levels.
-- `REPO-VAL-039`: The applicable production validation entry points shall enforce every closed maintained structural envelope declared by accepted `repo.repository-structure` within their ownership domain. Root validation shall enforce the exact maintained source-repository root boundary. Repository leaf validation shall enforce the exact direct entries and path kinds of `repo/`, `repo/specs/`, `repo/schemas/`, `repo/derived/`, and `repo/derived/specs/`. Product leaf validation shall enforce the exact direct entries and path kinds of `product/`, `product/specs/`, `product/schemas/`, `product/derived/`, and `product/derived/specs/`. Each such closed envelope shall reject missing required entries, undeclared extra entries, and wrong-kind entries. The governed `user/` namespace remains an explicit non-normative exception at the source-repository root; root `docs/` and every other undeclared root entry shall be rejected.
-- `REPO-VAL-040`: The applicable leaf validation entry point shall reject a functional-set artifact whose lifecycle status is neither candidate nor approved, shall reject an overview-whiteboard artifact that claims approval, shall require overview analysis to trace to whiteboard evidence, shall require a functional set to trace to analysis, and shall reject candidate functional sets as decomposition authority.
+- `REPO-VAL-039`: Structural-envelope validation shall mechanically enforce the repository namespaces and closed structural envelopes defined by repo.repository-structure and repo.development-document-base without independently defining those envelopes.
 - `REPO-VAL-041`: When repository-owned production validation enforces initialized-repository framework integrity that is anchored to an external source framework identity, the proof used by routine validation shall be committed repository-local authority that is independently verifiable against that immutable identity. Routine validation shall not require the originating developer-machine checkout and shall not retrieve validation authority from a network or remote repository; missing required local authority shall fail cleanly.
-- `REPO-VAL-042`: The hosting-platform issue-body field-policy boundary shall reject a governing issue declared as Atomic authority transition unless it cites exactly one accepted implementation plan, identifies one or more stable workstream or stage identifiers from that plan, cites a manifest-listed accepted product-specification set that contains the complete deterministic union of the selected identifiers' current controlling sets plus at least one additional accepted transition specification, cites predecessor issue and exact revision evidence, and provides Atomic transition evidence containing the accepted invariant, an explicit statement that no valid intermediate accepted revision exists, and the plan-impact revision or explicit reaffirmation that must precede maintained implementation within the exact proposed revision. The field-policy boundary shall keep ordinary Product-artifact implementation enforcement unchanged.
-- `REPO-VAL-043`: The maintained validation domains `validation/`, `repo/validation/`, and `product/validation/` shall use exact canonical structures. Root and repository validation shall contain exactly `README.md`, `manifest.json`, `checks/`, `core/`, `runners/`, `tests/`, and `github/` at the validation-domain root; product validation shall contain exactly `README.md`, `manifest.json`, `checks/`, `core/`, `runners/`, and `tests/`. In every validation domain, `checks/` shall contain exactly `development_documents.py`, `domain.py`, `generated_outputs.py`, `policy.py`, and `specifications.py`; `core/` shall contain exactly `context.py`, `errors.py`, `invariants.py`, `paths.py`, and `schema_subset.py`; and `runners/` shall contain exactly `validate_impl.py` and `test_validation_impl.py`. No additional files or directories are permitted in those fixed roots. `github/` is required as a directory for root and repository validation; this structural rule does not constrain its internal contents.
-- `REPO-VAL-044`: Each maintained validation domain shall contain `tests/` with exactly the direct subdirectories `unit/`, `self/`, and `fixtures/` and no other direct entries. Structural validation shall not constrain filenames, nested structure, or file contents beneath those three test subdirectories.
-- `REPO-VAL-045`: Each public leaf validation entry point shall enforce the exact canonical structure of its owned validation domain, and aggregate `scripts/validate` shall therefore enforce all three maintained validation-domain structures. Aggregate `scripts/test-validation` shall exercise root, repository, and product validation self-test responsibilities, while repository and product leaf self-test entry points remain independently runnable. Continuous integration validation self-tests shall use the canonical aggregate self-test surface.
-- `REPO-VAL-046`: Each leaf validation entry point shall perform an executive documentation-namespace check for the owned `repo/docs/` or `product/docs/` tree before deeper per-document validation. The check shall enforce the exact owner-appropriate direct child roots, reject every undeclared direct file or directory, enforce the closed direct-entry model of each canonical development-document root, require every subordinate chunk directory to be owned by exactly one valid controlling document, and reject every undeclared file, nested directory, orphan directory, or other content within a chunk directory.
-- `REPO-VAL-047`: Repository and product leaf validation shall enforce their owner-specific maintained `scripts/` and `src/` structural contracts declared by `REPO-STR-013` and `REPO-STR-014`. Each owner shall require both roots as directories; each `scripts/` root shall contain only direct executable files serving as wrappers or entry points, shall reject nested directories and Python implementation modules, and each `src/` root shall remain the owner-appropriate recursively extensible maintained implementation namespace. Repository validation shall reject repository validation implementation under `repo/src/`; product validation shall reject product validation implementation under `product/src/`. These checks shall enforce structural ownership only and shall not infer semantic code ownership from source contents.
+- `REPO-VAL-042`: Hosted issue-field validation for Atomic authority transitions shall enforce the canonical Atomic field-policy boundary declared by repo.governing-issue and repo.development-workflow without restating Atomic lifecycle semantics.
 
 ## Dependencies
 

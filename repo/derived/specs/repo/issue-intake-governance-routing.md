@@ -18,15 +18,37 @@ Do not edit directly.
 
 End-to-end orchestration for moving ordinary issue intake through classification, authority routing, provenance preservation, governed-work promotion, and hosted validation activation with observable success and failure conditions.
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `IRG-E2E-001`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-003; the predecessor text is not retained as an independent normative restatement inside repo.issue-intake-governance-routing.`
+- Surviving Requirements:
+  - `IRG-L0-003`
+- Disposition: `moved`
+- Id: `IRG-E2E-003`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-ROUTE-001, IRG-ROUTE-002, REPO-WF-007; the predecessor text is not retained as an independent normative restatement inside repo.issue-intake-governance-routing.`
+- Surviving Requirements:
+  - `IRG-ROUTE-001`
+  - `IRG-ROUTE-002`
+  - `REPO-WF-007`
+- Disposition: `moved`
+- Id: `IRG-E2E-004`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-ROUTE-005, REPO-AUTH-008; the predecessor text is not retained as an independent normative restatement inside repo.issue-intake-governance-routing.`
+- Surviving Requirements:
+  - `IRG-ROUTE-005`
+  - `REPO-AUTH-008`
+- Disposition: `moved`
+- Id: `IRG-E2E-007`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-PROM-005; the predecessor text is not retained as an independent normative restatement inside repo.issue-intake-governance-routing.`
+- Surviving Requirements:
+  - `IRG-PROM-005`
+
 ## Normative requirements
 
-- `IRG-E2E-001`: The issue-routing lifecycle shall begin with ordinary intake that may be unformatted and not yet governed.
 - `IRG-E2E-002`: The lifecycle shall classify intake, select the accepted authority path, preserve required intake provenance before content-restructuring promotion, establish governed-work state only for a canonical bounded governed operation, and activate governed field-policy validation only after that governed state exists.
-- `IRG-E2E-003`: Bug-fix routing shall enter audit; feature-request routing shall enter the governed feature-development lifecycle and shall not bypass functional-set approval, decomposition, specification, planning, or implementation gates applicable to later work.
-- `IRG-E2E-004`: If authority routing cannot determine a permitted path without resolving an unaccepted semantic decision, the lifecycle shall stop rather than manufacture authority.
 - `IRG-E2E-005`: A successful routing outcome shall leave the applicable authority path explicit, preserved intake evidence traceable, and any governed operation structurally subject to the existing bounded-change workflow.
 - `IRG-E2E-006`: The lifecycle shall treat failure to preserve required provenance, failure to establish a canonical governed issue before governed-work validation, or conflict between hosting state and repository authority as unsuccessful routing rather than successful governance.
-- `IRG-E2E-007`: The orchestration shall not redefine lower-level concepts or capabilities and shall treat either in-place or successor governed-issue realization as conforming when the accepted lower-level routing, provenance, promotion, and validation invariants are satisfied.
 
 ## Dependencies
 

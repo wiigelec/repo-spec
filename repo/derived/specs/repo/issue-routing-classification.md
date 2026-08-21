@@ -18,11 +18,18 @@ Do not edit directly.
 
 Primitive contract for classifying ordinary issue intake into routing concepts and resolving classification conflicts before authority routing proceeds.
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `IRG-CLS-003`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-001; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-classification.`
+- Surviving Requirements:
+  - `IRG-L0-001`
+
 ## Normative requirements
 
 - `IRG-CLS-001`: The routing classification vocabulary shall include `bug-fix` for reported behavior believed to violate already accepted authority and `feature-request` for requested new or changed direction.
 - `IRG-CLS-002`: The `bug-fix` and `feature-request` classifications may be assigned at issue creation or after review.
-- `IRG-CLS-003`: A routing classification shall remain distinct from `governed-work` governance state.
 - `IRG-CLS-004`: Classification uncertainty that changes the applicable authority path shall be surfaced rather than silently converted into repository mutation authority.
 - `IRG-CLS-005`: The `bug-fix` and `feature-request` classifications may coexist during raw intake or review, but before authority routing proceeds the routing state shall resolve to one applicable authority direction; unresolved conflicting classifications that imply different authority paths shall stop routing rather than select a path implicitly.
 

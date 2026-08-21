@@ -18,23 +18,51 @@ Do not edit directly.
 
 Defines the normative contract for the product-specification manifest.
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `REPO-PM-007`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-004; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest.`
+- Surviving Requirements:
+  - `REPO-PSB-004`
+- Disposition: `moved`
+- Id: `REPO-PM-010`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-010; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest.`
+- Surviving Requirements:
+  - `REPO-PL-010`
+- Disposition: `moved`
+- Id: `REPO-PM-011`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-006, REPO-PL-010; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest.`
+- Surviving Requirements:
+  - `REPO-PSB-006`
+  - `REPO-PL-010`
+- Disposition: `moved`
+- Id: `REPO-PM-012`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-001; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest.`
+- Surviving Requirements:
+  - `REPO-PL-001`
+- Disposition: `moved`
+- Id: `REPO-PM-013`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-011; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest.`
+- Surviving Requirements:
+  - `REPO-PSB-011`
+- Disposition: `moved`
+- Id: `REPO-PM-015`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-002; the predecessor text is not retained as an independent normative restatement inside repo.product-manifest.`
+- Surviving Requirements:
+  - `REPO-AUTH-002`
+
 ## Normative requirements
 
 - `REPO-PM-001`: The repository shall define `product/specs/product/manifest.json` as the canonical product-manifest path and shall keep it distinct from `repo/specs/repo/manifest.json`.
-- `REPO-PM-002`: The product manifest shall be authoritative for the governed product-specification registry under `product/specs/product/` and shall not claim repository-workflow authority. Declaration-driven product-derived projections are owned and declared by their source product specifications and shall reside under `product/derived/specs/product/` as defined by this contract and `repo.product-spec-base`.
+- `REPO-PM-002`: The product manifest is the authoritative registry of governed product specifications. Projection mechanics and common specification-envelope semantics are owned by repo.product-spec-base.
 - `REPO-PM-003`: The product manifest shall identify itself with the stable manifest identity `product.manifest` and shall use the same repository-spec lifecycle statuses as repository specifications.
 - `REPO-PM-004`: The presence of `product/specs/product/manifest.json` shall express activation of the product-specification system.
 - `REPO-PM-005`: A product manifest may be empty.
 - `REPO-PM-006`: The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level.
-- `REPO-PM-007`: A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`.
 - `REPO-PM-008`: The product manifest shall register the complete governed product-specification set, not only accepted specifications; candidate specifications shall appear when governed, and historical specifications shall remain registered while retained.
 - `REPO-PM-009`: Each registered product specification shall have a unique identity and a unique path within the manifest.
-- `REPO-PM-010`: Each registered product specification shall reside under exactly one reserved Level root: `product/specs/product/level-0/`, `product/specs/product/level-1/`, `product/specs/product/level-2/`, or `product/specs/product/level-3/`.
-- `REPO-PM-011`: Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value.
-- `REPO-PM-012`: Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries.
-- `REPO-PM-013`: Declared derived product projections shall be registered by the product specification itself in its `derived_artifacts` collection, shall use repository-relative Markdown paths under `product/derived/specs/product/`, and shall remain subordinate to the authoritative product specification.
 - `REPO-PM-014`: The product manifest shall be complete when it enumerates every governed product specification currently present under the reserved product-specification roots, excluding the manifest file itself.
-- `REPO-PM-015`: Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest.
 
 ## Dependencies
 

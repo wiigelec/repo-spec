@@ -101,23 +101,54 @@ Defines the normative boundary between Git-generic framework behavior and hostin
       - `bypass actors`
       - `enforcement`
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-PP-009`
+- Rationale: `Normalized into canonical owner REPO-PP-004; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PP-004`
+- Disposition: `merged`
+- Id: `REPO-PP-010`
+- Rationale: `Normalized into canonical owner REPO-PP-004; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PP-004`
+- Disposition: `merged`
+- Id: `REPO-PP-015`
+- Rationale: `Normalized into canonical owner REPO-PP-006; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PP-006`
+- Disposition: `moved`
+- Id: `REPO-PP-003`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-006; the predecessor text is not retained as an independent normative restatement inside repo.platform-profiles.`
+- Surviving Requirements:
+  - `REPO-STR-006`
+- Disposition: `moved`
+- Id: `REPO-PP-007`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AT-008, REPO-PP-002; the predecessor text is not retained as an independent normative restatement inside repo.platform-profiles.`
+- Surviving Requirements:
+  - `REPO-AT-008`
+  - `REPO-PP-002`
+
 ## Normative requirements
 
 - `REPO-PP-001`: The repository shall define a focused platform-profile specification that keeps Git-generic framework behavior separate from hosting-platform-specific behavior.
-- `REPO-PP-002`: GitHub shall be the first supported hosting-platform profile. The current repository state shall use populated reusable GitHub profile source under `repo/profiles/github/` as the source for managed installed adapters under `.github/`, while GitHub bootstrap scripts remain implementation infrastructure subordinate to accepted repository specifications.
-- `REPO-PP-003`: The repository shall use `repo/profiles/github/` for reusable GitHub profile source material and `.github/` for installed GitHub adapters.
-- `REPO-PP-004`: Managed installed adapters shall be generated deterministically from the populated GitHub profile source. Bootstrap infrastructure may be maintained directly as implementation support, but installed adapters shall not claim authority over profile source.
+- `REPO-PP-002`: GitHub shall be the first and currently supported hosting-platform profile. GitHub bootstrap scripts shall remain implementation infrastructure subordinate to accepted repository specifications; the profile's normative structured data defines its source and installed-adapter roots.
+- `REPO-PP-004`: Each platform profile shall define one authoritative repository-local source surface and a one-way source-to-adapter relationship. Installed provider adapters are faithful generated projections governed by repo.authority-model and shall not independently define platform policy.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PP-009: The populated GitHub profile source root and installed adapter root shall define a deterministic one-way source-to-adapter mapping: accepted source material under `repo/profiles/github/` projects to repository-local installed adapters under `.github/` with the same relative subpath unless the profile contract explicitly declares a different mapping, and the adapter root shall never become the source of normative authority over the profile source.
+- REPO-PP-010: Bootstrap infrastructure may continue to be maintained directly as implementation support, while managed installed adapters shall remain source-derived from the populated GitHub profile source and shall not supersede that source.
 - `REPO-PP-005`: Remote-only hosting-platform state shall be represented as deployment-state evidence, not as ordinary generated repository content.
-- `REPO-PP-006`: Hosting mutations shall record the governing issue, accepted repository revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification.
-- `REPO-PP-007`: The current GitHub-specific repository artifacts shall be classifiable under one GitHub profile identity as profile-source material, installed adapters, or bootstrap infrastructure according to their role; bootstrap infrastructure shall use implementation authority classification and shall not supersede accepted profile-source authority.
+- `REPO-PP-006`: Platform-specific remote state shall be represented only through the profile's complete declared remote-state field set, including governing-issue linkage when applicable; absent declared fields are not implicitly authoritative.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PP-015: The GitHub remote-state mutation evidence record shall include inspection evidence, accepted repository revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification.
 - `REPO-PP-008`: For GitHub, the `artifact_inventory` listed under the profile entry shall function as the managed profile artifact inventory for the current migration-free stage: it enumerates the repository-local GitHub-managed artifacts that are in scope for this contract, including installed adapters and bootstrap infrastructure, and no unlisted GitHub artifact shall be treated as managed by this profile contract by default. This inventory is distinct from `repo/profiles/github/manifest.json::managed_adapters`, which shall contain only source-to-installed adapter pairs.
-- `REPO-PP-009`: The populated GitHub profile source root and installed adapter root shall define a deterministic one-way source-to-adapter mapping: accepted source material under `repo/profiles/github/` projects to repository-local installed adapters under `.github/` with the same relative subpath unless the profile contract explicitly declares a different mapping, and the adapter root shall never become the source of normative authority over the profile source.
-- `REPO-PP-010`: Bootstrap infrastructure may continue to be maintained directly as implementation support, while managed installed adapters shall remain source-derived from the populated GitHub profile source and shall not supersede that source.
 - `REPO-PP-011`: For the active GitHub source-to-adapter model, deterministic output shall mean that a given accepted GitHub profile source revision produces the same installed-adapter content, file set, and ordering each time the projection is run, and freshness shall mean that the installed adapter tree matches the current accepted source-derived result for the same revision.
 - `REPO-PP-012`: Files not listed in the managed profile artifact inventory shall remain outside this profile contract, shall retain their existing ownership or bootstrap handling, and shall require separate governing authority before they are migrated, regenerated, or reclassified.
 - `REPO-PP-013`: The GitHub remote-state contract shall define a ruleset desired-state format and a branch-protection desired-state format, each with explicit required fields suitable for repository-local inspection and review.
 - `REPO-PP-014`: The GitHub remote-state contract shall separate inspection from apply: inspection shall capture live remote state and compare it to desired state, while apply shall only execute a previously approved desired-state change.
-- `REPO-PP-015`: The GitHub remote-state mutation evidence record shall include inspection evidence, accepted repository revision, target repository, target remote configuration identifier, previous state, intended state, execution evidence, rollback procedure, and post-change verification.
 - `REPO-PP-016`: Rollback and post-change verification shall be declared before any remote mutation is applied, and the verification step shall state the exact checks used to confirm the applied state.
 
 ## Dependencies

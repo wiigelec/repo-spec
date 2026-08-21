@@ -25,7 +25,7 @@ Issue-intake and governance-routing foundations defining shared meanings, author
 - `IRG-L0-003`: Ordinary issue intake may exist before governed-work state and shall not be required to satisfy governed-work field completeness solely because it exists.
 - `IRG-L0-004`: The routing model shall preserve traceability from ordinary intake into any later bounded governed operation.
 - `IRG-L0-005`: Hosted governed-field validation shall not be treated as applicable before the governed-work state that activates that validation boundary.
-- `IRG-L0-006`: This foundation introduces no intake-title preservation requirement, no universal requirement to retain routing labels after promotion, and no universal requirement to choose either in-place promotion or successor-issue promotion; exact hosting-platform mutation and event sequencing remains subordinate platform-specific authority.
+- `IRG-L0-006`: The routing foundation defines repository-generic routing governance only. Provider implementation details and remotely observable platform mechanics belong to the applicable platform profile and routing-platform-validation capability.
 
 ## Dependencies
 
