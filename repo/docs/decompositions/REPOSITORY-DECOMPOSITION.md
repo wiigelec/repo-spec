@@ -316,6 +316,12 @@ The validation-correspondence dependency direction is:
 
 `normative-reference identity and active requirement scope -> validation-correspondence package model -> validation-task correspondence and source auditability -> validation-domain ownership and product reconciliation -> correspondence integrity, propagation, and migration`
 
+The intended downstream normative specification-family dependency direction is:
+
+`existing repository authority and normative-reference/lifecycle foundations -> canonical repository validation-correspondence semantics -> coordinated product-correspondence normalization plus artifact/structure authorization -> delegated validation enforcement -> workflow, projection, and migration integration where required`
+
+This direction is responsibility-oriented rather than a declaration of exact future specification identities. Existing generic authority, generated-projection, structure, product-lifecycle, validation, and Atomic-transition invariants remain controlling dependencies and should be referenced or specialized rather than independently restated.
+
 The two capability chains share repository authority, workflow, validation, and structure dependencies but do not redefine one another. Audit and feature-development lifecycles remain external dependencies and are not redefined by this decomposition.
 
 ## Cross-cutting concerns

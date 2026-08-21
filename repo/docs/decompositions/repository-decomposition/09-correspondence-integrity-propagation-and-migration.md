@@ -68,6 +68,12 @@ Directional expectation:
 - **Repository development-workflow family**: candidate activation, valid intermediate states, and Atomic-transition eligibility;
 - **Cross-specification relationship**: all enforcement remains subordinate to normative authority and the canonical correspondence source model.
 
+Intended normative dependency direction:
+
+`existing repository authority and normative-reference/lifecycle foundations -> canonical repository validation-correspondence semantics -> coordinated product-correspondence normalization plus artifact/structure authorization -> delegated validation enforcement -> workflow, projection, and migration integration where required`
+
+This ordering expresses semantic ownership and dependency only. It does not select exact future specification identifiers, duplicate existing generic invariants, or authorize any schema, namespace, validator, migration, or implementation choice.
+
 ## Stopping criteria
 
 The validation-correspondence decomposition is complete when identity/scope, package model, task/source auditability, constitutional domain ownership/product reconciliation, and integrity/propagation/migration each have stable responsibility boundaries; their dependencies and cross-specification relationships are explicit; unresolved exact mechanics remain visible; and downstream repository specification work can proceed without inferring semantics from this directional document.
