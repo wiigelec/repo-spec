@@ -40,6 +40,10 @@
     {
       "id": "REPO-DDB-012",
       "text": "Each subordinate chunk directory shall itself be closed: its direct files shall exactly equal the `subordinate_chunks` inventory declared by its owning controlling document, every declared chunk shall be a direct Markdown file in that directory, and no additional files, nested directories, or undeclared content are permitted. Compatibility, exemption, grandfathering, or registry entries shall not make nonconforming content valid within a governed development-document root."
+    },
+    {
+      "id": "REPO-DDB-013",
+      "text": "For governed development documents, `artifact_id` shall be the stable semantic identity of the composite document, `document_slug` shall identify its subordinate chunk-directory slug, and `filename_stem` shall identify its top-level controlling filename stem. These fields serve distinct roles and shall not be required to have identical values."
     }
   ],
   "dependencies": [

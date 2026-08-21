@@ -165,11 +165,12 @@
     },
     {
       "id": "REPO-VAL-006",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-003"
+        "REPO-MAN-003",
+        "REPO-PSB-009"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Phase-6 semantic-preservation correction: the predecessor semantics are now owned by REPO-MAN-003, REPO-PSB-009; repo.validation retains delegated enforcement responsibility only."
     },
     {
       "id": "REPO-VAL-007",
@@ -269,19 +270,20 @@
     },
     {
       "id": "REPO-VAL-024",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-MAN-004",
+        "REPO-PSB-010"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Phase-6 semantic-preservation correction: the predecessor semantics are now owned by REPO-MAN-004, REPO-PSB-010; repo.validation retains delegated enforcement responsibility only."
     },
     {
       "id": "REPO-VAL-025",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-DDB-013"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Phase-6 semantic-preservation correction: the predecessor semantics are now owned by REPO-DDB-013; repo.validation retains delegated enforcement responsibility only."
     },
     {
       "id": "REPO-VAL-026",

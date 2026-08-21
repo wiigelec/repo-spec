@@ -39,7 +39,7 @@
     },
     {
       "id": "REPO-PSB-010",
-      "text": "The `supersedes` and `superseded_by` lineage collections shall record product-specification identity relationships and shall not self-reference."
+      "text": "The `supersedes` and `superseded_by` lineage collections shall record product-specification identity relationships, shall not self-reference, shall be reciprocal across retained product specifications, and shall form an acyclic product-specification supersession graph."
     },
     {
       "id": "REPO-PSB-011",
