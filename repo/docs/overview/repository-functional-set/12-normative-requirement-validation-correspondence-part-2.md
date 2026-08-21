@@ -1,0 +1,151 @@
+# functional-set lifecycle: Normative Requirement Validation Correspondence — Part 2
+
+This part defines the directional package, validation-disposition, validation-task, and entry-point correspondence model.
+
+## Validation-correspondence package
+
+A validation-correspondence package is the durable source artifact that binds one active identified normative requirement in an accepted repository or accepted product specification to its maintained validation disposition and externally identified validation evidence.
+
+The package is analytically distinct from:
+
+- the normative specification;
+- executable validation code;
+- validation orchestration;
+- test helper internals;
+- generated Markdown or aggregate coverage output.
+
+The package should remain small enough to express correspondence without duplicating normative semantics or executable implementation detail.
+
+## Package cardinality
+
+The directional cardinality is:
+
+- one active correspondence package per active identified normative requirement in accepted repository or accepted product authority;
+- one normative requirement reference per active package;
+- zero or more externally identified validation tasks per package.
+
+Package completeness and executable task population are separate concerns.
+
+A requirement may legitimately have an active package with no executable task when its accepted validation disposition explains why mechanical validation is absent.
+
+This prevents the correspondence model from inventing meaningless executable checks merely to satisfy package cardinality.
+
+## Validation disposition
+
+The collected request proposed these dispositions:
+
+- `mechanical`;
+- `partial`;
+- `semantic-review`;
+- `not-applicable`.
+
+The functional-set direction accepts the need for explicit validation disposition metadata. These four names remain the collected proposal's candidate vocabulary for downstream specification rather than exact accepted enum wording.
+
+Downstream specification must still define:
+
+- exact meaning of each disposition;
+- whether the vocabulary is exhaustive;
+- allowed transitions;
+- rationale requirements;
+- how mixed mechanical and non-mechanical coverage is represented;
+- how disposition affects completeness and reporting.
+
+Non-mechanical or incomplete mechanical validation should remain explainable rather than silently appearing as missing coverage.
+
+## Externally identified validation tasks
+
+The correspondence model needs stable identity for maintained validation tasks that are represented as correspondence evidence.
+
+It does not require every fixture, parameter case, assertion, or non-callable internal implementation unit to become a separately registered task. Every maintained validation callable defined in governed validation implementation source must, however, carry exactly one source-local role classification: validation-task callable or helper.
+
+An externally identified validation task should be a maintained executable validation responsibility whose source-level validation-task callable downstream tooling can identify, resolve, and report.
+
+Exact task-granularity rules remain downstream specification work.
+
+## Task ownership and uniqueness
+
+Each externally identified validation task should:
+
+- have stable identity within the accepted correspondence scope;
+- resolve to a maintained source location and validation-task callable;
+- belong to exactly one active correspondence package;
+- thereby correspond to exactly one canonical normative-requirement reference;
+- avoid duplicate registration in an independent aggregate registry.
+
+Shared helpers may support many tasks or requirements without becoming independent correspondence entries, but their helper role must be explicitly identifiable from source-local metadata. At any exact revision, helper and validation-task-callable roles are mutually exclusive; promoting a helper into a task requires an explicit source-role change rather than simultaneous classification.
+
+## Source-local auditability
+
+Opening any governed maintained validation source file should be sufficient for a human or machine to classify every maintained validation callable defined in that file by role.
+
+At an exact revision, every such callable has exactly one mutually exclusive source role:
+
+- **validation-task callable** — a maintained validation responsibility that carries source-local machine-readable correspondence to exactly one canonical normative requirement;
+- **helper** — a maintained callable explicitly identified as supporting validation implementation without independently owning normative-requirement correspondence.
+
+For a validation-task callable, the source file itself must expose the canonical normative-requirement correspondence without requiring lookup in a separate package, manifest, generated artifact, or registry merely to determine ownership.
+
+The exact source syntax remains downstream specification work. It may use a decorator, attribute, structured annotation, or another single canonical mechanism.
+
+Source-local role and requirement metadata remain subordinate traceability metadata. The canonical correspondence package remains the source model, and mechanical validation must reject disagreement between package ownership and source-local task metadata.
+
+Helpers may be used by tasks for multiple normative requirements. Their explicit helper classification prevents human or machine auditors from mistaking shared implementation for an independently owned validation obligation.
+
+## Task classification dimensions
+
+The original proposal listed:
+
+- positive;
+- negative;
+- boundary;
+- regression;
+- unit;
+- integration.
+
+The analysis found that these values mix different dimensions.
+
+The functional-set direction therefore separates at least:
+
+- **purpose or coverage intent**, such as positive, negative, boundary, or regression;
+- **execution level**, such as unit or integration.
+
+The exact vocabulary, multiplicity, and cardinality of each dimension remain downstream specification decisions.
+
+A validation task may legitimately be, for example, both negative in coverage intent and integration-level in execution.
+
+## Validation-task callable correspondence
+
+Machine-readable validation-task-callable metadata must be source-local and must agree with package ownership.
+
+The directional invariant is that every validation-task callable identifies exactly one canonical normative requirement directly from its source while the canonical package remains the canonical correspondence source model.
+
+A separate manifest, generated adapter, or aggregate registry may consume or project that information but may not substitute for source-local task correspondence.
+
+A validation-task callable is a source-level correspondence concept and is distinct from a public validation entry point governed by `repo.validation`; the latter is an externally exposed validation surface and may invoke one or more source-level validation-task callables.
+
+The exact source-local syntax remains downstream specification work.
+
+## Source-of-truth boundary
+
+The durable correspondence package set is the source model.
+
+Aggregate coverage tables, Markdown summaries, indexes, and similar views should be deterministic subordinate projections.
+
+Generated views must not become independent editing surfaces for correspondence authority.
+
+If generated output diverges from canonical package sources, the generated output is stale and should be regenerated or rejected.
+
+## Broad and parameterized tests
+
+Existing tests may exercise multiple cases, boundaries, or contract aspects.
+
+The functional set does not require every current test file or test function to map one-to-one with a package.
+
+Downstream migration may:
+
+- split broad tests;
+- introduce explicit externally identified task wrappers;
+- retain parameterized execution behind one stable task identity;
+- preserve shared helpers outside the correspondence registry.
+
+The selected migration must keep correspondence truthful without forcing artificial implementation structure.
