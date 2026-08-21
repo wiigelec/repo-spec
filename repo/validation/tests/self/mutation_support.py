@@ -44,6 +44,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo/functional-set-process.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
+        "repo/schemas/repo/validation-correspondence-package.schema.json",
     ]
 
     for root_rel in (

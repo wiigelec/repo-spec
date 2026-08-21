@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "repo/schemas/repo/validation-correspondence-package.schema.json",
+  "title": "Validation Correspondence Package Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "normative_reference",
+    "validation_disposition",
+    "tasks"
+  ],
+  "properties": {
+    "normative_reference": {
+      "$ref": "#/$defs/normativeReference"
+    },
+    "validation_disposition": {
+      "type": "string",
+      "enum": [
+        "mechanical",
+        "partial",
+        "semantic-review",
+        "not-applicable"
+      ]
+    },
+    "validation_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/validationTask"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "validation_disposition": {
+            "const": "mechanical"
+          }
+        }
+      },
+      "else": {
+        "required": [
+          "validation_rationale"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "normativeReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spec_id",
+        "requirement_id"
+      ],
+      "properties": {
+        "spec_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "requirement_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        }
+      }
+    },
+    "validationTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "source",
+        "callable"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "callable": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage_intent": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "positive",
+              "negative",
+              "boundary",
+              "regression"
+            ]
+          }
+        },
+        "execution_level": {
+          "type": "string",
+          "enum": [
+            "unit",
+            "integration"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -289,6 +289,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
         "repo.artifact-taxonomy": load_json(repo_root / "repo/schemas/repo/repo-artifact-taxonomy.schema.json"),
         "repo.platform-profiles": load_json(repo_root / "repo/schemas/repo/repo-platform-profiles.schema.json"),
         "repo.spec": load_json(repo_root / "repo/schemas/repo/repo-spec.schema.json"),
+        "validation-correspondence-package": load_json(repo_root / "repo/schemas/repo/validation-correspondence-package.schema.json"),
         "repo.development-document-base": copy.deepcopy(base_document_schema),
         "repo.functional-set-process": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/functional-set-process.schema.json")),
         "repo.product-decomposition": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/product-decomposition.schema.json")),
@@ -298,6 +299,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.artifact-taxonomy"], "repo/schemas/repo/repo-artifact-taxonomy.schema.json")
     ensure_schema_keywords(schemas["repo.platform-profiles"], "repo/schemas/repo/repo-platform-profiles.schema.json")
     ensure_schema_keywords(schemas["repo.spec"], "repo/schemas/repo/repo-spec.schema.json")
+    ensure_schema_keywords(schemas["validation-correspondence-package"], "repo/schemas/repo/validation-correspondence-package.schema.json")
     ensure_schema_keywords(schemas["repo.development-document-base"], "repo/schemas/repo/development-document-base.schema.json")
     ensure_schema_keywords(schemas["repo.functional-set-process"], "repo/schemas/repo/functional-set-process.schema.json")
     ensure_schema_keywords(schemas["repo.product-decomposition"], "repo/schemas/repo/product-decomposition.schema.json")
