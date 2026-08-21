@@ -21,23 +21,28 @@ Candidate migration analysis. Directional and non-normative.
   "required_content_areas": {
     "source_evidence": [
       "repo/docs/overview/repository-analysis/01-migration-analysis.md",
-      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "repo/docs/overview/repository-analysis/03-validation-package-analysis.md"
     ],
     "candidate_groupings": [
       "repo/docs/overview/repository-analysis/01-migration-analysis.md",
-      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "repo/docs/overview/repository-analysis/03-validation-package-analysis.md"
     ],
     "dependencies": [
       "repo/docs/overview/repository-analysis/01-migration-analysis.md",
-      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "repo/docs/overview/repository-analysis/03-validation-package-analysis.md"
     ],
     "ambiguities": [
       "repo/docs/overview/repository-analysis/01-migration-analysis.md",
-      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "repo/docs/overview/repository-analysis/03-validation-package-analysis.md"
     ],
     "candidate_functional_sets": [
       "repo/docs/overview/repository-analysis/01-migration-analysis.md",
-      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md"
+      "repo/docs/overview/repository-analysis/02-issue-routing-analysis.md",
+      "repo/docs/overview/repository-analysis/03-validation-package-analysis.md"
     ]
   },
   "controlling_documents": [
@@ -48,7 +53,8 @@ Candidate migration analysis. Directional and non-normative.
   ],
   "evidence": [
     "repo/docs/overview/repository-whiteboard/01-migration-input.md",
-    "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
+    "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md",
+    "repo/docs/overview/repository-whiteboard/03-validation-package-feature-request.md"
   ],
   "subordinate_chunks": [
     {
@@ -74,21 +80,34 @@ Candidate migration analysis. Directional and non-normative.
         "ambiguities",
         "candidate_functional_sets"
       ]
+    },
+    {
+      "order": 3,
+      "path": "repo/docs/overview/repository-analysis/03-validation-package-analysis.md",
+      "title": "Validation-package analysis",
+      "coverage": [
+        "source_evidence",
+        "candidate_groupings",
+        "dependencies",
+        "ambiguities",
+        "candidate_functional_sets"
+      ]
     }
   ],
-  "successor_action": "Decide whether to approve, revise, or reject the Issue Intake and Governance Routing candidate functional-set boundary before downstream decomposition or implementation.",
+  "successor_action": "Create a separate candidate functional-set operation to decide whether to carry forward, revise, split, or reject the Normative Requirement Validation Correspondence candidate boundary before any explicit approval or downstream decomposition/specification/implementation.",
   "schema_version": "1"
 }
 ```
 
 ## Overview
 
-This analysis performs only the structural interpretation necessary to migrate maintained direction into the functional-set lifecycle.
+This analysis performs only the structural interpretation necessary to carry collected repository direction into the functional-set lifecycle. It now covers migration, issue-routing, and validation-package correspondence evidence without approving candidate direction.
 
 ## Chunk index
 
 - [Migration analysis](repository-analysis/01-migration-analysis.md)
 - [Issue-routing analysis](repository-analysis/02-issue-routing-analysis.md)
+- [Validation-package analysis](repository-analysis/03-validation-package-analysis.md)
 
 ## Relationships
 
@@ -96,7 +115,7 @@ The analysis is controlled by and succeeds [Repo-Spec Repository whiteboard](./R
 
 ## Next authorized action
 
-Review the **Issue Intake and Governance Routing** candidate boundary from [Issue-routing analysis](repository-analysis/02-issue-routing-analysis.md) before creating or approving successor functional-set material.
+Use [Validation-package analysis](repository-analysis/03-validation-package-analysis.md) as the evidence base for a separate candidate functional-set operation. That successor must decide whether to carry forward, revise, split, or reject the **Normative Requirement Validation Correspondence** candidate boundary before any explicit approval or downstream realization.
 
 ## Discoverability
 
