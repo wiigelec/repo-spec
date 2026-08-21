@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-RP-013",
+    "spec_id": "repo.review-proposal"
+  },
+  "tasks": [],
+  "validation_disposition": "not-applicable",
+  "validation_rationale": "Loading and using a template is chatbot operating procedure rather than repository-state conformance, although the template itself can be validated separately."
+}

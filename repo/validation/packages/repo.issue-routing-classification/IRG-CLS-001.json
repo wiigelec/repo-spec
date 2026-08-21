@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "IRG-CLS-001",
+    "spec_id": "repo.issue-routing-classification"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "The accepted classification vocabulary is mechanically enforceable, while whether a concrete report is truly a bug-fix versus feature-request depends on semantic interpretation of accepted behavior."
+}

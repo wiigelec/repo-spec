@@ -19,7 +19,7 @@ from .development_documents import (
 
 # validation-metadata: {"role": "helper"}
 def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, label: str) -> None:
-    expected_top={"README.md","manifest.json","checks","core","runners","tests"}
+    expected_top={"README.md","manifest.json","checks","core","runners","tests","packages"}
     if require_github: expected_top.add("github")
     expect(domain_root.is_dir(), f"{label} validation layout failed: missing validation domain")
     actual={p.name:p for p in domain_root.iterdir()}
@@ -28,7 +28,7 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
     expect(not extra, f"{label} validation layout failed: unexpected top-level entries: {', '.join(extra)}")
     for n in ("README.md","manifest.json"):
         expect(actual[n].is_file(), f"{label} validation layout failed: {n} must be a file")
-    for n in ("checks","core","runners","tests"):
+    for n in ("checks","core","runners","tests","packages"):
         expect(actual[n].is_dir(), f"{label} validation layout failed: {n} must be a directory")
     if require_github: expect(actual["github"].is_dir(), f"{label} validation layout failed: github must be a directory")
     fixed={

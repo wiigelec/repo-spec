@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-PSB-017",
+    "spec_id": "repo.product-spec-base"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

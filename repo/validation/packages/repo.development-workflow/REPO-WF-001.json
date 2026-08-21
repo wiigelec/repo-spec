@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-WF-001",
+    "spec_id": "repo.development-workflow"
+  },
+  "tasks": [],
+  "validation_disposition": "not-applicable",
+  "validation_rationale": "This requirement governs actor/workflow procedure rather than a repository-local executable conformance property; repository-local validation does not apply to the governed behavior itself."
+}

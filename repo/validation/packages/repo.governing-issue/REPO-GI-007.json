@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-GI-007",
+    "spec_id": "repo.governing-issue"
+  },
+  "tasks": [],
+  "validation_disposition": "not-applicable",
+  "validation_rationale": "Issue closure timing depends on hosted lifecycle state and completion evidence rather than repository-local executable validation alone."
+}

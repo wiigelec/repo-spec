@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-041",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "validate_repo_tree_integrity",
+      "source": "validation/checks/policy.py",
+      "task_id": "root.validation.repository-tree-integrity"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

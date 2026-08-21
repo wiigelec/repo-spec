@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-WF-007",
+    "spec_id": "repo.development-workflow"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

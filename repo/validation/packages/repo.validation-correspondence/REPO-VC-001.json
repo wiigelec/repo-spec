@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VC-001",
+    "spec_id": "repo.validation-correspondence"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Single-owner identity is mechanically checkable, but whether correspondence restates, amends, infers, or replaces normative semantics is an authority/semantic review question."
+}

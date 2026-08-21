@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-IPL-005",
+    "spec_id": "repo.implementation-plan"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Explicit lifecycle/status claims can be mechanically inspected, but determining whether prose implicitly claims acceptance, merge, or release can require semantic review."
+}

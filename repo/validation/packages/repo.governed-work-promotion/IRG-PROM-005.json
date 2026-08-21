@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "IRG-PROM-005",
+    "spec_id": "repo.governed-work-promotion"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "In-place versus successor promotion options and provenance/traceability can be mechanically represented, while deciding when lifecycle separation or bounded-work scoping requires a successor involves governed judgment."
+}

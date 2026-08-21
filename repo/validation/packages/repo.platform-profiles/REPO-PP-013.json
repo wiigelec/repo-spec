@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-PP-013",
+    "spec_id": "repo.platform-profiles"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

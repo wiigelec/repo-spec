@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-001",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "check_validation_layout",
+      "source": "repo/validation/checks/policy.py",
+      "task_id": "repo.validation.validation-layout"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

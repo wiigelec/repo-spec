@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-GI-012",
+    "spec_id": "repo.governing-issue"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "The constrained Change type vocabulary and exact activation strings are mechanically enforceable, while deciding whether real work semantically qualifies as Product-artifact implementation or an Atomic authority transition can require governed judgment."
+}

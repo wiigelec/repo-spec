@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "IRG-L0-006",
+    "spec_id": "repo.issue-routing-governance"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Repository-generic versus provider-specific ownership boundaries can be mechanically reflected in source/profile placement, while whether behavior belongs to the correct authority domain can require semantic review."
+}

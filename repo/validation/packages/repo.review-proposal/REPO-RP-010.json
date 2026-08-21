@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-RP-010",
+    "spec_id": "repo.review-proposal"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Automatic issue-closing syntax is mechanically detectable, while determining that a governing completion gate truly requires post-merge validation may depend on interpreting the governing issue."
+}

@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VC-004",
+    "spec_id": "repo.validation-correspondence"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Package shape, cardinality, disposition vocabulary, rationale presence, and task collection are mechanically enforceable; whether a chosen disposition truthfully reflects the requirement's enforceability can require semantic review."
+}

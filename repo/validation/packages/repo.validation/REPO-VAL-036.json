@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-036",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-015",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "check_platform_profile_boundary",
+      "source": "repo/validation/checks/policy.py",
+      "task_id": "repo.validation.platform-profile-boundary"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

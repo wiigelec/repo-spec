@@ -1,0 +1,59 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-003",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "check_repository_source_layout",
+      "source": "repo/validation/checks/policy.py",
+      "task_id": "repo.validation.repository-source-layout"
+    },
+    {
+      "callable": "_check_repository_lifecycle",
+      "source": "repo/validation/checks/policy.py",
+      "task_id": "repo.validation.lifecycle-authority-sequence"
+    },
+    {
+      "callable": "check_unique_derived_artifact_paths_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.unique-derived-artifact-paths"
+    },
+    {
+      "callable": "check_resolvable_references_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.resolvable-references"
+    },
+    {
+      "callable": "check_schema_conformance",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.schema-conformance"
+    },
+    {
+      "callable": "check_manifest_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.manifest-completeness"
+    },
+    {
+      "callable": "check_dependency_targets_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.dependency-target-lifecycle"
+    },
+    {
+      "callable": "check_unique_spec_ids_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.unique-specification-ids"
+    },
+    {
+      "callable": "check_acyclic_dependencies_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.acyclic-dependencies"
+    },
+    {
+      "callable": "check_unique_item_properties_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.unique-item-properties"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

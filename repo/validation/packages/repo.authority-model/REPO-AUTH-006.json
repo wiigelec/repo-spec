@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-AUTH-006",
+    "spec_id": "repo.authority-model"
+  },
+  "tasks": [],
+  "validation_disposition": "semantic-review",
+  "validation_rationale": "The distinction between validation evidence, semantic correctness, authority, review, and acceptance is an authority interpretation responsibility rather than a mechanically provable repository-state property."
+}
