@@ -77,6 +77,24 @@ The functional set does not silently define which specification families or life
 
 Downstream decomposition and specification must make the completeness domain explicit so validators do not infer scope from directory presence or implementation convenience.
 
+## Propagation with repository authority
+
+For repo-owned normative requirements, validation correspondence follows the normative authority through the repository framework propagation path.
+
+When repo-owned normative authority is passed into the repo-spec `product/` tree and into derived or initialized repository `repo/` and `product/` trees, the associated validation correspondence must be passed with it.
+
+Propagation must preserve:
+
+- the same canonical normative-requirement reference;
+- the same correspondence/package semantic identity;
+- the same active or withdrawn lifecycle meaning;
+- the same validation disposition and externally identified task correspondence applicable to that propagated authority;
+- traceability back to the canonical repo-owned source.
+
+A propagated or derived copy is subordinate materialization, not an independent correspondence authority.
+
+The functional set does not require every surface to use the same physical path or serialization. Downstream structure, initializer, and generated-artifact authority owns those mechanics, but the propagated result must remain correspondence-equivalent to the canonical repo-owned source.
+
 ## Exclusions
 
 This capability does not decide:

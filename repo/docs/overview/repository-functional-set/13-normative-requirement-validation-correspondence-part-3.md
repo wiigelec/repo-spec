@@ -66,6 +66,25 @@ Downstream decomposition must determine:
 
 No package namespace is authorized by this functional-set patch alone.
 
+## Propagation and materialization integrity
+
+Repo-owned normative validation correspondence is framework material that must accompany the repo-owned normative authority it describes.
+
+The propagation boundary includes the repo-spec `product/` tree and the derived or initialized repository `repo/` and `product/` trees that receive repo-owned normative authority under existing framework/bootstrap contracts.
+
+Directional integrity across those surfaces requires:
+
+- propagated correspondence to resolve to the same canonical repo-owned normative requirement;
+- package/correspondence identity to remain stable across materialization;
+- active/withdrawn state to remain consistent;
+- validation disposition and externally identified task ownership to remain semantically equivalent;
+- generated or copied views to remain subordinate to the canonical source;
+- stale, missing, or divergent propagated correspondence to be detectable.
+
+A downstream design must not create separate mutable correspondence registries for the source tree, repo-spec product tree, initialized `repo/`, and initialized `product/` surfaces.
+
+Exact copying, generation, initializer inventory, destination paths, and freshness-check mechanics remain owned by downstream structure, initializer, generated-artifact, and validation specifications.
+
 ## Migration direction
 
 The repository may begin from a state with no package namespace while the intended end state requires complete package correspondence.
@@ -106,7 +125,8 @@ At minimum, decomposition should separate responsibilities for:
 1. normative-reference identity and active requirement scope;
 2. validation-correspondence package ownership, cardinality, lifecycle, and disposition;
 3. validation-task identity, task dimensions, and executable entry-point correspondence;
-4. correspondence integrity, deterministic projections, and migration/conformance.
+4. correspondence propagation/materialization across the repo-spec `product/` tree and derived/initialized repository `repo/` and `product/` trees;
+5. correspondence integrity, deterministic projections, and migration/conformance.
 
 The decomposition may refine or repartition these areas if it preserves the approved capability boundary.
 
@@ -125,6 +145,8 @@ Later governed work must decide, without treating this functional set as exact t
 - shared-helper and parameterized-test treatment;
 - withdrawn/superseded correspondence retention;
 - generated projection paths and formats;
+- exact source-to-product and source-to-initialized-tree propagation/materialization mechanics;
+- exact freshness and equivalence validation across propagated correspondence surfaces;
 - exact self-validation mechanics;
 - migration sequencing and whether atomic transition is required.
 
