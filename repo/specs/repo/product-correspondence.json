@@ -35,7 +35,7 @@
     },
     {
       "id": "REPO-PC-010",
-      "text": "Each product test mapping shall remain a stable local test-artifact correspondence record with repository-relative test paths and shall identify the applicable canonical validation-correspondence package relationships through which its normative-requirement association is derived. Test paths shall remain repository-relative and shall not use external mutable run identifiers or CI URLs. A product test mapping shall not independently author a normative-requirement list, validation-task identity, or validation-task-callable ownership. Exact package-reference field names and serialization are delegated to later governed schema and migration work."
+      "text": "Each product test mapping shall remain a stable local test-artifact correspondence record with repository-relative test paths and shall identify its applicable canonical validation-correspondence package relationships in one field named `validation_package_refs`. Each entry in `validation_package_refs` shall be one canonical validation-correspondence normative-reference object using exactly the accepted `spec_id` and `requirement_id` shape defined by `repo.validation-correspondence`; the referenced canonical package path and ownership domain shall be derived from that canonical reference rather than independently authored. Test paths shall remain repository-relative and shall not use external mutable run identifiers or CI URLs. A product test mapping shall not independently author a normative-requirement list, validation-task identity, validation-task-callable ownership, package path, or second requirement-to-validation registry."
     },
     {
       "id": "REPO-PC-011",
