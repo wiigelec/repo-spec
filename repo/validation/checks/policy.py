@@ -50,6 +50,35 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
     wrong=sorted(n for n,p in tests.items() if not p.is_dir())
     expect(not wrong, f"{label} validation layout failed: non-directory tests entries: {', '.join(wrong)}")
 
+def _check_exact_directory_envelope(
+    root: Path,
+    expected_directories: set[str],
+    *,
+    label: str,
+) -> None:
+    expect(root.is_dir(), f"{label} failed: missing directory")
+    actual = {path.name: path for path in root.iterdir()}
+    missing = sorted(expected_directories - set(actual))
+    extra = sorted(set(actual) - expected_directories)
+    expect(not missing, f"{label} failed: missing entries: {', '.join(missing)}")
+    expect(not extra, f"{label} failed: unexpected entries: {', '.join(extra)}")
+    wrong = sorted(name for name, path in actual.items() if not path.is_dir())
+    expect(not wrong, f"{label} failed: non-directory entries: {', '.join(wrong)}")
+
+
+def check_repository_structural_envelopes(context: ValidationContext) -> None:
+    repo_root = context.repo_root
+    _check_exact_directory_envelope(
+        repo_root / "repo",
+        {"derived", "docs", "profiles", "schemas", "scripts", "specs", "src", "validation"},
+        label="repository ownership envelope",
+    )
+    _check_exact_directory_envelope(repo_root / "repo/specs", {"repo"}, label="repository specifications envelope")
+    _check_exact_directory_envelope(repo_root / "repo/schemas", {"repo"}, label="repository schemas envelope")
+    _check_exact_directory_envelope(repo_root / "repo/derived", {"specs"}, label="repository derived envelope")
+    _check_exact_directory_envelope(repo_root / "repo/derived/specs", {"repo"}, label="repository derived specifications envelope")
+
+
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "repo/validation", require_github=True, label="repo")
 

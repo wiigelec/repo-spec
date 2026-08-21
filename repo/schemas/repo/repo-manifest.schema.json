@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "repo/schemas/repo-manifest.schema.json",
+  "$id": "repo/schemas/repo/repo-manifest.schema.json",
   "title": "Repository Spec Manifest Schema",
   "type": "object",
   "additionalProperties": false,

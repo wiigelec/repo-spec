@@ -48,8 +48,7 @@ B0/I1-I5 authority sets in canonical metadata without reassigning accepted autho
     "product/docs/decompositions/initializer-decomposition/01-invocation-and-authority.md",
     "product/docs/decompositions/initializer-decomposition/02-framework-and-product-foundations.md",
     "product/docs/decompositions/initializer-decomposition/03-platform-and-execution.md",
-    "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md",
-    "product/evidence/i5/full-initialization-exit.json"
+    "product/docs/decompositions/initializer-decomposition/04-generation-validation-and-handoff.md"
   ],
   "applicable_accepted_specifications": [
     "product.content-equivalence",

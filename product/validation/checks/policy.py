@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from pathlib import Path
 
 from typing import Any
@@ -44,6 +46,48 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
     expect(not extra, f"{label} validation layout failed: unexpected tests entries: {', '.join(extra)}")
     wrong=sorted(n for n,p in tests.items() if not p.is_dir())
     expect(not wrong, f"{label} validation layout failed: non-directory tests entries: {', '.join(wrong)}")
+
+def _check_exact_directory_envelope(
+    root: Path,
+    expected_directories: set[str],
+    *,
+    label: str,
+) -> None:
+    expect(root.is_dir(), f"{label} failed: missing directory")
+    actual = {path.name: path for path in root.iterdir()}
+    missing = sorted(expected_directories - set(actual))
+    extra = sorted(set(actual) - expected_directories)
+    expect(not missing, f"{label} failed: missing entries: {', '.join(missing)}")
+    expect(not extra, f"{label} failed: unexpected entries: {', '.join(extra)}")
+    wrong = sorted(name for name, path in actual.items() if not path.is_dir())
+    expect(not wrong, f"{label} failed: non-directory entries: {', '.join(wrong)}")
+
+
+def check_product_structural_envelopes(context: ValidationContext) -> None:
+    repo_root = context.repo_root
+    _check_exact_directory_envelope(
+        repo_root / "product",
+        {"derived", "docs", "schemas", "scripts", "specs", "src", "validation"},
+        label="product ownership envelope",
+    )
+    _check_exact_directory_envelope(repo_root / "product/specs", {"product"}, label="product specifications envelope")
+    _check_exact_directory_envelope(repo_root / "product/schemas", {"product"}, label="product schemas envelope")
+    _check_exact_directory_envelope(repo_root / "product/derived", {"specs"}, label="product derived envelope")
+    _check_exact_directory_envelope(repo_root / "product/derived/specs", {"product"}, label="product derived specifications envelope")
+
+
+def check_product_source_layout(context: ValidationContext) -> None:
+    repo_root = context.repo_root
+    scripts_root = repo_root / "product/scripts"
+    source_root = repo_root / "product/src"
+    expect(source_root.is_dir(), "product source layout failed: missing product/src")
+    expect(scripts_root.is_dir(), "product source layout failed: missing product/scripts")
+    expect(not (source_root / "validation").exists(), "product source layout failed: validation must remain under product/validation")
+    for path in sorted(scripts_root.iterdir(), key=lambda item: item.name):
+        expect(path.is_file(), f"product source layout failed: product/scripts contains non-entry-point path {path.name}")
+        expect(path.suffix != ".py", f"product source layout failed: product/scripts contains Python implementation module {path.name}")
+        expect(os.access(path, os.X_OK), f"product source layout failed: product/scripts entry point is not executable: {path.name}")
+
 
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "product/validation", require_github=False, label="product")

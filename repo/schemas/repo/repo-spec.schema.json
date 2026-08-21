@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "repo/schemas/repo-spec.schema.json",
+  "$id": "repo/schemas/repo/repo-spec.schema.json",
   "title": "Repository Spec Schema",
   "type": "object",
   "additionalProperties": false,

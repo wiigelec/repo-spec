@@ -19,7 +19,7 @@ class FunctionalSetTransportTests(unittest.TestCase):
             "repo/specs/repo/functional-set-process.json",
             "repo/specs/repo/product-decomposition.json",
             "repo/specs/repo/validation.json",
-            "repo/schemas/repo-artifact-taxonomy.schema.json",
+            "repo/schemas/repo/repo-artifact-taxonomy.schema.json",
             "repo/schemas/repo/development-document-base.schema.json",
             "repo/schemas/repo/functional-set-process.schema.json",
             "repo/derived/specs/repo/artifact-taxonomy.md",

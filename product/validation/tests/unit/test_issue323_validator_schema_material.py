@@ -18,10 +18,10 @@ EXISTING = {
 }
 
 NEW = {
-    "repo/schemas/repo-manifest.schema.json",
-    "repo/schemas/repo-artifact-taxonomy.schema.json",
-    "repo/schemas/repo-platform-profiles.schema.json",
-    "repo/schemas/repo-spec.schema.json",
+    "repo/schemas/repo/repo-manifest.schema.json",
+    "repo/schemas/repo/repo-artifact-taxonomy.schema.json",
+    "repo/schemas/repo/repo-platform-profiles.schema.json",
+    "repo/schemas/repo/repo-spec.schema.json",
     "product/schemas/product/product-manifest.schema.json",
     "product/schemas/product/product-spec-base.schema.json",
     "product/schemas/product/product-level-0.schema.json",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "repo/schemas/repo-platform-profiles.schema.json",
+  "$id": "repo/schemas/repo/repo-platform-profiles.schema.json",
   "title": "Platform Profiles Schema",
   "type": "object",
   "additionalProperties": false,

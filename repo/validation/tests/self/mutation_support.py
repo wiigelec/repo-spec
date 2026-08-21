@@ -36,10 +36,10 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
 
     required_paths = [
         "repo/specs/repo/manifest.json",
-        "repo/schemas/repo-manifest.schema.json",
-        "repo/schemas/repo-artifact-taxonomy.schema.json",
-        "repo/schemas/repo-platform-profiles.schema.json",
-        "repo/schemas/repo-spec.schema.json",
+        "repo/schemas/repo/repo-manifest.schema.json",
+        "repo/schemas/repo/repo-artifact-taxonomy.schema.json",
+        "repo/schemas/repo/repo-platform-profiles.schema.json",
+        "repo/schemas/repo/repo-spec.schema.json",
         "repo/schemas/repo/development-document-base.schema.json",
         "repo/schemas/repo/functional-set-process.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
