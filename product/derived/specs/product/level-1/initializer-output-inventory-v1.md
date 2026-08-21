@@ -514,28 +514,28 @@ Complete closed inventory of repository-framework paths produced by local bootst
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/schemas/repo-manifest.schema.json`
+- Destination Path: `repo/schemas/repo/repo-manifest.schema.json`
 - Material Key: `validator-schema-repo-manifest`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/schemas/repo-artifact-taxonomy.schema.json`
+- Destination Path: `repo/schemas/repo/repo-artifact-taxonomy.schema.json`
 - Material Key: `validator-schema-repo-artifact-taxonomy`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/schemas/repo-platform-profiles.schema.json`
+- Destination Path: `repo/schemas/repo/repo-platform-profiles.schema.json`
 - Material Key: `validator-schema-repo-platform-profiles`
 - Mode: `100644`
 - Operation: `copy-verbatim`
 - Producer: `framework-installation`
 - Required: `True`
 - Role: `validation-utility`
-- Destination Path: `repo/schemas/repo-spec.schema.json`
+- Destination Path: `repo/schemas/repo/repo-spec.schema.json`
 - Material Key: `validator-schema-repo-spec`
 - Mode: `100644`
 - Operation: `copy-verbatim`

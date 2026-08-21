@@ -393,7 +393,7 @@ def run_schema_mutations(repo_root: Path) -> None:
     mutated_schema["properties"]["title"]["maxLength"] = 1
     expect_failure(
         "unsupported keyword detection",
-        lambda: ensure_schema_keywords(mutated_schema, "repo/schemas/repo-spec.schema.json"),
+        lambda: ensure_schema_keywords(mutated_schema, "repo/schemas/repo/repo-spec.schema.json"),
         "unsupported schema keyword",
     )
 

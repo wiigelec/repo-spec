@@ -387,7 +387,7 @@
     },
     {
       "material_key": "validator-schema-repo-manifest",
-      "source_path": "repo/schemas/repo-manifest.schema.json",
+      "source_path": "repo/schemas/repo/repo-manifest.schema.json",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -395,7 +395,7 @@
     },
     {
       "material_key": "validator-schema-repo-artifact-taxonomy",
-      "source_path": "repo/schemas/repo-artifact-taxonomy.schema.json",
+      "source_path": "repo/schemas/repo/repo-artifact-taxonomy.schema.json",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -403,7 +403,7 @@
     },
     {
       "material_key": "validator-schema-repo-platform-profiles",
-      "source_path": "repo/schemas/repo-platform-profiles.schema.json",
+      "source_path": "repo/schemas/repo/repo-platform-profiles.schema.json",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",
@@ -411,7 +411,7 @@
     },
     {
       "material_key": "validator-schema-repo-spec",
-      "source_path": "repo/schemas/repo-spec.schema.json",
+      "source_path": "repo/schemas/repo/repo-spec.schema.json",
       "role": "validation-utility",
       "operation": "copy-verbatim",
       "source_type": "blob",

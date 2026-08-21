@@ -21,6 +21,7 @@ from ..self.mutation_support import add_lifecycle_spec, create_repo_fixture, exp
 def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
     labels = [label for label, _check in REPOSITORY_LEAF_VALIDATION_PHASES]
     expected_labels = [
+        "repository structural envelopes",
         "repository validation layout",
         "repository source layout",
         "repository JSON Schema conformance",

@@ -445,7 +445,7 @@
     },
     {
       "material_key": "validator-schema-repo-manifest",
-      "destination_path": "repo/schemas/repo-manifest.schema.json",
+      "destination_path": "repo/schemas/repo/repo-manifest.schema.json",
       "operation": "copy-verbatim",
       "mode": "100644",
       "producer": "framework-installation",
@@ -454,7 +454,7 @@
     },
     {
       "material_key": "validator-schema-repo-artifact-taxonomy",
-      "destination_path": "repo/schemas/repo-artifact-taxonomy.schema.json",
+      "destination_path": "repo/schemas/repo/repo-artifact-taxonomy.schema.json",
       "operation": "copy-verbatim",
       "mode": "100644",
       "producer": "framework-installation",
@@ -463,7 +463,7 @@
     },
     {
       "material_key": "validator-schema-repo-platform-profiles",
-      "destination_path": "repo/schemas/repo-platform-profiles.schema.json",
+      "destination_path": "repo/schemas/repo/repo-platform-profiles.schema.json",
       "operation": "copy-verbatim",
       "mode": "100644",
       "producer": "framework-installation",
@@ -472,7 +472,7 @@
     },
     {
       "material_key": "validator-schema-repo-spec",
-      "destination_path": "repo/schemas/repo-spec.schema.json",
+      "destination_path": "repo/schemas/repo/repo-spec.schema.json",
       "operation": "copy-verbatim",
       "mode": "100644",
       "producer": "framework-installation",
