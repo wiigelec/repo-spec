@@ -137,7 +137,7 @@
     },
     {
       "id": "REPO-PP-002",
-      "text": "GitHub shall be the first supported hosting-platform profile. The current repository state shall use populated reusable GitHub profile source under `repo/profiles/github/` as the source for managed installed adapters under `.github/`, while GitHub bootstrap scripts remain implementation infrastructure subordinate to accepted repository specifications."
+      "text": "GitHub shall be the first and currently supported hosting-platform profile. GitHub bootstrap scripts shall remain implementation infrastructure subordinate to accepted repository specifications; the profile's normative structured data defines its source and installed-adapter roots."
     },
     {
       "id": "REPO-PP-004",

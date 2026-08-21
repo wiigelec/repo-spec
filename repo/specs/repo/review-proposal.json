@@ -69,7 +69,7 @@
     },
     {
       "id": "REPO-RP-002",
-      "text": "The canonical review-proposal contract shall include structured field definitions for the reviewer-facing fields governing issue, summary, validation, review focus, and scope notes, while allowing evidence that is already captured by GitHub metadata, automated checks, the governing issue, or linked validation records to remain outside the visible PR body."
+      "text": "The canonical `review_fields` collection in this specification is normative structured contract data under repo.authority-model. Evidence already captured by GitHub metadata, automated checks, the governing issue, or linked validation records may remain outside the visible PR body."
     },
     {
       "id": "REPO-RP-003",

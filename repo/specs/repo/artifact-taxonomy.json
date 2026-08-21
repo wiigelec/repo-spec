@@ -361,10 +361,6 @@
       "text": "An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance."
     },
     {
-      "id": "REPO-AT-005",
-      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized."
-    },
-    {
       "id": "REPO-AT-006",
       "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority."
     },
@@ -448,6 +444,14 @@
         "REPO-AT-003"
       ],
       "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-FSP-005, REPO-AT-003; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
+    },
+    {
+      "id": "REPO-AT-005",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-014."
     }
   ]
 }

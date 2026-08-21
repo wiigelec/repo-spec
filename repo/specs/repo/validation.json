@@ -15,7 +15,7 @@
     },
     {
       "id": "REPO-VAL-003",
-      "text": "Core repository validation shall mechanically enforce the accepted manifest, repository-structure, authority, taxonomy, and product-specification structural contracts delegated to it without restating their source semantics as independent rules.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-VAL-004: Each leaf validation entry point shall enforce manifest completeness for manifests and authoritative content within its owned validation domain.\n- REPO-VAL-005: Each leaf validation entry point shall enforce unique specification IDs within its owned validation domain.\n- REPO-VAL-006: Each leaf validation entry point shall enforce resolvable references within its owned validation domain according to lifecycle semantics: normative specification references shall target accepted specifications only, historical specification references shall target superseded or retired specifications only, and artifact references shall resolve within the repository.\n- REPO-VAL-007: The product leaf validation entry point shall enforce allowed product dependency directions, product completeness rules, acyclic dependencies, and shall allow candidate product specifications to depend on candidate or accepted product specifications while allowing accepted product specifications to depend only on accepted product specifications."
+      "text": "Core repository validation shall mechanically enforce the accepted manifest, repository-structure, authority, taxonomy, reference-resolution, and product-specification structural contracts delegated to it without restating their source semantics as independent rules."
     },
     {
       "id": "REPO-VAL-008",
@@ -35,11 +35,11 @@
     },
     {
       "id": "REPO-VAL-013",
-      "text": "The leaf validation entry points shall enforce separation between repository-specification and product-specification roots within their owned trees and shall reject undeclared specification JSON content under an owned specification root when that root is governed by a manifest.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-VAL-014: The repository leaf validation entry point shall reject product specifications placed under `repo/specs/repo/`, and the product leaf validation entry point shall reject repository specifications placed under `product/specs/product/`, where those placements are detectable from repository-local JSON files."
+      "text": "Repository and product leaf validation shall mechanically enforce the specification-root separation and registry/default-deny boundaries defined by the controlling repository-structure and manifest contracts."
     },
     {
       "id": "REPO-VAL-015",
-      "text": "Platform validation shall enforce the active platform profile's declared source, adapter, inventory, and remote-state contracts; the platform profile remains the source of those semantics.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-VAL-016: The repository leaf validation entry point shall enforce that declared hosting mutation records include the governing issue, accepted revision, target repository, target remote configuration identifier, previous state, inspection evidence, intended state, execution evidence, rollback procedure, and post-change verification fields.\n- REPO-VAL-018: The repository leaf validation entry point shall enforce the GitHub remote-state deployment contract, including desired-state formats for rulesets and branch protection, inspection procedure, plan/apply separation, mutation evidence record fields, and rollback and post-change verification declarations."
+      "text": "Platform validation shall mechanically enforce the active platform profile's declared source, adapter, inventory, desired-state, mutation-evidence, and remote-state contracts; repo.platform-profiles remains the source of those semantics."
     },
     {
       "id": "REPO-VAL-017",
@@ -47,11 +47,11 @@
     },
     {
       "id": "REPO-VAL-019",
-      "text": "Development-document validation shall enforce objective repository structure, document-base, lifecycle, lineage, and type-specific constraints delegated by the controlling development-document specifications without redefining them.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-VAL-020: Each leaf validation entry point shall enforce the machine-readable metadata envelope and required section structure for governed overview-process, decomposition, and planning artifacts within its owned tree.\n- REPO-VAL-021: Each leaf validation entry point shall classify every non-README top-level Markdown file in governed development-document roots within its owned tree and shall require every such file to conform to the applicable development-document contract. Compatibility, exemption, grandfathering, or registry entries shall not satisfy development-document conformance.\n- REPO-VAL-022: Each leaf validation entry point shall enforce type-specific content-area inventories for governed overview whiteboards, overview analyses, functional sets, decompositions, and planning artifacts within its owned tree so the declared chunk coverage matches the artifact contract.\n- REPO-VAL-023: Each leaf validation entry point shall build the cross-document registry required for governed development documents within its owned tree and shall enforce controlling-document resolution, predecessor-document existence, evidence-path existence, allowed artifact-type transitions, same-product correspondence where applicable, lifecycle-state eligibility, no predecessor cycles, analysis traceability to whiteboard evidence, functional-set traceability to analysis, and approved functional-set eligibility when a functional set governs decomposition.\n- REPO-VAL-024: The repository and product leaf validation entry points shall each enforce reciprocal and acyclic supersession relationships for specifications within their owned validation domains that declare supersedes or superseded_by relations.\n- REPO-VAL-025: Each applicable leaf validation entry point shall treat artifact_id as stable semantic identity, document_slug as the chunk-directory slug, and filename_stem as the top-level filename stem, and shall not require those fields to be identical.\n- REPO-VAL-026: Each applicable leaf validation entry point shall enforce both line-count and byte-count ceilings for governed development-document chunks within its owned tree so chunk manageability remains deterministic without relying on token counts.\n- REPO-VAL-034: The applicable leaf validation entry point shall enforce that a product decomposition identifies expected Level 0-3 specification families, responsibility boundaries, and intended dependency directions, and shall reject a decomposition that lacks this identification when the decomposition declares readiness for specification work.\n- REPO-VAL-040: The applicable leaf validation entry point shall reject a functional-set artifact whose lifecycle status is neither candidate nor approved, shall reject an overview-whiteboard artifact that claims approval, shall require overview analysis to trace to whiteboard evidence, shall require a functional set to trace to analysis, and shall reject candidate functional sets as decomposition authority.\n- REPO-VAL-046: Each leaf validation entry point shall perform an executive documentation-namespace check for the owned `repo/docs/` or `product/docs/` tree before deeper per-document validation. The check shall enforce the exact owner-appropriate direct child roots, reject every undeclared direct file or directory, enforce the closed direct-entry model of each canonical development-document root, require every subordinate chunk directory to be owned by exactly one valid controlling document, and reject every undeclared file, nested directory, orphan directory, or other content within a chunk directory."
+      "text": "Development-document validation shall mechanically enforce objective repository-structure, document-base, lifecycle, lineage, type-specific content, traceability, chunk-boundary, and namespace constraints delegated by the controlling development-document specifications without redefining those semantics."
     },
     {
       "id": "REPO-VAL-027",
-      "text": "Implementation-plan validation shall mechanically enforce objective plan structure, authority references, dependency closure, and acceptance preconditions delegated by repo.implementation-plan and its controlling product authority.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-VAL-028: The applicable leaf validation entry point shall reject an implementation plan that references a product specification that is absent from the product manifest or whose lifecycle status has not reached the minimum required state.\n- REPO-VAL-029: The applicable leaf validation entry point shall reject an implementation plan that references only placeholder specification roots or scaffolding instead of substantive accepted product specifications for any planned workstream that would produce maintained product artifacts.\n- REPO-VAL-030: The applicable leaf validation entry point shall reject an implementation plan that references candidate product specifications where accepted specifications are required by the governing scope.\n- REPO-VAL-031: The applicable leaf validation entry point shall reject an implementation plan that references product specifications with invalid upward or circular dependency chains as defined by repo.product-levels.\n- REPO-VAL-032: The applicable leaf validation entry point shall reject an implementation plan that references mutually contradictory product specifications where the contradiction is machine-detectable (e.g., overlapping normative requirement identifiers, incompatible Level-participation requirements).\n- REPO-VAL-033: The applicable leaf validation entry point shall reject an implementation plan that claims specification-complete scope for any workstream whose referenced product specifications are missing required correspondence or dependency declarations."
+      "text": "Implementation-plan validation shall mechanically enforce objective plan structure, controlling-authority references, dependency closure, and acceptance preconditions delegated by repo.implementation-plan and the applicable product authority without independently defining plan validity."
     },
     {
       "id": "REPO-VAL-036",
@@ -147,19 +147,21 @@
     },
     {
       "id": "REPO-VAL-004",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-003"
+        "REPO-MAN-001",
+        "REPO-PM-014"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-MAN-001, REPO-PM-014; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-005",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-003"
+        "REPO-MAN-002",
+        "REPO-PM-009"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-MAN-002, REPO-PM-009; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-006",
@@ -171,11 +173,14 @@
     },
     {
       "id": "REPO-VAL-007",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-003"
+        "REPO-PL-006",
+        "REPO-PL-007",
+        "REPO-PL-008",
+        "REPO-PL-009"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PL-006, REPO-PL-007, REPO-PL-008, REPO-PL-009; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-037",
@@ -196,59 +201,71 @@
     },
     {
       "id": "REPO-VAL-014",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-013"
+        "REPO-STR-002"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-013; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-STR-002; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-016",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-015"
+        "REPO-PP-006"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-015; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PP-006; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-018",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-015"
+        "REPO-PP-013",
+        "REPO-PP-014",
+        "REPO-PP-016"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-015; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PP-013, REPO-PP-014, REPO-PP-016; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-020",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-DDB-004",
+        "REPO-FSP-001",
+        "REPO-PDC-002",
+        "REPO-IPL-002"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-004, REPO-FSP-001, REPO-PDC-002, REPO-IPL-002; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-021",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-DDB-011",
+        "REPO-DDB-012"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-011, REPO-DDB-012; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-022",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-FSP-002",
+        "REPO-FSP-003",
+        "REPO-FSP-004",
+        "REPO-PDC-002",
+        "REPO-IPL-002"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-FSP-002, REPO-FSP-003, REPO-FSP-004, REPO-PDC-002, REPO-IPL-002; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-023",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-DDB-004",
+        "REPO-FSP-006",
+        "REPO-WF-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-004, REPO-FSP-006, REPO-WF-007; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-024",
@@ -268,83 +285,90 @@
     },
     {
       "id": "REPO-VAL-026",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-DDB-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-DDB-008; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-034",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-PDC-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-PDC-007; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-040",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-FSP-002",
+        "REPO-FSP-003",
+        "REPO-FSP-005",
+        "REPO-FSP-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-FSP-002, REPO-FSP-003, REPO-FSP-005, REPO-FSP-007; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-046",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-019"
+        "REPO-STR-015",
+        "REPO-DDB-011",
+        "REPO-DDB-012"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-019; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-STR-015, REPO-DDB-011, REPO-DDB-012; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-028",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-027"
+        "REPO-IPL-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-029",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-027"
+        "REPO-IPL-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-030",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-027"
+        "REPO-IPL-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-031",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-027"
+        "REPO-IPL-008",
+        "REPO-PL-006",
+        "REPO-PL-007"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008, REPO-PL-006, REPO-PL-007; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-032",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-027"
+        "REPO-IPL-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-033",
-      "disposition": "merged",
+      "disposition": "moved",
       "surviving_requirements": [
-        "REPO-VAL-027"
+        "REPO-IPL-008"
       ],
-      "rationale": "Normalized into canonical owner REPO-VAL-027; predecessor semantics were folded into the surviving requirement before withdrawal."
+      "rationale": "Final proposal-normalization pass: the mechanically enforced predecessor semantics are controlled by REPO-IPL-008; repo.validation retains only delegated enforcement responsibility."
     },
     {
       "id": "REPO-VAL-038",

@@ -52,14 +52,6 @@
     {
       "id": "REPO-PL-012",
       "text": "Structural completeness shall be machine-checkable from the declared Level, path correspondence, dependency targets, and lifecycle agreement, while semantic completeness remains review-owned."
-    },
-    {
-      "id": "REPO-PL-026",
-      "text": "Published product-level requirement identifiers shall remain stable and shall never be reused after a requirement is withdrawn or superseded."
-    },
-    {
-      "id": "REPO-PL-027",
-      "text": "Withdrawn published product requirement identifiers shall be reserved in machine-readable withdrawn-ID metadata and shall never be reassigned to different semantics; the generic stability rule is owned by repo.authority-model."
     }
   ],
   "dependencies": [
@@ -188,6 +180,22 @@
         "REPO-PL-011"
       ],
       "rationale": "Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-PL-026",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-013"
+      ],
+      "rationale": "Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-013."
+    },
+    {
+      "id": "REPO-PL-027",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-013"
+      ],
+      "rationale": "Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-013."
     }
   ]
 }

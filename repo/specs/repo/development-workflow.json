@@ -35,7 +35,7 @@
     },
     {
       "id": "REPO-WF-010",
-      "text": "Before implementation is accepted, every applicable implementation plan shall satisfy the controlling plan contract and remain consistent with the accepted authority it claims to realize; repo.implementation-plan owns plan-invalidity semantics."
+      "text": "Before an implementation plan is accepted, every applicable controlling specification shall satisfy the plan contract required by repo.implementation-plan and remain consistent with the accepted authority the plan claims to realize; repo.implementation-plan owns detailed plan-invalidity semantics."
     },
     {
       "id": "REPO-WF-011",

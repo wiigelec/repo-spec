@@ -215,7 +215,7 @@
     },
     {
       "id": "REPO-GI-002",
-      "text": "The canonical governing-issue field collection in this specification is normative structured contract data under repo.authority-model. Requiredness, validation kind, and field meaning shall be taken directly from those field definitions.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-GI-003: The canonical governing-issue contract shall distinguish required fields from optional fields."
+      "text": "The canonical governing-issue field collection in this specification is normative structured contract data under repo.authority-model. Requiredness, validation kind, and field meaning shall be taken directly from those field definitions."
     },
     {
       "id": "REPO-GI-004",

@@ -19,7 +19,7 @@
     },
     {
       "id": "REPO-STR-006",
-      "text": "The repository shall use `repo/profiles/github/` as the populated reusable GitHub profile source location, `.github/` as the installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications. `repo/profiles/` and installed adapter namespaces shall be explicitly profile-governed extension points: profile source, managed adapter paths, and profile-specific bootstrap infrastructure shall be permitted only through the applicable accepted platform-profile contract or its accepted profile-owned declaration mechanism."
+      "text": "The repository shall structurally authorize `repo/profiles/` as the reusable platform-profile source namespace and installed hosting-adapter namespaces such as `.github/` as profile-governed extension points. Profile source, managed adapter paths, and profile-specific bootstrap infrastructure shall be permitted only through the applicable accepted platform-profile contract or its accepted profile-owned declaration mechanism."
     },
     {
       "id": "REPO-STR-008",
