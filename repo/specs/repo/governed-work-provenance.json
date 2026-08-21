@@ -6,20 +6,12 @@
   "schema_version": "1",
   "normative_requirements": [
     {
-      "id": "IRG-PROV-001",
-      "text": "`governed-work` shall represent governance state rather than routing classification."
-    },
-    {
       "id": "IRG-PROV-002",
-      "text": "When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring."
+      "text": "When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring.\n\nSemantic preservation from normalized predecessor requirements:\n- IRG-PROV-001: `governed-work` shall represent governance state rather than routing classification.\n- IRG-PROV-004: Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion."
     },
     {
       "id": "IRG-PROV-003",
       "text": "The routing-classification labels associated with the intake item before promotion shall be preserved in the same or another traceable issue comment before body replacement or restructuring during promotion."
-    },
-    {
-      "id": "IRG-PROV-004",
-      "text": "Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion."
     },
     {
       "id": "IRG-PROV-005",
@@ -57,6 +49,24 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/governed-work-provenance.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "IRG-PROV-001",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "IRG-PROV-002"
+      ],
+      "rationale": "Normalized into canonical owner IRG-PROV-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "IRG-PROV-004",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "IRG-PROV-002"
+      ],
+      "rationale": "Normalized into canonical owner IRG-PROV-002; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

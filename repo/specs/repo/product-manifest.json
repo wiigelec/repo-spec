@@ -11,7 +11,7 @@
     },
     {
       "id": "REPO-PM-002",
-      "text": "The product manifest shall be authoritative for the governed product-specification registry under `product/specs/product/` and shall not claim repository-workflow authority. Declaration-driven product-derived projections are owned and declared by their source product specifications and shall reside under `product/derived/specs/product/` as defined by this contract and `repo.product-spec-base`."
+      "text": "The product manifest is the authoritative registry of governed product specifications. Projection mechanics and common specification-envelope semantics are owned by repo.product-spec-base.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PM-007: A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`.\n- REPO-PM-010: Each registered product specification shall reside under exactly one reserved Level root: `product/specs/product/level-0/`, `product/specs/product/level-1/`, `product/specs/product/level-2/`, or `product/specs/product/level-3/`.\n- REPO-PM-011: Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value.\n- REPO-PM-012: Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries.\n- REPO-PM-013: Declared derived product projections shall be registered by the product specification itself in its `derived_artifacts` collection, shall use repository-relative Markdown paths under `product/derived/specs/product/`, and shall remain subordinate to the authoritative product specification.\n- REPO-PM-015: Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest."
     },
     {
       "id": "REPO-PM-003",
@@ -30,10 +30,6 @@
       "text": "The registry field shall be `product_specifications`, and every registry entry shall include the product specification identity, repository-relative path, lifecycle status, and Level."
     },
     {
-      "id": "REPO-PM-007",
-      "text": "A registered product specification shall use one of the lifecycle statuses `candidate`, `accepted`, `superseded`, or `retired`."
-    },
-    {
       "id": "REPO-PM-008",
       "text": "The product manifest shall register the complete governed product-specification set, not only accepted specifications; candidate specifications shall appear when governed, and historical specifications shall remain registered while retained."
     },
@@ -42,28 +38,8 @@
       "text": "Each registered product specification shall have a unique identity and a unique path within the manifest."
     },
     {
-      "id": "REPO-PM-010",
-      "text": "Each registered product specification shall reside under exactly one reserved Level root: `product/specs/product/level-0/`, `product/specs/product/level-1/`, `product/specs/product/level-2/`, or `product/specs/product/level-3/`."
-    },
-    {
-      "id": "REPO-PM-011",
-      "text": "Each registry entry shall record Level metadata as one of `0`, `1`, `2`, or `3`, and the corresponding product specification shall record the same Level value."
-    },
-    {
-      "id": "REPO-PM-012",
-      "text": "Level registration is metadata in this contract; `repo.product-levels` defines Level responsibilities, dependency directions, same-Level behavior, cycle rules, lifecycle requirements, and extension boundaries."
-    },
-    {
-      "id": "REPO-PM-013",
-      "text": "Declared derived product projections shall be registered by the product specification itself in its `derived_artifacts` collection, shall use repository-relative Markdown paths under `product/derived/specs/product/`, and shall remain subordinate to the authoritative product specification."
-    },
-    {
       "id": "REPO-PM-014",
       "text": "The product manifest shall be complete when it enumerates every governed product specification currently present under the reserved product-specification roots, excluding the manifest file itself."
-    },
-    {
-      "id": "REPO-PM-015",
-      "text": "Product workflow authority, including governing issues, branch selection, review, acceptance, merge, release, and repository-generic change control, shall remain outside the product manifest."
     }
   ],
   "dependencies": [
@@ -106,6 +82,56 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/product-manifest.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-PM-007",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-PM-010",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-PM-011",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-PM-012",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-PM-013",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-PM-015",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PM-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PM-002; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

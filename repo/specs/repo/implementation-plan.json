@@ -6,20 +6,12 @@
   "schema_version": "1",
   "normative_requirements": [
     {
-      "id": "REPO-IPL-001",
-      "text": "An implementation plan shall be stored under the owner-specific plan root defined by `repo.development-document-base`: repository/framework-owned plans under `repo/docs/plans/` and product-owned plans under `product/docs/plans/`. It shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks."
-    },
-    {
       "id": "REPO-IPL-002",
-      "text": "An implementation plan shall record the controlling overview and decomposition, controlling documents, predecessor documents, evidence, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work, with semantic coverage separated from subordinate chunk layout. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree."
+      "text": "An implementation plan shall record the controlling overview and decomposition, controlling documents, predecessor documents, evidence, applicable accepted specifications, accepted base or planning basis, scope and exclusions, workstreams or stages, dependency and execution order, entry conditions, exit conditions, transition gates, validation strategy, risks and unresolved planning decisions, completion conditions, and successor implementation or specification work, with semantic coverage separated from subordinate chunk layout. The subordinate chunk inventory shall declare the semantic areas each chunk covers so the top-level area map and chunk-level declaration agree.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-IPL-001: An implementation plan shall be stored under the owner-specific plan root defined by `repo.development-document-base`: repository/framework-owned plans under `repo/docs/plans/` and product-owned plans under `product/docs/plans/`. It shall use the canonical top-level `*-IMPLEMENTATION-PLAN.md` controlling document plus subordinate chunks.\n- REPO-IPL-004: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the plan composite document."
     },
     {
       "id": "REPO-IPL-003",
-      "text": "An implementation plan has planning authority but is non-normative with respect to repository and product semantics, and it shall not redefine accepted overview direction or accepted specifications."
-    },
-    {
-      "id": "REPO-IPL-004",
-      "text": "The top-level controlling document shall act as the index, status declaration, and navigation entry point for the plan composite document."
+      "text": "An implementation plan has planning authority but is non-normative with respect to repository and product semantics, and it shall not redefine accepted overview direction or accepted specifications.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-IPL-010: An implementation plan shall not supply missing normative semantics. Plans may sequence and coordinate work but shall not define repository-generic behavior that belongs in accepted repository specifications or product-specific behavior that belongs in accepted product specifications."
     },
     {
       "id": "REPO-IPL-005",
@@ -35,19 +27,11 @@
     },
     {
       "id": "REPO-IPL-008",
-      "text": "An implementation plan shall not be accepted when its required controlling specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the applicable authoritative manifest, or missing correspondence or dependency declarations required by the governing specification contracts."
+      "text": "An implementation plan shall not be accepted when its required controlling specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the applicable authoritative manifest, or missing correspondence or dependency declarations required by the governing specification contracts.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-IPL-011: A material specification change affecting specifications that an implementation plan relies upon shall invalidate the corresponding plan sections. The plan must be revised or the affected sections explicitly reaffirmed before implementation under the changed authority may proceed."
     },
     {
       "id": "REPO-IPL-009",
       "text": "An implementation plan may include separately identified future specification work as a planned activity, but that portion shall not authorize maintained-artifact synthesis before the applicable specifications are accepted and the plan is correspondingly updated or revalidated."
-    },
-    {
-      "id": "REPO-IPL-010",
-      "text": "An implementation plan shall not supply missing normative semantics. Plans may sequence and coordinate work but shall not define repository-generic behavior that belongs in accepted repository specifications or product-specific behavior that belongs in accepted product specifications."
-    },
-    {
-      "id": "REPO-IPL-011",
-      "text": "A material specification change affecting specifications that an implementation plan relies upon shall invalidate the corresponding plan sections. The plan must be revised or the affected sections explicitly reaffirmed before implementation under the changed authority may proceed."
     }
   ],
   "dependencies": [
@@ -93,6 +77,40 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/implementation-plan.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-IPL-001",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-IPL-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-IPL-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-IPL-004",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-IPL-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-IPL-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-IPL-010",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-IPL-003"
+      ],
+      "rationale": "Normalized into canonical owner REPO-IPL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-IPL-011",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-IPL-008"
+      ],
+      "rationale": "Normalized into canonical owner REPO-IPL-008; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

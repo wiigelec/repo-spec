@@ -15,7 +15,7 @@
     },
     {
       "id": "REPO-DDB-003",
-      "text": "Each governed development document shall have a top-level controlling Markdown file directly under its root and a subordinate chunk directory with the same lower-case slug as the top-level file stem."
+      "text": "Each governed development document shall have a top-level controlling Markdown file directly under its root and a subordinate chunk directory with the same lower-case slug as the top-level file stem.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-DDB-006: A governed development document shall be invalid if its top-level file, chunk directory, or chunk inventory does not match the declared metadata.\n- REPO-DDB-009: Mechanically enforceable validation shall cover root containment, top-level filename pattern, subordinate directory naming, declared chunk inventory, chunk ordering, duplicate detection, missing or undeclared chunks, and declared chunk-size limits."
     },
     {
       "id": "REPO-DDB-004",
@@ -26,24 +26,12 @@
       "text": "The top-level controlling document shall be the discoverable entry point and index for the composite document, while subordinate chunks shall carry the substantive bounded content for each coherent concern."
     },
     {
-      "id": "REPO-DDB-006",
-      "text": "A governed development document shall be invalid if its top-level file, chunk directory, or chunk inventory does not match the declared metadata."
-    },
-    {
       "id": "REPO-DDB-007",
       "text": "Chunk numbering shall be contiguous, ordered, and unique within a composite document, and each chunk shall remain within the declared chunk directory."
     },
     {
       "id": "REPO-DDB-008",
-      "text": "A governed development chunk shall cover one coherent concern, avoid unrelated lifecycle stages or authority domains, and remain small enough for direct human and AI inspection."
-    },
-    {
-      "id": "REPO-DDB-009",
-      "text": "Mechanically enforceable validation shall cover root containment, top-level filename pattern, subordinate directory naming, declared chunk inventory, chunk ordering, duplicate detection, missing or undeclared chunks, and declared chunk-size limits."
-    },
-    {
-      "id": "REPO-DDB-010",
-      "text": "Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven."
+      "text": "Development-document chunks shall remain small enough for coherent review while preserving semantic integrity. Judgment about semantic partitioning belongs to review under controlling document-type contracts; mechanical validation may enforce only objective structural boundaries delegated by those contracts.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-DDB-010: Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven."
     },
     {
       "id": "REPO-DDB-011",
@@ -90,6 +78,32 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/development-document-base.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-DDB-010",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-DDB-008"
+      ],
+      "rationale": "Normalized into canonical owner REPO-DDB-008; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-DDB-006",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-DDB-003"
+      ],
+      "rationale": "Normalized into canonical owner REPO-DDB-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-DDB-009",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-DDB-003"
+      ],
+      "rationale": "Normalized into canonical owner REPO-DDB-003; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

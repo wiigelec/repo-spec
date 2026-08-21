@@ -361,36 +361,20 @@
       "text": "An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance."
     },
     {
-      "id": "REPO-AT-004",
-      "text": "An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority."
-    },
-    {
       "id": "REPO-AT-005",
-      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized."
+      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-004: An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority."
     },
     {
       "id": "REPO-AT-006",
-      "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority."
+      "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-010: The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
     },
     {
       "id": "REPO-AT-007",
-      "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release."
+      "text": "Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-011: The overview-whiteboard class shall remain evidentiary, the overview-analysis class shall remain directional synthesis, and a functional-set artifact shall distinguish candidate from approved lifecycle status; only an approved functional set may act as the directional predecessor authority for decomposition."
     },
     {
       "id": "REPO-AT-008",
-      "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority."
-    },
-    {
-      "id": "REPO-AT-009",
-      "text": "Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
-    },
-    {
-      "id": "REPO-AT-010",
-      "text": "The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
-    },
-    {
-      "id": "REPO-AT-011",
-      "text": "The overview-whiteboard class shall remain evidentiary, the overview-analysis class shall remain directional synthesis, and a functional-set artifact shall distinguish candidate from approved lifecycle status; only an approved functional set may act as the directional predecessor authority for decomposition."
+      "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-AT-009: Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
     }
   ],
   "dependencies": [
@@ -426,6 +410,40 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/artifact-taxonomy.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-AT-004",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-AT-005"
+      ],
+      "rationale": "Normalized into canonical owner REPO-AT-005; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-AT-009",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-AT-008"
+      ],
+      "rationale": "Normalized into canonical owner REPO-AT-008; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-AT-010",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-AT-006"
+      ],
+      "rationale": "Normalized into canonical owner REPO-AT-006; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-AT-011",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-AT-007"
+      ],
+      "rationale": "Normalized into canonical owner REPO-AT-007; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

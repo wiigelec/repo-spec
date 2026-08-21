@@ -27,7 +27,7 @@
     },
     {
       "id": "IRG-L0-006",
-      "text": "This foundation introduces no intake-title preservation requirement, no universal requirement to retain routing labels after promotion, and no universal requirement to choose either in-place promotion or successor-issue promotion; exact hosting-platform mutation and event sequencing remains subordinate platform-specific authority."
+      "text": "The routing foundation defines repository-generic routing governance only. Provider implementation details and remotely observable platform mechanics belong to the applicable platform profile and routing-platform-validation capability."
     }
   ],
   "dependencies": [],

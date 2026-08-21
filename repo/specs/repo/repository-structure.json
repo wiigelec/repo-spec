@@ -11,15 +11,11 @@
     },
     {
       "id": "REPO-STR-002",
-      "text": "The repository-specification root shall be `repo/specs/repo/`, the product-specification root shall be `product/specs/product/`, and the two roots shall remain distinct authoritative domains. The direct contents of `repo/specs/` shall consist exactly of the `repo/` directory, and the direct contents of `product/specs/` shall consist exactly of the `product/` directory. Content beneath each authoritative specification root shall be admitted only by the registry and lifecycle contract applicable to that domain."
+      "text": "The repository-specification root shall be `repo/specs/repo/`, the product-specification root shall be `product/specs/product/`, and the two roots shall remain distinct authoritative domains. The direct contents of `repo/specs/` shall consist exactly of the `repo/` directory, and the direct contents of `product/specs/` shall consist exactly of the `product/` directory. Content beneath each authoritative specification root shall be admitted only by the registry and lifecycle contract applicable to that domain.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-STR-004: An initialized repository may omit product-specification files until product planning activates the product-specification system, but repository specifications shall not be placed under `product/specs/product/` and product specifications shall not be placed under `repo/specs/repo/`."
     },
     {
       "id": "REPO-STR-003",
       "text": "The repository shall reserve `product/specs/product/level-0/`, `product/specs/product/level-1/`, `product/specs/product/level-2/`, and `product/specs/product/level-3/` as the conceptual product-specification Level roots, along with `product/schemas/product/` and `product/derived/specs/product/`."
-    },
-    {
-      "id": "REPO-STR-004",
-      "text": "An initialized repository may omit product-specification files until product planning activates the product-specification system, but repository specifications shall not be placed under `product/specs/product/` and product specifications shall not be placed under `repo/specs/repo/`."
     },
     {
       "id": "REPO-STR-005",
@@ -27,11 +23,7 @@
     },
     {
       "id": "REPO-STR-006",
-      "text": "The repository shall use `repo/profiles/github/` as the populated reusable GitHub profile source location, `.github/` as the installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications. `repo/profiles/` and installed adapter namespaces shall be explicitly profile-governed extension points: profile source, managed adapter paths, and profile-specific bootstrap infrastructure shall be permitted only through the applicable accepted platform-profile contract or its accepted profile-owned declaration mechanism."
-    },
-    {
-      "id": "REPO-STR-007",
-      "text": "Remote hosting-platform deployment state shall remain outside repository content and shall be represented only through explicit evidence or declared deployment-state records rather than ordinary generated artifacts."
+      "text": "The repository shall use `repo/profiles/github/` as the populated reusable GitHub profile source location, `.github/` as the installed GitHub adapter location, and the applicable repository/framework or product-owned development-document roots as the locations for their respective top-level controlling documents and subordinate chunk directories while keeping all of them subordinate to accepted repository specifications. `repo/profiles/` and installed adapter namespaces shall be explicitly profile-governed extension points: profile source, managed adapter paths, and profile-specific bootstrap infrastructure shall be permitted only through the applicable accepted platform-profile contract or its accepted profile-owned declaration mechanism.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-STR-007: Remote hosting-platform deployment state shall remain outside repository content and shall be represented only through explicit evidence or declared deployment-state records rather than ordinary generated artifacts."
     },
     {
       "id": "REPO-STR-008",
@@ -68,6 +60,10 @@
     {
       "id": "REPO-STR-016",
       "text": "The maintained schema and derived-specification structural envelopes shall be closed. `repo/schemas/` shall contain exactly the direct child directory `repo/`, and `product/schemas/` shall contain exactly the direct child directory `product/`; schema files beneath those domain roots shall be permitted only where authorized by the accepted schema-owning repository or product contract. `repo/derived/` and `product/derived/` shall each contain exactly the direct child directory `specs/`; `repo/derived/specs/` shall contain exactly the direct child directory `repo/`, and `product/derived/specs/` shall contain exactly the direct child directory `product/`. Files beneath the final derived-specification domain roots shall be permitted only when declared by their accepted authoritative source contract and shall remain subordinate generated projections."
+    },
+    {
+      "id": "REPO-STR-017",
+      "text": "Every validation-domain implementation path and validation entry-point path authorized by repository policy shall reside inside a repository-structure namespace explicitly authorized for validation tooling; no validation executable or domain implementation may establish a parallel undeclared validation namespace."
     }
   ],
   "dependencies": [
@@ -89,6 +85,24 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/repository-structure.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-STR-004",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-STR-002"
+      ],
+      "rationale": "Normalized into canonical owner REPO-STR-002; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-STR-007",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-STR-006"
+      ],
+      "rationale": "Normalized into canonical owner REPO-STR-006; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

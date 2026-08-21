@@ -6,20 +6,8 @@
   "schema_version": "1",
   "normative_requirements": [
     {
-      "id": "IRG-PVAL-001",
-      "text": "Hosting-platform labels, comments, body updates, issue events, and hosted field-policy realization shall remain subordinate to repository-generic routing and governance authority."
-    },
-    {
-      "id": "IRG-PVAL-002",
-      "text": "Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent."
-    },
-    {
       "id": "IRG-PVAL-003",
-      "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state."
-    },
-    {
-      "id": "IRG-PVAL-004",
-      "text": "Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance."
+      "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state.\n\nSemantic preservation from normalized predecessor requirements:\n- IRG-PVAL-001: Hosting-platform labels, comments, body updates, issue events, and hosted field-policy realization shall remain subordinate to repository-generic routing and governance authority.\n- IRG-PVAL-002: Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent.\n- IRG-PVAL-004: Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance."
     },
     {
       "id": "IRG-PVAL-005",
@@ -63,6 +51,32 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/issue-routing-platform-validation.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "IRG-PVAL-001",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "IRG-PVAL-003"
+      ],
+      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "IRG-PVAL-002",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "IRG-PVAL-003"
+      ],
+      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "IRG-PVAL-004",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "IRG-PVAL-003"
+      ],
+      "rationale": "Normalized into canonical owner IRG-PVAL-003; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }
