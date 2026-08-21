@@ -225,6 +225,7 @@ Semantic preservation from normalized predecessor requirements:
 - `REPO-VAL-039`: Structural-envelope validation shall mechanically enforce the repository namespaces and closed structural envelopes defined by repo.repository-structure and repo.development-document-base without independently defining those envelopes.
 - `REPO-VAL-041`: When repository-owned production validation enforces initialized-repository framework integrity that is anchored to an external source framework identity, the proof used by routine validation shall be committed repository-local authority that is independently verifiable against that immutable identity. Routine validation shall not require the originating developer-machine checkout and shall not retrieve validation authority from a network or remote repository; missing required local authority shall fail cleanly.
 - `REPO-VAL-042`: Hosted issue-field validation for Atomic authority transitions shall enforce the canonical Atomic field-policy boundary declared by repo.governing-issue and repo.development-workflow without restating Atomic lifecycle semantics.
+- `REPO-VAL-043`: Repository validation shall mechanically enforce the accepted validation-correspondence integrity contract delegated by `repo.validation-correspondence` without restating or becoming an independent owner of correspondence semantics. Repository-owned correspondence shall be enforced within repository validation responsibility; product-owned correspondence shall be enforced within product validation responsibility; and aggregate root validation shall enforce only cross-domain or whole-checkout correspondence invariants that cannot be proved by one leaf alone, including duplicate canonical package ownership across validation domains and aggregate active-correspondence completeness. Mechanical enforcement shall cover the objective accepted invariants for active-package uniqueness, canonical requirement/package binding, stable validation-task identity resolution, task-to-package uniqueness, source/package agreement, inactive treatment of withdrawn requirements, and deterministic subordinate projections, while exact package schema, serialized field names, task identifier syntax, source-local tagging syntax, package population, and migration mechanics remain governed by their accepted owners or later implementation authority.
 
 ## Dependencies
 
@@ -246,6 +247,7 @@ Semantic preservation from normalized predecessor requirements:
 - artifact: `repo/scripts/validate`
 - artifact: `repo/scripts/generate-docs`
 - artifact: `repo/validation/github/github_field_policy.py`
+- specification: `repo.validation-correspondence`
 
 ## Derived artifacts
 
