@@ -43,15 +43,11 @@ Repository authority defines the validation-domain layout contract for root, rep
 
 When accepted repository authority introduces a validation-correspondence structural element as a common validation-domain concept, the corresponding element must exist in every validation domain to which that concept applies.
 
-For the proposed package architecture, the directional rule is explicit:
+For the proposed package architecture, structural symmetry is conditional on the package namespace later selected by accepted repository authority.
 
-```text
-repo/validation/packages/
-product/validation/packages/
-validation/packages/
-```
+If accepted repository specification ultimately authorizes `repo/validation/packages/` as the repository-owned package namespace for the common validation-correspondence capability, then repository authority must also authorize corresponding `product/validation/packages/` and root `validation/packages/` roles for product-owned and whole-checkout correspondence unless it explicitly defines a domain-specific exception.
 
-If accepted repository specification ultimately authorizes `repo/validation/packages/` as the repository-owned package namespace for the common validation-correspondence capability, then repository authority must also authorize the corresponding `product/validation/packages/` and root `validation/packages/` namespaces as the product-owned and whole-checkout forms of that same common structural role.
+The functional set does not independently choose `packages/` as the final namespace. It establishes that a common validation-correspondence role selected for one applicable validation domain must have repository-authorized corresponding representation in the other applicable domains.
 
 This is structural correspondence, not a claim that every validation-domain directory must be byte-for-byte identical.
 
@@ -61,15 +57,33 @@ But a common correspondence role may not exist only in `repo/validation/` while 
 
 ## Domain ownership
 
-The three package namespaces serve different authority scopes while conforming to one repository-defined correspondence model:
+Whatever package namespace is later selected, repository authority must preserve distinct ownership roles while applying one repository-defined correspondence model:
 
-- `repo/validation/packages/` contains correspondence owned by repository/framework normative requirements;
-- `product/validation/packages/` contains correspondence owned by product normative requirements;
-- `validation/packages/` contains inherently cross-domain or whole-checkout correspondence whose ownership is explicitly defined by repository authority.
+- repository/framework correspondence belongs to the repository-owned validation domain;
+- product correspondence belongs to the product-owned validation domain;
+- inherently cross-domain or whole-checkout correspondence belongs to the root validation domain when repository authority assigns it there.
+
+If downstream specification selects `packages/` as the common structural role, these ownership roles correspond directionally to `repo/validation/packages/`, `product/validation/packages/`, and `validation/packages/`.
 
 A package belongs in the domain that owns the normative validation responsibility.
 
 Physical placement does not change normative ownership and must not create a second semantic owner for the referenced requirement.
+
+## Existing product-correspondence reconciliation
+
+Accepted `repo.product-correspondence` already defines product-specification correspondence among requirements, implementation mappings, test mappings, and conformance records.
+
+The new normative validation-correspondence capability must not create a second independently maintained requirement-to-test authority beside that existing contract.
+
+Downstream decomposition and specification must explicitly determine how the existing product correspondence system is revised, narrowed, referenced, or otherwise normalized so that:
+
+- product specification semantics remain owned by product authority;
+- repository-generic validation correspondence has one controlling semantic owner;
+- requirement-to-validation-task relationships are not independently authored in two registries;
+- retained product implementation/conformance correspondence remains compatible with the canonical validation-correspondence graph;
+- transition preserves existing accepted product-specification lifecycle semantics until successor authority is accepted.
+
+The functional set does not select the exact normalization strategy.
 
 ## Repo-spec source and initialized repositories
 

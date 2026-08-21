@@ -233,7 +233,7 @@ Approved functional set migrated from the maintained directional overview. Direc
       ]
     }
   ],
-  "successor_action": "Proceed to separately governed repository decomposition for the approved Normative Requirement Validation Correspondence capability before specification, planning, validation-package implementation, or other downstream mutation.",
+  "successor_action": "Proceed to separately governed repository decomposition for the approved Normative Requirement Validation Correspondence capability, including reconciliation with existing product correspondence authority and candidate/pre-acceptance correspondence lifecycle, before specification, planning, validation-package implementation, or other downstream mutation.",
   "schema_version": "1"
 }
 ```
@@ -265,7 +265,7 @@ This approved functional set is controlled by and succeeds [Repo-Spec Repository
 
 ## Next authorized action
 
-Use this approved functional set as directional authority for decomposition. The newly approved **Normative Requirement Validation Correspondence** capability requires a subsequent governed repository-decomposition update before specification, planning, validation-package implementation, or other downstream mutation.
+Use this approved functional set as directional authority for decomposition. The newly approved **Normative Requirement Validation Correspondence** capability requires a subsequent governed repository-decomposition update that reconciles existing product correspondence authority and defines candidate/pre-acceptance correspondence lifecycle before specification, planning, validation-package implementation, or other downstream mutation.
 
 ## Discoverability
 

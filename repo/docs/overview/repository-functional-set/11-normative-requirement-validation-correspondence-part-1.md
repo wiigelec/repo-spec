@@ -14,7 +14,7 @@ The correspondence model shall remain subordinate to accepted normative authorit
 
 The framework should support a canonical correspondence model in which:
 
-- each in-scope active identified normative requirement has one durable active validation-correspondence package;
+- each active identified normative requirement in an accepted repository or accepted product specification governed by the repository framework has one durable active validation-correspondence package;
 - each active package identifies one unambiguous normative requirement;
 - maintained externally identified validation tasks belong through exactly one package to exactly one normative-requirement reference;
 - package metadata records how the requirement is validated without restating the requirement's normative semantics;
@@ -71,11 +71,11 @@ Exact retention format and archival mechanics remain downstream decisions.
 
 ## Completeness scope
 
-The intended end state is complete correspondence for the set of normative requirements declared in scope by downstream authority.
+The intended end state is complete correspondence for all active identified normative requirements in accepted repository specifications and accepted product specifications governed by the repository framework.
 
-The functional set does not silently define which specification families or lifecycle states constitute that in-scope set.
+Candidate specifications are not yet normative authority and therefore do not contribute active normative requirements to completeness.
 
-Downstream decomposition and specification must make the completeness domain explicit so validators do not infer scope from directory presence or implementation convenience.
+Downstream decomposition and specification may define preparatory correspondence for candidate authority, but they must not narrow the active completeness domain by ownership area, convenience, directory presence, or implementation status.
 
 ## Propagation with repository authority
 
@@ -94,6 +94,12 @@ Propagation must preserve:
 A propagated or derived copy is subordinate materialization, not an independent correspondence authority.
 
 The functional set does not require every surface to use the same physical path or serialization. Downstream structure, initializer, and generated-artifact authority owns those mechanics, but the propagated result must remain correspondence-equivalent to the canonical repo-owned source.
+
+## Evidence and decision provenance
+
+Parts 1–3 primarily carry forward the capability boundary identified by merged analysis chunk 03.
+
+Part 4 incorporates later user clarification that repository validation law applies constitutionally across repository-owned, product-owned, and whole-checkout validation domains. That clarification is constrained by accepted `repo.authority-model`, `repo.repository-structure`, `repo.validation`, `repo.product-spec-base`, and `repo.product-correspondence` authority and is a functional-set directional decision rather than a claim that analysis chunk 03 already resolved the question.
 
 ## Exclusions
 

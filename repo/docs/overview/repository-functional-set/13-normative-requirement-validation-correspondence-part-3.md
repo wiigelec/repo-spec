@@ -85,6 +85,16 @@ A downstream design must not create separate mutable correspondence registries f
 
 Exact copying, generation, initializer inventory, destination paths, and freshness-check mechanics remain owned by downstream structure, initializer, generated-artifact, and validation specifications.
 
+## Candidate and pre-acceptance correspondence lifecycle
+
+The correspondence lifecycle should permit package material to be prepared before the referenced normative requirement becomes active.
+
+Candidate repository or product specifications may therefore have preparatory correspondence under downstream-defined non-active lifecycle rules so that ordinary acceptance can activate the requirement and its complete correspondence together without inherently requiring an Atomic authority transition.
+
+Preparatory correspondence must not cause candidate requirements to become normative early.
+
+Atomic transition remains reserved for cases where accepted-state invariants make specification authority and maintained correspondence mechanically inseparable and no valid intermediate accepted revision exists.
+
 ## Migration direction
 
 The repository may begin from a state with no package namespace while the intended end state requires complete package correspondence.
@@ -137,7 +147,7 @@ Later governed work must decide, without treating this functional set as exact t
 - canonical normative-reference representation;
 - package artifact type and schema;
 - package source namespace;
-- in-scope normative requirement families;
+- exact candidate/pre-acceptance correspondence lifecycle representation;
 - disposition definitions and transition rules;
 - task identity granularity;
 - task metadata vocabulary and cardinalities;
