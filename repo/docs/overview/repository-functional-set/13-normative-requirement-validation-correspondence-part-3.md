@@ -12,9 +12,9 @@ Directional integrity expectations include:
 - every active package resolves to a known active normative requirement;
 - package ownership agrees with the normative owner;
 - externally identified task identities are unique in their accepted scope;
-- referenced task source locations and entry points resolve;
+- referenced task source locations and validation-task callables resolve;
 - every externally identified task belongs to exactly one package;
-- task entry-point metadata agrees with package ownership;
+- validation-task-callable metadata agrees with package ownership;
 - every maintained validation callable defined in governed validation implementation source has exactly one source-local role: validation-task callable or helper;
 - every validation-task callable source-locally identifies exactly one canonical normative requirement;
 - helpers are explicitly source-locally identifiable and are mutually exclusive with validation-task ownership at the same revision;

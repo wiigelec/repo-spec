@@ -31,7 +31,7 @@ A validation-correspondence package:
 
 - may identify a normative requirement;
 - may classify validation disposition;
-- may identify maintained validation tasks and entry points;
+- may identify maintained validation tasks and their validation-task callables;
 - may provide rationale required by downstream correspondence rules;
 - may participate in deterministic generated coverage views.
 
@@ -47,7 +47,7 @@ Validation failures may show that implementation or correspondence is inconsiste
 
 ## Canonical normative-requirement reference
 
-The capability requires every package and externally identified validation task to resolve through an unambiguous canonical normative-requirement reference.
+The capability requires every package and externally identified validation task to resolve through an unambiguous canonical normative-requirement reference; source-level task correspondence is represented by validation-task callables rather than by `repo.validation` public validation entry points.
 
 The functional set does not require bare requirement identifiers to be repository-global.
 

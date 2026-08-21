@@ -58,7 +58,7 @@ The correspondence model needs stable identity for maintained validation tasks t
 
 It does not require every fixture, parameter case, assertion, or non-callable internal implementation unit to become a separately registered task. Every maintained validation callable defined in governed validation implementation source must, however, carry exactly one source-local role classification: validation-task callable or helper.
 
-An externally identified validation task should be a maintained executable validation responsibility that downstream tooling can identify, resolve, and report.
+An externally identified validation task should be a maintained executable validation responsibility whose source-level validation-task callable downstream tooling can identify, resolve, and report.
 
 Exact task-granularity rules remain downstream specification work.
 
@@ -67,7 +67,7 @@ Exact task-granularity rules remain downstream specification work.
 Each externally identified validation task should:
 
 - have stable identity within the accepted correspondence scope;
-- resolve to a maintained source location or executable entry point;
+- resolve to a maintained source location and validation-task callable;
 - belong to exactly one active correspondence package;
 - thereby correspond to exactly one canonical normative-requirement reference;
 - avoid duplicate registration in an independent aggregate registry.
@@ -117,7 +117,7 @@ A validation task may legitimately be, for example, both negative in coverage in
 
 Machine-readable validation-task-callable metadata must be source-local and must agree with package ownership.
 
-The directional invariant is that every validation-task callable identifies exactly one canonical normative requirement directly from its source while the canonical package remains the authoritative correspondence model.
+The directional invariant is that every validation-task callable identifies exactly one canonical normative requirement directly from its source while the canonical package remains the canonical correspondence source model.
 
 A separate manifest, generated adapter, or aggregate registry may consume or project that information but may not substitute for source-local task correspondence.
 
