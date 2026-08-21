@@ -72,4 +72,3 @@ Defines the planning-authority contract for implementation plan documents.
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/implementation-plan.md`
-

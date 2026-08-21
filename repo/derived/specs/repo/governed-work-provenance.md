@@ -52,4 +52,3 @@ Primitive contract for governance-state identity and the minimum intake provenan
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/governed-work-provenance.md`
-

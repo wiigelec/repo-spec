@@ -346,4 +346,3 @@ Validation metadata:
 
 - `markdown`: `repo/derived/specs/repo/governing-issue.md`
 - `yaml`: `.github/ISSUE_TEMPLATE/governing-issue.yml` (renderer: `issue-form`)
-

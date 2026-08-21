@@ -71,4 +71,3 @@ Semantic preservation from normalized predecessor requirements:
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/product-correspondence.md`
-

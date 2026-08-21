@@ -55,4 +55,3 @@ Reusable capability for transitioning routed intake into a bounded governed oper
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/governed-work-promotion.md`
-

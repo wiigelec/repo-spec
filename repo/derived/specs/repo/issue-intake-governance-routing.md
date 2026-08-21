@@ -69,4 +69,3 @@ End-to-end orchestration for moving ordinary issue intake through classification
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/issue-intake-governance-routing.md`
-

@@ -58,4 +58,3 @@ Semantic preservation from normalized predecessor requirements:
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/issue-authority-routing.md`
-

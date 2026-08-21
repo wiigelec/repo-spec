@@ -48,4 +48,3 @@ Primitive contract for classifying ordinary issue intake into routing concepts a
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/issue-routing-classification.md`
-

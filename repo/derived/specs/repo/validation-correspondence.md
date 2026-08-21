@@ -53,4 +53,3 @@ Defines the canonical repository-generic semantic contract relating active norma
 ## Derived artifacts
 
 - `markdown`: `repo/derived/specs/repo/validation-correspondence.md`
-

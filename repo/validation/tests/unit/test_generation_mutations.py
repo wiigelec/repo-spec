@@ -16,6 +16,16 @@ from ..self.mutation_support import create_repo_fixture, expect_failure, expect_
 def run_generation_mutations(repo_root: Path) -> None:
     _manifest, specs, paths, _ = load_specs(repo_root)
 
+    rendered_validation = render_spec_projection(
+        specs["repo.validation"]["title"],
+        paths["repo.validation"],
+        specs["repo.validation"],
+    )
+    if not rendered_validation.endswith("\n") or rendered_validation.endswith("\n\n"):
+        raise AssertionError(
+            "repository-spec Markdown projection must end with exactly one terminal newline"
+        )
+
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
         clone_index = 0
