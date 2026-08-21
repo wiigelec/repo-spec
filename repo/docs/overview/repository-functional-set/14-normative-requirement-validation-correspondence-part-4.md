@@ -22,11 +22,11 @@ Any exception or specialization to those repository-generic rules must be explic
 
 ## Applicability to product-owned normative requirements
 
-The normative validation-correspondence contract applies to every in-scope active normative requirement regardless of whether the requirement is owned by `repo/` or `product/`.
+The normative validation-correspondence contract applies to every active identified normative requirement in an accepted repository or accepted product specification governed by the repository framework.
 
 Therefore an active product-owned normative requirement is subject to the same repository-defined correspondence invariants as an active repo-owned normative requirement, including:
 
-- one durable active correspondence package per in-scope active identified requirement;
+- one durable active correspondence package per active identified normative requirement;
 - one unambiguous canonical normative-requirement reference per package;
 - explicit validation disposition;
 - stable externally identified validation-task ownership where tasks exist;
@@ -54,6 +54,12 @@ This is structural correspondence, not a claim that every validation-domain dire
 Repository authority may define domain-specific differences where the role itself differs. Existing examples include root/repository GitHub-validation support that is not necessarily a product-domain concern.
 
 But a common correspondence role may not exist only in `repo/validation/` while product-owned normative requirements remain subject to the same correspondence contract.
+
+Structural symmetry does not require identical package population in every domain.
+
+A normative requirement still has exactly one canonical active correspondence package according to its normative owner. A validation task executed from root `validation/` may therefore be referenced by a repository-owned or product-owned canonical package without creating a duplicate root-owned package for the same requirement.
+
+If a root `validation/packages/` role is later authorized, downstream authority must define what canonical correspondence may legitimately be owned there without violating one-package-per-requirement cardinality.
 
 ## Domain ownership
 
@@ -95,7 +101,7 @@ Accordingly:
 
 - repo-spec `repo/` requirements use the repository-owned correspondence domain;
 - repo-spec `product/` requirements use the product-owned correspondence domain;
-- derived or initialized repositories receive the same repository-generic correspondence structure and rules;
+- derived or initialized repositories remain governed by the same repository-generic correspondence rules, with any framework materialization preserving canonical ownership;
 - their own product requirements are governed by the same product correspondence contract;
 - whole-checkout correspondence remains governed by the repository-defined root validation domain.
 
@@ -103,7 +109,7 @@ The framework must not produce initialized repositories with weaker corresponden
 
 ## Propagation versus independent ownership
 
-Repo-owned normative authority that is propagated or installed into another repository carries its repository-owned correspondence rules and materialization requirements with it.
+Repository-generic framework material that is propagated or installed into another repository remains governed by repo-owned normative authority; materialization does not move that authority into the product domain.
 
 Product-owned requirements created within a derived repository are not copies of repo-owned requirements; they are independent product authority within the product domain.
 

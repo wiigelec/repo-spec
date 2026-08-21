@@ -4,7 +4,7 @@ This part defines the directional package, validation-disposition, validation-ta
 
 ## Validation-correspondence package
 
-A validation-correspondence package is the durable source artifact that binds one in-scope active normative requirement to its maintained validation disposition and externally identified validation evidence.
+A validation-correspondence package is the durable source artifact that binds one active identified normative requirement in an accepted repository or accepted product specification to its maintained validation disposition and externally identified validation evidence.
 
 The package is analytically distinct from:
 
@@ -20,7 +20,7 @@ The package should remain small enough to express correspondence without duplica
 
 The directional cardinality is:
 
-- one active correspondence package per in-scope active identified normative requirement;
+- one active correspondence package per active identified normative requirement in accepted repository or accepted product authority;
 - one normative requirement reference per active package;
 - zero or more externally identified validation tasks per package.
 
@@ -39,7 +39,7 @@ The collected request proposed these dispositions:
 - `semantic-review`;
 - `not-applicable`.
 
-The functional-set direction accepts the need for explicit validation disposition metadata and accepts these names as the current directional vocabulary.
+The functional-set direction accepts the need for explicit validation disposition metadata. These four names remain the collected proposal's candidate vocabulary for downstream specification rather than exact accepted enum wording.
 
 Downstream specification must still define:
 

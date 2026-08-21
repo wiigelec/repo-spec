@@ -8,7 +8,7 @@ The capability should support validation of the correspondence model itself.
 
 Directional integrity expectations include:
 
-- every in-scope active identified normative requirement resolves to exactly one active package;
+- every active identified normative requirement in accepted repository or accepted product authority resolves to exactly one active package;
 - every active package resolves to a known active normative requirement;
 - package ownership agrees with the normative owner;
 - externally identified task identities are unique in their accepted scope;
@@ -68,9 +68,9 @@ No package namespace is authorized by this functional-set patch alone.
 
 ## Propagation and materialization integrity
 
-Repo-owned normative validation correspondence is framework material that must accompany the repo-owned normative authority it describes.
+Repo-owned normative validation correspondence remains governed by the repo-owned normative authority it describes, including when repository-generic validation framework material is projected or materialized into another maintained validation domain.
 
-The propagation boundary includes the repo-spec `product/` tree and the derived or initialized repository `repo/` and `product/` trees that receive repo-owned normative authority under existing framework/bootstrap contracts.
+The materialization boundary includes repo-spec and derived/initialized repository validation domains that receive repository-generic framework structure or correspondence under accepted framework/bootstrap mechanics. This does not transfer repo normative ownership into the product authority domain.
 
 Directional integrity across those surfaces requires:
 

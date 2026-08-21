@@ -21,7 +21,7 @@ The framework should support a canonical correspondence model in which:
 - machine-readable correspondence can drive deterministic coverage and documentation views;
 - integrity validation can detect missing, duplicated, stale, or conflicting correspondence.
 
-The capability applies to every in-scope active normative requirement governed by the repository framework, including both repository-owned and product-owned normative requirements. Repository ownership determines the semantic authority domain; it does not determine whether validation correspondence is required.
+The capability applies to every active identified normative requirement in an accepted repository or accepted product specification governed by the repository framework. Repository ownership determines the semantic authority domain; it does not determine whether validation correspondence is required.
 
 ## Relationship to normative authority
 
@@ -79,9 +79,9 @@ Downstream decomposition and specification may define preparatory correspondence
 
 ## Propagation with repository authority
 
-For repo-owned normative requirements, validation correspondence follows the normative authority through the repository framework propagation path.
+For repo-owned normative requirements, repository-generic correspondence obligations and any framework materializations of that correspondence remain governed by the repo-owned normative authority.
 
-When repo-owned normative authority is passed into the repo-spec `product/` tree and into derived or initialized repository `repo/` and `product/` trees, the associated validation correspondence must be passed with it.
+Where accepted framework/bootstrap mechanics materialize repository-generic validation structure or correspondence into repo-spec or initialized-repository validation domains, the materialized correspondence must preserve its canonical repo-owned normative reference and remain subordinate to repo authority.
 
 Propagation must preserve:
 
