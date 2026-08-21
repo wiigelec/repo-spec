@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import ast
+import json
+
 from pathlib import Path
 from typing import Any
 
@@ -14,6 +17,315 @@ from ..core.invariants import (
 )
 from ..core.paths import resolve_repo_path
 from ..core.schema_subset import validate_instance
+
+
+_VALIDATION_METADATA_PREFIX = "# validation-metadata: "
+
+
+# validation-metadata: {"role": "helper"}
+def _active_repository_requirement_refs(
+    specs: dict[str, dict[str, Any]],
+) -> set[tuple[str, str]]:
+    refs: set[tuple[str, str]] = set()
+    for spec_id, spec in specs.items():
+        if spec.get("status") != "accepted":
+            continue
+        requirements = spec.get("normative_requirements", [])
+        expect(
+            isinstance(requirements, list),
+            f"validation correspondence failed: {spec_id}.normative_requirements must be an array",
+        )
+        for requirement in requirements:
+            expect(
+                isinstance(requirement, dict),
+                f"validation correspondence failed: {spec_id} requirement must be an object",
+            )
+            requirement_id = requirement.get("id")
+            expect(
+                isinstance(requirement_id, str) and bool(requirement_id),
+                f"validation correspondence failed: {spec_id} requirement id must be a non-empty string",
+            )
+            ref = (spec_id, requirement_id)
+            expect(
+                ref not in refs,
+                f"validation correspondence failed: duplicate active requirement {spec_id}/{requirement_id}",
+            )
+            refs.add(ref)
+    return refs
+
+
+# validation-metadata: {"role": "helper"}
+def _is_python_validation_source(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    if path.suffix == ".py":
+        return True
+    try:
+        first_line = path.read_text(encoding="utf-8").splitlines()[0]
+    except (OSError, UnicodeDecodeError, IndexError):
+        return False
+    return first_line.startswith("#!") and "python" in first_line.lower()
+
+
+# validation-metadata: {"role": "helper"}
+def _collect_validation_callable_metadata(
+    repo_root: Path,
+) -> tuple[dict[str, dict[str, Any]], set[tuple[str, str]]]:
+    task_records: dict[str, dict[str, Any]] = {}
+    helper_coordinates: set[tuple[str, str]] = set()
+
+    for validation_root in (repo_root / "repo/validation",):
+        if not validation_root.is_dir():
+            continue
+        for path in sorted(validation_root.rglob("*")):
+            if not _is_python_validation_source(path):
+                continue
+
+            source = path.relative_to(repo_root).as_posix()
+            text = path.read_text(encoding="utf-8")
+            lines = text.splitlines()
+            try:
+                tree = ast.parse(text, filename=source)
+            except SyntaxError as exc:
+                fail(
+                    f"validation correspondence failed: cannot parse validation source {source}: {exc}"
+                )
+
+            for node in ast.walk(tree):
+                if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+
+                declaration_line = min(
+                    [node.lineno] + [decorator.lineno for decorator in node.decorator_list]
+                )
+                expect(
+                    declaration_line > 1,
+                    f"validation correspondence failed: missing source metadata for {source}:{node.name}",
+                )
+                declaration_text = lines[declaration_line - 1]
+                indent = declaration_text[
+                    : len(declaration_text) - len(declaration_text.lstrip())
+                ]
+                metadata_line = lines[declaration_line - 2]
+                prefix = indent + _VALIDATION_METADATA_PREFIX
+                expect(
+                    metadata_line.startswith(prefix),
+                    f"validation correspondence failed: unclassified callable {source}:{node.name}",
+                )
+
+                try:
+                    metadata = json.loads(metadata_line[len(prefix) :])
+                except json.JSONDecodeError as exc:
+                    fail(
+                        f"validation correspondence failed: invalid metadata for {source}:{node.name}: {exc}"
+                    )
+
+                role = metadata.get("role")
+                if role == "helper":
+                    expect(
+                        set(metadata) == {"role"},
+                        f"validation correspondence failed: helper metadata must be non-owning at {source}:{node.name}",
+                    )
+                    helper_coordinates.add((source, node.name))
+                    continue
+
+                expect(
+                    role == "task",
+                    f"validation correspondence failed: invalid callable role at {source}:{node.name}",
+                )
+                expect(
+                    set(metadata) == {"role", "task_id", "normative_reference"},
+                    f"validation correspondence failed: task metadata shape mismatch at {source}:{node.name}",
+                )
+
+                task_id = metadata.get("task_id")
+                normative_reference = metadata.get("normative_reference")
+                expect(
+                    isinstance(task_id, str) and bool(task_id),
+                    f"validation correspondence failed: invalid task id at {source}:{node.name}",
+                )
+                expect(
+                    isinstance(normative_reference, dict)
+                    and set(normative_reference) == {"spec_id", "requirement_id"}
+                    and isinstance(normative_reference.get("spec_id"), str)
+                    and bool(normative_reference["spec_id"])
+                    and isinstance(normative_reference.get("requirement_id"), str)
+                    and bool(normative_reference["requirement_id"]),
+                    f"validation correspondence failed: invalid normative reference for task {task_id}",
+                )
+                expect(
+                    task_id not in task_records,
+                    f"validation correspondence failed: duplicate source task id {task_id}",
+                )
+                task_records[task_id] = {
+                    "task_id": task_id,
+                    "source": source,
+                    "callable": node.name,
+                    "normative_reference": normative_reference,
+                }
+
+    return task_records, helper_coordinates
+
+
+# validation-metadata: {"role": "helper"}
+def _check_repository_validation_correspondence(
+    repo_root: Path,
+    specs: dict[str, dict[str, Any]],
+    schemas: dict[str, dict[str, Any]],
+) -> None:
+    package_root = repo_root / "repo/validation/packages"
+    expect(
+        package_root.is_dir(),
+        "validation correspondence failed: missing repo/validation/packages",
+    )
+
+    schema = schemas.get("validation-correspondence-package")
+    expect(
+        isinstance(schema, dict),
+        "validation correspondence failed: missing validation correspondence package schema",
+    )
+
+    active_refs = _active_repository_requirement_refs(specs)
+    package_refs: set[tuple[str, str]] = set()
+    packaged_tasks: dict[str, dict[str, Any]] = {}
+
+    for path in sorted(package_root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(package_root)
+        expect(
+            path.suffix == ".json" and len(relative.parts) == 2,
+            f"validation correspondence failed: noncanonical package path {path.relative_to(repo_root).as_posix()}",
+        )
+
+        spec_id = relative.parts[0]
+        requirement_id = path.stem
+        ref = (spec_id, requirement_id)
+        expect(
+            ref not in package_refs,
+            f"validation correspondence failed: duplicate package owner {spec_id}/{requirement_id}",
+        )
+
+        try:
+            package = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            fail(
+                f"validation correspondence failed: invalid JSON {path.relative_to(repo_root).as_posix()}: {exc}"
+            )
+
+        validate_instance(
+            package,
+            schema,
+            path.relative_to(repo_root).as_posix(),
+            schema,
+        )
+        expect(
+            package["normative_reference"]
+            == {"spec_id": spec_id, "requirement_id": requirement_id},
+            f"validation correspondence failed: package/path binding mismatch for {spec_id}/{requirement_id}",
+        )
+        expect(
+            ref in active_refs,
+            f"validation correspondence failed: package targets inactive or unknown requirement {spec_id}/{requirement_id}",
+        )
+
+        package_refs.add(ref)
+        for task in package["tasks"]:
+            task_id = task["task_id"]
+            expect(
+                task_id not in packaged_tasks,
+                f"validation correspondence failed: task {task_id} is owned by multiple packages",
+            )
+            packaged_tasks[task_id] = {
+                "task_id": task_id,
+                "source": task["source"],
+                "callable": task["callable"],
+                "normative_reference": {
+                    "spec_id": spec_id,
+                    "requirement_id": requirement_id,
+                },
+            }
+
+    missing = sorted(active_refs - package_refs)
+    unexpected = sorted(package_refs - active_refs)
+    expect(
+        not missing,
+        "validation correspondence failed: missing active package(s): "
+        + ", ".join(f"{spec_id}/{requirement_id}" for spec_id, requirement_id in missing),
+    )
+    expect(
+        not unexpected,
+        "validation correspondence failed: unexpected active package(s): "
+        + ", ".join(
+            f"{spec_id}/{requirement_id}" for spec_id, requirement_id in unexpected
+        ),
+    )
+
+    source_tasks, _ = _collect_validation_callable_metadata(repo_root)
+    repo_packaged_tasks = {
+        task_id: record
+        for task_id, record in packaged_tasks.items()
+        if record["source"].startswith("repo/validation/")
+    }
+    source_ids = set(source_tasks)
+    package_ids = set(repo_packaged_tasks)
+
+    missing_task_packages = sorted(source_ids - package_ids)
+    unexpected_package_tasks = sorted(package_ids - source_ids)
+    expect(
+        not missing_task_packages,
+        "validation correspondence failed: repo validation source task(s) missing package ownership: "
+        + ", ".join(missing_task_packages),
+    )
+    expect(
+        not unexpected_package_tasks,
+        "validation correspondence failed: repo validation package task(s) missing source metadata: "
+        + ", ".join(unexpected_package_tasks),
+    )
+
+    for task_id in sorted(source_ids):
+        source_record = source_tasks[task_id]
+        package_record = repo_packaged_tasks[task_id]
+        expect(
+            source_record == package_record,
+            f"validation correspondence failed: package/source disagreement for task {task_id}",
+        )
+
+        source_path = repo_root / source_record["source"]
+        expect(
+            source_path.is_file(),
+            f"validation correspondence failed: task source missing for {task_id}: {source_record['source']}",
+        )
+        source_tree = ast.parse(
+            source_path.read_text(encoding="utf-8"),
+            filename=source_record["source"],
+        )
+        callable_names = {
+            node.name
+            for node in ast.walk(source_tree)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+        }
+        expect(
+            source_record["callable"] in callable_names,
+            f"validation correspondence failed: task callable missing for {task_id}: "
+            f"{source_record['source']}:{source_record['callable']}",
+        )
+
+
+
+# validation-metadata: {"role": "task", "task_id": "repo.validation.validation-correspondence-integrity", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-043"}}
+def check_validation_correspondence_integrity_phase(
+    context: ValidationContext,
+) -> None:
+    expect(
+        context.repository is not None,
+        "validation correspondence failed: repository validation context is required",
+    )
+    _check_repository_validation_correspondence(
+        context.repo_root,
+        context.repository.specs,
+        context.repository.schemas,
+    )
 
 # validation-metadata: {"role": "helper"}
 def check_unique_derived_artifact_paths(specs: dict[str, dict[str, Any]]) -> None:

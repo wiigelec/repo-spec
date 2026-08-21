@@ -26,6 +26,7 @@ def run_repository_validation_phase_contract_tests(repo_root: Path) -> None:
         "repository validation layout",
         "repository source layout",
         "repository JSON Schema conformance",
+        "repository validation correspondence integrity",
         "manifest completeness",
         "unique specification IDs",
         "unique item properties",

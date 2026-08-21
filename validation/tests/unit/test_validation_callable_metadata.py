@@ -115,7 +115,7 @@ class ValidationCallableMetadataTests(unittest.TestCase):
                 )
 
         self.assertGreater(callable_count, 113)
-        self.assertEqual(18, task_count)
+        self.assertEqual(19, task_count)
 
     # validation-metadata: {"role": "helper"}
     def test_product_validation_remains_unmodified_handoff_scope(self) -> None:

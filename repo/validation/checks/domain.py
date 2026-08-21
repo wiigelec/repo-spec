@@ -27,6 +27,7 @@ from .specifications import (
     check_unique_derived_artifact_paths_phase,
     check_unique_item_properties_phase,
     check_unique_spec_ids_phase,
+    check_validation_correspondence_integrity_phase,
 )
 
 # validation-metadata: {"role": "helper"}
@@ -63,6 +64,7 @@ REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository validation layout", check_validation_layout),
     ("repository source layout", check_repository_source_layout),
     ("repository JSON Schema conformance", check_schema_conformance),
+    ("repository validation correspondence integrity", check_validation_correspondence_integrity_phase),
     ("manifest completeness", check_manifest_phase),
     ("unique specification IDs", check_unique_spec_ids_phase),
     ("unique item properties", check_unique_item_properties_phase),
