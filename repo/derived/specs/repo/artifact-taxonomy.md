@@ -241,6 +241,22 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
   - `validated repository revision`
   - `validation command output`
 
+### Validation correspondence package
+
+- Identifier: `validation-correspondence-package`
+- Role: `validation correspondence source package`
+- Authority category: `implementation`
+- Authority source: accepted repo.validation-correspondence semantics and maintained correspondence state
+- Source of truth rule: Acts as the canonical maintained source record for exactly one validation-correspondence package relationship, including its delegated disposition and validation-task references, while remaining subordinate to the owning normative requirement and never defining, restating, or extending that requirement's semantics.
+- Mutability: mutable only through governed synchronization with accepted correspondence authority
+- Generation mode: `manual`
+- Validation ownership: `validation`
+- Portability category: `framework-generic`
+- Manifest participation: `reference`
+
+- Source artifacts:
+  - `repo.validation-correspondence`
+
 ### Review record
 
 - Identifier: `review-record`
@@ -398,6 +414,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - `REPO-AT-006`: Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.
 - `REPO-AT-007`: Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.
 - `REPO-AT-008`: The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.
+- `REPO-AT-012`: The taxonomy shall recognize `validation-correspondence-package` as the canonical maintained implementation-class source artifact for one validation-correspondence package relationship. Such an artifact shall remain subordinate to the owning normative requirement and `repo.validation-correspondence`, shall not independently define normative semantics, and shall use the taxonomy metadata defined for that class to distinguish source correspondence state from generated projections, test artifacts, and validation evidence.
 
 ## Dependencies
 
@@ -411,6 +428,7 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - specification: `repo.repository-structure`
 - specification: `repo.development-workflow`
 - specification: `repo.validation`
+- specification: `repo.validation-correspondence`
 
 ## Derived artifacts
 
