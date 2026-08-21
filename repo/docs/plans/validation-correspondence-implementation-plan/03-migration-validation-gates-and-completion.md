@@ -17,17 +17,16 @@ The preferred repository-generic strategy is staged:
 
 Preparatory/non-active correspondence may be used only where accepted lifecycle authority permits it. The plan does not treat partial aggregate active completeness as valid unless controlling authority explicitly allows that state.
 
-## Candidate-to-accepted plan gate
+## Accepted-plan gate
 
-Candidate-plan content may be reviewed and merged while retaining `lifecycle_status: candidate`, but that merge is not plan acceptance and does not authorize implementation.
+This revision records `lifecycle_status: accepted` and is the explicit acceptance transition required by #568.
 
 Before any implementation issue exists:
 
-- #568 remains open;
-- a separate bounded acceptance revision changes plan status prose and `lifecycle_status` to `accepted`;
-- that exact revision is validated, reviewed, and manually merged;
+- this exact acceptance revision is validated, reviewed, and manually merged;
 - merged `main` is verified;
-- a final read-only plan-acceptance audit confirms no unresolved authority gap.
+- #568 remains open until a final read-only plan-acceptance audit confirms no unresolved authority gap;
+- only after that final audit may #568 close and successor implementation issues be created.
 
 ## Product-authority gate
 
@@ -98,13 +97,11 @@ VCP-I6 may exit only when:
 
 ## Plan completion and acceptance
 
-This candidate plan is content-complete when all workstreams have bounded authority, dependencies, entry/exit conditions, transition gates, validation strategy, unresolved planning decisions, product-authority handoff rules, and successor-issue boundaries sufficient to execute without inventing normative semantics.
+The plan content is complete: all workstreams have bounded authority, dependencies, entry/exit conditions, transition gates, validation strategy, unresolved planning decisions, product-authority handoff rules, and successor-issue boundaries sufficient to execute without inventing normative semantics.
 
-Content-complete candidate status is not accepted planning authority.
+This revision records the plan as accepted. Accepted planning authority becomes effective only after this exact revision is manually merged and verified and the final read-only acceptance audit passes.
 
-Accepted planning authority begins only after the separate explicit acceptance revision described above is manually merged and verified.
-
-Implementation completion is separate from plan acceptance.
+Implementation completion remains separate from plan acceptance.
 
 ## Successor issue order
 
