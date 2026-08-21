@@ -2,30 +2,49 @@
 
 ## Transition strategy
 
-Migration shall preserve valid accepted revisions.
+Migration shall preserve valid accepted revisions and the repository/product authority boundary.
 
-The preferred strategy is staged:
+The preferred repository-generic strategy is staged:
 
 1. implement subordinate schema/parsing support without activating repository-wide completeness;
-2. establish source-local role/task identity metadata;
-3. populate canonical packages in valid batches;
-4. reconcile product mappings;
-5. activate objective enforcement after the governed source population required by that enforcement exists;
-6. add propagation/freshness mechanics for actual maintained materialization surfaces;
-7. remove obsolete duplicate mappings and enable final end-to-end completeness.
+2. establish repository-generic source-local role/task identity mechanics;
+3. populate canonical repository-owned packages in valid batches;
+4. establish deterministic product-obligation discovery and handoff without product-owned mutation;
+5. activate objective repository-scope enforcement after required repository-owned sources exist;
+6. add repository/framework-owned propagation/freshness mechanics;
+7. consume separately accepted product-owned realization evidence;
+8. remove obsolete repository-owned duplicate mappings and enable final aggregate completeness only after both authority domains are ready.
 
-Preparatory/non-active correspondence may be used only where accepted lifecycle authority permits it. The plan does not treat partial active completeness as valid unless controlling specifications explicitly allow that state.
+Preparatory/non-active correspondence may be used only where accepted lifecycle authority permits it. The plan does not treat partial aggregate active completeness as valid unless controlling authority explicitly allows that state.
+
+## Candidate-to-accepted plan gate
+
+Candidate-plan content may be reviewed and merged while retaining `lifecycle_status: candidate`, but that merge is not plan acceptance and does not authorize implementation.
+
+Before any implementation issue exists:
+
+- #568 remains open;
+- a separate bounded acceptance revision changes plan status prose and `lifecycle_status` to `accepted`;
+- that exact revision is validated, reviewed, and manually merged;
+- merged `main` is verified;
+- a final read-only plan-acceptance audit confirms no unresolved authority gap.
+
+## Product-authority gate
+
+Before product-owned package population, product-spec correspondence mutation, product-specific validation-source mutation, or product-specific materialization occurs, separately governed product-owned planning/implementation authority must identify the exact applicable accepted product specifications.
+
+Repository-generic VCP work may discover obligations and validate common invariants but may not substitute repository-only workstream authority for product-owned artifact mutation.
 
 ## Atomic checkpoint
 
-Before any increment proposes an Atomic transition, its governing issue must prove all of the following from current accepted authority:
+Before any increment proposes an Atomic transition, its governing issue must prove:
 
-- the exact invariant that makes specification/plan/artifact synchronization inseparable;
+- the exact invariant that makes the transition inseparable;
 - why no valid intermediate accepted revision exists;
 - the logical branch order required by `repo.development-workflow`;
-- plan impact or reaffirmation for the exact proposed revision.
+- required plan impact/reaffirmation for the exact proposed revision.
 
-If a staged inactive/preparatory or otherwise valid intermediate path exists, ordinary governed increments shall be used instead.
+If a staged inactive/preparatory or otherwise valid intermediate path exists, ordinary governed increments shall be used.
 
 ## Validation strategy
 
@@ -34,6 +53,7 @@ Every implementation increment shall use the strongest applicable combination of
 - focused schema/package/source metadata tests;
 - validation-domain unit/self tests;
 - deterministic fixture tests for positive, negative, boundary, and regression behavior where useful;
+- product-authority evidence checks when aggregate completeness depends on product-owned work;
 - `git diff --check`;
 - generated-artifact freshness checks;
 - `./scripts/validate`;
@@ -48,41 +68,46 @@ VCP-I1 may exit only when the dedicated schema is present at the accepted path, 
 
 ## Gate G2 — Source auditability readiness
 
-VCP-I2 may exit only when the selected language mechanism is canonical across applicable validation domains, all migrated callables are classifiable task/helper, and task metadata can be mechanically compared to package records.
+VCP-I2 may exit only when the selected repository-generic language mechanism is canonical across applicable framework-maintained validation domains and task metadata can be mechanically reconciled with canonical packages.
 
-## Gate G3 — Population readiness
+## Gate G3 — Repository population and product handoff readiness
 
-VCP-I3 may exit only when package ownership and active/historical/preparatory lifecycle are mechanically distinguishable, product mappings no longer duplicate requirement-to-test ownership, and the intended completeness population can be computed deterministically.
+VCP-I3 may exit only when repository-owned package ownership/lifecycle is mechanically distinguishable, repository-owned active population is complete for its selected scope, product-owned obligations are deterministically enumerable, and product-specific mutation is handed off rather than performed under repository-only authority.
 
 ## Gate G4 — Enforcement readiness
 
-VCP-I4 may enable active completeness enforcement only when the corresponding accepted-state package population already exists in the same valid revision path or when a separately proven Atomic transition is eligible.
+VCP-I4 may enable only those completeness/enforcement scopes whose required canonical package populations validly exist. Aggregate completeness across product-owned requirements remains disabled until accepted product-owned realization evidence exists.
 
-## Gate G5 — Materialization readiness
+## Gate G5 — Framework materialization readiness
 
-VCP-I5 may exit only when every actual propagated/materialized surface has deterministic source equivalence and stale/missing/divergent correspondence is detectable without network authority.
+VCP-I5 may exit only when every actual repository/framework-owned propagated/materialized surface has deterministic source equivalence and stale/missing/divergent correspondence is detectable. Product-specific surfaces remain outside this workstream's mutation authority.
 
 ## Gate G6 — Feature completion
 
 VCP-I6 may exit only when:
 
-- all active requirements in the accepted completeness domain have exactly one active package;
+- all active repository requirements in the accepted completeness domain have exactly one active package;
+- required separately governed product-owned package/correspondence realization is accepted and present;
 - all task/package/source invariants pass;
 - product mappings agree with canonical packages;
 - generated/materialized views are faithful and fresh;
 - no obsolete competing correspondence registry remains;
 - full repository validation and self-tests pass;
 - any required migration/Atomic evidence is complete;
-- all successor implementation issues are accepted and merged.
+- all required repository-owned and product-owned successor implementation work is accepted and merged.
 
-## Plan completion
+## Plan completion and acceptance
 
-This plan is complete as a planning artifact when all six workstreams have bounded authority, dependencies, entry/exit conditions, transition gates, validation strategy, unresolved planning decisions, and successor-issue rules sufficient to execute without inventing normative semantics.
+This candidate plan is content-complete when all workstreams have bounded authority, dependencies, entry/exit conditions, transition gates, validation strategy, unresolved planning decisions, product-authority handoff rules, and successor-issue boundaries sufficient to execute without inventing normative semantics.
 
-Implementation completion is separate from plan acceptance. Acceptance of this plan authorizes creation of governed implementation issues; it does not claim the implementation is already complete.
+Content-complete candidate status is not accepted planning authority.
+
+Accepted planning authority begins only after the separate explicit acceptance revision described above is manually merged and verified.
+
+Implementation completion is separate from plan acceptance.
 
 ## Successor issue order
 
-Default issue order is VCP-I1, VCP-I2, VCP-I3, VCP-I4, VCP-I5, VCP-I6.
+Default repository-generic issue order is VCP-I1, VCP-I2, VCP-I3, VCP-I4, VCP-I5, VCP-I6.
 
-A successor issue may cover multiple adjacent workstreams only if doing so improves validity/reviewability and its exact controlling specification union and predecessor evidence are explicit.
+Product-owned planning/implementation proceeds separately under applicable product authority and must deliver accepted evidence before VCP-I6 may claim aggregate completion.

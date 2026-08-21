@@ -2,9 +2,13 @@
 
 ## Status
 
-Candidate implementation plan; planning-authoritative only after acceptance; non-normative with respect to repository and product semantics.
+Candidate implementation plan; non-normative with respect to repository and product semantics.
 
-Issue #568 governs creation and acceptance of this plan. The completed normative-specification stage is recorded by issue #561 and final accepted specification-stage revision `21577021da0187d2310b808079a1ec573ea54b0a`. This candidate plan does not itself authorize maintained implementation mutation.
+Issue #568 governs creation, correction, and later explicit acceptance of this plan. The completed normative-specification stage is recorded by issue #561 and final accepted specification-stage revision `21577021da0187d2310b808079a1ec573ea54b0a`.
+
+Merging this candidate revision does **not** make the plan accepted. Durable planning authority exists only after a separate bounded acceptance revision changes this document's status and machine-readable `lifecycle_status` to `accepted`, that exact revision is reviewed and validated, and the user manually merges it.
+
+This candidate plan does not authorize maintained implementation mutation.
 
 ## Metadata
 
@@ -86,7 +90,8 @@ Issue #568 governs creation and acceptance of this plan. The completed normative
         "repo.product-correspondence",
         "repo.product-manifest",
         "repo.product-spec-base",
-        "repo.validation"
+        "repo.validation",
+        "repo.development-workflow"
       ]
     },
     {
@@ -96,7 +101,8 @@ Issue #568 governs creation and acceptance of this plan. The completed normative
         "repo.validation-correspondence",
         "repo.repository-structure",
         "repo.product-correspondence",
-        "repo.validation"
+        "repo.validation",
+        "repo.development-workflow"
       ]
     },
     {
@@ -188,7 +194,7 @@ Issue #568 governs creation and acceptance of this plan. The completed normative
       ]
     }
   ],
-  "successor_action": "After this plan is manually accepted and post-merge validation passes, create separately governed implementation issues in dependency order for VCP-I1 through VCP-I6. Each implementation issue must cite this accepted plan, exact selected workstream ID(s), exact controlling accepted repository specifications for those workstreams, the accepted default-branch base, and predecessor evidence. Any semantic gap discovered during implementation returns to specification governance before mutation.",
+  "successor_action": "This candidate revision does not authorize implementation issues, even if merged. After candidate content is reviewed and merged, #568 must govern a separate explicit acceptance revision that changes this plan's durable lifecycle state to accepted. Only after that accepted revision is manually merged and verified may separately governed repository-generic implementation issues cite VCP-I1 through VCP-I6. Product-owned package population, product-specification correspondence mutation, and product-specific materialization require separately governed product-owned planning and implementation authority with exact applicable accepted product specifications.",
   "schema_version": "1"
 }
 ```
@@ -201,34 +207,51 @@ Accepted planning basis: `main` at `21577021da0187d2310b808079a1ec573ea54b0a`.
 
 The controlling directional predecessors are the approved repository functional set and accepted repository decomposition. The controlling normative requirements are the accepted repository specifications declared in `applicable_accepted_specifications` and each workstream's exact authority set.
 
+This repository-owned plan controls repository-generic realization only. It may define framework-wide product correspondence rules and cross-domain validation behavior, but it does not by itself authorize mutation of product-owned packages, product-specification correspondence declarations, product-specific test artifacts, or product-specific materialization surfaces. Those mutations require separately governed product-owned planning/implementation authority citing exact applicable accepted product specifications.
+
 ## Workstreams
 
 | Workstream | Purpose | Primary dependency |
 | --- | --- | --- |
 | VCP-I1 | Package schema and canonical correspondence-source realization | none |
 | VCP-I2 | Source-local role metadata and validation-task identity adaptation | VCP-I1 |
-| VCP-I3 | Canonical package population and product correspondence reconciliation | VCP-I1, VCP-I2 |
+| VCP-I3 | Repository-owned package population framework and product-authority handoff | VCP-I1, VCP-I2 |
 | VCP-I4 | Mechanical integrity enforcement and deterministic projections | VCP-I1, VCP-I2, VCP-I3 |
-| VCP-I5 | Propagation/materialization and freshness/equivalence realization | VCP-I1, VCP-I4 |
-| VCP-I6 | Migration completion and end-to-end conformance | VCP-I1 through VCP-I5 |
+| VCP-I5 | Repository-generic propagation/materialization and freshness/equivalence realization | VCP-I1, VCP-I4 |
+| VCP-I6 | Repository-generic migration completion and cross-domain conformance integration | VCP-I1 through VCP-I5 plus required product-owned evidence |
 
 Each workstream's exact controlling accepted repository specifications are declared in `workstream_authority`.
 
 ## Execution order
 
-Primary order:
+Primary repository-generic order:
 
 `VCP-I1 -> VCP-I2 -> VCP-I3 -> VCP-I4 -> VCP-I5 -> VCP-I6`
 
-Parallel work is allowed only where a governed implementation issue proves its entry conditions and controlling specification closure without depending on unfinished predecessor state. Package population may be batched after VCP-I1/VCP-I2 only where the batch remains explicitly non-active or otherwise valid under accepted lifecycle authority until the applicable completeness gate is enabled.
+Product-owned planning may proceed only after this plan is accepted and only under applicable product lifecycle authority. VCP-I6 cannot claim end-to-end feature completion until required product-owned realization evidence exists.
+
+Parallel repository-generic work is allowed only where a governed implementation issue proves its entry conditions and controlling specification closure without depending on unfinished predecessor state.
 
 ## Planning boundary
 
-This plan is specification-complete: the final #561 audit found no remaining material normative corrections. Implementation issues may choose exact JSON Schema keywords, source metadata syntax, task-ID naming, validator organization, projection presentation, propagation mechanics, and migration batching only within the accepted specification constraints.
+This plan is specification-complete for repository-generic semantics: the final #561 audit found no remaining material normative corrections. Repository-generic implementation issues may choose exact JSON Schema keywords, source metadata syntax, task-ID naming, validator organization, projection presentation, propagation mechanics, and migration batching only within accepted specification constraints.
+
+This plan intentionally does not choose product-specific implementation mechanics or product-specification authority sets. Those belong to separately governed product-owned planning.
 
 If implementation planning or execution discovers a required semantic decision not already controlled by accepted specifications, the affected workstream blocks and returns that decision to specification governance.
 
 No Atomic transition is pre-authorized. A later governed implementation issue may use Atomic only if `repo.development-workflow` proves the existing no-valid-intermediate eligibility condition for the exact proposed transition.
+
+## Candidate-to-accepted transition
+
+The lifecycle is explicit:
+
+1. review and merge candidate planning content without treating the candidate artifact as accepted authority;
+2. keep #568 open;
+3. perform a separate bounded acceptance revision that changes the durable status prose and `lifecycle_status` from `candidate` to `accepted`, without changing implementation semantics;
+4. validate and manually merge that exact acceptance revision;
+5. verify merged `main` and perform a final read-only acceptance audit;
+6. only then create successor implementation issues.
 
 ## Chunk index
 
@@ -244,11 +267,12 @@ No Atomic transition is pre-authorized. A later governed implementation issue ma
 - Completed normative-specification issue: #561.
 - Controlling planning contracts: `repo.implementation-plan`, `repo.development-document-base`, `repo.development-workflow`, and `repo.validation`.
 - Controlling decomposition: `repo/docs/decompositions/REPOSITORY-DECOMPOSITION.md`.
-- Primary normative implementation authority: `repo.validation-correspondence` plus each workstream-specific accepted specification set.
+- Primary normative implementation authority: `repo.validation-correspondence` plus each workstream-specific accepted repository-specification set.
+- Product-specific maintained-artifact realization: separate product-owned planning/implementation authority.
 
 ## Next authorized action
 
-None until this candidate plan is reviewed, validated, manually merged, and accepted. After acceptance, separately governed implementation issues may cite VCP-I1 through VCP-I6 in dependency order.
+Review and merge corrected candidate planning content only. Candidate merge is not plan acceptance and does not authorize implementation. The next action after candidate merge is the explicit acceptance revision governed by #568.
 
 ## Discoverability
 

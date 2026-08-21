@@ -1,28 +1,42 @@
 # Risks and unresolved planning decisions
 
-## Planning decisions intentionally delegated to implementation mechanics
+## Planning decisions intentionally delegated to repository-generic implementation mechanics
 
 The following choices remain open but are not semantic authority gaps:
 
 1. exact JSON Schema draft/features, definition factoring, and diagnostic wording;
-2. exact source metadata syntax for each maintained implementation language;
+2. exact repository-generic source metadata syntax for each maintained implementation language;
 3. stable task-ID naming convention, provided identity stability and non-reuse semantics are preserved;
-4. whether broad existing tests are split, wrapped, or retained behind parameterized task entry points;
-5. package-population batching strategy;
-6. exact validator module organization and discovery implementation;
+4. whether broad framework-maintained tests are split, wrapped, or retained behind parameterized task entry points;
+5. repository-owned package-population batching strategy;
+6. exact repository-generic validator module organization and discovery implementation;
 7. exact aggregate generated coverage/report inventory and presentation;
-8. exact propagation mechanism for each actual maintained materialization surface;
+8. exact propagation mechanism for each repository/framework-owned materialization surface;
 9. freshness/equivalence algorithm for propagated or generated correspondence;
-10. exact migration batching/bootstrap sequence;
+10. exact repository-generic migration batching/bootstrap sequence;
 11. whether a later exact transition satisfies Atomic eligibility.
 
 These decisions must be recorded in the governing implementation issue when they materially affect scope or acceptance evidence.
 
+Product-specific realization choices are not delegated to this repository-owned plan; they belong to separately governed product-owned planning/implementation authority.
+
+## Risk: candidate merge mistaken for acceptance
+
+A merged candidate artifact could be incorrectly treated as accepted planning authority while its durable metadata still says `candidate`.
+
+**Mitigation:** require a separate acceptance revision changing durable status to `accepted`, exact-revision validation/review/manual merge, and final read-only acceptance audit before implementation issues.
+
+## Risk: repository/product authority collapse
+
+Repository-generic correspondence law could be mistaken for authorization to mutate product-owned package, test, correspondence, or materialization artifacts.
+
+**Mitigation:** repository workstreams may inspect product authority and define common invariants, but product-specific mutation requires separately governed product-owned planning/implementation with exact applicable accepted product specifications.
+
 ## Risk: completeness deadlock
 
-Enabling repository-wide completeness before canonical package population exists would make an otherwise valid intermediate revision fail.
+Enabling aggregate completeness before both repository-owned and required product-owned canonical populations exist would make an otherwise valid intermediate revision fail.
 
-**Mitigation:** keep completeness enforcement disabled or scoped until the required accepted-state population exists; use preparatory/non-active material where authorized; prove Atomic eligibility only if staging cannot produce a valid accepted revision.
+**Mitigation:** keep aggregate completeness disabled/scoped until both authority domains are ready; use preparatory/non-active material where authorized; prove Atomic eligibility only if staging cannot produce a valid accepted revision.
 
 ## Risk: duplicate correspondence authority
 
@@ -50,9 +64,9 @@ JSON Schema implementation could accidentally make optional semantic choices man
 
 ## Risk: product reconciliation regression
 
-Product correspondence could retain a second requirement-to-test mapping during migration.
+Product correspondence could retain a second requirement-to-test mapping during separately governed product migration.
 
-**Mitigation:** migrate test evidence through `validation_package_refs` and validate conformance agreement before removing predecessor mappings.
+**Mitigation:** product-owned planning must migrate test evidence through `validation_package_refs`; repository-generic validation checks agreement without directly authorizing the product mutation.
 
 ## Risk: historical lifecycle loss
 
@@ -62,10 +76,12 @@ Migration could discard useful withdrawn/superseded provenance or accidentally c
 
 ## Risk: materialization overreach
 
-Planning could invent initializer or projection requirements for surfaces that do not actually need correspondence materialization.
+Planning could invent initializer or product projection requirements for surfaces that do not actually need correspondence materialization.
 
-**Mitigation:** inventory actual maintained surfaces first; implement propagation only where an accepted framework surface requires it.
+**Mitigation:** inventory actual repository/framework-owned surfaces before VCP-I5 mutation; product-specific surfaces require product-owned authority.
 
 ## Authority escalation rule
 
-If any implementation choice requires a new semantic rule rather than selecting mechanics within the accepted specification envelope, stop that workstream and return the question to specification governance. Do not encode the choice first in schema, validator, package population, source metadata, or migration behavior.
+If any implementation choice requires a new semantic rule rather than selecting mechanics within the accepted specification envelope, stop that workstream and return the question to specification governance.
+
+If a proposed repository-generic implementation issue would mutate a product-owned artifact, stop and route that mutation through applicable product-owned planning/implementation authority instead of broadening the repository workstream ad hoc.
