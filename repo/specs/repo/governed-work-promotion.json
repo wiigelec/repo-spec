@@ -11,15 +11,7 @@
     },
     {
       "id": "IRG-PROM-002",
-      "text": "Promotion shall preserve the provenance requirements defined by `repo.governed-work-provenance` before any governed transition that replaces or restructures ordinary intake content."
-    },
-    {
-      "id": "IRG-PROM-003",
-      "text": "Promotion into governed-work shall establish entry into the bounded governed-change lifecycle and shall not itself bypass that lifecycle's branch, validation, review, or acceptance gates."
-    },
-    {
-      "id": "IRG-PROM-004",
-      "text": "A promoted governed operation shall remain traceable to the intake classification and preserved intake evidence that caused or informed its authority routing."
+      "text": "Before destructive restructuring of intake content during promotion, the provenance contract in repo.governed-work-provenance shall be satisfied. Promotion does not independently redefine provenance payload semantics."
     },
     {
       "id": "IRG-PROM-005",
@@ -63,6 +55,25 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/governed-work-promotion.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "IRG-PROM-003",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "IRG-L0-002",
+        "REPO-WF-001"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-002, REPO-WF-001; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-promotion."
+    },
+    {
+      "id": "IRG-PROM-004",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "IRG-L0-004"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-004; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-promotion."
     }
   ]
 }

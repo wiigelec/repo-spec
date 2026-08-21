@@ -10,10 +10,6 @@
       "text": "The repository shall require a governing issue, an isolated branch, validation, push, and PR for bounded changes."
     },
     {
-      "id": "REPO-WF-002",
-      "text": "Before any repository mutation, the chatbot shall complete workflow initialization by satisfying REPO-WF-017 through REPO-WF-024 together with the governing-issue procedure in REPO-WF-003; initialization is a mandatory pre-mutation gate."
-    },
-    {
       "id": "REPO-WF-003",
       "text": "When starting a bounded change, the chatbot shall inspect the user request, current branch, open PRs, repository records, and hosting-platform state for an existing governing issue; if exactly one open issue governs the requested work, it shall be reused; if none exists, the chatbot shall create one before any branch is created; if multiple issues could govern the work or the issue does not clearly authorize it, the chatbot shall stop and ask for clarification without creating a duplicate issue."
     },
@@ -23,7 +19,7 @@
     },
     {
       "id": "REPO-WF-005",
-      "text": "The chatbot shall report whether the issue and branch were reused or created, along with the issue number, accepted base, current branch, scope, exclusions, and next authorized action, and shall not mutate repository source until the governing issue and issue branch have been discovered or created and verified."
+      "text": "The chatbot shall report whether the issue and branch were reused or created, along with the issue number, accepted base, current branch, scope, exclusions, and next authorized action."
     },
     {
       "id": "REPO-WF-006",
@@ -31,11 +27,7 @@
     },
     {
       "id": "REPO-WF-007",
-      "text": "The normative development lifecycle for governed development shall be: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted owner-appropriate normative specifications, accepted implementation plan, governed implementation issues, and maintained artifacts. Repository/framework-owned development shall use accepted repository specifications for repository-generic requirements; product-owned development shall use accepted product specifications in the applicable Level 0\u20133 dependency order. Collection and analysis shall precede candidate functional-set formation, an approved functional set shall be required before the corresponding decomposition may be accepted, and each later acceptance-bearing stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance."
-    },
-    {
-      "id": "REPO-WF-008",
-      "text": "An approved functional set must be approved before the corresponding decomposition may be accepted. No additional development-document gate exists between functional-set approval and decomposition."
+      "text": "The normative development lifecycle for governed development shall be: collection, analysis, candidate functional set, approved functional set, accepted decomposition, accepted owner-appropriate normative specifications, accepted implementation plan, governed implementation issues, and maintained artifacts. Repository/framework-owned development shall use accepted repository specifications for repository-generic requirements; product-owned development shall use accepted product specifications in the applicable Level 0–3 dependency order. Collection and analysis shall precede candidate functional-set formation, an approved functional set shall be required before the corresponding decomposition may be accepted, and each later acceptance-bearing stage shall require acceptance of its predecessor stage before the next stage may be accepted, unless a later stage's governing specification explicitly permits concurrent drafting without acceptance.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-WF-008: An approved functional set must be approved before the corresponding decomposition may be accepted. No additional development-document gate exists between functional-set approval and decomposition."
     },
     {
       "id": "REPO-WF-009",
@@ -43,15 +35,11 @@
     },
     {
       "id": "REPO-WF-010",
-      "text": "All owner-appropriate normative specifications necessary to govern a planned implementation scope must be accepted before the corresponding implementation plan may become accepted. An implementation plan whose required controlling specifications are missing, merely placeholder scaffolding, candidate where acceptance is required, structurally invalid, mutually contradictory, absent from the applicable authoritative manifest, or missing correspondence or dependency declarations required by the governing specification contracts shall not be accepted."
+      "text": "Before an implementation plan is accepted, every applicable controlling specification shall satisfy the plan contract required by repo.implementation-plan and remain consistent with the accepted authority the plan claims to realize; repo.implementation-plan owns detailed plan-invalidity semantics."
     },
     {
       "id": "REPO-WF-011",
       "text": "Before any source mutation that creates or modifies maintained artifacts, workflow initialization shall verify that the applicable accepted owner-appropriate normative specifications exist for the planned implementation scope. Initialization shall stop before source mutation when applicable specifications are missing or their acceptance status conflicts with the planned work. The sole exception is an eligible Atomic authority transition governed by REPO-WF-025 and REPO-WF-026, where the branch may carry the complete normative revision and required plan-impact revision or explicit reaffirmation before the mechanically inseparable maintained-artifact synchronization is performed, with acceptance applying only to the final exact transition revision."
-    },
-    {
-      "id": "REPO-WF-012",
-      "text": "Code, tests, schemas, templates, generated output, and prior implementation behavior shall not become normative authority merely because they exist. Accepted repository specifications define repository-generic normative semantics, and accepted product specifications define product-specific normative semantics within their respective authority domains."
     },
     {
       "id": "REPO-WF-013",
@@ -67,11 +55,11 @@
     },
     {
       "id": "REPO-WF-016",
-      "text": "A product-artifact governing issue that creates or modifies maintained product artifacts shall cite the accepted implementation plan, identify one or more stable workstream or stage identifiers from that plan for its bounded implementation scope, cite the applicable accepted product specifications equal to the union of the selected workstreams' or stages' controlling sets, cite the exact accepted default-branch base, and cite predecessor implementation evidence."
+      "text": "Implementation authorization shall be derived from the accepted governing issue together with controlling specification and plan authority; this workflow shall not duplicate the governing issue's canonical evidence-field contract."
     },
     {
       "id": "REPO-WF-017",
-      "text": "Before any repository mutation, workflow initialization shall read README.md, discover the authoritative manifest, and read the accepted development-workflow specification."
+      "text": "Before any governed repository mutation, the actor shall read the repository README, discover the authoritative repository-spec manifest, read repo.authority-model and repo.development-workflow, and then load every additional accepted specification applicable to the planned change."
     },
     {
       "id": "REPO-WF-018",
@@ -99,7 +87,7 @@
     },
     {
       "id": "REPO-WF-024",
-      "text": "The chatbot shall withhold repository mutation until workflow initialization is complete and all applicable pre-mutation initialization requirements have been satisfied."
+      "text": "The chatbot shall withhold repository mutation until workflow initialization is complete and all applicable pre-mutation initialization requirements have been satisfied.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-WF-002: Before any repository mutation, the chatbot shall complete workflow initialization by satisfying REPO-WF-017 through REPO-WF-024 together with the governing-issue procedure in REPO-WF-003; initialization is a mandatory pre-mutation gate."
     },
     {
       "id": "REPO-WF-025",
@@ -107,7 +95,7 @@
     },
     {
       "id": "REPO-WF-026",
-      "text": "Before mutating an Atomic authority transition branch, workflow initialization shall verify the canonical Atomic authority transition change type, the accepted base, exactly one cited accepted implementation plan, selected stable workstream or stage identifiers, the complete current controlling-specification union, at least one additional accepted transition specification, predecessor issue and exact revision evidence, and the required Atomic transition evidence. Before review, validation shall prove the exact proposed revision contains the complete normative revision, plan-impact revision or explicit reaffirmation, and only the mechanically inseparable maintained-artifact synchronization authorized by the issue."
+      "text": "For an Atomic authority transition, workflow shall require the canonical Atomic evidence declared by repo.governing-issue and shall delegate hosted field-policy enforcement to repo.validation rather than restating either contract."
     }
   ],
   "dependencies": [
@@ -148,6 +136,32 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/development-workflow.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-WF-002",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-WF-024"
+      ],
+      "rationale": "Normalized into canonical owner REPO-WF-024; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-WF-008",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-WF-007"
+      ],
+      "rationale": "Normalized into canonical owner REPO-WF-007; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-WF-012",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-007"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.development-workflow."
     }
   ]
 }

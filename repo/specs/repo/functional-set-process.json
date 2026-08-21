@@ -7,7 +7,7 @@
   "normative_requirements": [
     {
       "id": "REPO-FSP-001",
-      "text": "Overview-process artifacts shall be stored under the owner-specific overview root defined by `repo.development-document-base`: repository/framework-owned artifacts under `repo/docs/overview/` and product-owned artifacts under `product/docs/overview/`. The recognized artifact types are `overview-whiteboard`, `overview-analysis`, and `functional-set`."
+      "text": "Functional-set, product-decomposition, and implementation-plan development documents shall use the canonical roots and type mapping defined by repo.development-document-base; this specification owns only functional-set-specific semantics."
     },
     {
       "id": "REPO-FSP-002",
@@ -23,7 +23,7 @@
     },
     {
       "id": "REPO-FSP-005",
-      "text": "A functional-set artifact shall use lifecycle status `candidate` until explicit user approval and `approved` after that decision. Candidate status shall not authorize decomposition. Approval shall establish the bounded directional handoff point for decomposition, later specification work, planning, implementation, tests, integration, and functional-set-bounded audit traversal."
+      "text": "Approval of a functional-set document establishes the directional authority handoff into decomposition work; it does not by itself authorize an implementation plan or implementation mutation outside the downstream governing contracts."
     },
     {
       "id": "REPO-FSP-006",

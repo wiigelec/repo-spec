@@ -14,10 +14,6 @@
       "text": "The `bug-fix` and `feature-request` classifications may be assigned at issue creation or after review."
     },
     {
-      "id": "IRG-CLS-003",
-      "text": "A routing classification shall remain distinct from `governed-work` governance state."
-    },
-    {
       "id": "IRG-CLS-004",
       "text": "Classification uncertainty that changes the applicable authority path shall be surfaced rather than silently converted into repository mutation authority."
     },
@@ -57,6 +53,16 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/issue-routing-classification.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "IRG-CLS-003",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "IRG-L0-001"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-001; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-classification."
     }
   ]
 }

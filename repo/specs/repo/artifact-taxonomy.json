@@ -113,10 +113,10 @@
       "identifier": "schema",
       "label": "Schema",
       "role": "schema",
-      "authority_category": "normative",
-      "authority_source": "accepted schema definition",
-      "source_of_truth_rule": "Validates repository-local structure but does not supersede the specification it constrains.",
-      "mutability": "immutable once accepted except through governed revision",
+      "authority_category": "implementation",
+      "authority_source": "accepted specification-delegated structural enforcement",
+      "source_of_truth_rule": "Encodes mechanically enforceable repository-local structure delegated by accepted specifications but does not independently define or override the semantics it constrains.",
+      "mutability": "mutable only through governed synchronization with controlling authority",
       "generation_mode": "manual",
       "validation_ownership": "validation",
       "portability_category": "framework-generic",
@@ -361,14 +361,6 @@
       "text": "An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance."
     },
     {
-      "id": "REPO-AT-004",
-      "text": "An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority."
-    },
-    {
-      "id": "REPO-AT-005",
-      "text": "Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized."
-    },
-    {
       "id": "REPO-AT-006",
       "text": "Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority."
     },
@@ -379,18 +371,6 @@
     {
       "id": "REPO-AT-008",
       "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority."
-    },
-    {
-      "id": "REPO-AT-009",
-      "text": "Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`."
-    },
-    {
-      "id": "REPO-AT-010",
-      "text": "The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics."
-    },
-    {
-      "id": "REPO-AT-011",
-      "text": "The overview-whiteboard class shall remain evidentiary, the overview-analysis class shall remain directional synthesis, and a functional-set artifact shall distinguish candidate from approved lifecycle status; only an approved functional set may act as the directional predecessor authority for decomposition."
     }
   ],
   "dependencies": [
@@ -426,6 +406,52 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/artifact-taxonomy.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-AT-004",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-003",
+        "REPO-AUTH-007"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-003, REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
+    },
+    {
+      "id": "REPO-AT-009",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-PP-004",
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PP-004, REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
+    },
+    {
+      "id": "REPO-AT-010",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-STR-012",
+        "REPO-AUTH-007"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-012, REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
+    },
+    {
+      "id": "REPO-AT-011",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-FSP-005",
+        "REPO-AT-003"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-FSP-005, REPO-AT-003; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy."
+    },
+    {
+      "id": "REPO-AT-005",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-014."
     }
   ]
 }

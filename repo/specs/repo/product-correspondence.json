@@ -27,15 +27,11 @@
     },
     {
       "id": "REPO-PC-006",
-      "text": "Each conformance record shall identify exactly one requirement, reference implementation and test mapping identifiers declared by the same source specification, and use the status vocabulary `covered` or `not-applicable`; a `not-applicable` record shall include a non-empty rationale."
+      "text": "Each conformance record shall identify exactly one requirement, reference implementation and test mapping identifiers declared by the same source specification, and use the status vocabulary `covered` or `not-applicable`; a `not-applicable` record shall include a non-empty rationale.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-PC-008: For correspondence records that are declared, every requirement reference shall match a normative requirement in the owning specification, no requirement shall have more than one conformance record, every covered record shall reference at least one implementation mapping and at least one test mapping, every not-applicable record shall reference none of those mappings and shall include a non-empty rationale, and every declared mapping identifier shall be reachable from at least one conformance record. Repository validation shall not require undeclared requirements to have conformance records solely because the owning product specification is accepted."
     },
     {
       "id": "REPO-PC-007",
       "text": "Correspondence declarations shall participate according to lifecycle: accepted specifications may exist before implementation and test artifacts and therefore are not required to declare complete correspondence merely to become accepted; candidate specifications may declare correspondence; and superseded or retired specifications may retain correspondence for historical continuity."
-    },
-    {
-      "id": "REPO-PC-008",
-      "text": "For correspondence records that are declared, every requirement reference shall match a normative requirement in the owning specification, no requirement shall have more than one conformance record, every covered record shall reference at least one implementation mapping and at least one test mapping, every not-applicable record shall reference none of those mappings and shall include a non-empty rationale, and every declared mapping identifier shall be reachable from at least one conformance record. Repository validation shall not require undeclared requirements to have conformance records solely because the owning product specification is accepted."
     },
     {
       "id": "REPO-PC-009",
@@ -99,6 +95,16 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/product-correspondence.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-PC-008",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-PC-006"
+      ],
+      "rationale": "Normalized into canonical owner REPO-PC-006; predecessor semantics were folded into the surviving requirement before withdrawal."
     }
   ]
 }

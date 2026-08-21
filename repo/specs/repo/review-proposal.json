@@ -69,7 +69,7 @@
     },
     {
       "id": "REPO-RP-002",
-      "text": "The canonical review-proposal contract shall include structured field definitions for the reviewer-facing fields governing issue, summary, validation, review focus, and scope notes, while allowing evidence that is already captured by GitHub metadata, automated checks, the governing issue, or linked validation records to remain outside the visible PR body."
+      "text": "The canonical `review_fields` collection in this specification is normative structured contract data under repo.authority-model. Evidence already captured by GitHub metadata, automated checks, the governing issue, or linked validation records may remain outside the visible PR body."
     },
     {
       "id": "REPO-RP-003",
@@ -77,23 +77,7 @@
     },
     {
       "id": "REPO-RP-004",
-      "text": "Validation evidence in a review proposal shall identify the exact revision tested, either directly or through GitHub metadata and linked records."
-    },
-    {
-      "id": "REPO-RP-005",
-      "text": "New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated."
-    },
-    {
-      "id": "REPO-RP-006",
-      "text": "Passing validation shall not be treated as semantic review."
-    },
-    {
-      "id": "REPO-RP-007",
-      "text": "Review shall not be treated as acceptance."
-    },
-    {
-      "id": "REPO-RP-008",
-      "text": "Acceptance shall apply only to the exact proposed revision."
+      "text": "Acceptance evidence is revision-specific: review conclusions, approval state, required evidence, and any freshness-sensitive claims used for acceptance shall correspond to the exact revision proposed for merge; a later material revision invalidates stale acceptance evidence until it is re-established for that revision.\n\nSemantic preservation from normalized predecessor requirements:\n- REPO-RP-005: New commits shall invalidate prior exact-head validation or acceptance evidence until checks are repeated.\n- REPO-RP-008: Acceptance shall apply only to the exact proposed revision.\n- REPO-RP-017: Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance."
     },
     {
       "id": "REPO-RP-009",
@@ -108,44 +92,12 @@
       "text": "Empty placeholders shall not satisfy required review-proposal fields."
     },
     {
-      "id": "REPO-RP-012",
-      "text": "GitHub-specific review-proposal artifacts shall remain subordinate to the canonical repository specification."
-    },
-    {
       "id": "REPO-RP-013",
       "text": "When creating or updating a GitHub pull request, the chatbot shall load and use .github/PULL_REQUEST_TEMPLATE.md as the PR-body template, and shall treat it as a subordinate adapter to repo.review-proposal rather than as the governing contract."
     },
     {
-      "id": "REPO-RP-014",
-      "text": "The Markdown projection shall provide a deterministic human-readable template for the canonical review-proposal structure and its structured field definitions."
-    },
-    {
-      "id": "REPO-RP-015",
-      "text": "The GitHub pull request template shall represent every required reviewer-facing field in the canonical review-proposal contract and may omit evidence duplicated elsewhere."
-    },
-    {
       "id": "REPO-RP-016",
       "text": "The GitHub pull request template shall omit internal field IDs, input types, placeholders, and schema-projection details from visible body content."
-    },
-    {
-      "id": "REPO-RP-017",
-      "text": "Reviewer-facing revision-specific claims in a review proposal shall not contradict the current proposed revision or authoritative validation evidence; after the proposed head changes, any such mutable claim shall be refreshed or removed before acceptance."
-    },
-    {
-      "id": "REPO-RP-018",
-      "text": "Human semantic review shall evaluate the exact proposed revision against controlling accepted authority for matters that mechanical validation cannot establish, including governing intent, semantic completeness, authority-domain correctness, and materially relevant ambiguity."
-    },
-    {
-      "id": "REPO-RP-019",
-      "text": "When a proposed change creates, modifies, relies upon, or exposes materially relevant validation behavior, human semantic review shall evaluate whether that behavior enforces the controlling authority without under-enforcement, overreach, or creation of normative semantics not granted by accepted authority."
-    },
-    {
-      "id": "REPO-RP-020",
-      "text": "A reviewer shall not treat existing implementation, tests, generated artifacts, prior behavior, validator behavior, or a passing validation result as authority that overrides conflicting controlling accepted specifications."
-    },
-    {
-      "id": "REPO-RP-021",
-      "text": "A material authority conflict or semantic-review finding that cannot be resolved from controlling accepted authority shall block acceptance of the affected proposed revision until the conflict is resolved through the governed process."
     }
   ],
   "dependencies": [
@@ -211,6 +163,105 @@
       "type": "markdown",
       "path": ".github/PULL_REQUEST_TEMPLATE.md",
       "renderer": "review-template"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-RP-005",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-RP-004"
+      ],
+      "rationale": "Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-RP-008",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-RP-004"
+      ],
+      "rationale": "Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-RP-017",
+      "disposition": "merged",
+      "surviving_requirements": [
+        "REPO-RP-004"
+      ],
+      "rationale": "Normalized into canonical owner REPO-RP-004; predecessor semantics were folded into the surviving requirement before withdrawal."
+    },
+    {
+      "id": "REPO-RP-014",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-015",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-006",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-005",
+        "REPO-AUTH-006"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005, REPO-AUTH-006; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-007",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-005"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-018",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-005"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-019",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-005"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-005; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-020",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-007"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-021",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-008"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-008; the predecessor text is not retained as an independent normative restatement inside repo.review-proposal."
+    },
+    {
+      "id": "REPO-RP-012",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-014"
+      ],
+      "rationale": "Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-014."
     }
   ]
 }

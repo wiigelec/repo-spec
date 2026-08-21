@@ -42,8 +42,20 @@
       "text": "Repository authority shall be changed only through the accepted governed change and acceptance process applicable to repository specifications. Neither implementation drift, validator behavior, generated output, human convenience material, review custom, nor repeated historical practice shall amend accepted repository authority implicitly."
     },
     {
-      "id": "REPO-AUTH-010",
-      "text": "Governmental, constitutional, legislative, executive, judicial, or similar institutional analogies may be used as non-normative explanatory aids, but such analogies shall not establish repository semantics, expand or limit delegated authority, or replace the precise requirements of accepted repository and product specifications."
+      "id": "REPO-AUTH-011",
+      "text": "Structured contract data explicitly designated by an accepted repository specification as part of that specification's contract shall carry the same repository-local normative authority as the specification's normative requirement text within the designated domain. Such structured data need not be re-enumerated in a separate prose requirement merely to be normative; a material inconsistency between controlling structured contract data and controlling normative text is an authority conflict governed by REPO-AUTH-008."
+    },
+    {
+      "id": "REPO-AUTH-012",
+      "text": "Each repository-generic semantic invariant shall have one controlling normative owner. A dependent specification may establish applicability, sequencing, specialization, evidence, or delegated enforcement for that invariant, but shall not create a second independent restatement of the same semantics when reference to the controlling owner is sufficient. Where existing accepted requirements duplicate one invariant, governed normalization may merge them into one controlling requirement without semantic loss."
+    },
+    {
+      "id": "REPO-AUTH-013",
+      "text": "Published normative requirement identifiers shall remain stable and shall never be reused for different semantics. When an accepted requirement is merged, moved, superseded by a stronger generic invariant, or otherwise withdrawn during governed normalization, its former identifier shall remain reserved and the owning specification shall retain a structured `withdrawn_requirements` record identifying the withdrawn ID, its disposition, the surviving controlling requirement or requirements when applicable, and a non-empty rationale."
+    },
+    {
+      "id": "REPO-AUTH-014",
+      "text": "A declared generated projection or installed adapter shall be a faithful deterministic representation of the authoritative source surface assigned to it, shall remain subordinate to that source, and shall not acquire independently controlling semantics merely because it is materialized. Any source-to-projection transformation shall preserve the source semantics applicable to the projection and shall expose no additional normative authority unless an accepted specification explicitly delegates such authority."
     }
   ],
   "dependencies": [
@@ -84,6 +96,26 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/authority-model.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "REPO-AUTH-010",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-007",
+        "REPO-AUTH-009"
+      ],
+      "rationale": "Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-007, REPO-AUTH-009."
+    },
+    {
+      "id": "REPO-AUTH-015",
+      "disposition": "withdrawn",
+      "surviving_requirements": [
+        "REPO-AUTH-004",
+        "REPO-AUTH-007"
+      ],
+      "rationale": "Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-004, REPO-AUTH-007."
     }
   ]
 }

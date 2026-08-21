@@ -6,20 +6,8 @@
   "schema_version": "1",
   "normative_requirements": [
     {
-      "id": "IRG-PVAL-001",
-      "text": "Hosting-platform labels, comments, body updates, issue events, and hosted field-policy realization shall remain subordinate to repository-generic routing and governance authority."
-    },
-    {
-      "id": "IRG-PVAL-002",
-      "text": "Ordinary unformatted intake that is not in governed-work state shall not fail governed-work field policy solely because canonical governed fields are absent."
-    },
-    {
       "id": "IRG-PVAL-003",
       "text": "Governed-work field policy shall apply after the issue is in governed-work state and shall validate the canonical governed issue representation applicable to that state."
-    },
-    {
-      "id": "IRG-PVAL-004",
-      "text": "Platform integration shall preserve provenance and shall not allow a hosted adapter state to create repository mutation authority that is absent from accepted repository governance."
     },
     {
       "id": "IRG-PVAL-005",
@@ -63,6 +51,34 @@
     {
       "type": "markdown",
       "path": "repo/derived/specs/repo/issue-routing-platform-validation.md"
+    }
+  ],
+  "withdrawn_requirements": [
+    {
+      "id": "IRG-PVAL-001",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "REPO-AUTH-007",
+        "IRG-L0-005"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-007, IRG-L0-005; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-platform-validation."
+    },
+    {
+      "id": "IRG-PVAL-002",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "IRG-L0-003",
+        "IRG-L0-005"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-003, IRG-L0-005; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-platform-validation."
+    },
+    {
+      "id": "IRG-PVAL-004",
+      "disposition": "moved",
+      "surviving_requirements": [
+        "IRG-L0-002"
+      ],
+      "rationale": "Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-002; the predecessor text is not retained as an independent normative restatement inside repo.issue-routing-platform-validation."
     }
   ]
 }
