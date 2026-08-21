@@ -58,8 +58,8 @@
       "text": "The maintained schema and derived-specification structural envelopes shall be closed. `repo/schemas/` shall contain exactly the direct child directory `repo/`, and `product/schemas/` shall contain exactly the direct child directory `product/`; schema files beneath those domain roots shall be permitted only where authorized by the accepted schema-owning repository or product contract. `repo/derived/` and `product/derived/` shall each contain exactly the direct child directory `specs/`; `repo/derived/specs/` shall contain exactly the direct child directory `repo/`, and `product/derived/specs/` shall contain exactly the direct child directory `product/`. Files beneath the final derived-specification domain roots shall be permitted only when declared by their accepted authoritative source contract and shall remain subordinate generated projections."
     },
     {
-      "id": "REPO-STR-017",
-      "text": "The maintained validation-domain structural envelopes are repository-structure semantics. The roots `validation/` and `repo/validation/` shall each contain exactly `README.md`, `manifest.json`, `checks/`, `core/`, `runners/`, `tests/`, and `github/`; `product/validation/` shall contain exactly `README.md`, `manifest.json`, `checks/`, `core/`, `runners/`, and `tests/`. In every validation domain, `checks/` shall contain exactly `development_documents.py`, `domain.py`, `generated_outputs.py`, `policy.py`, and `specifications.py`; `core/` shall contain exactly `context.py`, `errors.py`, `invariants.py`, `paths.py`, and `schema_subset.py`; and `runners/` shall contain exactly `validate_impl.py` and `test_validation_impl.py`. Each validation domain shall contain `tests/` with exactly the direct subdirectories `unit/`, `self/`, and `fixtures/`, with no other direct entries; this structural rule does not constrain filenames, nested structure, or file contents beneath those three test subdirectories. `github/` is required as a directory for root and repository validation, and this structural rule does not constrain its internal contents. Validation entry points and implementation shall remain inside the validation namespaces authorized by this specification rather than establishing parallel undeclared validation namespaces."
+      "id": "REPO-STR-018",
+      "text": "The maintained validation-domain structural envelopes are repository-structure semantics. The roots `validation/` and `repo/validation/` shall each contain exactly `README.md`, `manifest.json`, `checks/`, `core/`, `runners/`, `tests/`, `packages/`, and `github/`; `product/validation/` shall contain exactly `README.md`, `manifest.json`, `checks/`, `core/`, `runners/`, `tests/`, and `packages/`. In every validation domain, `packages/` is an explicitly extensible recursive role-governed namespace for canonical `validation-correspondence-package` source artifacts authorized by `repo.validation-correspondence` and `repo.artifact-taxonomy`. Canonical package placement shall follow normative ownership rather than task execution location: repository-owned normative requirements shall use `repo/validation/packages/`; product-owned normative requirements shall use `product/validation/packages/`; root `validation/packages/` is reserved only for canonical package ownership that accepted authority explicitly assigns to an inherently cross-domain or whole-checkout normative responsibility. Execution of a validation task from root validation shall not by itself create root package ownership, and a canonical normative requirement shall not have canonical package artifacts in more than one validation domain. Exact nested package path and filename serialization beneath the authorized `packages/` role is delegated to later accepted representation rules. In every validation domain, `checks/` shall contain exactly `development_documents.py`, `domain.py`, `generated_outputs.py`, `policy.py`, and `specifications.py`; `core/` shall contain exactly `context.py`, `errors.py`, `invariants.py`, `paths.py`, and `schema_subset.py`; and `runners/` shall contain exactly `validate_impl.py` and `test_validation_impl.py`. Each validation domain shall contain `tests/` with exactly the direct subdirectories `unit/`, `self/`, and `fixtures/`, with no other direct entries; this structural rule does not constrain filenames, nested structure, or file contents beneath those three test subdirectories. `github/` is required as a directory for root and repository validation, and this structural rule does not constrain its internal contents. Validation entry points, implementation, and canonical correspondence-package source artifacts shall remain inside the validation namespaces authorized by this specification rather than establishing parallel undeclared validation namespaces."
     }
   ],
   "dependencies": [
@@ -75,6 +75,14 @@
     {
       "type": "specification",
       "spec_id": "repo.platform-profiles"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation-correspondence"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.artifact-taxonomy"
     }
   ],
   "derived_artifacts": [
@@ -108,6 +116,14 @@
         "REPO-AUTH-003"
       ],
       "rationale": "Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-DDB-002, REPO-AUTH-003."
+    },
+    {
+      "id": "REPO-STR-017",
+      "disposition": "superseded",
+      "surviving_requirements": [
+        "REPO-STR-018"
+      ],
+      "rationale": "Superseded during validation-correspondence specification work because the closed validation-domain envelope must add the canonical correspondence-package structural role and ownership rules. REPO-STR-018 preserves the predecessor validation-domain structure while adding only the accepted package-role authorization."
     }
   ]
 }

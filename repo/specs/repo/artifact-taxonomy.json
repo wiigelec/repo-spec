@@ -227,6 +227,22 @@
       ]
     },
     {
+      "identifier": "validation-correspondence-package",
+      "label": "Validation correspondence package",
+      "role": "validation correspondence source package",
+      "authority_category": "implementation",
+      "authority_source": "accepted repo.validation-correspondence semantics and maintained correspondence state",
+      "source_of_truth_rule": "Acts as the canonical maintained source record for exactly one validation-correspondence package relationship, including its delegated disposition and validation-task references, while remaining subordinate to the owning normative requirement and never defining, restating, or extending that requirement's semantics.",
+      "mutability": "mutable only through governed synchronization with accepted correspondence authority",
+      "generation_mode": "manual",
+      "validation_ownership": "validation",
+      "portability_category": "framework-generic",
+      "manifest_participation": "reference",
+      "source_artifacts": [
+        "repo.validation-correspondence"
+      ]
+    },
+    {
       "identifier": "review-record",
       "label": "Review record",
       "role": "review record",
@@ -371,6 +387,10 @@
     {
       "id": "REPO-AT-008",
       "text": "The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority."
+    },
+    {
+      "id": "REPO-AT-012",
+      "text": "The taxonomy shall recognize `validation-correspondence-package` as the canonical maintained implementation-class source artifact for one validation-correspondence package relationship. Such an artifact shall remain subordinate to the owning normative requirement and `repo.validation-correspondence`, shall not independently define normative semantics, and shall use the taxonomy metadata defined for that class to distinguish source correspondence state from generated projections, test artifacts, and validation evidence."
     }
   ],
   "dependencies": [
@@ -400,6 +420,10 @@
     {
       "type": "specification",
       "spec_id": "repo.validation"
+    },
+    {
+      "type": "specification",
+      "spec_id": "repo.validation-correspondence"
     }
   ],
   "derived_artifacts": [

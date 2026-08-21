@@ -117,6 +117,9 @@
           },
           {
             "$ref": "#/$defs/userConvenience"
+          },
+          {
+            "$ref": "#/$defs/validationCorrespondencePackage"
           }
         ]
       }
@@ -196,7 +199,8 @@
             "review-record",
             "acceptance-record",
             "release-record",
-            "user-convenience"
+            "user-convenience",
+            "validation-correspondence-package"
           ]
         },
         "label": {
@@ -229,7 +233,8 @@
             "review record",
             "acceptance record",
             "release record",
-            "user convenience"
+            "user convenience",
+            "validation correspondence source package"
           ]
         },
         "authority_category": {
@@ -1217,6 +1222,46 @@
           "minLength": 1
         }
       }
+    },
+    "validationCorrespondencePackage": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactClass"
+        },
+        {
+          "properties": {
+            "identifier": {
+              "const": "validation-correspondence-package"
+            },
+            "role": {
+              "const": "validation correspondence source package"
+            },
+            "authority_category": {
+              "const": "implementation"
+            },
+            "generation_mode": {
+              "const": "manual"
+            },
+            "validation_ownership": {
+              "const": "validation"
+            },
+            "portability_category": {
+              "const": "framework-generic"
+            },
+            "manifest_participation": {
+              "const": "reference"
+            },
+            "source_artifacts": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "const": "repo.validation-correspondence"
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      ]
     }
   }
 }
