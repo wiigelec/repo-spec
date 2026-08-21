@@ -105,7 +105,11 @@
   "normative_requirements": [
     {
       "id": "REPO-MAN-001",
-      "text": "The manifest shall identify the authoritative repository-spec JSON files."
+      "text": "The manifest shall enumerate the complete authoritative repository-specification JSON set. Each authoritative entry shall identify exactly one stable `spec_id` and repository-relative path, and no authoritative repository specification may exist outside that registered set."
+    },
+    {
+      "id": "REPO-MAN-002",
+      "text": "Repository-specification identities and manifest paths shall be unique. Every declared repository-specification dependency shall resolve to a manifest-listed accepted repository specification, and the complete repository-specification dependency graph shall remain acyclic."
     }
   ],
   "dependencies": [],
