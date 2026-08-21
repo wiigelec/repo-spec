@@ -31,6 +31,7 @@ def run(repo_root: Path) -> int:
         env=env,
     )
     return result.returncode
+run.__validation_metadata__ = {"role": "helper"}
 
 
 def main(argv: list[str]) -> int:
@@ -39,6 +40,7 @@ def main(argv: list[str]) -> int:
         return 2
     repo_root = Path(argv[1]).resolve() if len(argv) == 2 else Path.cwd().resolve()
     return run(repo_root)
+main.__validation_metadata__ = {"role": "helper"}
 
 
 if __name__ == "__main__":

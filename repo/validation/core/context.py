@@ -41,3 +41,4 @@ def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str
         return load_repo_specs_impl(repo_root)
     except RepositoryError as exc:
         fail(str(exc))
+load_repo_specs.__validation_metadata__ = {"role": "helper"}

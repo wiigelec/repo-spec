@@ -16,3 +16,4 @@ def resolve_repo_path(repo_root: Path, value: str) -> Path:
         return resolve_repo_path_impl(repo_root, value)
     except RepositoryError as exc:
         fail(str(exc))
+resolve_repo_path.__validation_metadata__ = {"role": "helper"}

@@ -74,6 +74,7 @@ def development_document_schemas(context: ValidationContext) -> dict[str, dict[s
         return context.repository.schemas
     expect(context.external_repository is not None, "validation context missing external repository schema state")
     return context.external_repository.schemas
+development_document_schemas.__validation_metadata__ = {"role": "helper"}
 
 def markdown_headings(text: str) -> set[str]:
     headings: set[str] = set()
@@ -81,15 +82,18 @@ def markdown_headings(text: str) -> set[str]:
         if line.startswith("## "):
             headings.add(line.removeprefix("## ").strip())
     return headings
+markdown_headings.__validation_metadata__ = {"role": "helper"}
 
 def markdown_links(text: str) -> list[tuple[str, str]]:
     return re.findall(r"\[([^\]]+)\]\(([^)]+)\)", text)
+markdown_links.__validation_metadata__ = {"role": "helper"}
 
 def resolve_markdown_link_target(source_path: str, target: str) -> str:
     target = target.split("#", 1)[0]
     if not target:
         return target
     return os.path.normpath((Path(source_path).parent / target).as_posix())
+resolve_markdown_link_target.__validation_metadata__ = {"role": "helper"}
 
 def markdown_section(text: str, heading: str) -> str:
     lines = text.splitlines()
@@ -106,6 +110,7 @@ def markdown_section(text: str, heading: str) -> str:
             end = index
             break
     return "\n".join(lines[start:end])
+markdown_section.__validation_metadata__ = {"role": "helper"}
 
 def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
     match = re.search(r"## Metadata\s*\n\s*```json\s*\n(.*?)\n```", text, re.S)
@@ -116,6 +121,7 @@ def extract_document_metadata(text: str, source: str) -> dict[str, Any]:
         fail(f"development document metadata failed: invalid JSON in {source}: {exc.msg}")
     expect(isinstance(metadata, dict), f"development document metadata failed: {source} metadata must be an object")
     return metadata
+extract_document_metadata.__validation_metadata__ = {"role": "helper"}
 
 def load_development_document_compatibility_registry(
     repo_root: Path,
@@ -156,6 +162,7 @@ def load_development_document_compatibility_registry(
         registry[path] = entry
 
     return registry
+load_development_document_compatibility_registry.__validation_metadata__ = {"role": "helper"}
 
 def resolve_development_document_artifact(
     path: str,
@@ -175,6 +182,7 @@ def resolve_development_document_artifact(
             expect(owner_path in compatibility_registry, f"development document relationship failed: unresolved legacy composite owner for {path}")
             return owner_path, None
     raise KeyError(path)
+resolve_development_document_artifact.__validation_metadata__ = {"role": "helper"}
 
 def check_development_document_relationships(
     repo_root: Path,
@@ -241,6 +249,7 @@ def check_development_document_relationships(
                     saw_approved_functional_set = True
             elif target_type == "product-decomposition":
                 saw_decomposition = True
+        classify_target.__validation_metadata__ = {"role": "helper"}
 
         for target_path in controlling_documents:
             try:
@@ -393,9 +402,11 @@ def check_development_document_relationships(
             visit(dep)
         visiting.pop()
         visited.add(node)
+    visit.__validation_metadata__ = {"role": "helper"}
 
     for node in basis_graph:
         visit(node)
+check_development_document_relationships.__validation_metadata__ = {"role": "helper"}
 
 
 def check_development_document_namespace(
@@ -419,6 +430,7 @@ def check_development_document_namespace(
             f"development document namespace failed: canonical root must be a directory "
             f"{namespace_rel}{root_name}",
         )
+check_development_document_namespace.__validation_metadata__ = {"role": "helper"}
 
 
 def check_development_document_root_entries(
@@ -446,6 +458,7 @@ def check_development_document_root_entries(
             f"development document root failed: subordinate chunk root must be a directory "
             f"{root_rel}{chunk_dir_name}",
         )
+check_development_document_root_entries.__validation_metadata__ = {"role": "helper"}
 
 
 def check_development_document_chunk_entries(
@@ -472,6 +485,7 @@ def check_development_document_chunk_entries(
         f"{chunk_dir.relative_to(repo_root).as_posix()}",
     )
     return actual_chunks
+check_development_document_chunk_entries.__validation_metadata__ = {"role": "helper"}
 
 def check_development_documents_phase(
     context: ValidationContext,
@@ -660,6 +674,7 @@ def check_development_documents_phase(
             chunk_dir_names,
         )
     check_development_document_relationships(context.repo_root, records, compatibility_registry, chunk_owner_paths)
+check_development_documents_phase.__validation_metadata__ = {"role": "helper"}
 
 def get_development_document_records(
     context: ValidationContext,
@@ -701,6 +716,7 @@ def get_development_document_records(
                 chunk_owner_paths[chunk_path] = rel_path
 
     return records
+get_development_document_records.__validation_metadata__ = {"role": "helper"}
 
 def _repository_development_roots() -> dict[str, dict[str, Any]]:
     return {
@@ -708,9 +724,11 @@ def _repository_development_roots() -> dict[str, dict[str, Any]]:
         for root_rel, info in DEVELOPMENT_DOCUMENT_ROOTS.items()
         if not root_rel.startswith("product/")
     }
+_repository_development_roots.__validation_metadata__ = {"role": "helper"}
 
 def chunk_dir_for_metadata(metadata: dict[str, Any]) -> str:
     return f"{metadata['root_path']}{metadata['document_slug']}/"
+chunk_dir_for_metadata.__validation_metadata__ = {"role": "helper"}
 
 def _check_repository_development_documents(
     context: ValidationContext,
@@ -727,6 +745,8 @@ def _check_repository_development_documents(
         compatibility_registry={},
         owned_compatibility_paths=set(),
     )
+_check_repository_development_documents.__validation_metadata__ = {"role": "task", "task_id": "repo.validation.development-documents", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-019"}}
 
 def document_chunk_paths(metadata: dict[str, Any]) -> list[str]:
     return [chunk["path"] for chunk in metadata["subordinate_chunks"]]
+document_chunk_paths.__validation_metadata__ = {"role": "helper"}

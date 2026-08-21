@@ -17,6 +17,7 @@ def check_supersession_pairs(specs: dict[str, dict[str, Any]], relation_label: s
         for target_spec_id in spec.get("superseded_by", []):
             expect(target_spec_id in specs, f"{relation_label} failed: unresolved superseded_by pair {spec_id} -> {target_spec_id}")
             expect(spec_id in specs[target_spec_id].get("supersedes", []), f"{relation_label} failed: non-reciprocal superseded_by pair {spec_id} -> {target_spec_id}")
+check_supersession_pairs.__validation_metadata__ = {"role": "helper"}
 
 
 def check_supersession_acyclicity(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
@@ -35,9 +36,11 @@ def check_supersession_acyclicity(specs: dict[str, dict[str, Any]], relation_lab
             visit(dep)
         visiting.remove(node)
         visited.add(node)
+    visit.__validation_metadata__ = {"role": "helper"}
 
     for node in graph:
         visit(node)
+check_supersession_acyclicity.__validation_metadata__ = {"role": "helper"}
 
 
 def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str, field: str, keys: list[str]) -> None:
@@ -47,3 +50,4 @@ def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str,
         identity = tuple(item.get(key) for key in keys)
         expect(identity not in seen, f"{field} failed: duplicate item properties {', '.join(keys)}")
         seen.add(identity)
+check_unique_item_properties.__validation_metadata__ = {"role": "helper"}

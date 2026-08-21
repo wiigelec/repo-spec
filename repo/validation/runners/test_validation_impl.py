@@ -19,6 +19,7 @@ def _run_source_development_tests(repo_root: Path) -> None:
     from validation.tests.self.mutation_tests import run_repository_mutation_tests
 
     run_repository_mutation_tests(repo_root)
+_run_source_development_tests.__validation_metadata__ = {"role": "helper"}
 
 
 def main(argv: list[str]) -> int:
@@ -33,6 +34,7 @@ def main(argv: list[str]) -> int:
     except ValidationFailure as exc:
         print(f"validation test error: {exc}", file=sys.stderr)
         return 1
+main.__validation_metadata__ = {"role": "helper"}
 
 
 if __name__ == "__main__":

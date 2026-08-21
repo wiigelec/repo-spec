@@ -8,3 +8,4 @@ def validate_root(repo_root: Path) -> bool:
     development_documents.validate(repo_root)
     generated_outputs.validate(repo_root)
     return policy.validate(repo_root)
+validate_root.__validation_metadata__ = {"role": "helper"}
