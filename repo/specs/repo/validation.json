@@ -159,7 +159,7 @@
     },
     {
       "id": "REPO-VAL-039",
-      "text": "The repository leaf validation entry point shall enforce the approved maintained source-repository root boundary declared by accepted repository structure and related accepted repository-local contracts, shall allow the governed `user/` convenience namespace, shall reject root `docs/`, and shall reject any other undeclared top-level file or directory."
+      "text": "The applicable production validation entry points shall enforce every closed maintained structural envelope declared by accepted `repo.repository-structure` within their ownership domain. Root validation shall enforce the exact maintained source-repository root boundary. Repository leaf validation shall enforce the exact direct entries and path kinds of `repo/`, `repo/specs/`, `repo/schemas/`, `repo/derived/`, and `repo/derived/specs/`. Product leaf validation shall enforce the exact direct entries and path kinds of `product/`, `product/specs/`, `product/schemas/`, `product/derived/`, and `product/derived/specs/`. Each such closed envelope shall reject missing required entries, undeclared extra entries, and wrong-kind entries. The governed `user/` namespace remains an explicit non-normative exception at the source-repository root; root `docs/` and every other undeclared root entry shall be rejected."
     },
     {
       "id": "REPO-VAL-040",
@@ -188,6 +188,10 @@
     {
       "id": "REPO-VAL-046",
       "text": "Each leaf validation entry point shall perform an executive documentation-namespace check for the owned `repo/docs/` or `product/docs/` tree before deeper per-document validation. The check shall enforce the exact owner-appropriate direct child roots, reject every undeclared direct file or directory, enforce the closed direct-entry model of each canonical development-document root, require every subordinate chunk directory to be owned by exactly one valid controlling document, and reject every undeclared file, nested directory, orphan directory, or other content within a chunk directory."
+    },
+    {
+      "id": "REPO-VAL-047",
+      "text": "Repository and product leaf validation shall enforce their owner-specific maintained `scripts/` and `src/` structural contracts declared by `REPO-STR-013` and `REPO-STR-014`. Each owner shall require both roots as directories; each `scripts/` root shall contain only direct executable files serving as wrappers or entry points, shall reject nested directories and Python implementation modules, and each `src/` root shall remain the owner-appropriate recursively extensible maintained implementation namespace. Repository validation shall reject repository validation implementation under `repo/src/`; product validation shall reject product validation implementation under `product/src/`. These checks shall enforce structural ownership only and shall not infer semantic code ownership from source contents."
     }
   ],
   "dependencies": [

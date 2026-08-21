@@ -14,6 +14,7 @@ from .policy import (
     _check_repository_lifecycle,
     check_platform_profile_boundary,
     check_repository_source_layout,
+    check_repository_structural_envelopes,
     check_validation_layout,
 )
 from .specifications import (
@@ -55,6 +56,7 @@ def validate_repo(repo_root: Path) -> None:
         print(f"ok: {label}")
 
 REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
+    ("repository structural envelopes", check_repository_structural_envelopes),
     ("repository validation layout", check_validation_layout),
     ("repository source layout", check_repository_source_layout),
     ("repository JSON Schema conformance", check_schema_conformance),
