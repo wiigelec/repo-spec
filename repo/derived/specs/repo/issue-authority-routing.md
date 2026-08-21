@@ -18,14 +18,29 @@ Do not edit directly.
 
 Reusable capability for choosing the accepted authority path from issue routing classification while composing with, rather than redefining, existing audit and feature-development lifecycles.
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `IRG-ROUTE-004`
+- Rationale: `Normalized into canonical owner IRG-ROUTE-002; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `IRG-ROUTE-002`
+- Disposition: `merged`
+- Id: `IRG-ROUTE-006`
+- Rationale: `Normalized into canonical owner IRG-ROUTE-002; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `IRG-ROUTE-002`
+
 ## Normative requirements
 
 - `IRG-ROUTE-001`: An intake item classified `bug-fix` shall route toward audit rather than directly authorizing repository mutation.
 - `IRG-ROUTE-002`: An intake item classified `feature-request` shall route toward whiteboard collection, analysis, candidate functional-set formation, and explicit functional-set approval before downstream decomposition, specification, planning, or implementation authority is inferred.
+
+Semantic preservation from normalized predecessor requirements:
+- IRG-ROUTE-004: Feature-request routing shall not jump directly from intake to implementation.
+- IRG-ROUTE-006: This candidate does not redefine audit, whiteboard, analysis, functional-set, decomposition, specification, or implementation-plan semantics.
 - `IRG-ROUTE-003`: A claimed bug that audit determines is missing or unaccepted behavior shall be redirected toward feature-request development rather than allowing audit to invent new product scope.
-- `IRG-ROUTE-004`: Feature-request routing shall not jump directly from intake to implementation.
 - `IRG-ROUTE-005`: Routing failure or ambiguity that prevents a unique authority path shall halt authority selection rather than silently choosing a mutation path.
-- `IRG-ROUTE-006`: This candidate does not redefine audit, whiteboard, analysis, functional-set, decomposition, specification, or implementation-plan semantics.
 
 ## Dependencies
 

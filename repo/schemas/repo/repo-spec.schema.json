@@ -88,6 +88,12 @@
       "items": {
         "$ref": "#/$defs/derivedArtifact"
       }
+    },
+    "withdrawn_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/withdrawnRequirement"
+      }
     }
   },
   "$defs": {
@@ -291,6 +297,37 @@
     "specId": {
       "type": "string",
       "pattern": "^repo\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+    },
+    "withdrawnRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "disposition",
+        "surviving_requirements",
+        "rationale"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "disposition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "surviving_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     }
   }
 }

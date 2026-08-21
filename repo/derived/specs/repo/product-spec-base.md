@@ -18,21 +18,39 @@ Do not edit directly.
 
 Defines the normative common envelope shared by all product specifications.
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-PSB-012`
+- Rationale: `Normalized into canonical owner REPO-PSB-002; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PSB-002`
+- Disposition: `moved`
+- Id: `REPO-PSB-008`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-008; the predecessor text is not retained as an independent normative restatement inside repo.product-spec-base.`
+- Surviving Requirements:
+  - `REPO-PL-008`
+- Disposition: `moved`
+- Id: `REPO-PSB-013`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PL-011; the predecessor text is not retained as an independent normative restatement inside repo.product-spec-base.`
+- Surviving Requirements:
+  - `REPO-PL-011`
+
 ## Normative requirements
 
 - `REPO-PSB-001`: The repository shall define `repo.product-spec-base` as the normative common envelope for all Level 0-3 product specifications and shall keep it subordinate to `repo.manifest`, `repo.repository-structure`, `repo.artifact-taxonomy`, `repo.product-manifest`, and `repo.validation`.
-- `REPO-PSB-002`: Product specifications shall use stable `spec_id` values in the `product.*` namespace, and each registered product specification shall correspond to exactly one manifest entry with the same identity.
+- `REPO-PSB-002`: Every governed product specification shall satisfy this specification's common envelope and lifecycle contract. Repository workflow authority is owned by the repository workflow specifications and is not redefined here.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PSB-012: Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, and Level between the manifest entry and the product file. Declared derived-artifact ownership shall remain in the source product specification's `derived_artifacts` collection and shall not be duplicated into the manifest entry, while product workflow authority shall remain outside the product specification contract.
 - `REPO-PSB-003`: A product specification shall define `title`, `purpose`, `status`, `schema_version`, `level`, `normative_requirements`, `dependencies`, `references`, `supersedes`, `superseded_by`, `derived_artifacts`, and `correspondence` as its common base envelope.
 - `REPO-PSB-004`: The lifecycle vocabulary for product specifications shall be `candidate`, `accepted`, `superseded`, and `retired`; only accepted product specifications are normative, and candidate product specifications are not normative.
 - `REPO-PSB-005`: The `schema_version` field shall identify the base contract version and shall use the constant string `1`.
 - `REPO-PSB-006`: The `level` field shall record the product specification Level as one of `0`, `1`, `2`, or `3`; the manifest entry and product file shall agree on that Level value.
 - `REPO-PSB-007`: The `normative_requirements` collection shall contain requirement records with `id` and `text` fields, and requirement identifiers shall be unique within each specification.
-- `REPO-PSB-008`: The `dependencies` collection shall contain dependency records with `spec_id` fields; candidate product specifications may depend on candidate or accepted product specifications, while accepted product specifications shall depend only on accepted product specifications.
 - `REPO-PSB-009`: The `references` collection shall distinguish normative specification references, historical specification references, and artifact references; normative specification references shall target accepted product specifications only, historical specification references shall target superseded or retired product specifications only, and specification references shall remain within the governed product set.
-- `REPO-PSB-010`: The `supersedes` and `superseded_by` lineage collections shall record product-specification identity relationships and shall not self-reference.
+- `REPO-PSB-010`: The `supersedes` and `superseded_by` lineage collections shall record product-specification identity relationships, shall not self-reference, shall be reciprocal across retained product specifications, and shall form an acyclic product-specification supersession graph.
 - `REPO-PSB-011`: The `derived_artifacts` collection shall be the declaration mechanism used by the product specification itself, shall remain subordinate to that source specification, and shall use repository-relative Markdown paths beneath `product/derived/specs/product/`.
-- `REPO-PSB-012`: Manifest correspondence shall be defined by matching product specification identity, path, lifecycle status, and Level between the manifest entry and the product file. Declared derived-artifact ownership shall remain in the source product specification's `derived_artifacts` collection and shall not be duplicated into the manifest entry, while product workflow authority shall remain outside the product specification contract.
-- `REPO-PSB-013`: Future Level-specific schemas shall extend the base envelope through explicit governed extension boundaries defined by `repo.product-levels` rather than silently redefining common fields.
 - `REPO-PSB-014`: Each Level-specific product schema shall extend `product/schemas/product/product-spec-base.schema.json` through an `allOf` composition whose first member references the base schema and whose second member is the Level extension object schema.
 - `REPO-PSB-015`: The Level extension object schema shall attach Level-specific fields at the product-specification root, shall refine `level` with the Level-specific constant, and shall not redefine common envelope fields other than that narrowing refinement.
 - `REPO-PSB-016`: Each Level-specific product schema shall set root `unevaluatedProperties` to `false` so the base envelope and declared Level extension fields are the complete accepted root surface.

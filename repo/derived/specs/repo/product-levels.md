@@ -18,31 +18,95 @@ Do not edit directly.
 
 Defines the normative Level 0-3 product-specification model and its dependency semantics.
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-PL-014`
+- Rationale: `Normalized into canonical owner REPO-PL-002; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PL-002`
+- Disposition: `merged`
+- Id: `REPO-PL-015`
+- Rationale: `Normalized into canonical owner REPO-PL-003; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PL-003`
+- Disposition: `merged`
+- Id: `REPO-PL-016`
+- Rationale: `Normalized into canonical owner REPO-PL-004; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PL-004`
+- Disposition: `merged`
+- Id: `REPO-PL-017`
+- Rationale: `Normalized into canonical owner REPO-PL-005; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PL-005`
+- Disposition: `moved`
+- Id: `REPO-PL-013`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-011; the predecessor text is not retained as an independent normative restatement inside repo.product-levels.`
+- Surviving Requirements:
+  - `REPO-PSB-011`
+- Disposition: `moved`
+- Id: `REPO-PL-022`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-014, REPO-PSB-015; the predecessor text is not retained as an independent normative restatement inside repo.product-levels.`
+- Surviving Requirements:
+  - `REPO-PSB-014`
+  - `REPO-PSB-015`
+- Disposition: `moved`
+- Id: `REPO-PL-023`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-015; the predecessor text is not retained as an independent normative restatement inside repo.product-levels.`
+- Surviving Requirements:
+  - `REPO-PSB-015`
+- Disposition: `moved`
+- Id: `REPO-PL-024`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PSB-016, REPO-PSB-017; the predecessor text is not retained as an independent normative restatement inside repo.product-levels.`
+- Surviving Requirements:
+  - `REPO-PSB-016`
+  - `REPO-PSB-017`
+- Disposition: `merged`
+- Id: `REPO-PL-025`
+- Rationale: `Normalized into canonical owner REPO-PL-011; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PL-011`
+- Disposition: `withdrawn`
+- Id: `REPO-PL-026`
+- Rationale: `Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-013.`
+- Surviving Requirements:
+  - `REPO-AUTH-013`
+- Disposition: `withdrawn`
+- Id: `REPO-PL-027`
+- Rationale: `Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-013.`
+- Surviving Requirements:
+  - `REPO-AUTH-013`
+
 ## Normative requirements
 
 - `REPO-PL-001`: The repository shall define `repo.product-levels` as the normative contract for the Level 0-3 product-specification model.
-- `REPO-PL-002`: Level 0 shall define minimal product-wide semantics that govern the interpretation, identity, authority, lifecycle, or common constraints of otherwise independent product areas, and Level 0 specifications shall depend only on Level 0 specifications.
-- `REPO-PL-003`: Level 1 shall define an independently meaningful product concept or elementary contract that can be understood without coordinating multiple coherent product responsibilities, and Level 1 specifications shall depend only on Level 0 or Level 1 specifications.
-- `REPO-PL-004`: Level 2 shall define a reusable capability that composes primitives into one coherent product responsibility but does not itself establish a complete product outcome, and Level 2 specifications shall depend only on Level 0, Level 1, or Level 2 specifications.
-- `REPO-PL-005`: Level 3 shall define a complete product outcome, use case, or lifecycle transition by coordinating one or more independently meaningful responsibilities, including observable success and failure behavior, and Level 3 specifications shall depend only on Level 0, Level 1, Level 2, or Level 3 specifications.
+- `REPO-PL-002`: Level 0 establishes product intent and scope and shall not depend on higher-level product specifications.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PL-014: Level 0 shall not contain feature-specific semantics.
+- `REPO-PL-003`: Level 1 refines accepted Level-0 authority into externally observable product behavior and shall not depend on Level 2 or Level 3.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PL-015: Level 1 shall not coordinate multiple coherent responsibilities.
+- `REPO-PL-004`: Level 2 refines accepted lower-level product authority into architectural and component behavior and shall not depend on Level 3.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PL-016: Level 2 shall not define a complete product outcome.
+- `REPO-PL-005`: Level 3 refines accepted lower-level authority into implementation-constraining product detail without redefining higher-level semantics.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PL-017: Level 3 shall not redefine primitive or component semantics.
 - `REPO-PL-006`: Higher Levels may depend on the same or lower Levels, and lower Levels shall not depend on higher Levels.
 - `REPO-PL-007`: Same-Level dependencies shall be permitted only when they are explicit and the full product dependency graph remains acyclic.
 - `REPO-PL-008`: Candidate product specification dependencies may target candidate or accepted product specifications, while accepted product specification dependencies shall target only accepted product specifications.
 - `REPO-PL-009`: Accepted Level 1, Level 2, and Level 3 specifications shall have at least one accepted Level 0 specification in their transitive dependency closure, and intermediate Levels shall not be mandatory merely because a higher Level exists.
-- `REPO-PL-010`: Each product specification shall remain confined to its reserved Level root, and Level metadata recorded in the manifest and product file shall agree with the declared Level root.
+- `REPO-PL-010`: A product specification's declared Level shall correspond to its authorized Level root. Common Level-field agreement semantics are owned by repo.product-spec-base.
 - `REPO-PL-011`: Future Level-specific schemas shall extend the common product-specification envelope through explicit governed extension boundaries and shall not redefine common fields or lower-Level semantics.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PL-025: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics.
 - `REPO-PL-012`: Structural completeness shall be machine-checkable from the declared Level, path correspondence, dependency targets, and lifecycle agreement, while semantic completeness remains review-owned.
-- `REPO-PL-013`: Product projection declarations shall be declaration-driven rather than mandatory, and any declared product projection shall remain within the repository-relative `product/derived/specs/product/` root and subordinate to the owning product specification.
-- `REPO-PL-014`: Level 0 shall not contain feature-specific semantics.
-- `REPO-PL-015`: Level 1 shall not coordinate multiple coherent responsibilities.
-- `REPO-PL-016`: Level 2 shall not define a complete product outcome.
-- `REPO-PL-017`: Level 3 shall not redefine primitive or component semantics.
-- `REPO-PL-022`: Level-specific schema extension fields shall be declared in the second `allOf` object subschema after the common product-specification base reference.
-- `REPO-PL-023`: Level-specific schemas shall narrow the common `level` field to their declared Level and shall not redefine other common envelope fields.
-- `REPO-PL-024`: Level-specific schemas shall reject undeclared root properties through `unevaluatedProperties: false`, and nested Level extension objects shall reject undeclared properties through `additionalProperties: false`.
-- `REPO-PL-025`: A Level-specific schema extension shall remain subordinate to the common product-specification envelope and shall not redefine lower-Level semantics.
-- `REPO-PL-026`: Published product-level requirement identifiers shall remain stable and shall never be reused after a requirement is withdrawn or superseded.
-- `REPO-PL-027`: Requirement identifiers `REPO-PL-018` through `REPO-PL-021` are intentionally withdrawn from the accepted Level contract and remain reserved rather than being reused.
 
 ## Dependencies
 

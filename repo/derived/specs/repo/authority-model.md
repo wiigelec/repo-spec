@@ -18,6 +18,21 @@ Do not edit directly.
 
 Defines repository-local supremacy, scoped normative authority, delegated validation authority, semantic review responsibility, and the subordinate status of non-authoritative evidence and mechanisms.
 
+## Withdrawn Requirements
+
+- Disposition: `withdrawn`
+- Id: `REPO-AUTH-010`
+- Rationale: `Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-007, REPO-AUTH-009.`
+- Surviving Requirements:
+  - `REPO-AUTH-007`
+  - `REPO-AUTH-009`
+- Disposition: `withdrawn`
+- Id: `REPO-AUTH-015`
+- Rationale: `Withdrawn by semantic-owner correction because the refactor proposal assigns the controlling invariant to REPO-AUTH-004, REPO-AUTH-007.`
+- Surviving Requirements:
+  - `REPO-AUTH-004`
+  - `REPO-AUTH-007`
+
 ## Normative requirements
 
 - `REPO-AUTH-001`: Accepted repository specifications listed by repo.manifest shall constitute the highest repository-local normative authority for repository-generic structure, governance, workflow, validation, review, acceptance, and authority-domain rules. Repository-local artifacts, processes, tools, adapters, implementation state, or historical behavior shall not override conflicting accepted repository specifications.
@@ -29,7 +44,10 @@ Defines repository-local supremacy, scoped normative authority, delegated valida
 - `REPO-AUTH-007`: Code, tests, schemas, templates, generated artifacts, platform adapters, implementation plans, development notes, historical records, prior behavior, and other non-authoritative artifacts shall remain mechanisms, coordination material, projections, or evidence according to their accepted classifications. Their existence, age, successful execution, or prior acceptance of a repository revision shall not independently convert them into controlling normative authority.
 - `REPO-AUTH-008`: When two accepted authorities appear to conflict, interpretation shall first respect their accepted authority domains, dependencies, lifecycle state, and explicit delegation rules rather than applying an undifferentiated flat precedence list. A material conflict that cannot be resolved from accepted authority shall block affected mutation or acceptance until the controlling authority is clarified through the governed process.
 - `REPO-AUTH-009`: Repository authority shall be changed only through the accepted governed change and acceptance process applicable to repository specifications. Neither implementation drift, validator behavior, generated output, human convenience material, review custom, nor repeated historical practice shall amend accepted repository authority implicitly.
-- `REPO-AUTH-010`: Governmental, constitutional, legislative, executive, judicial, or similar institutional analogies may be used as non-normative explanatory aids, but such analogies shall not establish repository semantics, expand or limit delegated authority, or replace the precise requirements of accepted repository and product specifications.
+- `REPO-AUTH-011`: Structured contract data explicitly designated by an accepted repository specification as part of that specification's contract shall carry the same repository-local normative authority as the specification's normative requirement text within the designated domain. Such structured data need not be re-enumerated in a separate prose requirement merely to be normative; a material inconsistency between controlling structured contract data and controlling normative text is an authority conflict governed by REPO-AUTH-008.
+- `REPO-AUTH-012`: Each repository-generic semantic invariant shall have one controlling normative owner. A dependent specification may establish applicability, sequencing, specialization, evidence, or delegated enforcement for that invariant, but shall not create a second independent restatement of the same semantics when reference to the controlling owner is sufficient. Where existing accepted requirements duplicate one invariant, governed normalization may merge them into one controlling requirement without semantic loss.
+- `REPO-AUTH-013`: Published normative requirement identifiers shall remain stable and shall never be reused for different semantics. When an accepted requirement is merged, moved, superseded by a stronger generic invariant, or otherwise withdrawn during governed normalization, its former identifier shall remain reserved and the owning specification shall retain a structured `withdrawn_requirements` record identifying the withdrawn ID, its disposition, the surviving controlling requirement or requirements when applicable, and a non-empty rationale.
+- `REPO-AUTH-014`: A declared generated projection or installed adapter shall be a faithful deterministic representation of the authoritative source surface assigned to it, shall remain subordinate to that source, and shall not acquire independently controlling semantics merely because it is materialized. Any source-to-projection transformation shall preserve the source semantics applicable to the projection and shall expose no additional normative authority unless an accepted specification explicitly delegates such authority.
 
 ## Dependencies
 

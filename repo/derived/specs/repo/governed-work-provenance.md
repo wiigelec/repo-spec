@@ -18,12 +18,23 @@ Do not edit directly.
 
 Primitive contract for governance-state identity and the minimum intake provenance that must be preserved before ordinary intake content is replaced or restructured for governed work.
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `IRG-PROV-001`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-001; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-provenance.`
+- Surviving Requirements:
+  - `IRG-L0-001`
+- Disposition: `moved`
+- Id: `IRG-PROV-004`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by IRG-L0-004; the predecessor text is not retained as an independent normative restatement inside repo.governed-work-provenance.`
+- Surviving Requirements:
+  - `IRG-L0-004`
+
 ## Normative requirements
 
-- `IRG-PROV-001`: `governed-work` shall represent governance state rather than routing classification.
 - `IRG-PROV-002`: When promotion into governed-work will replace or restructure an ordinary unformatted issue body, the original unformatted body shall be preserved in an issue comment before that replacement or restructuring.
 - `IRG-PROV-003`: The routing-classification labels associated with the intake item before promotion shall be preserved in the same or another traceable issue comment before body replacement or restructuring during promotion.
-- `IRG-PROV-004`: Preserved intake provenance shall remain traceable to the bounded governed operation that follows promotion.
 - `IRG-PROV-005`: This contract introduces no intake-title preservation requirement. Its normative minimum provenance payload is the original unformatted issue body plus the pre-promotion routing-classification labels; additional provenance may be recorded but is not required by this contract.
 
 ## Dependencies

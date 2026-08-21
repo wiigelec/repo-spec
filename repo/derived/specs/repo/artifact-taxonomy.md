@@ -128,10 +128,10 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 
 - Identifier: `schema`
 - Role: `schema`
-- Authority category: `normative`
-- Authority source: accepted schema definition
-- Source of truth rule: Validates repository-local structure but does not supersede the specification it constrains.
-- Mutability: immutable once accepted except through governed revision
+- Authority category: `implementation`
+- Authority source: accepted specification-delegated structural enforcement
+- Source of truth rule: Encodes mechanically enforceable repository-local structure delegated by accepted specifications but does not independently define or override the semantics it constrains.
+- Mutability: mutable only through governed synchronization with controlling authority
 - Generation mode: `manual`
 - Validation ownership: `validation`
 - Portability category: `framework-generic`
@@ -357,20 +357,47 @@ Defines the normative artifact classes, authority roles, and ownership boundarie
 - Portability category: `framework-generic`
 - Manifest participation: `none`
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `REPO-AT-004`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-AUTH-003, REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy.`
+- Surviving Requirements:
+  - `REPO-AUTH-003`
+  - `REPO-AUTH-007`
+- Disposition: `moved`
+- Id: `REPO-AT-009`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-PP-004, REPO-AUTH-014; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy.`
+- Surviving Requirements:
+  - `REPO-PP-004`
+  - `REPO-AUTH-014`
+- Disposition: `moved`
+- Id: `REPO-AT-010`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-STR-012, REPO-AUTH-007; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy.`
+- Surviving Requirements:
+  - `REPO-STR-012`
+  - `REPO-AUTH-007`
+- Disposition: `moved`
+- Id: `REPO-AT-011`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-FSP-005, REPO-AT-003; the predecessor text is not retained as an independent normative restatement inside repo.artifact-taxonomy.`
+- Surviving Requirements:
+  - `REPO-FSP-005`
+  - `REPO-AT-003`
+- Disposition: `withdrawn`
+- Id: `REPO-AT-005`
+- Rationale: `Withdrawn by final proposal-normalization because the generic controlling invariant is owned by REPO-AUTH-014.`
+- Surviving Requirements:
+  - `REPO-AUTH-014`
+
 ## Normative requirements
 
 - `REPO-AT-001`: The repository shall define exactly one canonical artifact taxonomy for framework-generic and repository-local artifact classes.
 - `REPO-AT-002`: The taxonomy shall distinguish directional, planning, normative, generated, implementation, evidentiary, review, acceptance, release, profile-specific, and convenience authority categories, and shall distinguish overview collection evidence, overview analysis synthesis, candidate functional sets, and approved functional sets.
 - `REPO-AT-003`: The taxonomy shall state for each recognized class its role, authority category, authority source, source-of-truth rule, mutability, generation mode, validation ownership, portability category, and manifest participation.
 - `REPO-AT-003A`: An artifact's authority_category shall name the artifact class's authority role, while lifecycle status and governing text determine whether that role is effective for a specific document instance.
-- `REPO-AT-004`: An overview whiteboard, overview analysis, functional set, plan, generated artifact, implementation artifact, validation evidence record, review record, acceptance record, or release record shall not claim normative product-specification authority.
-- `REPO-AT-005`: Generated artifacts shall remain subordinate to declared source artifacts and shall not become semantic sources merely because they are materialized.
 - `REPO-AT-006`: Framework-generic, product-specific, and profile-specific classes shall be distinguished, and profile-specific classes shall not be treated as universal framework authority.
 - `REPO-AT-007`: Merge shall remain a revision event rather than an artifact class, and merge evidence shall not substitute for acceptance or release.
 - `REPO-AT-008`: The taxonomy shall distinguish hosting-profile source artifacts, installed adapters, bootstrap infrastructure, and remote deployment-state evidence so repository-local profile mechanics remain separate from Git-generic authority.
-- `REPO-AT-009`: Installed adapters shall remain subordinate to the profile source and shall not become semantic sources merely because they are materialized under `.github/`.
-- `REPO-AT-010`: The taxonomy shall classify user-facing convenience and session-support artifacts as non-normative user convenience material subordinate to accepted repository and product authority; such artifacts shall not establish or override repository, product, workflow, planning, validation, or implementation semantics.
-- `REPO-AT-011`: The overview-whiteboard class shall remain evidentiary, the overview-analysis class shall remain directional synthesis, and a functional-set artifact shall distinguish candidate from approved lifecycle status; only an approved functional set may act as the directional predecessor authority for decomposition.
 
 ## Dependencies
 

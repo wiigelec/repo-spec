@@ -18,6 +18,27 @@ Do not edit directly.
 
 Defines the canonical composite-document envelope shared by overview-process artifacts, product decompositions, and implementation plans.
 
+## Withdrawn Requirements
+
+- Disposition: `merged`
+- Id: `REPO-DDB-010`
+- Rationale: `Normalized into canonical owner REPO-DDB-008; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-DDB-008`
+- Disposition: `merged`
+- Id: `REPO-DDB-006`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-003, REPO-DDB-007, REPO-DDB-011, REPO-DDB-012; the predecessor text is not retained as an independent normative restatement inside repo.development-document-base.`
+- Surviving Requirements:
+  - `REPO-DDB-003`
+  - `REPO-DDB-007`
+  - `REPO-DDB-011`
+  - `REPO-DDB-012`
+- Disposition: `moved`
+- Id: `REPO-DDB-009`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-VAL-019; the predecessor text is not retained as an independent normative restatement inside repo.development-document-base.`
+- Surviving Requirements:
+  - `REPO-VAL-019`
+
 ## Normative requirements
 
 - `REPO-DDB-001`: The repository shall define one canonical composite-document base contract for overview whiteboards, overview analyses, functional sets, product decompositions, and implementation plans.
@@ -25,13 +46,14 @@ Defines the canonical composite-document envelope shared by overview-process art
 - `REPO-DDB-003`: Each governed development document shall have a top-level controlling Markdown file directly under its root and a subordinate chunk directory with the same lower-case slug as the top-level file stem.
 - `REPO-DDB-004`: The top-level controlling document shall declare the artifact identifier, artifact type, product scope, authority category, lifecycle status, governing issue, predecessor or controlling sources, evidence, subordinate chunk inventory, successor action, and contract version in a machine-readable envelope. An overview whiteboard may bootstrap from its governing issue and evidence without a controlling-document predecessor; analysis shall trace to whiteboard evidence; and a functional set shall trace to analysis and distinguish candidate from approved status.
 - `REPO-DDB-005`: The top-level controlling document shall be the discoverable entry point and index for the composite document, while subordinate chunks shall carry the substantive bounded content for each coherent concern.
-- `REPO-DDB-006`: A governed development document shall be invalid if its top-level file, chunk directory, or chunk inventory does not match the declared metadata.
 - `REPO-DDB-007`: Chunk numbering shall be contiguous, ordered, and unique within a composite document, and each chunk shall remain within the declared chunk directory.
-- `REPO-DDB-008`: A governed development chunk shall cover one coherent concern, avoid unrelated lifecycle stages or authority domains, and remain small enough for direct human and AI inspection.
-- `REPO-DDB-009`: Mechanically enforceable validation shall cover root containment, top-level filename pattern, subordinate directory naming, declared chunk inventory, chunk ordering, duplicate detection, missing or undeclared chunks, and declared chunk-size limits.
-- `REPO-DDB-010`: Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven.
+- `REPO-DDB-008`: Development-document chunks shall remain small enough for coherent review while preserving semantic integrity. Judgment about semantic partitioning belongs to review under controlling document-type contracts; mechanical validation may enforce only objective structural boundaries delegated by those contracts.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-DDB-010: Semantic judgment about whether a chunk boundary is the best possible partition remains review-owned when it cannot be mechanically proven.
 - `REPO-DDB-011`: Each canonical governed development-document root shall be a closed composite-document namespace. Its direct entries shall consist only of `README.md`, applicable top-level controlling Markdown documents, and subordinate chunk directories declared by those controlling documents. Every direct child directory shall be the `document_slug` directory of exactly one valid controlling document in the same root, and every controlling document shall own exactly one such directory. No other direct file or directory is permitted.
 - `REPO-DDB-012`: Each subordinate chunk directory shall itself be closed: its direct files shall exactly equal the `subordinate_chunks` inventory declared by its owning controlling document, every declared chunk shall be a direct Markdown file in that directory, and no additional files, nested directories, or undeclared content are permitted. Compatibility, exemption, grandfathering, or registry entries shall not make nonconforming content valid within a governed development-document root.
+- `REPO-DDB-013`: For governed development documents, `artifact_id` shall be the stable semantic identity of the composite document, `document_slug` shall identify its subordinate chunk-directory slug, and `filename_stem` shall identify its top-level controlling filename stem. These fields serve distinct roles and shall not be required to have identical values.
 
 ## Dependencies
 

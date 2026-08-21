@@ -18,14 +18,37 @@ Do not edit directly.
 
 Defines the directional, non-normative contract for product decomposition documents.
 
+## Withdrawn Requirements
+
+- Disposition: `moved`
+- Id: `REPO-PDC-001`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-002, REPO-DDB-003; the predecessor text is not retained as an independent normative restatement inside repo.product-decomposition.`
+- Surviving Requirements:
+  - `REPO-DDB-002`
+  - `REPO-DDB-003`
+- Disposition: `moved`
+- Id: `REPO-PDC-004`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-005; the predecessor text is not retained as an independent normative restatement inside repo.product-decomposition.`
+- Surviving Requirements:
+  - `REPO-DDB-005`
+- Disposition: `moved`
+- Id: `REPO-PDC-005`
+- Rationale: `Semantic-owner correction from the refactor proposal: predecessor semantics are controlled by REPO-DDB-008; the predecessor text is not retained as an independent normative restatement inside repo.product-decomposition.`
+- Surviving Requirements:
+  - `REPO-DDB-008`
+- Disposition: `merged`
+- Id: `REPO-PDC-006`
+- Rationale: `Normalized into canonical owner REPO-PDC-002; predecessor semantics were folded into the surviving requirement before withdrawal.`
+- Surviving Requirements:
+  - `REPO-PDC-002`
+
 ## Normative requirements
 
-- `REPO-PDC-001`: A product decomposition shall be stored under the owner-specific decomposition root defined by `repo.development-document-base`: repository/framework-owned decompositions under `repo/docs/decompositions/` and product-owned decompositions under `product/docs/decompositions/`. It shall use the canonical top-level `*-DECOMPOSITION.md` controlling document plus subordinate chunks.
 - `REPO-PDC-002`: A product decomposition shall record the controlling approved functional set, controlling documents, predecessor documents, evidence, document-wide decomposition obligations, bounded product-area inventory, stable product-area identifiers, required content areas, permitted chunk roles, product-defined areas, chunk-level document coverage, standardized product-area section headings, per-area structural coverage, dependencies, exclusions, cross-cutting concerns, unresolved decisions, stopping criteria, planning handoff, likely successor planning or specification work, and the authorized next planning action.
+
+Semantic preservation from normalized predecessor requirements:
+- REPO-PDC-006: A product decomposition shall make the next authorized planning action explicit so later work does not have to infer it from conversation history.
 - `REPO-PDC-003`: A product decomposition shall remain directional and non-normative and shall not define exact repository or product behavior, select implementation architecture without later authority, accept repository or product specifications, or conceal unresolved semantic decisions.
-- `REPO-PDC-004`: The top-level controlling document shall act as the index, status declaration, and navigation entry point for the decomposition composite document.
-- `REPO-PDC-005`: A product decomposition shall keep each bounded area coherent and shall not mix unrelated lifecycle stages or authority domains within one area.
-- `REPO-PDC-006`: A product decomposition shall make the next authorized planning action explicit so later work does not have to infer it from conversation history.
 - `REPO-PDC-007`: A product decomposition shall identify the expected downstream normative specification families appropriate to the owner of the decomposed direction, their responsibility boundaries, intended dependency direction, known cross-specification relationships, unresolved semantic decisions, specification work required before implementation planning, and areas that do not require separate specification artifacts. Repository/framework-owned decompositions shall identify repository specification families for repository-generic requirements and shall not force those requirements into product-specification levels. Product-owned decompositions shall identify the applicable Level 0–3 product-specification families. Hosting-platform-specific realization shall remain within the accepted platform-profile authority boundary. This identification shall remain directional and shall not prematurely define normative repository or product semantics.
 
 ## Dependencies

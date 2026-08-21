@@ -47,7 +47,10 @@ Identifies the complete repository-spec JSON set.
 
 ## Normative requirements
 
-- `REPO-MAN-001`: The manifest shall identify the authoritative repository-spec JSON files.
+- `REPO-MAN-001`: The manifest shall enumerate the complete authoritative repository-specification JSON set. Each authoritative entry shall identify exactly one stable `spec_id` and repository-relative path, and no authoritative repository specification may exist outside that registered set.
+- `REPO-MAN-002`: Repository-specification identities and manifest paths shall be unique. Every declared repository-specification dependency shall resolve to a manifest-listed accepted repository specification, and the complete repository-specification dependency graph shall remain acyclic.
+- `REPO-MAN-003`: Repository-specification references shall resolve according to their declared role. Normative specification references shall target manifest-listed accepted repository specifications; historical specification references shall target retained superseded or retired repository specifications when such historical lifecycle state is declared; and artifact references shall resolve to repository-local artifacts. Reference validation shall enforce this source contract without creating additional reference semantics.
+- `REPO-MAN-004`: Repository-specification supersession lineage shall be reciprocal, acyclic, and non-self-referential. When a repository specification declares `supersedes` or `superseded_by`, the corresponding retained repository specification shall declare the inverse relation, and the complete repository-specification supersession graph shall remain acyclic.
 
 ## Dependencies
 
