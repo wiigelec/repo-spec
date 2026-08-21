@@ -85,7 +85,8 @@ def check_product_source_layout(context: ValidationContext) -> None:
         expect(path.is_file(), f"product source layout failed: product/scripts contains non-entry-point path {path.name}")
         expect(path.suffix != ".py", f"product source layout failed: product/scripts contains Python implementation module {path.name}")
         expect(os.access(path, os.X_OK), f"product source layout failed: product/scripts entry point is not executable: {path.name}")
-\n\n
+
+
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "product/validation", require_github=False, label="product")
 

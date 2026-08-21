@@ -77,7 +77,8 @@ def check_repository_structural_envelopes(context: ValidationContext) -> None:
     _check_exact_directory_envelope(repo_root / "repo/schemas", {"repo"}, label="repository schemas envelope")
     _check_exact_directory_envelope(repo_root / "repo/derived", {"specs"}, label="repository derived envelope")
     _check_exact_directory_envelope(repo_root / "repo/derived/specs", {"repo"}, label="repository derived specifications envelope")
-\n\n
+
+
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "repo/validation", require_github=True, label="repo")
 
