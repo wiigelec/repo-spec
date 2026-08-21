@@ -21,15 +21,18 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
   "required_content_areas": {
     "collected_input": [
       "repo/docs/overview/repository-whiteboard/01-migration-input.md",
-      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
+      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md",
+      "repo/docs/overview/repository-whiteboard/03-validation-package-feature-request.md"
     ],
     "provenance": [
       "repo/docs/overview/repository-whiteboard/01-migration-input.md",
-      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
+      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md",
+      "repo/docs/overview/repository-whiteboard/03-validation-package-feature-request.md"
     ],
     "unresolved_intent": [
       "repo/docs/overview/repository-whiteboard/01-migration-input.md",
-      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md"
+      "repo/docs/overview/repository-whiteboard/02-issue-routing-intake.md",
+      "repo/docs/overview/repository-whiteboard/03-validation-package-feature-request.md"
     ]
   },
   "controlling_documents": [],
@@ -57,6 +60,16 @@ Active migration scaffold for the canonical overview lifecycle. Directional and 
         "provenance",
         "unresolved_intent"
       ]
+    },
+    {
+      "order": 3,
+      "path": "repo/docs/overview/repository-whiteboard/03-validation-package-feature-request.md",
+      "title": "Validation-package feature request",
+      "coverage": [
+        "collected_input",
+        "provenance",
+        "unresolved_intent"
+      ]
     }
   ],
   "successor_action": "Interpret this migration scaffold in repo/docs/overview/REPOSITORY-ANALYSIS.md.",
@@ -72,6 +85,7 @@ This document provides the minimal collection-stage artifact required for migrat
 
 - [Migration input](repository-whiteboard/01-migration-input.md)
 - [Issue-routing intake](repository-whiteboard/02-issue-routing-intake.md)
+- [Validation-package feature request](repository-whiteboard/03-validation-package-feature-request.md)
 
 ## Relationships
 
