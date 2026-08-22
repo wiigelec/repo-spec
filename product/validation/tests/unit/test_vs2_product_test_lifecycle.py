@@ -90,7 +90,12 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         return {
             "id": test_id,
             "paths": [path],
-            "requirements": [requirement],
+            "validation_package_refs": [
+                {
+                    "spec_id": "product.synthetic",
+                    "requirement_id": requirement,
+                }
+            ],
         }
 
     # validation-metadata: {"role": "helper"}
