@@ -72,6 +72,9 @@ A retained concept shall not override a keystone boundary or create authority ou
 | Current multi-stage development lifecycle | SUPERSEDE | Governance Design → Plan → Build |
 | GitHub issue/branch/PR workflow as governance semantics | SUPERSEDE | Platform realization of governed work |
 | Atomic authority transition | MODIFY | Exceptional governed atomic realization |
+| Bounded governed authorization | KEEP | Governance |
+| Acyclic normative dependency/authorization | KEEP | Framework Contract |
+| Observed vs desired external state | MODIFY | Governance / platform realization |
 
 # Concepts to Keep
 
@@ -501,9 +504,82 @@ A framework should not accidentally define GitHub behavior as universal reposito
 
 Framework Contract with subordinate platform/profile authority.
 
+## 16. Bounded Governed Authorization
+
+### Disposition
+
+**KEEP**
+
+### Current Concept
+
+The current governed-work model distinguishes authorized scope from adjacent or successor work. Material scope expansion must be made explicit, exclusions matter, and completion of one governed work item does not independently authorize unrelated follow-on work.
+
+### Successor Concept
+
+Governed authorization should remain explicitly bounded.
+
+Conceptually:
+
+**governed work**
+→ **explicit authorized scope**
+→ **explicit exclusions**
+→ **no authority beyond that boundary**
+
+Acceptance or completion of one governed result should not silently expand authorization into neighboring or successor work.
+
+### Why Keep It
+
+Bounded authorization prevents scope drift from becoming de facto Governance authority.
+
+It also makes delegation safer for automated and AI actors because possession of a valid governed-work identity does not imply permission to perform any adjacent useful work.
+
+### Successor Placement
+
+Governance.
+
+---
+
+## 17. Acyclic Normative Dependency and Authorization
+
+### Disposition
+
+**KEEP**
+
+### Current Concept
+
+The current repository requires key authority and product dependency graphs to remain directed and acyclic rather than permitting requirements to become authoritative through circular dependency.
+
+### Successor Concept
+
+The successor should distinguish ordinary bidirectional traceability from normative dependency.
+
+Historical cross-reference, reverse provenance lookup, and many-to-many evidence relationships may be cyclic as graph navigation.
+
+The normative basis by which authority depends on other authority should not be circular.
+
+Conceptually:
+
+**Authority A**
+→ depends normatively on **Authority B**
+→ depends normatively on **Authority C**
+
+must not return to **Authority A** as a condition of A's own authority.
+
+### Why Keep It
+
+Resolvable circularity is still circularity.
+
+This principle complements Governance's candidate-acceptance anti-circularity rule by addressing static normative dependency topology rather than only temporal self-authorization during acceptance.
+
+### Successor Placement
+
+Framework Contract.
+
+---
+
 # Concepts to Modify
 
-## 16. Capability-Oriented Functional Sets
+## 18. Capability-Oriented Functional Sets
 
 ### Disposition
 
@@ -540,7 +616,7 @@ Optional or conditionally required Governance Design technique.
 
 ---
 
-## 17. Directional Decomposition
+## 19. Directional Decomposition
 
 ### Disposition
 
@@ -566,7 +642,7 @@ Governance Design Audit/Normalize.
 
 ---
 
-## 18. Product Semantic Levels
+## 20. Product Semantic Levels
 
 ### Disposition
 
@@ -598,7 +674,7 @@ Subordinate product-authority design.
 
 ---
 
-## 19. Artifact Classification
+## 21. Artifact Classification
 
 ### Disposition
 
@@ -634,7 +710,7 @@ Framework/subordinate cross-cutting design.
 
 ---
 
-## 20. Conformance Ownership Domains
+## 22. Conformance Ownership Domains
 
 ### Disposition
 
@@ -662,7 +738,7 @@ Subordinate Conformance design.
 
 ---
 
-## 21. Requirement-Level Correspondence
+## 23. Requirement-Level Correspondence
 
 ### Disposition
 
@@ -694,7 +770,7 @@ Conformance and Assurance.
 
 ---
 
-## 22. Atomic Realization
+## 24. Atomic Realization
 
 ### Disposition
 
@@ -722,9 +798,43 @@ Any atomic mechanism must be authorized by authority accepted before the atomic 
 
 Subordinate Governance transition design.
 
+## 25. Observed vs Desired External State
+
+### Disposition
+
+**MODIFY**
+
+### Current Concept
+
+The current platform-profile model distinguishes live observed external state from desired state, separates inspection from apply, records intended mutation, and requires post-change verification.
+
+### Successor Concept
+
+The successor should preserve the more general state-management discipline:
+
+**observe external state**
+→ **compare with governed desired state**
+→ **Plan the authorized mutation**
+→ **Build/apply the mutation**
+→ **verify resulting state**
+
+Repository content, desired external state, and actual external state should not be treated as interchangeable.
+
+### What Changes
+
+This concept should not be GitHub-specific and should not become a fourth authority system.
+
+Governance owns authorization of the change, Conformance may mechanically verify observable properties, Assurance may review semantic sufficiency where required, and a platform profile may define provider-specific representation and mutation mechanics.
+
+### Successor Placement
+
+Subordinate Governance and platform/profile design.
+
+---
+
 # Concepts to Supersede
 
-## 23. Validation-Task and Callable-Centric Correspondence
+## 26. Validation-Task and Callable-Centric Correspondence
 
 ### Disposition
 
@@ -758,7 +868,7 @@ Conformance.
 
 ---
 
-## 24. Combined Validation Dispositions
+## 27. Combined Validation Dispositions
 
 ### Disposition
 
@@ -802,7 +912,7 @@ Conformance + Assurance with Governance-owned cross-keystone disposition.
 
 ---
 
-## 25. Human Semantic Review as an Informal Architecture
+## 28. Human Semantic Review as an Informal Architecture
 
 ### Disposition
 
@@ -837,7 +947,7 @@ Assurance.
 
 ---
 
-## 26. Current Multi-Stage Development Lifecycle as the Primary Governance Model
+## 29. Current Multi-Stage Development Lifecycle as the Primary Governance Model
 
 ### Disposition
 
@@ -876,7 +986,7 @@ Governance.
 
 ---
 
-## 27. GitHub Issue/Branch/PR Mechanics as Governance Semantics
+## 30. GitHub Issue/Branch/PR Mechanics as Governance Semantics
 
 ### Disposition
 
@@ -964,11 +1074,13 @@ Exploration, candidate design, analysis, review, successful execution, merge, re
 
 Promotion should occur only through the governed mechanism appropriate to the target role.
 
-# Candidate Successor Concept Requirements
+# Candidate Normalization Targets
 
-These are not intended to replace the candidate requirements in the four architecture proposals.
+The statements below are non-authoritative normalization targets, not a fifth parallel normative requirement set.
 
-They identify concepts that may warrant later normalization into the appropriate controlling specifications.
+They identify candidate semantics for incorporation into their controlling Framework Contract, Governance, Conformance, Assurance, product-authority, or subordinate specifications.
+
+Where a target overlaps an existing candidate requirement, later Design should normalize it into the single controlling semantic owner rather than preserve a duplicate requirement.
 
 ### SC-01 — Default-Deny Maintained State
 
@@ -1014,15 +1126,27 @@ They identify concepts that may warrant later normalization into the appropriate
 
 **Hosting-platform realization SHALL remain subordinate to portable framework authority and SHALL NOT independently define framework Governance, Conformance, or Assurance semantics.**
 
+### SC-12 — Bounded Governed Authorization
+
+**A governed work item SHALL authorize only its explicitly governed scope and SHALL NOT independently authorize unrelated or successor work.**
+
+### SC-13 — Acyclic Normative Dependency
+
+**Normative authority SHALL NOT depend for its authority on a cycle of normative dependencies.**
+
+### SC-14 — Observed and Desired External State
+
+**Governed external-state mutation SHALL distinguish observed state, desired state, authorized mutation, and post-mutation verification.**
+
 ## Audit Questions
 
 The successor Design should determine:
 
 1. Which retained concepts belong in the Framework Contract itself and which should remain subordinate.
-2. Whether default deny should apply only to maintained artifacts or to all maintained governed relationships and roles.
+2. Whether default deny should apply only to maintained artifacts or to all maintained governed relationships and roles, and which generalized rule belongs in the Framework Contract.
 3. What extension-point properties must be governed to prevent implicit authority creation.
 4. Whether the current manifest model is the appropriate successor representation for all enumerable authority or only for specifications.
-5. Which current semantic-owner rules should become Framework Contract requirements.
+5. Which current semantic-owner rules should become Framework Contract requirements, including whether one controlling semantic owner should be foundational.
 6. Which current functional-set semantics are generally useful Design principles and which are product-development-specific techniques.
 7. Whether directional decomposition should have a standardized artifact or remain a technique with multiple possible representations.
 8. Whether the current Level 0–3 product model remains the best abstraction-depth model for successor product authority.
@@ -1033,6 +1157,9 @@ The successor Design should determine:
 13. Which current validation ownership concepts should become Conformance ownership-domain semantics.
 14. Which current semantic-review practices can be transformed into Assurance obligations and cases.
 15. Whether any concept classified here as KEEP would create unnecessary foundational coupling if placed too high in the authority hierarchy.
+16. How bounded governed authorization should be represented independently of any specific issue or platform mechanism.
+17. Which normative dependency edges must be acyclic and which non-authoritative traceability graphs may legitimately contain cycles.
+18. How observed, desired, planned, applied, and verified external state should be represented without creating platform-specific framework authority.
 
 ## Explicitly Deferred Concerns
 
@@ -1073,7 +1200,7 @@ The intended conceptual hierarchy is:
 → provides governed semantic review
 
 **Successor Concept Set**
-→ preserves useful design lessons from the current repo-spec as non-authoritative Design input for detailed successor normalization
+→ preserves useful design lessons from the current repo-spec as non-authoritative Design input for detailed successor normalization and does not become an independent normative authority source
 
 The successor should therefore be neither a clean-sheet rejection of the current repository nor a mechanical preservation of its current contracts.
 

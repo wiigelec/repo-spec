@@ -108,7 +108,10 @@ It shall establish:
 - foundational provenance obligations;
 - the prohibition against implicit authority creation;
 - the relationship between framework authority and product authority; and
-- requirements for explicit, resolvable authority representation.
+- requirements for explicit, resolvable authority representation;
+- default-deny authorization of maintained governed state;
+- single controlling semantic ownership; and
+- acyclic normative authority dependency.
 
 The Framework Contract shall remain intentionally compact.
 
@@ -358,6 +361,12 @@ The Assurance Architecture Proposal shall define how governed semantic review op
 
 A subordinate framework specification shall not redefine or exceed authority delegated by the Framework Contract.
 
+Maintained governed framework state shall require accepted authorization or an explicitly governed extension point.
+
+Each independently governed framework semantic invariant shall have one controlling normative owner.
+
+Normative authority shall not depend for its authority on a cycle of normative dependencies.
+
 ## Candidate Foundational Requirements
 
 The following candidate requirements are intended for Design-stage normalization.
@@ -418,9 +427,21 @@ The following candidate requirements are intended for Design-stage normalization
 
 **Delegated authority relationships SHALL be resolvable without inference from non-authoritative repository state.**
 
+### FC-15 — Default-Deny Maintained State
+
+**Maintained governed framework state SHALL require accepted authorization or an explicitly governed extension point.**
+
+### FC-16 — Single Semantic Owner
+
+**Each independently governed framework semantic invariant SHALL have one controlling normative owner.**
+
+### FC-17 — Acyclic Normative Dependency
+
+**Normative authority SHALL NOT depend for its authority on a cycle of normative dependencies.**
+
 ## Primary Design Invariant
 
-**The authoritative `repo/` framework SHALL define and bound Governance, Conformance, and Assurance such that persistent normative authority changes only through Governance, mechanical normative enforcement occurs only through Conformance, governed semantic review occurs only through Assurance, and derived framework behavior remains subordinate and traceable to accepted normative authority.**
+**The authoritative `repo/` framework SHALL define and bound Governance, Conformance, and Assurance such that persistent normative authority changes only through Governance, mechanical normative enforcement occurs only through Conformance, governed semantic review occurs only through Assurance, maintained governed state is positively authorized, each independently governed semantic invariant has one controlling normative owner, normative authority does not depend on circular normative dependencies, and derived framework behavior remains subordinate and traceable to accepted normative authority.**
 
 All subordinate framework design shall preserve this invariant.
 

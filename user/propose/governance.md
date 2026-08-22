@@ -632,6 +632,10 @@ This prevents circular self-authorization during framework evolution and self-ho
 
 Governance state shall be explicitly represented.
 
+Governed authorization shall be bounded to explicitly governed scope.
+
+A governed work item shall not independently authorize unrelated or successor work merely because the current work is accepted or complete.
+
 A governed-work artifact shall not rely solely on surrounding platform state to determine its Governance state.
 
 Detailed state vocabulary and transition rules belong in subordinate Governance authority.
@@ -801,9 +805,13 @@ The following candidate requirements are intended for Design-stage normalization
 
 **Governance acceptance SHALL depend only on authority accepted before the candidate result acquires the authority produced by that acceptance.**
 
+### GOV-28 — Bounded Governed Authorization
+
+**A governed work item SHALL authorize only its explicitly governed scope and SHALL NOT independently authorize unrelated or successor work.**
+
 ## Primary Design Invariant
 
-**Governance SHALL transform non-authoritative design intent into accepted repository state through a traceable Design → Plan → Build lifecycle in which accepted normative obligations have stable requirement identities and governed evaluation dispositions, Design owns normative semantics, Plan owns realization intent, Build realizes only accepted Plan work, acceptance is explicit and depends only on previously accepted authority, and downstream stages route upstream defects rather than invent missing authority.**
+**Governance SHALL transform non-authoritative design intent into accepted repository state through a traceable Design → Plan → Build lifecycle in which accepted normative obligations have stable requirement identities and governed evaluation dispositions, Design owns normative semantics, Plan owns realization intent, Build realizes only accepted Plan work, governed authorization remains bounded to explicit scope, acceptance is explicit and depends only on previously accepted authority, and downstream stages route upstream defects rather than invent missing authority.**
 
 All detailed Governance design shall preserve this invariant.
 
