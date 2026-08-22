@@ -293,6 +293,7 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
         "repo.functional-set-process": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/functional-set-process.schema.json")),
         "repo.product-decomposition": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/product-decomposition.schema.json")),
         "repo.implementation-plan": materialize_document_schema(load_json(repo_root / "repo/schemas/repo/implementation-plan.schema.json")),
+        "validation-correspondence-package": load_json(repo_root / "repo/schemas/repo/validation-correspondence-package.schema.json"),
     }
     ensure_schema_keywords(schemas["repo.manifest"], "repo/schemas/repo/repo-manifest.schema.json")
     ensure_schema_keywords(schemas["repo.artifact-taxonomy"], "repo/schemas/repo/repo-artifact-taxonomy.schema.json")
@@ -302,4 +303,8 @@ def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["repo.functional-set-process"], "repo/schemas/repo/functional-set-process.schema.json")
     ensure_schema_keywords(schemas["repo.product-decomposition"], "repo/schemas/repo/product-decomposition.schema.json")
     ensure_schema_keywords(schemas["repo.implementation-plan"], "repo/schemas/repo/implementation-plan.schema.json")
+    ensure_schema_keywords(
+        schemas["validation-correspondence-package"],
+        "repo/schemas/repo/validation-correspondence-package.schema.json",
+    )
     return schemas

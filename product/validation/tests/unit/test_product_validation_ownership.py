@@ -23,7 +23,7 @@ def run_product_validation_ownership_tests(repo_root: Path) -> None:
             "product validation ownership failed: product/validation must not be "
             "an importable root package"
         )
-    expected_dirs = {"checks", "core", "runners", "tests"}
+    expected_dirs = {"checks", "core", "packages", "runners", "tests"}
     actual_dirs = {path.name for path in validation_root.iterdir() if path.is_dir()}
     if actual_dirs != expected_dirs:
         raise AssertionError(

@@ -104,6 +104,58 @@ def load_product_correspondence_inventory(context: ValidationContext, spec_id: s
     return ProductCorrespondenceInventory(requirement_ids, implementation_index, test_index, conformance)
 
 
+def check_product_validation_correspondence_packages_phase(
+    context: ValidationContext,
+) -> None:
+    if context.product is None:
+        return
+    expect(context.external_repository is not None, "product validation correspondence failed: repository authority context missing")
+    schema = context.external_repository.schemas.get("validation-correspondence-package")
+    expect(isinstance(schema, dict), "product validation correspondence failed: package schema missing")
+    package_root = context.repo_root / "product/validation/packages"
+    expect(package_root.is_dir(), "product validation correspondence failed: missing product/validation/packages")
+
+    active_refs: set[tuple[str, str]] = set()
+    source_records: dict[tuple[str, str], dict[str, Any]] = {}
+    for spec_id, spec in context.product.specs.items():
+        if spec.get("status") != "accepted":
+            continue
+        inventory = load_product_correspondence_inventory(context, spec_id, spec)
+        records = {record["requirement_id"]: record for record in inventory.conformance}
+        for req in spec.get("normative_requirements", []):
+            requirement_id = req.get("id") if isinstance(req, dict) else None
+            if not isinstance(requirement_id, str):
+                continue
+            ref = (spec_id, requirement_id)
+            active_refs.add(ref)
+            expect(requirement_id in records, f"product validation correspondence failed: missing conformance source {spec_id}/{requirement_id}")
+            source_records[ref] = records[requirement_id]
+
+    package_refs: set[tuple[str, str]] = set()
+    for path in sorted(package_root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(package_root)
+        expect(path.suffix == ".json" and len(relative.parts) == 2, f"product validation correspondence failed: noncanonical package path {path.relative_to(context.repo_root).as_posix()}")
+        ref = (relative.parts[0], path.stem)
+        expect(ref not in package_refs, f"product validation correspondence failed: duplicate package owner {ref[0]}/{ref[1]}")
+        package = load_json(path)
+        validate_instance(package, schema, path.relative_to(context.repo_root).as_posix(), schema)
+        expect(package["normative_reference"] == {"spec_id": ref[0], "requirement_id": ref[1]}, f"product validation correspondence failed: package/path binding mismatch {ref[0]}/{ref[1]}")
+        expect(ref in active_refs, f"product validation correspondence failed: inactive or unknown package {ref[0]}/{ref[1]}")
+        source = source_records[ref]
+        expect(source.get("status") == "not-applicable", f"product validation correspondence failed: unsupported migration state {ref[0]}/{ref[1]}")
+        expect(package["validation_disposition"] == "not-applicable", f"product validation correspondence failed: disposition mismatch {ref[0]}/{ref[1]}")
+        expect(package.get("validation_rationale") == source.get("rationale"), f"product validation correspondence failed: rationale mismatch {ref[0]}/{ref[1]}")
+        expect(package["tasks"] == [], f"product validation correspondence failed: not-applicable package invented task ownership {ref[0]}/{ref[1]}")
+        package_refs.add(ref)
+
+    missing = sorted(active_refs - package_refs)
+    unexpected = sorted(package_refs - active_refs)
+    expect(not missing, "product validation correspondence failed: missing active package(s): " + ", ".join(f"{s}/{r}" for s, r in missing))
+    expect(not unexpected, "product validation correspondence failed: unexpected package(s): " + ", ".join(f"{s}/{r}" for s, r in unexpected))
+
+
 def check_product_correspondence_phase(context: ValidationContext) -> None:
     if context.product is None:
         return

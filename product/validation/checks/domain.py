@@ -16,6 +16,7 @@ from .policy import (
 from .specifications import (
     check_product_conformance_completeness_phase,
     check_product_correspondence_phase,
+    check_product_validation_correspondence_packages_phase,
 )
 from .development_documents import check_product_development_documents
 from .policy import check_product_lifecycle_readiness
@@ -159,6 +160,10 @@ PRODUCT_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ),
     ("product specification root", check_product_specification_root_phase),
     ("product correspondence inventory", check_product_correspondence_phase),
+    (
+        "product validation correspondence packages",
+        check_product_validation_correspondence_packages_phase,
+    ),
     (
         "product conformance completeness",
         check_product_conformance_completeness_phase,

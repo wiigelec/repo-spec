@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "INIT-FIN-003",
+    "spec_id": "product.full-initialization"
+  },
+  "tasks": [],
+  "validation_disposition": "not-applicable",
+  "validation_rationale": "Current accepted repo-spec authority declares no governed generic product implementation-test obligation for this requirement at product/scripts/test-product; source-development tests and validation self-tests are separate surfaces. Future activation requires a governed correspondence update."
+}
