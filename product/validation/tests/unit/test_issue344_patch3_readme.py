@@ -11,6 +11,7 @@ OUTPUT = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.j
 
 
 class Issue344Patch3ReadmeTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_root_readme_projection_uses_neutral_template(self) -> None:
         framework = json.loads(FRAMEWORK.read_text())
         output = json.loads(OUTPUT.read_text())
@@ -34,6 +35,7 @@ class Issue344Patch3ReadmeTests(unittest.TestCase):
             "product/src/initializer/templates/initialized-repository-README.md",
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_neutral_readme_has_only_destination_discovery_surface(self) -> None:
         text = TEMPLATE.read_text()
 

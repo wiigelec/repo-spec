@@ -19,6 +19,7 @@ from initializer.upgrade_resolution import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def git(repo: Path, *args: str, check: bool = True) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -33,6 +34,7 @@ def git(repo: Path, *args: str, check: bool = True) -> str:
 
 
 class UP1ConformanceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_framework(self):
         td = tempfile.TemporaryDirectory()
         repo = Path(td.name).resolve()
@@ -43,6 +45,7 @@ class UP1ConformanceTests(unittest.TestCase):
         (repo / "product/specs/product/level-1").mkdir(parents=True)
         return td, repo
 
+    # validation-metadata: {"role": "helper"}
     def write_inventory(self, repo: Path, defs: dict[str, tuple[str, str]]):
         manifest = []
         output = []
@@ -81,11 +84,13 @@ class UP1ConformanceTests(unittest.TestCase):
             encoding="utf-8",
         )
 
+    # validation-metadata: {"role": "helper"}
     def commit(self, repo: Path, message: str) -> str:
         git(repo, "add", "-A")
         git(repo, "commit", "-qm", message)
         return git(repo, "rev-parse", "HEAD")
 
+    # validation-metadata: {"role": "helper"}
     def make_target(self, framework: Path, revision: str, *, provenance=True):
         td = tempfile.TemporaryDirectory()
         target = Path(td.name).resolve()
@@ -115,6 +120,7 @@ class UP1ConformanceTests(unittest.TestCase):
         git(target, "commit", "-qm", "target")
         return td, target
 
+    # validation-metadata: {"role": "helper"}
     def test_invalid_noninitialized_and_incomplete_provenance_fail_closed(self):
         ftd, framework = self.make_framework()
         with ftd:
@@ -141,6 +147,7 @@ class UP1ConformanceTests(unittest.TestCase):
                 ):
                     resolve_accepted_baseline(str(target))
 
+    # validation-metadata: {"role": "helper"}
     def test_subsequent_reconciliation_uses_latest_accepted_lineage_entry(self):
         ftd, framework = self.make_framework()
         with ftd:
@@ -169,6 +176,7 @@ class UP1ConformanceTests(unittest.TestCase):
                     result.active_baseline.framework_revision.object_id, second
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_evidence_is_deterministic_complete_and_up1_is_non_mutating(self):
         ftd, framework = self.make_framework()
         with ftd:
@@ -249,6 +257,7 @@ class UP1ConformanceTests(unittest.TestCase):
                     before_status,
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_evidence_fingerprint_changes_when_authoritative_target_changes(self):
         ftd, framework = self.make_framework()
         with ftd:

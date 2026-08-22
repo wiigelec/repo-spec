@@ -19,6 +19,7 @@ TEST_TIMESTAMP = "2026-08-12T12:00:00Z"
 OTHER_TIMESTAMP = "2026-08-12T12:00:01Z"
 
 class I3GitBootstrapTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_repository(self) -> tuple[tempfile.TemporaryDirectory, Path]:
         td = tempfile.TemporaryDirectory()
         repo = Path(td.name) / "repository"
@@ -31,6 +32,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         self.addCleanup(td.cleanup)
         return td, repo
 
+    # validation-metadata: {"role": "helper"}
     def test_initializes_exact_single_root_commit_profile(self):
         _td, repo = self.make_repository()
         result = initialize_i3_git_repository(repo, TEST_TIMESTAMP)
@@ -47,6 +49,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         self.assertEqual(result.tree.object_format, "sha1")
         self.assertEqual(len(result.tree.object_id), 40)
 
+    # validation-metadata: {"role": "helper"}
     def test_identical_content_produces_identical_tree_and_commit(self):
         _a, repo_a = self.make_repository()
         _b, repo_b = self.make_repository()
@@ -55,6 +58,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         self.assertEqual(a.tree, b.tree)
         self.assertEqual(a.commit, b.commit)
 
+    # validation-metadata: {"role": "helper"}
     def test_identical_content_different_timestamp_keeps_tree_changes_commit(self):
         _a, repo_a = self.make_repository()
         _b, repo_b = self.make_repository()
@@ -63,6 +67,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         self.assertEqual(a.tree, b.tree)
         self.assertNotEqual(a.commit, b.commit)
 
+    # validation-metadata: {"role": "helper"}
     def test_executable_mode_changes_tree_and_commit(self):
         _a, repo_a = self.make_repository()
         _b, repo_b = self.make_repository()
@@ -72,6 +77,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         self.assertNotEqual(a.tree, b.tree)
         self.assertNotEqual(a.commit, b.commit)
 
+    # validation-metadata: {"role": "helper"}
     def test_verify_rejects_remote(self):
         _td, repo = self.make_repository()
         initialize_i3_git_repository(repo, TEST_TIMESTAMP)
@@ -83,6 +89,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         with self.assertRaisesRegex(GitError, "no remotes"):
             verify_i3_git_repository(repo)
 
+    # validation-metadata: {"role": "helper"}
     def test_verify_rejects_extra_commit(self):
         _td, repo = self.make_repository()
         initialize_i3_git_repository(repo, TEST_TIMESTAMP)
@@ -109,6 +116,7 @@ class I3GitBootstrapTests(unittest.TestCase):
         with self.assertRaisesRegex(GitError, "exactly one commit"):
             verify_i3_git_repository(repo)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_existing_git_state_without_mutation(self):
         _td, repo = self.make_repository()
         (repo / ".git").mkdir()

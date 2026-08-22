@@ -6,6 +6,7 @@ from pathlib import Path
 from validation.core.errors import expect
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_validate_cli_contract(repo_root: Path) -> None:
     validate_launcher = (repo_root / "product/scripts/validate").read_text()
     test_launcher = (repo_root / "product/scripts/test-validation").read_text()

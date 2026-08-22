@@ -22,6 +22,7 @@ EXPECTED = {
 }
 
 class Issue321SchemaMaterialTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_real_material_manifest_parser_accepts_schema_entries(self):
         output = json.loads(SPEC.read_text())
         framework = json.loads(FRAMEWORK.read_text())
@@ -40,6 +41,7 @@ class Issue321SchemaMaterialTests(unittest.TestCase):
             self.assertEqual(entry.source_type, "blob", rel)
             self.assertEqual(entry.mode, "100644", rel)
 
+    # validation-metadata: {"role": "helper"}
     def test_schema_sources_exist_and_are_mode_100644(self):
         for rel in EXPECTED:
             p = ROOT / rel

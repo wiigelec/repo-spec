@@ -9,6 +9,7 @@ from validation.core.errors import ValidationFailure
 from validation.tests.self.portable_self_tests import run_product_portable_self_tests
 
 
+# validation-metadata: {"role": "helper"}
 def _run_source_development_tests(repo_root: Path) -> None:
     source_suite = repo_root / "product/validation/tests/self/mutation_tests.py"
     if not source_suite.is_file():
@@ -45,6 +46,7 @@ INFRASTRUCTURE = "infrastructure-failure"
 SUCCESS_CLASSES = {SUCCESS_ZERO, SUCCESS_APPLICABLE}
 
 
+# validation-metadata: {"role": "helper"}
 def _result(
     *,
     applicability: str,
@@ -67,6 +69,7 @@ def _result(
     return value
 
 
+# validation-metadata: {"role": "helper"}
 def _safe_repository_path(value: object) -> str | None:
     if not isinstance(value, str) or not value:
         return None
@@ -78,10 +81,12 @@ def _safe_repository_path(value: object) -> str | None:
     return value
 
 
+# validation-metadata: {"role": "helper"}
 def _load_json(path: Path) -> object:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+# validation-metadata: {"role": "helper"}
 def _invalid(
     accepted_specs: list[str],
     evidence: dict[str, Any],
@@ -99,6 +104,7 @@ def _invalid(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _collect_applicability(repo_root: Path) -> dict[str, Any]:
     manifest_path = repo_root / "product/specs/product/manifest.json"
 
@@ -414,6 +420,7 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_tests(
     repo_root: Path,
     *,
@@ -496,6 +503,7 @@ def run_product_tests(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     args = argv[2:]

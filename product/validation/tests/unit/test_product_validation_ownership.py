@@ -4,6 +4,7 @@ import ast
 from pathlib import Path
 
 
+# validation-metadata: {"role": "helper"}
 def _absolute_imports(path: Path) -> set[str]:
     tree = ast.parse(path.read_text(), filename=str(path))
     modules: set[str] = set()
@@ -15,6 +16,7 @@ def _absolute_imports(path: Path) -> set[str]:
     return modules
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_validation_ownership_tests(repo_root: Path) -> None:
     scripts = repo_root / "product/scripts"
     validation_root = repo_root / "product/validation"

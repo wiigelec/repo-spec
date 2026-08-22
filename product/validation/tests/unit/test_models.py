@@ -6,6 +6,7 @@ import unittest
 from initializer.validation import validate_and_normalize
 
 
+# validation-metadata: {"role": "helper"}
 def request(destination: str = "output") -> dict[str, object]:
     return {
         "schema_version": "2",
@@ -14,29 +15,34 @@ def request(destination: str = "output") -> dict[str, object]:
 
 
 class ImmutableRequestTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_validated_model_is_minimal_v2(self) -> None:
         model = validate_and_normalize(request(), "/work").request
         self.assertEqual(model.schema_version, "2")
         self.assertEqual(model.destination, "/work/output")
         self.assertEqual(model.repository_name, "output")
 
+    # validation-metadata: {"role": "helper"}
     def test_repository_name_is_derived_not_authoritative_input(self) -> None:
         model = validate_and_normalize(request("/work/repos/example"), "/work").request
         self.assertEqual(model.repository_name, "example")
         canonical = json.loads(model.canonical_request_bytes.decode("utf-8"))
         self.assertNotIn("repository_name", canonical)
 
+    # validation-metadata: {"role": "helper"}
     def test_canonical_bytes_are_deterministic(self) -> None:
         left = validate_and_normalize(request("./out"), "/work").request
         right = validate_and_normalize(request("/work/out"), "/work").request
         self.assertEqual(left.canonical_request_bytes, right.canonical_request_bytes)
         self.assertEqual(left.request_fingerprint, right.request_fingerprint)
 
+    # validation-metadata: {"role": "helper"}
     def test_model_is_immutable(self) -> None:
         model = validate_and_normalize(request(), "/work").request
         with self.assertRaises(AttributeError):
             model._destination = "/other"
 
+    # validation-metadata: {"role": "helper"}
     def test_removed_v1_fields_are_absent(self) -> None:
         model = validate_and_normalize(request(), "/work").request
         for name in (

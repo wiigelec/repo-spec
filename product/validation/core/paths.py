@@ -9,6 +9,7 @@ from pathlib import Path
 from validation.core.errors import fail
 
 
+# validation-metadata: {"role": "helper"}
 def resolve_repo_path(repo_root: Path, value: str) -> Path:
     if (
         not value

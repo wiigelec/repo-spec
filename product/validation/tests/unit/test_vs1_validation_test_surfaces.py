@@ -18,10 +18,12 @@ SUCCESS_CLASSES = {
 
 
 class VS1ValidationTestSurfaceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_product_test_surface_exists_and_is_executable(self) -> None:
         self.assertTrue(SURFACE.is_file())
         self.assertTrue(os.access(SURFACE, os.X_OK))
 
+    # validation-metadata: {"role": "helper"}
     def test_product_test_surface_exposes_vs2_machine_result_without_placeholder(self) -> None:
         completed = subprocess.run(
             [str(SURFACE), "--product"],
@@ -40,12 +42,14 @@ class VS1ValidationTestSurfaceTests(unittest.TestCase):
         expected_returncode = 0 if result["classification"] in SUCCESS_CLASSES else 1
         self.assertEqual(completed.returncode, expected_returncode)
 
+    # validation-metadata: {"role": "helper"}
     def test_common_validation_invokes_generic_product_test_surface(self) -> None:
         text = COMMON.read_text(encoding="utf-8")
         self.assertIn('"$root/repo/scripts/test-validation"', text)
         self.assertIn('"$root/product/scripts/test-validation"', text)
         self.assertNotIn('"$root/product/scripts/test-product"', text)
 
+    # validation-metadata: {"role": "helper"}
     def test_product_test_surface_rejects_unknown_modes(self) -> None:
         completed = subprocess.run(
             [str(SURFACE), "unexpected-mode"],

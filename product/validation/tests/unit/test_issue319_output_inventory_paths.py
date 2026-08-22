@@ -12,6 +12,7 @@ INVENTORY = (
 
 
 class Issue319OutputInventoryPathTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_bootstrap_inventory_does_not_seed_product_workspace_readmes(self):
         inventory = json.loads(INVENTORY.read_text())
         destinations = {
@@ -29,6 +30,7 @@ class Issue319OutputInventoryPathTests(unittest.TestCase):
         ):
             self.assertNotIn(path, destinations)
 
+    # validation-metadata: {"role": "helper"}
     def test_bootstrap_fixed_outputs_are_only_initializer_records(self):
         inventory = json.loads(INVENTORY.read_text())
         self.assertEqual(

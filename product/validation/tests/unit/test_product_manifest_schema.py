@@ -12,14 +12,17 @@ from ..self.mutation_support import expect_failure
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# validation-metadata: {"role": "helper"}
 def load_fixture(name: str) -> dict:
     return json.loads((FIXTURE_DIR / name).read_text())
 
 
+# validation-metadata: {"role": "helper"}
 def assert_valid(schema: dict, name: str) -> None:
         validate_instance(load_fixture(name), schema, f"product/validation/tests/fixtures/{name}", schema)
 
 
+# validation-metadata: {"role": "helper"}
 def assert_invalid(schema: dict, name: str, fragment: str) -> None:
     expect_failure(
         name,
@@ -28,6 +31,7 @@ def assert_invalid(schema: dict, name: str, fragment: str) -> None:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_manifest_schema_tests(repo_root: Path) -> None:
     schema = load_product_schemas(repo_root)["product.manifest"]
 

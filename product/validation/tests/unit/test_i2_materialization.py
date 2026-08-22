@@ -21,6 +21,7 @@ from initializer.staging import (
 from initializer.validation import validate_and_normalize
 
 
+# validation-metadata: {"role": "helper"}
 def _git(repo: Path, *args: str) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -34,6 +35,7 @@ def _git(repo: Path, *args: str) -> str:
 
 
 class I2MaterializationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self) -> None:
         self.base = Path(tempfile.mkdtemp())
         self.source_repo = self.base / "source"
@@ -120,9 +122,11 @@ class I2MaterializationTests(unittest.TestCase):
             I2StagingInputs(self.request, self.source, self.destination)
         )
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self) -> None:
         shutil.rmtree(self.base, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_realizes_closed_framework_only(self) -> None:
         result = realize_i2_materials(self.workspace)
         repo = self.workspace.repository_path
@@ -138,6 +142,7 @@ class I2MaterializationTests(unittest.TestCase):
         self.assertEqual(result.foundation_paths, ())
         self.assertFalse((repo / ".git").exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_product_foundation_plan(self) -> None:
         plan = build_foundation_plan("sample", ["/direction.md"], "issue-old")
         with self.assertRaisesRegex(
@@ -146,6 +151,7 @@ class I2MaterializationTests(unittest.TestCase):
         ):
             realize_i2_materials(self.workspace, plan)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_nonempty_repository_before_realization(self) -> None:
         sentinel = self.workspace.repository_path / "sentinel"
         sentinel.write_text("preserve", encoding="utf-8")

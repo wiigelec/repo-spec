@@ -13,6 +13,7 @@ from initializer.full_initialization_actions import (
 
 
 class InstalledValidationGateTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def _repository(self, script: str):
         temp = tempfile.TemporaryDirectory()
         root = Path(temp.name)
@@ -22,6 +23,7 @@ class InstalledValidationGateTests(unittest.TestCase):
         validator.chmod(0o755)
         return temp, root
 
+    # validation-metadata: {"role": "helper"}
     def test_success_uses_staged_repository_as_working_directory(self) -> None:
         temp, root = self._repository("")
         try:
@@ -36,6 +38,7 @@ class InstalledValidationGateTests(unittest.TestCase):
         finally:
             temp.cleanup()
 
+    # validation-metadata: {"role": "helper"}
     def test_ambient_python_shell_and_git_overrides_are_removed(self) -> None:
         checks = "\n".join(
             f'test -z "${{{key}-}}"' for key in _AMBIENT_VALIDATION_ENV_KEYS
@@ -48,6 +51,7 @@ class InstalledValidationGateTests(unittest.TestCase):
         finally:
             temp.cleanup()
 
+    # validation-metadata: {"role": "helper"}
     def test_nonzero_installed_validation_fails_closed(self) -> None:
         temp, root = self._repository('echo "broken installed validator" >&2\nexit 23\n')
         try:

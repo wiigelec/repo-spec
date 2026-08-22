@@ -16,11 +16,13 @@ import initializer.cli as cli
 REPO_SPEC_INIT = Path(__file__).resolve().parents[3] / "scripts" / "repo-spec-init"
 
 
+# validation-metadata: {"role": "helper"}
 def request(destination: str = "missing-output") -> dict[str, object]:
     return {"schema_version": "2", "destination": destination}
 
 
 class CliTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def run_request(self, raw: object, cwd: Path) -> subprocess.CompletedProcess[str]:
         path = cwd / "request.json"
         path.write_text(json.dumps(raw), encoding="utf-8")
@@ -31,6 +33,7 @@ class CliTests(unittest.TestCase):
             text=True,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_validate_request_reports_normalized_path_and_fingerprint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             cwd = Path(directory)
@@ -41,6 +44,7 @@ class CliTests(unittest.TestCase):
             self.assertEqual(output["destination"], str(cwd / "missing-output"))
             self.assertRegex(output["request_fingerprint"], r"^[0-9a-f]{64}$")
 
+    # validation-metadata: {"role": "helper"}
     def test_validate_request_does_not_create_destination(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             cwd = Path(directory)
@@ -48,6 +52,7 @@ class CliTests(unittest.TestCase):
             self.assertEqual(proc.returncode, 0, proc.stderr)
             self.assertFalse((cwd / "missing-output").exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_validate_request_rejects_legacy_authority(self) -> None:
         raw = request()
         raw["authority"] = {"granted_by": "issue-old"}
@@ -56,6 +61,7 @@ class CliTests(unittest.TestCase):
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("invalid-structure", proc.stderr)
 
+    # validation-metadata: {"role": "helper"}
     def test_validate_request_rejects_unknown_and_profile_fields(self) -> None:
         for field, value in (("metadata", {}), ("profile", "dry-run")):
             with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
@@ -64,12 +70,14 @@ class CliTests(unittest.TestCase):
                 proc = self.run_request(raw, Path(directory))
                 self.assertNotEqual(proc.returncode, 0)
 
+    # validation-metadata: {"role": "helper"}
     def test_validate_request_requires_json_object(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             proc = self.run_request([], Path(directory))
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("invalid-structure", proc.stderr)
 
+    # validation-metadata: {"role": "helper"}
     def test_public_usage_is_consistent_for_empty_and_unknown_command_paths(self) -> None:
         public_forms = (
             "usage: repo-spec init --repo <destination>",
@@ -92,6 +100,7 @@ class CliTests(unittest.TestCase):
                     self.assertIn(public_form, rendered)
 
 
+    # validation-metadata: {"role": "helper"}
     def test_upgrade_cli_streams_human_progress_and_keeps_stdout_empty(self) -> None:
         result = SimpleNamespace(
             terminal_result="promoted-success",
@@ -106,6 +115,7 @@ class CliTests(unittest.TestCase):
             "promotion",
         )
 
+        # validation-metadata: {"role": "helper"}
         def execute(_target, _framework, *, progress=None):
             self.assertIsNotNone(progress)
             for phase in phases:
@@ -144,6 +154,7 @@ class CliTests(unittest.TestCase):
         positions = [rendered.index(message) for message in expected]
         self.assertEqual(positions, sorted(positions))
 
+    # validation-metadata: {"role": "helper"}
     def test_request_driven_staging_commands_are_unavailable(self) -> None:
         commands = (
             "stage-framework",
@@ -167,6 +178,7 @@ class CliTests(unittest.TestCase):
                     self.assertNotEqual(proc.returncode, 0)
                     self.assertIn("unavailable", proc.stderr)
 
+    # validation-metadata: {"role": "helper"}
     def test_preflight_request_remains_bounded_i1_path(self):
         source = inspect.getsource(cli._cmd_preflight_request)
         self.assertIn("validate_and_normalize", source)

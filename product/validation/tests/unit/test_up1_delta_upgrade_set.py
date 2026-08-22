@@ -9,6 +9,7 @@ from pathlib import Path
 from initializer.upgrade_resolution import UpgradeResolutionError, resolve_upgrade_set
 
 
+# validation-metadata: {"role": "helper"}
 def git(repo: Path, *args: str) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -21,6 +22,7 @@ def git(repo: Path, *args: str) -> str:
 
 
 class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_framework(self):
         td = tempfile.TemporaryDirectory()
         repo = Path(td.name).resolve()
@@ -31,6 +33,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
         (repo / "product/specs/product/level-1").mkdir(parents=True)
         return td, repo
 
+    # validation-metadata: {"role": "helper"}
     def write_inventory(self, repo: Path, definitions: dict[str, tuple[str, str]]):
         manifest_entries = []
         output_entries = []
@@ -70,11 +73,13 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
             encoding="utf-8",
         )
 
+    # validation-metadata: {"role": "helper"}
     def commit(self, repo: Path, message: str) -> str:
         git(repo, "add", "-A")
         git(repo, "commit", "-qm", message)
         return git(repo, "rev-parse", "HEAD")
 
+    # validation-metadata: {"role": "helper"}
     def make_target(self, framework: Path, baseline_revision: str):
         td = tempfile.TemporaryDirectory()
         target = Path(td.name).resolve()
@@ -103,6 +108,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
         git(target, "commit", "-qm", "initialized")
         return td, target
 
+    # validation-metadata: {"role": "helper"}
     def test_classifies_union_by_stable_material_key_and_exact_source_identity(self):
         ftd, framework = self.make_framework()
         with ftd:
@@ -142,6 +148,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
                 self.assertTrue(evidence["baseline_endpoint"]["manifest_blob_id"])
                 self.assertTrue(evidence["target_endpoint"]["output_inventory_blob_id"])
 
+    # validation-metadata: {"role": "helper"}
     def test_target_owned_qualification_only_constrains_existing_transitions(self):
         ftd, framework = self.make_framework()
         with ftd:
@@ -179,6 +186,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
                     {"a", "b", "c"},
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_qualification_cannot_expand_to_unmanaged_or_unchanged_material(self):
         ftd, framework = self.make_framework()
         with ftd:
@@ -210,6 +218,7 @@ class UP1DeltaAndUpgradeSetTests(unittest.TestCase):
                 with self.assertRaisesRegex(UpgradeResolutionError, "non-transition material"):
                     resolve_upgrade_set(str(target), str(framework))
 
+    # validation-metadata: {"role": "helper"}
     def test_dirty_reconciliation_target_fails_closed_before_set_resolution(self):
         ftd, framework = self.make_framework()
         with ftd:

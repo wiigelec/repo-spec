@@ -18,6 +18,7 @@ class ProductCorrespondenceInventory:
     conformance: list[dict[str, Any]]
 
 
+# validation-metadata: {"role": "helper"}
 def load_product_correspondence_inventory(context: ValidationContext, spec_id: str, spec: dict[str, Any]) -> ProductCorrespondenceInventory:
     forbidden_prefixes = ("specs/", "derived/", "schemas/", "docs/", ".github/", "repo/scripts/")
     forbidden_exact = {"README.md", "AGENTS.md", "LICENSE"}
@@ -28,6 +29,7 @@ def load_product_correspondence_inventory(context: ValidationContext, spec_id: s
     requirement_ids = {req["id"] for req in spec.get("normative_requirements", [])}
     declared_paths: set[str] = set()
 
+    # validation-metadata: {"role": "helper"}
     def validate_mapping_collection(collection_name: str, id_field: str) -> dict[str, dict[str, Any]]:
         mappings = correspondence.get(collection_name, [])
         expect(isinstance(mappings, list), f"correspondence validation failed: {spec_id} {collection_name} must be an array")
@@ -104,6 +106,7 @@ def load_product_correspondence_inventory(context: ValidationContext, spec_id: s
     return ProductCorrespondenceInventory(requirement_ids, implementation_index, test_index, conformance)
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_validation_correspondence_packages_phase(
     context: ValidationContext,
 ) -> None:
@@ -156,6 +159,7 @@ def check_product_validation_correspondence_packages_phase(
     expect(not unexpected, "product validation correspondence failed: unexpected package(s): " + ", ".join(f"{s}/{r}" for s, r in unexpected))
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_correspondence_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
@@ -164,6 +168,7 @@ def check_product_correspondence_phase(context: ValidationContext) -> None:
         load_product_correspondence_inventory(context, spec_id, spec)
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_conformance_completeness_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
@@ -208,6 +213,7 @@ class ProductValidationContext:
     schemas: dict[str, dict[str, Any]]
 
 
+# validation-metadata: {"role": "helper"}
 def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     schemas = {
         "product.manifest": load_json(repo_root / "product/schemas/product/product-manifest.schema.json"),
@@ -216,6 +222,7 @@ def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     base_schema = schemas["product.spec-base"]
     base_defs = copy.deepcopy(base_schema.get("$defs", {}))
 
+    # validation-metadata: {"role": "helper"}
     def materialize_level_schema(schema: dict[str, Any]) -> dict[str, Any]:
         schema = copy.deepcopy(schema)
         defs = schema.setdefault("$defs", {})
@@ -241,6 +248,7 @@ def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["product.level-2"], "product/schemas/product/product-level-2.schema.json")
     ensure_schema_keywords(schemas["product.level-3"], "product/schemas/product/product-level-3.schema.json")
     return schemas
+# validation-metadata: {"role": "helper"}
 def actual_product_paths(repo_root: Path) -> list[str]:
     product_root = repo_root / "product/specs/product"
     if not product_root.exists():
@@ -252,6 +260,7 @@ def actual_product_paths(repo_root: Path) -> list[str]:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def load_product_validation_context(repo_root: Path) -> ProductValidationContext | None:
     manifest_path = repo_root / "product/specs/product/manifest.json"
     actual_paths = actual_product_paths(repo_root)

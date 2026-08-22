@@ -39,6 +39,7 @@ SUPPORTED_SCHEMA_KEYS = {
 SUPPORTED_SCHEMA_TYPES = {"object", "array", "string", "boolean", "integer"}
 
 
+# validation-metadata: {"role": "helper"}
 def load_json(path: Path) -> Any:
     try:
         return json.loads(path.read_text())
@@ -48,14 +49,17 @@ def load_json(path: Path) -> Any:
         fail(f"invalid JSON: {path}: {exc.msg}")
 
 
+# validation-metadata: {"role": "helper"}
 def instance_location(source: str, path: str) -> str:
     return source if not path else f"{source} {path}"
 
 
+# validation-metadata: {"role": "helper"}
 def schema_location(source: str, path: str) -> str:
     return source if not path else f"{source}{path}"
 
 
+# validation-metadata: {"role": "helper"}
 def resolve_ref(root_schema: dict[str, Any], ref: str, source: str) -> Any:
     expect(ref.startswith("#/$defs/"), f"schema loading failed: {source} unsupported ref {ref}")
     parts = ref.removeprefix("#/").split("/")
@@ -66,6 +70,7 @@ def resolve_ref(root_schema: dict[str, Any], ref: str, source: str) -> Any:
     return node
 
 
+# validation-metadata: {"role": "helper"}
 def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema: Any | None = None) -> None:
     expect(isinstance(schema, dict), f"schema loading failed: {schema_location(source, path)} must be an object")
     if root_schema is None:
@@ -140,6 +145,7 @@ def ensure_schema_keywords(schema: Any, source: str, path: str = "", root_schema
         resolve_ref(root_schema, schema["$ref"], source)
 
 
+# validation-metadata: {"role": "helper"}
 def validate_instance(
     instance: Any,
     schema: dict[str, Any],
@@ -151,6 +157,7 @@ def validate_instance(
     validate_instance_with_evaluation(instance, schema, source, root_schema, path, ref_stack)
 
 
+# validation-metadata: {"role": "helper"}
 def validate_instance_with_evaluation(
     instance: Any,
     schema: dict[str, Any],
@@ -259,6 +266,7 @@ def validate_instance_with_evaluation(
     return evaluated_keys
 
 
+# validation-metadata: {"role": "helper"}
 def schema_matches(instance: Any, schema: dict[str, Any], source: str, root_schema: dict[str, Any], path: str, ref_stack: tuple[str, ...]) -> bool:
     try:
         validate_instance(instance, schema, source, root_schema, path, ref_stack)
@@ -267,9 +275,11 @@ def schema_matches(instance: Any, schema: dict[str, Any], source: str, root_sche
         return False
 
 
+# validation-metadata: {"role": "helper"}
 def load_repo_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     base_document_schema = load_json(repo_root / "repo/schemas/repo/development-document-base.schema.json")
 
+    # validation-metadata: {"role": "helper"}
     def materialize_document_schema(schema: dict[str, Any]) -> dict[str, Any]:
         schema = copy.deepcopy(schema)
         defs = schema.setdefault("$defs", {})

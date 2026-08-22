@@ -13,6 +13,7 @@ from ..self.mutation_support import create_repo_fixture, deactivate_product_plan
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# validation-metadata: {"role": "helper"}
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     if dest_path == "product/specs/product/manifest.json" and source_name.startswith("manifest-"):
         product_specs_root = temp_repo / "product/specs/product"
@@ -25,6 +26,7 @@ def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     shutil.copy2(source, target)
 
 
+# validation-metadata: {"role": "helper"}
 def accept_kernel(temp_repo: Path) -> None:
     mutate_json(
         temp_repo / "product/specs/product/manifest.json",
@@ -59,6 +61,7 @@ def accept_kernel(temp_repo: Path) -> None:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def snapshot_generated_docs(repo_root: Path) -> dict[str, str]:
     derived_root = repo_root / "product/derived/specs/product"
     return {
@@ -67,6 +70,7 @@ def snapshot_generated_docs(repo_root: Path) -> dict[str, str]:
     }
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_generation_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

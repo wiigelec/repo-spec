@@ -10,9 +10,11 @@ TARGET = "repo/validation/github/github_field_policy.py"
 SPEC = ROOT / "product/specs/product/level-1/initializer-output-inventory-v1.json"
 FRAMEWORK = ROOT / "product/src/initializer/framework-inventory.json"
 
+# validation-metadata: {"role": "helper"}
 def target_mode(path: Path) -> str:
     data = json.loads(path.read_text())
     found = []
+    # validation-metadata: {"role": "helper"}
     def walk(x):
         if isinstance(x, dict):
             target_path = x.get("source_path", x.get("destination_path"))
@@ -29,6 +31,7 @@ def target_mode(path: Path) -> str:
     return found[0]
 
 class Issue318InventoryGitModeTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_product_and_runtime_inventory_match_committed_mode(self):
         git_mode = subprocess.run(
             ["git", "ls-tree", "HEAD", TARGET],

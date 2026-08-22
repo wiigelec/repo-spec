@@ -18,6 +18,7 @@ from initializer.framework_authority import (
 from initializer.inventory import resolve_source_material
 
 
+# validation-metadata: {"role": "helper"}
 def _run(repo: Path, *args: str) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -29,6 +30,7 @@ def _run(repo: Path, *args: str) -> str:
     return p.stdout.strip()
 
 
+# validation-metadata: {"role": "helper"}
 def _fixture_framework(root: Path) -> tuple[Path, str]:
     repo = root / "framework"
     repo.mkdir()
@@ -68,11 +70,13 @@ def _fixture_framework(root: Path) -> tuple[Path, str]:
     return repo, _run(repo, "rev-parse", "HEAD")
 
 
+# validation-metadata: {"role": "helper"}
 def _blob_oid(content: bytes) -> str:
     return hashlib.sha1(f"blob {len(content)}\0".encode("ascii") + content).hexdigest()
 
 
 class TransportableFrameworkAuthorityTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_bundle_is_deterministic_and_materializable(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -90,6 +94,7 @@ class TransportableFrameworkAuthorityTests(unittest.TestCase):
             self.assertEqual(resolved.commit_id, sha)
             self.assertEqual(resolved.manifest[0].source_path, "repo/scripts/x")
 
+    # validation-metadata: {"role": "helper"}
     def test_bundle_tamper_fails_closed(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -103,6 +108,7 @@ class TransportableFrameworkAuthorityTests(unittest.TestCase):
             with self.assertRaises(FrameworkAuthorityError):
                 verify_bundle_directory(bundle_dir, sha)
 
+    # validation-metadata: {"role": "helper"}
     def test_subordinate_index_cannot_reauthorize_forged_source_blob(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -139,6 +145,7 @@ class TransportableFrameworkAuthorityTests(unittest.TestCase):
             with self.assertRaises(FrameworkAuthorityError):
                 verify_bundle_directory(bundle_dir, sha)
 
+    # validation-metadata: {"role": "helper"}
     def test_missing_or_incomplete_bundle_fails_closed(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -156,6 +163,7 @@ class TransportableFrameworkAuthorityTests(unittest.TestCase):
             with self.assertRaises(FrameworkAuthorityError):
                 verify_bundle_directory(bundle_dir, sha)
 
+    # validation-metadata: {"role": "helper"}
     def test_bundle_directory_must_be_anchored_to_exact_commit_identity(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

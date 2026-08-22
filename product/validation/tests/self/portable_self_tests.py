@@ -9,6 +9,7 @@ from validation.core.errors import ValidationFailure
 from validation.checks.domain import validate_product
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_portable_self_tests(repo_root: Path) -> None:
     del repo_root
 

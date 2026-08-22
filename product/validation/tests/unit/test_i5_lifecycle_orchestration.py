@@ -19,6 +19,7 @@ from initializer.orchestration import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def steps(
     *,
     fail_stage: str | None = None,
@@ -31,6 +32,7 @@ def steps(
     result = []
 
     for stage_id in CANONICAL_STANDARD_STAGES:
+        # validation-metadata: {"role": "helper"}
         def action(stage_id=stage_id):
             sink.append(stage_id)
             if stage_id == fail_stage:
@@ -51,6 +53,7 @@ def steps(
 
 
 class I5LifecycleOrchestrationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_canonical_standard_stage_order_is_exactly_thirteen_required_stages(self) -> None:
         self.assertEqual(len(canonical_standard_stage_ids()), 13)
         self.assertEqual(
@@ -72,6 +75,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
             ),
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_promoted_success_executes_every_stage_once_in_order(self) -> None:
         calls: list[str] = []
         result = execute_standard_lifecycle(steps(calls=calls))
@@ -82,6 +86,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertIsNone(result.failed_stage)
         self.assertTrue(result.succeeded)
 
+    # validation-metadata: {"role": "helper"}
     def test_pre_promotion_failure_halts_without_later_stage_execution(self) -> None:
         calls: list[str] = []
         result = execute_standard_lifecycle(
@@ -94,6 +99,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertNotIn("promotion", calls)
         self.assertNotIn("success-finalization", calls)
 
+    # validation-metadata: {"role": "helper"}
     def test_failed_precondition_halts_before_stage_action(self) -> None:
         calls: list[str] = []
         result = execute_standard_lifecycle(
@@ -104,6 +110,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertNotIn("repository-validation", calls)
         self.assertNotIn("promotion", calls)
 
+    # validation-metadata: {"role": "helper"}
     def test_indeterminate_promotion_halts_and_never_finalizes_success(self) -> None:
         calls: list[str] = []
         result = execute_standard_lifecycle(
@@ -115,6 +122,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertNotIn("promotion", result.completed_stages)
         self.assertNotIn("success-finalization", calls)
 
+    # validation-metadata: {"role": "helper"}
     def test_promotion_exception_is_indeterminate_and_not_retried(self) -> None:
         calls: list[str] = []
         result = execute_standard_lifecycle(
@@ -124,6 +132,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertEqual(calls.count("promotion"), 1)
         self.assertNotIn("success-finalization", calls)
 
+    # validation-metadata: {"role": "helper"}
     def test_cleanup_failure_preserves_promoted_outcome(self) -> None:
         result = execute_standard_lifecycle(
             steps(finalization_outcome=FINALIZATION_CLEANUP_FAILURE)
@@ -138,6 +147,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertNotIn("success-finalization", result.completed_stages)
         self.assertFalse(result.succeeded)
 
+    # validation-metadata: {"role": "helper"}
     def test_success_finalization_exception_is_promoted_with_finalization_error(self) -> None:
         result = execute_standard_lifecycle(
             steps(fail_stage="success-finalization")
@@ -149,6 +159,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         self.assertEqual(result.promotion_outcome, "promoted")
         self.assertIn("promotion", result.completed_stages)
 
+    # validation-metadata: {"role": "helper"}
     def test_missing_or_reordered_required_stage_sequence_is_rejected(self) -> None:
         canonical = list(steps())
         with self.assertRaises(OrchestrationError):
@@ -158,6 +169,7 @@ class I5LifecycleOrchestrationTests(unittest.TestCase):
         with self.assertRaises(OrchestrationError):
             execute_standard_lifecycle(tuple(reordered))
 
+    # validation-metadata: {"role": "helper"}
     def test_duplicate_stage_identifier_is_rejected(self) -> None:
         canonical = list(steps())
         canonical[1] = StageStep(

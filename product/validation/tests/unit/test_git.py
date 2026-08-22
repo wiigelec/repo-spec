@@ -31,6 +31,7 @@ from initializer.git import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def git_available() -> bool:
     try:
         proc = subprocess.run(["git", "--version"], capture_output=True, text=True, timeout=10)
@@ -40,6 +41,7 @@ def git_available() -> bool:
 
 
 class GitPreflightModelTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_allowed_preflight(self) -> None:
         p = GitPreflight(
             destination_path="/tmp/dest",
@@ -59,6 +61,7 @@ class GitPreflightModelTests(unittest.TestCase):
         self.assertEqual(p.git_version, "git version 2.30.0")
         self.assertEqual(p.destination_path, "/tmp/dest")
 
+    # validation-metadata: {"role": "helper"}
     def test_rejected_preflight(self) -> None:
         p = GitPreflight(
             destination_path="/tmp/dest",
@@ -77,6 +80,7 @@ class GitPreflightModelTests(unittest.TestCase):
         self.assertEqual(p.decision, "rejected")
         self.assertEqual(p.rejection_reason, "destination already contains a .git entry")
 
+    # validation-metadata: {"role": "helper"}
     def test_to_dict(self) -> None:
         p = GitPreflight(
             destination_path="/tmp/dest",
@@ -96,6 +100,7 @@ class GitPreflightModelTests(unittest.TestCase):
         self.assertEqual(d["destination_path"], "/tmp/dest")
         self.assertIn("git_available", d)
 
+    # validation-metadata: {"role": "helper"}
     def test_equality(self) -> None:
         a = GitPreflight("/tmp/d", True, "v1", True, True, False, False, False, None, True, decision="allowed")
         b = GitPreflight("/tmp/d", True, "v1", True, True, False, False, False, None, True, decision="allowed")
@@ -103,6 +108,7 @@ class GitPreflightModelTests(unittest.TestCase):
         self.assertEqual(a, b)
         self.assertNotEqual(a, c)
 
+    # validation-metadata: {"role": "helper"}
     def test_hash(self) -> None:
         a = GitPreflight("/tmp/d", True, "v1", True, True, False, False, False, None, True, decision="allowed")
         b = GitPreflight("/tmp/d", True, "v1", True, True, False, False, False, None, True, decision="allowed")
@@ -110,6 +116,7 @@ class GitPreflightModelTests(unittest.TestCase):
 
 
 class GitCommandResultTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_successful_command(self) -> None:
         r = GitCommandResult(["git", "status"], 0, "output", "")
         self.assertTrue(r.succeeded)
@@ -117,10 +124,12 @@ class GitCommandResultTests(unittest.TestCase):
         self.assertEqual(r.stdout, "output")
         self.assertEqual(r.command, ["git", "status"])
 
+    # validation-metadata: {"role": "helper"}
     def test_failed_command(self) -> None:
         r = GitCommandResult(["git", "unknown"], 1, "", "error message")
         self.assertFalse(r.succeeded)
 
+    # validation-metadata: {"role": "helper"}
     def test_to_dict(self) -> None:
         r = GitCommandResult(["git", "init"], 0, "ok", "")
         d = r.to_dict()
@@ -128,6 +137,7 @@ class GitCommandResultTests(unittest.TestCase):
         self.assertEqual(d["command"], "git init")
         self.assertEqual(d["stdout"], "ok")
 
+    # validation-metadata: {"role": "helper"}
     def test_equality(self) -> None:
         a = GitCommandResult(["git", "init"], 0, "", "")
         b = GitCommandResult(["git", "init"], 0, "", "")
@@ -137,6 +147,7 @@ class GitCommandResultTests(unittest.TestCase):
 
 
 class GitEstablishmentPlanTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_default_plan(self) -> None:
         plan = GitEstablishmentPlan("/tmp/dest")
         self.assertEqual(plan.destination_path, "/tmp/dest")
@@ -146,6 +157,7 @@ class GitEstablishmentPlanTests(unittest.TestCase):
         self.assertEqual(plan.author_email, "initializer@repo-spec.local")
         self.assertRegex(plan.timestamp, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 
+    # validation-metadata: {"role": "helper"}
     def test_custom_plan(self) -> None:
         plan = GitEstablishmentPlan(
             destination_path="/tmp/dest",
@@ -160,11 +172,13 @@ class GitEstablishmentPlanTests(unittest.TestCase):
         self.assertEqual(plan.author_name, "Author")
         self.assertEqual(plan.timestamp, "987654321 +0000")
 
+    # validation-metadata: {"role": "helper"}
     def test_committer_falls_back_to_author(self) -> None:
         plan = GitEstablishmentPlan("/tmp/dest", author_name="A", author_email="a@b")
         self.assertEqual(plan.committer_name, "A")
         self.assertEqual(plan.committer_email, "a@b")
 
+    # validation-metadata: {"role": "helper"}
     def test_to_dict(self) -> None:
         plan = GitEstablishmentPlan("/tmp/dest")
         d = plan.to_dict()
@@ -172,6 +186,7 @@ class GitEstablishmentPlanTests(unittest.TestCase):
         self.assertEqual(d["initial_branch"], "main")
         self.assertIn("commit_message", d)
 
+    # validation-metadata: {"role": "helper"}
     def test_equality(self) -> None:
         a = GitEstablishmentPlan("/tmp/d")
         b = GitEstablishmentPlan("/tmp/d")
@@ -179,6 +194,7 @@ class GitEstablishmentPlanTests(unittest.TestCase):
         self.assertEqual(a, b)
         self.assertNotEqual(a, c)
 
+    # validation-metadata: {"role": "helper"}
     def test_hash(self) -> None:
         a = GitEstablishmentPlan("/tmp/d")
         b = GitEstablishmentPlan("/tmp/d")
@@ -186,6 +202,7 @@ class GitEstablishmentPlanTests(unittest.TestCase):
 
 
 class GitEstablishmentResultTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_success_result(self) -> None:
         r = GitEstablishmentResult(
             status="success",
@@ -209,6 +226,7 @@ class GitEstablishmentResultTests(unittest.TestCase):
         self.assertEqual(r.root_commit, "abc123")
         self.assertTrue(r.worktree_clean)
 
+    # validation-metadata: {"role": "helper"}
     def test_failure_result(self) -> None:
         r = GitEstablishmentResult(
             status="failed",
@@ -219,6 +237,7 @@ class GitEstablishmentResultTests(unittest.TestCase):
         self.assertEqual(r.status, "failed")
         self.assertEqual(r.failure_reason, "git not available")
 
+    # validation-metadata: {"role": "helper"}
     def test_to_dict(self) -> None:
         r = GitEstablishmentResult(
             status="success",
@@ -233,6 +252,7 @@ class GitEstablishmentResultTests(unittest.TestCase):
         self.assertEqual(d["initial_branch"], "main")
         self.assertNotIn("failure_reason", d)
 
+    # validation-metadata: {"role": "helper"}
     def test_to_dict_with_failure(self) -> None:
         r = GitEstablishmentResult(
             status="failed",
@@ -244,6 +264,7 @@ class GitEstablishmentResultTests(unittest.TestCase):
         self.assertIn("failure_reason", d)
         self.assertEqual(d["failure_reason"], "something went wrong")
 
+    # validation-metadata: {"role": "helper"}
     def test_equality(self) -> None:
         a = GitEstablishmentResult("success", GitEstablishmentPhase.verified, "/tmp/d")
         b = GitEstablishmentResult("success", GitEstablishmentPhase.verified, "/tmp/d")
@@ -253,17 +274,20 @@ class GitEstablishmentResultTests(unittest.TestCase):
 
 
 class GitPreflightFunctionTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_preflight_rejects_nonexistent_destination(self) -> None:
         result = git_preflight("/tmp/nonexistent-repo-spec-path-12345")
         self.assertEqual(result.decision, "rejected")
         self.assertIn("does not exist", result.rejection_reason or "")
 
+    # validation-metadata: {"role": "helper"}
     def test_preflight_rejects_file_destination(self) -> None:
         with tempfile.NamedTemporaryFile() as f:
             result = git_preflight(f.name)
             self.assertEqual(result.decision, "rejected")
             self.assertIn("not a directory", result.rejection_reason or "")
 
+    # validation-metadata: {"role": "helper"}
     def test_preflight_allows_empty_dir(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             if not git_available():
@@ -274,6 +298,7 @@ class GitPreflightFunctionTests(unittest.TestCase):
                 result = git_preflight(td)
                 self.assertEqual(result.decision, "allowed", msg=f"rejected: {result.rejection_reason}")
 
+    # validation-metadata: {"role": "helper"}
     def test_preflight_rejects_existing_git_repo(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -283,6 +308,7 @@ class GitPreflightFunctionTests(unittest.TestCase):
             self.assertEqual(result.decision, "rejected")
             self.assertIn(".git", (result.rejection_reason or "").lower())
 
+    # validation-metadata: {"role": "helper"}
     def test_preflight_reports_git_version(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -292,6 +318,7 @@ class GitPreflightFunctionTests(unittest.TestCase):
             self.assertIsNotNone(result.git_version)
             self.assertIn("git version", result.git_version or "")
 
+    # validation-metadata: {"role": "helper"}
     def test_preflight_deterministic_for_same_dir(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -302,17 +329,20 @@ class GitPreflightFunctionTests(unittest.TestCase):
 
 
 class GitEstablishmentFunctionTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_establish_rejects_nonexistent(self) -> None:
         result = establish_git_repository("/tmp/nonexistent-repo-spec-99999")
         self.assertEqual(result.status, "failed")
         self.assertIn("does not exist", result.failure_reason or "")
 
+    # validation-metadata: {"role": "helper"}
     def test_establish_rejects_file(self) -> None:
         with tempfile.NamedTemporaryFile() as f:
             result = establish_git_repository(f.name)
             self.assertEqual(result.status, "failed")
             self.assertIn("not a directory", result.failure_reason or "")
 
+    # validation-metadata: {"role": "helper"}
     def test_establish_rejects_existing_git(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -322,6 +352,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             self.assertEqual(result.status, "failed")
             self.assertIn(".git", result.failure_reason or "")
 
+    # validation-metadata: {"role": "helper"}
     def test_successful_establishment(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -338,6 +369,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             self.assertEqual(result.remote_count, 0)
             self.assertIn("Repo-Spec Initializer", result.author_identity)
 
+    # validation-metadata: {"role": "helper"}
     def test_establishes_root_commit(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -352,6 +384,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             commits = [l for l in log.stdout.splitlines() if l.strip()]
             self.assertEqual(len(commits), 1)
 
+    # validation-metadata: {"role": "helper"}
     def test_has_no_parent(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -365,6 +398,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             )
             self.assertEqual(len(parents.stdout.strip().split()), 1)
 
+    # validation-metadata: {"role": "helper"}
     def test_no_remotes_after_establishment(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -378,6 +412,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             )
             self.assertEqual(remotes.stdout.strip(), "")
 
+    # validation-metadata: {"role": "helper"}
     def test_initial_branch_is_main(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -391,6 +426,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             )
             self.assertEqual(branch.stdout.strip(), "main")
 
+    # validation-metadata: {"role": "helper"}
     def test_completed_phases_include_verified(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -400,6 +436,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             self.assertEqual(result.status, "success")
             self.assertIn(GitEstablishmentPhase.verified, result.completed_phases)
 
+    # validation-metadata: {"role": "helper"}
     def test_clean_worktree_after_establishment(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -413,6 +450,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
             )
             self.assertEqual(status.stdout.strip(), "")
 
+    # validation-metadata: {"role": "helper"}
     def test_staged_files_match_expected(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -430,6 +468,7 @@ class GitEstablishmentFunctionTests(unittest.TestCase):
 
 
 class GitCleanupTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_cleanup_removes_dotgit_on_precommit_failure(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -438,6 +477,7 @@ class GitCleanupTests(unittest.TestCase):
             result = establish_git_repository(td)
             self.assertEqual(result.status, "success")
 
+    # validation-metadata: {"role": "helper"}
     def test_destination_content_preserved_after_git_operations(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -450,6 +490,7 @@ class GitCleanupTests(unittest.TestCase):
 
 
 class GitDeterminismTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_equivalent_inputs_produce_same_commit_tree(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -463,6 +504,7 @@ class GitDeterminismTests(unittest.TestCase):
         self.assertEqual(trees[0], trees[1],
                          "equivalent inputs should produce the same commit tree")
 
+    # validation-metadata: {"role": "helper"}
     def test_equivalent_inputs_preserve_tree_when_commit_timestamp_varies(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -482,6 +524,7 @@ class GitDeterminismTests(unittest.TestCase):
             self.assertEqual(len(result.root_commit), 40)
             self.assertRegex(result.timestamps, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 
+    # validation-metadata: {"role": "helper"}
     def test_different_content_produces_different_commit(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -497,6 +540,7 @@ class GitDeterminismTests(unittest.TestCase):
 
 
 class GitInitializePromotedDestinationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_rejects_nonexistent_destination(self) -> None:
         result = initialize_promoted_destination(
             "/tmp/nonexistent-repo-spec-promoted-999",
@@ -504,6 +548,7 @@ class GitInitializePromotedDestinationTests(unittest.TestCase):
         )
         self.assertEqual(result.status, "failed")
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_failed_promotion(self) -> None:
         result = initialize_promoted_destination(
             "/tmp/some-path",
@@ -512,6 +557,7 @@ class GitInitializePromotedDestinationTests(unittest.TestCase):
         self.assertEqual(result.status, "failed")
         self.assertIn("promotion", (result.failure_reason or "").lower())
 
+    # validation-metadata: {"role": "helper"}
     def test_successful_promoted_establishment(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -523,6 +569,7 @@ class GitInitializePromotedDestinationTests(unittest.TestCase):
             )
             self.assertEqual(result.status, "success", msg=f"failed: {result.failure_reason}")
 
+    # validation-metadata: {"role": "helper"}
     def test_works_without_promotion_result(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -533,16 +580,19 @@ class GitInitializePromotedDestinationTests(unittest.TestCase):
 
 
 class GitEnvironmentIsolationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_sanitize_env_removes_git_dir(self) -> None:
         env = _sanitize_env()
         self.assertNotIn("GIT_DIR", env)
         self.assertNotIn("GIT_WORK_TREE", env)
         self.assertNotIn("GIT_INDEX_FILE", env)
 
+    # validation-metadata: {"role": "helper"}
     def test_git_optional_locks_disabled(self) -> None:
         env = _sanitize_env()
         self.assertEqual(env.get("GIT_OPTIONAL_LOCKS"), "0")
 
+    # validation-metadata: {"role": "helper"}
     def test_establishment_with_git_dir_env(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -556,37 +606,46 @@ class GitEnvironmentIsolationTests(unittest.TestCase):
             finally:
                 os.environ.pop("GIT_DIR", None)
 
+    # validation-metadata: {"role": "helper"}
     def test_sanitize_env_keeps_home(self) -> None:
         env = _sanitize_env()
         self.assertIn("HOME", env)
 
 
 class GitVersionParsingTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_parse_typical_version(self) -> None:
         self.assertEqual(_parse_git_version("git version 2.30.0"), (2, 30, 0))
 
+    # validation-metadata: {"role": "helper"}
     def test_parse_with_suffix(self) -> None:
         self.assertEqual(_parse_git_version("git version 2.25.1.windows.1"), (2, 25, 1))
 
+    # validation-metadata: {"role": "helper"}
     def test_parse_major_minor(self) -> None:
         self.assertEqual(_parse_git_version("git version 2.25"), (2, 25, 0))
 
+    # validation-metadata: {"role": "helper"}
     def test_parse_malformed(self) -> None:
         self.assertEqual(_parse_git_version("not a git version"), (0, 0, 0))
 
+    # validation-metadata: {"role": "helper"}
     def test_parse_multi_digit(self) -> None:
         self.assertEqual(_parse_git_version("git version 10.5.42"), (10, 5, 42))
 
+    # validation-metadata: {"role": "helper"}
     def test_minimum_version_constant(self) -> None:
         self.assertGreaterEqual(MINIMUM_GIT_VERSION, (2, 5, 0))
 
 
 class GitCheckAvailableTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_check_available(self) -> None:
         if not git_available():
             self.skipTest("git not available")
         self.assertTrue(check_git_available())
 
+    # validation-metadata: {"role": "helper"}
     def test_check_with_version(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -597,11 +656,13 @@ class GitCheckAvailableTests(unittest.TestCase):
 
 
 class GitTreeInventoryTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_empty_dir_inventory(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             inv = _build_tree_inventory(Path(td))
             self.assertEqual(inv, [])
 
+    # validation-metadata: {"role": "helper"}
     def test_inventories_files(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             (Path(td) / "a.txt").write_text("a")
@@ -611,6 +672,7 @@ class GitTreeInventoryTests(unittest.TestCase):
             self.assertIn("a.txt", paths)
             self.assertIn("b.txt", paths)
 
+    # validation-metadata: {"role": "helper"}
     def test_inventory_key_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             (Path(td) / "z.txt").write_text("z")
@@ -623,6 +685,7 @@ class GitTreeInventoryTests(unittest.TestCase):
 class GitCLIIntegrationTests(unittest.TestCase):
     REPO_SPEC_INIT = Path(__file__).resolve().parents[3] / "scripts" / "repo-spec-init"
 
+    # validation-metadata: {"role": "helper"}
     def _run(self, *args: str) -> subprocess.CompletedProcess:
         return subprocess.run(
             [str(self.REPO_SPEC_INIT), *args],
@@ -630,11 +693,13 @@ class GitCLIIntegrationTests(unittest.TestCase):
             text=True,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_git_preflight_missing_args(self) -> None:
         proc = self._run("git-preflight")
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("usage:", proc.stderr.lower())
 
+    # validation-metadata: {"role": "helper"}
     def test_git_preflight_absent_dir(self) -> None:
         proc = self._run("git-preflight", "/tmp/nonexistent-git-preflight-99999")
         self.assertNotEqual(proc.returncode, 0)
@@ -642,6 +707,7 @@ class GitCLIIntegrationTests(unittest.TestCase):
         data = json.loads(proc.stdout)
         self.assertEqual(data["decision"], "rejected")
 
+    # validation-metadata: {"role": "helper"}
     def test_git_preflight_allowed_empty(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -656,17 +722,20 @@ class GitCLIIntegrationTests(unittest.TestCase):
             self.assertEqual(data["decision"], "allowed")
             self.assertEqual(data["_type"], "git_preflight")
 
+    # validation-metadata: {"role": "helper"}
     def test_git_establish_missing_args(self) -> None:
         proc = self._run("git-establish")
         self.assertNotEqual(proc.returncode, 0)
         self.assertIn("usage:", proc.stderr.lower())
 
+    # validation-metadata: {"role": "helper"}
     def test_git_establish_nonexistent(self) -> None:
         proc = self._run("git-establish", "/tmp/nonexistent-git-est-99999")
         self.assertNotEqual(proc.returncode, 0)
         data = json.loads(proc.stdout)
         self.assertEqual(data["status"], "failed")
 
+    # validation-metadata: {"role": "helper"}
     def test_git_establish_success(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -683,6 +752,7 @@ class GitCLIIntegrationTests(unittest.TestCase):
             self.assertNotEqual(data["root_commit"], "")
             self.assertTrue(data["worktree_clean"])
 
+    # validation-metadata: {"role": "helper"}
     def test_git_establish_deterministic_tree_cli(self) -> None:
         if not git_available():
             self.skipTest("git not available")
@@ -704,6 +774,7 @@ class GitCLIIntegrationTests(unittest.TestCase):
 
 
 class GitNoGitNoPlatformTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_git_preflight_no_git_simulated(self) -> None:
         result = GitPreflight(
             destination_path="/tmp/dest",
@@ -722,6 +793,7 @@ class GitNoGitNoPlatformTests(unittest.TestCase):
         self.assertEqual(result.decision, "rejected")
         self.assertFalse(result.git_available)
 
+    # validation-metadata: {"role": "helper"}
     def test_establishment_rejects_no_git(self) -> None:
         from initializer.git import _find_git
         if _find_git() is None:

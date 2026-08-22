@@ -11,10 +11,12 @@ LOWER_LEVEL = "product/scripts/repo-spec-init --request request.json"
 
 
 class H1DocumentationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.root = ROOT_README.read_text()
         self.reference = INIT_README.read_text()
 
+    # validation-metadata: {"role": "helper"}
     def test_root_readme_leads_with_canonical_wrapper_workflow(self):
         self.assertLess(
             self.root.index("## Initialize a repository"),
@@ -23,6 +25,7 @@ class H1DocumentationTests(unittest.TestCase):
         self.assertIn(NORMAL_COMMAND, self.root)
         self.assertIn("web chat agent", self.root.lower())
 
+    # validation-metadata: {"role": "helper"}
     def test_docs_preserve_product_authority_boundary(self):
         text = self.root + chr(10) + self.reference
         self.assertIn("destination path is the only normal-user bootstrap input", text)
@@ -31,6 +34,7 @@ class H1DocumentationTests(unittest.TestCase):
         self.assertIn("product ID or product identity", text)
         self.assertIn("product direction material or direction evidence", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_leads_with_normal_workflow_before_internal_request(self):
         self.assertLess(
             self.reference.index("## Normal human workflow"),
@@ -39,6 +43,7 @@ class H1DocumentationTests(unittest.TestCase):
         self.assertIn(LOWER_LEVEL, self.reference)
         self.assertIn("not the recommended normal-user workflow", self.reference)
 
+    # validation-metadata: {"role": "helper"}
     def test_docs_explicitly_exclude_non_bootstrap_behavior(self):
         section = self.reference[
             self.reference.index("## What bootstrap does not create"):
@@ -53,6 +58,7 @@ class H1DocumentationTests(unittest.TestCase):
         ):
             self.assertIn(phrase, section)
 
+    # validation-metadata: {"role": "helper"}
     def test_normal_command_matches_real_wrapper_path(self):
         self.assertTrue((ROOT / "product/scripts/repo-spec").is_file())
         self.assertIn(NORMAL_COMMAND, self.root)

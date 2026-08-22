@@ -11,6 +11,7 @@ from validation.core.errors import ValidationFailure, fail
 from validation.checks.development_documents import extract_document_metadata
 
 
+# validation-metadata: {"role": "helper"}
 def deactivate_product_plans(repo_root: Path) -> None:
     """Make copied product plans non-active for fixtures that replace the product registry."""
     plans_root = repo_root / "product/docs/plans"
@@ -25,6 +26,7 @@ def deactivate_product_plans(repo_root: Path) -> None:
             )
 
 
+# validation-metadata: {"role": "helper"}
 def expect_failure(description: str, func, fragment: str) -> None:
     try:
         func()
@@ -35,6 +37,7 @@ def expect_failure(description: str, func, fragment: str) -> None:
         fail(f"mutation test failed: {description} did not fail")
 
 
+# validation-metadata: {"role": "helper"}
 def expect_render_change(description: str, renderer, spec: dict, mutate) -> None:
     original = renderer(spec)
     mutated = copy.deepcopy(spec)
@@ -43,6 +46,7 @@ def expect_render_change(description: str, renderer, spec: dict, mutate) -> None
         fail(f"mutation test failed: {description} did not change output")
 
 
+# validation-metadata: {"role": "helper"}
 def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
     manifest = json.loads((repo_root / "repo/specs/repo/manifest.json").read_text())
     required_paths = [
@@ -148,6 +152,7 @@ REQUIRED_FIXTURE_ROOT_FILES = (".gitignore", "AGENTS.md", "LICENSE", "README.md"
 REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "product", "reference", "repo", "scripts", "user")
 
 
+# validation-metadata: {"role": "helper"}
 def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:
     fixture_root = temp_root / f"fixture-{fixture_index}"
     fixture_root.mkdir(parents=True, exist_ok=True)
@@ -177,11 +182,13 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
     return fixture_root
 
 
+# validation-metadata: {"role": "helper"}
 def mutate_json(path: Path, transform) -> None:
     data = json.loads(path.read_text())
     path.write_text(json.dumps(transform(data), indent=2) + "\n")
 
 
+# validation-metadata: {"role": "helper"}
 def add_lifecycle_spec(specs: dict, temp_repo: Path, spec_id: str, status: str, supersedes: list[str] | None = None, superseded_by: list[str] | None = None) -> None:
     mutate_json(
         temp_repo / "repo/specs/repo/manifest.json",

@@ -8,10 +8,12 @@ from pathlib import Path
 
 
 class ReferenceExclusionTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls) -> None:
         cls.repo_root = Path(__file__).resolve().parents[4]
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_is_source_only_and_absent_from_install_contract(self) -> None:
         source_reference = self.repo_root / "reference"
         self.assertTrue(source_reference.is_dir(), "source repo-spec reference/ tree must remain")
@@ -60,6 +62,7 @@ class ReferenceExclusionTests(unittest.TestCase):
         self.assertEqual(len(output_keys), len(set(output_keys)))
         self.assertEqual(set(framework_keys), set(output_keys))
 
+    # validation-metadata: {"role": "helper"}
     @unittest.skip("deferred: initializer materialization must be updated in the follow-up after validation migrations are proven")
     def test_clean_init_validates_without_reference_and_rejects_reintroduced_reference(self) -> None:
         with tempfile.TemporaryDirectory(prefix="repo-spec-reference-exclusion-") as temp:

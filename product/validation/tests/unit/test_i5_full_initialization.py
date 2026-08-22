@@ -17,10 +17,12 @@ from initializer.orchestration import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def raw_request(destination: str = "./out") -> dict[str, object]:
     return {"schema_version": "2", "destination": destination}
 
 
+# validation-metadata: {"role": "helper"}
 def actions(
     *,
     fail_stage=None,
@@ -30,7 +32,9 @@ def actions(
 ):
     sink = calls if calls is not None else []
 
+    # validation-metadata: {"role": "helper"}
     def make(stage_id):
+        # validation-metadata: {"role": "helper"}
         def action(carried):
             sink.append(stage_id)
             if stage_id == fail_stage:
@@ -63,6 +67,7 @@ def actions(
 
 
 class I5FullInitializationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_complete_standard_workflow_returns_promoted_success(self):
         calls = []
         result = execute_full_initialization(
@@ -77,6 +82,7 @@ class I5FullInitializationTests(unittest.TestCase):
         self.assertTrue(result.succeeded)
         self.assertEqual(len(calls), 13)
 
+    # validation-metadata: {"role": "helper"}
     def test_legacy_profile_executes_no_stage_action(self):
         calls = []
         raw = raw_request()
@@ -89,6 +95,7 @@ class I5FullInitializationTests(unittest.TestCase):
             )
         self.assertEqual(calls, [])
 
+    # validation-metadata: {"role": "helper"}
     def test_pre_promotion_failure_stops_lifecycle(self):
         calls = []
         result = execute_full_initialization(
@@ -105,6 +112,7 @@ class I5FullInitializationTests(unittest.TestCase):
         )
         self.assertNotIn("promotion", calls)
 
+    # validation-metadata: {"role": "helper"}
     def test_indeterminate_promotion_is_terminal(self):
         calls = []
         result = execute_full_initialization(
@@ -121,6 +129,7 @@ class I5FullInitializationTests(unittest.TestCase):
         )
         self.assertNotIn("success-finalization", calls)
 
+    # validation-metadata: {"role": "helper"}
     def test_cleanup_failure_remains_promoted(self):
         result = execute_full_initialization(
             raw_request(),
@@ -134,6 +143,7 @@ class I5FullInitializationTests(unittest.TestCase):
             TERMINAL_PROMOTED_WITH_FINALIZATION_ERROR,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_lexically_equivalent_destinations_are_equivalent(self):
         left = execute_full_initialization(
             raw_request("./out"),

@@ -13,6 +13,7 @@ from ..self.mutation_support import create_repo_fixture, deactivate_product_plan
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# validation-metadata: {"role": "helper"}
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     source = FIXTURE_DIR / source_name
     target = temp_repo / dest_path
@@ -20,6 +21,7 @@ def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     shutil.copy2(source, target)
 
 
+# validation-metadata: {"role": "helper"}
 def write_manifest(temp_repo: Path, entries: list[dict[str, object]]) -> None:
     mutate_json(
         temp_repo / "product/specs/product/manifest.json",
@@ -27,6 +29,7 @@ def write_manifest(temp_repo: Path, entries: list[dict[str, object]]) -> None:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def configure_spec(temp_repo: Path, dest_path: str, *, spec_id: str, title: str, purpose: str, dependency_ids: list[str]) -> None:
     mutate_json(
         temp_repo / dest_path,
@@ -41,6 +44,7 @@ def configure_spec(temp_repo: Path, dest_path: str, *, spec_id: str, title: str,
     )
 
 
+# validation-metadata: {"role": "helper"}
 def reset_product_spec_registry(temp_repo: Path) -> None:
     product_specs_root = temp_repo / "product/specs/product"
     if product_specs_root.exists():
@@ -48,6 +52,7 @@ def reset_product_spec_registry(temp_repo: Path) -> None:
     product_specs_root.mkdir(parents=True, exist_ok=True)
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_acyclicity_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

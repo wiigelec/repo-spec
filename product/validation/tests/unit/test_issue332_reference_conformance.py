@@ -12,6 +12,7 @@ REFERENCE = ROOT / "user/archive/docs/product-initializer/README.md"
 LAUNCHER = ROOT / "product/scripts/repo-spec-init"
 
 
+# validation-metadata: {"role": "helper"}
 def documented_internal_request(text: str) -> dict[str, object]:
     start_marker = "## Internal canonical request"
     end_marker = "## Lower-level developer interface"
@@ -24,14 +25,17 @@ def documented_internal_request(text: str) -> dict[str, object]:
 
 
 class Issue332ReferenceConformanceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls) -> None:
         cls.text = REFERENCE.read_text()
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_describes_canonical_normal_user_command(self) -> None:
         self.assertIn("repo-spec init --repo /path/to/new/repository-name", self.text)
         self.assertIn("No user-authored JSON is required for the normal workflow.", self.text)
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_describes_closed_v2_internal_request_shape(self) -> None:
         request = documented_internal_request(self.text)
         self.assertEqual(
@@ -45,6 +49,7 @@ class Issue332ReferenceConformanceTests(unittest.TestCase):
             self.assertNotIn(legacy, request)
         self.assertIn("Unknown fields are rejected.", self.text)
 
+    # validation-metadata: {"role": "helper"}
     def test_documented_v2_request_passes_real_intake_validator(self) -> None:
         request = documented_internal_request(self.text)
         with tempfile.TemporaryDirectory() as td:
@@ -59,6 +64,7 @@ class Issue332ReferenceConformanceTests(unittest.TestCase):
             )
         self.assertEqual(proc.returncode, 0, proc.stderr)
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_describes_local_exact_framework_provenance(self) -> None:
         start = self.text.index("## Local framework provenance")
         end = self.text.index("## What bootstrap creates")
@@ -68,6 +74,7 @@ class Issue332ReferenceConformanceTests(unittest.TestCase):
         self.assertIn("not a local Git repository", section)
         self.assertIn("unsupported Git object format", section)
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_excludes_product_foundations_from_bootstrap(self) -> None:
         start = self.text.index("## What bootstrap does not create")
         end = self.text.index("## Internal canonical request")
@@ -82,6 +89,7 @@ class Issue332ReferenceConformanceTests(unittest.TestCase):
         ):
             self.assertIn(phrase, section)
 
+    # validation-metadata: {"role": "helper"}
     def test_reference_keeps_lower_level_request_interface_subordinate(self) -> None:
         start = self.text.index("## Lower-level developer interface")
         end = self.text.index("## Transaction safety")

@@ -12,19 +12,23 @@ from validation.core.errors import ValidationFailure
 
 
 class ProductValidationCorrespondencePackageTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls) -> None:
         cls.repo_root = Path(__file__).resolve().parents[4]
 
+    # validation-metadata: {"role": "helper"}
     def _copy_fixture(self) -> Path:
         temp = Path(tempfile.mkdtemp(prefix="product-validation-correspondence-"))
         for rel in ("repo", "product"):
             shutil.copytree(self.repo_root / rel, temp / rel)
         return temp
 
+    # validation-metadata: {"role": "helper"}
     def test_current_product_packages_are_valid(self) -> None:
         check_product_validation_correspondence_packages_phase(_load_product_only_context(self.repo_root))
 
+    # validation-metadata: {"role": "helper"}
     def test_missing_active_package_fails(self) -> None:
         root = self._copy_fixture()
         try:
@@ -34,6 +38,7 @@ class ProductValidationCorrespondencePackageTests(unittest.TestCase):
         finally:
             shutil.rmtree(root)
 
+    # validation-metadata: {"role": "helper"}
     def test_path_binding_mismatch_fails(self) -> None:
         root = self._copy_fixture()
         try:
@@ -46,6 +51,7 @@ class ProductValidationCorrespondencePackageTests(unittest.TestCase):
         finally:
             shutil.rmtree(root)
 
+    # validation-metadata: {"role": "helper"}
     def test_rationale_divergence_fails(self) -> None:
         root = self._copy_fixture()
         try:
@@ -58,6 +64,7 @@ class ProductValidationCorrespondencePackageTests(unittest.TestCase):
         finally:
             shutil.rmtree(root)
 
+    # validation-metadata: {"role": "helper"}
     def test_invented_task_ownership_fails(self) -> None:
         root = self._copy_fixture()
         try:

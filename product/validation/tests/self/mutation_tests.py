@@ -38,6 +38,7 @@ from ..unit.test_product_validation_ownership import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_mutation_tests(repo_root: Path) -> None:
     check_product_validate_cli_contract(repo_root)
     run_product_validation_ownership_tests(repo_root)

@@ -12,6 +12,7 @@ from validation.runners import test_validation_impl as test_product_impl
 
 
 class VS2ProductTestLifecycleTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_repo_spec_current_state_is_explicit_honest_zero(self) -> None:
         root = Path(__file__).resolve().parents[4]
         result = test_product_impl.run_product_tests(root)
@@ -22,11 +23,13 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         self.assertTrue(result["evidence"]["conformance_complete"])
         self.assertEqual(result["obligations"], [])
 
+    # validation-metadata: {"role": "helper"}
     def _empty_repo(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
         td = tempfile.TemporaryDirectory()
         root = Path(td.name)
         return td, root
 
+    # validation-metadata: {"role": "helper"}
     def _active_repo(self, *, accepted: bool = True) -> tuple[tempfile.TemporaryDirectory[str], Path]:
         td = tempfile.TemporaryDirectory()
         root = Path(td.name)
@@ -53,6 +56,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         )
         return td, root
 
+    # validation-metadata: {"role": "helper"}
     def _write_spec(
         self,
         root: Path,
@@ -81,6 +85,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
             encoding="utf-8",
         )
 
+    # validation-metadata: {"role": "helper"}
     def _mapping(self, test_id: str, path: str, requirement: str = "SYN-001") -> dict[str, object]:
         return {
             "id": test_id,
@@ -88,6 +93,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
             "requirements": [requirement],
         }
 
+    # validation-metadata: {"role": "helper"}
     def _covered(self, test_id: str, requirement: str = "SYN-001") -> dict[str, object]:
         return {
             "requirement_id": requirement,
@@ -96,6 +102,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
             "status": "covered",
         }
 
+    # validation-metadata: {"role": "helper"}
     def _not_applicable(self, requirement: str = "SYN-001") -> dict[str, object]:
         return {
             "requirement_id": requirement,
@@ -105,6 +112,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
             "rationale": "No governed product implementation test applies.",
         }
 
+    # validation-metadata: {"role": "helper"}
     def _write_executable(self, root: Path, relative: str, body: str) -> Path:
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -112,6 +120,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         path.chmod(path.stat().st_mode | stat.S_IXUSR)
         return path
 
+    # validation-metadata: {"role": "helper"}
     def test_inactive_product_system_is_honest_zero(self) -> None:
         td, root = self._empty_repo()
         self.addCleanup(td.cleanup)
@@ -121,6 +130,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         self.assertEqual(result["classification"], "successful-zero-applicable")
         self.assertEqual(result["evidence"]["product_specification_system"], "inactive")
 
+    # validation-metadata: {"role": "helper"}
     def test_active_manifest_with_no_accepted_specs_is_honest_zero(self) -> None:
         td, root = self._active_repo(accepted=False)
         self.addCleanup(td.cleanup)
@@ -130,6 +140,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         self.assertEqual(result["classification"], "successful-zero-applicable")
         self.assertTrue(result["evidence"]["conformance_complete"])
 
+    # validation-metadata: {"role": "helper"}
     def test_explicit_not_applicable_conformance_proves_zero(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -147,6 +158,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         self.assertEqual(first["accepted_specs"], ["product.synthetic"])
         self.assertTrue(first["evidence"]["conformance_complete"])
 
+    # validation-metadata: {"role": "helper"}
     def test_empty_test_mappings_without_complete_conformance_are_invalid_not_zero(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -157,6 +169,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         self.assertEqual(result["classification"], "applicability-invalid")
         self.assertNotEqual(result["classification"], "successful-zero-applicable")
 
+    # validation-metadata: {"role": "helper"}
     def test_covered_obligations_execute_in_deterministic_order(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -182,6 +195,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
         self.assertEqual([x["test_id"] for x in result["obligations"]], ["test.a", "test.z"])
         self.assertEqual(log.read_text(encoding="utf-8"), "a\nz\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_expected_but_missing_test_is_not_zero(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -195,6 +209,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
 
         self.assertEqual(result["classification"], "unresolved-expected-tests")
 
+    # validation-metadata: {"role": "helper"}
     def test_broken_registration_is_distinct_from_zero(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -208,6 +223,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
 
         self.assertEqual(result["classification"], "discovery-registration-failure")
 
+    # validation-metadata: {"role": "helper"}
     def test_nonzero_test_is_failed_test_class(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -222,6 +238,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
 
         self.assertEqual(result["classification"], "failed-applicable-tests")
 
+    # validation-metadata: {"role": "helper"}
     def test_missing_runtime_interpreter_is_interface_dependency_failure(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -240,6 +257,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
 
         self.assertEqual(result["classification"], "interface-dependency-failure")
 
+    # validation-metadata: {"role": "helper"}
     def test_infrastructure_failure_is_distinct_from_failed_test(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)
@@ -250,6 +268,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
             conformance=[self._covered("test.infra")],
         )
 
+        # validation-metadata: {"role": "helper"}
         def broken_runner(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
             del args, kwargs
             raise OSError(errno.EIO, "synthetic infrastructure failure")
@@ -258,6 +277,7 @@ class VS2ProductTestLifecycleTests(unittest.TestCase):
 
         self.assertEqual(result["classification"], "infrastructure-failure")
 
+    # validation-metadata: {"role": "helper"}
     def test_unexecutable_expected_test_is_unresolved(self) -> None:
         td, root = self._active_repo()
         self.addCleanup(td.cleanup)

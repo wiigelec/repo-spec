@@ -10,6 +10,7 @@ from initializer.orchestration import FullInitializationActions
 
 
 class H1CliTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_help_presents_lower_level_request_interface(self):
         with patch("sys.stderr", new_callable=io.StringIO) as err:
             rc = cli.main(["repo-spec-init", "repo-root"])
@@ -18,6 +19,7 @@ class H1CliTests(unittest.TestCase):
         self.assertIn("repo-spec-init --request <request.json>", text)
         self.assertNotIn("stage-framework-and-foundations", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_superseded_command_remains_explicitly_unavailable(self):
         with patch("sys.stderr", new_callable=io.StringIO) as err:
             rc = cli.main([
@@ -29,6 +31,7 @@ class H1CliTests(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertIn("unavailable", err.getvalue())
 
+    # validation-metadata: {"role": "helper"}
     def test_action_builder_returns_exact_i5_action_bundle(self):
         actions = build_full_initialization_actions(
             "/tmp/framework",

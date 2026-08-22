@@ -14,6 +14,7 @@ from initializer.validation import (
 
 
 class I4RepositoryValidationContractTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_profile_is_complete_unique_and_two_phase_ordered(self) -> None:
         version, checks = load_validation_profile_v1()
         self.assertEqual(version, "v1")
@@ -56,6 +57,7 @@ class I4RepositoryValidationContractTests(unittest.TestCase):
             ],
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_report_serialization_is_deterministic_and_field_ordered(self) -> None:
         _version, profile = load_validation_profile_v1()
         checks = tuple(
@@ -87,6 +89,7 @@ class I4RepositoryValidationContractTests(unittest.TestCase):
             expected_repository_content_digest="b" * 64,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_required_failure_forces_fail_and_invalid_pass_is_rejected(self) -> None:
         _version, profile = load_validation_profile_v1()
         results = []
@@ -120,6 +123,7 @@ class I4RepositoryValidationContractTests(unittest.TestCase):
             )
         self.assertEqual(raised.exception.category, INVALID_STRUCTURE)
 
+    # validation-metadata: {"role": "helper"}
     def test_report_rejects_unknown_code_duplicate_and_bad_order(self) -> None:
         _version, profile = load_validation_profile_v1()
         checks = [

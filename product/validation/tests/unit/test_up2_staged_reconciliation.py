@@ -17,6 +17,7 @@ from initializer.upgrade_resolution import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def git(repo: Path, *args: str) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -30,6 +31,7 @@ def git(repo: Path, *args: str) -> str:
     return p.stdout.strip()
 
 
+# validation-metadata: {"role": "helper"}
 def commit_blob(repo: Path, path: str, content: str) -> tuple[str, str]:
     full = repo / path
     full.parent.mkdir(parents=True, exist_ok=True)
@@ -39,6 +41,7 @@ def commit_blob(repo: Path, path: str, content: str) -> tuple[str, str]:
     return git(repo, "rev-parse", "HEAD"), git(repo, "rev-parse", f"HEAD:{path}")
 
 
+# validation-metadata: {"role": "helper"}
 def evidence(key: str, destination: str, blob: str):
     return {
         "material_key": key,
@@ -57,6 +60,7 @@ def evidence(key: str, destination: str, blob: str):
 
 
 class UP2StagedManagedReconciliationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_repo(self):
         td = tempfile.TemporaryDirectory()
         repo = Path(td.name).resolve()
@@ -65,6 +69,7 @@ class UP2StagedManagedReconciliationTests(unittest.TestCase):
         git(repo, "config", "user.name", "Test")
         return td, repo
 
+    # validation-metadata: {"role": "helper"}
     def build_resolution(self, target, baseline_repo, target_repo, delta, selected):
         baseline_endpoint = InventoryEndpoint(
             repository=str(baseline_repo),
@@ -88,6 +93,7 @@ class UP2StagedManagedReconciliationTests(unittest.TestCase):
             selected_material_keys=tuple(selected),
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_selected_operations_preserve_unmanaged_and_original_target(self):
         btd, baseline = self.make_repo()
         std, source = self.make_repo()
@@ -168,6 +174,7 @@ class UP2StagedManagedReconciliationTests(unittest.TestCase):
             self.assertNotIn(result.staging_root, serialized)
             self.assertNotIn(result.repository_path, serialized)
 
+    # validation-metadata: {"role": "helper"}
     def test_dirty_managed_state_conflicts_before_any_operation(self):
         btd, baseline = self.make_repo()
         std, source = self.make_repo()
@@ -202,6 +209,7 @@ class UP2StagedManagedReconciliationTests(unittest.TestCase):
             self.assertEqual((staged / "managed/a.txt").read_text(), "local edit\n")
             self.assertFalse((staged / "managed/b.txt").exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_unselected_transition_is_preserved(self):
         btd, baseline = self.make_repo()
         std, source = self.make_repo()

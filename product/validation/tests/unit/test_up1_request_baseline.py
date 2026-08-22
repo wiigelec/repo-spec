@@ -14,6 +14,7 @@ from initializer.upgrade_resolution import (
     serialize_framework_lineage,
 )
 
+# validation-metadata: {"role": "helper"}
 def git(repo: Path, *args: str) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -25,6 +26,7 @@ def git(repo: Path, *args: str) -> str:
     return p.stdout.strip()
 
 class UP1RequestBaselineTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_framework(self):
         td = tempfile.TemporaryDirectory()
         repo = Path(td.name).resolve()
@@ -61,6 +63,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
         git(repo, "commit", "-qm", "framework-v1")
         return td, repo, git(repo, "rev-parse", "HEAD")
 
+    # validation-metadata: {"role": "helper"}
     def make_target(self, framework_repo: Path, framework_revision: str):
         td = tempfile.TemporaryDirectory()
         target = Path(td.name).resolve()
@@ -85,6 +88,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
         git(target, "commit", "-qm", "initialized")
         return td, target
 
+    # validation-metadata: {"role": "helper"}
     def test_first_reconciliation_bootstraps_from_valid_provenance_without_mutation(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -106,6 +110,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 )
                 self.assertFalse((target / "repo/initializer/framework-lineage.json").exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_existing_lineage_selects_most_recent_accepted_entry(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -129,6 +134,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 self.assertEqual(len(result.lineage), 2)
                 self.assertEqual(result.active_baseline.framework_revision.object_id, second)
 
+    # validation-metadata: {"role": "helper"}
     def test_present_invalid_lineage_fails_closed_without_provenance_fallback(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -144,6 +150,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 ):
                     resolve_accepted_baseline(str(target))
 
+    # validation-metadata: {"role": "helper"}
     def test_missing_or_unresolvable_bootstrap_authority_fails_closed(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -162,6 +169,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 ):
                     resolve_accepted_baseline(str(target))
 
+    # validation-metadata: {"role": "helper"}
     def test_dirty_lineage_cannot_replace_committed_accepted_baseline(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -194,6 +202,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 self.assertEqual(result.baseline_source, "accepted-lineage")
                 self.assertEqual(result.active_baseline.framework_revision.object_id, second)
 
+    # validation-metadata: {"role": "helper"}
     def test_dirty_provenance_cannot_replace_committed_bootstrap_authority(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -215,6 +224,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 self.assertEqual(result.baseline_source, "legacy-provenance-bootstrap")
                 self.assertEqual(result.active_baseline.framework_revision.object_id, first)
 
+    # validation-metadata: {"role": "helper"}
     def test_untracked_lineage_cannot_shadow_committed_legacy_provenance(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -240,6 +250,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 self.assertEqual(result.baseline_source, "legacy-provenance-bootstrap")
                 self.assertEqual(result.active_baseline.framework_revision.object_id, first)
 
+    # validation-metadata: {"role": "helper"}
     def test_unrelated_dirty_content_does_not_block_committed_authority_resolution(self):
         ftd, framework, first = self.make_framework()
         with ftd:
@@ -257,6 +268,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                     before,
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_remote_like_target_and_nested_target_are_rejected(self):
         with self.assertRaisesRegex(UpgradeResolutionError, "local filesystem"):
             resolve_accepted_baseline("https://example.invalid/repo.git")
@@ -269,6 +281,7 @@ class UP1RequestBaselineTests(unittest.TestCase):
                 with self.assertRaisesRegex(UpgradeResolutionError, "repository root exactly"):
                     resolve_accepted_baseline(str(nested))
 
+    # validation-metadata: {"role": "helper"}
     def test_lineage_serialization_is_deterministic_and_status_free(self):
         entry = FrameworkLineageEntry(
             "/framework", GitObjectIdentity("sha1", "1" * 40)

@@ -14,6 +14,7 @@ from validation.core.paths import resolve_repo_path
 
 
 
+# validation-metadata: {"role": "helper"}
 def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, label: str) -> None:
     expected_top={"README.md","manifest.json","checks","core","runners","tests","packages"}
     if require_github: expected_top.add("github")
@@ -47,6 +48,7 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
     wrong=sorted(n for n,p in tests.items() if not p.is_dir())
     expect(not wrong, f"{label} validation layout failed: non-directory tests entries: {', '.join(wrong)}")
 
+# validation-metadata: {"role": "helper"}
 def _check_exact_directory_envelope(
     root: Path,
     expected_directories: set[str],
@@ -63,6 +65,7 @@ def _check_exact_directory_envelope(
     expect(not wrong, f"{label} failed: non-directory entries: {', '.join(wrong)}")
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_structural_envelopes(context: ValidationContext) -> None:
     repo_root = context.repo_root
     _check_exact_directory_envelope(
@@ -76,6 +79,7 @@ def check_product_structural_envelopes(context: ValidationContext) -> None:
     _check_exact_directory_envelope(repo_root / "product/derived/specs", {"product"}, label="product derived specifications envelope")
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_source_layout(context: ValidationContext) -> None:
     repo_root = context.repo_root
     scripts_root = repo_root / "product/scripts"
@@ -89,9 +93,11 @@ def check_product_source_layout(context: ValidationContext) -> None:
         expect(os.access(path, os.X_OK), f"product source layout failed: product/scripts entry point is not executable: {path.name}")
 
 
+# validation-metadata: {"role": "helper"}
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "product/validation", require_github=False, label="product")
 
+# validation-metadata: {"role": "helper"}
 def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:
     allowed_target_levels = {
         0: {0},
@@ -111,7 +117,9 @@ def check_dependency_directions(specs: dict[str, dict[str, Any]]) -> None:
             )
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_completeness(specs: dict[str, dict[str, Any]]) -> None:
+    # validation-metadata: {"role": "helper"}
     def has_accepted_level0_in_closure(spec_id: str) -> bool:
         pending = [dep["spec_id"] for dep in specs[spec_id].get("dependencies", [])]
         visited: set[str] = set()
@@ -140,11 +148,13 @@ def check_product_completeness(specs: dict[str, dict[str, Any]]) -> None:
         )
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None:
     graph = {spec["spec_id"]: [dep["spec_id"] for dep in spec.get("dependencies", [])] for spec in specs.values()}
     visiting: list[str] = []
     visited: set[str] = set()
 
+    # validation-metadata: {"role": "helper"}
     def cycle_fragment(node: str) -> str:
         if node in visiting:
             start = visiting.index(node)
@@ -152,6 +162,7 @@ def check_product_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None
             return " -> ".join(cycle)
         return node
 
+    # validation-metadata: {"role": "helper"}
     def visit(node: str) -> None:
         if node in visited:
             return
@@ -168,6 +179,7 @@ def check_product_acyclic_dependencies(specs: dict[str, dict[str, Any]]) -> None
         visit(node)
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_specification_root_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
@@ -200,18 +212,21 @@ def check_product_specification_root_phase(context: ValidationContext) -> None:
                 expect(target_spec_id != spec_id, f"product lineage failed: self reference {spec_id}")
 
 
+# validation-metadata: {"role": "helper"}
 def check_dependency_directions_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
     check_dependency_directions(context.product.specs)
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_completeness_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
     check_product_completeness(context.product.specs)
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_acyclic_dependencies_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
@@ -227,6 +242,7 @@ from .development_documents import get_development_document_records
 from .development_documents import _product_development_roots
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_lifecycle_readiness(context: ValidationContext) -> None:
     product_specs = context.product.specs if context.product is not None else {}
     product_entries = context.product.entries if context.product is not None else []
