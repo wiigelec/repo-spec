@@ -127,6 +127,24 @@ Assurance shall not:
 
 ## Assurance Terminology
 
+### Assurance Primitive
+
+A maintained artifact whose purpose participates in governed semantic review.
+
+Assurance primitives may include:
+
+- Assurance correspondence;
+- review obligations;
+- review cases;
+- evidence manifests;
+- reviewer instructions;
+- rubrics;
+- findings;
+- dispositions;
+- semantic checklists;
+- Assurance schemas; and
+- generated Assurance views.
+
 ### Assurance Correspondence
 
 The governed relationship between accepted authority and Assurance responsibility.
@@ -307,7 +325,7 @@ Exploratory analysis may occur without becoming governed Assurance responsibilit
 
 ## Assurance Provenance
 
-Every maintained Assurance review obligation, review case, and finding shall resolve through governed provenance to accepted authority.
+Every maintained Assurance primitive shall resolve through governed provenance to accepted authority.
 
 The provenance chain shall permit resolution of:
 
@@ -336,6 +354,13 @@ This permits repeated reviews against the same authority without conflating thei
 ## Review Scope
 
 Every review case shall explicitly define its scope.
+
+A review case shall distinguish:
+
+- **authorizing authority** — accepted authority that requires or permits Assurance to perform the review; and
+- **review subject** — the candidate authority, accepted authority, Governance artifact, Conformance artifact, implementation, repository state, or other material being evaluated.
+
+This distinction permits Assurance to review non-authoritative candidates without allowing the candidate to authorize its own review.
 
 Scope shall identify, as applicable:
 
@@ -374,6 +399,14 @@ A finding should distinguish:
 - recommended action.
 
 The exact representation belongs in subordinate Assurance authority.
+
+## Review Execution Closure
+
+A review obligation may exist without being continuously active.
+
+When accepted authority triggers a review obligation for a governed decision, that obligation shall be realized by a governed review case before the decision may be accepted.
+
+A declared review obligation that is triggered but never instantiated does not satisfy Assurance responsibility.
 
 ## Assurance Semantic Boundary
 
@@ -775,7 +808,7 @@ The following candidate requirements are intended for Design-stage normalization
 
 ### ASSUR-02 — Assurance Provenance
 
-**Every maintained Assurance review obligation, review case, and finding SHALL resolve through governed provenance to accepted authority.**
+**Every maintained Assurance primitive SHALL resolve through governed provenance to accepted authority.**
 
 ### ASSUR-03 — Canonical Assurance Correspondence
 
@@ -799,7 +832,7 @@ The following candidate requirements are intended for Design-stage normalization
 
 ### ASSUR-08 — Review Case Scope
 
-**Each governed Assurance review case SHALL explicitly identify its accepted authority, review obligations, and reviewed subject matter.**
+**Each governed Assurance review case SHALL explicitly identify its authorizing authority, review obligations, and reviewed subject matter.**
 
 ### ASSUR-09 — Finding Identity
 
@@ -807,7 +840,7 @@ The following candidate requirements are intended for Design-stage normalization
 
 ### ASSUR-10 — Finding Traceability
 
-**Each Assurance finding SHALL resolve to its review case, applicable review obligation, accepted authority, and evidence basis.**
+**Each Assurance finding SHALL resolve to its review case, applicable review obligation, authorizing authority, reviewed subject matter, and evidence basis.**
 
 ### ASSUR-11 — Assurance Semantic Boundary
 
@@ -824,6 +857,10 @@ The following candidate requirements are intended for Design-stage normalization
 ### ASSUR-14 — Single Correspondence Authority
 
 **Requirement-to-Assurance correspondence SHALL NOT depend on independently maintained mappings that may silently diverge.**
+
+### ASSUR-15 — Review Execution Closure
+
+**Each triggered Assurance review obligation SHALL be realized by a governed review case before the governed decision requiring that review may be accepted.**
 
 ## Primary Design Invariant
 

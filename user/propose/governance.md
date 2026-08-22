@@ -420,7 +420,7 @@ Build shall not:
 
 Build Implement performs accepted realization work.
 
-Each governed Build change shall resolve to accepted Plan authority or other accepted authority that authorizes the change.
+Each governed Build change shall resolve to an accepted Plan work item that authorizes the change.
 
 Implementation may expose upstream defects but shall not silently repair them by creating missing authority.
 
@@ -582,9 +582,17 @@ Governed work shall not exist without resolvable authority.
 
 Each governed Plan work item shall resolve to accepted normative authority that requires or authorizes it.
 
-Each governed Build change shall resolve to accepted Plan authority or other accepted authority that authorizes it.
+Each governed Build change shall resolve to the accepted Plan or other accepted authority that authorizes it.
 
 The exact provenance representation belongs in detailed Governance authority.
+
+## Normative Requirement Identity
+
+Accepted normative obligations shall be represented by stable machine-resolvable normative requirement identities.
+
+The normative requirement is the canonical addressable unit of accepted normative semantics.
+
+A normative obligation shall not remain accepted only as unidentified prose that escapes Conformance and Assurance correspondence.
 
 ## Governed Identity
 
@@ -601,6 +609,24 @@ At minimum, identity shall exist for:
 - accepted Build result.
 
 The exact identity representation belongs in detailed Governance authority.
+
+## Evaluation Disposition
+
+Each accepted normative requirement shall have governed Conformance and Assurance applicability.
+
+A requirement for which Conformance applicability is `none` and Assurance applicability is `none` shall have a governed rationale explaining why neither keystone directly evaluates that requirement.
+
+Governance owns acceptance of this cross-keystone disposition.
+
+Neither Conformance nor Assurance shall independently determine the responsibility of the other keystone.
+
+## Acceptance Authority
+
+Governance acceptance shall depend only on authority accepted before the candidate result acquires the authority produced by that acceptance.
+
+A candidate authority shall not require itself, or authority that exists only because that candidate has already been accepted, as a prerequisite for its own acceptance.
+
+This prevents circular self-authorization during framework evolution and self-hosting.
 
 ## Governed State
 
@@ -697,7 +723,7 @@ The following candidate requirements are intended for Design-stage normalization
 
 ### GOV-08 — Build Authority
 
-**Build SHALL be the Governance stage responsible for realizing accepted Plan authority.**
+**Build SHALL be the Governance stage responsible for realizing the accepted Plan.**
 
 ### GOV-09 — Build Semantic Boundary
 
@@ -762,6 +788,18 @@ The following candidate requirements are intended for Design-stage normalization
 ### GOV-24 — Identity Preservation
 
 **A normative identity SHALL NOT be reused in a manner that obscures previously accepted authority.**
+
+### GOV-25 — Normative Requirement Identity
+
+**Each accepted normative obligation SHALL be represented by a stable machine-resolvable normative requirement identity.**
+
+### GOV-26 — Evaluation Disposition
+
+**Each accepted normative requirement SHALL have governed Conformance and Assurance applicability, and a requirement with neither mechanical Conformance nor required Assurance SHALL have a governed rationale.**
+
+### GOV-27 — Acceptance Authority
+
+**Governance acceptance SHALL depend only on authority accepted before the candidate result acquires the authority produced by that acceptance.**
 
 ## Primary Design Invariant
 
