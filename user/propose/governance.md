@@ -582,7 +582,7 @@ Governed work shall not exist without resolvable authority.
 
 Each governed Plan work item shall resolve to accepted normative authority that requires or authorizes it.
 
-Each governed Build change shall resolve to the accepted Plan or other accepted authority that authorizes it.
+Each governed Build change shall resolve to an accepted Plan work item that authorizes the change.
 
 The exact provenance representation belongs in detailed Governance authority.
 
@@ -803,7 +803,7 @@ The following candidate requirements are intended for Design-stage normalization
 
 ## Primary Design Invariant
 
-**Governance SHALL transform non-authoritative design intent into accepted repository state through a traceable Design → Plan → Build lifecycle in which Design owns normative semantics, Plan owns realization intent, Build owns realization, acceptance is explicit, and downstream stages route upstream defects rather than invent missing authority.**
+**Governance SHALL transform non-authoritative design intent into accepted repository state through a traceable Design → Plan → Build lifecycle in which accepted normative obligations have stable requirement identities and governed evaluation dispositions, Design owns normative semantics, Plan owns realization intent, Build realizes only accepted Plan work, acceptance is explicit and depends only on previously accepted authority, and downstream stages route upstream defects rather than invent missing authority.**
 
 All detailed Governance design shall preserve this invariant.
 

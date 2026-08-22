@@ -364,7 +364,8 @@ This distinction permits Assurance to review non-authoritative candidates withou
 
 Scope shall identify, as applicable:
 
-- accepted authority under review;
+- authorizing authority;
+- reviewed subject matter;
 - review obligations being exercised;
 - Governance artifact or stage under review;
 - Conformance correspondence or assertions under review;
@@ -388,7 +389,8 @@ Each Assurance finding shall resolve to:
 
 - its review case;
 - applicable review obligation;
-- accepted authority under review; and
+- authorizing authority;
+- reviewed subject matter; and
 - evidence basis.
 
 A finding should distinguish:
@@ -864,7 +866,7 @@ The following candidate requirements are intended for Design-stage normalization
 
 ## Primary Design Invariant
 
-**Assurance SHALL provide governed semantic review through traceable and explicitly scoped review cases in which every review responsibility derives from accepted authority, every finding resolves to its authority and evidence basis, interpretation remains within accepted normative semantics, findings remain bounded to their authorized cases, and persistent semantic change returns through Governance.**
+**Assurance SHALL provide governed semantic review through a closed provenance model in which every maintained Assurance primitive derives from accepted authority, every triggered review obligation is realized by a traceable and explicitly scoped review case, every finding resolves to its authorizing authority, reviewed subject matter, and evidence basis, interpretation remains within accepted normative semantics, findings remain bounded to their authorized cases, and persistent semantic change returns through Governance.**
 
 All detailed Assurance design shall preserve this invariant.
 
