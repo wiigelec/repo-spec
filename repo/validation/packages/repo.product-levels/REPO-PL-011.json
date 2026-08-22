@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-PL-011",
+    "spec_id": "repo.product-levels"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Schema extension boundaries can be mechanically checked, while whether an extension redefines lower-Level semantics requires semantic comparison."
+}

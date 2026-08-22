@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "IRG-L0-002",
+    "spec_id": "repo.issue-routing-governance"
+  },
+  "tasks": [],
+  "validation_disposition": "semantic-review",
+  "validation_rationale": "Whether routing metadata is being treated as repository-mutation authority is fundamentally an authority interpretation about actor behavior rather than a repository-state invariant."
+}

@@ -12,13 +12,16 @@ INVENTORY = ROOT / "product/specs/product/level-1/initializer-output-inventory-v
 
 
 class Issue327DynamicOutputValidationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls) -> None:
         cls.inventory = json.loads(INVENTORY.read_text())
 
+    # validation-metadata: {"role": "helper"}
     def test_bootstrap_inventory_declares_no_dynamic_product_outputs(self) -> None:
         self.assertEqual(self.inventory["dynamic_path_families"], [])
 
+    # validation-metadata: {"role": "helper"}
     def test_successor_product_artifacts_are_not_bootstrap_dynamic_outputs(self) -> None:
         paths = (
             "product/docs/direction/evidence/000-README.md",
@@ -33,6 +36,7 @@ class Issue327DynamicOutputValidationTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertFalse(_i4_match_dynamic(path, self.inventory))
 
+    # validation-metadata: {"role": "helper"}
     def test_fabricated_and_adjacent_paths_are_not_bootstrap_dynamic_outputs(self) -> None:
         paths = (
             "product/docs/overview/audit-sample-overview/chunk-99-made-up.md",

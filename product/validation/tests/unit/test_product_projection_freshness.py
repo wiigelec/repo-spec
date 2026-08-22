@@ -13,6 +13,7 @@ from ..self.mutation_support import create_repo_fixture, deactivate_product_plan
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# validation-metadata: {"role": "helper"}
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     if dest_path == "product/specs/product/manifest.json" and source_name.startswith("manifest-"):
         product_specs_root = temp_repo / "product/specs/product"
@@ -25,6 +26,7 @@ def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     shutil.copy2(source, target)
 
 
+# validation-metadata: {"role": "helper"}
 def accept_kernel(temp_repo: Path) -> None:
     mutate_json(
         temp_repo / "product/specs/product/manifest.json",
@@ -38,7 +40,7 @@ def accept_kernel(temp_repo: Path) -> None:
                 "correspondence",
                 {
                     "implementations": [{"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}],
-                    "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}],
+                    "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}],
                     "conformance": [
                         {
                             "requirement_id": "KERNEL-001",
@@ -55,6 +57,7 @@ def accept_kernel(temp_repo: Path) -> None:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def build_product_repo(repo_root: Path, temp_root: Path, index: int) -> Path:
     temp_repo = create_repo_fixture(repo_root, temp_root, index)
     install_fixture(temp_repo, "manifest-valid-four.json", "product/specs/product/manifest.json")
@@ -72,6 +75,7 @@ def build_product_repo(repo_root: Path, temp_root: Path, index: int) -> Path:
     return temp_repo
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_projection_freshness_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)

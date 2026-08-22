@@ -18,6 +18,7 @@ class ProductCorrespondenceInventory:
     conformance: list[dict[str, Any]]
 
 
+# validation-metadata: {"role": "helper"}
 def load_product_correspondence_inventory(context: ValidationContext, spec_id: str, spec: dict[str, Any]) -> ProductCorrespondenceInventory:
     forbidden_prefixes = ("specs/", "derived/", "schemas/", "docs/", ".github/", "repo/scripts/")
     forbidden_exact = {"README.md", "AGENTS.md", "LICENSE"}
@@ -28,6 +29,7 @@ def load_product_correspondence_inventory(context: ValidationContext, spec_id: s
     requirement_ids = {req["id"] for req in spec.get("normative_requirements", [])}
     declared_paths: set[str] = set()
 
+    # validation-metadata: {"role": "helper"}
     def validate_mapping_collection(collection_name: str, id_field: str) -> dict[str, dict[str, Any]]:
         mappings = correspondence.get(collection_name, [])
         expect(isinstance(mappings, list), f"correspondence validation failed: {spec_id} {collection_name} must be an array")
@@ -62,10 +64,129 @@ def load_product_correspondence_inventory(context: ValidationContext, spec_id: s
                 expect(resolved.exists(), f"correspondence validation failed: {spec_id} {collection_name} {mapping_id} missing path {path}")
                 expect(resolved.is_file(), f"correspondence validation failed: {spec_id} {collection_name} {mapping_id} path {path} must be a file")
 
+
+        return indexed
+
+    # validation-metadata: {"role": "helper"}
+    def validate_test_mapping_collection() -> dict[str, dict[str, Any]]:
+        mappings = correspondence.get("tests", [])
+        expect(
+            isinstance(mappings, list),
+            f"correspondence validation failed: {spec_id} tests must be an array",
+        )
+        seen_ids: set[str] = set()
+        indexed: dict[str, dict[str, Any]] = {}
+        for index, mapping in enumerate(mappings):
+            expect(
+                isinstance(mapping, dict),
+                f"correspondence validation failed: {spec_id} tests[{index}] must be an object",
+            )
+            mapping_id = mapping.get("id")
+            expect(
+                isinstance(mapping_id, str) and mapping_id,
+                f"correspondence validation failed: {spec_id} tests[{index}] missing id",
+            )
+            expect(
+                mapping_id not in seen_ids,
+                f"correspondence validation failed: {spec_id} duplicate tests id {mapping_id}",
+            )
+            seen_ids.add(mapping_id)
+            indexed[mapping_id] = mapping
+
+            paths = mapping.get("paths")
+            expect(
+                isinstance(paths, list),
+                f"correspondence validation failed: {spec_id} tests {mapping_id} paths must be an array",
+            )
+            expect(
+                paths,
+                f"correspondence validation failed: {spec_id} tests {mapping_id} requires at least one path",
+            )
+            expect(
+                len(paths) == len(set(paths)),
+                f"correspondence validation failed: {spec_id} tests {mapping_id} duplicate paths",
+            )
+            for path in paths:
+                expect(
+                    path not in forbidden_exact,
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} invalid path {path}",
+                )
+                expect(
+                    not path.startswith(forbidden_prefixes),
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} invalid path {path}",
+                )
+                expect(
+                    path not in declared_paths,
+                    f"correspondence validation failed: {spec_id} duplicate correspondence path {path}",
+                )
+                declared_paths.add(path)
+                resolved = resolve_repo_path(context.repo_root, path)
+                expect(
+                    resolved.exists(),
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} missing path {path}",
+                )
+                expect(
+                    resolved.is_file(),
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} path {path} must be a file",
+                )
+
+            refs = mapping.get("validation_package_refs")
+            expect(
+                isinstance(refs, list),
+                f"correspondence validation failed: {spec_id} tests {mapping_id} validation_package_refs must be an array",
+            )
+            expect(
+                refs,
+                f"correspondence validation failed: {spec_id} tests {mapping_id} requires at least one validation package ref",
+            )
+            normalized: list[tuple[str, str]] = []
+            for ref_index, ref in enumerate(refs):
+                expect(
+                    isinstance(ref, dict)
+                    and set(ref) == {"spec_id", "requirement_id"},
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} validation_package_refs[{ref_index}] must be one canonical normative reference",
+                )
+                ref_spec_id = ref.get("spec_id")
+                requirement_id = ref.get("requirement_id")
+                expect(
+                    ref_spec_id == spec_id,
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} cross-owner validation package ref {ref_spec_id}/{requirement_id}",
+                )
+                expect(
+                    requirement_id in requirement_ids,
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} unknown validation package requirement {requirement_id}",
+                )
+                coordinate = (ref_spec_id, requirement_id)
+                expect(
+                    coordinate not in normalized,
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} duplicate validation package ref {ref_spec_id}/{requirement_id}",
+                )
+                normalized.append(coordinate)
+
+                package_path = (
+                    context.repo_root
+                    / "product/validation/packages"
+                    / ref_spec_id
+                    / f"{requirement_id}.json"
+                )
+                expect(
+                    package_path.is_file(),
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} missing canonical validation package {ref_spec_id}/{requirement_id}",
+                )
+                package = load_json(package_path)
+                expect(
+                    package.get("normative_reference")
+                    == {
+                        "spec_id": ref_spec_id,
+                        "requirement_id": requirement_id,
+                    },
+                    f"correspondence validation failed: {spec_id} tests {mapping_id} validation package binding mismatch {ref_spec_id}/{requirement_id}",
+                )
+
         return indexed
 
     implementation_index = validate_mapping_collection("implementations", "id")
-    test_index = validate_mapping_collection("tests", "id")
+    test_index = validate_test_mapping_collection()
 
     conformance = correspondence.get("conformance", [])
     expect(isinstance(conformance, list), f"correspondence validation failed: {spec_id} conformance must be an array")
@@ -99,11 +220,82 @@ def load_product_correspondence_inventory(context: ValidationContext, spec_id: s
 
         for mapping_id in test_ids:
             expect(mapping_id in test_index, f"correspondence validation failed: {spec_id} conformance[{index}] unresolved test {mapping_id}")
-            expect(requirement_id in test_index[mapping_id]["requirements"], f"correspondence validation failed: {spec_id} conformance[{index}] test {mapping_id} does not own {requirement_id}")
+            expect(
+                {"spec_id": spec_id, "requirement_id": requirement_id}
+                in test_index[mapping_id]["validation_package_refs"],
+                f"correspondence validation failed: {spec_id} conformance[{index}] test "
+                f"{mapping_id} does not resolve through canonical validation package "
+                f"{spec_id}/{requirement_id}",
+            )
 
     return ProductCorrespondenceInventory(requirement_ids, implementation_index, test_index, conformance)
 
 
+# validation-metadata: {"role": "helper"}
+def check_product_validation_correspondence_packages_phase(
+    context: ValidationContext,
+) -> None:
+    if context.product is None:
+        return
+    expect(context.external_repository is not None, "product validation correspondence failed: repository authority context missing")
+    schema = context.external_repository.schemas.get("validation-correspondence-package")
+    expect(isinstance(schema, dict), "product validation correspondence failed: package schema missing")
+    package_root = context.repo_root / "product/validation/packages"
+    expect(package_root.is_dir(), "product validation correspondence failed: missing product/validation/packages")
+
+    active_refs: set[tuple[str, str]] = set()
+    source_records: dict[tuple[str, str], dict[str, Any]] = {}
+    for spec_id, spec in context.product.specs.items():
+        if spec.get("status") != "accepted":
+            continue
+        inventory = load_product_correspondence_inventory(context, spec_id, spec)
+        records = {record["requirement_id"]: record for record in inventory.conformance}
+        for req in spec.get("normative_requirements", []):
+            requirement_id = req.get("id") if isinstance(req, dict) else None
+            if not isinstance(requirement_id, str):
+                continue
+            ref = (spec_id, requirement_id)
+            active_refs.add(ref)
+            expect(requirement_id in records, f"product validation correspondence failed: missing conformance source {spec_id}/{requirement_id}")
+            source_records[ref] = records[requirement_id]
+
+    package_refs: set[tuple[str, str]] = set()
+    for path in sorted(package_root.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(package_root)
+        expect(path.suffix == ".json" and len(relative.parts) == 2, f"product validation correspondence failed: noncanonical package path {path.relative_to(context.repo_root).as_posix()}")
+        ref = (relative.parts[0], path.stem)
+        expect(ref not in package_refs, f"product validation correspondence failed: duplicate package owner {ref[0]}/{ref[1]}")
+        package = load_json(path)
+        validate_instance(package, schema, path.relative_to(context.repo_root).as_posix(), schema)
+        expect(package["normative_reference"] == {"spec_id": ref[0], "requirement_id": ref[1]}, f"product validation correspondence failed: package/path binding mismatch {ref[0]}/{ref[1]}")
+        expect(ref in active_refs, f"product validation correspondence failed: inactive or unknown package {ref[0]}/{ref[1]}")
+        source = source_records[ref]
+        source_status = source.get("status")
+        if source_status == "not-applicable":
+            expect(package["validation_disposition"] == "not-applicable", f"product validation correspondence failed: disposition mismatch {ref[0]}/{ref[1]}")
+            expect(package.get("validation_rationale") == source.get("rationale"), f"product validation correspondence failed: rationale mismatch {ref[0]}/{ref[1]}")
+            expect(package["tasks"] == [], f"product validation correspondence failed: not-applicable package invented task ownership {ref[0]}/{ref[1]}")
+        elif source_status == "covered":
+            expect(
+                package["validation_disposition"] != "not-applicable",
+                f"product validation correspondence failed: covered conformance cannot resolve through not-applicable package {ref[0]}/{ref[1]}",
+            )
+        else:
+            expect(
+                False,
+                f"product validation correspondence failed: unsupported conformance status {source_status!r} {ref[0]}/{ref[1]}",
+            )
+        package_refs.add(ref)
+
+    missing = sorted(active_refs - package_refs)
+    unexpected = sorted(package_refs - active_refs)
+    expect(not missing, "product validation correspondence failed: missing active package(s): " + ", ".join(f"{s}/{r}" for s, r in missing))
+    expect(not unexpected, "product validation correspondence failed: unexpected package(s): " + ", ".join(f"{s}/{r}" for s, r in unexpected))
+
+
+# validation-metadata: {"role": "helper"}
 def check_product_correspondence_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
@@ -112,6 +304,7 @@ def check_product_correspondence_phase(context: ValidationContext) -> None:
         load_product_correspondence_inventory(context, spec_id, spec)
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_conformance_completeness_phase(context: ValidationContext) -> None:
     if context.product is None:
         return
@@ -156,6 +349,7 @@ class ProductValidationContext:
     schemas: dict[str, dict[str, Any]]
 
 
+# validation-metadata: {"role": "helper"}
 def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     schemas = {
         "product.manifest": load_json(repo_root / "product/schemas/product/product-manifest.schema.json"),
@@ -164,6 +358,7 @@ def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     base_schema = schemas["product.spec-base"]
     base_defs = copy.deepcopy(base_schema.get("$defs", {}))
 
+    # validation-metadata: {"role": "helper"}
     def materialize_level_schema(schema: dict[str, Any]) -> dict[str, Any]:
         schema = copy.deepcopy(schema)
         defs = schema.setdefault("$defs", {})
@@ -189,6 +384,7 @@ def load_product_schemas(repo_root: Path) -> dict[str, dict[str, Any]]:
     ensure_schema_keywords(schemas["product.level-2"], "product/schemas/product/product-level-2.schema.json")
     ensure_schema_keywords(schemas["product.level-3"], "product/schemas/product/product-level-3.schema.json")
     return schemas
+# validation-metadata: {"role": "helper"}
 def actual_product_paths(repo_root: Path) -> list[str]:
     product_root = repo_root / "product/specs/product"
     if not product_root.exists():
@@ -200,6 +396,7 @@ def actual_product_paths(repo_root: Path) -> list[str]:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def load_product_validation_context(repo_root: Path) -> ProductValidationContext | None:
     manifest_path = repo_root / "product/specs/product/manifest.json"
     actual_paths = actual_product_paths(repo_root)

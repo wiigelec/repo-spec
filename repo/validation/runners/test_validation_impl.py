@@ -11,6 +11,7 @@ from validation.core.errors import ValidationFailure
 from validation.tests.self.portable_self_tests import run_repository_portable_self_tests
 
 
+# validation-metadata: {"role": "helper"}
 def _run_source_development_tests(repo_root: Path) -> None:
     source_suite = repo_root / "repo/validation/tests/self/mutation_tests.py"
     if not source_suite.is_file():
@@ -21,6 +22,7 @@ def _run_source_development_tests(repo_root: Path) -> None:
     run_repository_mutation_tests(repo_root)
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     if len(argv) > 2:

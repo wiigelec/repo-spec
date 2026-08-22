@@ -8,6 +8,7 @@ from mutation_support import create_repo_fixture, expect_failure
 
 
 class MutationSupportTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_create_repo_fixture_is_repo_only(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
         with tempfile.TemporaryDirectory(prefix="repo-spec-root-unit-") as temp_name:
@@ -16,12 +17,16 @@ class MutationSupportTests(unittest.TestCase):
             self.assertFalse((fixture / "product").exists())
             self.assertFalse((fixture / ".github").exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_expect_failure_accepts_matching_fragment(self) -> None:
+        # validation-metadata: {"role": "helper"}
         def fail() -> None:
             raise RuntimeError("expected fragment here")
         expect_failure("matching fragment", fail, "expected fragment")
 
+    # validation-metadata: {"role": "helper"}
     def test_expect_failure_rejects_wrong_fragment(self) -> None:
+        # validation-metadata: {"role": "helper"}
         def fail() -> None:
             raise RuntimeError("actual")
         with self.assertRaises(AssertionError):

@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-008",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "_check_repository_generated_freshness",
+      "source": "repo/validation/checks/generated_outputs.py",
+      "task_id": "repo.validation.generated-document-freshness"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

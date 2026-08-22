@@ -11,6 +11,7 @@ from validation.core.errors import ValidationFailure
 from validation.checks.domain import validate_product
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     if len(argv) > 2:

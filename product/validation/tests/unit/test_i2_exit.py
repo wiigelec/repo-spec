@@ -17,15 +17,19 @@ from initializer.staging import (
 
 
 class I2RepositoryDigestTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self) -> None:
         self.root = Path(tempfile.mkdtemp())
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self) -> None:
         shutil.rmtree(self.root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def digest(self):
         return i2_repository_digest_input(self.root)
 
+    # validation-metadata: {"role": "helper"}
     def test_enumeration_is_repository_relative_and_sorted(self) -> None:
         (self.root / "z").mkdir()
         (self.root / "z/b.txt").write_bytes(b"b")
@@ -34,6 +38,7 @@ class I2RepositoryDigestTests(unittest.TestCase):
         paths = [entry.path for entry in entries]
         self.assertEqual(paths, ["a.txt", "z/", "z/b.txt"])
 
+    # validation-metadata: {"role": "helper"}
     def test_digest_input_is_byte_deterministic(self) -> None:
         (self.root / "a.txt").write_bytes(b"a\\r\\n")
         first, first_entries = self.digest()
@@ -41,6 +46,7 @@ class I2RepositoryDigestTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(first_entries, second_entries)
 
+    # validation-metadata: {"role": "helper"}
     def test_file_bytes_change_digest_input(self) -> None:
         path = self.root / "a.txt"
         path.write_bytes(b"one")
@@ -49,6 +55,7 @@ class I2RepositoryDigestTests(unittest.TestCase):
         second, _ = self.digest()
         self.assertNotEqual(first, second)
 
+    # validation-metadata: {"role": "helper"}
     def test_executable_bit_changes_digest_input(self) -> None:
         path = self.root / "tool"
         path.write_bytes(b"#!/bin/sh\\n")
@@ -58,6 +65,7 @@ class I2RepositoryDigestTests(unittest.TestCase):
         second, _ = self.digest()
         self.assertNotEqual(first, second)
 
+    # validation-metadata: {"role": "helper"}
     def test_timestamps_do_not_change_digest_input(self) -> None:
         path = self.root / "a.txt"
         path.write_bytes(b"same")
@@ -66,6 +74,7 @@ class I2RepositoryDigestTests(unittest.TestCase):
         second, _ = self.digest()
         self.assertEqual(first, second)
 
+    # validation-metadata: {"role": "helper"}
     def test_symlink_target_participates_in_digest(self) -> None:
         (self.root / "one").write_text("one")
         (self.root / "two").write_text("two")
@@ -77,11 +86,13 @@ class I2RepositoryDigestTests(unittest.TestCase):
         second, _ = self.digest()
         self.assertNotEqual(first, second)
 
+    # validation-metadata: {"role": "helper"}
     def test_git_state_is_rejected(self) -> None:
         (self.root / ".git").mkdir()
         with self.assertRaises(StagingError):
             self.digest()
 
+    # validation-metadata: {"role": "helper"}
     @unittest.skipUnless(hasattr(os, "mkfifo"), "FIFO unavailable")
     def test_special_files_are_rejected(self) -> None:
         fifo = self.root / "pipe"

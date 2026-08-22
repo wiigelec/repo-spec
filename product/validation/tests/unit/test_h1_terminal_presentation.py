@@ -27,6 +27,7 @@ from initializer.orchestration import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def fake_full_result(
     terminal: str,
     *,
@@ -47,6 +48,7 @@ def fake_full_result(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def inert_actions(calls: list[str]) -> FullInitializationActions:
     names = (
         "request_intake",
@@ -64,7 +66,9 @@ def inert_actions(calls: list[str]) -> FullInitializationActions:
         "success_finalization",
     )
 
+    # validation-metadata: {"role": "helper"}
     def make(name):
+        # validation-metadata: {"role": "helper"}
         def action(_carried):
             calls.append(name)
             if name == "promotion":
@@ -78,6 +82,7 @@ def inert_actions(calls: list[str]) -> FullInitializationActions:
 
 
 class H1TerminalPresentationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_minimal_patch1_result_shape_remains_supported(self):
         result = SimpleNamespace(
             terminal_result=TERMINAL_PROMOTED_SUCCESS,
@@ -89,6 +94,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("Initialization complete: /tmp/out", text)
         self.assertIn("promoted successfully", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_cli_announces_start_and_success_destination(self):
         raw = {"schema_version": "2", "destination": "/tmp/created"}
         result = fake_full_result(
@@ -108,6 +114,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("Initialization complete: /tmp/created", text)
         self.assertIn("promoted successfully", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_pre_promotion_failure_says_destination_not_promoted(self):
         result = fake_full_result(
             TERMINAL_PRE_PROMOTION_FAILURE,
@@ -122,6 +129,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("validation failed", text)
         self.assertIn("not promoted", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_indeterminate_promotion_never_claims_destination_state(self):
         result = fake_full_result(
             TERMINAL_INDETERMINATE_PROMOTION,
@@ -137,6 +145,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertNotIn("Destination was not promoted.", text)
         self.assertNotIn("promoted successfully", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_promoted_finalization_error_explicitly_preserves_promotion(self):
         result = fake_full_result(
             TERMINAL_PROMOTED_WITH_FINALIZATION_ERROR,
@@ -152,6 +161,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("Destination was promoted", text)
 
 
+    # validation-metadata: {"role": "helper"}
     def test_upgrade_success_presentation_matches_public_cli_style(self):
         result = SimpleNamespace(
             terminal_result="promoted-success",
@@ -166,6 +176,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertNotIn("{", text)
         self.assertNotIn("upgrade_set_fingerprint", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_upgrade_pre_promotion_failure_reports_reason_and_no_promotion(self):
         result = SimpleNamespace(
             terminal_result="pre-promotion-failure",
@@ -179,6 +190,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("validation failed", text)
         self.assertIn("not promoted", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_upgrade_indeterminate_does_not_claim_final_state(self):
         result = SimpleNamespace(
             terminal_result="indeterminate",
@@ -193,6 +205,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertNotIn("promoted successfully", text)
         self.assertNotIn("Repository was not promoted.", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_upgrade_promoted_finalization_error_preserves_promotion_fact(self):
         result = SimpleNamespace(
             terminal_result="promoted-with-finalization-error",
@@ -206,6 +219,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("finalization did not complete cleanly", text)
         self.assertIn("Repository was promoted", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_progress_wrapper_preserves_action_return_values_and_order(self):
         calls = []
         base = inert_actions(calls)
@@ -219,6 +233,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         self.assertIn("Resolving source material", text)
         self.assertIn("Validating prepared repository", text)
 
+    # validation-metadata: {"role": "helper"}
     def test_human_presentation_does_not_mutate_terminal_result(self):
         result = fake_full_result(
             TERMINAL_PRE_PROMOTION_FAILURE,
@@ -241,6 +256,7 @@ class H1TerminalPresentationTests(unittest.TestCase):
         )
         self.assertEqual(before, after)
 
+    # validation-metadata: {"role": "helper"}
     def test_no_interactive_or_field_defaulting_surface_is_added(self):
         stderr = io.StringIO()
         with patch("sys.stderr", stderr):

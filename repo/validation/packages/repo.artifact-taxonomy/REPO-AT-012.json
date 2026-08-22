@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-AT-012",
+    "spec_id": "repo.artifact-taxonomy"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Recognition and metadata of validation-correspondence-package as an implementation-class source artifact are mechanically checkable, while its non-normative/subordinate semantic role requires authority interpretation."
+}

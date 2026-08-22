@@ -27,8 +27,10 @@ from .specifications import (
     check_unique_derived_artifact_paths_phase,
     check_unique_item_properties_phase,
     check_unique_spec_ids_phase,
+    check_validation_correspondence_integrity_phase,
 )
 
+# validation-metadata: {"role": "helper"}
 def validate_repository_phase(repo_root: Path, phase_label: str) -> None:
     context = _load_repository_only_context(repo_root)
     for label, check in REPOSITORY_VALIDATION_PHASES:
@@ -37,6 +39,7 @@ def validate_repository_phase(repo_root: Path, phase_label: str) -> None:
             return
     fail(f"unknown repository validation phase: {phase_label}")
 
+# validation-metadata: {"role": "helper"}
 def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     manifest, specs, source_paths, actual_paths = load_repo_specs(repo_root)
     schemas = load_repo_schemas(repo_root)
@@ -49,6 +52,7 @@ def _load_repository_only_context(repo_root: Path) -> ValidationContext:
     )
     return ValidationContext(repo_root, repository, None, None)
 
+# validation-metadata: {"role": "helper"}
 def validate_repo(repo_root: Path) -> None:
     context = _load_repository_only_context(repo_root)
     for label, check in REPOSITORY_VALIDATION_PHASES:
@@ -60,6 +64,7 @@ REPOSITORY_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("repository validation layout", check_validation_layout),
     ("repository source layout", check_repository_source_layout),
     ("repository JSON Schema conformance", check_schema_conformance),
+    ("repository validation correspondence integrity", check_validation_correspondence_integrity_phase),
     ("manifest completeness", check_manifest_phase),
     ("unique specification IDs", check_unique_spec_ids_phase),
     ("unique item properties", check_unique_item_properties_phase),

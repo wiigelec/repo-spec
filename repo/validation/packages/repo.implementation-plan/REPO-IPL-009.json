@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-IPL-009",
+    "spec_id": "repo.implementation-plan"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Future specification work can be structurally identified and acceptance state can be checked, while whether a planned activity effectively authorizes premature maintained-artifact synthesis may require semantic review."
+}

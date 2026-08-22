@@ -13,6 +13,7 @@ from ..self.mutation_support import create_repo_fixture, deactivate_product_plan
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# validation-metadata: {"role": "helper"}
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     if dest_path == "product/specs/product/manifest.json" and source_name.startswith("manifest-"):
         product_specs_root = temp_repo / "product/specs/product"
@@ -25,6 +26,7 @@ def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     shutil.copy2(source, target)
 
 
+# validation-metadata: {"role": "helper"}
 def accept_kernel(temp_repo: Path) -> None:
     mutate_json(
         temp_repo / "product/specs/product/manifest.json",
@@ -41,7 +43,7 @@ def accept_kernel(temp_repo: Path) -> None:
                         {"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "tests": [
-                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}
+                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}
                     ],
                     "conformance": [
                         {
@@ -57,6 +59,7 @@ def accept_kernel(temp_repo: Path) -> None:
         )[-1],
     )
 
+# validation-metadata: {"role": "helper"}
 def run_product_dependency_policy_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -233,6 +236,7 @@ def run_product_dependency_policy_tests(repo_root: Path) -> None:
 
     print("ok: product dependency policy tests")
 
+# validation-metadata: {"role": "helper"}
 def run_product_schema_boundary_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -299,6 +303,7 @@ def run_product_schema_boundary_tests(repo_root: Path) -> None:
     print("ok: product schema-boundary tests")
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_manifest_completeness_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -320,6 +325,7 @@ def run_product_manifest_completeness_tests(repo_root: Path) -> None:
     print("ok: product manifest completeness tests")
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_manifest_uniqueness_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -340,6 +346,7 @@ def run_product_manifest_uniqueness_tests(repo_root: Path) -> None:
     print("ok: product manifest uniqueness tests")
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_manifest_correspondence_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -371,6 +378,7 @@ def run_product_manifest_correspondence_tests(repo_root: Path) -> None:
     print("ok: product manifest correspondence tests")
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_reference_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -387,6 +395,7 @@ def run_product_reference_tests(repo_root: Path) -> None:
     print("ok: product reference tests")
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_lineage_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -406,6 +415,7 @@ def run_product_lineage_tests(repo_root: Path) -> None:
 
     print("ok: product lineage tests")
 
+# validation-metadata: {"role": "helper"}
 def run_product_correspondence_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -429,7 +439,7 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
                 spec["correspondence"]["implementations"].append({"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}),
-                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}),
+                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}),
                 spec,
             )[-1],
         )
@@ -593,10 +603,10 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         accept_kernel(temp_repo)
         mutate_json(
             temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: (spec["correspondence"]["tests"][0].pop("requirements"), spec)[1],
+            lambda spec: (spec["correspondence"]["tests"][0].pop("validation_package_refs"), spec)[1],
         )
         deactivate_product_plans(temp_repo)
-        expect_failure("missing test mapping requirements", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "missing required property requirements")
+        expect_failure("missing test mapping validation package refs", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "missing required property validation_package_refs")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
@@ -730,7 +740,7 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         (temp_repo / "product/src/test_unused.py").write_text("pass\n")
         mutate_json(
             temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/src/test_unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/src/test_unused.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "PRIMITIVE-001"}]}) or spec,
         )
         deactivate_product_plans(temp_repo)
         expect_failure("unused test mapping", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "unreachable test mappings")

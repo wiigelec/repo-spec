@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-GI-006",
+    "spec_id": "repo.governing-issue"
+  },
+  "tasks": [],
+  "validation_disposition": "not-applicable",
+  "validation_rationale": "Authorization timing for material scope changes is governed workflow behavior, not a repository-local executable conformance property."
+}

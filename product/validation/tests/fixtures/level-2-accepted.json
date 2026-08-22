@@ -59,8 +59,11 @@
         "paths": [
           "product/validation/tests/unit/test_foundations.py"
         ],
-        "requirements": [
-          "COMPONENT-001"
+        "validation_package_refs": [
+          {
+            "spec_id": "product.component",
+            "requirement_id": "COMPONENT-001"
+          }
         ]
       }
     ],

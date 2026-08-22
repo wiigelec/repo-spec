@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VC-007",
+    "spec_id": "repo.validation-correspondence"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

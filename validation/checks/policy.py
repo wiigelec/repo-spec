@@ -18,11 +18,13 @@ INITIALIZED_REQUIRED_DIRS = {".github", "product", "repo", "scripts", "user"}
 IGNORED_ROOT_ENTRIES = {".git"}
 
 
+# validation-metadata: {"role": "helper"}
 def _layout_expect(condition: bool, message: str) -> None:
     if not condition:
         raise RootValidationError(message)
 
 
+# validation-metadata: {"role": "helper"}
 def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, label: str) -> None:
     expected_top={"README.md","manifest.json","checks","core","runners","tests"}
     if require_github: expected_top.add("github")
@@ -61,6 +63,7 @@ class RootValidationError(RuntimeError):
     pass
 
 
+# validation-metadata: {"role": "helper"}
 def _git(repo_root: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     result = subprocess.run(
         ["git", *args],
@@ -75,10 +78,12 @@ def _git(repo_root: Path, *args: str, check: bool = True) -> subprocess.Complete
     return result
 
 
+# validation-metadata: {"role": "helper"}
 def _is_initialized(repo_root: Path) -> bool:
     return (repo_root / "repo" / "initializer" / "provenance.json").is_file()
 
 
+# validation-metadata: {"role": "task", "task_id": "root.validation.root-boundary", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-039"}}
 def validate_root_boundary(repo_root: Path, initialized: bool) -> None:
     required_files = INITIALIZED_REQUIRED_FILES if initialized else SOURCE_REQUIRED_FILES
     required_dirs = INITIALIZED_REQUIRED_DIRS if initialized else SOURCE_REQUIRED_DIRS
@@ -125,6 +130,7 @@ OUTPUT_INVENTORY_PATH = "product/specs/product/level-1/initializer-output-invent
 SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
+# validation-metadata: {"role": "helper"}
 def _git_bytes(
     repo_root: Path,
     *args: str,
@@ -146,6 +152,7 @@ def _git_bytes(
     return result
 
 
+# validation-metadata: {"role": "helper"}
 def _read_json_at_revision(
     repository: Path,
     revision: str,
@@ -177,6 +184,7 @@ def _read_json_at_revision(
     return value
 
 
+# validation-metadata: {"role": "helper"}
 def _parse_lineage_endpoint(entry: object, context: str) -> tuple[str, str]:
     if not isinstance(entry, dict) or set(entry) != {
         "framework_repository",
@@ -209,6 +217,7 @@ def _parse_lineage_endpoint(entry: object, context: str) -> tuple[str, str]:
         )
     return repository, object_id
 
+# validation-metadata: {"role": "helper"}
 def _read_framework_lineage(repo_root: Path) -> list[tuple[str, str]] | None:
     tree = _git(
         repo_root,
@@ -265,10 +274,12 @@ def _read_framework_lineage(repo_root: Path) -> list[tuple[str, str]] | None:
 
 AUTHORITY_ROOT = "repo/initializer/framework-authority"
 
+# validation-metadata: {"role": "helper"}
 def _canonical_git_object_id(object_type: str, content: bytes) -> str:
     header = f"{object_type} {len(content)}\0".encode("ascii")
     return hashlib.sha1(header + content).hexdigest()
 
+# validation-metadata: {"role": "helper"}
 def _parse_authority_tree(content: bytes) -> dict[str, tuple[str, str]]:
     result: dict[str, tuple[str, str]] = {}
     offset = 0
@@ -286,6 +297,7 @@ def _parse_authority_tree(content: bytes) -> dict[str, tuple[str, str]]:
         offset = nul + 21
     return result
 
+# validation-metadata: {"role": "helper"}
 def _authority_commit_tree(content: bytes) -> str:
     for line in content.splitlines():
         if line.startswith(b"tree "):
@@ -295,6 +307,7 @@ def _authority_commit_tree(content: bytes) -> str:
             break
     raise RootValidationError("repo tree integrity failed: retained framework commit has invalid tree identity")
 
+# validation-metadata: {"role": "helper"}
 def _decode_authority_object(oid: str, raw: bytes) -> tuple[str, bytes]:
     try:
         record = json.loads(raw.decode("utf-8"))
@@ -323,6 +336,7 @@ def _decode_authority_object(oid: str, raw: bytes) -> tuple[str, bytes]:
         )
     return object_type, content
 
+# validation-metadata: {"role": "helper"}
 def _authority_resolve_path(
     objects: dict[str, tuple[str, bytes]],
     commit_oid: str,
@@ -368,6 +382,7 @@ def _authority_resolve_path(
             return mode, obj[1], oid, visited
     raise RootValidationError("repo tree integrity failed: unreachable authority path")
 
+# validation-metadata: {"role": "helper"}
 def _read_committed_authority_bundle(
     repo_root: Path,
     framework_revision: str,
@@ -415,6 +430,7 @@ def _read_committed_authority_bundle(
 
     used: set[str] = set()
 
+    # validation-metadata: {"role": "helper"}
     def read(path: str) -> tuple[str, bytes, str]:
         mode, content, oid, visited = _authority_resolve_path(
             objects, framework_revision, path
@@ -534,6 +550,7 @@ def _read_committed_authority_bundle(
         "read": read,
     }
 
+# validation-metadata: {"role": "helper"}
 def _tree_entry(
     repository: Path,
     revision: str,
@@ -562,6 +579,7 @@ def _tree_entry(
     mode, object_type, _object_id, _path = fields
     return mode, object_type
 
+# validation-metadata: {"role": "helper"}
 def _verify_current_managed_repo_content_from_authority(
     repo_root: Path,
     bundle: dict,
@@ -588,6 +606,7 @@ def _verify_current_managed_repo_content_from_authority(
                 f"repo tree integrity failed: managed repo material does not match accepted framework authority: {destination}"
             )
 
+# validation-metadata: {"role": "task", "task_id": "root.validation.repository-tree-integrity", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-041"}}
 def validate_repo_tree_integrity(repo_root: Path) -> None:
     if not (repo_root / ".git").exists():
         raise RootValidationError(
@@ -715,6 +734,7 @@ def validate_repo_tree_integrity(repo_root: Path) -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def validate(repo_root: Path) -> bool:
     initialized = _is_initialized(repo_root)
     validate_root_boundary(repo_root, initialized)
@@ -726,6 +746,7 @@ def validate(repo_root: Path) -> bool:
     return initialized
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     if len(argv) > 2:
         print(f"validation error: unknown argument: {argv[2]}", file=sys.stderr)

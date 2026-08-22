@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-GI-002",
+    "spec_id": "repo.governing-issue"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Field existence, requiredness, and validation-kind structure are mechanically checkable, while field meaning remains normative semantic content requiring review for faithful interpretation."
+}

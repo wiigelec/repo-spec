@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-PM-005",
+    "spec_id": "repo.product-manifest"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

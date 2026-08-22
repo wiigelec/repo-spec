@@ -1,0 +1,26 @@
+{
+  "actual_repository_framework_materialization_count": 0,
+  "aggregate_product_completeness_enabled": false,
+  "artifact_type": "validation-correspondence-framework-materialization-nonapplicability",
+  "authority_category": "evidence",
+  "canonical_repository_package_count": 216,
+  "exact_canonical_package_copy_count": 0,
+  "excluded_descriptive_generated_spec_documents": [
+    "repo/derived/specs/repo/artifact-taxonomy.md",
+    "repo/derived/specs/repo/manifest.md",
+    "repo/derived/specs/repo/product-correspondence.md",
+    "repo/derived/specs/repo/repository-structure.md",
+    "repo/derived/specs/repo/validation-correspondence.md",
+    "repo/derived/specs/repo/validation.md"
+  ],
+  "finding": "No maintained repository/framework-owned propagated or materialized validation-correspondence package surface is present at the source revision. The listed generated Markdown files are deterministic projections of accepted repository specifications that describe correspondence semantics; they are not copies or projections of canonical validation package instances.",
+  "gate_g5_result": "No actual repository/framework-owned propagated/materialized correspondence surface exists, so no freshness/equivalence implementation is applicable. VCP-I5 does not create a projection or materialization.",
+  "governing_issue": 571,
+  "normative": false,
+  "product_handoff": "Product-specific propagation/materialization remains outside issue #571 and requires separately governed product-owned authority if later discovered.",
+  "product_mutation_authorized": false,
+  "product_owned_correspondence_surface_count": 0,
+  "repository_profile_correspondence_surface_count": 0,
+  "source_revision": "7a73592830fbc2d14f1398e15a7ebcacfaa7fa8f",
+  "workstream": "VCP-I5"
+}

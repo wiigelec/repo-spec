@@ -9,6 +9,7 @@ from typing import Any
 from validation.core.errors import expect, fail
 
 
+# validation-metadata: {"role": "helper"}
 def check_supersession_pairs(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
     for spec_id, spec in specs.items():
         for target_spec_id in spec.get("supersedes", []):
@@ -19,11 +20,13 @@ def check_supersession_pairs(specs: dict[str, dict[str, Any]], relation_label: s
             expect(spec_id in specs[target_spec_id].get("supersedes", []), f"{relation_label} failed: non-reciprocal superseded_by pair {spec_id} -> {target_spec_id}")
 
 
+# validation-metadata: {"role": "helper"}
 def check_supersession_acyclicity(specs: dict[str, dict[str, Any]], relation_label: str) -> None:
     graph = {spec_id: list(spec.get("supersedes", [])) for spec_id, spec in specs.items()}
     visiting: set[str] = set()
     visited: set[str] = set()
 
+    # validation-metadata: {"role": "helper"}
     def visit(node: str) -> None:
         if node in visited:
             return
@@ -40,6 +43,7 @@ def check_supersession_acyclicity(specs: dict[str, dict[str, Any]], relation_lab
         visit(node)
 
 
+# validation-metadata: {"role": "helper"}
 def check_unique_item_properties(specs: dict[str, dict[str, Any]], spec_id: str, field: str, keys: list[str]) -> None:
     seen: set[tuple[Any, ...]] = set()
     for index, item in enumerate(specs[spec_id][field]):

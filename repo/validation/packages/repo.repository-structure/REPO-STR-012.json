@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-STR-012",
+    "spec_id": "repo.repository-structure"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "The user/ namespace boundary and location rules are mechanically enforceable, while the rule that archived/convenience material remains non-normative and cannot satisfy authority obligations is semantic in effect."
+}

@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-012",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "check_lineage_relations_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.lineage-relations"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

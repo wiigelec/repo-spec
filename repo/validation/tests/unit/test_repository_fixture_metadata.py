@@ -13,6 +13,7 @@ SYNTHETIC_DEP = "repo/docs/plans/synthetic-dependency.md"
 SYNTHETIC_CHUNK = "repo/docs/plans/synthetic-chunk.md"
 
 
+# validation-metadata: {"role": "helper"}
 def _expect_validation_failure(label: str, action, fragment: str) -> None:
     try:
         action()
@@ -23,6 +24,7 @@ def _expect_validation_failure(label: str, action, fragment: str) -> None:
     raise AssertionError(f"{label}: expected ValidationFailure")
 
 
+# validation-metadata: {"role": "helper"}
 def _synthetic_document(*, malformed: bool = False, earlier_json: bool = False) -> str:
     prefix = ""
     if earlier_json:
@@ -74,6 +76,7 @@ def _synthetic_document(*, malformed: bool = False, earlier_json: bool = False) 
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _install_synthetic_document(repo_root: Path, text: str) -> None:
     doc_path = repo_root / SYNTHETIC_DOC
     doc_path.parent.mkdir(parents=True, exist_ok=True)
@@ -82,6 +85,7 @@ def _install_synthetic_document(repo_root: Path, text: str) -> None:
     (repo_root / SYNTHETIC_CHUNK).write_text("synthetic chunk\n")
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_fixture_metadata_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-repo-fixture-meta-") as temp_root_name:
         temp_root = Path(temp_root_name)

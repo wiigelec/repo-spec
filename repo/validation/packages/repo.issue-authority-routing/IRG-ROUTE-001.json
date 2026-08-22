@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "IRG-ROUTE-001",
+    "spec_id": "repo.issue-authority-routing"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

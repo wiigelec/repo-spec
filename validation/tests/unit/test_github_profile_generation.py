@@ -9,6 +9,7 @@ from mutation_support import create_repo_fixture
 
 
 
+# validation-metadata: {"role": "helper"}
 def expect_profile_failure(description: str, func, fragment: str) -> None:
     try:
         func()
@@ -22,6 +23,7 @@ def expect_profile_failure(description: str, func, fragment: str) -> None:
             f"github profile mutation test failed: {description} did not fail"
         )
 
+# validation-metadata: {"role": "helper"}
 def snapshot_profile_files(repo_root: Path) -> dict[str, str]:
     return {
         path.relative_to(repo_root).as_posix(): path.read_text()
@@ -34,6 +36,7 @@ def snapshot_profile_files(repo_root: Path) -> dict[str, str]:
     }
 
 
+# validation-metadata: {"role": "helper"}
 def run_github_profile_generation_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -61,6 +64,7 @@ def run_github_profile_generation_tests(repo_root: Path) -> None:
     print("ok: github profile generation tests")
 
 
+# validation-metadata: {"role": "helper"}
 def run_github_profile_mutation_tests(repo_root: Path) -> None:
     with tempfile.TemporaryDirectory(prefix="repo-spec-validation-") as temp_root_name:
         temp_root = Path(temp_root_name)
@@ -114,10 +118,12 @@ import unittest
 
 
 class GitHubProfileTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_profile_generation(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
         run_github_profile_generation_tests(repo_root)
 
+    # validation-metadata: {"role": "helper"}
     def test_profile_mutations(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
         run_github_profile_mutation_tests(repo_root)

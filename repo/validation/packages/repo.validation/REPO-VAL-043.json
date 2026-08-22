@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-043",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "check_validation_correspondence_integrity_phase",
+      "source": "repo/validation/checks/specifications.py",
+      "task_id": "repo.validation.validation-correspondence-integrity"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

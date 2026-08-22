@@ -14,6 +14,7 @@ from validation.checks.domain import validate_product_phases
 from ..self.mutation_support import add_lifecycle_spec, create_repo_fixture, declared_repo_fixture_paths, expect_failure, mutate_json
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_development_document_tests(repo_root: Path) -> None:
     repository_validation_spec = json.loads(
         (repo_root / "repo/specs/repo/validation.json").read_text()
@@ -453,6 +454,7 @@ def run_product_development_document_tests(repo_root: Path) -> None:
 
     print("ok: product development document tests")
 
+# validation-metadata: {"role": "helper"}
 def run_product_root_tests(repo_root: Path) -> None:
     repository_validation_spec = json.loads(
         (repo_root / "repo/specs/repo/validation.json").read_text()

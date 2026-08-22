@@ -29,6 +29,7 @@ B = "2" * 40
 C = "3" * 40
 
 
+# validation-metadata: {"role": "helper"}
 def entry(repo: str, oid: str) -> FrameworkLineageEntry:
     return FrameworkLineageEntry(
         framework_repository=repo,
@@ -36,6 +37,7 @@ def entry(repo: str, oid: str) -> FrameworkLineageEntry:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def make_resolution(
     target_repo: str,
     accepted: tuple[FrameworkLineageEntry, ...],
@@ -62,6 +64,7 @@ def make_resolution(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def make_stage(root: Path, *, conflict: bool = False) -> StagedManagedReconciliation:
     repo = root / "repository"
     transaction = root / "transaction"
@@ -78,8 +81,10 @@ def make_stage(root: Path, *, conflict: bool = False) -> StagedManagedReconcilia
         repository_content_digest="f" * 64,
     )
 
+# validation-metadata: {"role": "helper"}
 @contextmanager
 def stub_authority_materialization():
+    # validation-metadata: {"role": "helper"}
     def build(_repository: str, _revision: str, bundle_dir: Path) -> None:
         bundle_dir.mkdir(parents=True, exist_ok=True)
 
@@ -97,6 +102,7 @@ def stub_authority_materialization():
 
 
 class UP3FrameworkReanchoringTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_first_reconciliation_materializes_final_form_prospective_lineage(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -128,6 +134,7 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
                 serialize_reanchoring_evidence(result).decode("utf-8"),
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_subsequent_reconciliation_preserves_all_accepted_history_in_order(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -155,6 +162,7 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
             self.assertEqual(parsed, accepted + (entry(str(source), C),))
             self.assertEqual(result.prior_accepted_entries, accepted)
 
+    # validation-metadata: {"role": "helper"}
     def test_reanchoring_refuses_conflicted_up2_state(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -169,6 +177,7 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
             with self.assertRaises(FrameworkReanchoringError):
                 reanchor_staged_repository(resolution, stage)
 
+    # validation-metadata: {"role": "helper"}
     def test_reanchoring_fails_closed_on_target_identity_mismatch(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -187,6 +196,7 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
             with self.assertRaises(FrameworkReanchoringError):
                 reanchor_staged_repository(resolution, stage)
 
+    # validation-metadata: {"role": "helper"}
     def test_existing_staged_lineage_must_equal_resolved_accepted_history(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -209,6 +219,7 @@ class UP3FrameworkReanchoringTests(unittest.TestCase):
             with self.assertRaises(FrameworkReanchoringError):
                 reanchor_staged_repository(resolution, stage)
 
+    # validation-metadata: {"role": "helper"}
     def test_equivalent_reanchoring_evidence_is_deterministic_across_staging_roots(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

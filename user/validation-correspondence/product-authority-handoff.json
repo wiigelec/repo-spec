@@ -1,0 +1,1974 @@
+{
+  "artifact_type": "validation-correspondence-product-authority-handoff",
+  "authority_category": "evidence",
+  "governing_issue": "#571",
+  "normative": false,
+  "obligation_count": 392,
+  "obligations": [
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-001.json",
+      "requirement_id": "INIT-EQV-001",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-002.json",
+      "requirement_id": "INIT-EQV-002",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-003.json",
+      "requirement_id": "INIT-EQV-003",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-004.json",
+      "requirement_id": "INIT-EQV-004",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-005.json",
+      "requirement_id": "INIT-EQV-005",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-006.json",
+      "requirement_id": "INIT-EQV-006",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-007.json",
+      "requirement_id": "INIT-EQV-007",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-008.json",
+      "requirement_id": "INIT-EQV-008",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-009.json",
+      "requirement_id": "INIT-EQV-009",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-010.json",
+      "requirement_id": "INIT-EQV-010",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-011.json",
+      "requirement_id": "INIT-EQV-011",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-012.json",
+      "requirement_id": "INIT-EQV-012",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-013.json",
+      "requirement_id": "INIT-EQV-013",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-014.json",
+      "requirement_id": "INIT-EQV-014",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.content-equivalence/INIT-EQV-015.json",
+      "requirement_id": "INIT-EQV-015",
+      "spec_id": "product.content-equivalence"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-001.json",
+      "requirement_id": "UPG-FULL-001",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-002.json",
+      "requirement_id": "UPG-FULL-002",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-003.json",
+      "requirement_id": "UPG-FULL-003",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-004.json",
+      "requirement_id": "UPG-FULL-004",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-005.json",
+      "requirement_id": "UPG-FULL-005",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-006.json",
+      "requirement_id": "UPG-FULL-006",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-007.json",
+      "requirement_id": "UPG-FULL-007",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-008.json",
+      "requirement_id": "UPG-FULL-008",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-009.json",
+      "requirement_id": "UPG-FULL-009",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-010.json",
+      "requirement_id": "UPG-FULL-010",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.derived-repository-upgrade/UPG-FULL-011.json",
+      "requirement_id": "UPG-FULL-011",
+      "spec_id": "product.derived-repository-upgrade"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.destination/INIT-DST-001.json",
+      "requirement_id": "INIT-DST-001",
+      "spec_id": "product.destination"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.destination/INIT-DST-002.json",
+      "requirement_id": "INIT-DST-002",
+      "spec_id": "product.destination"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.destination/INIT-DST-003.json",
+      "requirement_id": "INIT-DST-003",
+      "spec_id": "product.destination"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.destination-preflight/INIT-DPF-001.json",
+      "requirement_id": "INIT-DPF-001",
+      "spec_id": "product.destination-preflight"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.destination-preflight/INIT-DPF-002.json",
+      "requirement_id": "INIT-DPF-002",
+      "spec_id": "product.destination-preflight"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-001.json",
+      "requirement_id": "INIT-ERC-001",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-002.json",
+      "requirement_id": "INIT-ERC-002",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-003.json",
+      "requirement_id": "INIT-ERC-003",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-004.json",
+      "requirement_id": "INIT-ERC-004",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-005.json",
+      "requirement_id": "INIT-ERC-005",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-006.json",
+      "requirement_id": "INIT-ERC-006",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-007.json",
+      "requirement_id": "INIT-ERC-007",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-008.json",
+      "requirement_id": "INIT-ERC-008",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.executable-reference-closure/INIT-ERC-009.json",
+      "requirement_id": "INIT-ERC-009",
+      "spec_id": "product.executable-reference-closure"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-orchestration/INIT-EOR-001.json",
+      "requirement_id": "INIT-EOR-001",
+      "spec_id": "product.execution-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-orchestration/INIT-EOR-002.json",
+      "requirement_id": "INIT-EOR-002",
+      "spec_id": "product.execution-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-profile/INIT-PRF-001.json",
+      "requirement_id": "INIT-PRF-001",
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-profile/INIT-PRF-002.json",
+      "requirement_id": "INIT-PRF-002",
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-profile/INIT-PRF-003.json",
+      "requirement_id": "INIT-PRF-003",
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-profile/INIT-PRF-004.json",
+      "requirement_id": "INIT-PRF-004",
+      "spec_id": "product.execution-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-001.json",
+      "requirement_id": "INIT-RPT-001",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-002.json",
+      "requirement_id": "INIT-RPT-002",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-003.json",
+      "requirement_id": "INIT-RPT-003",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-004.json",
+      "requirement_id": "INIT-RPT-004",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-004a.json",
+      "requirement_id": "INIT-RPT-004a",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-004b.json",
+      "requirement_id": "INIT-RPT-004b",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-005.json",
+      "requirement_id": "INIT-RPT-005",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-006.json",
+      "requirement_id": "INIT-RPT-006",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-007.json",
+      "requirement_id": "INIT-RPT-007",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-008.json",
+      "requirement_id": "INIT-RPT-008",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-009.json",
+      "requirement_id": "INIT-RPT-009",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-010.json",
+      "requirement_id": "INIT-RPT-010",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-011.json",
+      "requirement_id": "INIT-RPT-011",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.execution-report/INIT-RPT-012.json",
+      "requirement_id": "INIT-RPT-012",
+      "spec_id": "product.execution-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-001.json",
+      "requirement_id": "INIT-FSD-001",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-002.json",
+      "requirement_id": "INIT-FSD-002",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-003.json",
+      "requirement_id": "INIT-FSD-003",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-004.json",
+      "requirement_id": "INIT-FSD-004",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-005.json",
+      "requirement_id": "INIT-FSD-005",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-006.json",
+      "requirement_id": "INIT-FSD-006",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.foundation-seeding/INIT-FSD-007.json",
+      "requirement_id": "INIT-FSD-007",
+      "spec_id": "product.foundation-seeding"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-001.json",
+      "requirement_id": "INIT-FIN-001",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-002.json",
+      "requirement_id": "INIT-FIN-002",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-003.json",
+      "requirement_id": "INIT-FIN-003",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-004.json",
+      "requirement_id": "INIT-FIN-004",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-005.json",
+      "requirement_id": "INIT-FIN-005",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-006.json",
+      "requirement_id": "INIT-FIN-006",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-007.json",
+      "requirement_id": "INIT-FIN-007",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-008.json",
+      "requirement_id": "INIT-FIN-008",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-installation/INIT-FIN-009.json",
+      "requirement_id": "INIT-FIN-009",
+      "spec_id": "product.framework-installation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-001.json",
+      "requirement_id": "UPG-ANC-001",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-002.json",
+      "requirement_id": "UPG-ANC-002",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-003.json",
+      "requirement_id": "UPG-ANC-003",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-004.json",
+      "requirement_id": "UPG-ANC-004",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-005.json",
+      "requirement_id": "UPG-ANC-005",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-006.json",
+      "requirement_id": "UPG-ANC-006",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reanchoring/UPG-ANC-007.json",
+      "requirement_id": "UPG-ANC-007",
+      "spec_id": "product.framework-reanchoring"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-001.json",
+      "requirement_id": "UPG-LIN-001",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-002.json",
+      "requirement_id": "UPG-LIN-002",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-003.json",
+      "requirement_id": "UPG-LIN-003",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-004.json",
+      "requirement_id": "UPG-LIN-004",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-005.json",
+      "requirement_id": "UPG-LIN-005",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-006.json",
+      "requirement_id": "UPG-LIN-006",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-007.json",
+      "requirement_id": "UPG-LIN-007",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-008.json",
+      "requirement_id": "UPG-LIN-008",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.framework-reconciliation-lineage/UPG-LIN-009.json",
+      "requirement_id": "UPG-LIN-009",
+      "spec_id": "product.framework-reconciliation-lineage"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-001.json",
+      "requirement_id": "INIT-FIN-001",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-002.json",
+      "requirement_id": "INIT-FIN-002",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-003.json",
+      "requirement_id": "INIT-FIN-003",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-004.json",
+      "requirement_id": "INIT-FIN-004",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-005.json",
+      "requirement_id": "INIT-FIN-005",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-006.json",
+      "requirement_id": "INIT-FIN-006",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-007.json",
+      "requirement_id": "INIT-FIN-007",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-008.json",
+      "requirement_id": "INIT-FIN-008",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-009.json",
+      "requirement_id": "INIT-FIN-009",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-010.json",
+      "requirement_id": "INIT-FIN-010",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-011.json",
+      "requirement_id": "INIT-FIN-011",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-012.json",
+      "requirement_id": "INIT-FIN-012",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.full-initialization/INIT-FIN-013.json",
+      "requirement_id": "INIT-FIN-013",
+      "spec_id": "product.full-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-001.json",
+      "requirement_id": "INIT-GRL-001",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-002.json",
+      "requirement_id": "INIT-GRL-002",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-003.json",
+      "requirement_id": "INIT-GRL-003",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-004.json",
+      "requirement_id": "INIT-GRL-004",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-005.json",
+      "requirement_id": "INIT-GRL-005",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-006.json",
+      "requirement_id": "INIT-GRL-006",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-007.json",
+      "requirement_id": "INIT-GRL-007",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-008.json",
+      "requirement_id": "INIT-GRL-008",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-009.json",
+      "requirement_id": "INIT-GRL-009",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-010.json",
+      "requirement_id": "INIT-GRL-010",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-011.json",
+      "requirement_id": "INIT-GRL-011",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.generated-repository/INIT-GRL-012.json",
+      "requirement_id": "INIT-GRL-012",
+      "spec_id": "product.generated-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-bootstrap-profile/INIT-BPF-001.json",
+      "requirement_id": "INIT-BPF-001",
+      "spec_id": "product.git-bootstrap-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-bootstrap-profile/INIT-BPF-002.json",
+      "requirement_id": "INIT-BPF-002",
+      "spec_id": "product.git-bootstrap-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-bootstrap-profile/INIT-BPF-003.json",
+      "requirement_id": "INIT-BPF-003",
+      "spec_id": "product.git-bootstrap-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-bootstrap-profile/INIT-BPF-004.json",
+      "requirement_id": "INIT-BPF-004",
+      "spec_id": "product.git-bootstrap-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-bootstrap-profile/INIT-BPF-005.json",
+      "requirement_id": "INIT-BPF-005",
+      "spec_id": "product.git-bootstrap-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-001.json",
+      "requirement_id": "INIT-OID-001",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-002.json",
+      "requirement_id": "INIT-OID-002",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-003.json",
+      "requirement_id": "INIT-OID-003",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-004.json",
+      "requirement_id": "INIT-OID-004",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-005.json",
+      "requirement_id": "INIT-OID-005",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-006.json",
+      "requirement_id": "INIT-OID-006",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-007.json",
+      "requirement_id": "INIT-OID-007",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-008.json",
+      "requirement_id": "INIT-OID-008",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-009.json",
+      "requirement_id": "INIT-OID-009",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.git-object-identity/INIT-OID-010.json",
+      "requirement_id": "INIT-OID-010",
+      "spec_id": "product.git-object-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-assembly/INIT-HAS-001.json",
+      "requirement_id": "INIT-HAS-001",
+      "spec_id": "product.handoff-assembly"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-001.json",
+      "requirement_id": "INIT-HND-001",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-002.json",
+      "requirement_id": "INIT-HND-002",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-003.json",
+      "requirement_id": "INIT-HND-003",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-004.json",
+      "requirement_id": "INIT-HND-004",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-005.json",
+      "requirement_id": "INIT-HND-005",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-006.json",
+      "requirement_id": "INIT-HND-006",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-007.json",
+      "requirement_id": "INIT-HND-007",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-008.json",
+      "requirement_id": "INIT-HND-008",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-009.json",
+      "requirement_id": "INIT-HND-009",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.handoff-manifest/INIT-HND-010.json",
+      "requirement_id": "INIT-HND-010",
+      "spec_id": "product.handoff-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-001.json",
+      "requirement_id": "INIT-REQ-001",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-002.json",
+      "requirement_id": "INIT-REQ-002",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-003.json",
+      "requirement_id": "INIT-REQ-003",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-004.json",
+      "requirement_id": "INIT-REQ-004",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-005.json",
+      "requirement_id": "INIT-REQ-005",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-006.json",
+      "requirement_id": "INIT-REQ-006",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-007.json",
+      "requirement_id": "INIT-REQ-007",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-008.json",
+      "requirement_id": "INIT-REQ-008",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-009.json",
+      "requirement_id": "INIT-REQ-009",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initialization-request/INIT-REQ-010.json",
+      "requirement_id": "INIT-REQ-010",
+      "spec_id": "product.initialization-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-001.json",
+      "requirement_id": "INIT-L0-001",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-002.json",
+      "requirement_id": "INIT-L0-002",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-003.json",
+      "requirement_id": "INIT-L0-003",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-004.json",
+      "requirement_id": "INIT-L0-004",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-005.json",
+      "requirement_id": "INIT-L0-005",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-006.json",
+      "requirement_id": "INIT-L0-006",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-007.json",
+      "requirement_id": "INIT-L0-007",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-008.json",
+      "requirement_id": "INIT-L0-008",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-009.json",
+      "requirement_id": "INIT-L0-009",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-level-0/INIT-L0-010.json",
+      "requirement_id": "INIT-L0-010",
+      "spec_id": "product.initializer-level-0"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-001.json",
+      "requirement_id": "INV-V1-001",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-002.json",
+      "requirement_id": "INV-V1-002",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-003.json",
+      "requirement_id": "INV-V1-003",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-004.json",
+      "requirement_id": "INV-V1-004",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-005.json",
+      "requirement_id": "INV-V1-005",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-006.json",
+      "requirement_id": "INV-V1-006",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-007.json",
+      "requirement_id": "INV-V1-007",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-008.json",
+      "requirement_id": "INV-V1-008",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-009.json",
+      "requirement_id": "INV-V1-009",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-010.json",
+      "requirement_id": "INV-V1-010",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-011.json",
+      "requirement_id": "INV-V1-011",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-012.json",
+      "requirement_id": "INV-V1-012",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-013.json",
+      "requirement_id": "INV-V1-013",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-014.json",
+      "requirement_id": "INV-V1-014",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.initializer-output-inventory-v1/INV-V1-015.json",
+      "requirement_id": "INV-V1-015",
+      "spec_id": "product.initializer-output-inventory-v1"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-001.json",
+      "requirement_id": "INIT-ICR-001",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-002.json",
+      "requirement_id": "INIT-ICR-002",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-003.json",
+      "requirement_id": "INIT-ICR-003",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-004.json",
+      "requirement_id": "INIT-ICR-004",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-005.json",
+      "requirement_id": "INIT-ICR-005",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-006.json",
+      "requirement_id": "INIT-ICR-006",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-007.json",
+      "requirement_id": "INIT-ICR-007",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.installed-command-requirement/INIT-ICR-008.json",
+      "requirement_id": "INIT-ICR-008",
+      "spec_id": "product.installed-command-requirement"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-001.json",
+      "requirement_id": "INIT-LCS-001",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-002.json",
+      "requirement_id": "INIT-LCS-002",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-003.json",
+      "requirement_id": "INIT-LCS-003",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-004.json",
+      "requirement_id": "INIT-LCS-004",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-005.json",
+      "requirement_id": "INIT-LCS-005",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-006.json",
+      "requirement_id": "INIT-LCS-006",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-007.json",
+      "requirement_id": "INIT-LCS-007",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-008.json",
+      "requirement_id": "INIT-LCS-008",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-009.json",
+      "requirement_id": "INIT-LCS-009",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-010.json",
+      "requirement_id": "INIT-LCS-010",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-011.json",
+      "requirement_id": "INIT-LCS-011",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.lifecycle-stages/INIT-LCS-012.json",
+      "requirement_id": "INIT-LCS-012",
+      "spec_id": "product.lifecycle-stages"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-initialization/INIT-LGI-001.json",
+      "requirement_id": "INIT-LGI-001",
+      "spec_id": "product.local-git-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-initialization/INIT-LGI-002.json",
+      "requirement_id": "INIT-LGI-002",
+      "spec_id": "product.local-git-initialization"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-repository/INIT-GIT-001.json",
+      "requirement_id": "INIT-GIT-001",
+      "spec_id": "product.local-git-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-repository/INIT-GIT-002.json",
+      "requirement_id": "INIT-GIT-002",
+      "spec_id": "product.local-git-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-repository/INIT-GIT-003.json",
+      "requirement_id": "INIT-GIT-003",
+      "spec_id": "product.local-git-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-repository/INIT-GIT-004.json",
+      "requirement_id": "INIT-GIT-004",
+      "spec_id": "product.local-git-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.local-git-repository/INIT-GIT-005.json",
+      "requirement_id": "INIT-GIT-005",
+      "spec_id": "product.local-git-repository"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-001.json",
+      "requirement_id": "UPG-DLT-001",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-002.json",
+      "requirement_id": "UPG-DLT-002",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-003.json",
+      "requirement_id": "UPG-DLT-003",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-004.json",
+      "requirement_id": "UPG-DLT-004",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-005.json",
+      "requirement_id": "UPG-DLT-005",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-006.json",
+      "requirement_id": "UPG-DLT-006",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.managed-material-delta/UPG-DLT-007.json",
+      "requirement_id": "UPG-DLT-007",
+      "spec_id": "product.managed-material-delta"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-classification/INIT-MAT-001.json",
+      "requirement_id": "INIT-MAT-001",
+      "spec_id": "product.material-classification"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-classification/INIT-MAT-002.json",
+      "requirement_id": "INIT-MAT-002",
+      "spec_id": "product.material-classification"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-classification/INIT-MAT-003.json",
+      "requirement_id": "INIT-MAT-003",
+      "spec_id": "product.material-classification"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-001.json",
+      "requirement_id": "INIT-MMF-001",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-002.json",
+      "requirement_id": "INIT-MMF-002",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-003.json",
+      "requirement_id": "INIT-MMF-003",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-004.json",
+      "requirement_id": "INIT-MMF-004",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-005.json",
+      "requirement_id": "INIT-MMF-005",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-006.json",
+      "requirement_id": "INIT-MMF-006",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-007.json",
+      "requirement_id": "INIT-MMF-007",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-008.json",
+      "requirement_id": "INIT-MMF-008",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-009.json",
+      "requirement_id": "INIT-MMF-009",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-010.json",
+      "requirement_id": "INIT-MMF-010",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.material-manifest/INIT-MMF-011.json",
+      "requirement_id": "INIT-MMF-011",
+      "spec_id": "product.material-manifest"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-001.json",
+      "requirement_id": "INIT-PID-001",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-002.json",
+      "requirement_id": "INIT-PID-002",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-003.json",
+      "requirement_id": "INIT-PID-003",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-004.json",
+      "requirement_id": "INIT-PID-004",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-005.json",
+      "requirement_id": "INIT-PID-005",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-006.json",
+      "requirement_id": "INIT-PID-006",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-identity/INIT-PID-007.json",
+      "requirement_id": "INIT-PID-007",
+      "spec_id": "product.product-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-001.json",
+      "requirement_id": "INIT-PTA-001",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-002.json",
+      "requirement_id": "INIT-PTA-002",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-003.json",
+      "requirement_id": "INIT-PTA-003",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-004.json",
+      "requirement_id": "INIT-PTA-004",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-005.json",
+      "requirement_id": "INIT-PTA-005",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-006.json",
+      "requirement_id": "INIT-PTA-006",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-007.json",
+      "requirement_id": "INIT-PTA-007",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-008.json",
+      "requirement_id": "INIT-PTA-008",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-applicability/INIT-PTA-009.json",
+      "requirement_id": "INIT-PTA-009",
+      "spec_id": "product.product-test-applicability"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-001.json",
+      "requirement_id": "INIT-PTL-001",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-002.json",
+      "requirement_id": "INIT-PTL-002",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-003.json",
+      "requirement_id": "INIT-PTL-003",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-004.json",
+      "requirement_id": "INIT-PTL-004",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-005.json",
+      "requirement_id": "INIT-PTL-005",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-006.json",
+      "requirement_id": "INIT-PTL-006",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-007.json",
+      "requirement_id": "INIT-PTL-007",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-008.json",
+      "requirement_id": "INIT-PTL-008",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-009.json",
+      "requirement_id": "INIT-PTL-009",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.product-test-lifecycle/INIT-PTL-010.json",
+      "requirement_id": "INIT-PTL-010",
+      "spec_id": "product.product-test-lifecycle"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-001.json",
+      "requirement_id": "INIT-PRO-001",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-002.json",
+      "requirement_id": "INIT-PRO-002",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-003.json",
+      "requirement_id": "INIT-PRO-003",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-004.json",
+      "requirement_id": "INIT-PRO-004",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-005.json",
+      "requirement_id": "INIT-PRO-005",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-006.json",
+      "requirement_id": "INIT-PRO-006",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-007.json",
+      "requirement_id": "INIT-PRO-007",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-record/INIT-PRO-008.json",
+      "requirement_id": "INIT-PRO-008",
+      "spec_id": "product.provenance-record"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-recording/INIT-PRC-001.json",
+      "requirement_id": "INIT-PRC-001",
+      "spec_id": "product.provenance-recording"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.provenance-recording/INIT-PRC-002.json",
+      "requirement_id": "INIT-PRC-002",
+      "spec_id": "product.provenance-recording"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-001.json",
+      "requirement_id": "UPG-VAP-001",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-002.json",
+      "requirement_id": "UPG-VAP-002",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-003.json",
+      "requirement_id": "UPG-VAP-003",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-004.json",
+      "requirement_id": "UPG-VAP-004",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-005.json",
+      "requirement_id": "UPG-VAP-005",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-006.json",
+      "requirement_id": "UPG-VAP-006",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-007.json",
+      "requirement_id": "UPG-VAP-007",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-008.json",
+      "requirement_id": "UPG-VAP-008",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.reconciliation-validation-promotion/UPG-VAP-009.json",
+      "requirement_id": "UPG-VAP-009",
+      "spec_id": "product.reconciliation-validation-promotion"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.repository-validation/INIT-RVA-001.json",
+      "requirement_id": "INIT-RVA-001",
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.repository-validation/INIT-RVA-002.json",
+      "requirement_id": "INIT-RVA-002",
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.repository-validation/INIT-RVA-003.json",
+      "requirement_id": "INIT-RVA-003",
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.repository-validation/INIT-RVA-004.json",
+      "requirement_id": "INIT-RVA-004",
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.repository-validation/INIT-RVA-005.json",
+      "requirement_id": "INIT-RVA-005",
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.repository-validation/INIT-RVA-006.json",
+      "requirement_id": "INIT-RVA-006",
+      "spec_id": "product.repository-validation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.request-intake/INIT-INT-001.json",
+      "requirement_id": "INIT-INT-001",
+      "spec_id": "product.request-intake"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.request-intake/INIT-INT-002.json",
+      "requirement_id": "INIT-INT-002",
+      "spec_id": "product.request-intake"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.request-intake/INIT-INT-003.json",
+      "requirement_id": "INIT-INT-003",
+      "spec_id": "product.request-intake"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-material-resolution/INIT-SMR-001.json",
+      "requirement_id": "INIT-SMR-001",
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-material-resolution/INIT-SMR-002.json",
+      "requirement_id": "INIT-SMR-002",
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-material-resolution/INIT-SMR-003.json",
+      "requirement_id": "INIT-SMR-003",
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-material-resolution/INIT-SMR-004.json",
+      "requirement_id": "INIT-SMR-004",
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-material-resolution/INIT-SMR-005.json",
+      "requirement_id": "INIT-SMR-005",
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-material-resolution/INIT-SMR-006.json",
+      "requirement_id": "INIT-SMR-006",
+      "spec_id": "product.source-material-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-001.json",
+      "requirement_id": "INIT-SRC-001",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-002.json",
+      "requirement_id": "INIT-SRC-002",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-003.json",
+      "requirement_id": "INIT-SRC-003",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-004.json",
+      "requirement_id": "INIT-SRC-004",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-005.json",
+      "requirement_id": "INIT-SRC-005",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-006.json",
+      "requirement_id": "INIT-SRC-006",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-007.json",
+      "requirement_id": "INIT-SRC-007",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.source-revision-identity/INIT-SRC-008.json",
+      "requirement_id": "INIT-SRC-008",
+      "spec_id": "product.source-revision-identity"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-001.json",
+      "requirement_id": "UPG-SMR-001",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-002.json",
+      "requirement_id": "UPG-SMR-002",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-003.json",
+      "requirement_id": "UPG-SMR-003",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-004.json",
+      "requirement_id": "UPG-SMR-004",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-005.json",
+      "requirement_id": "UPG-SMR-005",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-006.json",
+      "requirement_id": "UPG-SMR-006",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staged-managed-reconciliation/UPG-SMR-007.json",
+      "requirement_id": "UPG-SMR-007",
+      "spec_id": "product.staged-managed-reconciliation"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-001.json",
+      "requirement_id": "INIT-STA-001",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-002.json",
+      "requirement_id": "INIT-STA-002",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-003.json",
+      "requirement_id": "INIT-STA-003",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-004.json",
+      "requirement_id": "INIT-STA-004",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-005.json",
+      "requirement_id": "INIT-STA-005",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-006.json",
+      "requirement_id": "INIT-STA-006",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-007.json",
+      "requirement_id": "INIT-STA-007",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-008.json",
+      "requirement_id": "INIT-STA-008",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-009.json",
+      "requirement_id": "INIT-STA-009",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-010.json",
+      "requirement_id": "INIT-STA-010",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-011.json",
+      "requirement_id": "INIT-STA-011",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-012.json",
+      "requirement_id": "INIT-STA-012",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-state/INIT-STA-013.json",
+      "requirement_id": "INIT-STA-013",
+      "spec_id": "product.staging-state"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-workspace/INIT-STG-001.json",
+      "requirement_id": "INIT-STG-001",
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-workspace/INIT-STG-002.json",
+      "requirement_id": "INIT-STG-002",
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-workspace/INIT-STG-003.json",
+      "requirement_id": "INIT-STG-003",
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-workspace/INIT-STG-004.json",
+      "requirement_id": "INIT-STG-004",
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.staging-workspace/INIT-STG-005.json",
+      "requirement_id": "INIT-STG-005",
+      "spec_id": "product.staging-workspace"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-001.json",
+      "requirement_id": "INIT-TST-001",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-002.json",
+      "requirement_id": "INIT-TST-002",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-003.json",
+      "requirement_id": "INIT-TST-003",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-004.json",
+      "requirement_id": "INIT-TST-004",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-005.json",
+      "requirement_id": "INIT-TST-005",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-006.json",
+      "requirement_id": "INIT-TST-006",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transactional-staging/INIT-TST-007.json",
+      "requirement_id": "INIT-TST-007",
+      "spec_id": "product.transactional-staging"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-001.json",
+      "requirement_id": "UPG-TFA-001",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-002.json",
+      "requirement_id": "UPG-TFA-002",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-003.json",
+      "requirement_id": "UPG-TFA-003",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-004.json",
+      "requirement_id": "UPG-TFA-004",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-005.json",
+      "requirement_id": "UPG-TFA-005",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-006.json",
+      "requirement_id": "UPG-TFA-006",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-007.json",
+      "requirement_id": "UPG-TFA-007",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-008.json",
+      "requirement_id": "UPG-TFA-008",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-009.json",
+      "requirement_id": "UPG-TFA-009",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.transportable-framework-authority/UPG-TFA-010.json",
+      "requirement_id": "UPG-TFA-010",
+      "spec_id": "product.transportable-framework-authority"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-request/UPG-REQ-001.json",
+      "requirement_id": "UPG-REQ-001",
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-request/UPG-REQ-002.json",
+      "requirement_id": "UPG-REQ-002",
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-request/UPG-REQ-003.json",
+      "requirement_id": "UPG-REQ-003",
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-request/UPG-REQ-004.json",
+      "requirement_id": "UPG-REQ-004",
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-request/UPG-REQ-005.json",
+      "requirement_id": "UPG-REQ-005",
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-request/UPG-REQ-006.json",
+      "requirement_id": "UPG-REQ-006",
+      "spec_id": "product.upgrade-request"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-001.json",
+      "requirement_id": "UPG-SET-001",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-002.json",
+      "requirement_id": "UPG-SET-002",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-003.json",
+      "requirement_id": "UPG-SET-003",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-004.json",
+      "requirement_id": "UPG-SET-004",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-005.json",
+      "requirement_id": "UPG-SET-005",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-006.json",
+      "requirement_id": "UPG-SET-006",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.upgrade-set-resolution/UPG-SET-007.json",
+      "requirement_id": "UPG-SET-007",
+      "spec_id": "product.upgrade-set-resolution"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-001.json",
+      "requirement_id": "INIT-VP-001",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-002.json",
+      "requirement_id": "INIT-VP-002",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-003.json",
+      "requirement_id": "INIT-VP-003",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-004.json",
+      "requirement_id": "INIT-VP-004",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-005.json",
+      "requirement_id": "INIT-VP-005",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-006.json",
+      "requirement_id": "INIT-VP-006",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-profile/INIT-VP-007.json",
+      "requirement_id": "INIT-VP-007",
+      "spec_id": "product.validation-profile"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-001.json",
+      "requirement_id": "INIT-VR-001",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-002.json",
+      "requirement_id": "INIT-VR-002",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-003.json",
+      "requirement_id": "INIT-VR-003",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-004.json",
+      "requirement_id": "INIT-VR-004",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-005.json",
+      "requirement_id": "INIT-VR-005",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-006.json",
+      "requirement_id": "INIT-VR-006",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-007.json",
+      "requirement_id": "INIT-VR-007",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-008.json",
+      "requirement_id": "INIT-VR-008",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-009.json",
+      "requirement_id": "INIT-VR-009",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-010.json",
+      "requirement_id": "INIT-VR-010",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-011.json",
+      "requirement_id": "INIT-VR-011",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-012.json",
+      "requirement_id": "INIT-VR-012",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-013.json",
+      "requirement_id": "INIT-VR-013",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-014.json",
+      "requirement_id": "INIT-VR-014",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-015.json",
+      "requirement_id": "INIT-VR-015",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-report/INIT-VR-016.json",
+      "requirement_id": "INIT-VR-016",
+      "spec_id": "product.validation-report"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-001.json",
+      "requirement_id": "INIT-VTO-001",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-002.json",
+      "requirement_id": "INIT-VTO-002",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-003.json",
+      "requirement_id": "INIT-VTO-003",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-004.json",
+      "requirement_id": "INIT-VTO-004",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-005.json",
+      "requirement_id": "INIT-VTO-005",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-006.json",
+      "requirement_id": "INIT-VTO-006",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-007.json",
+      "requirement_id": "INIT-VTO-007",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-008.json",
+      "requirement_id": "INIT-VTO-008",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-009.json",
+      "requirement_id": "INIT-VTO-009",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-orchestration/INIT-VTO-010.json",
+      "requirement_id": "INIT-VTO-010",
+      "spec_id": "product.validation-test-orchestration"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-001.json",
+      "requirement_id": "INIT-VTS-001",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-002.json",
+      "requirement_id": "INIT-VTS-002",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-003.json",
+      "requirement_id": "INIT-VTS-003",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-004.json",
+      "requirement_id": "INIT-VTS-004",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-005.json",
+      "requirement_id": "INIT-VTS-005",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-006.json",
+      "requirement_id": "INIT-VTS-006",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-007.json",
+      "requirement_id": "INIT-VTS-007",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-008.json",
+      "requirement_id": "INIT-VTS-008",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-009.json",
+      "requirement_id": "INIT-VTS-009",
+      "spec_id": "product.validation-test-surface"
+    },
+    {
+      "canonical_package_path": "product/validation/packages/product.validation-test-surface/INIT-VTS-010.json",
+      "requirement_id": "INIT-VTS-010",
+      "spec_id": "product.validation-test-surface"
+    }
+  ],
+  "product_mutation_authorized": false,
+  "purpose": "Deterministically enumerate accepted product-owned validation-correspondence package obligations for separately governed product-owned planning and implementation.",
+  "required_successor_authority": "Separately governed product-owned planning/implementation authority citing the exact applicable accepted product specifications.",
+  "source_revision": "868060f039cc2287f75dfe6ce74cb0152cb5a284",
+  "workstream": "VCP-I3"
+}

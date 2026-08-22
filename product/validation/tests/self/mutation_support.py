@@ -11,6 +11,7 @@ from validation.core.errors import ValidationFailure, fail
 from validation.checks.development_documents import extract_document_metadata
 
 
+# validation-metadata: {"role": "helper"}
 def deactivate_product_plans(repo_root: Path) -> None:
     """Make copied product plans non-active for fixtures that replace the product registry."""
     plans_root = repo_root / "product/docs/plans"
@@ -25,6 +26,7 @@ def deactivate_product_plans(repo_root: Path) -> None:
             )
 
 
+# validation-metadata: {"role": "helper"}
 def expect_failure(description: str, func, fragment: str) -> None:
     try:
         func()
@@ -35,6 +37,7 @@ def expect_failure(description: str, func, fragment: str) -> None:
         fail(f"mutation test failed: {description} did not fail")
 
 
+# validation-metadata: {"role": "helper"}
 def expect_render_change(description: str, renderer, spec: dict, mutate) -> None:
     original = renderer(spec)
     mutated = copy.deepcopy(spec)
@@ -43,6 +46,7 @@ def expect_render_change(description: str, renderer, spec: dict, mutate) -> None
         fail(f"mutation test failed: {description} did not change output")
 
 
+# validation-metadata: {"role": "helper"}
 def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
     manifest = json.loads((repo_root / "repo/specs/repo/manifest.json").read_text())
     required_paths = [
@@ -55,6 +59,7 @@ def declared_repo_fixture_paths(repo_root: Path) -> tuple[str, ...]:
         "repo/schemas/repo/functional-set-process.schema.json",
         "repo/schemas/repo/product-decomposition.schema.json",
         "repo/schemas/repo/implementation-plan.schema.json",
+        "repo/schemas/repo/validation-correspondence-package.schema.json",
         "product/schemas/product/product-manifest.schema.json",
         "product/schemas/product/product-spec-base.schema.json",
         "product/schemas/product/product-level-0.schema.json",
@@ -147,6 +152,7 @@ REQUIRED_FIXTURE_ROOT_FILES = (".gitignore", "AGENTS.md", "LICENSE", "README.md"
 REQUIRED_FIXTURE_ROOT_DIRECTORIES = (".github", "product", "reference", "repo", "scripts", "user")
 
 
+# validation-metadata: {"role": "helper"}
 def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, required_paths: tuple[str, ...] | None = None) -> Path:
     fixture_root = temp_root / f"fixture-{fixture_index}"
     fixture_root.mkdir(parents=True, exist_ok=True)
@@ -176,11 +182,83 @@ def create_repo_fixture(repo_root: Path, temp_root: Path, fixture_index: int, re
     return fixture_root
 
 
+# validation-metadata: {"role": "helper"}
+def _fixture_repo_root(path: Path) -> Path | None:
+    resolved = path.resolve()
+    for parent in resolved.parents:
+        if (
+            (parent / "product").is_dir()
+            and (parent / "repo").is_dir()
+            and (parent / "scripts").is_dir()
+            and resolved.is_relative_to(parent / "product")
+        ):
+            return parent
+    return None
+
+
+# validation-metadata: {"role": "helper"}
+def _materialize_synthetic_validation_packages(path: Path, data: object) -> None:
+    if not isinstance(data, dict):
+        return
+    spec_id = data.get("spec_id")
+    correspondence = data.get("correspondence")
+    if not isinstance(spec_id, str) or not isinstance(correspondence, dict):
+        return
+    repo_root = _fixture_repo_root(path)
+    if repo_root is None:
+        return
+
+    for mapping in correspondence.get("tests", []):
+        if not isinstance(mapping, dict):
+            continue
+        refs = mapping.get("validation_package_refs", [])
+        if not isinstance(refs, list):
+            continue
+        for ref in refs:
+            if (
+                not isinstance(ref, dict)
+                or ref.get("spec_id") != spec_id
+                or not isinstance(ref.get("requirement_id"), str)
+            ):
+                continue
+            requirement_id = ref["requirement_id"]
+            package_path = (
+                repo_root
+                / "product/validation/packages"
+                / spec_id
+                / f"{requirement_id}.json"
+            )
+            if package_path.exists():
+                continue
+            package_path.parent.mkdir(parents=True, exist_ok=True)
+            package_path.write_text(
+                json.dumps(
+                    {
+                        "normative_reference": {
+                            "spec_id": spec_id,
+                            "requirement_id": requirement_id,
+                        },
+                        "validation_disposition": "semantic-review",
+                        "validation_rationale": "Synthetic mutation-test package for covered correspondence.",
+                        "tasks": [],
+                    },
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+
+# validation-metadata: {"role": "helper"}
 def mutate_json(path: Path, transform) -> None:
     data = json.loads(path.read_text())
-    path.write_text(json.dumps(transform(data), indent=2) + "\n")
+    transformed = transform(data)
+    path.write_text(json.dumps(transformed, indent=2) + "\n")
+    _materialize_synthetic_validation_packages(path, transformed)
 
 
+# validation-metadata: {"role": "helper"}
 def add_lifecycle_spec(specs: dict, temp_repo: Path, spec_id: str, status: str, supersedes: list[str] | None = None, superseded_by: list[str] | None = None) -> None:
     mutate_json(
         temp_repo / "repo/specs/repo/manifest.json",

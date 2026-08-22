@@ -11,6 +11,7 @@ from ..self.mutation_support import expect_render_change
 FIXTURE_PATH = Path(__file__).resolve().parent.parent / "fixtures" / 'level-1-accepted.json'
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_projection_rendering_tests(repo_root: Path) -> None:
     del repo_root
 

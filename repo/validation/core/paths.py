@@ -11,6 +11,7 @@ from repo_model import RepositoryError, resolve_repo_path as resolve_repo_path_i
 from ..core.errors import fail
 
 
+# validation-metadata: {"role": "helper"}
 def resolve_repo_path(repo_root: Path, value: str) -> Path:
     try:
         return resolve_repo_path_impl(repo_root, value)

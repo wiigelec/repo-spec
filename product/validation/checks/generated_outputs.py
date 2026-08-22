@@ -10,6 +10,7 @@ from validation.core.errors import expect
 from validation.core.paths import resolve_repo_path
 
 
+# validation-metadata: {"role": "helper"}
 def check_product_generated_freshness(context: ValidationContext) -> None:
     if context.product is None:
         specs = {}

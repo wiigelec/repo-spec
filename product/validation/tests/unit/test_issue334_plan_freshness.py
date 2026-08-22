@@ -13,12 +13,14 @@ CHUNKS = [
 ]
 
 class Issue334PlanFreshnessTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @classmethod
     def setUpClass(cls) -> None:
         cls.plan = PLAN.read_text()
         cls.chunk_text = "\n".join(path.read_text() for path in CHUNKS)
         cls.all_text = cls.plan + "\n" + cls.chunk_text
 
+    # validation-metadata: {"role": "helper"}
     def test_h1_machine_authority_mapping_is_unchanged(self) -> None:
         metadata_text = self.plan.split("```json\n", 1)[1].split("\n```", 1)[0]
         metadata = json.loads(metadata_text)
@@ -41,12 +43,14 @@ class Issue334PlanFreshnessTests(unittest.TestCase):
         ]
         self.assertEqual(h1["controlling_product_specifications"], expected)
 
+    # validation-metadata: {"role": "helper"}
     def test_completed_h1_history_is_recorded(self) -> None:
         self.assertIn("#311", self.plan)
         self.assertIn("#313", self.plan)
         self.assertIn("#318", self.plan)
         self.assertIn("H1 are completed historical work", self.all_text)
 
+    # validation-metadata: {"role": "helper"}
     def test_pending_h1_instructions_are_gone(self) -> None:
         forbidden = [
             "H1 implementation still requires a separate Product-artifact implementation governing issue",
@@ -58,11 +62,13 @@ class Issue334PlanFreshnessTests(unittest.TestCase):
         for phrase in forbidden:
             self.assertNotIn(phrase, self.all_text)
 
+    # validation-metadata: {"role": "helper"}
     def test_future_extension_boundary_remains_deferred(self) -> None:
         self.assertIn("Future-extension specs remain candidate and deferred", self.all_text)
         for feature in ("dry-run", "platform", "remote", "resume", "recovery", "overwrite"):
             self.assertIn(feature, self.all_text)
 
+    # validation-metadata: {"role": "helper"}
     def test_no_new_successor_is_authorized(self) -> None:
         self.assertIn("No new successor implementation scope is authorized", self.all_text)
 

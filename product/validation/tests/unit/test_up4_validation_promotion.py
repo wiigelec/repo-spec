@@ -31,6 +31,7 @@ A = "1" * 40
 B = "2" * 40
 
 
+# validation-metadata: {"role": "helper"}
 def lineage_entry(repo: str, oid: str) -> FrameworkLineageEntry:
     return FrameworkLineageEntry(
         framework_repository=repo,
@@ -38,6 +39,7 @@ def lineage_entry(repo: str, oid: str) -> FrameworkLineageEntry:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def git(repo: Path, *args: str, check: bool = True) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -51,6 +53,7 @@ def git(repo: Path, *args: str, check: bool = True) -> str:
     return p.stdout.strip()
 
 
+# validation-metadata: {"role": "helper"}
 def prepare_case(root: Path, validator_body: str = "exit 0\n"):
     target = root / "target"
     target.mkdir()
@@ -108,6 +111,7 @@ def prepare_case(root: Path, validator_body: str = "exit 0\n"):
     return target, stage_root, staged, reanchoring
 
 
+# validation-metadata: {"role": "helper"}
 def make_framework(root: Path) -> tuple[Path, str, str]:
     framework = root / "framework-real"
     framework.mkdir()
@@ -169,6 +173,7 @@ def make_framework(root: Path) -> tuple[Path, str, str]:
 
 
 class UP4ValidationPromotionTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_staged_repository_suite_passes_then_exact_candidate_promotes(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -194,6 +199,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertTrue((target / "repo/initializer/framework-lineage.json").is_file())
             self.assertFalse(stage_root.exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_validation_failure_blocks_promotion_and_preserves_target(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -214,6 +220,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertFalse(promotion.accepted)
             self.assertEqual((target / "product.txt").read_text(), "old\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_validation_suite_may_not_mutate_candidate(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -228,6 +235,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertIn("mutated", validation.failure_reason or "")
             self.assertEqual((target / "product.txt").read_text(), "old\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_failed_candidate_commit_restores_previous_target(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -236,6 +244,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
                 staged, reanchoring, str(target)
             )
 
+            # validation-metadata: {"role": "helper"}
             def fault(point: str):
                 if point == "after-target-backup":
                     raise OSError("simulated commit failure")
@@ -250,6 +259,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertEqual(promotion.promotion_outcome, "not-promoted")
             self.assertEqual((target / "product.txt").read_text(), "old\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_post_commit_finalization_error_remains_promoted(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -258,6 +268,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
                 staged, reanchoring, str(target)
             )
 
+            # validation-metadata: {"role": "helper"}
             def fault(point: str):
                 if point == "after-candidate-commit":
                     raise OSError("simulated finalization failure")
@@ -278,6 +289,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertEqual((target / "product.txt").read_text(), "new\n")
 
 
+    # validation-metadata: {"role": "helper"}
     def test_promoted_head_contains_accepted_lineage_for_next_baseline(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -388,6 +400,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
                 target_revision,
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_promotion_refuses_index_only_change_after_validation(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -419,6 +432,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertIn("Git status changed", promotion.failure_reason or "")
             self.assertEqual((target / "product.txt").read_text(), "old\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_promotion_refuses_candidate_head_change_after_validation(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -437,6 +451,7 @@ class UP4ValidationPromotionTests(unittest.TestCase):
             self.assertEqual(promotion.promotion_outcome, "not-promoted")
             self.assertIn("HEAD changed", promotion.failure_reason or "")
             self.assertEqual((target / "product.txt").read_text(), "old\n")
+    # validation-metadata: {"role": "helper"}
     def test_terminal_evidence_is_deterministic_and_excludes_paths(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

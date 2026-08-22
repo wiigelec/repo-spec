@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 
 
+# validation-metadata: {"role": "helper"}
 def tree_digest(root: Path) -> dict[str, str]:
     result: dict[str, str] = {}
     for path in sorted(root.rglob("*")):
@@ -14,12 +15,14 @@ def tree_digest(root: Path) -> dict[str, str]:
     return result
 
 
+# validation-metadata: {"role": "helper"}
 def find_material(entries: list[dict], material_key: str) -> dict:
     matches = [entry for entry in entries if entry["material_key"] == material_key]
     assert len(matches) == 1, (material_key, len(matches))
     return matches[0]
 
 
+# validation-metadata: {"role": "helper"}
 def run_docgen_ownership_tests(repo_root: Path) -> None:
     repo_docgen = (repo_root / "repo/src/docgen.py").read_text()
     product_docgen = (repo_root / "product/src/docgen.py").read_text()

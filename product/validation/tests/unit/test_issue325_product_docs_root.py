@@ -12,6 +12,7 @@ INVENTORY = (
 
 
 class Issue325ProductDocsRootTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_product_document_families_are_not_bootstrap_outputs(self):
         inventory = json.loads(INVENTORY.read_text())
         self.assertEqual(inventory["dynamic_path_families"], [])

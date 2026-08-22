@@ -16,6 +16,7 @@ from .policy import (
 from .specifications import (
     check_product_conformance_completeness_phase,
     check_product_correspondence_phase,
+    check_product_validation_correspondence_packages_phase,
 )
 from .development_documents import check_product_development_documents
 from .policy import check_product_lifecycle_readiness
@@ -28,6 +29,7 @@ from validation.core.invariants import check_supersession_acyclicity, check_supe
 
 
 
+# validation-metadata: {"role": "helper"}
 def _validate_inactive_product(repo_root: Path) -> None:
     """Validate the inactive product boundary without requiring repository material."""
     product_root = repo_root / "product/specs/product"
@@ -62,6 +64,7 @@ def _validate_inactive_product(repo_root: Path) -> None:
 
 
 
+# validation-metadata: {"role": "helper"}
 def _load_product_only_context(repo_root: Path) -> ValidationContext:
     _manifest, specs, _source_paths, _actual_paths = load_repo_specs(repo_root)
     external_repository = ExternalRepositoryValidationContext(
@@ -72,6 +75,7 @@ def _load_product_only_context(repo_root: Path) -> ValidationContext:
     return ValidationContext(repo_root, None, product, external_repository)
 
 
+# validation-metadata: {"role": "helper"}
 def _check_product_unique_spec_ids(context: ValidationContext) -> None:
     expect(context.product is not None, "product validation context missing")
     expect(
@@ -80,6 +84,7 @@ def _check_product_unique_spec_ids(context: ValidationContext) -> None:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _check_product_unique_item_properties(context: ValidationContext) -> None:
     expect(context.product is not None, "product validation context missing")
     for spec_id in context.product.specs:
@@ -109,6 +114,7 @@ def _check_product_unique_item_properties(context: ValidationContext) -> None:
         )
 
 
+# validation-metadata: {"role": "helper"}
 def _check_product_unique_derived_artifact_paths(
     context: ValidationContext,
 ) -> None:
@@ -123,6 +129,7 @@ def _check_product_unique_derived_artifact_paths(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _check_product_lineage(context: ValidationContext) -> None:
     expect(context.product is not None, "product validation context missing")
     for spec_id, spec in context.product.specs.items():
@@ -160,6 +167,10 @@ PRODUCT_LEAF_VALIDATION_PHASES: list[tuple[str, Any]] = [
     ("product specification root", check_product_specification_root_phase),
     ("product correspondence inventory", check_product_correspondence_phase),
     (
+        "product validation correspondence packages",
+        check_product_validation_correspondence_packages_phase,
+    ),
+    (
         "product conformance completeness",
         check_product_conformance_completeness_phase,
     ),
@@ -181,6 +192,7 @@ PRODUCT_VALIDATION_PHASES: list[tuple[str, Any]] = [
 ]
 
 
+# validation-metadata: {"role": "helper"}
 def validate_product_phases(repo_root: Path, phase_labels: tuple[str, ...]) -> None:
     context = _load_product_only_context(repo_root)
     phase_map = dict(PRODUCT_VALIDATION_PHASES)
@@ -194,6 +206,7 @@ def validate_product_phases(repo_root: Path, phase_labels: tuple[str, ...]) -> N
         check(context)
 
 
+# validation-metadata: {"role": "helper"}
 def validate_product(repo_root: Path) -> None:
     manifest = repo_root / "product/specs/product/manifest.json"
     if not manifest.exists():

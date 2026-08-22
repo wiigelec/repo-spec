@@ -13,6 +13,7 @@ from ..self.mutation_support import create_repo_fixture, deactivate_product_plan
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# validation-metadata: {"role": "helper"}
 def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     source = FIXTURE_DIR / source_name
     target = temp_repo / dest_path
@@ -20,6 +21,7 @@ def install_fixture(temp_repo: Path, source_name: str, dest_path: str) -> None:
     shutil.copy2(source, target)
 
 
+# validation-metadata: {"role": "helper"}
 def configure_spec(
     temp_repo: Path,
     source_name: str,
@@ -51,6 +53,7 @@ def configure_spec(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def write_manifest(temp_repo: Path, entries: list[dict[str, object]]) -> None:
     mutate_json(
         temp_repo / "product/specs/product/manifest.json",
@@ -58,6 +61,7 @@ def write_manifest(temp_repo: Path, entries: list[dict[str, object]]) -> None:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def build_case(temp_repo: Path, source: dict[str, object], target: dict[str, object]) -> None:
     product_specs_root = temp_repo / "product/specs/product"
     if product_specs_root.exists():
@@ -77,6 +81,7 @@ def build_case(temp_repo: Path, source: dict[str, object], target: dict[str, obj
     check_generated_document_write_behavior(temp_repo)
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_dependency_direction_tests(repo_root: Path) -> None:
     cases = [
         ({"fixture": "level-0-candidate.json", "path": "product/specs/product/level-0/src.json", "spec_id": "product.l0-src", "level": 0, "status": "candidate"}, {"fixture": "level-0-candidate.json", "path": "product/specs/product/level-0/tgt.json", "spec_id": "product.l0-tgt", "level": 0, "status": "candidate"}, True),

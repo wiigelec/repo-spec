@@ -1,0 +1,14 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-019",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "_check_repository_development_documents",
+      "source": "repo/validation/checks/development_documents.py",
+      "task_id": "repo.validation.development-documents"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

@@ -9,6 +9,7 @@ from validation.core.errors import ValidationFailure
 from validation.checks.domain import validate_repo
 
 
+# validation-metadata: {"role": "helper"}
 def run_repository_portable_self_tests(repo_root: Path) -> None:
     validate_repo(repo_root)
 

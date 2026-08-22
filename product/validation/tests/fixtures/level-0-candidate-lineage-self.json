@@ -13,34 +13,55 @@
   ],
   "dependencies": [],
   "references": [],
-  "supersedes": ["product.kernel"],
+  "supersedes": [
+    "product.kernel"
+  ],
   "superseded_by": [],
   "derived_artifacts": [],
   "correspondence": {
     "implementations": [
       {
         "id": "impl.kernel",
-        "paths": ["product/src/docgen.py"],
-        "requirements": ["KERNEL-001"]
+        "paths": [
+          "product/src/docgen.py"
+        ],
+        "requirements": [
+          "KERNEL-001"
+        ]
       }
     ],
     "tests": [
       {
         "id": "test.kernel",
-        "paths": ["product/validation/tests/unit/test_product_validation.py"],
-        "requirements": ["KERNEL-001"]
+        "paths": [
+          "product/validation/tests/unit/test_product_validation.py"
+        ],
+        "validation_package_refs": [
+          {
+            "spec_id": "product.kernel",
+            "requirement_id": "KERNEL-001"
+          }
+        ]
       }
     ],
     "conformance": [
       {
         "requirement_id": "KERNEL-001",
-        "implementation_ids": ["impl.kernel"],
-        "test_ids": ["test.kernel"],
+        "implementation_ids": [
+          "impl.kernel"
+        ],
+        "test_ids": [
+          "test.kernel"
+        ],
         "status": "covered"
       }
     ]
   },
   "kernel": {
-    "foundations": ["terminology", "identity", "lifecycle"]
+    "foundations": [
+      "terminology",
+      "identity",
+      "lifecycle"
+    ]
   }
 }

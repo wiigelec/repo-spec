@@ -9,13 +9,16 @@ from initializer.destination import DestinationError, i1_destination_preflight
 
 
 class I1DestinationPreflightTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self) -> None:
         self.td = tempfile.TemporaryDirectory()
         self.base = Path(self.td.name)
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self) -> None:
         self.td.cleanup()
 
+    # validation-metadata: {"role": "helper"}
     def test_allows_absent_destination_without_creating_anything(self) -> None:
         destination = self.base / "new-repository"
         before = set(self.base.iterdir())
@@ -33,6 +36,7 @@ class I1DestinationPreflightTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             result.decision = "rejected"
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_every_existing_destination_type(self) -> None:
         regular = self.base / "regular"
         regular.write_text("x")
@@ -50,6 +54,7 @@ class I1DestinationPreflightTests(unittest.TestCase):
                 with self.assertRaisesRegex(DestinationError, "already exists"):
                     i1_destination_preflight(str(path))
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_missing_or_inaccessible_parent(self) -> None:
         with self.assertRaisesRegex(DestinationError, "parent is inaccessible"):
             i1_destination_preflight(str(self.base / "missing" / "dest"))
@@ -57,6 +62,7 @@ class I1DestinationPreflightTests(unittest.TestCase):
             with self.assertRaisesRegex(DestinationError, "parent is inaccessible"):
                 i1_destination_preflight(str(self.base / "dest"))
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_non_absolute_destination(self) -> None:
         with self.assertRaisesRegex(DestinationError, "intake-resolved absolute"):
             i1_destination_preflight("relative/dest")

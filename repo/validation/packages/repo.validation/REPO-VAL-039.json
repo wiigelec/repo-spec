@@ -1,0 +1,19 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-VAL-039",
+    "spec_id": "repo.validation"
+  },
+  "tasks": [
+    {
+      "callable": "validate_root_boundary",
+      "source": "validation/checks/policy.py",
+      "task_id": "root.validation.root-boundary"
+    },
+    {
+      "callable": "check_repository_structural_envelopes",
+      "source": "repo/validation/checks/policy.py",
+      "task_id": "repo.validation.structural-envelopes"
+    }
+  ],
+  "validation_disposition": "mechanical"
+}

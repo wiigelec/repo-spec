@@ -27,6 +27,7 @@ OBJECT_ID = "0123456789abcdef0123456789abcdef01234567"
 
 
 class I3HandoffTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_realization(self):
         td = tempfile.TemporaryDirectory()
         root = Path(td.name)
@@ -79,6 +80,7 @@ class I3HandoffTests(unittest.TestCase):
         self.addCleanup(td.cleanup)
         return realization
 
+    # validation-metadata: {"role": "helper"}
     def test_classification_is_framework_only_at_bootstrap(self):
         c = classify_handoff(self.make_realization())
         self.assertEqual(c.product, ())
@@ -89,6 +91,7 @@ class I3HandoffTests(unittest.TestCase):
         self.assertIn("repo/initializer/provenance.json", c.generated)
         self.assertIn("repo/initializer/handoff.json", c.generated)
 
+    # validation-metadata: {"role": "helper"}
     def test_manifest_has_v2_closed_shape(self):
         manifest = build_handoff_manifest(
             classify_handoff(self.make_realization())
@@ -97,6 +100,7 @@ class I3HandoffTests(unittest.TestCase):
         self.assertEqual(manifest["foundations"]["product"], [])
         self.assertEqual(manifest["next_action"], NEXT_ACTION)
 
+    # validation-metadata: {"role": "helper"}
     def test_serialization_is_deterministic(self):
         manifest = build_handoff_manifest(
             classify_handoff(self.make_realization())
@@ -108,6 +112,7 @@ class I3HandoffTests(unittest.TestCase):
         )
         self.assertTrue(payload.endswith(b"\n"))
 
+    # validation-metadata: {"role": "helper"}
     def test_write_classifies_handoff_itself(self):
         realization = self.make_realization()
         result = write_handoff_manifest(realization)
@@ -117,6 +122,7 @@ class I3HandoffTests(unittest.TestCase):
         )
         self.assertTrue(result.path.is_file())
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_undeclared_present_file(self):
         realization = self.make_realization()
         (realization.workspace.repository_path / "rogue.txt").write_text(

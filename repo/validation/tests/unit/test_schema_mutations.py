@@ -11,6 +11,7 @@ from validation.core.schema_subset import ensure_schema_keywords, load_repo_sche
 from ..self.mutation_support import expect_failure, expect_render_change
 
 
+# validation-metadata: {"role": "helper"}
 def run_schema_mutations(repo_root: Path) -> None:
     schemas = load_repo_schemas(repo_root)
     _manifest, specs, paths, _ = load_specs(repo_root)
@@ -124,6 +125,7 @@ def run_schema_mutations(repo_root: Path) -> None:
     )
 
     taxonomy_spec = copy.deepcopy(specs["repo.artifact-taxonomy"])
+    # validation-metadata: {"role": "helper"}
     def artifact_class(spec: dict, identifier: str) -> dict:
         for item in spec["artifact_classes"]:
             if item["identifier"] == identifier:

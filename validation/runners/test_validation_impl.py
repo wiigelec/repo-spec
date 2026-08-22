@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 
+# validation-metadata: {"role": "helper"}
 def run(repo_root: Path) -> int:
     repo_root = repo_root.resolve()
     env = os.environ.copy()
@@ -33,6 +34,7 @@ def run(repo_root: Path) -> int:
     return result.returncode
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     if len(argv) > 2:
         print(f"usage: {Path(argv[0]).name} [repo-root]", file=sys.stderr)

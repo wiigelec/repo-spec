@@ -1,0 +1,8 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-FSP-002",
+    "spec_id": "repo.functional-set-process"
+  },
+  "tasks": [],
+  "validation_disposition": "mechanical"
+}

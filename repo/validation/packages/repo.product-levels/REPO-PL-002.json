@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-PL-002",
+    "spec_id": "repo.product-levels"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "Dependency direction is mechanically checkable, while whether Level 0 content contains feature-level or implementation-specific semantics requires semantic classification."
+}

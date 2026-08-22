@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from . import development_documents, generated_outputs, policy, specifications
 
+# validation-metadata: {"role": "helper"}
 def validate_root(repo_root: Path) -> bool:
     specifications.validate(repo_root)
     development_documents.validate(repo_root)

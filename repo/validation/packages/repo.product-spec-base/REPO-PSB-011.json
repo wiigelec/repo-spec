@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-PSB-011",
+    "spec_id": "repo.product-spec-base"
+  },
+  "tasks": [],
+  "validation_disposition": "partial",
+  "validation_rationale": "derived_artifacts declaration shape and repository-relative paths are mechanically enforceable, while the requirement that projections remain subordinate and not independent authority has semantic force."
+}

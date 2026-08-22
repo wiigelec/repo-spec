@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-AUTH-011",
+    "spec_id": "repo.authority-model"
+  },
+  "tasks": [],
+  "validation_disposition": "semantic-review",
+  "validation_rationale": "Meaningful conformance is primarily an authority/semantic interpretation responsibility rather than an objectively provable repository-state property."
+}

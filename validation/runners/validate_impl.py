@@ -9,6 +9,7 @@ if str(REPOSITORY_ROOT) not in sys.path:
 from validation.checks.domain import validate_root
 from validation.checks.policy import RootValidationError
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     if len(argv) > 2:
         print(f"validation error: unknown argument: {argv[2]}", file=sys.stderr)

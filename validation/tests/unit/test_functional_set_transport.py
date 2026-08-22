@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 class FunctionalSetTransportTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_framework_transport_boundary(self) -> None:
         repo_root = Path(__file__).resolve().parents[3]
         inventory_path = repo_root / "product/src/initializer/framework-inventory.json"

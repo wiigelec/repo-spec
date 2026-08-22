@@ -23,6 +23,7 @@ OBJECT_ID = "0123456789abcdef0123456789abcdef01234567"
 
 
 class I3ProvenanceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def make_workspace(self):
         td = tempfile.TemporaryDirectory()
         root = Path(td.name)
@@ -54,6 +55,7 @@ class I3ProvenanceTests(unittest.TestCase):
         self.addCleanup(td.cleanup)
         return workspace
 
+    # validation-metadata: {"role": "helper"}
     def inputs(self) -> ProvenanceInputs:
         return ProvenanceInputs(
             "repo-spec-init",
@@ -61,6 +63,7 @@ class I3ProvenanceTests(unittest.TestCase):
             "2026-08-08T19:00:00Z",
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_build_record_uses_exact_v2_closed_order(self):
         workspace = self.make_workspace()
         record = build_provenance_record(workspace, self.inputs())
@@ -81,6 +84,7 @@ class I3ProvenanceTests(unittest.TestCase):
         self.assertNotIn("product_identifier", record)
         self.assertNotIn("request_identifier", record)
 
+    # validation-metadata: {"role": "helper"}
     def test_serialization_is_deterministic(self):
         record = build_provenance_record(
             self.make_workspace(),
@@ -94,6 +98,7 @@ class I3ProvenanceTests(unittest.TestCase):
             list(PROVENANCE_FIELD_ORDER),
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_write_places_record_at_exact_path(self):
         workspace = self.make_workspace()
         result = write_provenance_record(workspace, self.inputs())
@@ -103,6 +108,7 @@ class I3ProvenanceTests(unittest.TestCase):
         )
         self.assertTrue(result.path.is_file())
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_invalid_timestamp(self):
         workspace = self.make_workspace()
         with self.assertRaises(ProvenanceError):
@@ -115,6 +121,7 @@ class I3ProvenanceTests(unittest.TestCase):
                 ),
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_extra_serialization_fields(self):
         record = build_provenance_record(
             self.make_workspace(),

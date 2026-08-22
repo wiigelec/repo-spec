@@ -9,6 +9,7 @@ from validation.core.errors import ValidationFailure
 from validation.tests.self.portable_self_tests import run_product_portable_self_tests
 
 
+# validation-metadata: {"role": "helper"}
 def _run_source_development_tests(repo_root: Path) -> None:
     source_suite = repo_root / "product/validation/tests/self/mutation_tests.py"
     if not source_suite.is_file():
@@ -45,6 +46,7 @@ INFRASTRUCTURE = "infrastructure-failure"
 SUCCESS_CLASSES = {SUCCESS_ZERO, SUCCESS_APPLICABLE}
 
 
+# validation-metadata: {"role": "helper"}
 def _result(
     *,
     applicability: str,
@@ -67,6 +69,7 @@ def _result(
     return value
 
 
+# validation-metadata: {"role": "helper"}
 def _safe_repository_path(value: object) -> str | None:
     if not isinstance(value, str) or not value:
         return None
@@ -78,10 +81,12 @@ def _safe_repository_path(value: object) -> str | None:
     return value
 
 
+# validation-metadata: {"role": "helper"}
 def _load_json(path: Path) -> object:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+# validation-metadata: {"role": "helper"}
 def _invalid(
     accepted_specs: list[str],
     evidence: dict[str, Any],
@@ -99,6 +104,7 @@ def _invalid(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _collect_applicability(repo_root: Path) -> dict[str, Any]:
     manifest_path = repo_root / "product/specs/product/manifest.json"
 
@@ -257,16 +263,23 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
 
             test_id = mapping.get("id")
             paths = mapping.get("paths")
-            mapping_requirements = mapping.get("requirements")
+            validation_package_refs = mapping.get("validation_package_refs")
             if (
                 not isinstance(test_id, str)
                 or not test_id.startswith("test.")
                 or test_id in test_mappings
                 or not isinstance(paths, list)
                 or not paths
-                or not isinstance(mapping_requirements, list)
-                or not mapping_requirements
-                or not all(isinstance(req, str) and req for req in mapping_requirements)
+                or not isinstance(validation_package_refs, list)
+                or not validation_package_refs
+                or not all(
+                    isinstance(ref, dict)
+                    and set(ref) == {"spec_id", "requirement_id"}
+                    and ref.get("spec_id") == spec_id
+                    and isinstance(ref.get("requirement_id"), str)
+                    and ref["requirement_id"]
+                    for ref in validation_package_refs
+                )
             ):
                 return _invalid(
                     accepted_specs,
@@ -287,11 +300,28 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
                     )
                 normalized_paths.append(normalized)
 
+            normalized_refs = sorted(
+                {
+                    (ref["spec_id"], ref["requirement_id"])
+                    for ref in validation_package_refs
+                }
+            )
+            if len(normalized_refs) != len(validation_package_refs):
+                return _invalid(
+                    accepted_specs,
+                    evidence,
+                    f"test correspondence registration repeats a validation package ref: {spec_id}:{test_id}",
+                    classification=DISCOVERY,
+                )
+
             test_mappings[test_id] = {
                 "spec_id": spec_id,
                 "test_id": test_id,
                 "paths": sorted(set(normalized_paths)),
-                "requirements": sorted(set(mapping_requirements)),
+                "validation_package_refs": [
+                    {"spec_id": ref_spec_id, "requirement_id": requirement_id}
+                    for ref_spec_id, requirement_id in normalized_refs
+                ],
             }
 
         conformance_by_requirement: dict[str, dict[str, Any]] = {}
@@ -361,11 +391,14 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
                         f"covered conformance references unknown test mapping: {spec_id}:{requirement_id}:{test_id}",
                         classification=DISCOVERY,
                     )
-                if requirement_id not in mapping["requirements"]:
+                if {
+                    "spec_id": spec_id,
+                    "requirement_id": requirement_id,
+                } not in mapping["validation_package_refs"]:
                     return _invalid(
                         accepted_specs,
                         evidence,
-                        f"test mapping does not claim covered requirement: {spec_id}:{requirement_id}:{test_id}",
+                        f"test mapping does not resolve through covered validation package: {spec_id}:{requirement_id}:{test_id}",
                         classification=DISCOVERY,
                     )
                 referenced_test_ids.add(test_id)
@@ -414,6 +447,7 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def run_product_tests(
     repo_root: Path,
     *,
@@ -496,6 +530,7 @@ def run_product_tests(
     )
 
 
+# validation-metadata: {"role": "helper"}
 def main(argv: list[str]) -> int:
     repo_root = Path(argv[1]).resolve() if len(argv) > 1 else Path.cwd().resolve()
     args = argv[2:]

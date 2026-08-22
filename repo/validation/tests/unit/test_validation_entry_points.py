@@ -6,6 +6,7 @@ from pathlib import Path
 from validation.core.errors import expect
 
 
+# validation-metadata: {"role": "helper"}
 def run_validation_entry_point_tests(repo_root: Path) -> None:
     validate_path = repo_root / "repo/scripts/validate"
     self_test_path = repo_root / "repo/scripts/test-validation"

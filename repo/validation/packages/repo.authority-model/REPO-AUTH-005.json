@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-AUTH-005",
+    "spec_id": "repo.authority-model"
+  },
+  "tasks": [],
+  "validation_disposition": "semantic-review",
+  "validation_rationale": "Meaningful conformance is explicitly assigned to governed human semantic review when mechanical validation is insufficient."
+}

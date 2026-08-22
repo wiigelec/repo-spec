@@ -36,6 +36,7 @@ class ValidationContext:
     external_repository: ExternalRepositoryValidationContext | None = None
 
 
+# validation-metadata: {"role": "helper"}
 def load_repo_specs(repo_root: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]], dict[str, str], list[str]]:
     try:
         return load_repo_specs_impl(repo_root)

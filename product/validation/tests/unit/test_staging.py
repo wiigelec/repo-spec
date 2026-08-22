@@ -40,6 +40,7 @@ from initializer.staging import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def _make_entry(
     path: str,
     classification: str = "framework-authoritative",
@@ -64,6 +65,7 @@ def _make_entry(
     return InventoryEntry(raw)
 
 
+# validation-metadata: {"role": "helper"}
 def _make_source_tree(base: Path, entries: dict[str, str | dict]) -> None:
     for path, content in entries.items():
         full = base / path
@@ -79,6 +81,7 @@ def _make_source_tree(base: Path, entries: dict[str, str | dict]) -> None:
 
 
 class InstallationPlanTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_selects_only_installable_entries(self):
         entries = [
             _make_entry("repo/specs/repo/", classification="framework-authoritative"),
@@ -95,6 +98,7 @@ class InstallationPlanTests(unittest.TestCase):
         self.assertIn("repo/specs/repo/", paths)
         self.assertIn("derived/", paths)
 
+    # validation-metadata: {"role": "helper"}
     def test_entries_sorted_by_path(self):
         entries = [
             _make_entry("zzz/", classification="framework-support"),
@@ -106,6 +110,7 @@ class InstallationPlanTests(unittest.TestCase):
         paths = [e.path for e in plan.entries]
         self.assertEqual(paths, sorted(paths))
 
+    # validation-metadata: {"role": "helper"}
     def test_empty_when_no_installable(self):
         entries = [
             _make_entry("docs/overview/", classification="product-instance", installable=False,
@@ -115,6 +120,7 @@ class InstallationPlanTests(unittest.TestCase):
         plan = InstallationPlan(ci)
         self.assertEqual(plan.entry_count, 0)
 
+    # validation-metadata: {"role": "helper"}
     def test_equality(self):
         e1 = [_make_entry("repo/specs/repo/"), _make_entry("repo/scripts/", classification="framework-support")]
         e2 = [_make_entry("repo/specs/repo/"), _make_entry("repo/scripts/", classification="framework-support")]
@@ -123,6 +129,7 @@ class InstallationPlanTests(unittest.TestCase):
         self.assertEqual(p1, p2)
         self.assertEqual(hash(p1), hash(p2))
 
+    # validation-metadata: {"role": "helper"}
     def test_inequality(self):
         e1 = [_make_entry("repo/specs/repo/")]
         e2 = [_make_entry("repo/scripts/", classification="framework-support")]
@@ -132,6 +139,7 @@ class InstallationPlanTests(unittest.TestCase):
 
 
 class InstallationResultTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_to_dict_structure(self):
         ss = SourceSelection("https://example.com/repo", "abc123")
         result = InstallationResult(
@@ -150,6 +158,7 @@ class InstallationResultTests(unittest.TestCase):
         self.assertEqual(len(d["skipped"]), 0)
         self.assertEqual(len(d["rejected"]), 0)
 
+    # validation-metadata: {"role": "helper"}
     def test_to_dict_no_source_selection(self):
         result = InstallationResult(
             source_selection=None,
@@ -163,6 +172,7 @@ class InstallationResultTests(unittest.TestCase):
 
 
 class BuildInstallationPlanTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_from_classified_inventory(self):
         entries = [
             _make_entry("repo/specs/repo/", classification="framework-authoritative"),
@@ -176,50 +186,62 @@ class BuildInstallationPlanTests(unittest.TestCase):
 
 
 class ValidateSourcePathTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.root = Path(tempfile.mkdtemp())
         (self.root / "repo" / "specs" / "repo").mkdir(parents=True)
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_valid_path(self):
         validate_source_path(self.root, "repo/specs/repo/", _make_entry("repo/specs/repo/"))
 
+    # validation-metadata: {"role": "helper"}
     def test_absolute_path_rejected(self):
         with self.assertRaises(StagingError):
             validate_source_path(self.root, "/absolute/path", _make_entry("/absolute/path"))
 
+    # validation-metadata: {"role": "helper"}
     def test_parent_traversal_rejected(self):
         with self.assertRaises(StagingError):
             validate_source_path(self.root, "../outside", _make_entry("../outside"))
 
+    # validation-metadata: {"role": "helper"}
     def test_missing_path_rejected(self):
         with self.assertRaises(StagingError):
             validate_source_path(self.root, "nonexistent/path", _make_entry("nonexistent/path"))
 
+    # validation-metadata: {"role": "helper"}
     def test_escape_via_complex_path_rejected(self):
         with self.assertRaises(StagingError):
             validate_source_path(self.root, "specs/../../etc/passwd", _make_entry("specs/../../etc/passwd"))
 
 
 class ResolveEntryTypeTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.root = Path(tempfile.mkdtemp())
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_file(self):
         f = self.root / "test.txt"
         f.write_text("hello")
         self.assertEqual(resolve_entry_type(self.root, "test.txt"), "file")
 
+    # validation-metadata: {"role": "helper"}
     def test_directory(self):
         d = self.root / "mydir"
         d.mkdir()
         self.assertEqual(resolve_entry_type(self.root, "mydir"), "directory")
 
+    # validation-metadata: {"role": "helper"}
     def test_symlink(self):
         f = self.root / "target.txt"
         f.write_text("content")
@@ -229,12 +251,15 @@ class ResolveEntryTypeTests(unittest.TestCase):
 
 
 class SymlinkSafetyTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.root = Path(tempfile.mkdtemp())
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_internal_symlink_allowed(self):
         (self.root / "dir").mkdir()
         target = self.root / "dir" / "actual.txt"
@@ -244,6 +269,7 @@ class SymlinkSafetyTests(unittest.TestCase):
         result = check_symlink_safety(self.root, "dir/link.txt")
         self.assertEqual(result, "actual.txt")
 
+    # validation-metadata: {"role": "helper"}
     def test_external_symlink_rejected(self):
         outside = Path(tempfile.mkdtemp())
         outside_target = outside / "external.txt"
@@ -253,12 +279,14 @@ class SymlinkSafetyTests(unittest.TestCase):
         with self.assertRaises(StagingError):
             check_symlink_safety(self.root, "escape_link")
 
+    # validation-metadata: {"role": "helper"}
     def test_absolute_symlink_rejected(self):
         link = self.root / "abs_link"
         link.symlink_to("/etc/passwd")
         with self.assertRaises(StagingError):
             check_symlink_safety(self.root, "abs_link")
 
+    # validation-metadata: {"role": "helper"}
     def test_not_a_symlink_returns_empty(self):
         f = self.root / "regular.txt"
         f.write_text("hello")
@@ -267,12 +295,15 @@ class SymlinkSafetyTests(unittest.TestCase):
 
 
 class DestinationConflictTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.staging = Path(tempfile.mkdtemp())
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.staging, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_no_conflict(self):
         entries = [
             _make_entry("repo/specs/repo/"),
@@ -280,6 +311,7 @@ class DestinationConflictTests(unittest.TestCase):
         ]
         check_destination_conflicts(self.staging, entries)
 
+    # validation-metadata: {"role": "helper"}
     def test_exact_duplicate_rejected(self):
         entries = [
             _make_entry("repo/specs/repo/"),
@@ -288,6 +320,7 @@ class DestinationConflictTests(unittest.TestCase):
         with self.assertRaises(StagingError):
             check_destination_conflicts(self.staging, entries)
 
+    # validation-metadata: {"role": "helper"}
     def test_nested_overlap_rejected(self):
         entries = [
             _make_entry("repo/specs/"),
@@ -298,12 +331,14 @@ class DestinationConflictTests(unittest.TestCase):
 
 
 class StagingWorkspaceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_creates_new_workspace(self):
         ws = create_staging_workspace()
         self.assertTrue(ws.exists())
         self.assertTrue(ws.name.startswith(STAGING_PREFIX))
         _cleanup_staging(ws)
 
+    # validation-metadata: {"role": "helper"}
     def test_creates_under_parent(self):
         parent = Path(tempfile.mkdtemp())
         try:
@@ -314,6 +349,7 @@ class StagingWorkspaceTests(unittest.TestCase):
             shutil.rmtree(parent, ignore_errors=True)
             _cleanup_staging(ws)
 
+    # validation-metadata: {"role": "helper"}
     def test_preexisting_nonempty_rejected(self):
         parent = Path(tempfile.mkdtemp())
         try:
@@ -327,14 +363,17 @@ class StagingWorkspaceTests(unittest.TestCase):
 
 
 class CopyEntryTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.source_root = Path(tempfile.mkdtemp())
         self.staging_root = Path(tempfile.mkdtemp())
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.source_root, ignore_errors=True)
         shutil.rmtree(self.staging_root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_copy_file(self):
         src = self.source_root / "test.txt"
         src.write_text("hello world")
@@ -344,6 +383,7 @@ class CopyEntryTests(unittest.TestCase):
         self.assertTrue(dst.exists())
         self.assertEqual(dst.read_text(), "hello world")
 
+    # validation-metadata: {"role": "helper"}
     def test_copy_directory(self):
         src_dir = self.source_root / "mydir"
         src_dir.mkdir()
@@ -357,6 +397,7 @@ class CopyEntryTests(unittest.TestCase):
         self.assertTrue((dst_dir / "file2.txt").exists())
         self.assertEqual((dst_dir / "file1.txt").read_text(), "one")
 
+    # validation-metadata: {"role": "helper"}
     def test_copy_symlink(self):
         target = self.source_root / "target.txt"
         target.write_text("target content")
@@ -368,6 +409,7 @@ class CopyEntryTests(unittest.TestCase):
         self.assertTrue(dst.is_symlink())
         self.assertEqual(os.readlink(str(dst)), "target.txt")
 
+    # validation-metadata: {"role": "helper"}
     def test_preserves_repository_relative_path(self):
         (self.source_root / "deep" / "nested").mkdir(parents=True)
         (self.source_root / "deep" / "nested" / "file.txt").write_text("deep")
@@ -379,11 +421,13 @@ class CopyEntryTests(unittest.TestCase):
 
 
 class StageFrameworkTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.source_root = Path(tempfile.mkdtemp())
         self._create_framework_source()
         self.ss = SourceSelection("https://github.com/wiigelec/repo-spec", "test-revision")
 
+    # validation-metadata: {"role": "helper"}
     def _create_framework_source(self):
         (self.source_root / "repo" / "specs" / "repo").mkdir(parents=True)
         (self.source_root / "repo" / "specs" / "repo" / "manifest.json").write_text('{"spec_id": "repo.manifest"}')
@@ -401,6 +445,7 @@ class StageFrameworkTests(unittest.TestCase):
         (self.source_root / "reference").mkdir()
         (self.source_root / "reference" / "notes.md").write_text("# notes")
 
+    # validation-metadata: {"role": "helper"}
     def _make_classified_inventory(self) -> ClassifiedInventory:
         entries = [
             _make_entry("repo/specs/repo/", classification="framework-authoritative"),
@@ -418,9 +463,11 @@ class StageFrameworkTests(unittest.TestCase):
         ]
         return ClassifiedInventory(entries)
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.source_root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_stages_installable_framework_material(self):
         ci = self._make_classified_inventory()
         result = stage_framework(ci, self.ss, self.source_root)
@@ -430,6 +477,7 @@ class StageFrameworkTests(unittest.TestCase):
         self.assertIn("repo/scripts/validate", installed_paths)
         self.assertIn("repo/derived/", installed_paths)
 
+    # validation-metadata: {"role": "helper"}
     def test_excludes_uninstallable_classifications(self):
         ci = self._make_classified_inventory()
         result = stage_framework(ci, self.ss, self.source_root)
@@ -439,6 +487,7 @@ class StageFrameworkTests(unittest.TestCase):
         self.assertNotIn(".gitignore", installed_paths)
         self.assertNotIn("reference/", installed_paths)
 
+    # validation-metadata: {"role": "helper"}
     def test_preserves_repository_relative_paths(self):
         ci = self._make_classified_inventory()
         result = stage_framework(ci, self.ss, self.source_root)
@@ -448,6 +497,7 @@ class StageFrameworkTests(unittest.TestCase):
             staged_path = ws / path
             self.assertTrue(staged_path.exists(), f"missing: {path}")
 
+    # validation-metadata: {"role": "helper"}
     def test_staging_workspace_separate_from_destination(self):
         ci = self._make_classified_inventory()
         result = stage_framework(ci, self.ss, self.source_root)
@@ -455,12 +505,14 @@ class StageFrameworkTests(unittest.TestCase):
         ws = Path(result.staging_workspace)
         self.assertNotEqual(str(ws), "/tmp/repo-spec-test-dest")
 
+    # validation-metadata: {"role": "helper"}
     def test_staging_workspace_prefix(self):
         ci = self._make_classified_inventory()
         result = stage_framework(ci, self.ss, self.source_root)
         ws_name = Path(result.staging_workspace).name
         self.assertTrue(ws_name.startswith(STAGING_PREFIX))
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_missing_source_path(self):
         entries = [
             _make_entry("nonexistent/path", classification="framework-authoritative"),
@@ -471,6 +523,7 @@ class StageFrameworkTests(unittest.TestCase):
         self.assertEqual(len(result.rejected), 1)
         self.assertIn("does not exist", result.rejected[0]["reason"])
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_absolute_source_path(self):
         entries = [
             _make_entry("/etc/passwd", classification="framework-authoritative"),
@@ -480,6 +533,7 @@ class StageFrameworkTests(unittest.TestCase):
         self.assertEqual(len(result.installed), 0)
         self.assertEqual(len(result.rejected), 1)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_parent_traversal(self):
         entries = [
             _make_entry("../outside", classification="framework-authoritative"),
@@ -489,6 +543,7 @@ class StageFrameworkTests(unittest.TestCase):
         self.assertEqual(len(result.installed), 0)
         self.assertEqual(len(result.rejected), 1)
 
+    # validation-metadata: {"role": "helper"}
     def test_source_selection_in_result(self):
         ci = self._make_classified_inventory()
         result = stage_framework(ci, self.ss, self.source_root)
@@ -496,6 +551,7 @@ class StageFrameworkTests(unittest.TestCase):
         self.assertEqual(d["source_selection"]["repository"], "https://github.com/wiigelec/repo-spec")
         self.assertEqual(d["source_selection"]["revision"], "test-revision")
 
+    # validation-metadata: {"role": "helper"}
     def test_destination_not_modified(self):
         dest = Path("/tmp/repo-spec-test-dest")
         dest_before = dest.exists()
@@ -504,6 +560,7 @@ class StageFrameworkTests(unittest.TestCase):
         dest_after = dest.exists()
         self.assertEqual(dest_before, dest_after)
 
+    # validation-metadata: {"role": "helper"}
     def test_cleanup_on_failure(self):
         bad_source = self.source_root / "trigger_failure"
         bad_source.write_text("trigger")
@@ -517,6 +574,7 @@ class StageFrameworkTests(unittest.TestCase):
 
 
 class StagingDeterminismTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def setUp(self):
         self.source_root = Path(tempfile.mkdtemp())
         (self.source_root / "specs" / "repo").mkdir(parents=True)
@@ -525,9 +583,11 @@ class StagingDeterminismTests(unittest.TestCase):
         (self.source_root / "repo" / "scripts" / "validate").write_text("#!/bin/bash\necho ok")
         self.ss = SourceSelection("https://github.com/wiigelec/repo-spec", "test-revision")
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self):
         shutil.rmtree(self.source_root, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_equivalent_inputs_produce_equivalent_output(self):
         entries = [
             _make_entry("repo/specs/repo/", classification="framework-authoritative"),
@@ -545,6 +605,7 @@ class StagingDeterminismTests(unittest.TestCase):
 
 
 class PreexistingWorkspaceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_preexisting_nonempty_raises(self):
         ws = Path(tempfile.mkdtemp())
         (ws / "leftover.txt").write_text("leftover")
@@ -552,6 +613,7 @@ class PreexistingWorkspaceTests(unittest.TestCase):
             check_preexisting_workspace(ws)
         shutil.rmtree(ws, ignore_errors=True)
 
+    # validation-metadata: {"role": "helper"}
     def test_preexisting_empty_allowed(self):
         ws = Path(tempfile.mkdtemp())
         check_preexisting_workspace(ws)
@@ -561,6 +623,7 @@ class PreexistingWorkspaceTests(unittest.TestCase):
 class I2StagingTopologyTests(unittest.TestCase):
     OBJECT_ID = "0123456789abcdef0123456789abcdef01234567"
 
+    # validation-metadata: {"role": "helper"}
     def setUp(self) -> None:
         self.td = tempfile.TemporaryDirectory()
         self.base = Path(self.td.name)
@@ -587,16 +650,19 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.inputs = I2StagingInputs(self.request, self.source, self.preflight)
         self.workspaces: list[StagingWorkspace] = []
 
+    # validation-metadata: {"role": "helper"}
     def tearDown(self) -> None:
         for workspace in self.workspaces:
             _cleanup_staging(workspace.root)
         self.td.cleanup()
 
+    # validation-metadata: {"role": "helper"}
     def establish(self) -> StagingWorkspace:
         workspace = establish_staging_workspace(self.inputs)
         self.workspaces.append(workspace)
         return workspace
 
+    # validation-metadata: {"role": "helper"}
     def test_establishes_exact_isolated_same_filesystem_topology(self) -> None:
         before = set(self.base.iterdir())
         workspace = self.establish()
@@ -613,6 +679,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.assertEqual(set(self.base.iterdir()) - before, {workspace.root})
         validate_staging_workspace(workspace)
 
+    # validation-metadata: {"role": "helper"}
     def test_exposes_reserved_record_and_future_repository_boundaries(self) -> None:
         workspace = self.establish()
 
@@ -625,6 +692,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.assertNotEqual(workspace.repository_path, workspace.root)
         self.assertNotEqual(workspace.repository_path, workspace.transaction_path)
 
+    # validation-metadata: {"role": "helper"}
     def test_carries_exact_i1_facts_without_reconstruction(self) -> None:
         workspace = self.establish()
 
@@ -636,6 +704,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.assertEqual(output["request_fingerprint"], self.request.request_fingerprint)
         self.assertEqual(output["source_revision"], self.OBJECT_ID)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_mismatched_source_before_mutation(self) -> None:
         mismatched = ResolvedSourceMaterial(
             repository=self.source.repository,
@@ -650,6 +719,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         self.assertEqual(workspace.inputs.source.commit_id, "0" * 40)
         self.assertEqual(set(self.base.iterdir()) - before, {workspace.root})
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_changed_filesystem_fact_before_mutation(self) -> None:
         stale = I1DestinationPreflight(
             destination=self.preflight.destination,
@@ -666,6 +736,7 @@ class I2StagingTopologyTests(unittest.TestCase):
 
         self.assertEqual(set(self.base.iterdir()), before)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_destination_that_appeared_after_preflight(self) -> None:
         self.destination.mkdir()
 
@@ -674,6 +745,7 @@ class I2StagingTopologyTests(unittest.TestCase):
 
         self.assertFalse(any(path.name.startswith(STAGING_PREFIX) for path in self.base.iterdir()))
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_extra_root_or_transaction_content(self) -> None:
         workspace = self.establish()
         extra = workspace.root / "extra"
@@ -685,6 +757,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         with self.assertRaisesRegex(StagingError, "undeclared content"):
             validate_staging_workspace(workspace)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_swapped_topology_interfaces(self) -> None:
         workspace = self.establish()
         swapped = StagingWorkspace(
@@ -701,6 +774,7 @@ class I2StagingTopologyTests(unittest.TestCase):
         with self.assertRaisesRegex(StagingError, "canonical layout"):
             validate_staging_workspace(swapped)
 
+    # validation-metadata: {"role": "helper"}
     def test_rejects_replaced_staging_root_identity(self) -> None:
         workspace = self.establish()
         original = workspace.root.with_name(workspace.root.name + "-original")

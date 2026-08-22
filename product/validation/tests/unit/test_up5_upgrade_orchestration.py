@@ -33,6 +33,7 @@ REQUIREMENT_TEST_MAP = {
 }
 
 
+# validation-metadata: {"role": "helper"}
 def git(repo: Path, *args: str, check: bool = True) -> str:
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -46,6 +47,7 @@ def git(repo: Path, *args: str, check: bool = True) -> str:
     return p.stdout.strip()
 
 
+# validation-metadata: {"role": "helper"}
 def write_inventory(repo: Path, definitions: dict[str, tuple[str, str]]) -> None:
     manifest = []
     output = []
@@ -88,12 +90,14 @@ def write_inventory(repo: Path, definitions: dict[str, tuple[str, str]]) -> None
     )
 
 
+# validation-metadata: {"role": "helper"}
 def commit(repo: Path, message: str) -> str:
     git(repo, "add", "-A")
     git(repo, "commit", "-qm", message)
     return git(repo, "rev-parse", "HEAD")
 
 
+# validation-metadata: {"role": "helper"}
 def make_framework(root: Path) -> Path:
     framework = root / "framework"
     framework.mkdir()
@@ -103,6 +107,7 @@ def make_framework(root: Path) -> Path:
     return framework
 
 
+# validation-metadata: {"role": "helper"}
 def make_target(
     root: Path,
     framework: Path,
@@ -152,6 +157,7 @@ def make_target(
 
 
 class UP5UpgradeOrchestrationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     @unittest.skip("deferred: initializer materialization must be updated in the follow-up after validation migrations are proven")
     def test_public_repo_spec_upgrade_drives_real_lifecycle(self):
         with tempfile.TemporaryDirectory() as td:
@@ -260,6 +266,7 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
                 "stdout:\n" + validation.stdout + "\nstderr:\n" + validation.stderr,
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_equivalent_inputs_produce_equivalent_reconciliation_and_content(self):
         from initializer.upgrade_validation_promotion import repository_content_digest
 
@@ -301,12 +308,14 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
                 (second_target / "user-owned.txt").read_bytes(),
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_requirement_map_covers_all_level3_requirements(self):
         self.assertEqual(
             set(REQUIREMENT_TEST_MAP),
             {f"UPG-FULL-{index:03d}" for index in range(1, 11)},
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_first_and_subsequent_upgrade_compose_complete_lifecycle(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -380,6 +389,7 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             ]
             self.assertEqual(revisions, [baseline, first_target, second_target])
 
+    # validation-metadata: {"role": "helper"}
     def test_invalid_legacy_provenance_fails_closed_before_staging(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -400,6 +410,7 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             self.assertEqual(git(target, "rev-parse", "HEAD"), before_head)
             self.assertEqual(sorted(p.name for p in root.iterdir()), siblings_before)
 
+    # validation-metadata: {"role": "helper"}
     def test_managed_conflict_rejects_without_target_mutation(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -422,6 +433,7 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             self.assertEqual(git(target, "rev-parse", "HEAD"), before_head)
             self.assertEqual((target / "managed.txt").read_text(), "local change\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_validation_failure_prevents_promotion(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -442,6 +454,7 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             self.assertEqual(git(target, "rev-parse", "HEAD"), before_head)
             self.assertEqual((target / "managed.txt").read_text(), "one\n")
 
+    # validation-metadata: {"role": "helper"}
     def test_terminal_evidence_is_deterministic(self):
         result = DerivedRepositoryUpgradeResult(
             terminal_result="rejected",
@@ -469,6 +482,7 @@ class UP5UpgradeOrchestrationTests(unittest.TestCase):
             upgrade_evidence_fingerprint(result),
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_public_cli_dispatch_has_no_framework_revision_selector(self):
         fake = DerivedRepositoryUpgradeResult(
             terminal_result="promoted-success",

@@ -28,10 +28,12 @@ class _Request:
     source_revision = GitObjectIdentity("sha1", "b" * 40)
     source_repository = "/tmp/source"
 
+    # validation-metadata: {"role": "helper"}
     def __init__(self, destination: str) -> None:
         self.destination = destination
 
 
+# validation-metadata: {"role": "helper"}
 def _workspace(root: Path, destination: Path):
     transaction = root / "transaction"
     repository = root / "repository"
@@ -54,6 +56,7 @@ def _workspace(root: Path, destination: Path):
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _run() -> RepositoryValidationRun:
     _version, profile = load_validation_profile_v1()
     checks = tuple(
@@ -65,6 +68,7 @@ def _run() -> RepositoryValidationRun:
     )
 
 
+# validation-metadata: {"role": "helper"}
 def _pair(workspace) -> FinalizedValidationPair:
     run = _run()
     report = run.report_dict()
@@ -89,6 +93,7 @@ def _pair(workspace) -> FinalizedValidationPair:
 
 
 class I4PromotionTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_absent_only_recheck_rejects_empty_directory(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             destination = Path(directory) / "dest"
@@ -96,6 +101,7 @@ class I4PromotionTests(unittest.TestCase):
             with self.assertRaises(Exception):
                 i4_recheck_destination_absent(destination)
 
+    # validation-metadata: {"role": "helper"}
     def test_success_uses_exactly_one_rename_and_removes_transaction_root(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             parent = Path(directory)
@@ -106,6 +112,7 @@ class I4PromotionTests(unittest.TestCase):
             pair = _pair(workspace)
             calls = []
 
+            # validation-metadata: {"role": "helper"}
             def rename(source: Path, target: Path) -> None:
                 calls.append((source, target))
                 os.rename(source, target)
@@ -121,6 +128,7 @@ class I4PromotionTests(unittest.TestCase):
             self.assertTrue((destination / "README.md").is_file())
             self.assertFalse(root.exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_existing_destination_never_calls_rename(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             parent = Path(directory)
@@ -132,6 +140,7 @@ class I4PromotionTests(unittest.TestCase):
             pair = _pair(workspace)
             calls = []
 
+            # validation-metadata: {"role": "helper"}
             def rename(source: Path, target: Path) -> None:
                 calls.append((source, target))
 
@@ -148,6 +157,7 @@ class I4PromotionTests(unittest.TestCase):
             )
             self.assertEqual(report["promotion_outcome"], "not-promoted")
 
+    # validation-metadata: {"role": "helper"}
     def test_rename_error_is_indeterminate_and_not_retried(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             parent = Path(directory)
@@ -158,6 +168,7 @@ class I4PromotionTests(unittest.TestCase):
             pair = _pair(workspace)
             calls = []
 
+            # validation-metadata: {"role": "helper"}
             def rename(source: Path, target: Path) -> None:
                 calls.append((source, target))
                 raise OSError("injected")
@@ -180,6 +191,7 @@ class I4PromotionTests(unittest.TestCase):
             self.assertEqual(state["promotion_outcome"], "indeterminate")
             self.assertEqual(report["promotion_outcome"], "indeterminate")
 
+    # validation-metadata: {"role": "helper"}
     def test_cleanup_failure_preserves_promoted_outcome(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             parent = Path(directory)
@@ -189,6 +201,7 @@ class I4PromotionTests(unittest.TestCase):
             workspace = _workspace(root, destination)
             pair = _pair(workspace)
 
+            # validation-metadata: {"role": "helper"}
             def cleanup(path: Path) -> None:
                 raise OSError("cleanup injected")
 
@@ -219,6 +232,7 @@ class I4PromotionTests(unittest.TestCase):
                 "promoted-with-finalization-error",
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_closed_gate_cannot_mutate_destination(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             parent = Path(directory)

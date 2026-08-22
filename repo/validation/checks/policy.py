@@ -17,8 +17,9 @@ from .development_documents import (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, label: str) -> None:
-    expected_top={"README.md","manifest.json","checks","core","runners","tests"}
+    expected_top={"README.md","manifest.json","checks","core","runners","tests","packages"}
     if require_github: expected_top.add("github")
     expect(domain_root.is_dir(), f"{label} validation layout failed: missing validation domain")
     actual={p.name:p for p in domain_root.iterdir()}
@@ -27,7 +28,7 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
     expect(not extra, f"{label} validation layout failed: unexpected top-level entries: {', '.join(extra)}")
     for n in ("README.md","manifest.json"):
         expect(actual[n].is_file(), f"{label} validation layout failed: {n} must be a file")
-    for n in ("checks","core","runners","tests"):
+    for n in ("checks","core","runners","tests","packages"):
         expect(actual[n].is_dir(), f"{label} validation layout failed: {n} must be a directory")
     if require_github: expect(actual["github"].is_dir(), f"{label} validation layout failed: github must be a directory")
     fixed={
@@ -50,6 +51,7 @@ def _check_exact_validation_layout(domain_root: Path, *, require_github: bool, l
     wrong=sorted(n for n,p in tests.items() if not p.is_dir())
     expect(not wrong, f"{label} validation layout failed: non-directory tests entries: {', '.join(wrong)}")
 
+# validation-metadata: {"role": "helper"}
 def _check_exact_directory_envelope(
     root: Path,
     expected_directories: set[str],
@@ -66,6 +68,7 @@ def _check_exact_directory_envelope(
     expect(not wrong, f"{label} failed: non-directory entries: {', '.join(wrong)}")
 
 
+# validation-metadata: {"role": "task", "task_id": "repo.validation.structural-envelopes", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-039"}}
 def check_repository_structural_envelopes(context: ValidationContext) -> None:
     repo_root = context.repo_root
     _check_exact_directory_envelope(
@@ -79,10 +82,12 @@ def check_repository_structural_envelopes(context: ValidationContext) -> None:
     _check_exact_directory_envelope(repo_root / "repo/derived/specs", {"repo"}, label="repository derived specifications envelope")
 
 
+# validation-metadata: {"role": "task", "task_id": "repo.validation.validation-layout", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-001"}}
 def check_validation_layout(context: ValidationContext) -> None:
     _check_exact_validation_layout(context.repo_root / "repo/validation", require_github=True, label="repo")
 
 
+# validation-metadata: {"role": "task", "task_id": "repo.validation.repository-source-layout", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-003"}}
 def check_repository_source_layout(context: ValidationContext) -> None:
     repo_root = context.repo_root
     scripts_root = repo_root / "repo/scripts"
@@ -109,6 +114,7 @@ def check_repository_source_layout(context: ValidationContext) -> None:
             f"repository source layout failed: repo/scripts entry point is not executable: {path.name}",
         )
 
+# validation-metadata: {"role": "task", "task_id": "repo.validation.platform-profile-boundary", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-015"}}
 def check_platform_profile_boundary(context: ValidationContext) -> None:
     spec = context.repository.specs.get("repo.platform-profiles")
     expect(spec is not None, "platform profile boundary failed: missing repo.platform-profiles")
@@ -130,6 +136,7 @@ def check_platform_profile_boundary(context: ValidationContext) -> None:
     expect(github_profile is not None, "platform profile boundary failed: missing GitHub profile identity")
     check_github_bootstrap_conformance(github_profile)
 
+# validation-metadata: {"role": "helper"}
 def check_github_bootstrap_conformance(profile: dict[str, Any]) -> None:
     expect(profile.get("source_root") == "repo/profiles/github/", "platform profile boundary failed: GitHub source root mismatch")
     expect(profile.get("installed_adapter_root") == ".github/", "platform profile boundary failed: GitHub adapter root mismatch")
@@ -207,12 +214,14 @@ EXPECTED_GITHUB_MUTATION_RECORD_FIELDS = {
     "post-change verification",
 }
 
+# validation-metadata: {"role": "helper"}
 def repository_reference_specs(context: ValidationContext) -> dict[str, dict[str, Any]]:
     if context.repository is not None:
         return context.repository.specs
     expect(context.external_repository is not None, "validation context missing external repository reference state")
     return context.external_repository.specs
 
+# validation-metadata: {"role": "task", "task_id": "repo.validation.lifecycle-authority-sequence", "normative_reference": {"spec_id": "repo.validation", "requirement_id": "REPO-VAL-003"}}
 def _check_repository_lifecycle(
     context: ValidationContext,
 ) -> None:
@@ -251,6 +260,7 @@ def _check_repository_lifecycle(
                     f"unknown specification {target_spec_id}"
                 )
 
+# validation-metadata: {"role": "helper"}
 def check_platform_profile_inventory(profile: dict[str, Any], index: int) -> None:
     identifier = profile.get("identifier")
     expect(isinstance(identifier, str) and identifier, f"platform profile boundary failed: missing profile identifier at index {index}")
@@ -313,6 +323,7 @@ EXPECTED_GITHUB_DEPLOYMENT_STATE = {
     ],
 }
 
+# validation-metadata: {"role": "helper"}
 def check_generate_docs_cli_contract(repo_root: Path) -> None:
     proc = subprocess.run([str(repo_root / "repo/scripts/generate-docs")], cwd=repo_root, capture_output=True, text=True)
     expect(proc.returncode == 0, "generate-docs launcher failed")
@@ -323,6 +334,7 @@ def check_generate_docs_cli_contract(repo_root: Path) -> None:
     expect(proc.returncode != 0, "generate-docs unknown mode succeeded")
 
 
+# validation-metadata: {"role": "helper"}
 def check_validate_cli_contract(repo_root: Path) -> None:
     validate_launcher = (repo_root / "repo/scripts/validate").read_text()
     test_launcher = (repo_root / "repo/scripts/test-validation").read_text()

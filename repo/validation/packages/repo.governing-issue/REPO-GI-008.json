@@ -1,0 +1,9 @@
+{
+  "normative_reference": {
+    "requirement_id": "REPO-GI-008",
+    "spec_id": "repo.governing-issue"
+  },
+  "tasks": [],
+  "validation_disposition": "semantic-review",
+  "validation_rationale": "Whether successor work is unrelated is a bounded-scope/authority judgment that requires review."
+}

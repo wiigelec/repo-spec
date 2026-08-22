@@ -30,12 +30,14 @@ _PRODUCT_PREFIXES = (
 _CHECKOUT_ROOT_NAMES = {"repo_root"}
 
 
+# validation-metadata: {"role": "helper"}
 def _literal_string(node: ast.AST) -> str | None:
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
         return node.value
     return None
 
 
+# validation-metadata: {"role": "helper"}
 def _call_name(node: ast.AST) -> str | None:
     if isinstance(node, ast.Name):
         return node.id
@@ -51,12 +53,14 @@ def _call_name(node: ast.AST) -> str | None:
     return None
 
 
+# validation-metadata: {"role": "helper"}
 def _annotate_parents(tree: ast.AST) -> None:
     for parent in ast.walk(tree):
         for child in ast.iter_child_nodes(parent):
             setattr(child, "parent", parent)
 
 
+# validation-metadata: {"role": "helper"}
 def _is_negative_membership_assert(node: ast.AST, value: str) -> bool:
     current = node
     while hasattr(current, "parent"):
@@ -82,10 +86,12 @@ def _is_negative_membership_assert(node: ast.AST, value: str) -> bool:
     return False
 
 
+# validation-metadata: {"role": "helper"}
 def _split_literal_path(value: str) -> list[str]:
     return [part for part in value.split("/") if part not in {"", "."}]
 
 
+# validation-metadata: {"role": "helper"}
 def _rooted_path_segments(node: ast.AST) -> list[str] | None:
     if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div):
         left = _rooted_path_segments(node.left)
@@ -98,6 +104,7 @@ def _rooted_path_segments(node: ast.AST) -> list[str] | None:
     return None
 
 
+# validation-metadata: {"role": "helper"}
 def _outermost_path(node: ast.BinOp) -> ast.BinOp:
     current = node
     while hasattr(current, "parent"):
@@ -109,6 +116,7 @@ def _outermost_path(node: ast.BinOp) -> ast.BinOp:
     return current
 
 
+# validation-metadata: {"role": "helper"}
 def _string_inside_rooted_path(node: ast.Constant) -> bool:
     current: ast.AST = node
     while hasattr(current, "parent"):
@@ -121,6 +129,7 @@ def _string_inside_rooted_path(node: ast.Constant) -> bool:
     return False
 
 
+# validation-metadata: {"role": "helper"}
 def _scan_python(rel: str, text: str) -> list[str]:
     violations: list[str] = []
     try:
@@ -188,6 +197,7 @@ def _scan_python(rel: str, text: str) -> list[str]:
     return violations
 
 
+# validation-metadata: {"role": "helper"}
 def _scan_shell(rel: str, text: str) -> list[str]:
     violations: list[str] = []
     # Match each $root path independently and stop at shell/path-list delimiters.
@@ -206,6 +216,7 @@ def _scan_shell(rel: str, text: str) -> list[str]:
     return violations
 
 
+# validation-metadata: {"role": "helper"}
 def _validation_files(repo_root: Path) -> list[Path]:
     files = [repo_root / rel for rel in _PUBLIC_WRAPPERS]
     validation_root = repo_root / "repo/validation"
@@ -219,6 +230,7 @@ def _validation_files(repo_root: Path) -> list[Path]:
     return sorted(set(files))
 
 
+# validation-metadata: {"role": "helper"}
 def collect_repo_validation_boundary_violations(repo_root: Path) -> list[str]:
     violations: list[str] = []
 
@@ -241,6 +253,7 @@ def collect_repo_validation_boundary_violations(repo_root: Path) -> list[str]:
     return sorted(set(violations))
 
 
+# validation-metadata: {"role": "helper"}
 def run_repo_validation_boundary_tests(repo_root: Path) -> None:
     violations = collect_repo_validation_boundary_violations(repo_root)
     if violations:

@@ -30,6 +30,7 @@ class _Request:
     source_repository = "/tmp/source"
     destination = "/tmp/destination"
 
+# validation-metadata: {"role": "helper"}
 def _workspace(root: Path):
     transaction = root / "transaction"
     repository = root / "repository"
@@ -49,6 +50,7 @@ def _workspace(root: Path):
         ),
     )
 
+# validation-metadata: {"role": "helper"}
 def _validation_run(status: str = "pass") -> RepositoryValidationRun:
     _version, profile = load_validation_profile_v1()
     results = []
@@ -66,6 +68,7 @@ def _validation_run(status: str = "pass") -> RepositoryValidationRun:
     )
 
 class I4ReportFinalizationTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_staging_state_is_closed_ordered_and_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = _workspace(Path(directory))
@@ -80,10 +83,12 @@ class I4ReportFinalizationTests(unittest.TestCase):
             self.assertEqual(first, staging_state_bytes_v1(state))
             self.assertTrue(first.endswith(b"\n"))
 
+    # validation-metadata: {"role": "helper"}
     def test_report_is_written_before_completed_staging_state(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = _workspace(Path(directory))
             observed = {}
+            # validation-metadata: {"role": "helper"}
             def injector(point: str) -> None:
                 observed[point] = (
                     workspace.validation_report_path.exists(),
@@ -101,6 +106,7 @@ class I4ReportFinalizationTests(unittest.TestCase):
             self.assertEqual(observed["after-validation-report-write"], (True, False))
             self.assertEqual(observed["after-staging-state-write"], (True, True))
 
+    # validation-metadata: {"role": "helper"}
     def test_each_fault_boundary_raises_and_never_returns_gate(self) -> None:
         points = (
             "after-in-memory-construction",
@@ -115,6 +121,7 @@ class I4ReportFinalizationTests(unittest.TestCase):
         for target in points:
             with self.subTest(target=target), tempfile.TemporaryDirectory() as directory:
                 workspace = _workspace(Path(directory))
+                # validation-metadata: {"role": "helper"}
                 def injector(point: str) -> None:
                     if point == target:
                         raise ReportFinalizationError("injected-fault", target)
@@ -133,6 +140,7 @@ class I4ReportFinalizationTests(unittest.TestCase):
                     if state.get("validation_completed") is True:
                         self.assertTrue(workspace.validation_report_path.exists())
 
+    # validation-metadata: {"role": "helper"}
     def test_failed_validation_pair_does_not_open_promotion_gate(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = _workspace(Path(directory))
@@ -145,6 +153,7 @@ class I4ReportFinalizationTests(unittest.TestCase):
             self.assertIsInstance(pair, FinalizedValidationPair)
             self.assertFalse(pair.promotion_gate_open())
 
+    # validation-metadata: {"role": "helper"}
     def test_execution_report_pre_promotion_failure_shape(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = _workspace(Path(directory))
@@ -169,6 +178,7 @@ class I4ReportFinalizationTests(unittest.TestCase):
             self.assertEqual(first, execution_report_bytes_v1(report))
             self.assertTrue(first.endswith(b"\n"))
 
+    # validation-metadata: {"role": "helper"}
     def test_execution_report_rejects_bad_terminal_combination(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = _workspace(Path(directory))

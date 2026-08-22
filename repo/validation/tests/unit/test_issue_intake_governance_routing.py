@@ -39,6 +39,7 @@ MANAGED_CANONICAL_PRODUCER = (
 )
 
 
+# validation-metadata: {"role": "helper"}
 def canonical_governed_body() -> str:
     return (
         "## Change type\nMaintenance\n\n"
@@ -69,6 +70,7 @@ def canonical_governed_body() -> str:
 
 
 class TrustedProducerFixture:
+    # validation-metadata: {"role": "helper"}
     def __init__(self, *, body: str | None = None):
         self.tmp = tempfile.TemporaryDirectory()
         self.body_path = pathlib.Path(self.tmp.name) / "canonical.md"
@@ -78,6 +80,7 @@ class TrustedProducerFixture:
         )
         self.revision = hashlib.sha256(self.body_path.read_bytes()).hexdigest()
 
+    # validation-metadata: {"role": "helper"}
     def __enter__(self):
         self.patch = mock.patch.dict(
             os.environ,
@@ -90,11 +93,13 @@ class TrustedProducerFixture:
         self.patch.start()
         return self
 
+    # validation-metadata: {"role": "helper"}
     def __exit__(self, exc_type, exc, tb):
         self.patch.stop()
         self.tmp.cleanup()
 
 
+# validation-metadata: {"role": "helper"}
 def canonical_evidence(*, governing_issue: str, governed_operation: str):
     with TrustedProducerFixture() as fixture:
         observation = CanonicalGovernedStateObservation(
@@ -109,6 +114,7 @@ def canonical_evidence(*, governing_issue: str, governed_operation: str):
 
 
 class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_classification_states_and_governed_state_are_orthogonal(self):
         self.assertEqual(classify_labels([]).state, ClassificationState.UNCLASSIFIED)
         self.assertEqual(classify_labels(["bug-fix"]).state, ClassificationState.BUG_FIX)
@@ -124,6 +130,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(governed.state, ClassificationState.BUG_FIX)
         self.assertTrue(governed.governed_work)
 
+    # validation-metadata: {"role": "helper"}
     def test_authority_routing_and_audit_redirect_preserve_no_mutation_authority(self):
         bug = route_labels(["bug-fix"])
         feature = route_labels(["feature-request"])
@@ -138,6 +145,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
             AuthorityPath.FEATURE_DEVELOPMENT,
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_provenance_preserves_original_body_and_pre_promotion_routing_labels(self):
         provenance = capture_intake_provenance(
             intake_issue="#12",
@@ -149,6 +157,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(provenance.original_body, "ordinary unformatted intake body")
         self.assertTrue(provenance.captured_before_restructure)
 
+    # validation-metadata: {"role": "helper"}
     def test_arbitrary_validator_objects_are_not_an_api_surface(self):
         observation = CanonicalGovernedStateObservation(
             governing_issue="#12",
@@ -157,6 +166,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         )
 
         class CallerValidator:
+            # validation-metadata: {"role": "helper"}
             def validate(self, observation):
                 return {"canonical_structure_valid": True}
 
@@ -166,6 +176,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                 validator=CallerValidator(),
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_unrecognized_or_unavailable_producer_fails_closed(self):
         with TrustedProducerFixture() as fixture:
             observation = CanonicalGovernedStateObservation(
@@ -198,6 +209,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                     producer_id="repository-canonical-validator",
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_same_name_substituted_producer_fails_artifact_identity(self):
         with tempfile.TemporaryDirectory() as tmp:
             fake = pathlib.Path(tmp) / "canonical-governed-state-validator"
@@ -229,6 +241,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                         producer_id="repository-canonical-validator",
                     )
 
+    # validation-metadata: {"role": "helper"}
     def test_trusted_producer_result_is_bound_and_fresh(self):
         evidence = canonical_evidence(
             governing_issue="#12",
@@ -239,6 +252,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(evidence.producer_id, "repository-canonical-validator")
         self.assertTrue(evidence.is_fresh)
 
+    # validation-metadata: {"role": "helper"}
     def test_managed_producer_rejects_stale_subject_revision(self):
         with TrustedProducerFixture() as fixture:
             observation = CanonicalGovernedStateObservation(
@@ -252,6 +266,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                     producer_id="repository-canonical-validator",
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_managed_producer_rejects_noncanonical_subject(self):
         with TrustedProducerFixture(body="ordinary unformatted intake body") as fixture:
             observation = CanonicalGovernedStateObservation(
@@ -265,6 +280,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                     producer_id="repository-canonical-validator",
                 )
 
+    # validation-metadata: {"role": "helper"}
     def test_no_module_level_evidence_issuance_or_verification_helpers(self):
         self.assertFalse(hasattr(promotion_module, "_issue_validated_evidence"))
         self.assertFalse(hasattr(promotion_module, "_require_issued_evidence_for"))
@@ -294,6 +310,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                 canonical_state_evidence=forged,
             )
 
+    # validation-metadata: {"role": "helper"}
     def test_both_promotion_forms_require_trusted_producer_evidence(self):
         provenance = capture_intake_provenance(
             intake_issue="#12",
@@ -326,6 +343,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(in_place.form, PromotionForm.IN_PLACE)
         self.assertEqual(successor.form, PromotionForm.SUCCESSOR)
 
+    # validation-metadata: {"role": "helper"}
     def test_hosted_validation_activates_only_after_canonical_governed_state(self):
         inactive = activate_hosted_validation(
             governed_work_state=False,
@@ -338,6 +356,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertFalse(inactive.validation_active)
         self.assertTrue(active.validation_active)
 
+    # validation-metadata: {"role": "helper"}
     def test_end_to_end_bug_fix_success(self):
         outcome = route_intake_to_governed_work(
             labels=["bug-fix"],
@@ -355,6 +374,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
         self.assertEqual(outcome.authority_path, "audit")
         self.assertFalse(outcome.mutation_authorized)
 
+    # validation-metadata: {"role": "helper"}
     def test_end_to_end_feature_request_success_preserves_feature_gates(self):
         outcome = route_intake_to_governed_work(
             labels=["feature-request"],
@@ -379,6 +399,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
             ),
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_end_to_end_fails_closed_for_ambiguous_or_unclassified_intake(self):
         for labels in ([], ["bug-fix", "feature-request"]):
             with self.subTest(labels=labels):
@@ -396,6 +417,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
                         ),
                     )
 
+    # validation-metadata: {"role": "helper"}
     def test_repository_owned_implementation_has_no_product_runtime_dependency(self):
         package = REPO_SRC / "issue_intake_governance_routing"
         for path in package.glob("*.py"):
@@ -408,6 +430,7 @@ class RepositoryOwnedIssueIntakeGovernanceRoutingTests(unittest.TestCase):
 
 
 
+# validation-metadata: {"role": "helper"}
 def run_issue_intake_governance_routing_tests(repo_root: pathlib.Path) -> None:
     if repo_root.resolve() != REPO_ROOT.resolve():
         raise AssertionError(

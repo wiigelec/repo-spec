@@ -216,7 +216,7 @@ def render_correspondence(spec: dict) -> list[str]:
     correspondence = spec["correspondence"]
     lines = ["## Correspondence", ""]
     lines.extend(render_correspondence_collection("Implementations", correspondence["implementations"], "id", ["id", "paths", "requirements"]))
-    lines.extend(render_correspondence_collection("Tests", correspondence["tests"], "id", ["id", "paths", "requirements"]))
+    lines.extend(render_correspondence_collection("Tests", correspondence["tests"], "id", ["id", "paths", "validation_package_refs"]))
     lines.extend(
         render_correspondence_collection(
             "Conformance",

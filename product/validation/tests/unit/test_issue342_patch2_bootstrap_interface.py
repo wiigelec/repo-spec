@@ -12,6 +12,7 @@ from initializer.validation import validate_and_normalize, validate_request
 
 
 class Issue342Patch2BootstrapInterfaceTests(unittest.TestCase):
+    # validation-metadata: {"role": "helper"}
     def test_destination_only_v2_request_is_canonical(self) -> None:
         ctx = validate_and_normalize(
             {"schema_version": "2", "destination": "./alpha-repo"},
@@ -29,6 +30,7 @@ class Issue342Patch2BootstrapInterfaceTests(unittest.TestCase):
             hashlib.sha256(request.canonical_request_bytes).hexdigest(),
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_old_bootstrap_fields_are_rejected(self) -> None:
         raw = {
             "schema_version": "2",
@@ -40,11 +42,13 @@ class Issue342Patch2BootstrapInterfaceTests(unittest.TestCase):
         }
         self.assertFalse(validate_request(raw, "/work").is_valid)
 
+    # validation-metadata: {"role": "helper"}
     def test_root_destination_is_rejected(self) -> None:
         self.assertFalse(
             validate_request({"schema_version": "2", "destination": "/"}, "/work").is_valid
         )
 
+    # validation-metadata: {"role": "helper"}
     def test_repo_spec_wrapper_and_cli_route_exist(self) -> None:
         wrapper = ROOT / "product/scripts/repo-spec"
         self.assertTrue(wrapper.exists())
