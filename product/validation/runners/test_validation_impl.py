@@ -263,16 +263,23 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
 
             test_id = mapping.get("id")
             paths = mapping.get("paths")
-            mapping_requirements = mapping.get("requirements")
+            validation_package_refs = mapping.get("validation_package_refs")
             if (
                 not isinstance(test_id, str)
                 or not test_id.startswith("test.")
                 or test_id in test_mappings
                 or not isinstance(paths, list)
                 or not paths
-                or not isinstance(mapping_requirements, list)
-                or not mapping_requirements
-                or not all(isinstance(req, str) and req for req in mapping_requirements)
+                or not isinstance(validation_package_refs, list)
+                or not validation_package_refs
+                or not all(
+                    isinstance(ref, dict)
+                    and set(ref) == {"spec_id", "requirement_id"}
+                    and ref.get("spec_id") == spec_id
+                    and isinstance(ref.get("requirement_id"), str)
+                    and ref["requirement_id"]
+                    for ref in validation_package_refs
+                )
             ):
                 return _invalid(
                     accepted_specs,
@@ -293,11 +300,28 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
                     )
                 normalized_paths.append(normalized)
 
+            normalized_refs = sorted(
+                {
+                    (ref["spec_id"], ref["requirement_id"])
+                    for ref in validation_package_refs
+                }
+            )
+            if len(normalized_refs) != len(validation_package_refs):
+                return _invalid(
+                    accepted_specs,
+                    evidence,
+                    f"test correspondence registration repeats a validation package ref: {spec_id}:{test_id}",
+                    classification=DISCOVERY,
+                )
+
             test_mappings[test_id] = {
                 "spec_id": spec_id,
                 "test_id": test_id,
                 "paths": sorted(set(normalized_paths)),
-                "requirements": sorted(set(mapping_requirements)),
+                "validation_package_refs": [
+                    {"spec_id": ref_spec_id, "requirement_id": requirement_id}
+                    for ref_spec_id, requirement_id in normalized_refs
+                ],
             }
 
         conformance_by_requirement: dict[str, dict[str, Any]] = {}
@@ -367,11 +391,14 @@ def _collect_applicability(repo_root: Path) -> dict[str, Any]:
                         f"covered conformance references unknown test mapping: {spec_id}:{requirement_id}:{test_id}",
                         classification=DISCOVERY,
                     )
-                if requirement_id not in mapping["requirements"]:
+                if {
+                    "spec_id": spec_id,
+                    "requirement_id": requirement_id,
+                } not in mapping["validation_package_refs"]:
                     return _invalid(
                         accepted_specs,
                         evidence,
-                        f"test mapping does not claim covered requirement: {spec_id}:{requirement_id}:{test_id}",
+                        f"test mapping does not resolve through covered validation package: {spec_id}:{requirement_id}:{test_id}",
                         classification=DISCOVERY,
                     )
                 referenced_test_ids.add(test_id)

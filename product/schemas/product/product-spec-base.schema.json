@@ -243,7 +243,7 @@
       "required": [
         "id",
         "paths",
-        "requirements"
+        "validation_package_refs"
       ],
       "properties": {
         "id": {
@@ -255,11 +255,13 @@
             "$ref": "#/$defs/repositoryPath"
           }
         },
-        "requirements": {
+        "validation_package_refs": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/requirementId"
-          }
+            "$ref": "#/$defs/validationPackageRef"
+          },
+          "minItems": 1,
+          "uniqueItems": true
         }
       }
     },
@@ -366,6 +368,22 @@
     "productSpecId": {
       "type": "string",
       "pattern": "^product\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+    },
+    "validationPackageRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spec_id",
+        "requirement_id"
+      ],
+      "properties": {
+        "spec_id": {
+          "$ref": "#/$defs/productSpecId"
+        },
+        "requirement_id": {
+          "$ref": "#/$defs/requirementId"
+        }
+      }
     }
   }
 }

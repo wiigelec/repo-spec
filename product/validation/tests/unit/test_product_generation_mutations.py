@@ -51,7 +51,7 @@ def accept_kernel(temp_repo: Path) -> None:
                         {
                             "id": "test.kernel",
                             "paths": ["product/validation/tests/unit/test_product_validation.py"],
-                            "requirements": ["KERNEL-001"],
+                            "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}],
                         }
                     ],
                     "conformance": [

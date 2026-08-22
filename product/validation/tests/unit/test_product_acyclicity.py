@@ -129,7 +129,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                     "correspondence",
                     {
                         "implementations": [{"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}],
-                        "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}],
                         "conformance": [
                             {
                                 "requirement_id": "KERNEL-001",
@@ -179,7 +179,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                     "correspondence",
                     {
                         "implementations": [{"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}],
-                        "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}],
                         "conformance": [
                             {
                                 "requirement_id": "KERNEL-001",
@@ -232,7 +232,7 @@ def run_product_acyclicity_tests(repo_root: Path) -> None:
                     "correspondence",
                     {
                         "implementations": [{"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}],
-                        "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}],
+                        "tests": [{"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}],
                         "conformance": [
                             {
                                 "requirement_id": "KERNEL-001",

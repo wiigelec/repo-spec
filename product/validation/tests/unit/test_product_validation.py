@@ -43,7 +43,7 @@ def accept_kernel(temp_repo: Path) -> None:
                         {"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "tests": [
-                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}
+                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}
                     ],
                     "conformance": [
                         {
@@ -439,7 +439,7 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
             temp_repo / "product/specs/product/level-0/kernel.json",
             lambda spec: (
                 spec["correspondence"]["implementations"].append({"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}),
-                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}),
+                spec["correspondence"]["tests"].append({"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}),
                 spec,
             )[-1],
         )
@@ -603,10 +603,10 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         accept_kernel(temp_repo)
         mutate_json(
             temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: (spec["correspondence"]["tests"][0].pop("requirements"), spec)[1],
+            lambda spec: (spec["correspondence"]["tests"][0].pop("validation_package_refs"), spec)[1],
         )
         deactivate_product_plans(temp_repo)
-        expect_failure("missing test mapping requirements", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "missing required property requirements")
+        expect_failure("missing test mapping validation package refs", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "missing required property validation_package_refs")
         temp_repo = create_repo_fixture(repo_root, temp_root, clone_index)
         clone_index += 1
         install_fixture(temp_repo, "manifest-valid.json", "product/specs/product/manifest.json")
@@ -740,7 +740,7 @@ def run_product_correspondence_tests(repo_root: Path) -> None:
         (temp_repo / "product/src/test_unused.py").write_text("pass\n")
         mutate_json(
             temp_repo / "product/specs/product/level-1/primitive.json",
-            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/src/test_unused.py"], "requirements": ["PRIMITIVE-001"]}) or spec,
+            lambda spec: spec["correspondence"]["tests"].append({"id": "test.unused", "paths": ["product/src/test_unused.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "PRIMITIVE-001"}]}) or spec,
         )
         deactivate_product_plans(temp_repo)
         expect_failure("unused test mapping", lambda: validate_product_phases(temp_repo, ('product correspondence inventory', 'product conformance completeness')), "unreachable test mappings")

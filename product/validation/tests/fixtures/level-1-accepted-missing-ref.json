@@ -49,8 +49,11 @@
         "paths": [
           "product/validation/tests/unit/test_destination_promotion.py"
         ],
-        "requirements": [
-          "PRIMITIVE-001"
+        "validation_package_refs": [
+          {
+            "spec_id": "product.primitive",
+            "requirement_id": "PRIMITIVE-001"
+          }
         ]
       }
     ],

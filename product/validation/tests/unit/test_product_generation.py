@@ -44,7 +44,7 @@ def accept_kernel(temp_repo: Path) -> None:
                         {"id": "impl.kernel", "paths": ["product/src/docgen.py"], "requirements": ["KERNEL-001"]}
                     ],
                     "tests": [
-                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "requirements": ["KERNEL-001"]}
+                        {"id": "test.kernel", "paths": ["product/validation/tests/unit/test_product_validation.py"], "validation_package_refs": [{"spec_id": spec["spec_id"], "requirement_id": "KERNEL-001"}]}
                     ],
                     "conformance": [
                         {
