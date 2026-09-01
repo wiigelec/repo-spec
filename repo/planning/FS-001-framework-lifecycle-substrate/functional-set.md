@@ -1,7 +1,7 @@
 ---
 functional_set: FS-001
 title: Framework Lifecycle Substrate
-design_revision: c1012693f67584ec723c572fcce8d4c5ae7e12a8
+design_revision: 36735bd44e47b70f97221d61033e2affca9b9616 
 ---
 
 # FS-001 — Framework Lifecycle Substrate
@@ -14,7 +14,7 @@ Establish the minimum durable repository substrate needed to operate the redesig
 
 Planning is bound to Design revision:
 
-`c1012693f67584ec723c572fcce8d4c5ae7e12a8`
+`36735bd44e47b70f97221d61033e2affca9b9616`
 
 Selected Design scope:
 

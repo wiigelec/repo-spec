@@ -24,7 +24,7 @@ The canonical active Design corpus shall remain human-readable Markdown under `r
 
 **Classification: M**
 
-FS-001 Planning shall identify exact Design revision `c1012693f67584ec723c572fcce8d4c5ae7e12a8`.
+FS-001 Planning shall identify exact Design revision `36735bd44e47b70f97221d61033e2affca9b9616`.
 
 ### FS-001-NR-003 — Planning Artifact Separation
 

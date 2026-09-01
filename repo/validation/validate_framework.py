@@ -37,7 +37,7 @@ REQ_HEADING_RE = re.compile(r"^### (FS-\d{3}-NR-\d{3}) — .+$", re.MULTILINE)
 ALL_H3_RE = re.compile(r"^### (.+)$", re.MULTILINE)
 
 # FS-001 has an explicit mechanical requirement naming the exact Design revision.
-FS001_DESIGN_REVISION = "c1012693f67584ec723c572fcce8d4c5ae7e12a8"
+FS001_DESIGN_REVISION = "36735bd44e47b70f97221d61033e2affca9b9616"
 
 
 def fail(message: str) -> None:
