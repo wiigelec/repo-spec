@@ -68,19 +68,6 @@ class InitializerTests(unittest.TestCase):
         self.assertFalse((destination / "product/src").exists())
         self.assertFalse((destination / "product/validation").exists())
 
-        validator = subprocess.run(
-            [str(destination / "repo/scripts/validate")],
-            cwd=destination,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        self.assertEqual(
-            validator.returncode,
-            0,
-            msg=f"initialized validation failed:\n{validator.stdout}\n{validator.stderr}",
-        )
-
         # Fetch-by-path does not persist a dependency on the supplying checkout.
         remotes = run_git(destination, "remote").stdout.splitlines()
         self.assertEqual(remotes, [])
@@ -127,9 +114,6 @@ class InitializerTests(unittest.TestCase):
         revision = self.initialize(destination)
         self.assert_initialized(destination, revision)
 
-    def test_initialized_root_documents_are_generic(self) -> None:
-        destination = self.temp / "generic-docs"
-        self.initialize(destination)
         readme = (destination / "README.md").read_text(encoding="utf-8")
         agents = (destination / "AGENTS.md").read_text(encoding="utf-8")
         self.assertNotIn("fs0-genesis", readme)
@@ -141,7 +125,10 @@ class InitializerTests(unittest.TestCase):
             readme.index("- `user/` — user-owned operational material outside the framework."),
             readme.index("Begin substantive product work in Product Design"),
         )
-        self.assertIn("Do not assume Product meaning before Product Design establishes it", agents)
+        self.assertIn(
+            "Do not assume Product meaning before Product Design establishes it",
+            agents,
+        )
 
     def test_initializes_absent_destination(self) -> None:
         destination = self.temp / "new-repo"

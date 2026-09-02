@@ -32,7 +32,6 @@ TASK_TESTS = {
     ],
     "initialized-state": [
         "test_initialized_repository_state",
-        "test_initialized_root_documents_are_generic",
     ],
     "validation-boundary": [
         "test_validation_failure_does_not_promote_destination",
