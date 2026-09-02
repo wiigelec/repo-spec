@@ -547,18 +547,50 @@ def task_framework_regression() -> None:
         planning.mkdir()
         specs.mkdir()
 
+        foreign = root / "foreign"
+        foreign.mkdir()
+        subprocess.run(
+            ["git", "init", "--initial-branch=main"],
+            cwd=foreign,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        subprocess.run(["git", "config", "user.name", "repo-spec test"], cwd=foreign, check=True)
+        subprocess.run(["git", "config", "user.email", "repo-spec-test@local.invalid"], cwd=foreign, check=True)
+        (foreign / "design.md").write_text("foreign design\n", encoding="utf-8")
+        subprocess.run(["git", "add", "design.md"], cwd=foreign, check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "Foreign Design"],
+            cwd=foreign,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        foreign_revision = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=foreign,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        ).stdout.strip()
+
+        if git_commit_exists(foreign_revision):
+            fail("foreign Design commit unexpectedly exists in current repository")
+
         write_fixture_fs(
             planning,
             specs,
             "FS-998-fixture",
             "FS-998",
-            "0" * 40,
+            foreign_revision,
             "FS-998-NR-001",
             "M",
         )
         reqs = collect_requirements(planning, specs)
         if reqs != {"FS-998-NR-001": "M"}:
-            fail("portable non-local Design revision regression failed")
+            fail("portable foreign Design revision regression failed")
 
         fs_path = planning / "FS-998-fixture" / "functional-set.md"
         text = fs_path.read_text(encoding="utf-8").replace(
@@ -762,6 +794,12 @@ def task_framework_regression() -> None:
             fail("root Validation must pass when framework passes and product Validation is absent")
 
         product = product_scripts / "validate"
+        product.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        product.chmod(0o644)
+        completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if completed.returncode == 0:
+            fail("root Validation must fail when product Validation exists but is not executable")
+
         product.write_text("#!/bin/sh\nexit 7\n", encoding="utf-8")
         product.chmod(0o755)
         completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
