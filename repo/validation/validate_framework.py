@@ -16,6 +16,7 @@ DESIGN = ROOT / "repo" / "design"
 PLANNING_ROOT = ROOT / "repo" / "planning"
 SPECS_ROOT = ROOT / "repo" / "specs"
 MANIFEST = ROOT / "repo" / "validation" / "requirement-evaluation.json"
+FRAMEWORK_SOURCE_RECORD = ROOT / "repo" / "validation" / "framework-source.json"
 ENTRYPOINT = ROOT / "repo" / "scripts" / "validate"
 ROOT_ENTRYPOINT = ROOT / "scripts" / "validate"
 README = ROOT / "README.md"
@@ -246,6 +247,37 @@ def collect_requirements(
     return requirements
 
 
+def collect_spec_requirement_state(
+    specs_root: Path = SPECS_ROOT,
+) -> tuple[dict[str, str], set[str]]:
+    if not specs_root.is_dir():
+        fail("repo/specs must exist")
+    requirements: dict[str, str] = {}
+    inactive: set[str] = set()
+    seen_fs: set[str] = set()
+    for spec_path in sorted(specs_root.glob("FS-*.md")):
+        match = FS_BASENAME_RE.fullmatch(spec_path.stem)
+        if not match:
+            fail(f"invalid Functional Set specification name: {spec_path.name}")
+        fs_id = match.group(1)
+        if fs_id in seen_fs:
+            fail(f"duplicate Functional Set specification identity: {fs_id}")
+        seen_fs.add(fs_id)
+        parsed, parsed_inactive = parse_specification(spec_path, fs_id)
+        overlap = set(requirements) & set(parsed)
+        if overlap:
+            fail(f"duplicate normative requirement identities across specifications: {sorted(overlap)}")
+        requirements.update(parsed)
+        inactive.update(parsed_inactive)
+    if not requirements:
+        fail("repo/specs contains no normative requirements")
+    return requirements, inactive
+
+
+def installed_framework(source_record: Path = FRAMEWORK_SOURCE_RECORD) -> bool:
+    return source_record.is_file()
+
+
 def load_manifest(path: Path = MANIFEST) -> dict:
     try:
         data = json.loads(read(path))
@@ -367,11 +399,16 @@ def task_repository_structure() -> None:
 
 
 def task_planning_structure() -> None:
+    if installed_framework():
+        return
     collect_requirements()
 
 
 def task_manifest_integrity() -> None:
-    requirements, inactive = collect_requirement_state()
+    if installed_framework():
+        requirements, inactive = collect_spec_requirement_state()
+    else:
+        requirements, inactive = collect_requirement_state()
     required_bindings = {
         req
         for req, classification in requirements.items()
@@ -416,7 +453,10 @@ def task_docs_alignment() -> None:
     for term in ("Design", "Planning", "Build", "Validation", "Semantic Review", "Acceptance"):
         if term not in readme:
             fail(f"README missing lifecycle term: {term}")
-    for value in ("repo/design/", "repo/planning/", "repo/specs/", "product/", "scripts/validate", "repo/scripts/validate", "main"):
+    active_surfaces = ["repo/design/", "repo/specs/", "product/", "scripts/validate", "repo/scripts/validate", "main"]
+    if not installed_framework():
+        active_surfaces.append("repo/planning/")
+    for value in active_surfaces:
         if value not in readme:
             fail(f"README missing active surface: {value}")
     for route in ("→ **Design**", "→ **Planning**", "→ **Build**"):
@@ -811,6 +851,25 @@ def task_framework_regression() -> None:
         completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if completed.returncode != 0:
             fail("root Validation must pass when framework and product Validation pass")
+
+    # Installed framework snapshots may omit framework-development Planning history.
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        specs = root / "specs"
+        specs.mkdir()
+        source_record = root / "framework-source.json"
+        source_record.write_text("{}\n", encoding="utf-8")
+        (specs / "FS-998-fixture.md").write_text(
+            "# FS-998 — Fixture\n\n"
+            "### FS-998-NR-001 — Fixture requirement\n\n"
+            "**Classification: M**\n\nFixture obligation.\n",
+            encoding="utf-8",
+        )
+        if not installed_framework(source_record):
+            fail("installed framework source record regression failed")
+        requirements, inactive = collect_spec_requirement_state(specs)
+        if requirements != {"FS-998-NR-001": "M"} or inactive:
+            fail("installed framework spec-only requirement regression failed")
 
     # Retired I evaluation classification is invalid.
     with tempfile.TemporaryDirectory() as tmp:

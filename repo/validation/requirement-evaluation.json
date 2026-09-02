@@ -297,6 +297,14 @@
       "tasks": [
         "docs-alignment"
       ]
+    },
+    {
+      "requirement": "FS-004-NR-012",
+      "tasks": [
+        "planning-structure",
+        "manifest-integrity",
+        "framework-regression"
+      ]
     }
   ]
 }
