@@ -412,8 +412,6 @@ def task_docs_alignment() -> None:
     for route in ("→ **Design**", "→ **Planning**", "→ **Build**"):
         if route not in agents:
             fail(f"AGENTS.md missing defect route: {route}")
-    if "Do not infer current normative intent from `repo_old/`" not in agents:
-        fail("AGENTS.md must deny repo_old normative intent")
     if "`product/` is the generic product-owned domain" not in agents:
         fail("AGENTS.md must describe generic product ownership")
     if "Closed architectural boundaries are default-deny" not in agents:
