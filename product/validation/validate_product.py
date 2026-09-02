@@ -23,15 +23,17 @@ TASK_TESTS = {
             "test_refuses_dirty_initializer_source_material",
         "test_accepts_linked_git_worktree_as_supplying_checkout",
         "test_source_revision_matches_current_supplying_commit",
-        "test_explicit_test_seam_allows_unaccepted_feature_revision",
+        "test_internal_test_seam_allows_unaccepted_feature_revision",
     ],
     "destination-safety": [
         "test_initializes_absent_destination",
         "test_initializes_existing_empty_directory",
         "test_refuses_nonempty_destination_without_deleting_material",
+        "test_refuses_symlink_destination_without_mutating_target",
     ],
     "initialized-state": [
         "test_initialized_repository_state",
+        "test_initialized_repository_validates_after_source_checkout_removed",
     ],
     "validation-boundary": [
         "test_validation_failure_does_not_promote_destination",

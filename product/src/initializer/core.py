@@ -150,14 +150,18 @@ def _verify_supplying_checkout(
 def _verify_destination(destination: Path) -> tuple[Path, bool]:
     destination = destination.expanduser()
     if not destination.is_absolute():
-        destination = (Path.cwd() / destination).resolve()
-    else:
-        destination = destination.resolve()
+        destination = Path.cwd() / destination
 
+    # Check the user-selected destination itself before resolving it. Resolving
+    # first would erase the fact that the selected path is a symlink.
+    if destination.is_symlink():
+        raise InitializationError("destination exists but is not an ordinary directory")
+
+    destination = destination.resolve()
     existed = destination.exists()
 
     if existed:
-        if destination.is_symlink() or not destination.is_dir():
+        if not destination.is_dir():
             raise InitializationError("destination exists but is not an ordinary directory")
         try:
             next(destination.iterdir())

@@ -45,8 +45,11 @@ class InitializerTests(unittest.TestCase):
         self.tempdir.cleanup()
 
     def initialize(self, destination: Path, **kwargs) -> str:
+        source = self._make_clean_candidate_source(
+            f"candidate-source-{destination.name}"
+        )
         return initialize_repository(
-            source_root=ROOT,
+            source_root=source,
             destination=destination,
             require_accepted=False,
             **kwargs,
@@ -152,15 +155,36 @@ class InitializerTests(unittest.TestCase):
 
         self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep\n")
 
+    def test_refuses_symlink_destination_without_mutating_target(self) -> None:
+        target = self.temp / "symlink-target"
+        target.mkdir()
+        destination = self.temp / "symlink-destination"
+        destination.symlink_to(target, target_is_directory=True)
+
+        with self.assertRaisesRegex(
+            InitializationError,
+            "destination exists but is not an ordinary directory",
+        ):
+            self.initialize(destination)
+
+        self.assertTrue(destination.is_symlink())
+        self.assertEqual(list(target.iterdir()), [])
+
     def test_refuses_dirty_initializer_source_material(self):
-        source = ROOT / "product" / "src" / "initializer" / "core.py"
-        original = source.read_text(encoding="utf-8")
-        try:
-            source.write_text(original + "\n# dirty initializer source test\n", encoding="utf-8")
-            with self.assertRaises(InitializationError):
-                self.initialize(self.temp / "dirty-initializer-source")
-        finally:
-            source.write_text(original, encoding="utf-8")
+        source = self._make_clean_candidate_source("dirty-initializer-source")
+        candidate = source / "product" / "src" / "initializer" / "core.py"
+        candidate.write_text(
+            candidate.read_text(encoding="utf-8")
+            + "\n# dirty initializer source test\n",
+            encoding="utf-8",
+        )
+
+        with self.assertRaises(InitializationError):
+            initialize_repository(
+                source_root=source,
+                destination=self.temp / "dirty-initializer-result",
+                require_accepted=False,
+            )
 
     def test_refuses_dirty_supplying_framework_material(self) -> None:
         source = self.temp / "dirty-source"
@@ -183,75 +207,104 @@ class InitializerTests(unittest.TestCase):
                 require_accepted=False,
             )
 
-    def test_normal_cli_refuses_unaccepted_feature_revision(self) -> None:
-        current = run_git(ROOT, "rev-parse", "HEAD").stdout.strip()
-        accepted = run_git(
-            ROOT,
-            "merge-base",
-            "--is-ancestor",
-            current,
-            "refs/heads/main",
-            check=False,
+    def _make_clean_candidate_source(self, name: str) -> Path:
+        source = self.temp / name
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
-        if accepted.returncode == 0:
-            self.skipTest("current test checkout is already accepted in local main history")
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+        run_git(source, "switch", "-c", "candidate")
 
+        # Commit the current candidate implementation into the temporary source.
+        # This lets pre-commit Product Validation exercise the candidate while
+        # preserving the initializer's source-cleanliness contract.
+        for rel in (
+            Path("product/src/initializer/cli.py"),
+            Path("product/src/initializer/core.py"),
+            Path("product/scripts/repo-spec"),
+        ):
+            target = source / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, target)
+
+        run_git(source, "add", "-A")
+        staged = run_git(source, "diff", "--cached", "--quiet", check=False)
+        if staged.returncode == 1:
+            run_git(source, "commit", "-m", "Install candidate initializer implementation")
+        elif staged.returncode != 0:
+            raise AssertionError("could not evaluate candidate source changes")
+        return source
+
+    def _make_unaccepted_candidate_source(self, name: str) -> Path:
+        source = self.temp / name
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+        base = run_git(source, "rev-parse", "HEAD").stdout.strip()
+        run_git(source, "branch", "-f", "main", base)
+        run_git(source, "switch", "-c", "candidate")
+
+        # Install the candidate implementation under test into a source whose
+        # HEAD will deliberately not be reachable from its local main.
+        for rel in (
+            Path("product/src/initializer/cli.py"),
+            Path("product/src/initializer/core.py"),
+            Path("product/scripts/repo-spec"),
+        ):
+            target = source / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, target)
+
+        marker = source / "product/src/initializer/.candidate-test"
+        marker.write_text("candidate\n", encoding="utf-8")
+        run_git(source, "add", "-A")
+        run_git(source, "commit", "-m", "Create unaccepted initializer candidate")
+        return source
+
+    def test_normal_cli_refuses_unaccepted_feature_revision(self) -> None:
+        source = self._make_unaccepted_candidate_source("unaccepted-cli-source")
         destination = self.temp / "cli-result"
+        env = os.environ.copy()
+        env["REPO_SPEC_ALLOW_UNACCEPTED_TEST_SOURCE"] = "1"
         completed = subprocess.run(
             [
-                str(ROOT / "product/scripts/repo-spec"),
+                str(source / "product/scripts/repo-spec"),
                 "init",
                 "--repo",
                 str(destination),
             ],
-            cwd=ROOT,
+            cwd=source,
+            env=env,
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
         self.assertNotEqual(completed.returncode, 0)
         self.assertIn("not established as accepted", completed.stderr)
+        self.assertNotIn("unaccepted test source revision", completed.stderr)
         self.assertFalse(destination.exists())
 
-    def test_explicit_test_seam_allows_unaccepted_feature_revision(self) -> None:
-        current = run_git(ROOT, "rev-parse", "HEAD").stdout.strip()
-        accepted = run_git(
-            ROOT,
-            "merge-base",
-            "--is-ancestor",
-            current,
-            "refs/heads/main",
-            check=False,
+    def test_internal_test_seam_allows_unaccepted_feature_revision(self) -> None:
+        source = self._make_unaccepted_candidate_source("unaccepted-internal-source")
+        destination = self.temp / "internal-test-seam"
+        revision = initialize_repository(
+            source_root=source,
+            destination=destination,
+            require_accepted=False,
         )
-        if accepted.returncode == 0:
-            self.skipTest("current test checkout is already accepted in local main history")
-
-        destination = self.temp / "cli-test-seam"
-        env = os.environ.copy()
-        env["REPO_SPEC_ALLOW_UNACCEPTED_TEST_SOURCE"] = "1"
-        completed = subprocess.run(
-            [
-                str(ROOT / "product/scripts/repo-spec"),
-                "init",
-                "--repo",
-                str(destination),
-            ],
-            cwd=ROOT,
-            env=env,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        self.assertEqual(
-            completed.returncode,
-            0,
-            msg=(
-                f"stdout:\n{completed.stdout}\n"
-                f"stderr:\n{completed.stderr}"
-            ),
-        )
-        self.assertIn("unaccepted test source revision", completed.stderr)
-        self.assertTrue(destination.exists())
+        self.assertEqual(revision, run_git(source, "rev-parse", "HEAD").stdout.strip())
+        self.assert_initialized(destination, revision)
 
     def test_validation_failure_does_not_promote_destination(self) -> None:
         destination = self.temp / "invalid-result"
@@ -265,15 +318,54 @@ class InitializerTests(unittest.TestCase):
         self.assertFalse(destination.exists())
 
     def test_source_revision_matches_current_supplying_commit(self) -> None:
+        source = self._make_clean_candidate_source("source-record-source")
         destination = self.temp / "source-record"
-        expected = run_git(ROOT, "rev-parse", "HEAD").stdout.strip()
-        observed = self.initialize(destination)
+        expected = run_git(source, "rev-parse", "HEAD").stdout.strip()
+        observed = initialize_repository(
+            source_root=source,
+            destination=destination,
+            require_accepted=False,
+        )
         self.assertEqual(observed, expected)
 
         record = json.loads(
             (destination / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
         )
         self.assertEqual(record["repo_spec_source_revision"], expected)
+
+    def test_initialized_repository_validates_after_source_checkout_removed(self) -> None:
+        source = self.temp / "independence-source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        destination = self.temp / "independence-result"
+        revision = initialize_repository(
+            source_root=source,
+            destination=destination,
+            require_accepted=False,
+        )
+        self.assert_initialized(destination, revision)
+
+        shutil.rmtree(source)
+        self.assertFalse(source.exists())
+
+        completed = subprocess.run(
+            [str(destination / "repo/scripts/validate")],
+            cwd=destination,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
+        )
 
 
 if __name__ == "__main__":
