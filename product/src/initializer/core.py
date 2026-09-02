@@ -80,7 +80,13 @@ def _verify_supplying_checkout(
 ) -> str:
     source_root = source_root.resolve()
 
-    if not (source_root / ".git").exists():
+    inside = _git(
+        source_root,
+        "rev-parse",
+        "--is-inside-work-tree",
+        check=False,
+    )
+    if inside.returncode != 0 or inside.stdout.strip() != "true":
         raise InitializationError("supplying source is not a Git working tree")
 
     observed_root = Path(_scalar(source_root, "rev-parse", "--show-toplevel")).resolve()

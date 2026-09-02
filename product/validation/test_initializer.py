@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "product" / "src"))
 
+from initializer.cli import build_parser  # noqa: E402
 from initializer.core import (  # noqa: E402
     FRAMEWORK_SOURCE_RECORD,
     GENERIC_PRODUCT_MARKER,
@@ -89,6 +90,41 @@ class InitializerTests(unittest.TestCase):
             run_git(destination, "cat-file", "-t", source_revision).stdout.strip(),
             "commit",
         )
+
+    def test_cli_surface_requires_destination_only(self) -> None:
+        parser = build_parser()
+        subparsers = next(
+            action for action in parser._actions
+            if action.__class__.__name__ == "_SubParsersAction"
+        )
+        init_parser = subparsers.choices["init"]
+        option_actions = [
+            action
+            for action in init_parser._actions
+            if action.option_strings and action.dest != "help"
+        ]
+        self.assertEqual(len(option_actions), 1)
+        self.assertEqual(option_actions[0].option_strings, ["--repo"])
+        self.assertTrue(option_actions[0].required)
+
+    def test_accepts_linked_git_worktree_as_supplying_checkout(self) -> None:
+        linked = self.temp / "linked-source"
+        run_git(ROOT, "worktree", "add", "--detach", str(linked), "HEAD")
+        try:
+            destination = self.temp / "linked-result"
+            revision = initialize_repository(
+                source_root=linked,
+                destination=destination,
+                require_accepted=False,
+            )
+            self.assert_initialized(destination, revision)
+        finally:
+            run_git(ROOT, "worktree", "remove", "--force", str(linked), check=False)
+
+    def test_initialized_repository_state(self) -> None:
+        destination = self.temp / "state-result"
+        revision = self.initialize(destination)
+        self.assert_initialized(destination, revision)
 
     def test_initializes_absent_destination(self) -> None:
         destination = self.temp / "new-repo"
