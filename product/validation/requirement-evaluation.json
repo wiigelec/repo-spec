@@ -93,6 +93,46 @@
         "destination-safety",
         "validation-boundary"
       ]
+    },
+    {
+      "requirement": "FS-002-NR-001",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-002",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-003",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-004",
+      "tasks": [
+        "initialized-state",
+        "source-integrity"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-005",
+      "tasks": [
+        "initialized-state",
+        "validation-boundary"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-006",
+      "tasks": [
+        "source-integrity",
+        "destination-safety",
+        "cli-surface"
+      ]
     }
   ]
 }

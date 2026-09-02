@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+sys.dont_write_bytecode = True
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "product" / "src"))
+
+from initializer.core import InitializationError, initialize_repository
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        prog="test-pre-merge",
+        description="Create a test repository from the current repo-spec candidate.",
+    )
+    parser.add_argument("--repo", required=True, help="destination repository path")
+    args = parser.parse_args()
+
+    destination = Path(args.repo)
+
+    try:
+        revision = initialize_repository(
+            source_root=ROOT,
+            destination=destination,
+            require_accepted=False,
+        )
+    except InitializationError as exc:
+        print(f"test-pre-merge: {exc}", file=sys.stderr)
+        return 1
+
+    print(f"Initialized pre-merge test repository from {revision}")
+    print(f"Destination: {destination.expanduser().resolve()}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

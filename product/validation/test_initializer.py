@@ -58,6 +58,8 @@ class InitializerTests(unittest.TestCase):
     def assert_initialized(self, destination: Path, source_revision: str) -> None:
         self.assertTrue((destination / ".git").is_dir())
         self.assertTrue((destination / "repo/scripts/validate").is_file())
+        self.assertTrue((destination / "scripts/validate").is_file())
+        self.assertFalse((destination / "repo/planning").exists())
         self.assertTrue((destination / GENERIC_PRODUCT_MARKER).is_file())
 
         record = json.loads(
@@ -71,15 +73,16 @@ class InitializerTests(unittest.TestCase):
         self.assertFalse((destination / "product/src").exists())
         self.assertFalse((destination / "product/validation").exists())
 
-        # Fetch-by-path does not persist a dependency on the supplying checkout.
         remotes = run_git(destination, "remote").stdout.splitlines()
         self.assertEqual(remotes, [])
 
-        # The exact source commit remains in the initialized repository history,
-        # so copied framework Planning Design bindings continue to resolve.
-        self.assertEqual(
-            run_git(destination, "cat-file", "-t", source_revision).stdout.strip(),
-            "commit",
+        head = run_git(destination, "rev-parse", "HEAD").stdout.strip()
+        roots = run_git(destination, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
+        self.assertEqual(roots, [head])
+        self.assertEqual(run_git(destination, "rev-list", "--count", "HEAD").stdout.strip(), "1")
+        self.assertNotEqual(
+            run_git(destination, "cat-file", "-e", f"{source_revision}^{{commit}}", check=False).returncode,
+            0,
         )
 
     def test_cli_surface_requires_destination_only(self) -> None:
@@ -356,7 +359,7 @@ class InitializerTests(unittest.TestCase):
         self.assertFalse(source.exists())
 
         completed = subprocess.run(
-            [str(destination / "repo/scripts/validate")],
+            [str(destination / "scripts/validate")],
             cwd=destination,
             text=True,
             stdout=subprocess.PIPE,

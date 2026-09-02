@@ -29,6 +29,7 @@ SUPPLYING_MATERIAL_PATHS = (
     "product/src",
     "product/scripts/repo-spec",
     "repo",
+    "scripts",
     "user/script-transfer-handoff.json",
 )
 
@@ -178,54 +179,87 @@ def _verify_destination(destination: Path) -> tuple[Path, bool]:
     return destination, existed
 
 
-def _remove_initializer_product(stage: Path) -> None:
-    product = stage / "product"
-    if product.exists():
-        shutil.rmtree(product)
+INSTALLED_MATERIAL_PATHS = (
+    Path(".github"),
+    Path("AGENTS.md"),
+    Path("LICENSE"),
+    Path("README.md"),
+    Path("repo"),
+    Path("scripts"),
+    Path("user/script-transfer-handoff.json"),
+)
+
+
+def _copy_installed_material(stage: Path, source_root: Path) -> None:
+    for rel in INSTALLED_MATERIAL_PATHS:
+        source = source_root / rel
+        if not source.exists():
+            if rel == Path("user/script-transfer-handoff.json"):
+                continue
+            raise InitializationError(f"supplying installed material missing: {rel}")
+        target = stage / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source.is_dir():
+            shutil.copytree(source, target)
+        else:
+            shutil.copy2(source, target)
+
+    planning = stage / "repo" / "planning"
+    if planning.exists():
+        shutil.rmtree(planning)
+
     marker = stage / GENERIC_PRODUCT_MARKER
     marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text("", encoding="utf-8")
 
 
-def _reduce_user_material(stage: Path) -> None:
-    user_root = stage / "user"
-    keep = {path.as_posix() for path in SEEDED_USER_PATHS}
-
-    if user_root.exists():
-        for path in sorted(user_root.rglob("*"), reverse=True):
-            if path.is_dir():
-                continue
-            rel = path.relative_to(stage).as_posix()
-            if rel not in keep:
-                path.unlink()
-
-        # Remove now-empty nested directories without removing user/ itself.
-        for path in sorted(
-            (p for p in user_root.rglob("*") if p.is_dir()),
-            key=lambda p: len(p.parts),
-            reverse=True,
-        ):
-            try:
-                path.rmdir()
-            except OSError:
-                pass
-
-    # The handoff is seed-if-present in the supplying accepted framework.
-    handoff = stage / "user/script-transfer-handoff.json"
-    if handoff.exists():
-        return
-    if user_root.exists():
-        try:
-            user_root.rmdir()
-        except OSError:
-            pass
-
-
 def _write_generic_root_documents(stage: Path) -> None:
     readme = stage / "README.md"
     agents = stage / "AGENTS.md"
-    readme.write_text('# Repository\n\nThis repository uses the repo-spec lifecycle framework.\n\n## Lifecycle\n\nWork proceeds through Design, Planning, Build, Validation, Semantic Review, and Acceptance.\n\n`main` represents accepted repository state.\n\n## Repository surfaces\n\n- `repo/design/` — canonical framework Design.\n- `repo/planning/` — durable framework Planning.\n- `repo/specs/` — canonical framework normative specifications.\n- `repo/scripts/validate` — canonical mechanical Validation entry point.\n- `product/` is the product-owned domain. Product meaning is established independently through Product Design.\n- `product/design/` — starting surface for Product Design.\n- `user/` — user-owned operational material outside the framework.\n\nBegin substantive product work in Product Design.\n\nThe exact repo-spec framework source revision used to initialize this repository is recorded in `repo/validation/framework-source.json`.\n\nValidation is mechanical evaluation only. Semantic Review evaluates meaning and fidelity. Acceptance is intentional integration of a satisfactory candidate into `main`.\n', encoding="utf-8")
-    agents.write_text('# Repository Agent Guidance\n\nThis file provides operational guidance and does not independently define normative meaning.\n\n## Lifecycle ownership\n\nA missing consequential semantic decision → **Design**.\n\nA Functional Set, Plan, normative requirement, scope, or evaluation-classification defect → **Planning**.\n\nAn implementation or mechanical-enforcement-construction defect → **Build**.\n\nValidation does not create Design meaning or normative requirements.\n\n## Repository ownership\n\n`repo/` is the reusable repository-development framework.\n\n`product/` is the generic product-owned domain. Do not assume Product meaning before Product Design establishes it.\n\n`user/` is user-owned operational material outside the framework.\n\nClosed architectural boundaries are default-deny. Do not add new direct children or files where the accepted architecture does not allow them.\n\n## Build discipline\n\nConsume reviewed Design and Planning. Prefer the simplest implementation that preserves their meaning and satisfies applicable normative requirements.\n\nDo not infer normative intent from implementation behavior.\n\n## Validation\n\nUse `repo/scripts/validate` as the canonical framework mechanical Validation entry point.\n\nMechanical Validation passing does not establish semantic acceptance.\n\n## Semantic Review and Acceptance\n\nSemantic Review evaluates the realized candidate against the complete applicable Design and Planning result.\n\n`main` represents accepted state. Acceptance occurs only through intentional integration of a satisfactory candidate into `main`.\n', encoding="utf-8")
+    readme.write_text(
+        "# Repository\n\n"
+        "This repository uses an installed repo-spec lifecycle framework.\n\n"
+        "## Lifecycle\n\n"
+        "Work proceeds through Design, Planning, Build, Validation, Semantic Review, and Acceptance.\n\n"
+        "`main` represents accepted repository state.\n\n"
+        "## Repository surfaces\n\n"
+        "- `repo/design/` — installed framework Design.\n"
+        "- `repo/specs/` — installed framework normative specifications.\n"
+        "- `repo/scripts/validate` — framework-owned mechanical Validation entry point.\n"
+        "- `scripts/validate` — repository-wide mechanical Validation entry point.\n"
+        "- `product/` is the product-owned domain. Product meaning is established independently through Product Design.\n"
+        "- `product/design/` — starting surface for Product Design.\n"
+        "- `user/` — user-owned operational material outside the framework.\n\n"
+        "Begin substantive product work in Product Design.\n\n"
+        "The exact repo-spec framework source revision used to initialize this repository is recorded in `repo/validation/framework-source.json`.\n\n"
+        "Validation is mechanical evaluation only. Semantic Review evaluates meaning and fidelity. Acceptance is intentional integration of a satisfactory candidate into `main`.\n",
+        encoding="utf-8",
+    )
+    agents.write_text(
+        "# Repository Agent Guidance\n\n"
+        "This file provides operational guidance and does not independently define normative meaning.\n\n"
+        "## Lifecycle ownership\n\n"
+        "A missing consequential semantic decision → **Design**.\n\n"
+        "A Functional Set, Plan, normative requirement, scope, or evaluation-classification defect → **Planning**.\n\n"
+        "An implementation or mechanical-enforcement-construction defect → **Build**.\n\n"
+        "Validation does not create Design meaning or normative requirements.\n\n"
+        "## Repository ownership\n\n"
+        "`repo/` is the reusable repository-development framework.\n\n"
+        "`product/` is the generic product-owned domain. Do not assume Product meaning before Product Design establishes it.\n\n"
+        "`scripts/` is the narrow repository-wide operational composition role.\n\n"
+        "`user/` is user-owned operational material outside the framework.\n\n"
+        "Closed architectural boundaries are default-deny. Do not add new direct children or files where the accepted architecture does not allow them.\n\n"
+        "## Build discipline\n\n"
+        "Consume reviewed Design and Planning. Prefer the simplest implementation that preserves their meaning and satisfies applicable normative requirements.\n\n"
+        "Do not infer normative intent from implementation behavior.\n\n"
+        "## Validation\n\n"
+        "Use `scripts/validate` as the repository-wide mechanical Validation entry point. `repo/scripts/validate` remains authoritative for framework mechanical checks.\n\n"
+        "Mechanical Validation passing does not establish semantic acceptance.\n\n"
+        "## Semantic Review and Acceptance\n\n"
+        "Semantic Review evaluates the realized candidate against the complete applicable Design and Planning result.\n\n"
+        "`main` represents accepted state. Acceptance occurs only through intentional integration of a satisfactory candidate into `main`.\n",
+        encoding="utf-8",
+    )
 
 def _write_source_record(stage: Path, source_revision: str) -> None:
     record = stage / FRAMEWORK_SOURCE_RECORD
@@ -246,21 +280,7 @@ def _write_source_record(stage: Path, source_revision: str) -> None:
 
 def _construct_stage(stage: Path, source_root: Path, source_revision: str) -> None:
     _run(("git", "init", "--initial-branch=main"), cwd=stage)
-    _run(
-        (
-            "git",
-            "fetch",
-            "--no-tags",
-            "--no-write-fetch-head",
-            str(source_root),
-            source_revision,
-        ),
-        cwd=stage,
-    )
-    _run(("git", "checkout", "-B", "main", source_revision), cwd=stage)
-
-    _remove_initializer_product(stage)
-    _reduce_user_material(stage)
+    _copy_installed_material(stage, source_root)
     _write_generic_root_documents(stage)
     _write_source_record(stage, source_revision)
 
@@ -287,14 +307,14 @@ def _construct_stage(stage: Path, source_root: Path, source_revision: str) -> No
 
 
 def _validate_stage(stage: Path) -> None:
-    validator = stage / "repo/scripts/validate"
+    validator = stage / "scripts/validate"
     if not validator.is_file():
-        raise InitializationError("initialized repository is missing canonical validation entrypoint")
+        raise InitializationError("initialized repository is missing repository-wide validation entrypoint")
     completed = _run((str(validator),), cwd=stage, check=False)
     if completed.returncode != 0:
         detail = completed.stderr.strip() or completed.stdout.strip()
         raise InitializationError(
-            "initialized repository canonical validation failed"
+            "initialized repository repository-wide validation failed"
             + (f": {detail}" if detail else "")
         )
 
