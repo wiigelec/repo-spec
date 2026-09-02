@@ -167,7 +167,7 @@ class InitializerTests(unittest.TestCase):
         try:
             source.write_text(original + "\n# dirty initializer source test\n", encoding="utf-8")
             with self.assertRaises(InitializationError):
-                self.initialize(self.root / "dirty-initializer-source")
+                self.initialize(self.temp / "dirty-initializer-source")
         finally:
             source.write_text(original, encoding="utf-8")
 
