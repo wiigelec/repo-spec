@@ -22,6 +22,7 @@ TASK_TESTS = {
         "test_refuses_dirty_supplying_framework_material",
         "test_accepts_linked_git_worktree_as_supplying_checkout",
         "test_source_revision_matches_current_supplying_commit",
+        "test_explicit_test_seam_allows_unaccepted_feature_revision",
     ],
     "destination-safety": [
         "test_initializes_absent_destination",

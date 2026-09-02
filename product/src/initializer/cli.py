@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -27,11 +28,20 @@ def main(argv: list[str] | None = None) -> int:
     if args.command != "init":
         raise AssertionError(f"unhandled command: {args.command}")
 
+    allow_unaccepted_test_source = (
+        os.environ.get("REPO_SPEC_ALLOW_UNACCEPTED_TEST_SOURCE") == "1"
+    )
+    if allow_unaccepted_test_source:
+        print(
+            "WARNING: repo-spec init is using an unaccepted test source revision",
+            file=sys.stderr,
+        )
+
     try:
         revision = initialize_repository(
             source_root=_repo_root(),
             destination=Path(args.repo),
-            require_accepted=True,
+            require_accepted=not allow_unaccepted_test_source,
         )
     except InitializationError as exc:
         print(f"repo-spec init: {exc}", file=sys.stderr)

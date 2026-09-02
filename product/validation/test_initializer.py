@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -198,6 +199,46 @@ class InitializerTests(unittest.TestCase):
         self.assertNotEqual(completed.returncode, 0)
         self.assertIn("not established as accepted", completed.stderr)
         self.assertFalse(destination.exists())
+
+    def test_explicit_test_seam_allows_unaccepted_feature_revision(self) -> None:
+        current = run_git(ROOT, "rev-parse", "HEAD").stdout.strip()
+        accepted = run_git(
+            ROOT,
+            "merge-base",
+            "--is-ancestor",
+            current,
+            "refs/heads/main",
+            check=False,
+        )
+        if accepted.returncode == 0:
+            self.skipTest("current test checkout is already accepted in local main history")
+
+        destination = self.temp / "cli-test-seam"
+        env = os.environ.copy()
+        env["REPO_SPEC_ALLOW_UNACCEPTED_TEST_SOURCE"] = "1"
+        completed = subprocess.run(
+            [
+                str(ROOT / "product/scripts/repo-spec"),
+                "init",
+                "--repo",
+                str(destination),
+            ],
+            cwd=ROOT,
+            env=env,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=(
+                f"stdout:\n{completed.stdout}\n"
+                f"stderr:\n{completed.stderr}"
+            ),
+        )
+        self.assertIn("unaccepted test source revision", completed.stderr)
+        self.assertTrue(destination.exists())
 
     def test_validation_failure_does_not_promote_destination(self) -> None:
         destination = self.temp / "invalid-result"
