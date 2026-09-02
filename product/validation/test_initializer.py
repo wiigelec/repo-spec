@@ -252,6 +252,7 @@ class InitializerTests(unittest.TestCase):
         run_git(source, "config", "user.name", "repo-spec test")
         run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
         base = run_git(source, "rev-parse", "HEAD").stdout.strip()
+        run_git(source, "switch", "--detach", base)
         run_git(source, "branch", "-f", "main", base)
         run_git(source, "switch", "-c", "candidate")
 
