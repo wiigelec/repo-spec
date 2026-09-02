@@ -33,5 +33,5 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
 
-      - name: Run canonical Validation
-        run: ./repo/scripts/validate
+      - name: Run repository-wide Validation
+        run: ./scripts/validate
