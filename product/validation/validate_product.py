@@ -20,6 +20,7 @@ TASK_TESTS = {
     ],
     "source-integrity": [
         "test_refuses_dirty_supplying_framework_material",
+            "test_refuses_dirty_initializer_source_material",
         "test_accepts_linked_git_worktree_as_supplying_checkout",
         "test_source_revision_matches_current_supplying_commit",
         "test_explicit_test_seam_allows_unaccepted_feature_revision",
@@ -31,6 +32,7 @@ TASK_TESTS = {
     ],
     "initialized-state": [
         "test_initialized_repository_state",
+        "test_initialized_root_documents_are_generic",
     ],
     "validation-boundary": [
         "test_validation_failure_does_not_promote_destination",

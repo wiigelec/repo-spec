@@ -127,6 +127,18 @@ class InitializerTests(unittest.TestCase):
         revision = self.initialize(destination)
         self.assert_initialized(destination, revision)
 
+    def test_initialized_root_documents_are_generic(self) -> None:
+        destination = self.temp / "generic-docs"
+        self.initialize(destination)
+        readme = (destination / "README.md").read_text(encoding="utf-8")
+        agents = (destination / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertNotIn("fs0-genesis", readme)
+        self.assertNotIn("repo_old/", readme)
+        self.assertNotIn("repo_old/", agents)
+        self.assertIn("product/` is the product-owned domain", readme)
+        self.assertIn("Begin substantive product work in Product Design", readme)
+        self.assertIn("Do not assume Product meaning before Product Design establishes it", agents)
+
     def test_initializes_absent_destination(self) -> None:
         destination = self.temp / "new-repo"
         revision = self.initialize(destination)
@@ -148,6 +160,16 @@ class InitializerTests(unittest.TestCase):
             self.initialize(destination)
 
         self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep\n")
+
+    def test_refuses_dirty_initializer_source_material(self):
+        source = self.source_root / "product" / "src" / "initializer" / "core.py"
+        original = source.read_text(encoding="utf-8")
+        try:
+            source.write_text(original + "\n# dirty initializer source test\n", encoding="utf-8")
+            with self.assertRaises(InitializationError):
+                self.initialize(self.root / "dirty-initializer-source")
+        finally:
+            source.write_text(original, encoding="utf-8")
 
     def test_refuses_dirty_supplying_framework_material(self) -> None:
         source = self.temp / "dirty-source"

@@ -17,6 +17,8 @@ FRAMEWORK_SOURCE_RECORD = Path("repo/validation/framework-source.json")
 GENERIC_PRODUCT_MARKER = Path("product/design/.gitkeep")
 SEEDED_USER_PATHS = (Path("user/script-transfer-handoff.json"),)
 
+GENERIC_ROOT_DOCUMENTS = {'README.md': '# Repository\n\nThis repository uses the repo-spec lifecycle framework to develop a product whose meaning is owned by `product/`.\n\n## Lifecycle\n\nWork progresses through Design, Planning, Build, Validation, Semantic Review, and Acceptance.\n\n- `repo/` contains the reusable repository lifecycle framework.\n- `product/` is the product-owned domain for this repository.\n- `user/` contains user-owned operational material outside framework and product semantics.\n- `.github/` contains repository automation such as canonical Validation delegation.\n\nProduct meaning is not supplied by the framework. Begin substantive product work in Product Design under `product/design/`.\n\n## Validation\n\nRun:\n\n```bash\nrepo/scripts/validate\n```\n\nMechanical Validation checks mechanically decidable obligations. Passing Validation does not establish semantic completeness or Acceptance.\n\n## Accepted state\n\nDevelopment branches contain candidate work. `main` represents accepted repository state.\n\nA candidate becomes eligible for Acceptance only after required mechanical Validation passes and required Semantic Review converges.\n\n## Framework source\n\nThe exact repo-spec framework source revision used to initialize this repository is maintained in:\n\n`repo/validation/framework-source.json`\n\n## License\n\nSee `LICENSE`.\n', 'AGENTS.md': '# Agent and Contributor Guidance\n\nThis file is operational guidance. It does not create Product Design meaning or normative requirements and cannot override reviewed Design, Planning, or normative specifications.\n\n## Responsibility boundaries\n\n- Design owns semantic meaning and intent.\n- Planning owns Functional Set scope, consequential technical intent, normative requirements, and evaluation classification.\n- Build owns implementation correctness and construction of required mechanical enforcement.\n- Validation executes mechanically decidable checks; it does not create normative intent.\n- Semantic Review checks fidelity, completeness, drift, and unnecessary complexity.\n- Acceptance intentionally integrates a satisfactory candidate into `main`.\n\nRoute defects to the stage that owns the defective decision rather than inventing meaning downstream.\n\n## Ownership and structure\n\n- `repo/` is the reusable repository/framework ownership domain.\n- `product/` is the product-owned domain for this repository.\n- `user/` is user-owned operational material.\n- Closed architectural boundaries are default-deny.\n- Do not assume Product meaning before Product Design establishes it.\n\n## Build discipline\n\nBuild consumes reviewed Planning, its normative specification, and its bound Design revision.\n\nPrefer the simplest implementation that satisfies reviewed Planning. Do not add machinery merely because a similar mechanism existed elsewhere or historically.\n\n## Validation\n\nUse:\n\n```bash\nrepo/scripts/validate\n```\n\nas the canonical mechanical Validation entry point.\n\nDo not create a second normative validator in CI or workflow glue. Passing Validation proves only the mechanically checked conditions.\n\n## Semantic Review and Acceptance\n\nAfter Build and required Validation, review against the complete Planning result, normative specification, and Design revision it consumed.\n\nA satisfactory development candidate becomes accepted only through intentional integration into `main`.\n'}
+
 # These are the maintained source surfaces used to construct the initialized
 # repository. Product-owned initializer state is intentionally absent.
 SUPPLYING_MATERIAL_PATHS = (
@@ -25,6 +27,8 @@ SUPPLYING_MATERIAL_PATHS = (
     "AGENTS.md",
     "LICENSE",
     "README.md",
+    "product/src",
+    "product/scripts/repo-spec",
     "repo",
     "user/script-transfer-handoff.json",
 )
@@ -214,6 +218,12 @@ def _reduce_user_material(stage: Path) -> None:
             pass
 
 
+def _write_generic_root_documents(stage: Path) -> None:
+    readme = stage / "README.md"
+    agents = stage / "AGENTS.md"
+    readme.write_text('# Repository\n\nThis repository uses the repo-spec lifecycle framework.\n\n## Lifecycle\n\nWork proceeds through Design, Planning, Build, Validation, Semantic Review, and Acceptance.\n\n`main` represents accepted repository state.\n\n## Repository surfaces\n\n- `repo/design/` — canonical framework Design.\n- `repo/planning/` — durable framework Planning.\n- `repo/specs/` — canonical framework normative specifications.\n- `repo/scripts/validate` — canonical mechanical Validation entry point.\n- `product/` — product-owned domain. Product meaning is established independently through Product Design.\n- `product/design/` — starting surface for Product Design.\n- `user/` — user-owned operational material outside the framework.\n\nThe exact repo-spec framework source revision used to initialize this repository is recorded in `repo/validation/framework-source.json`.\n\nValidation is mechanical evaluation only. Semantic Review evaluates meaning and fidelity. Acceptance is intentional integration of a satisfactory candidate into `main`.\n', encoding="utf-8")
+    agents.write_text('# Repository Agent Guidance\n\nThis file provides operational guidance and does not independently define normative meaning.\n\n## Lifecycle ownership\n\nIf a consequential semantic decision is missing, return to **Design**.\n\nA Functional Set, Plan, normative requirement, scope, or evaluation-classification defect → **Planning**.\n\nAn implementation or mechanical-enforcement-construction defect → **Build**.\n\nValidation does not create Design meaning or normative requirements.\n\n## Repository ownership\n\n`repo/` is the reusable repository-development framework.\n\n`product/` is the generic product-owned domain. Do not assume Product meaning before Product Design establishes it.\n\n`user/` is user-owned operational material outside the framework.\n\nClosed architectural boundaries are default-deny. Do not add new direct children or files where the accepted architecture does not allow them.\n\n## Build discipline\n\nConsume reviewed Design and Planning. Prefer the simplest implementation that preserves their meaning and satisfies applicable normative requirements.\n\nDo not infer normative intent from implementation behavior.\n\n## Validation\n\nUse `repo/scripts/validate` as the canonical framework mechanical Validation entry point.\n\nMechanical Validation passing does not establish semantic acceptance.\n\n## Semantic Review and Acceptance\n\nSemantic Review evaluates the realized candidate against the complete applicable Design and Planning result.\n\n`main` represents accepted state. Acceptance occurs only through intentional integration of a satisfactory candidate into `main`.\n', encoding="utf-8")
+
 def _write_source_record(stage: Path, source_revision: str) -> None:
     record = stage / FRAMEWORK_SOURCE_RECORD
     record.parent.mkdir(parents=True, exist_ok=True)
@@ -248,6 +258,7 @@ def _construct_stage(stage: Path, source_root: Path, source_revision: str) -> No
 
     _remove_initializer_product(stage)
     _reduce_user_material(stage)
+    _write_generic_root_documents(stage)
     _write_source_record(stage, source_revision)
 
     _run(("git", "add", "-A"), cwd=stage)
