@@ -1,4 +1,4 @@
-# fs0-genesis
+# repo-spec
 
 This repository develops a small repository lifecycle for turning human intent into correct working software while keeping the process understandable and bounded.
 
@@ -20,25 +20,41 @@ The lifecycle describes responsibilities and control flow. It does not require e
 - `repo/` — reusable repository/framework ownership domain.
 - `repo/design/` — canonical human-readable framework Design corpus.
 - `repo/planning/` — durable framework Functional Set scope and technical Planning artifacts.
-- `repo/specs/` — canonical human-readable, machine-parseable framework normative specifications.
-- `product/` — generic product-owned domain for whatever product a repository develops; its product meaning is not defined by the framework.
-- `repo/validation/requirement-evaluation.json` — current mechanical requirement-to-Validation-task bindings.
-- `repo/scripts/validate` — canonical mechanical Validation entry point.
+- `repo/specs/` — canonical framework normative specifications.
+- `repo/scripts/validate` — canonical framework-owned mechanical Validation entry point.
+- `product/` — generic product-owned domain for whatever product a repository develops.
+- `product/scripts/validate` — product-owned mechanical Validation entry point when the product has one.
+- `scripts/` — narrow repository-root operational composition role; it owns no framework or product normative meaning.
+- `scripts/validate` — repository-wide mechanical Validation entry point that composes applicable domain validators.
+- `repo/validation/requirement-evaluation.json` — current framework mechanical requirement-to-Validation-task bindings.
 - `user/` — user-owned operational material outside the repository framework.
 
-Planning artifacts preserve the exact Design revision they consumed. Normative specifications under `repo/specs/` are the normative source for requirement text and evaluation classification. Build, parsers, manifests, and Validation do not create new Design meaning or normative requirements merely through implementation behavior.
+Planning artifacts preserve the exact Design revision they consumed. A retained `design_revision` is an exact identifier of that consumed Design state; when framework Planning is carried into an independently rooted repository, the identifier does not imply that the originating Git object or supplier ancestry must exist locally.
+
+Normative specifications under `repo/specs/` are the normative source for requirement text and evaluation classification. Build, parsers, manifests, root operational scripts, and Validation do not create new Design meaning or normative requirements merely through implementation behavior.
 
 ## Validation
 
-Run:
+Run repository-wide Validation with:
+
+```bash
+scripts/validate
+```
+
+The root entry point first runs framework Validation and then runs product Validation when `product/scripts/validate` exists. Domain validators remain independently owned:
 
 ```bash
 repo/scripts/validate
+product/scripts/validate
 ```
 
-Validation checks mechanically decidable obligations. Passing Validation does not establish semantic completeness or Acceptance.
+A repository without product mechanical Validation may omit the product entry point. Passing Validation does not establish semantic completeness or Acceptance. CI delegates mechanical gating to `scripts/validate` rather than independently selecting or recreating domain checks.
 
-CI delegates mechanical gating to this same entry point rather than defining an independent set of normative predicates.
+## Portable repository history
+
+The reusable framework remains operational when installed into a repository with Git history independent from the framework-supplying repository.
+
+Preserved source or Design revision identifiers retain their exact historical meaning without requiring imported supplier commits, ancestry, remotes, grafts, or replace refs merely for ordinary lifecycle use.
 
 ## Accepted state
 

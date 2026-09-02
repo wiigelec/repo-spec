@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -15,7 +16,9 @@ DESIGN = ROOT / "repo" / "design"
 PLANNING_ROOT = ROOT / "repo" / "planning"
 SPECS_ROOT = ROOT / "repo" / "specs"
 MANIFEST = ROOT / "repo" / "validation" / "requirement-evaluation.json"
+FRAMEWORK_SOURCE_RECORD = ROOT / "repo" / "validation" / "framework-source.json"
 ENTRYPOINT = ROOT / "repo" / "scripts" / "validate"
+ROOT_ENTRYPOINT = ROOT / "scripts" / "validate"
 README = ROOT / "README.md"
 AGENTS = ROOT / "AGENTS.md"
 OLD_WORKFLOW = ROOT / ".github" / "workflows" / "fs0-conformance.yml"
@@ -215,9 +218,6 @@ def validate_functional_set(
             "40-character lowercase Git design_revision"
         )
     revision = revision_matches[0]
-    if not git_commit_exists(revision):
-        fail(f"{fs_id} Design revision does not resolve to a Git commit: {revision}")
-
     if fs_id == "FS-001" and revision != FS001_DESIGN_REVISION:
         fail("FS-001 does not identify its exact normative Design revision")
 
@@ -245,6 +245,37 @@ def collect_requirements(
 ) -> dict[str, str]:
     requirements, _ = collect_requirement_state(planning_root, specs_root)
     return requirements
+
+
+def collect_spec_requirement_state(
+    specs_root: Path = SPECS_ROOT,
+) -> tuple[dict[str, str], set[str]]:
+    if not specs_root.is_dir():
+        fail("repo/specs must exist")
+    requirements: dict[str, str] = {}
+    inactive: set[str] = set()
+    seen_fs: set[str] = set()
+    for spec_path in sorted(specs_root.glob("FS-*.md")):
+        match = FS_BASENAME_RE.fullmatch(spec_path.stem)
+        if not match:
+            fail(f"invalid Functional Set specification name: {spec_path.name}")
+        fs_id = match.group(1)
+        if fs_id in seen_fs:
+            fail(f"duplicate Functional Set specification identity: {fs_id}")
+        seen_fs.add(fs_id)
+        parsed, parsed_inactive = parse_specification(spec_path, fs_id)
+        overlap = set(requirements) & set(parsed)
+        if overlap:
+            fail(f"duplicate normative requirement identities across specifications: {sorted(overlap)}")
+        requirements.update(parsed)
+        inactive.update(parsed_inactive)
+    if not requirements:
+        fail("repo/specs contains no normative requirements")
+    return requirements, inactive
+
+
+def installed_framework(source_record: Path = FRAMEWORK_SOURCE_RECORD) -> bool:
+    return source_record.is_file()
 
 
 def load_manifest(path: Path = MANIFEST) -> dict:
@@ -332,7 +363,7 @@ def candidate_paths() -> list[str]:
 
 def validate_structural_paths(paths: list[str]) -> None:
     root_files = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
-    root_dirs = {".github", "repo", "product", "user"}
+    root_dirs = {".github", "repo", "product", "scripts", "user"}
     repo_children = {"design", "planning", "scripts", "specs", "src", "validation"}
     product_children = {"design", "planning", "scripts", "specs", "src", "validation"}
     for raw in paths:
@@ -358,6 +389,9 @@ def validate_structural_paths(paths: list[str]) -> None:
                 fail(f"unauthorized product/ direct-child role: {child}")
             if len(parts) == 2:
                 fail(f"maintained direct files are not permitted beneath product/: {raw}")
+        if top == "scripts":
+            if len(parts) != 2 or parts[1] != "validate":
+                fail(f"unauthorized repository-root scripts entry: {raw}")
 
 
 def task_repository_structure() -> None:
@@ -365,11 +399,16 @@ def task_repository_structure() -> None:
 
 
 def task_planning_structure() -> None:
+    if installed_framework():
+        return
     collect_requirements()
 
 
 def task_manifest_integrity() -> None:
-    requirements, inactive = collect_requirement_state()
+    if installed_framework():
+        requirements, inactive = collect_spec_requirement_state()
+    else:
+        requirements, inactive = collect_requirement_state()
     required_bindings = {
         req
         for req, classification in requirements.items()
@@ -397,7 +436,15 @@ def task_validation_entrypoint() -> None:
         stderr=subprocess.PIPE,
     )
     if cp.returncode == 0:
-        fail("canonical Validation did not fail for an invalid required task")
+        fail("canonical framework Validation did not fail for an invalid required task")
+
+    root_text = read(ROOT_ENTRYPOINT)
+    if not os.access(ROOT_ENTRYPOINT, os.X_OK):
+        fail("scripts/validate must be executable")
+    if 'ROOT / "repo" / "scripts" / "validate"' not in root_text:
+        fail("scripts/validate must delegate to repo/scripts/validate")
+    if 'ROOT / "product" / "scripts" / "validate"' not in root_text:
+        fail("scripts/validate must compose product/scripts/validate when present")
 
 
 def task_docs_alignment() -> None:
@@ -406,7 +453,10 @@ def task_docs_alignment() -> None:
     for term in ("Design", "Planning", "Build", "Validation", "Semantic Review", "Acceptance"):
         if term not in readme:
             fail(f"README missing lifecycle term: {term}")
-    for value in ("repo/design/", "repo/planning/", "repo/specs/", "product/", "repo/scripts/validate", "main"):
+    active_surfaces = ["repo/design/", "repo/specs/", "product/", "scripts/validate", "repo/scripts/validate", "main"]
+    if not installed_framework():
+        active_surfaces.append("repo/planning/")
+    for value in active_surfaces:
         if value not in readme:
             fail(f"README missing active surface: {value}")
     for route in ("→ **Design**", "→ **Planning**", "→ **Build**"):
@@ -435,10 +485,12 @@ def task_ci_delegation() -> None:
     if OLD_WORKFLOW.exists():
         fail("retired fs0-conformance workflow remains active")
     text = read(WORKFLOW)
-    if "name: Validation" not in text or "run: ./repo/scripts/validate" not in text:
-        fail("CI must use Validation terminology and invoke canonical Validation")
+    if "name: Validation" not in text or "run: ./scripts/validate" not in text:
+        fail("CI must use Validation terminology and invoke repository-wide Validation")
+    if "run: ./repo/scripts/validate" in text or "run: ./product/scripts/validate" in text:
+        fail("CI must delegate domain selection to scripts/validate")
     if "repo/validation/validate_framework.py" in text:
-        fail("CI must not bypass canonical Validation entry point")
+        fail("CI must not bypass canonical Validation entry points")
     if "Conformance" in text or "conformance" in text:
         fail("active CI retains retired Conformance terminology")
 
@@ -535,19 +587,50 @@ def task_framework_regression() -> None:
         planning.mkdir()
         specs.mkdir()
 
+        foreign = root / "foreign"
+        foreign.mkdir()
+        subprocess.run(
+            ["git", "init", "--initial-branch=main"],
+            cwd=foreign,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        subprocess.run(["git", "config", "user.name", "repo-spec test"], cwd=foreign, check=True)
+        subprocess.run(["git", "config", "user.email", "repo-spec-test@local.invalid"], cwd=foreign, check=True)
+        (foreign / "design.md").write_text("foreign design\n", encoding="utf-8")
+        subprocess.run(["git", "add", "design.md"], cwd=foreign, check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "Foreign Design"],
+            cwd=foreign,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        foreign_revision = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=foreign,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        ).stdout.strip()
+
+        if git_commit_exists(foreign_revision):
+            fail("foreign Design commit unexpectedly exists in current repository")
+
         write_fixture_fs(
             planning,
             specs,
             "FS-998-fixture",
             "FS-998",
-            "0" * 40,
+            foreign_revision,
             "FS-998-NR-001",
             "M",
         )
-        expect_failure(
-            lambda: collect_requirements(planning, specs),
-            "does not resolve to a Git commit",
-        )
+        reqs = collect_requirements(planning, specs)
+        if reqs != {"FS-998-NR-001": "M"}:
+            fail("portable foreign Design revision regression failed")
 
         fs_path = planning / "FS-998-fixture" / "functional-set.md"
         text = fs_path.read_text(encoding="utf-8").replace(
@@ -728,6 +811,65 @@ def task_framework_regression() -> None:
             lambda: collect_requirements(planning, specs),
             "exactly one well-formed",
         )
+
+    # Repository-root Validation composes framework and optional product Validation.
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        scripts_dir = root / "scripts"
+        repo_scripts = root / "repo" / "scripts"
+        product_scripts = root / "product" / "scripts"
+        scripts_dir.mkdir(parents=True)
+        repo_scripts.mkdir(parents=True)
+        product_scripts.mkdir(parents=True)
+
+        shutil.copy2(ROOT_ENTRYPOINT, scripts_dir / "validate")
+        (scripts_dir / "validate").chmod(0o755)
+
+        framework = repo_scripts / "validate"
+        framework.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        framework.chmod(0o755)
+
+        completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if completed.returncode != 0:
+            fail("root Validation must pass when framework passes and product Validation is absent")
+
+        product = product_scripts / "validate"
+        product.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        product.chmod(0o644)
+        completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if completed.returncode == 0:
+            fail("root Validation must fail when product Validation exists but is not executable")
+
+        product.write_text("#!/bin/sh\nexit 7\n", encoding="utf-8")
+        product.chmod(0o755)
+        completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if completed.returncode == 0:
+            fail("root Validation must fail when product Validation fails")
+
+        product.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        product.chmod(0o755)
+        completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if completed.returncode != 0:
+            fail("root Validation must pass when framework and product Validation pass")
+
+    # Installed framework snapshots may omit framework-development Planning history.
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        specs = root / "specs"
+        specs.mkdir()
+        source_record = root / "framework-source.json"
+        source_record.write_text("{}\n", encoding="utf-8")
+        (specs / "FS-998-fixture.md").write_text(
+            "# FS-998 — Fixture\n\n"
+            "### FS-998-NR-001 — Fixture requirement\n\n"
+            "**Classification: M**\n\nFixture obligation.\n",
+            encoding="utf-8",
+        )
+        if not installed_framework(source_record):
+            fail("installed framework source record regression failed")
+        requirements, inactive = collect_spec_requirement_state(specs)
+        if requirements != {"FS-998-NR-001": "M"} or inactive:
+            fail("installed framework spec-only requirement regression failed")
 
     # Retired I evaluation classification is invalid.
     with tempfile.TemporaryDirectory() as tmp:

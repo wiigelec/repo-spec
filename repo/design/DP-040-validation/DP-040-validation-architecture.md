@@ -58,3 +58,15 @@ Semantic completeness, faithful interpretation, unnecessary complexity, scope me
 Passing Validation is a gate condition, not acceptance and not a separate durable lifecycle result.
 
 All required mechanical validation applicable to the candidate must pass before the candidate is eligible for acceptance. Optional diagnostic, exploratory, performance, development, or informational checks do not become acceptance gates unless Planning establishes a normative obligation that makes them required.
+
+## Repository-Wide Validation Composition
+
+A repository may provide one repository-root Validation entry point that composes the canonical Validation entry points of the ownership domains present in that repository.
+
+Repository-wide composition coordinates execution only. Framework Validation remains owned by `repo/`; product Validation remains owned by `product/`. The root composition layer does not duplicate, reinterpret, or create normative predicates.
+
+The repository-root Validation entry point shall run required framework Validation and shall also run product Validation when the product ownership domain provides its canonical Validation entry point. Failure in any required participating domain makes repository-wide Validation fail.
+
+CI should delegate its mechanical gate to the repository-root Validation entry point when that composition surface exists, rather than independently selecting domain validators or reproducing their checks.
+
+For an installed framework snapshot identified by its framework source record, framework Validation may omit checks whose subject is framework-development Planning history that is intentionally absent from that snapshot. Remaining installed framework normative state remains mechanically evaluated from the installed normative specifications, requirement-evaluation bindings, and applicable framework artifacts.

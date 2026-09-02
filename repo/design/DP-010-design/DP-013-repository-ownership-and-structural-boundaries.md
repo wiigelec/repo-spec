@@ -62,3 +62,21 @@ Framework behavior may supply generic product-development surfaces and structura
 Closed structural boundaries are mechanically decidable where their permitted direct entries are explicit.
 
 Validation may enforce those boundaries directly. Such enforcement protects accepted structure but does not independently create a new namespace, ownership rule, or product semantic.
+
+## Repository-Wide Operational Composition
+
+Repository-root `scripts/` is an authorized operational composition role.
+
+It may contain repository-wide entry points that coordinate already-owned framework and product operations when a repository-level command is necessary. This role does not own framework meaning, product meaning, normative requirements, or domain implementation. It delegates to authoritative entry points of the ownership domains it coordinates.
+
+The root operational composition role remains narrow. It shall not become a parallel framework implementation tree, product implementation tree, generalized plugin namespace, or substitute for domain ownership.
+
+## Portable History Boundary
+
+The reusable framework must remain operational when installed into a repository whose Git history is independent from the framework-supplying repository.
+
+Framework artifacts may retain exact identifiers from their originating history where those identifiers preserve meaning or traceability. Retaining such an identifier does not require the originating commit object, ancestry, remote, graft, replace ref, or other supplier-history machinery to remain present in the current repository unless Design explicitly requires that dependency.
+
+Ordinary lifecycle use therefore distinguishes preserved historical identifiers from current-repository ancestry.
+
+An installed framework snapshot may omit framework-development history that is not required for the installed framework's operation. In particular, framework Planning artifacts need not be carried into a derived repository when an installed-framework source record identifies the supplied framework state and the remaining installed artifacts preserve the framework meaning and enforceable normative state.

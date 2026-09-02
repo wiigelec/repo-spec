@@ -240,6 +240,71 @@
         "repository-structure",
         "framework-regression"
       ]
+    },
+    {
+      "requirement": "FS-004-NR-001",
+      "tasks": [
+        "repository-structure"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-002",
+      "tasks": [
+        "validation-entrypoint"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-003",
+      "tasks": [
+        "validation-entrypoint"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-004",
+      "tasks": [
+        "validation-entrypoint",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-005",
+      "tasks": [
+        "ci-delegation"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-006",
+      "tasks": [
+        "planning-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-007",
+      "tasks": [
+        "planning-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-008",
+      "tasks": [
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-009",
+      "tasks": [
+        "docs-alignment"
+      ]
+    },
+    {
+      "requirement": "FS-004-NR-012",
+      "tasks": [
+        "planning-structure",
+        "manifest-integrity",
+        "framework-regression"
+      ]
     }
   ]
 }
