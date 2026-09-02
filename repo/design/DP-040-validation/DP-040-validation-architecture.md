@@ -68,3 +68,5 @@ Repository-wide composition coordinates execution only. Framework Validation rem
 The repository-root Validation entry point shall run required framework Validation and shall also run product Validation when the product ownership domain provides its canonical Validation entry point. Failure in any required participating domain makes repository-wide Validation fail.
 
 CI should delegate its mechanical gate to the repository-root Validation entry point when that composition surface exists, rather than independently selecting domain validators or reproducing their checks.
+
+For an installed framework snapshot identified by its framework source record, framework Validation may omit checks whose subject is framework-development Planning history that is intentionally absent from that snapshot. Remaining installed framework normative state remains mechanically evaluated from the installed normative specifications, requirement-evaluation bindings, and applicable framework artifacts.

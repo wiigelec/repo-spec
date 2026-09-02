@@ -78,3 +78,5 @@ The reusable framework must remain operational when installed into a repository 
 Framework artifacts may retain exact identifiers from their originating history where those identifiers preserve meaning or traceability. Retaining such an identifier does not require the originating commit object, ancestry, remote, graft, replace ref, or other supplier-history machinery to remain present in the current repository unless Design explicitly requires that dependency.
 
 Ordinary lifecycle use therefore distinguishes preserved historical identifiers from current-repository ancestry.
+
+An installed framework snapshot may omit framework-development history that is not required for the installed framework's operation. In particular, framework Planning artifacts need not be carried into a derived repository when an installed-framework source record identifies the supplied framework state and the remaining installed artifacts preserve the framework meaning and enforceable normative state.
