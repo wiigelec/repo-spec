@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "bindings": [
+    {
+      "requirement": "FS-001-NR-001",
+      "tasks": [
+        "cli-surface"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-002",
+      "tasks": [
+        "cli-surface"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-003",
+      "tasks": [
+        "source-integrity"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-004",
+      "tasks": [
+        "source-integrity"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-005",
+      "tasks": [
+        "destination-safety"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-006",
+      "tasks": [
+        "destination-safety"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-007",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-008",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-010",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-011",
+      "tasks": [
+        "initialized-state",
+        "source-integrity"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-012",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-013",
+      "tasks": [
+        "validation-boundary"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-014",
+      "tasks": [
+        "regression-integrity"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-015",
+      "tasks": [
+        "validation-boundary"
+      ]
+    },
+    {
+      "requirement": "FS-001-NR-016",
+      "tasks": [
+        "source-integrity",
+        "destination-safety",
+        "validation-boundary"
+      ]
+    }
+  ]
+}
