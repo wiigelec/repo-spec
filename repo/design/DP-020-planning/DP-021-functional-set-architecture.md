@@ -56,3 +56,11 @@ The Functional Set boundary should change only through Planning. If implementati
 The Functional Set should contain only the information needed to identify the bounded work and relate its Planning outputs.
 
 Its representation should remain as simple as practicable while preserving scope, Design traceability, correctness, and necessary agent control.
+
+## Portable Design Binding
+
+A Functional Set's Design binding identifies the exact Design state Planning consumed. When a Git revision is used for that binding, the revision value remains the identifier of that consumed state even if the Functional Set is later carried into an independently rooted repository that does not contain the originating Git object.
+
+The binding shall be preserved accurately. Mechanical Validation may enforce the required representation and any explicitly fixed value, but portability shall not be defeated merely by requiring an originating commit object to exist in the current repository.
+
+An operation may use stronger local-history checks when controlling Design or Planning explicitly requires local-history membership for that operation. Such a rule does not redefine the portable meaning of the retained Design binding.
