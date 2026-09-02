@@ -54,6 +54,12 @@ Canonical framework mechanical Validation shall remain operable when a well-form
 
 `README.md` and `AGENTS.md` shall describe repository-root Validation composition, domain Validation ownership, and the portable meaning of retained Design revision identifiers.
 
+### FS-004-NR-012 — Minimal installed framework snapshot
+
+**Classification: B**
+
+When `repo/validation/framework-source.json` exists, `repo/planning/` may be absent. Canonical framework Validation shall not fail merely because framework-development Planning history is absent, shall skip Planning-history checks that require that directory, and shall continue mechanically evaluating the installed normative requirement state from `repo/specs/` and `repo/validation/requirement-evaluation.json`.
+
 ### FS-004-NR-010 — Composition does not own normative meaning
 
 **Classification: S**

@@ -1,7 +1,7 @@
 ---
 functional_set: FS-004
 title: Portable History and Validation Composition
-design_revision: 5682091b3c88762cb6759d2fe53c74b6287ba3d4
+design_revision: 15475e3b13790380850c1e890284cc6eeb7b7ebc
 ---
 
 # FS-004 — Portable History and Validation Composition
@@ -12,7 +12,7 @@ Make the reusable framework compatible with repositories whose Git history is in
 
 ## Selected Design
 
-Planning consumes framework Design at repository revision `5682091b3c88762cb6759d2fe53c74b6287ba3d4`.
+Planning consumes framework Design at repository revision `15475e3b13790380850c1e890284cc6eeb7b7ebc`.
 
 Selected Design scope:
 
@@ -22,7 +22,7 @@ Selected Design scope:
 
 ## Functional Set Boundary
 
-FS-004 establishes portable retained Design bindings, repository-root `scripts/` operational composition, `scripts/validate`, framework/product Validation composition, CI delegation, and active README/AGENTS alignment.
+FS-004 establishes portable retained Design bindings, minimal installed framework snapshots that may omit `repo/planning/`, repository-root `scripts/` operational composition, `scripts/validate`, framework/product Validation composition, CI delegation, and active README/AGENTS alignment.
 
 ## Out of Scope
 

@@ -8,6 +8,12 @@ Remove the accidental local-Git-object dependency from generic Functional Set De
 
 `design_revision` remains exactly one 40-character lowercase Git revision identifier. Generic framework Validation shall validate that representation and any explicitly fixed revision value required by an existing normative requirement, but shall not generally require the referenced commit object to resolve in the current repository.
 
+## Installed Framework Snapshot
+
+`repo/validation/framework-source.json` is the existing installed-framework source record. Its presence is sufficient to identify an installed framework snapshot; FS-004 adds no mode field, state machine, or second validator.
+
+An installed snapshot may omit `repo/planning/`. When the source record exists, framework Validation shall skip checks whose subject is framework-development Planning history and shall derive requirement classification/state needed for manifest validation directly from `repo/specs/`. All other applicable framework Validation remains active.
+
 ## Root Operational Role
 
 Planning authorizes one new maintained repository-root namespace: `scripts/`.
