@@ -9,7 +9,10 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SPEC_PATH = ROOT / "product/specs/FS-001-minimal-repository-initialization.md"
+SPEC_PATHS = (
+    ROOT / "product/specs/FS-001-minimal-repository-initialization.md",
+    ROOT / "product/specs/FS-002-independent-initialized-repository.md",
+)
 MANIFEST_PATH = ROOT / "product/validation/requirement-evaluation.json"
 TEST_PATH = ROOT / "product/validation/test_initializer.py"
 
@@ -48,22 +51,24 @@ def fail(message: str) -> int:
 
 
 def parse_requirements() -> dict[str, str]:
-    text = SPEC_PATH.read_text(encoding="utf-8")
     requirements: dict[str, str] = {}
-    current: str | None = None
-
     heading = re.compile(r"^### (FS-\d+-NR-\d+) — ")
     classification = re.compile(r"^Classification: ([MSB])$")
 
-    for line in text.splitlines():
-        match = heading.match(line)
-        if match:
-            current = match.group(1)
-            continue
-        match = classification.match(line)
-        if match and current is not None:
-            requirements[current] = match.group(1)
-            current = None
+    for spec_path in SPEC_PATHS:
+        text = spec_path.read_text(encoding="utf-8")
+        current: str | None = None
+        for line in text.splitlines():
+            match = heading.match(line)
+            if match:
+                current = match.group(1)
+                if current in requirements:
+                    raise ValueError(f"duplicate requirement identity: {current}")
+                continue
+            match = classification.match(line)
+            if match and current is not None:
+                requirements[current] = match.group(1)
+                current = None
 
     return requirements
 
