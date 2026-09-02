@@ -24,7 +24,6 @@ The lifecycle describes responsibilities and control flow. It does not require e
 - `product/` — generic product-owned domain for whatever product a repository develops; its product meaning is not defined by the framework.
 - `repo/validation/requirement-evaluation.json` — current mechanical requirement-to-Validation-task bindings.
 - `repo/scripts/validate` — canonical mechanical Validation entry point.
-- `repo_old/` — historical implementation material; it is not a source of current normative intent.
 - `user/` — user-owned operational material outside the repository framework.
 
 Planning artifacts preserve the exact Design revision they consumed. Normative specifications under `repo/specs/` are the normative source for requirement text and evaluation classification. Build, parsers, manifests, and Validation do not create new Design meaning or normative requirements merely through implementation behavior.
@@ -46,10 +45,6 @@ CI delegates mechanical gating to this same entry point rather than defining an 
 Development branches contain candidate work. `main` represents accepted repository state.
 
 A candidate is eligible for Acceptance only after required mechanical Validation passes and required Semantic Review converges. For this single-developer repository, intentional integration of the satisfactory candidate into `main` is Acceptance; no parallel acceptance record is required.
-
-## Historical material
-
-`repo_old/` is retained for historical comparison and implementation evidence. Existing historical behavior is not normative merely because it exists and should not be ported unless current Design and Planning require the capability.
 
 ## License
 

@@ -60,7 +60,7 @@ FS-001 normative requirements and technical realization shall preserve the meani
 
 **Classification: S**
 
-`repo_old/` content and historical repository behavior shall not independently determine FS-001 normative obligations or implementation behavior.
+Implementation behavior shall not independently determine FS-001 normative obligations.
 
 ### FS-001-NR-009 — Requirement Evaluation Manifest
 
@@ -126,7 +126,7 @@ Mechanical Validation shall use the simplest reliable project-native mechanisms 
 
 **Classification: B**
 
-`AGENTS.md` shall route semantic defects to Design, Planning defects to Planning, and implementation or mechanical-enforcement-construction defects to Build, and shall not direct agents to infer current normative intent from `repo_old/`.
+`AGENTS.md` shall route semantic defects to Design, Planning defects to Planning, and implementation or mechanical-enforcement-construction defects to Build, and shall not direct agents to infer normative intent from implementation behavior.
 
 ### FS-001-NR-020 — CI Delegation
 

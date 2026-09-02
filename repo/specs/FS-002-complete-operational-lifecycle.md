@@ -106,7 +106,7 @@ Generic Functional Set discovery and requirement parsing shall not cause semanti
 
 **Classification: S**
 
-Historical repository state, including `repo_old/`, shall not become current normative authority merely because lifecycle mechanisms inspect or preserve historical data.
+Lifecycle mechanisms shall not treat repository history as current normative authority merely because that history is inspectable.
 
 ### FS-002-NR-019 — Registry Non-Requirement
 

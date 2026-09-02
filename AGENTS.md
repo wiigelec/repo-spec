@@ -36,14 +36,6 @@ If a consequential semantic decision is missing, return to Design. If a conseque
 
 Prefer the simplest implementation that satisfies the reviewed Planning result. Do not add framework machinery merely because a similar mechanism existed historically.
 
-## Historical repository state
-
-`repo_old/` is historical implementation material and design evidence only.
-
-Do not infer current normative intent from `repo_old/`, generated artifacts, CI success, review notes, implementation behavior, or repository history merely because they exist.
-
-A historical mechanism may be reused only when current Design and Planning independently require the capability.
-
 ## Validation
 
 Use:
