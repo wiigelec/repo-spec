@@ -162,7 +162,7 @@ class InitializerTests(unittest.TestCase):
         self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep\n")
 
     def test_refuses_dirty_initializer_source_material(self):
-        source = self.source_root / "product" / "src" / "initializer" / "core.py"
+        source = ROOT / "product" / "src" / "initializer" / "core.py"
         original = source.read_text(encoding="utf-8")
         try:
             source.write_text(original + "\n# dirty initializer source test\n", encoding="utf-8")
