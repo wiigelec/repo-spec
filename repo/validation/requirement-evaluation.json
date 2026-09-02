@@ -203,6 +203,43 @@
       "tasks": [
         "docs-alignment"
       ]
+    },
+    {
+      "requirement": "FS-003-NR-001",
+      "tasks": [
+        "repository-structure"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-003",
+      "tasks": [
+        "repository-structure"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-004",
+      "tasks": [
+        "repository-structure"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-005",
+      "tasks": [
+        "repository-structure"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-010",
+      "tasks": [
+        "docs-alignment"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-011",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
     }
   ]
 }

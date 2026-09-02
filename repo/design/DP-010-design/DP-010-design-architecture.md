@@ -29,10 +29,13 @@ Design is decomposed into:
 
 - DP-011 — Semantic Decomposition Architecture
 - DP-012 — Design Corpus Architecture
+- DP-013 — Repository Ownership and Structural Boundaries
 
 DP-011 defines how meaning is partitioned and when decomposition should stop.
 
 DP-012 defines canonical documents, document identity, semantic relationships, corpus evolution, and reference precision.
+
+DP-013 defines portable repository/framework and product ownership domains and the selective closed structural boundaries that preserve them.
 
 ## Planning Boundary
 

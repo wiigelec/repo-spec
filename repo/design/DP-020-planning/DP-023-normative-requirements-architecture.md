@@ -34,6 +34,12 @@ A requirement should preserve the intended meaning of its Design source without 
 
 A requirement may express behavior, structure, constraints, invariants, compatibility, or other obligations that must hold for the Functional Set.
 
+## Semantic Ownership
+
+Each normative obligation should have one controlling requirement owner. A requirement may reference, apply, or specialize an obligation controlled elsewhere, but it should not create a second independent restatement of equivalent semantics when reference to the controlling requirement is sufficient.
+
+When a genuinely distinct obligation is required, Planning assigns it its own identity and states the distinction precisely enough that downstream Build and Review do not have to infer which requirement controls the shared meaning.
+
 ## Requirement State
 
 Every normative requirement has a current Planning-owned state.
