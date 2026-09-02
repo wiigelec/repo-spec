@@ -72,7 +72,6 @@ FS-002 excludes:
 - a Functional Set registry or lifecycle authority database;
 - provenance graphs, correspondence graphs, evidence stores, adjudication systems, or parallel acceptance records;
 - mechanical evaluation of semantic-only requirements;
-- migration or revival of retired predecessor behavior;
 - universal validation/plugin/framework infrastructure;
 - implementation abstractions whose only purpose is anticipated future extensibility;
 - rewriting the historical meaning of accepted FS-001 requirements.

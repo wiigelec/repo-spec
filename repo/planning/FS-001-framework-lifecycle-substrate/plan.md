@@ -267,7 +267,6 @@ Rewrite operational agent guidance to enforce the new ownership boundaries:
 Agents shall:
 
 - consume the selected Design and Planning result;
-- not infer intent from predecessor implementation history;
 - not treat Validation as normative authority;
 - not invent semantic requirements during Build;
 - return consequential unresolved decisions to their owning stage; and
@@ -299,7 +298,6 @@ Build may choose ordinary code organization, helper functions, parser implementa
 - the Functional Set boundary; and
 - the direct requirement-to-task relationship.
 
-No predecessor mechanism is required merely because an equivalent old mechanism exists.
 
 ## Acceptance
 

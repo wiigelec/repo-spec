@@ -43,12 +43,9 @@ This does not authorize generalized framework machinery beyond what the selected
 The development branch currently contains:
 
 - the redesigned canonical Design corpus under `repo/design/`;
-- historical framework implementation and planning state from the predecessor implementation;
 - `README.md` describing the former Governance / Conformance / Assurance architecture;
 - `AGENTS.md` containing former authority and Governance terminology; and
 - `.github/workflows/fs0-conformance.yml`, which invokes the former Conformance runtime.
-
-Predecessor implementation history is design evidence only. It is not normative input to FS-001.
 
 Existing behavior shall not be retained merely because the previous framework implemented it.
 
@@ -75,7 +72,6 @@ FS-001 does not:
 - recreate adjudication machinery;
 - recreate the former Conformance runtime;
 - migrate old normative requirements automatically;
-- make predecessor implementation history authoritative;
 - require statement-level Design identities;
 - introduce a universal test or validation framework;
 - define future product functionality;
