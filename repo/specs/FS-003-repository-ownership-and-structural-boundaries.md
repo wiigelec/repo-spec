@@ -42,18 +42,6 @@ Closed hierarchy enforcement shall remain selective and shallow: it shall protec
 
 Build shall not create a new architectural namespace at a closed boundary merely as an implementation convenience; a required new architectural role shall return upstream for the Design and Planning decisions that own it.
 
-### FS-003-NR-008 — Upstream Conflict Boundary
-
-**Classification: S**
-
-A consequential downstream decision whose controlling Design or Planning state is materially missing, ambiguous, or contradictory shall return to the stage that owns the defect rather than being resolved through downstream invented intent.
-
-### FS-003-NR-009 — Controlling Requirement Ownership
-
-**Classification: S**
-
-Planning shall avoid independent duplicate normative owners for equivalent semantics when reference, applicability, or specialization of one controlling requirement is sufficient.
-
 ### FS-003-NR-010 — Operational Guidance Alignment
 
 **Classification: B**
@@ -70,4 +58,4 @@ Canonical Validation shall include a required `repository-structure` task that m
 
 **Classification: S**
 
-Acceptance of FS-003 shall make the portable lifecycle framework structurally ready for ordinary product development under `product/` without requiring another framework Functional Set merely to establish generic product ownership or placement.
+Acceptance of FS-003 shall establish the generic structural ownership and placement needed to begin product Design and subsequent product lifecycle work under `product/` without requiring another framework Functional Set merely to establish that ownership or placement. This requirement does not assert that every framework-side lifecycle tool already discovers or processes product-owned lifecycle artifacts.

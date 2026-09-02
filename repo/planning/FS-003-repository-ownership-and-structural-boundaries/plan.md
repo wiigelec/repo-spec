@@ -12,6 +12,8 @@ Authorized maintained repository-root files are `.gitignore`, `AGENTS.md`, `LICE
 
 Authorized roles may be absent until needed. Additional maintained root roles are rejected.
 
+For this Functional Set's mechanical enforcement, candidate maintained paths are the tracked and untracked non-ignored paths visible to Git. Ignored transient local state is outside that mechanical candidate set; content intended to become accepted repository state must not rely on ignore rules to bypass the Design-declared closed boundary.
+
 ## `repo/` Boundary
 
 Maintained direct children of `repo/` may be only `design/`, `planning/`, `scripts/`, `specs/`, `src/`, and `validation/`, and must be directories.

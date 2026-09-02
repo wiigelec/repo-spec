@@ -1,7 +1,7 @@
 ---
 functional_set: FS-003
 title: Repository Ownership and Structural Boundaries
-design_revision: 57f2bc3c22d06ba8cca4b8862546257c1df9e695
+design_revision: db93ee8fd40f76484915264bdd082abe20d5650c
 ---
 
 # FS-003 — Repository Ownership and Structural Boundaries
@@ -14,7 +14,7 @@ This Functional Set responds to a concrete need exposed by beginning product dev
 
 ## Selected Design
 
-Planning consumes Design at repository revision `57f2bc3c22d06ba8cca4b8862546257c1df9e695`.
+Planning consumes Design at repository revision `db93ee8fd40f76484915264bdd082abe20d5650c`.
 
 Selected Design scope:
 
@@ -35,8 +35,8 @@ FS-003 establishes `repo/` as the reusable framework domain, `product/` as the g
 
 ## Out of Scope
 
-FS-003 does not define product identity or semantics, make `product/` initializer-specific, recursively close nested implementation structure, create a structure registry or artifact taxonomy, recreate v0 governance machinery, or change Acceptance semantics.
+FS-003 does not define product identity or semantics, make `product/` initializer-specific, recursively close nested implementation structure, create a structure registry or artifact taxonomy, recreate v0 governance machinery, generalize framework-side lifecycle discovery or parsing to product-owned artifacts, or change Acceptance semantics.
 
 ## Completion Criterion
 
-After Acceptance, product work may begin under `product/` without another framework Functional Set merely to establish generic product ownership or placement.
+After Acceptance, product Design and subsequent product lifecycle work may begin under `product/` without another framework Functional Set merely to establish generic product ownership or placement. FS-003 establishes structural readiness; it does not claim that every framework-side lifecycle tool already operates generically on product-owned artifacts.
