@@ -267,23 +267,13 @@ Rewrite operational agent guidance to enforce the new ownership boundaries:
 Agents shall:
 
 - consume the selected Design and Planning result;
-- not infer intent from `repo_old/`;
+- not infer intent from predecessor implementation history;
 - not treat Validation as normative authority;
 - not invent semantic requirements during Build;
 - return consequential unresolved decisions to their owning stage; and
 - prefer the simplest implementation preserving Design, Plan, requirements, scope, and required agent control.
 
 Remove obsolete Governance / Conformance / Assurance authority terminology.
-
-## `repo_old/`
-
-`repo_old/` remains outside the active framework namespace during FS-001.
-
-Build shall not port content from it unless the Plan or selected Design independently requires the capability represented by that content.
-
-FS-001 does not require deleting `repo_old/`.
-
-A later cleanup Functional Set may remove it when historical comparison is no longer useful.
 
 ## Sequencing
 
@@ -309,7 +299,7 @@ Build may choose ordinary code organization, helper functions, parser implementa
 - the Functional Set boundary; and
 - the direct requirement-to-task relationship.
 
-No mechanism from `repo_old/` is required merely because an equivalent old mechanism exists.
+No predecessor mechanism is required merely because an equivalent old mechanism exists.
 
 ## Acceptance
 
