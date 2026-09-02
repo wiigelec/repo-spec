@@ -181,7 +181,6 @@ def _verify_destination(destination: Path) -> tuple[Path, bool]:
 
 INSTALLED_MATERIAL_PATHS = (
     Path(".github"),
-    Path(".gitignore"),
     Path("AGENTS.md"),
     Path("LICENSE"),
     Path("README.md"),
