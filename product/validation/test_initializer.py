@@ -137,6 +137,10 @@ class InitializerTests(unittest.TestCase):
         self.assertNotIn("repo_old/", agents)
         self.assertIn("product/` is the product-owned domain", readme)
         self.assertIn("Begin substantive product work in Product Design", readme)
+        self.assertLess(
+            readme.index("- `user/` — user-owned operational material outside the framework."),
+            readme.index("Begin substantive product work in Product Design"),
+        )
         self.assertIn("Do not assume Product meaning before Product Design establishes it", agents)
 
     def test_initializes_absent_destination(self) -> None:
