@@ -81,6 +81,10 @@ The semantic requirement is that the resulting repository can participate in the
 
 Design does not prescribe specific Git commands, object layouts, bootstrap commit construction, branch-manipulation algorithms, or low-level repository plumbing unless those details later become consequential product meaning.
 
+The initialized repository is a new repository in its own right. Its ordinary Git history shall not inherit the supplying repo-spec repository's commit ancestry merely as a consequence of framework installation. Exact source identity may be retained as maintained information without importing supplier commit objects into the initialized repository.
+
+Framework-development Planning history from the supplying repository is not required in an installed framework snapshot when the installed framework can operate from its Design, normative specifications, validation bindings, and source record without that history.
+
 ## Validation
 
 Before reporting successful initialization, the initializer shall cause the resulting repository state to be mechanically evaluated to the extent required by the installed framework and the initializer's mechanically decidable product obligations.

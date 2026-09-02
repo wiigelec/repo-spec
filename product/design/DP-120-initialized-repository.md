@@ -88,6 +88,8 @@ It does not create a separate authority system, acceptance ledger, provenance ar
 
 Git and ordinary repository state should carry this information when they can do so adequately.
 
+The source relationship does not make supplier commits part of the initialized repository's ancestry. A successfully initialized repository begins independent Git history while retaining the exact supplying revision as source information. An installed framework snapshot need not retain the supplying repository's framework-development `repo/planning/` history when ordinary lifecycle operation does not require it.
+
 ## Handoff
 
 Successful initialization ends when the new repository is valid and ready for its user to begin defining the actual product.
