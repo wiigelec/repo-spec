@@ -26,7 +26,11 @@ The initializer accepts only a supplying checkout whose repository and revision 
 
 For FS-001, the supplying checkout shall be clean with respect to maintained framework material used for initialization.
 
-The supplying revision shall resolve to a Git commit.
+The supplying revision shall be an accepted repo-spec revision represented by a Git commit in the accepted `main` history available to the supplying checkout.
+
+The normal initialization command shall reject an executing revision whose accepted status cannot be established unambiguously from repository state available to the checkout.
+
+This acceptance check applies to the normal user initialization path. Build may provide controlled internal test seams needed to exercise candidate implementation before that implementation itself is accepted.
 
 Build may choose the smallest reliable Git checks that establish these conditions.
 
@@ -119,6 +123,7 @@ Planning expects Build to provide task-specific regression coverage for at least
 - successful initialization into an empty directory;
 - refusal of a non-empty destination;
 - refusal when supplying source state cannot support truthful initialization;
+- refusal when the executing supplying revision is not established as accepted;
 - exclusion of initializer-product semantics from target `product/`;
 - accurate source-revision retention;
 - successful canonical validation inside the initialized destination;

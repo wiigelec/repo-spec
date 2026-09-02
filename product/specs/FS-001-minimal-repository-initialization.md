@@ -14,7 +14,7 @@ Classification: B
 
 ### FS-001-NR-003 — Supplying source identity
 
-Initialization shall derive the supplying repo-spec source and exact supplying Git commit from the checkout that executes the initializer, and shall fail if that relationship cannot be established accurately and unambiguously.
+Initialization shall derive the supplying repo-spec source and exact supplying Git commit from the checkout that executes the initializer, shall establish that the supplying commit is an accepted repo-spec revision, and shall fail if either the source relationship or accepted status cannot be established accurately and unambiguously.
 
 Classification: B
 
@@ -58,7 +58,7 @@ Classification: S
 
 A successful initialization shall produce a Git repository capable of participating in the installed repo-spec lifecycle.
 
-Classification: M
+Classification: B
 
 ### FS-001-NR-011 — Exact source revision retention
 
@@ -80,9 +80,9 @@ Classification: M
 
 ### FS-001-NR-014 — Product regression validation
 
-The initializer implementation shall provide mechanically executable regression coverage for the mechanically decidable FS-001 obligations, including success, destination refusal, source-state refusal, installed-material boundaries, source-revision retention, initialized-destination validation, and failure propagation.
+The initializer implementation shall provide mechanically executable regression coverage for the mechanically decidable FS-001 obligations, including success, destination refusal, source-state refusal, refusal of an unaccepted supplying revision, installed-material boundaries, source-revision retention, initialized-destination validation, and failure propagation.
 
-Classification: M
+Classification: B
 
 ### FS-001-NR-015 — Success boundary
 
