@@ -23,6 +23,7 @@ WORKFLOW = ROOT / ".github" / "workflows" / "validation.yml"
 
 TASKS = (
     "design-corpus",
+    "repository-structure",
     "planning-structure",
     "manifest-integrity",
     "validation-entrypoint",
@@ -316,6 +317,53 @@ def task_design_corpus() -> None:
         fail(f"canonical Design corpus contains non-Markdown files: {non_markdown}")
 
 
+
+def candidate_paths() -> list[str]:
+    cp = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if cp.returncode != 0:
+        fail(f"could not enumerate maintained candidate paths: {cp.stderr.decode(errors='replace')}")
+    return [value.decode("utf-8") for value in cp.stdout.split(b"\0") if value]
+
+
+def validate_structural_paths(paths: list[str]) -> None:
+    root_files = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
+    root_dirs = {".github", "repo", "product", "user"}
+    repo_children = {"design", "planning", "scripts", "specs", "src", "validation"}
+    product_children = {"design", "planning", "scripts", "specs", "src", "validation"}
+    for raw in paths:
+        parts = Path(raw).parts
+        if not parts:
+            continue
+        top = parts[0]
+        if len(parts) == 1:
+            if top not in root_files:
+                fail(f"unauthorized maintained repository-root file: {raw}")
+            continue
+        if top not in root_dirs:
+            fail(f"unauthorized maintained repository-root role: {top}")
+        if top == "repo":
+            child = parts[1]
+            if child not in repo_children:
+                fail(f"unauthorized repo/ direct-child role: {child}")
+            if len(parts) == 2:
+                fail(f"maintained direct files are not permitted beneath repo/: {raw}")
+        if top == "product":
+            child = parts[1]
+            if child not in product_children:
+                fail(f"unauthorized product/ direct-child role: {child}")
+            if len(parts) == 2:
+                fail(f"maintained direct files are not permitted beneath product/: {raw}")
+
+
+def task_repository_structure() -> None:
+    validate_structural_paths(candidate_paths())
+
+
 def task_planning_structure() -> None:
     collect_requirements()
 
@@ -358,7 +406,7 @@ def task_docs_alignment() -> None:
     for term in ("Design", "Planning", "Build", "Validation", "Semantic Review", "Acceptance"):
         if term not in readme:
             fail(f"README missing lifecycle term: {term}")
-    for value in ("repo/design/", "repo/planning/", "repo/specs/", "repo/scripts/validate", "main"):
+    for value in ("repo/design/", "repo/planning/", "repo/specs/", "product/", "repo/scripts/validate", "main"):
         if value not in readme:
             fail(f"README missing active surface: {value}")
     for route in ("→ **Design**", "→ **Planning**", "→ **Build**"):
@@ -366,6 +414,10 @@ def task_docs_alignment() -> None:
             fail(f"AGENTS.md missing defect route: {route}")
     if "Do not infer current normative intent from `repo_old/`" not in agents:
         fail("AGENTS.md must deny repo_old normative intent")
+    if "`product/` is the generic product-owned domain" not in agents:
+        fail("AGENTS.md must describe generic product ownership")
+    if "Closed architectural boundaries are default-deny" not in agents:
+        fail("AGENTS.md must describe closed architectural boundaries")
     retired = (
         "canonical mechanical Conformance",
         "accepted Governance",
@@ -826,6 +878,25 @@ def task_framework_regression() -> None:
         "unknown Validation task",
     )
 
+    validate_structural_paths([
+        ".github/workflows/validation.yml",
+        "README.md",
+        "AGENTS.md",
+        "repo/design/DP-001.md",
+        "repo/src/pkg/module.py",
+        "product/design/DP-100.md",
+        "product/src/pkg/module.py",
+        "user/session/notes.txt",
+    ])
+    for bad_path, diagnostic in (
+        ("docs/readme.md", "repository-root role"),
+        ("repo/tools/helper.py", "repo/ direct-child role"),
+        ("repo/design", "direct files are not permitted beneath repo/"),
+        ("product/lib/module.py", "product/ direct-child role"),
+        ("product/src", "direct files are not permitted beneath product/"),
+    ):
+        expect_failure(lambda bad_path=bad_path: validate_structural_paths([bad_path]), diagnostic)
+
     all_current = {
         "FS-997-NR-001": "M",
         "FS-998-NR-001": "M",
@@ -847,6 +918,7 @@ def task_framework_regression() -> None:
 
 TASK_FUNCTIONS: dict[str, Callable[[], None]] = {
     "design-corpus": task_design_corpus,
+    "repository-structure": task_repository_structure,
     "planning-structure": task_planning_structure,
     "manifest-integrity": task_manifest_integrity,
     "validation-entrypoint": task_validation_entrypoint,

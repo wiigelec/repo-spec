@@ -18,6 +18,14 @@ Route defects to the stage that owns the defective decision:
 
 Do not conceal an upstream defect by inventing intent, changing scope, or redefining an obligation downstream.
 
+## Ownership and structure
+
+- `repo/` is the reusable repository/framework ownership domain.
+- `product/` is the generic product-owned domain; do not assume it means the repo-spec initializer or any other specific product.
+- Closed architectural boundaries are default-deny. Do not create a new repository-root, `repo/`, or `product/` direct-child role merely for implementation convenience.
+- Ordinary nested implementation structure remains allowed inside an authorized extensible role when it preserves that role and the governing upstream intent.
+- If a required capability does not fit the accepted closed structure, return upstream for the Design and Planning decision rather than inventing a parallel namespace.
+
 ## Build discipline
 
 Build consumes one reviewed Functional Set Planning result, its normative specification, and its bound Design revision.
