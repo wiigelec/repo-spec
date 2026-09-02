@@ -31,9 +31,13 @@ Repository-root operational surfaces such as `README.md`, `AGENTS.md`, hosting i
 
 `user/` remains user-owned operational material outside framework and product normative ownership.
 
+For structural ownership, maintained repository state is content intended to participate in persistent candidate or accepted repository state. Transient ignored local state is outside structural closure merely by existing; content intended to become accepted state must use an authorized structural role rather than rely on ignore rules to evade that boundary.
+
 ## Closed Structural Boundaries
 
 Design may declare an architectural boundary closed.
+
+The maintained repository-root boundary and the direct-child boundaries of `repo/` and `product/` are closed architectural boundaries. Planning establishes the concrete authorized roles within those Design-declared boundaries.
 
 At a closed boundary, an entry is permitted only when the governing structure explicitly authorizes its role. Absence of an explicit prohibition is not permission to create a new architectural namespace.
 
