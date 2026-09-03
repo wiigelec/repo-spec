@@ -23,7 +23,7 @@ Initialization establishes a new repository. Upgrade begins from an existing ini
 
 A user chooses an existing repo-spec-initialized repository and a repo-spec source revision whose reusable framework they intend that repository to adopt.
 
-The upgrade capability transforms the existing repository from its currently installed framework state to the selected supplying framework state while preserving material outside the framework-managed upgrade boundary.
+The upgrade capability transforms the existing repository from its currently installed framework state to the selected supplying framework state while preserving material outside the upgrade boundary.
 
 The initializer shall not interpret the request to upgrade the framework as permission to redesign, regenerate, discard, or reinterpret the repository's independently developed product.
 
@@ -77,19 +77,19 @@ The mere existence of a similarly named path in the supplying repository does no
 
 ## Reconciliation
 
-Upgrade reconciles the currently installed managed framework state with the managed framework state supplied by the selected repo-spec revision.
+Upgrade reconciles the currently installed framework-owned state with the framework-owned state supplied by the selected repo-spec revision.
 
-Reconciliation may require adding newly required managed material, updating changed managed material, removing material that is no longer part of the installed framework, or changing a managed representation where the framework has intentionally evolved.
+Reconciliation may require adding newly required framework material, updating changed framework material, removing framework material that is no longer part of the installed framework, or changing a framework representation where the framework has intentionally evolved.
 
 The result shall correspond coherently to the selected supplying framework revision rather than becoming an undocumented mixture of unrelated framework states.
 
-Upgrade is not required to preserve obsolete framework material merely because it existed in the earlier installed revision.
+Upgrade is not required to preserve obsolete framework-owned material merely because it existed in the earlier installed revision.
 
-Conversely, upgrade shall not remove target material merely because it is absent from the later supplying repository when that material is outside the managed upgrade boundary.
+Conversely, upgrade shall not remove target material merely because it is absent from the later supplying repository when that material is outside the upgrade boundary.
 
 ## Local Modification
 
-An initialized repository may contain local modification of material that upgrade otherwise considers managed.
+An initialized repository may contain local modification of state within the upgrade boundary.
 
 Upgrade shall not silently overwrite such a condition when doing so could destroy independently intentional repository work or make the resulting framework relationship untruthful.
 
@@ -164,6 +164,10 @@ Repository upgrade has two user-visible semantic outcomes:
 - a successfully upgraded repository; or
 - upgrade failure.
 
+A failed upgrade shall not leave the target repository presenting a partially installed prospective framework as its current framework state.
+
+After failure, the pre-upgrade repository state shall remain the authoritative usable repository state apart from transient or explicitly recoverable operational artifacts that do not alter that authoritative state.
+
 The initializer shall not knowingly report success while leaving the repository in a partially reconciled or ambiguously installed framework state.
 
 Failure shall not intentionally destroy valid pre-upgrade repository-owned material merely to simplify recovery.
@@ -174,8 +178,8 @@ Exact staging, rollback, filesystem replacement, Git transaction, recovery, and 
 
 A successful upgrade produces the same existing repository with:
 
-- its independently developed repository and product state preserved except where explicitly authorized upgrade-managed material changes;
-- its managed framework state coherently corresponding to the selected supplying repo-spec revision;
+- its independently developed repository and product state preserved except where explicitly authorized changes authorized by the upgrade boundary;
+- its framework-owned state coherently corresponding to the selected supplying repo-spec revision;
 - its current framework source relationship updated truthfully;
 - the mechanical Validation capability required by that installed framework operating correctly; and
 - the repository ready to continue its existing lifecycle.
@@ -188,7 +192,7 @@ Upgrade shall fail rather than knowingly produce or report a result when:
 
 - the existing installed framework relationship cannot be determined sufficiently for safe reconciliation;
 - the selected supplying framework state cannot be identified accurately;
-- managed and repository-owned material cannot be distinguished sufficiently to avoid unauthorized mutation;
+- framework-owned, compatibility-adapted, and independently owned state cannot be distinguished sufficiently to avoid unauthorized mutation;
 - local modification creates an unresolved conflict under accepted policy;
 - the prospective repository cannot satisfy required mechanical Validation; or
 - the initializer otherwise cannot establish the required upgraded state accurately and unambiguously.
@@ -262,8 +266,8 @@ Planning should resolve only the technical decisions necessary for that Function
 
 - identification of the currently installed framework revision;
 - identification of framework-owned state and framework-required compatibility adaptations within the upgrade boundary;
-- derivation of the source-to-target managed delta;
-- treatment of locally modified managed material;
+- derivation of the framework transition delta;
+- treatment of locally modified state within the upgrade boundary;
 - construction and evaluation of the prospective upgraded repository;
 - update of the current framework source relationship;
 - compatibility checks where necessary;
