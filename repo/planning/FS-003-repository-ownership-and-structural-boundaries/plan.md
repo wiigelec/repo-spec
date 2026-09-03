@@ -39,3 +39,11 @@ README and AGENTS shall describe the generic ownership split and closed-boundary
 ## Validation
 
 Run `repo/scripts/validate --task repository-structure`, canonical `repo/scripts/validate`, and `git diff --check`.
+
+## Issue #12 Structural Amendment
+
+When maintained `product/` exists, `repository-structure` shall additionally require the baseline direct-child roles `design/`, `specs/`, `scripts/`, and `validation/`.
+
+`planning/` and `src/` remain authorized but optional. Nested contents remain extensible except where another Functional Set establishes a more specific contract.
+
+This amendment does not require placeholder files merely to retain directories. Initializer Planning selects useful starter content for otherwise-empty product surfaces.

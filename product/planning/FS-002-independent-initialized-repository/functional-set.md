@@ -1,7 +1,7 @@
 ---
 functional_set: FS-002
 title: Independent Initialized Repository
-design_revision: 790d8204f545c7759f22f4f34f53dd34e206ab6a
+design_revision: a5d566041958481286325f671393405b900a7141
 ---
 
 # FS-002 — Independent Initialized Repository
@@ -12,7 +12,7 @@ Refine repository initialization so the derived repository begins independent Gi
 
 ## Selected Design
 
-Planning consumes Product Design at repository revision `790d8204f545c7759f22f4f34f53dd34e206ab6a`.
+Planning consumes Product Design at repository revision `a5d566041958481286325f671393405b900a7141`.
 
 Selected Product Design scope:
 
@@ -32,3 +32,9 @@ FS-002 does not add upgrade behavior, archive/distribution formats, generalized 
 ## Completion Criterion
 
 A successful initialization produces one independently rooted target repository whose installed framework validates without `repo/planning/` or supplier Git objects, while retaining the exact supplying revision in `repo/validation/framework-source.json`.
+
+## Issue #12 Bug-Fix Amendment
+
+This accepted Functional Set is corrected in place so every newly initialized independent repository receives the canonical generic product Validation scaffold required by the installed framework.
+
+The scaffold carries no target-product semantics. It provides only product lifecycle ownership surfaces, starter guidance, an empty Requirement Evaluation Manifest, and a no-op-until-bound product Validation mechanism.

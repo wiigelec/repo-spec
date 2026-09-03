@@ -22,7 +22,7 @@ For FS-004 its only authorized maintained entry is `scripts/validate`.
 
 ## Validation Composition
 
-`scripts/validate` shall run `repo/scripts/validate`, stop on framework failure, then run `product/scripts/validate` when that path exists. If the product path exists it must be executable. Product failure fails repository-wide Validation. Absence of product Validation is valid before a product establishes mechanical obligations.
+`scripts/validate` shall run `repo/scripts/validate`, stop on framework failure, then require and run executable `product/scripts/validate` whenever the maintained `product/` ownership domain is present. Product Validation failure fails repository-wide Validation. A product with no current mechanical obligations is represented by an empty valid product manifest and a passing canonical product validator, not by omission of the product Validation substrate.
 
 The root entry point coordinates domain validators and shall not implement their normative checks itself.
 
@@ -41,3 +41,25 @@ README and AGENTS shall document root Validation composition, domain ownership, 
 ## Validation
 
 Before Acceptance run `./scripts/validate`, `./repo/scripts/validate`, `./product/scripts/validate`, and `git diff --check`; confirm this Functional Set binds the Design-only commit created before Planning; then perform Build Review for scope and unnecessary complexity.
+
+## Issue #12 Product Validation Contract
+
+Framework Validation shall enforce the following generic product Validation contract when maintained `product/` exists:
+
+- `product/scripts/validate` is executable and is the canonical product-domain entry point;
+- the entry point is a narrow launcher that delegates to `product/validation/validate_product.py` and forwards arguments unchanged;
+- `product/validation/requirement-evaluation.json` exists and has the same versioned `bindings` shape used by framework Validation;
+- product normative requirement identity and mechanical classification are derived from maintained `product/specs/`;
+- every active product requirement classified `M` or `B` has exactly one manifest binding with at least one task;
+- active `S` requirements and inactive requirements have no mechanical binding;
+- every manifest requirement exists in product specifications;
+- task lists are non-empty, contain unique task identities, and every referenced task resolves through the canonical product validator;
+- `product/scripts/validate --list-tasks` prints the available product validation task identities, one per line;
+- `product/scripts/validate --task <task>` executes one named task and fails for an unknown task;
+- `product/scripts/validate` with no task argument executes the distinct tasks required by the active product manifest and fails if any required task fails.
+
+The standardized launcher and task interface exist only to make framework-owned structural and traceability checks reliable. Product task implementation may invoke project-native tools and remains owned by `product/validation/`.
+
+Framework Validation shall not execute a product task merely to determine whether the task identity resolves. Product-specific predicates are executed by product Validation.
+
+Regression coverage shall include missing product entry point, non-executable entry point, launcher drift, missing or malformed product manifest, unbound mechanical product requirements, impermissible semantic-only bindings, unknown requirements, duplicate bindings/tasks, unresolved task identities, product Validation failure propagation, and the valid empty-manifest state.
