@@ -6,6 +6,7 @@ import importlib.util
 import json
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -43,7 +44,7 @@ TASK_TESTS = {
 }
 
 CLASS_RE = re.compile(r"^(?:\*\*)?Classification: ([MSB])(?:\*\*)?$")
-STATE_RE = re.compile(r"^(?:\*\*)?State: (active|inactive)(?:\*\*)?$")
+STATE_RE = re.compile(r"^\*\*State: ([^*\n]+)\*\*$")
 
 
 def fail(message: str) -> int:
@@ -51,14 +52,14 @@ def fail(message: str) -> int:
     return 1
 
 
-def parse_requirement_state() -> tuple[dict[str, str], set[str]]:
+def parse_requirement_state(specs_root: Path = SPECS_ROOT) -> tuple[dict[str, str], set[str]]:
     requirements: dict[str, str] = {}
     inactive: set[str] = set()
 
-    if not SPECS_ROOT.is_dir():
+    if not specs_root.is_dir():
         raise ValueError("product/specs must exist")
 
-    for spec_path in sorted(SPECS_ROOT.glob("FS-*.md")):
+    for spec_path in sorted(specs_root.glob("FS-*.md")):
         text = spec_path.read_text(encoding="utf-8")
         headings = list(re.finditer(r"^### (FS-\d{3}-NR-\d{3}) — .+$", text, re.MULTILINE))
         for index, match in enumerate(headings):
@@ -74,10 +75,58 @@ def parse_requirement_state() -> tuple[dict[str, str], set[str]]:
             states = [m.group(1) for line in block.splitlines() if (m := STATE_RE.match(line))]
             if len(states) > 1:
                 raise ValueError(f"{rid} has multiple State declarations")
-            if states == ["inactive"]:
+            if states and states[0] != "Inactive":
+                raise ValueError(f"{rid} State must be Inactive when explicitly present")
+            if states:
                 inactive.add(rid)
 
     return requirements, inactive
+
+
+def validate_requirement_state_regression() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        specs = Path(tmp)
+        spec = specs / "FS-998-state-fixture.md"
+        spec.write_text(
+            "# FS-998 — State Fixture\n\n"
+            "### FS-998-NR-001 — Inactive mechanical\n\n"
+            "**Classification: M**\n\n"
+            "**State: Inactive**\n\n"
+            "Fixture.\n\n"
+            "### FS-998-NR-002 — Inactive both\n\n"
+            "**Classification: B**\n\n"
+            "**State: Inactive**\n\n"
+            "Fixture.\n\n"
+            "### FS-998-NR-003 — Active semantic\n\n"
+            "**Classification: S**\n\n"
+            "Fixture.\n",
+            encoding="utf-8",
+        )
+        requirements, inactive = parse_requirement_state(specs)
+        if requirements != {
+            "FS-998-NR-001": "M",
+            "FS-998-NR-002": "B",
+            "FS-998-NR-003": "S",
+        }:
+            raise ValueError("product requirement-state regression parsed classifications incorrectly")
+        if inactive != {"FS-998-NR-001", "FS-998-NR-002"}:
+            raise ValueError("product requirement-state regression did not preserve canonical Inactive state")
+
+        spec.write_text(
+            spec.read_text(encoding="utf-8").replace(
+                "**State: Inactive**",
+                "**State: Active**",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        try:
+            parse_requirement_state(specs)
+        except ValueError as exc:
+            if "State must be Inactive" not in str(exc):
+                raise
+        else:
+            raise ValueError("noncanonical explicit product State unexpectedly passed")
 
 
 def load_manifest() -> dict:
@@ -138,6 +187,11 @@ def run_task(task: str, module) -> bool:
     print(f"\n===== PRODUCT TASK {task} =====", flush=True)
     methods = TASK_TESTS[task]
     if task == "regression-integrity":
+        try:
+            validate_requirement_state_regression()
+        except Exception as exc:
+            print(f"FAIL regression-integrity requirement-state parser: {exc}", flush=True)
+            return False
         available = {name for name in dir(module.InitializerTests) if name.startswith("test_")}
         referenced = {method for task_methods in TASK_TESTS.values() for method in task_methods}
         missing = sorted(referenced - available)

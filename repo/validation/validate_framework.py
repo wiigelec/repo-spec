@@ -349,7 +349,7 @@ def validate_manifest_data(
 
 
 PRODUCT_CLASS_RE = re.compile(r"^(?:\*\*)?Classification: ([MSB])(?:\*\*)?$")
-PRODUCT_STATE_RE = re.compile(r"^(?:\*\*)?State: (active|inactive)(?:\*\*)?$")
+PRODUCT_STATE_RE = re.compile(r"^\*\*State: ([^*\n]+)\*\*$")
 
 
 def collect_product_requirement_state(
@@ -375,7 +375,9 @@ def collect_product_requirement_state(
             states = [m.group(1) for line in block.splitlines() if (m := PRODUCT_STATE_RE.match(line))]
             if len(states) > 1:
                 fail(f"product requirement {req} has multiple State declarations")
-            if states == ["inactive"]:
+            if states and states[0] != "Inactive":
+                fail(f"product requirement {req} State must be Inactive when explicitly present")
+            if states:
                 inactive.add(req)
     return requirements, inactive
 
@@ -992,6 +994,49 @@ def task_framework_regression() -> None:
         completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if completed.returncode != 0:
             fail("root Validation must pass when framework and product Validation pass")
+
+    # Product requirement state uses the repository's canonical explicit
+    # Inactive form; absence of State means active.
+    with tempfile.TemporaryDirectory() as tmp:
+        specs = Path(tmp)
+        spec = specs / "FS-998-state-fixture.md"
+        spec.write_text(
+            "# FS-998 — State Fixture\n\n"
+            "### FS-998-NR-001 — Inactive mechanical\n\n"
+            "**Classification: M**\n\n"
+            "**State: Inactive**\n\n"
+            "Fixture.\n\n"
+            "### FS-998-NR-002 — Inactive both\n\n"
+            "**Classification: B**\n\n"
+            "**State: Inactive**\n\n"
+            "Fixture.\n\n"
+            "### FS-998-NR-003 — Active semantic\n\n"
+            "**Classification: S**\n\n"
+            "Fixture.\n",
+            encoding="utf-8",
+        )
+        product_requirements, product_inactive = collect_product_requirement_state(specs)
+        if product_inactive != {"FS-998-NR-001", "FS-998-NR-002"}:
+            fail("canonical product Inactive-state regression failed")
+        validate_product_manifest_contract(
+            product_requirements,
+            product_inactive,
+            {"version": 1, "bindings": []},
+            (),
+        )
+
+        spec.write_text(
+            spec.read_text(encoding="utf-8").replace(
+                "**State: Inactive**",
+                "**State: Active**",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        expect_failure(
+            lambda: collect_product_requirement_state(specs),
+            "State must be Inactive",
+        )
 
     # Product Validation entrypoint must remain composition only.
     validate_product_entrypoint_text(CANONICAL_PRODUCT_ENTRYPOINT)
