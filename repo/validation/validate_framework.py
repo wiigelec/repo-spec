@@ -25,6 +25,11 @@ PRODUCT_ENTRYPOINT = PRODUCT_ROOT / "scripts" / "validate"
 PRODUCT_VALIDATION_ROOT = PRODUCT_ROOT / "validation"
 PRODUCT_MANIFEST = PRODUCT_VALIDATION_ROOT / "requirement-evaluation.json"
 PRODUCT_VALIDATOR = PRODUCT_VALIDATION_ROOT / "validate_product.py"
+CANONICAL_PRODUCT_ENTRYPOINT = """#!/usr/bin/env bash
+set -euo pipefail
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+exec python3 "$repo_root/product/validation/validate_product.py" "$@"
+"""
 README = ROOT / "README.md"
 AGENTS = ROOT / "AGENTS.md"
 OLD_WORKFLOW = ROOT / ".github" / "workflows" / "fs0-conformance.yml"
@@ -375,6 +380,14 @@ def collect_product_requirement_state(
     return requirements, inactive
 
 
+def validate_product_entrypoint_text(text: str) -> None:
+    if text != CANONICAL_PRODUCT_ENTRYPOINT:
+        fail(
+            "product/scripts/validate must be the canonical thin launcher only; "
+            "substantive product Validation belongs under product/validation/"
+        )
+
+
 def product_task_names(entrypoint: Path = PRODUCT_ENTRYPOINT) -> tuple[str, ...]:
     cp = subprocess.run(
         [str(entrypoint), "--list-tasks"],
@@ -563,10 +576,7 @@ def task_validation_entrypoint() -> None:
         product_text = read(PRODUCT_ENTRYPOINT)
         if not os.access(PRODUCT_ENTRYPOINT, os.X_OK):
             fail("product/scripts/validate must be executable")
-        if "product/validation/validate_product.py" not in product_text:
-            fail("product/scripts/validate must delegate to product/validation/validate_product.py")
-        if '"$@"' not in product_text:
-            fail("product/scripts/validate must forward command arguments unchanged")
+        validate_product_entrypoint_text(product_text)
         if not PRODUCT_VALIDATOR.is_file():
             fail("product/validation/validate_product.py must exist")
         product_task_names()
@@ -982,6 +992,13 @@ def task_framework_regression() -> None:
         completed = subprocess.run([str(scripts_dir / "validate")], cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if completed.returncode != 0:
             fail("root Validation must pass when framework and product Validation pass")
+
+    # Product Validation entrypoint must remain composition only.
+    validate_product_entrypoint_text(CANONICAL_PRODUCT_ENTRYPOINT)
+    expect_failure(
+        lambda: validate_product_entrypoint_text(CANONICAL_PRODUCT_ENTRYPOINT + "\necho substantive-product-check\n"),
+        "canonical thin launcher only",
+    )
 
     # Generic product Validation contract regression.
     with tempfile.TemporaryDirectory() as tmp:
