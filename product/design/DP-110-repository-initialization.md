@@ -73,6 +73,18 @@ It shall not populate those surfaces with invented target-product intent.
 
 A newly initialized repository may therefore be structurally ready for product development while having no current product Design beyond the generic ownership domain supplied by the framework.
 
+## Product Validation Scaffold
+
+Product readiness includes establishment of the generic product surfaces required to use the installed lifecycle rather than leaving each target repository to reconstruct those mechanics independently.
+
+Initialization shall establish the canonical product Design surface, normative-specification surface, product Validation entry point, and product Validation implementation surface required by the installed framework.
+
+The initialized product Validation substrate includes a Requirement Evaluation Manifest in the product Validation ownership domain. Before product normative requirements exist, that manifest represents a valid empty binding set.
+
+The product Validation entry point is a narrow executable interface to product-owned Validation. Initialization shall not populate that entry point with initializer-specific or target-product-specific validation predicates merely to make the scaffold executable.
+
+These surfaces establish lifecycle mechanism and ownership only. Their presence does not define the target product, create product Design meaning, create normative product requirements, or imply that target-product implementation has begun.
+
 ## Repository Bootstrap
 
 Where Git repository state is necessary for the initialized repository to use the framework correctly, initialization may establish that state.

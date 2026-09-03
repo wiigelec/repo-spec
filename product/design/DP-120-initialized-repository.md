@@ -64,6 +64,18 @@ Initialization need not pre-create speculative Planning or normative requirement
 
 Generic empty or starter ownership surfaces may exist when useful, but they carry no product semantics merely by existing.
 
+## Product Validation Readiness
+
+At handoff, the product domain contains the canonical Validation substrate required for later product lifecycle work even though the product itself may have no Design or normative requirements yet.
+
+The initialized repository therefore provides the product Design and normative-specification surfaces, a canonical product Validation entry point, and a product Validation ownership surface containing a valid Requirement Evaluation Manifest.
+
+When no product normative requirement currently requires mechanical evaluation, the product manifest may contain no bindings and product Validation may have no product-specific predicate to execute. That inactive state is represented explicitly by the valid empty substrate rather than by omission of the product Validation architecture.
+
+As product Planning later classifies product normative requirements for mechanical evaluation, Build extends the product-owned validation implementation and records the corresponding requirement-to-task bindings without changing the framework/product ownership boundary.
+
+Framework mechanical Validation may enforce that this generic product Validation contract remains structurally and traceably valid. Product-specific mechanical predicates remain owned and executed by product Validation.
+
 ## Mechanical Validity
 
 A successfully initialized repository shall satisfy all mechanically decidable framework and initialization obligations applicable to its initialized state.
