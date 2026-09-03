@@ -133,6 +133,37 @@
         "destination-safety",
         "cli-surface"
       ]
+    },
+    {
+      "requirement": "FS-002-NR-008",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-010",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-011",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-012",
+      "tasks": [
+        "initialized-state"
+      ]
+    },
+    {
+      "requirement": "FS-002-NR-013",
+      "tasks": [
+        "initialized-state",
+        "validation-boundary"
+      ]
     }
   ]
 }

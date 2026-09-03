@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import importlib.util
 import json
 import re
@@ -9,12 +10,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SPEC_PATHS = (
-    ROOT / "product/specs/FS-001-minimal-repository-initialization.md",
-    ROOT / "product/specs/FS-002-independent-initialized-repository.md",
-)
-MANIFEST_PATH = ROOT / "product/validation/requirement-evaluation.json"
-TEST_PATH = ROOT / "product/validation/test_initializer.py"
+SPECS_ROOT = ROOT / "product" / "specs"
+MANIFEST_PATH = ROOT / "product" / "validation" / "requirement-evaluation.json"
+TEST_PATH = ROOT / "product" / "validation" / "test_initializer.py"
 
 TASK_TESTS = {
     "cli-surface": [
@@ -23,7 +21,7 @@ TASK_TESTS = {
     ],
     "source-integrity": [
         "test_refuses_dirty_supplying_framework_material",
-            "test_refuses_dirty_initializer_source_material",
+        "test_refuses_dirty_initializer_source_material",
         "test_accepts_linked_git_worktree_as_supplying_checkout",
         "test_source_revision_matches_current_supplying_commit",
         "test_internal_test_seam_allows_unaccepted_feature_revision",
@@ -44,59 +42,64 @@ TASK_TESTS = {
     "regression-integrity": [],
 }
 
+CLASS_RE = re.compile(r"^(?:\*\*)?Classification: ([MSB])(?:\*\*)?$")
+STATE_RE = re.compile(r"^(?:\*\*)?State: (active|inactive)(?:\*\*)?$")
+
 
 def fail(message: str) -> int:
     print(f"FAIL product-validation: {message}", flush=True)
     return 1
 
 
-def parse_requirements() -> dict[str, str]:
+def parse_requirement_state() -> tuple[dict[str, str], set[str]]:
     requirements: dict[str, str] = {}
-    heading = re.compile(r"^### (FS-\d+-NR-\d+) — ")
-    classification = re.compile(r"^Classification: ([MSB])$")
+    inactive: set[str] = set()
 
-    for spec_path in SPEC_PATHS:
+    if not SPECS_ROOT.is_dir():
+        raise ValueError("product/specs must exist")
+
+    for spec_path in sorted(SPECS_ROOT.glob("FS-*.md")):
         text = spec_path.read_text(encoding="utf-8")
-        current: str | None = None
-        for line in text.splitlines():
-            match = heading.match(line)
-            if match:
-                current = match.group(1)
-                if current in requirements:
-                    raise ValueError(f"duplicate requirement identity: {current}")
-                continue
-            match = classification.match(line)
-            if match and current is not None:
-                requirements[current] = match.group(1)
-                current = None
+        headings = list(re.finditer(r"^### (FS-\d{3}-NR-\d{3}) — .+$", text, re.MULTILINE))
+        for index, match in enumerate(headings):
+            rid = match.group(1)
+            if rid in requirements:
+                raise ValueError(f"duplicate requirement identity: {rid}")
+            end = headings[index + 1].start() if index + 1 < len(headings) else len(text)
+            block = text[match.end():end]
+            classes = [m.group(1) for line in block.splitlines() if (m := CLASS_RE.match(line))]
+            if len(classes) != 1:
+                raise ValueError(f"{rid} must have exactly one Classification")
+            requirements[rid] = classes[0]
+            states = [m.group(1) for line in block.splitlines() if (m := STATE_RE.match(line))]
+            if len(states) > 1:
+                raise ValueError(f"{rid} has multiple State declarations")
+            if states == ["inactive"]:
+                inactive.add(rid)
 
-    return requirements
+    return requirements, inactive
 
 
 def load_manifest() -> dict:
     try:
-        return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        data = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
-        raise ValueError(f"required manifest missing: {MANIFEST_PATH.relative_to(ROOT)}") from exc
+        raise ValueError("required manifest missing: product/validation/requirement-evaluation.json") from exc
     except json.JSONDecodeError as exc:
         raise ValueError(f"invalid manifest JSON: {exc}") from exc
+    if data.get("version") != 1 or not isinstance(data.get("bindings"), list):
+        raise ValueError("invalid product Requirement Evaluation Manifest structure")
+    return data
 
 
 def validate_manifest() -> tuple[dict[str, str], dict[str, list[str]]]:
-    requirements = parse_requirements()
-    mechanical = {rid for rid, cls in requirements.items() if cls in {"M", "B"}}
-    semantic = {rid for rid, cls in requirements.items() if cls == "S"}
+    requirements, inactive = parse_requirement_state()
+    required = {rid for rid, cls in requirements.items() if cls in {"M", "B"} and rid not in inactive}
+    forbidden = {rid for rid, cls in requirements.items() if cls == "S" or rid in inactive}
 
-    manifest = load_manifest()
-    if manifest.get("version") != 1:
-        raise ValueError("manifest version must be 1")
-
-    bindings = manifest.get("bindings")
-    if not isinstance(bindings, list):
-        raise ValueError("manifest bindings must be a list")
-
+    data = load_manifest()
     observed: dict[str, list[str]] = {}
-    for item in bindings:
+    for item in data["bindings"]:
         if not isinstance(item, dict):
             raise ValueError("each binding must be an object")
         rid = item.get("requirement")
@@ -107,27 +110,23 @@ def validate_manifest() -> tuple[dict[str, str], dict[str, list[str]]]:
             raise ValueError(f"duplicate requirement binding: {rid}")
         if rid not in requirements:
             raise ValueError(f"unknown/stale requirement binding: {rid}")
-        if rid in semantic:
-            raise ValueError(f"purely semantic requirement must not have mechanical binding: {rid}")
-        unknown_tasks = [task for task in tasks if task not in TASK_TESTS]
-        if unknown_tasks:
-            raise ValueError(f"{rid} references unknown tasks: {unknown_tasks}")
-        if len(tasks) != len(set(tasks)):
-            raise ValueError(f"{rid} contains duplicate tasks")
+        if rid in forbidden:
+            raise ValueError(f"requirement must not have mechanical binding: {rid}")
+        if len(tasks) != len(set(tasks)) or not all(isinstance(task, str) and task for task in tasks):
+            raise ValueError(f"{rid} contains invalid or duplicate tasks")
+        unknown = [task for task in tasks if task not in TASK_TESTS]
+        if unknown:
+            raise ValueError(f"{rid} references unknown tasks: {unknown}")
         observed[rid] = tasks
 
-    missing = sorted(mechanical - set(observed))
-    extra = sorted(set(observed) - mechanical)
+    missing = sorted(required - set(observed))
     if missing:
         raise ValueError(f"mechanical requirements missing bindings: {missing}")
-    if extra:
-        raise ValueError(f"non-mechanical requirements unexpectedly bound: {extra}")
-
     return requirements, observed
 
 
 def load_tests_module():
-    spec = importlib.util.spec_from_file_location("fs001_initializer_tests", TEST_PATH)
+    spec = importlib.util.spec_from_file_location("initializer_tests", TEST_PATH)
     if spec is None or spec.loader is None:
         raise RuntimeError("could not load product regression test module")
     module = importlib.util.module_from_spec(spec)
@@ -137,19 +136,10 @@ def load_tests_module():
 
 def run_task(task: str, module) -> bool:
     print(f"\n===== PRODUCT TASK {task} =====", flush=True)
-
     methods = TASK_TESTS[task]
     if task == "regression-integrity":
-        available = {
-            name
-            for name in dir(module.InitializerTests)
-            if name.startswith("test_")
-        }
-        referenced = {
-            method
-            for task_methods in TASK_TESTS.values()
-            for method in task_methods
-        }
+        available = {name for name in dir(module.InitializerTests) if name.startswith("test_")}
+        referenced = {method for task_methods in TASK_TESTS.values() for method in task_methods}
         missing = sorted(referenced - available)
         unbound = sorted(available - referenced)
         if missing:
@@ -158,65 +148,53 @@ def run_task(task: str, module) -> bool:
         if unbound:
             print(f"FAIL regression-integrity unbound tests: {unbound}", flush=True)
             return False
-        print(
-            f"PASS regression-integrity {len(available)} regression tests are task-bound",
-            flush=True,
-        )
+        print(f"PASS regression-integrity {len(available)} regression tests are task-bound", flush=True)
         return True
-
-    suite = unittest.TestSuite()
-    for method in methods:
-        suite.addTest(module.InitializerTests(method))
-
-    result = unittest.TextTestRunner(
-        stream=sys.stdout,
-        verbosity=2,
-    ).run(suite)
-    return result.wasSuccessful()
+    suite = unittest.TestSuite(module.InitializerTests(method) for method in methods)
+    return unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite).wasSuccessful()
 
 
-def main() -> int:
-    print("Product Validation: START", flush=True)
+def required_tasks(bindings: dict[str, list[str]]) -> list[str]:
+    ordered: list[str] = []
+    for item in load_manifest()["bindings"]:
+        for task in item["tasks"]:
+            if task not in ordered:
+                ordered.append(task)
+    return ordered
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(add_help=True)
+    parser.add_argument("--list-tasks", action="store_true")
+    parser.add_argument("--task")
+    args = parser.parse_args(argv)
+
+    if args.list_tasks and args.task:
+        return fail("--list-tasks and --task are mutually exclusive")
+    if args.list_tasks:
+        for task in sorted(TASK_TESTS):
+            print(task)
+        return 0
 
     try:
         requirements, bindings = validate_manifest()
     except (ValueError, OSError) as exc:
         return fail(str(exc))
 
-    mechanical_count = sum(cls in {"M", "B"} for cls in requirements.values())
-    semantic_count = sum(cls == "S" for cls in requirements.values())
-    print(
-        f"PASS requirement-evaluation manifest: "
-        f"{mechanical_count} mechanical/B requirements bound; "
-        f"{semantic_count} semantic-only requirements unbound",
-        flush=True,
-    )
+    if args.task:
+        if args.task not in TASK_TESTS:
+            return fail(f"unknown product Validation task: {args.task}")
+        module = load_tests_module()
+        return 0 if run_task(args.task, module) else 1
 
-    required_tasks = []
-    for item in json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))["bindings"]:
-        for task in item["tasks"]:
-            if task not in required_tasks:
-                required_tasks.append(task)
-
+    print("Product Validation: START", flush=True)
     module = load_tests_module()
-
-    all_passed = True
-    for task in required_tasks:
-        requirements_for_task = [
-            rid for rid, tasks in bindings.items() if task in tasks
-        ]
-        print(
-            f"\nTask {task}: requirements {', '.join(requirements_for_task)}",
-            flush=True,
-        )
+    for task in required_tasks(bindings):
+        owners = [rid for rid, tasks in bindings.items() if task in tasks]
+        print(f"\nTask {task}: requirements {', '.join(owners)}", flush=True)
         if not run_task(task, module):
-            all_passed = False
-            break
-
-    if not all_passed:
-        print("Product Validation: FAILED", flush=True)
-        return 1
-
+            print("Product Validation: FAILED", flush=True)
+            return 1
     print("\nProduct Validation: PASS", flush=True)
     return 0
 

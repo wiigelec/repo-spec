@@ -15,7 +15,11 @@ sys.path.insert(0, str(ROOT / "product" / "src"))
 from initializer.cli import build_parser  # noqa: E402
 from initializer.core import (  # noqa: E402
     FRAMEWORK_SOURCE_RECORD,
-    GENERIC_PRODUCT_MARKER,
+    PRODUCT_DESIGN_README,
+    PRODUCT_SPECS_README,
+    PRODUCT_VALIDATION_ENTRYPOINT,
+    PRODUCT_VALIDATION_MANIFEST,
+    PRODUCT_VALIDATOR,
     InitializationError,
     initialize_repository,
 )
@@ -60,7 +64,42 @@ class InitializerTests(unittest.TestCase):
         self.assertTrue((destination / "repo/scripts/validate").is_file())
         self.assertTrue((destination / "scripts/validate").is_file())
         self.assertFalse((destination / "repo/planning").exists())
-        self.assertTrue((destination / GENERIC_PRODUCT_MARKER).is_file())
+        self.assertTrue((destination / PRODUCT_DESIGN_README).is_file())
+        self.assertTrue((destination / PRODUCT_SPECS_README).is_file())
+        self.assertTrue((destination / PRODUCT_VALIDATION_ENTRYPOINT).is_file())
+        self.assertTrue(os.access(destination / PRODUCT_VALIDATION_ENTRYPOINT, os.X_OK))
+        self.assertTrue((destination / PRODUCT_VALIDATION_MANIFEST).is_file())
+        self.assertTrue((destination / PRODUCT_VALIDATOR).is_file())
+        self.assertFalse((destination / "product/design/.gitkeep").exists())
+
+        manifest = json.loads(
+            (destination / PRODUCT_VALIDATION_MANIFEST).read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest, {"version": 1, "bindings": []})
+
+        listed = subprocess.run(
+            [str(destination / PRODUCT_VALIDATION_ENTRYPOINT), "--list-tasks"],
+            cwd=destination, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertEqual(listed.returncode, 0, listed.stderr)
+        self.assertEqual(listed.stdout, "")
+
+        product_validation = subprocess.run(
+            [str(destination / PRODUCT_VALIDATION_ENTRYPOINT)],
+            cwd=destination, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertEqual(product_validation.returncode, 0, product_validation.stderr)
+
+        unknown = subprocess.run(
+            [str(destination / PRODUCT_VALIDATION_ENTRYPOINT), "--task", "__unknown__"],
+            cwd=destination, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(unknown.returncode, 0)
+
+        design_readme = (destination / PRODUCT_DESIGN_README).read_text(encoding="utf-8")
+        specs_readme = (destination / PRODUCT_SPECS_README).read_text(encoding="utf-8")
+        self.assertIn("Design owns product meaning", design_readme)
+        self.assertIn("Normative requirements belong here", specs_readme)
 
         record = json.loads(
             (destination / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
@@ -69,9 +108,9 @@ class InitializerTests(unittest.TestCase):
 
         self.assertFalse((destination / "product/design/DP-100-repo-spec-initializer.md").exists())
         self.assertFalse((destination / "product/planning").exists())
-        self.assertFalse((destination / "product/specs").exists())
+        self.assertTrue((destination / "product/specs").is_dir())
         self.assertFalse((destination / "product/src").exists())
-        self.assertFalse((destination / "product/validation").exists())
+        self.assertTrue((destination / "product/validation").is_dir())
 
         remotes = run_git(destination, "remote").stdout.splitlines()
         self.assertEqual(remotes, [])
@@ -105,6 +144,30 @@ class InitializerTests(unittest.TestCase):
         linked = self.temp / "linked-source"
         run_git(ROOT, "worktree", "add", "--detach", str(linked), "HEAD")
         try:
+            run_git(linked, "config", "user.name", "repo-spec test")
+            run_git(linked, "config", "user.email", "repo-spec-test@local.invalid")
+
+            # The linked worktree starts from the reviewed Planning HEAD. Install
+            # and commit the current candidate Build surfaces so this pre-merge
+            # regression exercises the same candidate as the other initializer
+            # source fixtures while preserving the source-cleanliness contract.
+            for rel in (
+                Path("product/src/initializer/core.py"),
+                Path("repo/validation/validate_framework.py"),
+                Path("repo/validation/requirement-evaluation.json"),
+                Path("scripts/validate"),
+            ):
+                target = linked / rel
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / rel, target)
+
+            run_git(linked, "add", "-A")
+            staged = run_git(linked, "diff", "--cached", "--quiet", check=False)
+            if staged.returncode == 1:
+                run_git(linked, "commit", "-m", "Install candidate Build surfaces")
+            elif staged.returncode != 0:
+                raise AssertionError("could not evaluate linked candidate source changes")
+
             destination = self.temp / "linked-result"
             revision = initialize_repository(
                 source_root=linked,
@@ -230,6 +293,9 @@ class InitializerTests(unittest.TestCase):
             Path("product/src/initializer/cli.py"),
             Path("product/src/initializer/core.py"),
             Path("product/scripts/repo-spec"),
+            Path("repo/validation/validate_framework.py"),
+            Path("repo/validation/requirement-evaluation.json"),
+            Path("scripts/validate"),
         ):
             target = source / rel
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -265,6 +331,9 @@ class InitializerTests(unittest.TestCase):
             Path("product/src/initializer/cli.py"),
             Path("product/src/initializer/core.py"),
             Path("product/scripts/repo-spec"),
+            Path("repo/validation/validate_framework.py"),
+            Path("repo/validation/requirement-evaluation.json"),
+            Path("scripts/validate"),
         ):
             target = source / rel
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -346,6 +415,28 @@ class InitializerTests(unittest.TestCase):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+
+        # Exercise the current pre-merge Build candidate rather than the
+        # committed Planning base. Commit candidate framework/initializer
+        # surfaces so supplier cleanliness remains true.
+        for rel in (
+            Path("product/src/initializer/core.py"),
+            Path("repo/validation/validate_framework.py"),
+            Path("repo/validation/requirement-evaluation.json"),
+            Path("scripts/validate"),
+        ):
+            target = source / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, target)
+
+        run_git(source, "add", "-A")
+        staged = run_git(source, "diff", "--cached", "--quiet", check=False)
+        if staged.returncode == 1:
+            run_git(source, "commit", "-m", "Install candidate Build surfaces")
+        elif staged.returncode != 0:
+            raise AssertionError("could not evaluate independence candidate source changes")
 
         destination = self.temp / "independence-result"
         revision = initialize_repository(

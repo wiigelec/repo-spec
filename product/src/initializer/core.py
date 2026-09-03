@@ -14,7 +14,11 @@ class InitializationError(RuntimeError):
 
 
 FRAMEWORK_SOURCE_RECORD = Path("repo/validation/framework-source.json")
-GENERIC_PRODUCT_MARKER = Path("product/design/.gitkeep")
+PRODUCT_DESIGN_README = Path("product/design/README.md")
+PRODUCT_SPECS_README = Path("product/specs/README.md")
+PRODUCT_VALIDATION_ENTRYPOINT = Path("product/scripts/validate")
+PRODUCT_VALIDATION_MANIFEST = Path("product/validation/requirement-evaluation.json")
+PRODUCT_VALIDATOR = Path("product/validation/validate_product.py")
 SEEDED_USER_PATHS = (Path("user/script-transfer-handoff.json"),)
 
 
@@ -208,9 +212,31 @@ def _copy_installed_material(stage: Path, source_root: Path) -> None:
     if planning.exists():
         shutil.rmtree(planning)
 
-    marker = stage / GENERIC_PRODUCT_MARKER
-    marker.parent.mkdir(parents=True, exist_ok=True)
-    marker.write_text("", encoding="utf-8")
+    _write_generic_product_scaffold(stage)
+
+
+def _write_generic_product_scaffold(stage: Path) -> None:
+    design = stage / PRODUCT_DESIGN_README
+    specs = stage / PRODUCT_SPECS_README
+    entrypoint = stage / PRODUCT_VALIDATION_ENTRYPOINT
+    manifest = stage / PRODUCT_VALIDATION_MANIFEST
+    validator = stage / PRODUCT_VALIDATOR
+
+    design.parent.mkdir(parents=True, exist_ok=True)
+    specs.parent.mkdir(parents=True, exist_ok=True)
+    entrypoint.parent.mkdir(parents=True, exist_ok=True)
+    manifest.parent.mkdir(parents=True, exist_ok=True)
+
+    design.write_text('# Product Design\n\nPut human-readable Product Design documents in this directory.\n\nDesign owns product meaning: identity, intended behavior, architecture, boundaries, and other consequential semantic decisions. Do not treat this starter README as Product Design or as authority for a future product.\n', encoding="utf-8")
+    specs.write_text('# Product Specifications\n\nPut reviewed product Functional Set normative specifications in this directory after Product Design and Planning establish them.\n\nNormative requirements belong here; mechanical validation bindings belong in `product/validation/requirement-evaluation.json`. This starter README does not define product requirements.\n', encoding="utf-8")
+    entrypoint.write_text('#!/usr/bin/env bash\nset -euo pipefail\nrepo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"\nexec python3 "$repo_root/product/validation/validate_product.py" "$@"\n', encoding="utf-8")
+    entrypoint.chmod(0o755)
+    manifest.write_text(
+        json.dumps({"version": 1, "bindings": []}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    validator.write_text('#!/usr/bin/env python3\nfrom __future__ import annotations\n\nimport argparse\nimport json\nimport sys\nfrom pathlib import Path\nfrom typing import Callable\n\nROOT = Path(__file__).resolve().parents[2]\nMANIFEST = ROOT / "product" / "validation" / "requirement-evaluation.json"\nTASKS: dict[str, Callable[[], bool | None]] = {}\n\n\ndef fail(message: str) -> int:\n    print(f"FAIL product-validation: {message}", file=sys.stderr)\n    return 1\n\n\ndef load_manifest() -> dict:\n    try:\n        data = json.loads(MANIFEST.read_text(encoding="utf-8"))\n    except (OSError, json.JSONDecodeError) as exc:\n        raise ValueError(f"cannot load product Requirement Evaluation Manifest: {exc}") from exc\n    if data.get("version") != 1 or not isinstance(data.get("bindings"), list):\n        raise ValueError("invalid product Requirement Evaluation Manifest structure")\n    return data\n\n\ndef manifest_tasks() -> list[str]:\n    data = load_manifest()\n    ordered: list[str] = []\n    for binding in data["bindings"]:\n        if not isinstance(binding, dict):\n            raise ValueError("product manifest binding must be an object")\n        tasks = binding.get("tasks")\n        if not isinstance(tasks, list) or not tasks:\n            raise ValueError("product manifest binding requires a non-empty tasks list")\n        for task in tasks:\n            if not isinstance(task, str) or not task:\n                raise ValueError("product validation task identity must be a non-empty string")\n            if task not in TASKS:\n                raise ValueError(f"product manifest references unknown task: {task}")\n            if task not in ordered:\n                ordered.append(task)\n    return ordered\n\n\ndef execute(task: str) -> int:\n    fn = TASKS.get(task)\n    if fn is None:\n        return fail(f"unknown product Validation task: {task}")\n    result = fn()\n    return 1 if result is False else 0\n\n\ndef main(argv: list[str] | None = None) -> int:\n    parser = argparse.ArgumentParser()\n    parser.add_argument("--list-tasks", action="store_true")\n    parser.add_argument("--task")\n    args = parser.parse_args(argv)\n\n    if args.list_tasks and args.task:\n        return fail("--list-tasks and --task are mutually exclusive")\n    if args.list_tasks:\n        for task in sorted(TASKS):\n            print(task)\n        return 0\n    if args.task:\n        return execute(args.task)\n\n    try:\n        tasks = manifest_tasks()\n    except ValueError as exc:\n        return fail(str(exc))\n    for task in tasks:\n        result = execute(task)\n        if result:\n            return result\n    print("Product Validation: PASS")\n    return 0\n\n\nif __name__ == "__main__":\n    raise SystemExit(main())\n', encoding="utf-8")
+    validator.chmod(0o755)
 
 
 def _write_generic_root_documents(stage: Path) -> None:
