@@ -1,7 +1,7 @@
 ---
 functional_set: FS-004
 title: Portable History and Validation Composition
-design_revision: 15475e3b13790380850c1e890284cc6eeb7b7ebc
+design_revision: a5d566041958481286325f671393405b900a7141
 ---
 
 # FS-004 — Portable History and Validation Composition
@@ -12,7 +12,7 @@ Make the reusable framework compatible with repositories whose Git history is in
 
 ## Selected Design
 
-Planning consumes framework Design at repository revision `15475e3b13790380850c1e890284cc6eeb7b7ebc`.
+Planning consumes framework Design at repository revision `a5d566041958481286325f671393405b900a7141`.
 
 Selected Design scope:
 
@@ -31,3 +31,9 @@ FS-004 does not change the initializer's Git materialization strategy, create fr
 ## Completion Criterion
 
 After Acceptance, framework Validation can operate with well-formed retained Design revision identifiers whose originating Git objects are absent, while repository-wide mechanical Validation is invoked through `scripts/validate` and delegates to domain-owned validators.
+
+## Issue #12 Bug-Fix Amendment
+
+This accepted Functional Set is corrected in place so repository-wide and framework Validation enforce the canonical product Validation contract rather than merely composing an optional product validator.
+
+The correction adds no plugin system or generalized validation discovery layer. It standardizes one small product Validation interface and keeps product-owned predicates under `product/validation/`.

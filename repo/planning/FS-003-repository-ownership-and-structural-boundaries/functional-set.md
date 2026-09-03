@@ -1,7 +1,7 @@
 ---
 functional_set: FS-003
 title: Repository Ownership and Structural Boundaries
-design_revision: db93ee8fd40f76484915264bdd082abe20d5650c
+design_revision: a5d566041958481286325f671393405b900a7141
 ---
 
 # FS-003 — Repository Ownership and Structural Boundaries
@@ -14,7 +14,7 @@ This Functional Set responds to a concrete need exposed by beginning product dev
 
 ## Selected Design
 
-Planning consumes Design at repository revision `db93ee8fd40f76484915264bdd082abe20d5650c`.
+Planning consumes Design at repository revision `a5d566041958481286325f671393405b900a7141`.
 
 Selected Design scope:
 
@@ -40,3 +40,11 @@ FS-003 does not define product identity or semantics, make `product/` initialize
 ## Completion Criterion
 
 After Acceptance, product Design and subsequent product lifecycle work may begin under `product/` without another framework Functional Set merely to establish generic product ownership or placement. FS-003 establishes structural readiness; it does not claim that every framework-side lifecycle tool already operates generically on product-owned artifacts.
+
+## Issue #12 Bug-Fix Amendment
+
+This accepted Functional Set is corrected in place to realize the canonical product Validation substrate now made explicit by DP-013.
+
+The existing generic `product/` role set remains unchanged. The correction makes `product/design/`, `product/specs/`, `product/scripts/`, and `product/validation/` required baseline roles whenever the maintained product ownership domain is present; `product/planning/` and `product/src/` remain optional until product work needs them.
+
+No new architectural namespace is introduced.

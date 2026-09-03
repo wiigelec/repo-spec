@@ -41,3 +41,39 @@ Classification: B
 FS-002 shall not use imported supplier ancestry, grafts, replace refs, bundles, hidden remotes, or generalized provenance machinery merely to initialize a repository.
 
 Classification: S
+
+### FS-002-NR-008 — Canonical Product Validation Scaffold
+
+Classification: M
+
+A successful initialized repository shall contain generic product starter state at `product/design/README.md`, `product/specs/README.md`, executable `product/scripts/validate`, `product/validation/requirement-evaluation.json`, and `product/validation/validate_product.py`.
+
+### FS-002-NR-009 — Starter Guidance Without Product Semantics
+
+Classification: S
+
+The initialized product Design and specification README files shall provide only concise ownership and placement guidance for future product lifecycle work and shall not define target-product identity, Design meaning, normative requirements, implementation semantics, or Acceptance state.
+
+### FS-002-NR-010 — Empty Product Requirement Evaluation Manifest
+
+Classification: M
+
+The initialized `product/validation/requirement-evaluation.json` shall contain the version-1 empty binding state and no product requirement binding before target-product Planning has established mechanically evaluated normative requirements.
+
+### FS-002-NR-011 — Thin Product Validation Launcher
+
+Classification: M
+
+The initialized `product/scripts/validate` shall be executable and shall delegate product Validation to `product/validation/validate_product.py` while forwarding command arguments unchanged.
+
+### FS-002-NR-012 — Inactive Product Validation Behavior
+
+Classification: M
+
+The initialized product validator shall expose the canonical product task interface, enumerate no product validation tasks in the initial empty state, succeed when invoked normally against the empty product manifest, and fail when asked to execute an unknown task.
+
+### FS-002-NR-013 — Repository-Wide Scaffold Validation
+
+Classification: B
+
+Before initialization reports success, repository-wide `scripts/validate` shall mechanically accept the generated canonical product Validation scaffold and empty product Validation state, and that behavior shall remain valid after the supplying checkout is unavailable.
