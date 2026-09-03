@@ -63,17 +63,17 @@ Historical information may remain in ordinary repository history where naturally
 
 ## Upgrade Boundary
 
-Upgrade authority is bounded by material that the initializer owns installing and maintaining as reusable framework or generic lifecycle-support state.
+Upgrade directly reconciles framework-owned state supplied by the selected repo-spec revision.
 
-Upgrade may reconcile framework-owned material and other initializer-established generic repository surfaces where current Design and Planning identify those surfaces as initializer-managed.
+A prospective framework may also require generic lifecycle-support state in another ownership domain or in a repository-root operational surface. Where that state is required for the prospective framework to operate correctly, upgrade may establish or adapt it to the extent necessary to satisfy the prospective framework while preserving independently developed meaning and content in that domain.
 
-Upgrade shall not use framework maintenance as authority to rewrite arbitrary product-owned or user-owned material.
+Such bounded upgrade authority does not transfer ownership of the affected state to the initializer or framework. Product-owned state remains product-owned, repository-root operational state retains its established role, and user-owned state remains user-owned.
 
-The managed boundary is semantic rather than merely path-based.
+A required generic lifecycle surface that is absent from an older initialized repository may therefore be created by upgrade. Existing state that already satisfies the prospective framework requirement shall not be replaced merely to reproduce initializer-generated starter content.
 
-For example, material under `repo/` may ordinarily be framework-owned, while material under `product/` is ordinarily product-owned. If initialization establishes particular generic product-support artifacts that remain initializer-managed, Planning may identify those exact artifacts as upgradeable without making the rest of `product/` upgrade-owned.
+Where an existing surface contains independently developed product meaning or other repository-owned content, upgrade shall preserve that meaning and content unless current Design explicitly authorizes a transformation. If the prospective framework requirement cannot be satisfied without an unresolved semantic change to independently developed state, upgrade shall surface the incompatibility rather than invent the required product decision.
 
-Repository-root operational material may likewise be reconciled only where its ownership and initializer-management relationship authorize that action.
+The mere existence of a similarly named path in the supplying repository does not create upgrade authority. Upgrade authority follows current Design meaning and the requirements of the prospective installed framework rather than historical initializer authorship or path coincidence.
 
 ## Reconciliation
 
@@ -129,9 +129,13 @@ A framework source identifier remains meaningful as the identity of the supplyin
 
 Upgrade shall evaluate a complete prospective upgraded repository state before reporting success.
 
-The prospective result includes both the reconciled managed framework material and the preserved repository-owned material with which that framework must operate.
+The prospective result includes the reconciled framework-owned state, any bounded compatibility adaptations required by the prospective framework, and the preserved repository-owned material with which that framework must operate.
 
-Validation shall therefore evaluate the candidate repository as a whole to the extent required by applicable mechanically decidable obligations rather than validating only copied framework files in isolation.
+Evaluation shall establish that the prospective framework is internally mechanically valid and that the repository satisfies mechanically decidable compatibility obligations introduced by adopting that framework.
+
+Design does not require every unrelated product-owned mechanical obligation to pass merely because framework upgrade is occurring. Existing product Validation failures that are independent of the framework transition shall not by themselves redefine an otherwise correct framework upgrade as unsuccessful.
+
+This distinction does not permit upgrade to ignore a product-owned condition when the prospective framework requires that condition for lifecycle compatibility. Planning shall derive the mechanical evaluation boundary necessary to distinguish framework-transition obligations from unrelated product-development state.
 
 Design does not require a particular staging implementation.
 
@@ -139,13 +143,19 @@ Planning and Build may use a staged copy, temporary worktree, transaction-like c
 
 ## Validation
 
-Before reporting successful upgrade, the initializer shall cause the prospective upgraded repository state to undergo the mechanical Validation required by the prospective installed framework and the initializer's applicable mechanically decidable upgrade obligations.
+Before reporting successful upgrade, the initializer shall cause the prospective upgraded repository state to undergo the mechanical evaluation required to establish:
 
-Validation shall use the framework state that the candidate repository would actually possess after successful upgrade.
+- the prospective installed framework's own mechanically decidable obligations;
+- the initializer's applicable mechanically decidable upgrade obligations; and
+- mechanically decidable repository compatibility conditions that the prospective framework requires of other ownership domains or repository-root operational state.
 
-Passing mechanical Validation establishes only the applicable mechanically checked conditions.
+Validation shall evaluate the state that the repository would actually possess after successful upgrade.
 
-It does not establish that every semantic consequence of a framework change is acceptable to the repository's product.
+The canonical repository-wide Validation entry point may be used when its full product Validation result is an appropriate gate for the selected upgrade. Design does not require Planning to use repository-wide Validation as the sole upgrade gate when doing so would make unrelated product-development failures block an otherwise valid framework transition.
+
+Passing upgrade mechanical evaluation establishes only the applicable mechanically checked conditions.
+
+It does not establish that every semantic consequence of a framework change is acceptable to the repository's product, and it does not convert unrelated product Validation status into framework-upgrade meaning.
 
 ## Atomic Meaning
 
@@ -251,7 +261,7 @@ Once this Design is accepted, Planning may select a bounded Repository Upgrade F
 Planning should resolve only the technical decisions necessary for that Functional Set, including:
 
 - identification of the currently installed framework revision;
-- identification of initializer-managed upgrade material;
+- identification of framework-owned state and framework-required compatibility adaptations within the upgrade boundary;
 - derivation of the source-to-target managed delta;
 - treatment of locally modified managed material;
 - construction and evaluation of the prospective upgraded repository;
