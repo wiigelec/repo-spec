@@ -69,7 +69,7 @@ The generic product ownership domain includes a canonical Validation substrate s
 
 The product Requirement Evaluation Manifest records exact bindings from mechanically evaluated product normative requirements to product validation tasks. An empty manifest is valid when no applicable product normative requirement currently requires mechanical evaluation; emptiness does not remove the product Validation substrate or its ownership boundaries.
 
-Framework Validation may mechanically enforce the presence, structural validity, and traceability contract of this generic product Validation substrate. Such framework enforcement protects the lifecycle architecture and requirement-to-task traceability; it does not define product-specific normative predicates, evaluate product semantic meaning, or transfer product Validation ownership into `repo/`.
+Framework Validation shall mechanically enforce the reliably decidable structural validity and requirement-to-task traceability contract of this generic product Validation substrate. Such framework enforcement protects the lifecycle architecture and requirement-to-task traceability; it does not define product-specific normative predicates, evaluate product semantic meaning, execute product-owned validation predicates, or transfer product Validation ownership into `repo/`.
 
 ## Validation
 

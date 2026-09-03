@@ -74,7 +74,7 @@ When no product normative requirement currently requires mechanical evaluation, 
 
 As product Planning later classifies product normative requirements for mechanical evaluation, Build extends the product-owned validation implementation and records the corresponding requirement-to-task bindings without changing the framework/product ownership boundary.
 
-Framework mechanical Validation may enforce that this generic product Validation contract remains structurally and traceably valid. Product-specific mechanical predicates remain owned and executed by product Validation.
+Framework mechanical Validation shall enforce the reliably mechanically decidable structural and traceability properties of this generic product Validation contract. Product-specific mechanical predicates remain owned and executed by product Validation.
 
 ## Mechanical Validity
 

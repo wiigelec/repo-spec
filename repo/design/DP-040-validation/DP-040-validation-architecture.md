@@ -77,7 +77,7 @@ The product entry point delegates execution into product-owned Validation implem
 
 The product Requirement Evaluation Manifest is the durable traceability boundary between mechanically evaluated product normative requirements and their product validation tasks. Product Validation consumes those bindings to determine the mechanically required product checks.
 
-Framework Validation may evaluate generic mechanical properties of that contract, including required product Validation surfaces, manifest structural validity, mechanically classified requirement coverage, and whether referenced task identities resolve within the product Validation mechanism. Framework Validation does not thereby execute or own the product-specific normative predicate represented by a task; the canonical product Validation entry point remains responsible for product mechanical evaluation.
+Framework Validation shall evaluate the reliably mechanically decidable generic properties of that contract, including required product Validation surfaces, manifest structural validity, mechanically classified requirement coverage, and whether referenced task identities resolve within the product Validation mechanism. Framework Validation does not thereby execute or own the product-specific normative predicate represented by a task; the canonical product Validation entry point remains responsible for product mechanical evaluation.
 
 A product with no applicable mechanically evaluated normative requirements still retains the canonical product Validation substrate. Its empty valid manifest represents the absence of current product mechanical obligations rather than the absence of product Validation architecture.
 
