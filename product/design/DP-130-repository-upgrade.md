@@ -178,7 +178,7 @@ Exact staging, rollback, filesystem replacement, Git transaction, recovery, and 
 
 A successful upgrade produces the same existing repository with:
 
-- its independently developed repository and product state preserved except where explicitly authorized changes authorized by the upgrade boundary;
+- its independently developed repository and product state preserved except for changes explicitly authorized by the upgrade boundary;
 - its framework-owned state coherently corresponding to the selected supplying repo-spec revision;
 - its current framework source relationship updated truthfully;
 - the mechanical Validation capability required by that installed framework operating correctly; and
