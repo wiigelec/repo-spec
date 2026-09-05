@@ -23,7 +23,16 @@ Selected product Design scope:
 - DP-120 — Initialized Repository
 - DP-130 — Repository Upgrade
 
-Relevant reusable framework Design is consumed as the lifecycle, ownership, Validation, portability, and structural environment in which this product work is performed.
+Selected reusable framework Design scope:
+
+- DP-013 — Repository Ownership and Structural Boundaries
+- DP-021 — Functional Set Architecture
+- DP-022 — Plan Architecture
+- DP-023 — Normative Requirements Architecture
+- DP-031 — Mechanical Enforcement Construction Architecture
+- DP-040 — Validation Architecture
+
+These framework documents provide the lifecycle, ownership, Planning, Validation, portability, and structural environment directly consequential to this Functional Set.
 
 ## Functional Set Boundary
 

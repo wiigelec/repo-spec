@@ -44,7 +44,7 @@ This is a bounded compatibility requirement for reconstructing the prior supplie
 
 If the recorded installed revision cannot be reconstructed from the supplying checkout, the transition is unsupported by FS-003 and upgrade fails explicitly.
 
-Upgrading to the same supplying revision is a successful no-op only when the target already corresponds to that installed framework and required compatibility surfaces; otherwise the detected discrepancy is treated as local modification or incompatibility rather than silently normalized.
+A request whose selected supplying revision is the same as the target's recorded installed framework revision is outside this Functional Set's required upgrade behavior. FS-003 does not prescribe a successful same-revision normalization operation.
 
 ## Installed Framework Snapshot Model
 
@@ -211,7 +211,6 @@ Build shall add focused regression coverage for at least:
 - creation of a missing generic compatibility surface when semantically safe;
 - unsupported transition when the old supplying revision cannot be reconstructed;
 - malformed or missing framework source record;
-- no-op same-revision upgrade behavior;
 - prospective Validation failure leaving the live target unchanged;
 - promotion failure restoring the pre-upgrade authoritative state;
 - unrelated product Validation failure not blocking a transition when outside the upgrade compatibility boundary;
