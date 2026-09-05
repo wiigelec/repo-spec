@@ -42,9 +42,15 @@ TASK_TESTS = {
     ],
     "upgrade-reconciliation": [
         "test_upgrade_cli_surface",
+        "test_upgrade_cli_success",
+        "test_upgrade_cli_failure_reports_error",
         "test_upgrade_successful_supported_transition",
         "test_upgrade_refuses_local_framework_modification",
         "test_upgrade_refuses_unavailable_installed_revision",
+        "test_upgrade_rejects_older_supplying_revision",
+        "test_upgrade_refuses_locally_modified_framework_source_record",
+        "test_upgrade_refuses_missing_framework_source_record",
+        "test_upgrade_refuses_malformed_framework_source_record",
     ],
     "upgrade-preservation": [
         "test_upgrade_preserves_independent_product_and_user_state",

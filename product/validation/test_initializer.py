@@ -797,5 +797,69 @@ class InitializerTests(unittest.TestCase):
         )
 
 
+    def test_upgrade_rejects_older_supplying_revision(self) -> None:
+        source, _, old_revision, new_revision = self._make_upgrade_fixture("downgrade")
+        newer_target = self.temp / "downgrade-newer-target"
+        self._initialize_source_revision(source, new_revision, newer_target)
+        worktree = self.temp / "downgrade-old-source"
+        run_git(source, "worktree", "add", "--detach", str(worktree), old_revision)
+        try:
+            with self.assertRaisesRegex(UpgradeError, "not a later descendant"):
+                upgrade_repository(source_root=worktree, target=newer_target, require_accepted=False)
+        finally:
+            run_git(source, "worktree", "remove", "--force", str(worktree), check=False)
+        self.assertEqual(
+            json.loads((newer_target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8"))["repo_spec_source_revision"],
+            new_revision,
+        )
+
+    def test_upgrade_refuses_locally_modified_framework_source_record(self) -> None:
+        source, target, old_revision, _ = self._make_upgrade_fixture("source-record-conflict")
+        record = target / FRAMEWORK_SOURCE_RECORD
+        data = json.loads(record.read_text(encoding="utf-8"))
+        data["local_note"] = "intentional"
+        record.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(UpgradeError, "local framework modification conflict: repo/validation/framework-source.json"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+        observed = json.loads(record.read_text(encoding="utf-8"))
+        self.assertEqual(observed["repo_spec_source_revision"], old_revision)
+        self.assertEqual(observed["local_note"], "intentional")
+
+    def test_upgrade_refuses_missing_framework_source_record(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("missing-source-record")
+        (target / FRAMEWORK_SOURCE_RECORD).unlink()
+        with self.assertRaisesRegex(UpgradeError, "source record is missing"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_refuses_malformed_framework_source_record(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("malformed-source-record")
+        (target / FRAMEWORK_SOURCE_RECORD).write_text("{bad json\n", encoding="utf-8")
+        with self.assertRaisesRegex(UpgradeError, "source record is malformed"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_cli_success(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture("cli-success")
+        run_git(source, "branch", "-f", "main", new_revision)
+        completed = subprocess.run(
+            [str(source / "product/scripts/repo-spec"), "upgrade", "--repo", str(target)],
+            cwd=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertEqual(completed.returncode, 0, msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}")
+        self.assertIn("Upgraded repo-spec repository", completed.stdout)
+        self.assertIn(new_revision, completed.stdout)
+
+    def test_upgrade_cli_failure_reports_error(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture("cli-failure")
+        run_git(source, "branch", "-f", "main", new_revision)
+        (target / FRAMEWORK_SOURCE_RECORD).unlink()
+        completed = subprocess.run(
+            [str(source / "product/scripts/repo-spec"), "upgrade", "--repo", str(target)],
+            cwd=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn("repo-spec upgrade:", completed.stderr)
+        self.assertIn("source record is missing", completed.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

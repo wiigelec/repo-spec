@@ -530,6 +530,38 @@ def _snapshot_product_and_user_owned(root: Path) -> dict[Path, object]:
     return states
 
 
+def _verify_forward_upgrade_relation(
+    source_root: Path,
+    installed_revision: str,
+    source_revision: str,
+) -> None:
+    resolved = _git(
+        source_root,
+        "cat-file",
+        "-e",
+        f"{installed_revision}^{{commit}}",
+        check=False,
+    )
+    if resolved.returncode != 0:
+        raise UpgradeError(
+            f"installed supplier revision unavailable for supported reconstruction: {installed_revision}"
+        )
+
+    forward = _git(
+        source_root,
+        "merge-base",
+        "--is-ancestor",
+        installed_revision,
+        source_revision,
+        check=False,
+    )
+    if forward.returncode != 0:
+        raise UpgradeError(
+            "selected supplying revision is not a later descendant of the installed "
+            f"framework revision: {installed_revision} -> {source_revision}"
+        )
+
+
 def _construct_installed_snapshot(stage: Path, source_root: Path, revision: str) -> None:
     stage.mkdir(parents=True, exist_ok=False)
     _construct_stage(stage, source_root, revision)
@@ -630,6 +662,19 @@ def _reconcile_framework_owned(
     if conflicts:
         raise UpgradeError(
             "local framework modification conflict: " + ", ".join(conflicts)
+        )
+
+
+def _reconcile_framework_source_record(
+    target: Path,
+    prior: Path,
+) -> None:
+    old = _path_state(prior, FRAMEWORK_SOURCE_RECORD)
+    observed = _path_state(target, FRAMEWORK_SOURCE_RECORD)
+    if observed != old:
+        raise UpgradeError(
+            "local framework modification conflict: "
+            + FRAMEWORK_SOURCE_RECORD.as_posix()
         )
 
 
@@ -775,6 +820,12 @@ def upgrade_repository(
             f"selected framework revision is already recorded as installed: {source_revision}"
         )
 
+    _verify_forward_upgrade_relation(
+        source_root,
+        installed_revision,
+        source_revision,
+    )
+
     target_head = _scalar(target, "rev-parse", "HEAD")
     target_roots = tuple(
         _git(target, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
@@ -797,6 +848,7 @@ def upgrade_repository(
         shutil.copytree(target, stage, symlinks=True)
 
         _reconcile_framework_owned(stage, target, prior, prospective)
+        _reconcile_framework_source_record(target, prior)
         _reconcile_root_compatibility(stage, target, prior, prospective)
         _reconcile_product_compatibility(stage, target, prior, prospective)
         _write_source_record(stage, source_revision)
