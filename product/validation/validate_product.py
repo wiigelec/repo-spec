@@ -51,6 +51,8 @@ TASK_TESTS = {
         "test_upgrade_refuses_locally_modified_framework_source_record",
         "test_upgrade_refuses_missing_framework_source_record",
         "test_upgrade_refuses_malformed_framework_source_record",
+        "test_upgrade_refuses_non_object_framework_source_record",
+        "test_upgrade_cli_contains_supplier_verification_failure",
     ],
     "upgrade-preservation": [
         "test_upgrade_preserves_independent_product_and_user_state",

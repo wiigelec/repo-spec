@@ -861,5 +861,43 @@ class InitializerTests(unittest.TestCase):
         self.assertIn("source record is missing", completed.stderr)
 
 
+    def test_upgrade_refuses_non_object_framework_source_record(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("non-object-source-record")
+        (target / FRAMEWORK_SOURCE_RECORD).write_text("[]\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(
+            UpgradeError,
+            "source record is malformed: expected JSON object",
+        ):
+            upgrade_repository(
+                source_root=source,
+                target=target,
+                require_accepted=False,
+            )
+
+    def test_upgrade_cli_contains_supplier_verification_failure(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("cli-source-failure")
+        run_git(source, "branch", "-f", "main", "HEAD")
+        dirty = source / "repo" / "src" / "cli-source-failure.txt"
+        dirty.write_text("dirty\n", encoding="utf-8")
+
+        completed = subprocess.run(
+            [
+                str(source / "product/scripts/repo-spec"),
+                "upgrade",
+                "--repo",
+                str(target),
+            ],
+            cwd=source,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn("repo-spec upgrade:", completed.stderr)
+        self.assertIn("supplying maintained framework material is dirty", completed.stderr)
+        self.assertNotIn("Traceback", completed.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

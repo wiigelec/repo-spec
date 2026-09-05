@@ -403,9 +403,8 @@ def initialize_repository(
 
 # Repository upgrade implementation -------------------------------------------------
 
-ROOT_COMPATIBILITY_PATHS = (
-    Path(".github"),
-    Path("scripts"),
+ROOT_COMPATIBILITY_FILES = (
+    Path("scripts/validate"),
 )
 PRODUCT_COMPATIBILITY_FILES = (
     PRODUCT_VALIDATION_ENTRYPOINT,
@@ -436,6 +435,9 @@ def _read_framework_source(root: Path) -> str:
         raise UpgradeError("installed framework source record is missing") from exc
     except json.JSONDecodeError as exc:
         raise UpgradeError(f"installed framework source record is malformed: {exc}") from exc
+
+    if not isinstance(data, dict):
+        raise UpgradeError("installed framework source record is malformed: expected JSON object")
 
     revision = data.get("repo_spec_source_revision")
     if not _full_revision(revision):
@@ -572,18 +574,6 @@ def _reconstruct_prior_snapshot(
     revision: str,
     destination: Path,
 ) -> None:
-    resolved = _git(
-        source_root,
-        "cat-file",
-        "-e",
-        f"{revision}^{{commit}}",
-        check=False,
-    )
-    if resolved.returncode != 0:
-        raise UpgradeError(
-            f"installed supplier revision unavailable for supported reconstruction: {revision}"
-        )
-
     parent = Path(tempfile.mkdtemp(prefix=".repo-spec-old-source-", dir=source_root.parent))
     worktree = parent / "source"
     try:
@@ -684,25 +674,19 @@ def _reconcile_root_compatibility(
     prior: Path,
     prospective: Path,
 ) -> None:
-    for prefix in ROOT_COMPATIBILITY_PATHS:
-        paths = (
-            _candidate_paths(prior, prefix)
-            | _candidate_paths(prospective, prefix)
-            | _candidate_paths(target, prefix)
-        )
-        for rel in sorted(paths):
-            old = _path_state(prior, rel)
-            observed = _path_state(target, rel)
-            new = _path_state(prospective, rel)
+    for rel in ROOT_COMPATIBILITY_FILES:
+        old = _path_state(prior, rel)
+        observed = _path_state(target, rel)
+        new = _path_state(prospective, rel)
 
-            if observed is None and new is not None:
-                _apply_state(stage, rel, new)
-            elif observed == old and old != new:
-                _apply_state(stage, rel, new)
-            elif observed == new:
-                continue
-            # Independently changed root operational material is preserved.
-            # Prospective framework Validation decides whether it remains compatible.
+        if observed is None and new is not None:
+            _apply_state(stage, rel, new)
+        elif observed == old and old != new:
+            _apply_state(stage, rel, new)
+        elif observed == new:
+            continue
+        # Independently changed root operational material is preserved.
+        # Prospective framework Validation decides whether it remains compatible.
 
 
 def _reconcile_product_compatibility(
@@ -736,7 +720,6 @@ def _validate_upgrade_stage(
     expected_revision: str,
     preserved_owned_state: dict[Path, object],
     target_head: str,
-    target_roots: tuple[str, ...],
 ) -> None:
     observed_revision = _read_framework_source(stage)
     if observed_revision != expected_revision:
@@ -746,10 +729,7 @@ def _validate_upgrade_stage(
         )
 
     stage_head = _scalar(stage, "rev-parse", "HEAD")
-    stage_roots = tuple(
-        _git(stage, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
-    )
-    if stage_head != target_head or stage_roots != target_roots:
+    if stage_head != target_head:
         raise UpgradeError("prospective upgrade changed target repository history")
 
     for rel, before in preserved_owned_state.items():
@@ -827,9 +807,6 @@ def upgrade_repository(
     )
 
     target_head = _scalar(target, "rev-parse", "HEAD")
-    target_roots = tuple(
-        _git(target, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
-    )
     preserved_owned_state = _snapshot_product_and_user_owned(target)
 
     snapshot_root = Path(tempfile.mkdtemp(prefix=".repo-spec-upgrade-snapshots-"))
@@ -861,7 +838,6 @@ def upgrade_repository(
             expected_revision=source_revision,
             preserved_owned_state=preserved_owned_state,
             target_head=target_head,
-            target_roots=target_roots,
         )
         _promote_upgrade(stage, target)
     finally:

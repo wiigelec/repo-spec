@@ -49,7 +49,7 @@ def main(argv: list[str] | None = None) -> int:
                 target=Path(args.repo),
                 require_accepted=True,
             )
-        except UpgradeError as exc:
+        except InitializationError as exc:
             print(f"repo-spec upgrade: {exc}", file=sys.stderr)
             return 1
 
