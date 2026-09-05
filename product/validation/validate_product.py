@@ -236,8 +236,8 @@ def run_task(task: str, module) -> bool:
 
 def required_tasks(bindings: dict[str, list[str]]) -> list[str]:
     ordered: list[str] = []
-    for item in load_manifest()["bindings"]:
-        for task in item["tasks"]:
+    for tasks in bindings.values():
+        for task in tasks:
             if task not in ordered:
                 ordered.append(task)
     return ordered

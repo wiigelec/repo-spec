@@ -44,6 +44,22 @@ def run_git(cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedPr
 
 
 class InitializerTests(unittest.TestCase):
+    _upgrade_template_tempdir = None
+    _upgrade_template_source = None
+    _upgrade_template_target = None
+    _upgrade_template_old_revision = None
+    _upgrade_template_new_revision = None
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls._upgrade_template_tempdir is not None:
+            cls._upgrade_template_tempdir.cleanup()
+        cls._upgrade_template_tempdir = None
+        cls._upgrade_template_source = None
+        cls._upgrade_template_target = None
+        cls._upgrade_template_old_revision = None
+        cls._upgrade_template_new_revision = None
+
     def setUp(self) -> None:
         self.tempdir = tempfile.TemporaryDirectory(prefix="repo-spec-fs001-")
         self.temp = Path(self.tempdir.name)
@@ -497,13 +513,21 @@ class InitializerTests(unittest.TestCase):
         finally:
             run_git(source, "worktree", "remove", "--force", str(worktree), check=False)
 
-    def _make_upgrade_fixture(
-        self,
-        name: str,
-        *,
-        add_independent_state: bool = False,
-    ) -> tuple[Path, Path, str, str]:
-        source = self.temp / f"{name}-source"
+    def _ensure_upgrade_templates(self) -> tuple[Path, Path, str, str]:
+        cls = type(self)
+        if cls._upgrade_template_source is not None:
+            return (
+                cls._upgrade_template_source,
+                cls._upgrade_template_target,
+                cls._upgrade_template_old_revision,
+                cls._upgrade_template_new_revision,
+            )
+
+        cls._upgrade_template_tempdir = tempfile.TemporaryDirectory(
+            prefix="repo-spec-upgrade-template-"
+        )
+        root = Path(cls._upgrade_template_tempdir.name)
+        source = root / "source"
         subprocess.run(
             ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
             check=True,
@@ -517,18 +541,82 @@ class InitializerTests(unittest.TestCase):
 
         fixture_dir = source / "repo" / "src"
         fixture_dir.mkdir(parents=True, exist_ok=True)
-        (fixture_dir / "upgrade-fixture-change.txt").write_text(
-            "old\n", encoding="utf-8"
-        )
-        (fixture_dir / "upgrade-fixture-remove.txt").write_text(
-            "remove-me\n", encoding="utf-8"
-        )
+        (fixture_dir / "upgrade-fixture-change.txt").write_text("old\n", encoding="utf-8")
+        (fixture_dir / "upgrade-fixture-remove.txt").write_text("remove-me\n", encoding="utf-8")
         run_git(source, "add", "-A")
         run_git(source, "commit", "-m", "Create old framework upgrade fixture")
         old_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
 
+        target = root / "target"
+        worktree = root / "old-source"
+        run_git(source, "worktree", "add", "--detach", str(worktree), old_revision)
+        try:
+            code = (
+                "from pathlib import Path; import sys; sys.dont_write_bytecode = True; "
+                "sys.path.insert(0, str(Path(sys.argv[1]) / 'product' / 'src')); "
+                "from initializer.core import initialize_repository; "
+                "initialize_repository(source_root=Path(sys.argv[1]), "
+                "destination=Path(sys.argv[2]), require_accepted=False)"
+            )
+            completed = subprocess.run(
+                [sys.executable, "-c", code, str(worktree), str(target)],
+                cwd=worktree,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
+            )
+        finally:
+            run_git(source, "worktree", "remove", "--force", str(worktree), check=False)
+
+        for rel in (
+            Path("product/src/initializer/__init__.py"),
+            Path("product/src/initializer/cli.py"),
+            Path("product/src/initializer/core.py"),
+            Path("product/scripts/repo-spec"),
+        ):
+            dest = source / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, dest)
+
+        (fixture_dir / "upgrade-fixture-change.txt").write_text("new\n", encoding="utf-8")
+        (fixture_dir / "upgrade-fixture-remove.txt").unlink()
+        (fixture_dir / "upgrade-fixture-add.txt").write_text("added\n", encoding="utf-8")
+        run_git(source, "add", "-A")
+        run_git(source, "commit", "-m", "Create prospective framework upgrade fixture")
+        new_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
+
+        cls._upgrade_template_source = source
+        cls._upgrade_template_target = target
+        cls._upgrade_template_old_revision = old_revision
+        cls._upgrade_template_new_revision = new_revision
+        return source, target, old_revision, new_revision
+
+    def _make_upgrade_fixture(
+        self,
+        name: str,
+        *,
+        add_independent_state: bool = False,
+    ) -> tuple[Path, Path, str, str]:
+        template_source, template_target, old_revision, new_revision = self._ensure_upgrade_templates()
+
+        source = self.temp / f"{name}-source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(template_source), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+
         target = self.temp / f"{name}-target"
-        self._initialize_source_revision(source, old_revision, target)
+        shutil.copytree(template_target, target, symlinks=True)
 
         if add_independent_state:
             run_git(target, "config", "user.name", "target test")
@@ -547,27 +635,6 @@ class InitializerTests(unittest.TestCase):
             run_git(target, "add", "-A")
             run_git(target, "commit", "-m", "Add independent target product state")
 
-        for rel in (
-            Path("product/src/initializer/__init__.py"),
-            Path("product/src/initializer/cli.py"),
-            Path("product/src/initializer/core.py"),
-            Path("product/scripts/repo-spec"),
-        ):
-            dest = source / rel
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(ROOT / rel, dest)
-
-        (fixture_dir / "upgrade-fixture-change.txt").write_text(
-            "new\n", encoding="utf-8"
-        )
-        (fixture_dir / "upgrade-fixture-remove.txt").unlink()
-        (fixture_dir / "upgrade-fixture-add.txt").write_text(
-            "added\n", encoding="utf-8"
-        )
-
-        run_git(source, "add", "-A")
-        run_git(source, "commit", "-m", "Create prospective framework upgrade fixture")
-        new_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
         return source, target, old_revision, new_revision
 
     def test_upgrade_cli_surface(self) -> None:
