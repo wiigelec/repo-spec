@@ -57,6 +57,7 @@ TASK_TESTS = {
     "upgrade-preservation": [
         "test_upgrade_preserves_independent_product_and_user_state",
         "test_upgrade_restores_missing_generic_product_validator",
+        "test_upgrade_restores_missing_root_validation_entrypoint",
     ],
     "upgrade-validation-boundary": [
         "test_upgrade_validation_failure_leaves_target_unchanged",

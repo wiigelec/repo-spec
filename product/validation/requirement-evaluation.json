@@ -240,7 +240,7 @@
     {
       "requirement": "FS-003-NR-013",
       "tasks": [
-        "upgrade-preservation"
+        "upgrade-reconciliation"
       ]
     },
     {

@@ -812,7 +812,10 @@ class InitializerTests(unittest.TestCase):
         entrypoint.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
         entrypoint.chmod(0o755)
 
-        with self.assertRaisesRegex(UpgradeError, "Validation failed"):
+        with self.assertRaisesRegex(
+            UpgradeError,
+            "product/root compatibility conflict",
+        ):
             upgrade_repository(source_root=source, target=target, require_accepted=False)
 
         self.assertEqual(entrypoint.read_text(encoding="utf-8"), "#!/usr/bin/env bash\nexit 0\n")
@@ -830,6 +833,28 @@ class InitializerTests(unittest.TestCase):
         upgrade_repository(source_root=source, target=target, require_accepted=False)
         self.assertTrue((target / PRODUCT_VALIDATOR).is_file())
         self.assertTrue(os.access(target / PRODUCT_VALIDATOR, os.X_OK))
+
+    def test_upgrade_restores_missing_root_validation_entrypoint(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("restore-root-validator")
+        root_validator = target / "scripts/validate"
+        root_validator.unlink()
+
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        self.assertTrue(root_validator.is_file())
+        self.assertTrue(os.access(root_validator, os.X_OK))
+
+        compatibility = subprocess.run(
+            [str(target / "repo/scripts/validate"), "--task", "validation-entrypoint"],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(
+            compatibility.returncode,
+            0,
+            msg=f"stdout:\n{compatibility.stdout}\nstderr:\n{compatibility.stderr}",
+        )
 
     def test_upgrade_promotion_failure_restores_target(self) -> None:
         source, target, old_revision, _ = self._make_upgrade_fixture(

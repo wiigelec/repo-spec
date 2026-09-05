@@ -714,6 +714,21 @@ def _reconcile_product_compatibility(
         # Validation below decides whether the preserved interface is compatible.
 
 
+def _validate_upgrade_compatibility(stage: Path, validator: Path) -> None:
+    for task in ("manifest-integrity", "validation-entrypoint"):
+        completed = _run(
+            (str(validator), "--task", task),
+            cwd=stage,
+            check=False,
+        )
+        if completed.returncode != 0:
+            detail = completed.stderr.strip() or completed.stdout.strip()
+            raise UpgradeError(
+                f"product/root compatibility conflict ({task})"
+                + (f": {detail}" if detail else "")
+            )
+
+
 def _validate_upgrade_stage(
     stage: Path,
     *,
@@ -742,6 +757,9 @@ def _validate_upgrade_stage(
     validator = stage / "repo" / "scripts" / "validate"
     if not validator.is_file():
         raise UpgradeError("prospective framework is missing repo/scripts/validate")
+
+    _validate_upgrade_compatibility(stage, validator)
+
     completed = _run((str(validator),), cwd=stage, check=False)
     if completed.returncode != 0:
         detail = completed.stderr.strip() or completed.stdout.strip()
