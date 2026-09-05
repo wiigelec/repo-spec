@@ -40,6 +40,24 @@ TASK_TESTS = {
     "validation-boundary": [
         "test_validation_failure_does_not_promote_destination",
     ],
+    "upgrade-reconciliation": [
+        "test_upgrade_cli_surface",
+        "test_upgrade_successful_supported_transition",
+        "test_upgrade_refuses_local_framework_modification",
+        "test_upgrade_refuses_unavailable_installed_revision",
+    ],
+    "upgrade-preservation": [
+        "test_upgrade_preserves_independent_product_and_user_state",
+        "test_upgrade_restores_missing_generic_product_validator",
+    ],
+    "upgrade-validation-boundary": [
+        "test_upgrade_validation_failure_leaves_target_unchanged",
+        "test_upgrade_preserves_unrelated_failing_product_validation",
+        "test_upgrade_incompatible_product_validation_surface_fails",
+    ],
+    "upgrade-atomicity": [
+        "test_upgrade_promotion_failure_restores_target",
+    ],
     "regression-integrity": [],
 }
 

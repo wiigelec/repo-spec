@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from typing import Callable, Sequence
@@ -11,6 +12,10 @@ from typing import Callable, Sequence
 
 class InitializationError(RuntimeError):
     """Raised when repository initialization cannot complete correctly."""
+
+
+class UpgradeError(InitializationError):
+    """Raised when repository upgrade cannot complete correctly."""
 
 
 FRAMEWORK_SOURCE_RECORD = Path("repo/validation/framework-source.json")
@@ -393,5 +398,423 @@ def initialize_repository(
         if stage.exists():
             shutil.rmtree(stage, ignore_errors=True)
         raise
+
+    return source_revision
+
+# Repository upgrade implementation -------------------------------------------------
+
+ROOT_COMPATIBILITY_PATHS = (
+    Path(".github"),
+    Path("scripts"),
+)
+PRODUCT_COMPATIBILITY_FILES = (
+    PRODUCT_VALIDATION_ENTRYPOINT,
+    PRODUCT_VALIDATION_MANIFEST,
+    PRODUCT_VALIDATOR,
+)
+PRODUCT_REQUIRED_DIRECTORIES = (
+    Path("product/design"),
+    Path("product/specs"),
+    Path("product/scripts"),
+    Path("product/validation"),
+)
+
+
+def _full_revision(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 40
+        and all(ch in "0123456789abcdef" for ch in value)
+    )
+
+
+def _read_framework_source(root: Path) -> str:
+    record = root / FRAMEWORK_SOURCE_RECORD
+    try:
+        data = json.loads(record.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise UpgradeError("installed framework source record is missing") from exc
+    except json.JSONDecodeError as exc:
+        raise UpgradeError(f"installed framework source record is malformed: {exc}") from exc
+
+    revision = data.get("repo_spec_source_revision")
+    if not _full_revision(revision):
+        raise UpgradeError(
+            "installed framework source record does not identify one exact prior supplying revision"
+        )
+    return revision
+
+
+def _verify_upgrade_target(target: Path) -> tuple[Path, str]:
+    selected = target.expanduser()
+    if not selected.is_absolute():
+        selected = Path.cwd() / selected
+    if selected.is_symlink():
+        raise UpgradeError("upgrade target is not an ordinary repository directory")
+    target = selected.resolve()
+    if not target.is_dir() or not (target / ".git").is_dir():
+        raise UpgradeError("upgrade target is not an eligible initialized repository")
+
+    inside = _git(target, "rev-parse", "--is-inside-work-tree", check=False)
+    if inside.returncode != 0 or inside.stdout.strip() != "true":
+        raise UpgradeError("upgrade target is not a Git working tree")
+    observed_root = Path(_scalar(target, "rev-parse", "--show-toplevel")).resolve()
+    if observed_root != target:
+        raise UpgradeError(
+            f"upgrade target root mismatch: expected {target}, observed {observed_root}"
+        )
+
+    return target, _read_framework_source(target)
+
+
+def _candidate_paths(root: Path, prefix: Path) -> set[Path]:
+    output = _git(
+        root,
+        "ls-files",
+        "-co",
+        "--exclude-standard",
+        "-z",
+        "--",
+        prefix.as_posix(),
+    ).stdout
+    return {Path(item) for item in output.split("\0") if item}
+
+
+def _path_state(root: Path, rel: Path):
+    path = root / rel
+    if path.is_symlink():
+        return ("symlink", os.readlink(path))
+    if not path.exists():
+        return None
+    if path.is_dir():
+        return ("directory",)
+    return ("file", path.stat().st_mode & 0o777, path.read_bytes())
+
+
+def _remove_path(path: Path) -> None:
+    if path.is_symlink() or path.is_file():
+        path.unlink()
+    elif path.is_dir():
+        shutil.rmtree(path)
+
+
+def _apply_state(root: Path, rel: Path, state) -> None:
+    path = root / rel
+    if state is None:
+        if path.exists() or path.is_symlink():
+            _remove_path(path)
+        return
+
+    if path.exists() or path.is_symlink():
+        _remove_path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    if state[0] == "symlink":
+        path.symlink_to(state[1])
+    elif state[0] == "directory":
+        path.mkdir(parents=True, exist_ok=True)
+    else:
+        _, mode, content = state
+        path.write_bytes(content)
+        path.chmod(mode)
+
+
+def _snapshot_product_and_user_owned(root: Path) -> dict[Path, object]:
+    states: dict[Path, object] = {}
+    excluded = set(PRODUCT_COMPATIBILITY_FILES)
+    for prefix in (Path("product"), Path("user")):
+        for rel in _candidate_paths(root, prefix):
+            if rel in excluded:
+                continue
+            states[rel] = _path_state(root, rel)
+    return states
+
+
+def _construct_installed_snapshot(stage: Path, source_root: Path, revision: str) -> None:
+    stage.mkdir(parents=True, exist_ok=False)
+    _construct_stage(stage, source_root, revision)
+
+
+def _reconstruct_prior_snapshot(
+    source_root: Path,
+    revision: str,
+    destination: Path,
+) -> None:
+    resolved = _git(
+        source_root,
+        "cat-file",
+        "-e",
+        f"{revision}^{{commit}}",
+        check=False,
+    )
+    if resolved.returncode != 0:
+        raise UpgradeError(
+            f"installed supplier revision unavailable for supported reconstruction: {revision}"
+        )
+
+    parent = Path(tempfile.mkdtemp(prefix=".repo-spec-old-source-", dir=source_root.parent))
+    worktree = parent / "source"
+    try:
+        added = _git(
+            source_root,
+            "worktree",
+            "add",
+            "--detach",
+            str(worktree),
+            revision,
+            check=False,
+        )
+        if added.returncode != 0:
+            detail = added.stderr.strip() or added.stdout.strip()
+            raise UpgradeError(
+                "installed supplier revision unavailable for supported reconstruction"
+                + (f": {detail}" if detail else "")
+            )
+
+        code = (
+            "from pathlib import Path; import sys; sys.dont_write_bytecode = True; "
+            "sys.path.insert(0, str(Path(sys.argv[1]) / 'product' / 'src')); "
+            "from initializer.core import initialize_repository; "
+            "initialize_repository(source_root=Path(sys.argv[1]), "
+            "destination=Path(sys.argv[2]), require_accepted=False)"
+        )
+        completed = _run(
+            (sys.executable, "-c", code, str(worktree), str(destination)),
+            cwd=worktree,
+            check=False,
+        )
+        if completed.returncode != 0:
+            detail = completed.stderr.strip() or completed.stdout.strip()
+            raise UpgradeError(
+                "installed supplier revision could not reconstruct prior expected framework state"
+                + (f": {detail}" if detail else "")
+            )
+    finally:
+        if worktree.exists():
+            _git(
+                source_root,
+                "worktree",
+                "remove",
+                "--force",
+                str(worktree),
+                check=False,
+            )
+        shutil.rmtree(parent, ignore_errors=True)
+
+
+def _reconcile_framework_owned(
+    stage: Path,
+    target: Path,
+    prior: Path,
+    prospective: Path,
+) -> None:
+    prefix = Path("repo")
+    paths = (
+        _candidate_paths(prior, prefix)
+        | _candidate_paths(prospective, prefix)
+        | _candidate_paths(target, prefix)
+    )
+    paths.discard(FRAMEWORK_SOURCE_RECORD)
+
+    conflicts: list[str] = []
+    for rel in sorted(paths):
+        old = _path_state(prior, rel)
+        observed = _path_state(target, rel)
+        new = _path_state(prospective, rel)
+        if observed != old:
+            conflicts.append(rel.as_posix())
+            continue
+        if new != old:
+            _apply_state(stage, rel, new)
+
+    if conflicts:
+        raise UpgradeError(
+            "local framework modification conflict: " + ", ".join(conflicts)
+        )
+
+
+def _reconcile_root_compatibility(
+    stage: Path,
+    target: Path,
+    prior: Path,
+    prospective: Path,
+) -> None:
+    for prefix in ROOT_COMPATIBILITY_PATHS:
+        paths = (
+            _candidate_paths(prior, prefix)
+            | _candidate_paths(prospective, prefix)
+            | _candidate_paths(target, prefix)
+        )
+        for rel in sorted(paths):
+            old = _path_state(prior, rel)
+            observed = _path_state(target, rel)
+            new = _path_state(prospective, rel)
+
+            if observed is None and new is not None:
+                _apply_state(stage, rel, new)
+            elif observed == old and old != new:
+                _apply_state(stage, rel, new)
+            elif observed == new:
+                continue
+            # Independently changed root operational material is preserved.
+            # Prospective framework Validation decides whether it remains compatible.
+
+
+def _reconcile_product_compatibility(
+    stage: Path,
+    target: Path,
+    prior: Path,
+    prospective: Path,
+) -> None:
+    for rel in PRODUCT_REQUIRED_DIRECTORIES:
+        if (prospective / rel).is_dir() and not (stage / rel).exists():
+            (stage / rel).mkdir(parents=True, exist_ok=True)
+
+    for rel in PRODUCT_COMPATIBILITY_FILES:
+        old = _path_state(prior, rel)
+        observed = _path_state(target, rel)
+        new = _path_state(prospective, rel)
+
+        if observed is None and new is not None:
+            _apply_state(stage, rel, new)
+        elif observed == old and old != new:
+            _apply_state(stage, rel, new)
+        elif observed == new:
+            continue
+        # Divergent product-owned content remains product-owned. Framework
+        # Validation below decides whether the preserved interface is compatible.
+
+
+def _validate_upgrade_stage(
+    stage: Path,
+    *,
+    expected_revision: str,
+    preserved_owned_state: dict[Path, object],
+    target_head: str,
+    target_roots: tuple[str, ...],
+) -> None:
+    observed_revision = _read_framework_source(stage)
+    if observed_revision != expected_revision:
+        raise UpgradeError(
+            f"prospective framework source mismatch: expected {expected_revision}, "
+            f"observed {observed_revision}"
+        )
+
+    stage_head = _scalar(stage, "rev-parse", "HEAD")
+    stage_roots = tuple(
+        _git(stage, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
+    )
+    if stage_head != target_head or stage_roots != target_roots:
+        raise UpgradeError("prospective upgrade changed target repository history")
+
+    for rel, before in preserved_owned_state.items():
+        after = _path_state(stage, rel)
+        if after != before:
+            raise UpgradeError(
+                f"prospective upgrade modified preserved repository-owned state: {rel}"
+            )
+
+    validator = stage / "repo" / "scripts" / "validate"
+    if not validator.is_file():
+        raise UpgradeError("prospective framework is missing repo/scripts/validate")
+    completed = _run((str(validator),), cwd=stage, check=False)
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        raise UpgradeError(
+            "prospective framework Validation failed"
+            + (f": {detail}" if detail else "")
+        )
+
+
+def _promote_upgrade(stage: Path, target: Path) -> None:
+    backup = Path(
+        tempfile.mkdtemp(prefix=f".{target.name}.repo-spec-backup-", dir=target.parent)
+    )
+    backup.rmdir()
+
+    moved_target = False
+    try:
+        os.replace(target, backup)
+        moved_target = True
+        os.replace(stage, target)
+    except OSError as exc:
+        if moved_target and backup.exists() and not target.exists():
+            try:
+                os.replace(backup, target)
+            except OSError as rollback_exc:
+                raise UpgradeError(
+                    f"upgrade promotion failed and rollback failed: {rollback_exc}"
+                ) from exc
+        raise UpgradeError(f"upgrade promotion failed: {exc}") from exc
+    else:
+        shutil.rmtree(backup, ignore_errors=True)
+
+
+def upgrade_repository(
+    *,
+    source_root: Path,
+    target: Path,
+    require_accepted: bool = True,
+    before_validate: Callable[[Path], None] | None = None,
+) -> str:
+    """Upgrade one initialized repository and return the new supplying revision.
+
+    ``require_accepted=False`` and ``before_validate`` are controlled internal
+    test seams. The normal CLI exposes neither.
+    """
+
+    source_root = source_root.resolve()
+    source_revision = _verify_supplying_checkout(
+        source_root,
+        require_accepted=require_accepted,
+    )
+    target, installed_revision = _verify_upgrade_target(target)
+
+    if source_revision == installed_revision:
+        raise UpgradeError(
+            f"selected framework revision is already recorded as installed: {source_revision}"
+        )
+
+    target_head = _scalar(target, "rev-parse", "HEAD")
+    target_roots = tuple(
+        _git(target, "rev-list", "--max-parents=0", "HEAD").stdout.splitlines()
+    )
+    preserved_owned_state = _snapshot_product_and_user_owned(target)
+
+    snapshot_root = Path(tempfile.mkdtemp(prefix=".repo-spec-upgrade-snapshots-"))
+    prior = snapshot_root / "prior"
+    prospective = snapshot_root / "prospective"
+
+    stage_holder = Path(
+        tempfile.mkdtemp(prefix=f".{target.name}.repo-spec-upgrade-", dir=target.parent)
+    )
+    stage = stage_holder / "repository"
+
+    try:
+        _reconstruct_prior_snapshot(source_root, installed_revision, prior)
+        _construct_installed_snapshot(prospective, source_root, source_revision)
+
+        shutil.copytree(target, stage, symlinks=True)
+
+        _reconcile_framework_owned(stage, target, prior, prospective)
+        _reconcile_root_compatibility(stage, target, prior, prospective)
+        _reconcile_product_compatibility(stage, target, prior, prospective)
+        _write_source_record(stage, source_revision)
+
+        if before_validate is not None:
+            before_validate(stage)
+
+        _validate_upgrade_stage(
+            stage,
+            expected_revision=source_revision,
+            preserved_owned_state=preserved_owned_state,
+            target_head=target_head,
+            target_roots=target_roots,
+        )
+        _promote_upgrade(stage, target)
+    finally:
+        shutil.rmtree(snapshot_root, ignore_errors=True)
+        if stage_holder.exists():
+            shutil.rmtree(stage_holder, ignore_errors=True)
 
     return source_revision

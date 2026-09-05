@@ -164,6 +164,91 @@
         "initialized-state",
         "validation-boundary"
       ]
+    },
+    {
+      "requirement": "FS-003-NR-001",
+      "tasks": [
+        "upgrade-reconciliation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-002",
+      "tasks": [
+        "upgrade-reconciliation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-003",
+      "tasks": [
+        "upgrade-reconciliation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-004",
+      "tasks": [
+        "upgrade-reconciliation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-005",
+      "tasks": [
+        "upgrade-reconciliation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-006",
+      "tasks": [
+        "upgrade-preservation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-007",
+      "tasks": [
+        "upgrade-preservation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-008",
+      "tasks": [
+        "upgrade-preservation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-009",
+      "tasks": [
+        "upgrade-validation-boundary"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-010",
+      "tasks": [
+        "upgrade-validation-boundary"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-011",
+      "tasks": [
+        "upgrade-atomicity"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-012",
+      "tasks": [
+        "upgrade-atomicity"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-013",
+      "tasks": [
+        "upgrade-preservation"
+      ]
+    },
+    {
+      "requirement": "FS-003-NR-014",
+      "tasks": [
+        "upgrade-reconciliation",
+        "upgrade-atomicity"
+      ]
     }
   ]
 }
