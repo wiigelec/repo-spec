@@ -10,32 +10,57 @@ sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "product" / "src"))
 
-from initializer.core import InitializationError, initialize_repository
+from initializer.core import (  # noqa: E402
+    InitializationError,
+    initialize_repository,
+    upgrade_repository,
+)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="test-pre-merge",
-        description="Create a test repository from the current repo-spec candidate.",
+        description="Exercise repo-spec candidate initialization or upgrade before Acceptance.",
     )
-    parser.add_argument("--repo", required=True, help="destination repository path")
-    args = parser.parse_args()
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    destination = Path(args.repo)
+    init_parser = subparsers.add_parser(
+        "init",
+        help="create a test repository from the current repo-spec candidate",
+    )
+    init_parser.add_argument("--repo", required=True, help="destination repository path")
+
+    upgrade_parser = subparsers.add_parser(
+        "upgrade",
+        help="upgrade an existing initialized repository from the current repo-spec candidate",
+    )
+    upgrade_parser.add_argument("--repo", required=True, help="existing repository path")
+
+    args = parser.parse_args()
+    selected = Path(args.repo)
 
     try:
-        revision = initialize_repository(
+        if args.command == "init":
+            revision = initialize_repository(
+                source_root=ROOT,
+                destination=selected,
+                require_accepted=False,
+            )
+            print(f"Initialized pre-merge test repository from {revision}")
+            print(f"Destination: {selected.expanduser().resolve()}")
+            return 0
+
+        revision = upgrade_repository(
             source_root=ROOT,
-            destination=destination,
+            target=selected,
             require_accepted=False,
         )
+        print(f"Upgraded pre-merge test repository to {revision}")
+        print(f"Repository: {selected.expanduser().resolve()}")
+        return 0
     except InitializationError as exc:
-        print(f"test-pre-merge: {exc}", file=sys.stderr)
+        print(f"test-pre-merge {args.command}: {exc}", file=sys.stderr)
         return 1
-
-    print(f"Initialized pre-merge test repository from {revision}")
-    print(f"Destination: {destination.expanduser().resolve()}")
-    return 0
 
 
 if __name__ == "__main__":
