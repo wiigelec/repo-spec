@@ -40,6 +40,34 @@ TASK_TESTS = {
     "validation-boundary": [
         "test_validation_failure_does_not_promote_destination",
     ],
+    "upgrade-reconciliation": [
+        "test_upgrade_cli_surface",
+        "test_upgrade_cli_success",
+        "test_upgrade_cli_failure_reports_error",
+        "test_upgrade_successful_supported_transition",
+        "test_upgrade_refuses_local_framework_modification",
+        "test_upgrade_refuses_unavailable_installed_revision",
+        "test_upgrade_rejects_older_supplying_revision",
+        "test_upgrade_refuses_locally_modified_framework_source_record",
+        "test_upgrade_refuses_missing_framework_source_record",
+        "test_upgrade_refuses_malformed_framework_source_record",
+        "test_upgrade_refuses_non_object_framework_source_record",
+        "test_upgrade_cli_contains_supplier_verification_failure",
+    ],
+    "upgrade-preservation": [
+        "test_upgrade_preserves_independent_product_and_user_state",
+        "test_upgrade_restores_missing_generic_product_validator",
+        "test_upgrade_from_pre_scaffold_revision_adds_generic_product_scaffold",
+        "test_upgrade_restores_missing_root_validation_entrypoint",
+    ],
+    "upgrade-validation-boundary": [
+        "test_upgrade_validation_failure_leaves_target_unchanged",
+        "test_upgrade_preserves_unrelated_failing_product_validation",
+        "test_upgrade_incompatible_product_validation_surface_fails",
+    ],
+    "upgrade-atomicity": [
+        "test_upgrade_promotion_failure_restores_target",
+    ],
     "regression-integrity": [],
 }
 
@@ -210,8 +238,8 @@ def run_task(task: str, module) -> bool:
 
 def required_tasks(bindings: dict[str, list[str]]) -> list[str]:
     ordered: list[str] = []
-    for item in load_manifest()["bindings"]:
-        for task in item["tasks"]:
+    for tasks in bindings.values():
+        for task in tasks:
             if task not in ordered:
                 ordered.append(task)
     return ordered

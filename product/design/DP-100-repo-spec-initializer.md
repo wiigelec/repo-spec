@@ -91,3 +91,5 @@ Additional initializer capabilities should be added only when current Design est
 Repository initialization semantics are defined by DP-110.
 
 The intended properties and lifecycle handoff of the initialized repository are defined by DP-120.
+
+Repository upgrade semantics for an already initialized repository are defined by DP-130.

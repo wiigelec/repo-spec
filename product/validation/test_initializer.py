@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,7 +22,9 @@ from initializer.core import (  # noqa: E402
     PRODUCT_VALIDATION_MANIFEST,
     PRODUCT_VALIDATOR,
     InitializationError,
+    UpgradeError,
     initialize_repository,
+    upgrade_repository,
 )
 
 
@@ -41,6 +44,22 @@ def run_git(cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedPr
 
 
 class InitializerTests(unittest.TestCase):
+    _upgrade_template_tempdir = None
+    _upgrade_template_source = None
+    _upgrade_template_target = None
+    _upgrade_template_old_revision = None
+    _upgrade_template_new_revision = None
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls._upgrade_template_tempdir is not None:
+            cls._upgrade_template_tempdir.cleanup()
+        cls._upgrade_template_tempdir = None
+        cls._upgrade_template_source = None
+        cls._upgrade_template_target = None
+        cls._upgrade_template_old_revision = None
+        cls._upgrade_template_new_revision = None
+
     def setUp(self) -> None:
         self.tempdir = tempfile.TemporaryDirectory(prefix="repo-spec-fs001-")
         self.temp = Path(self.tempdir.name)
@@ -461,6 +480,573 @@ class InitializerTests(unittest.TestCase):
             0,
             msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
         )
+
+
+    def _initialize_source_revision(
+        self,
+        source: Path,
+        revision: str,
+        destination: Path,
+    ) -> None:
+        worktree = self.temp / f"old-source-{destination.name}"
+        run_git(source, "worktree", "add", "--detach", str(worktree), revision)
+        try:
+            code = (
+                "from pathlib import Path; import sys; sys.dont_write_bytecode = True; "
+                "sys.path.insert(0, str(Path(sys.argv[1]) / 'product' / 'src')); "
+                "from initializer.core import initialize_repository; "
+                "initialize_repository(source_root=Path(sys.argv[1]), "
+                "destination=Path(sys.argv[2]), require_accepted=False)"
+            )
+            completed = subprocess.run(
+                [sys.executable, "-c", code, str(worktree), str(destination)],
+                cwd=worktree,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
+            )
+        finally:
+            run_git(source, "worktree", "remove", "--force", str(worktree), check=False)
+
+    def _ensure_upgrade_templates(self) -> tuple[Path, Path, str, str]:
+        cls = type(self)
+        if cls._upgrade_template_source is not None:
+            return (
+                cls._upgrade_template_source,
+                cls._upgrade_template_target,
+                cls._upgrade_template_old_revision,
+                cls._upgrade_template_new_revision,
+            )
+
+        cls._upgrade_template_tempdir = tempfile.TemporaryDirectory(
+            prefix="repo-spec-upgrade-template-"
+        )
+        root = Path(cls._upgrade_template_tempdir.name)
+        source = root / "source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+        run_git(source, "switch", "-c", "candidate")
+
+        fixture_dir = source / "repo" / "src"
+        fixture_dir.mkdir(parents=True, exist_ok=True)
+        (fixture_dir / "upgrade-fixture-change.txt").write_text("old\n", encoding="utf-8")
+        (fixture_dir / "upgrade-fixture-remove.txt").write_text("remove-me\n", encoding="utf-8")
+        run_git(source, "add", "-A")
+        run_git(source, "commit", "-m", "Create old framework upgrade fixture")
+        old_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
+
+        target = root / "target"
+        worktree = root / "old-source"
+        run_git(source, "worktree", "add", "--detach", str(worktree), old_revision)
+        try:
+            code = (
+                "from pathlib import Path; import sys; sys.dont_write_bytecode = True; "
+                "sys.path.insert(0, str(Path(sys.argv[1]) / 'product' / 'src')); "
+                "from initializer.core import initialize_repository; "
+                "initialize_repository(source_root=Path(sys.argv[1]), "
+                "destination=Path(sys.argv[2]), require_accepted=False)"
+            )
+            completed = subprocess.run(
+                [sys.executable, "-c", code, str(worktree), str(target)],
+                cwd=worktree,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
+            )
+        finally:
+            run_git(source, "worktree", "remove", "--force", str(worktree), check=False)
+
+        for rel in (
+            Path("product/src/initializer/__init__.py"),
+            Path("product/src/initializer/cli.py"),
+            Path("product/src/initializer/core.py"),
+            Path("product/scripts/repo-spec"),
+        ):
+            dest = source / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, dest)
+
+        (fixture_dir / "upgrade-fixture-change.txt").write_text("new\n", encoding="utf-8")
+        (fixture_dir / "upgrade-fixture-remove.txt").unlink()
+        (fixture_dir / "upgrade-fixture-add.txt").write_text("added\n", encoding="utf-8")
+        run_git(source, "add", "-A")
+        run_git(source, "commit", "-m", "Create prospective framework upgrade fixture")
+        new_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
+
+        cls._upgrade_template_source = source
+        cls._upgrade_template_target = target
+        cls._upgrade_template_old_revision = old_revision
+        cls._upgrade_template_new_revision = new_revision
+        return source, target, old_revision, new_revision
+
+    def _make_upgrade_fixture(
+        self,
+        name: str,
+        *,
+        add_independent_state: bool = False,
+    ) -> tuple[Path, Path, str, str]:
+        template_source, template_target, old_revision, new_revision = self._ensure_upgrade_templates()
+
+        source = self.temp / f"{name}-source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(template_source), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+
+        target = self.temp / f"{name}-target"
+        shutil.copytree(template_target, target, symlinks=True)
+
+        if add_independent_state:
+            run_git(target, "config", "user.name", "target test")
+            run_git(target, "config", "user.email", "target-test@local.invalid")
+            independent = {
+                Path("product/design/DP-900-local-product.md"): "# Local Product\n",
+                Path("product/specs/local-notes.md"): "local specification notes\n",
+                Path("product/src/app.py"): "VALUE = 'local-product'\n",
+                Path("product/validation/local-state.txt"): "local validation state\n",
+                Path("user/local-note.txt"): "user-owned\n",
+            }
+            for rel, content in independent.items():
+                path = target / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content, encoding="utf-8")
+            run_git(target, "add", "-A")
+            run_git(target, "commit", "-m", "Add independent target product state")
+
+        return source, target, old_revision, new_revision
+
+    def test_upgrade_cli_surface(self) -> None:
+        parser = build_parser()
+        subparsers = next(
+            action for action in parser._actions
+            if action.__class__.__name__ == "_SubParsersAction"
+        )
+        upgrade_parser = subparsers.choices["upgrade"]
+        option_actions = [
+            action
+            for action in upgrade_parser._actions
+            if action.option_strings and action.dest != "help"
+        ]
+        self.assertEqual(len(option_actions), 1)
+        self.assertEqual(option_actions[0].option_strings, ["--repo"])
+        self.assertTrue(option_actions[0].required)
+
+    def test_upgrade_successful_supported_transition(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture(
+            "success",
+            add_independent_state=True,
+        )
+        target_head = run_git(target, "rev-parse", "HEAD").stdout.strip()
+
+        observed = upgrade_repository(
+            source_root=source,
+            target=target,
+            require_accepted=False,
+        )
+        self.assertEqual(observed, new_revision)
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
+            new_revision,
+        )
+        self.assertEqual(run_git(target, "rev-parse", "HEAD").stdout.strip(), target_head)
+        self.assertEqual(
+            (target / "repo/src/upgrade-fixture-change.txt").read_text(encoding="utf-8"),
+            "new\n",
+        )
+        self.assertTrue((target / "repo/src/upgrade-fixture-add.txt").is_file())
+        self.assertFalse((target / "repo/src/upgrade-fixture-remove.txt").exists())
+        self.assertNotEqual(
+            run_git(
+                target,
+                "cat-file",
+                "-e",
+                f"{new_revision}^{{commit}}",
+                check=False,
+            ).returncode,
+            0,
+        )
+
+    def test_upgrade_preserves_independent_product_and_user_state(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture(
+            "preserve",
+            add_independent_state=True,
+        )
+        expected = {
+            Path("product/design/DP-900-local-product.md"): "# Local Product\n",
+            Path("product/specs/local-notes.md"): "local specification notes\n",
+            Path("product/src/app.py"): "VALUE = 'local-product'\n",
+            Path("product/validation/local-state.txt"): "local validation state\n",
+            Path("user/local-note.txt"): "user-owned\n",
+        }
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        for rel, content in expected.items():
+            self.assertEqual((target / rel).read_text(encoding="utf-8"), content)
+
+    def test_upgrade_refuses_local_framework_modification(self) -> None:
+        source, target, old_revision, _ = self._make_upgrade_fixture("local-conflict")
+        marker = target / "repo/src/upgrade-fixture-change.txt"
+        marker.write_text("locally-modified\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(UpgradeError, "local framework modification conflict"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+        self.assertEqual(marker.read_text(encoding="utf-8"), "locally-modified\n")
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
+            old_revision,
+        )
+
+    def test_upgrade_refuses_unavailable_installed_revision(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("unavailable")
+        record = target / FRAMEWORK_SOURCE_RECORD
+        data = json.loads(record.read_text(encoding="utf-8"))
+        data["repo_spec_source_revision"] = "f" * 40
+        record.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(UpgradeError, "unavailable for supported reconstruction"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_validation_failure_leaves_target_unchanged(self) -> None:
+        source, target, old_revision, _ = self._make_upgrade_fixture("validation-fail")
+        before = (target / "repo/src/upgrade-fixture-change.txt").read_text(
+            encoding="utf-8"
+        )
+
+        def break_candidate(stage: Path) -> None:
+            (stage / "unauthorized-root.txt").write_text("invalid\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(UpgradeError, "Validation failed"):
+            upgrade_repository(
+                source_root=source,
+                target=target,
+                require_accepted=False,
+                before_validate=break_candidate,
+            )
+
+        self.assertEqual(
+            (target / "repo/src/upgrade-fixture-change.txt").read_text(encoding="utf-8"),
+            before,
+        )
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
+            old_revision,
+        )
+        self.assertFalse((target / "unauthorized-root.txt").exists())
+
+    def test_upgrade_preserves_unrelated_failing_product_validation(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture(
+            "product-failure",
+            add_independent_state=True,
+        )
+        validator = target / PRODUCT_VALIDATOR
+        validator.write_text(
+            "#!/usr/bin/env python3\n"
+            "import sys\n"
+            "if '--list-tasks' in sys.argv:\n"
+            "    raise SystemExit(0)\n"
+            "if '--task' in sys.argv:\n"
+            "    raise SystemExit(1)\n"
+            "raise SystemExit(1)\n",
+            encoding="utf-8",
+        )
+        validator.chmod(0o755)
+
+        full_before = subprocess.run(
+            [str(target / "scripts/validate")],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(full_before.returncode, 0)
+
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
+            new_revision,
+        )
+        self.assertIn("raise SystemExit(1)", validator.read_text(encoding="utf-8"))
+
+        full_after = subprocess.run(
+            [str(target / "scripts/validate")],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(full_after.returncode, 0)
+
+    def test_upgrade_incompatible_product_validation_surface_fails(self) -> None:
+        source, target, old_revision, _ = self._make_upgrade_fixture("product-conflict")
+        entrypoint = target / PRODUCT_VALIDATION_ENTRYPOINT
+        entrypoint.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+        entrypoint.chmod(0o755)
+
+        with self.assertRaisesRegex(
+            UpgradeError,
+            "product/root compatibility conflict",
+        ):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+        self.assertEqual(entrypoint.read_text(encoding="utf-8"), "#!/usr/bin/env bash\nexit 0\n")
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
+            old_revision,
+        )
+
+    def test_upgrade_restores_missing_generic_product_validator(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("restore-product-validator")
+        (target / PRODUCT_VALIDATOR).unlink()
+
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        self.assertTrue((target / PRODUCT_VALIDATOR).is_file())
+        self.assertTrue(os.access(target / PRODUCT_VALIDATOR, os.X_OK))
+
+    def test_upgrade_from_pre_scaffold_revision_adds_generic_product_scaffold(self) -> None:
+        pre_scaffold_revision = "df64f6a1f976ca0bd2dde387f2932fc8ed6e2fe4"
+        source = self.temp / "pre-scaffold-upgrade-source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+
+        target = self.temp / "pre-scaffold-upgrade-target"
+        self._initialize_source_revision(source, pre_scaffold_revision, target)
+
+        self.assertTrue((target / "product/design/.gitkeep").is_file())
+        self.assertFalse((target / PRODUCT_SPECS_README).exists())
+        self.assertFalse((target / PRODUCT_VALIDATION_MANIFEST).exists())
+
+        run_git(target, "config", "user.name", "target test")
+        run_git(target, "config", "user.email", "target-test@local.invalid")
+        local_design = target / "product/design/DP-900-local-product.md"
+        local_design.write_text("# Independent Product Design\n", encoding="utf-8")
+        local_user = target / "user/local-note.txt"
+        local_user.parent.mkdir(parents=True, exist_ok=True)
+        local_user.write_text("independent user state\n", encoding="utf-8")
+        run_git(target, "add", "-A")
+        run_git(target, "commit", "-m", "Add independent pre-upgrade state")
+
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+        self.assertFalse((target / "product/design/.gitkeep").exists())
+        for rel in (
+            PRODUCT_DESIGN_README,
+            PRODUCT_SPECS_README,
+            PRODUCT_VALIDATION_ENTRYPOINT,
+            PRODUCT_VALIDATION_MANIFEST,
+            PRODUCT_VALIDATOR,
+        ):
+            self.assertTrue((target / rel).is_file(), rel.as_posix())
+
+        self.assertEqual(local_design.read_text(encoding="utf-8"), "# Independent Product Design\n")
+        self.assertEqual(local_user.read_text(encoding="utf-8"), "independent user state\n")
+
+        validation = subprocess.run(
+            [str(target / "scripts/validate")],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(
+            validation.returncode,
+            0,
+            msg=f"stdout:\n{validation.stdout}\nstderr:\n{validation.stderr}",
+        )
+
+    def test_upgrade_restores_missing_root_validation_entrypoint(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("restore-root-validator")
+        root_validator = target / "scripts/validate"
+        root_validator.unlink()
+
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        self.assertTrue(root_validator.is_file())
+        self.assertTrue(os.access(root_validator, os.X_OK))
+
+        compatibility = subprocess.run(
+            [str(target / "repo/scripts/validate"), "--task", "validation-entrypoint"],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(
+            compatibility.returncode,
+            0,
+            msg=f"stdout:\n{compatibility.stdout}\nstderr:\n{compatibility.stderr}",
+        )
+
+    def test_upgrade_promotion_failure_restores_target(self) -> None:
+        source, target, old_revision, _ = self._make_upgrade_fixture(
+            "promotion-fail",
+            add_independent_state=True,
+        )
+        real_replace = os.replace
+        target_resolved = target.resolve()
+        calls = {"to_target": 0}
+
+        def flaky_replace(src, dst):
+            if Path(dst).resolve() == target_resolved:
+                calls["to_target"] += 1
+                if calls["to_target"] == 1:
+                    raise OSError("promotion failure fixture")
+            return real_replace(src, dst)
+
+        with mock.patch("initializer.core.os.replace", side_effect=flaky_replace):
+            with self.assertRaisesRegex(UpgradeError, "upgrade promotion failed"):
+                upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+        self.assertTrue(target.is_dir())
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
+            old_revision,
+        )
+        self.assertEqual(
+            (target / "user/local-note.txt").read_text(encoding="utf-8"),
+            "user-owned\n",
+        )
+
+
+    def test_upgrade_rejects_older_supplying_revision(self) -> None:
+        source, _, old_revision, new_revision = self._make_upgrade_fixture("downgrade")
+        newer_target = self.temp / "downgrade-newer-target"
+        self._initialize_source_revision(source, new_revision, newer_target)
+        worktree = self.temp / "downgrade-old-source"
+        run_git(source, "worktree", "add", "--detach", str(worktree), old_revision)
+        try:
+            with self.assertRaisesRegex(UpgradeError, "not a later descendant"):
+                upgrade_repository(source_root=worktree, target=newer_target, require_accepted=False)
+        finally:
+            run_git(source, "worktree", "remove", "--force", str(worktree), check=False)
+        self.assertEqual(
+            json.loads((newer_target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8"))["repo_spec_source_revision"],
+            new_revision,
+        )
+
+    def test_upgrade_refuses_locally_modified_framework_source_record(self) -> None:
+        source, target, old_revision, _ = self._make_upgrade_fixture("source-record-conflict")
+        record = target / FRAMEWORK_SOURCE_RECORD
+        data = json.loads(record.read_text(encoding="utf-8"))
+        data["local_note"] = "intentional"
+        record.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(UpgradeError, "local framework modification conflict: repo/validation/framework-source.json"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+        observed = json.loads(record.read_text(encoding="utf-8"))
+        self.assertEqual(observed["repo_spec_source_revision"], old_revision)
+        self.assertEqual(observed["local_note"], "intentional")
+
+    def test_upgrade_refuses_missing_framework_source_record(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("missing-source-record")
+        (target / FRAMEWORK_SOURCE_RECORD).unlink()
+        with self.assertRaisesRegex(UpgradeError, "source record is missing"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_refuses_malformed_framework_source_record(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("malformed-source-record")
+        (target / FRAMEWORK_SOURCE_RECORD).write_text("{bad json\n", encoding="utf-8")
+        with self.assertRaisesRegex(UpgradeError, "source record is malformed"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_cli_success(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture("cli-success")
+        run_git(source, "branch", "-f", "main", new_revision)
+        completed = subprocess.run(
+            [str(source / "product/scripts/repo-spec"), "upgrade", "--repo", str(target)],
+            cwd=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertEqual(completed.returncode, 0, msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}")
+        self.assertIn("Upgraded repo-spec repository", completed.stdout)
+        self.assertIn(new_revision, completed.stdout)
+
+    def test_upgrade_cli_failure_reports_error(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture("cli-failure")
+        run_git(source, "branch", "-f", "main", new_revision)
+        (target / FRAMEWORK_SOURCE_RECORD).unlink()
+        completed = subprocess.run(
+            [str(source / "product/scripts/repo-spec"), "upgrade", "--repo", str(target)],
+            cwd=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn("repo-spec upgrade:", completed.stderr)
+        self.assertIn("source record is missing", completed.stderr)
+
+
+    def test_upgrade_refuses_non_object_framework_source_record(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("non-object-source-record")
+        (target / FRAMEWORK_SOURCE_RECORD).write_text("[]\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(
+            UpgradeError,
+            "source record is malformed: expected JSON object",
+        ):
+            upgrade_repository(
+                source_root=source,
+                target=target,
+                require_accepted=False,
+            )
+
+    def test_upgrade_cli_contains_supplier_verification_failure(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("cli-source-failure")
+        run_git(source, "branch", "-f", "main", "HEAD")
+        dirty = source / "repo" / "src" / "cli-source-failure.txt"
+        dirty.write_text("dirty\n", encoding="utf-8")
+
+        completed = subprocess.run(
+            [
+                str(source / "product/scripts/repo-spec"),
+                "upgrade",
+                "--repo",
+                str(target),
+            ],
+            cwd=source,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn("repo-spec upgrade:", completed.stderr)
+        self.assertIn("supplying maintained framework material is dirty", completed.stderr)
+        self.assertNotIn("Traceback", completed.stderr)
 
 
 if __name__ == "__main__":
