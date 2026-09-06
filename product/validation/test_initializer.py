@@ -834,6 +834,64 @@ class InitializerTests(unittest.TestCase):
         self.assertTrue((target / PRODUCT_VALIDATOR).is_file())
         self.assertTrue(os.access(target / PRODUCT_VALIDATOR, os.X_OK))
 
+    def test_upgrade_from_pre_scaffold_revision_adds_generic_product_scaffold(self) -> None:
+        pre_scaffold_revision = "df64f6a1f976ca0bd2dde387f2932fc8ed6e2fe4"
+        source = self.temp / "pre-scaffold-upgrade-source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+
+        target = self.temp / "pre-scaffold-upgrade-target"
+        self._initialize_source_revision(source, pre_scaffold_revision, target)
+
+        self.assertTrue((target / "product/design/.gitkeep").is_file())
+        self.assertFalse((target / PRODUCT_SPECS_README).exists())
+        self.assertFalse((target / PRODUCT_VALIDATION_MANIFEST).exists())
+
+        run_git(target, "config", "user.name", "target test")
+        run_git(target, "config", "user.email", "target-test@local.invalid")
+        local_design = target / "product/design/DP-900-local-product.md"
+        local_design.write_text("# Independent Product Design\n", encoding="utf-8")
+        local_user = target / "user/local-note.txt"
+        local_user.parent.mkdir(parents=True, exist_ok=True)
+        local_user.write_text("independent user state\n", encoding="utf-8")
+        run_git(target, "add", "-A")
+        run_git(target, "commit", "-m", "Add independent pre-upgrade state")
+
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+        self.assertFalse((target / "product/design/.gitkeep").exists())
+        for rel in (
+            PRODUCT_DESIGN_README,
+            PRODUCT_SPECS_README,
+            PRODUCT_VALIDATION_ENTRYPOINT,
+            PRODUCT_VALIDATION_MANIFEST,
+            PRODUCT_VALIDATOR,
+        ):
+            self.assertTrue((target / rel).is_file(), rel.as_posix())
+
+        self.assertEqual(local_design.read_text(encoding="utf-8"), "# Independent Product Design\n")
+        self.assertEqual(local_user.read_text(encoding="utf-8"), "independent user state\n")
+
+        validation = subprocess.run(
+            [str(target / "scripts/validate")],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(
+            validation.returncode,
+            0,
+            msg=f"stdout:\n{validation.stdout}\nstderr:\n{validation.stderr}",
+        )
+
     def test_upgrade_restores_missing_root_validation_entrypoint(self) -> None:
         source, target, _, _ = self._make_upgrade_fixture("restore-root-validator")
         root_validator = target / "scripts/validate"

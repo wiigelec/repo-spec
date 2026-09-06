@@ -57,6 +57,7 @@ TASK_TESTS = {
     "upgrade-preservation": [
         "test_upgrade_preserves_independent_product_and_user_state",
         "test_upgrade_restores_missing_generic_product_validator",
+        "test_upgrade_from_pre_scaffold_revision_adds_generic_product_scaffold",
         "test_upgrade_restores_missing_root_validation_entrypoint",
     ],
     "upgrade-validation-boundary": [

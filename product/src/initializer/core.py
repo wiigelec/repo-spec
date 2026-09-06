@@ -406,17 +406,6 @@ def initialize_repository(
 ROOT_COMPATIBILITY_FILES = (
     Path("scripts/validate"),
 )
-PRODUCT_COMPATIBILITY_FILES = (
-    PRODUCT_VALIDATION_ENTRYPOINT,
-    PRODUCT_VALIDATION_MANIFEST,
-    PRODUCT_VALIDATOR,
-)
-PRODUCT_REQUIRED_DIRECTORIES = (
-    Path("product/design"),
-    Path("product/specs"),
-    Path("product/scripts"),
-    Path("product/validation"),
-)
 
 
 def _full_revision(value: object) -> bool:
@@ -521,12 +510,21 @@ def _apply_state(root: Path, rel: Path, state) -> None:
         path.chmod(mode)
 
 
-def _snapshot_product_and_user_owned(root: Path) -> dict[Path, object]:
+def _product_compatibility_paths(prior: Path, prospective: Path) -> set[Path]:
+    # Initialization defines the generic product material that upgrade may reconcile.
+    prefix = Path("product")
+    return _candidate_paths(prior, prefix) | _candidate_paths(prospective, prefix)
+
+
+def _snapshot_product_and_user_owned(
+    root: Path,
+    *,
+    product_compatibility_paths: set[Path],
+) -> dict[Path, object]:
     states: dict[Path, object] = {}
-    excluded = set(PRODUCT_COMPATIBILITY_FILES)
     for prefix in (Path("product"), Path("user")):
         for rel in _candidate_paths(root, prefix):
-            if rel in excluded:
+            if rel in product_compatibility_paths:
                 continue
             states[rel] = _path_state(root, rel)
     return states
@@ -694,12 +692,10 @@ def _reconcile_product_compatibility(
     target: Path,
     prior: Path,
     prospective: Path,
+    *,
+    compatibility_paths: set[Path],
 ) -> None:
-    for rel in PRODUCT_REQUIRED_DIRECTORIES:
-        if (prospective / rel).is_dir() and not (stage / rel).exists():
-            (stage / rel).mkdir(parents=True, exist_ok=True)
-
-    for rel in PRODUCT_COMPATIBILITY_FILES:
+    for rel in sorted(compatibility_paths):
         old = _path_state(prior, rel)
         observed = _path_state(target, rel)
         new = _path_state(prospective, rel)
@@ -825,7 +821,6 @@ def upgrade_repository(
     )
 
     target_head = _scalar(target, "rev-parse", "HEAD")
-    preserved_owned_state = _snapshot_product_and_user_owned(target)
 
     snapshot_root = Path(tempfile.mkdtemp(prefix=".repo-spec-upgrade-snapshots-"))
     prior = snapshot_root / "prior"
@@ -840,12 +835,24 @@ def upgrade_repository(
         _reconstruct_prior_snapshot(source_root, installed_revision, prior)
         _construct_installed_snapshot(prospective, source_root, source_revision)
 
+        product_compatibility_paths = _product_compatibility_paths(prior, prospective)
+        preserved_owned_state = _snapshot_product_and_user_owned(
+            target,
+            product_compatibility_paths=product_compatibility_paths,
+        )
+
         shutil.copytree(target, stage, symlinks=True)
 
         _reconcile_framework_owned(stage, target, prior, prospective)
         _reconcile_framework_source_record(target, prior)
         _reconcile_root_compatibility(stage, target, prior, prospective)
-        _reconcile_product_compatibility(stage, target, prior, prospective)
+        _reconcile_product_compatibility(
+            stage,
+            target,
+            prior,
+            prospective,
+            compatibility_paths=product_compatibility_paths,
+        )
         _write_source_record(stage, source_revision)
 
         if before_validate is not None:
