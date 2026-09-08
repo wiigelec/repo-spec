@@ -2,33 +2,32 @@
 
 ## Technical Objective
 
-Replace the concrete structural allowlists embedded in `repo/validation/validate_framework.py` with one strict repository-local configuration while retaining exactly the same default-deny enforcement model.
+Replace concrete structural allowlists embedded in `repo/validation/validate_framework.py` with one strict repository-local configuration while retaining the same default-deny enforcement model.
 
 The framework owns:
 
 - the policy schema;
 - loading and strict validation of policy data;
-- closed-boundary enforcement semantics;
-- framework-required structural invariants; and
-- initializer/upgrade mechanics needed to keep the policy operable.
+- closed-boundary enforcement semantics; and
+- framework-required structural invariants.
 
-The target repository owns the concrete authorized-entry values in its installed policy, subject to current accepted Design and Planning.
+The installed repository owns the concrete authorized-entry values in its policy, subject to accepted Design and Planning.
 
-Changing an installed repository's structural policy is therefore not an arbitrary runtime bypass. It is a maintained repository change that must be justified by that repository's controlling Design/Planning where the change is consequential.
+Changing an installed repository's structural policy is a maintained repository change. It is not a Validation bypass.
 
 ## Canonical Policy Location
 
-The canonical structural-policy file shall be:
+The canonical structural-policy file is:
 
 `repo/validation/structure-policy.json`
 
-This location is a framework-defined configuration surface consumed by `repository-structure`. It is not a second normative specification and does not replace Design or Planning.
+It is a framework-defined configuration surface consumed by `repository-structure`. It is not a second normative specification.
 
-`repository-structure` shall not contain a fallback copy of the concrete allowlists. Missing or invalid policy fails closed.
+`repository-structure` shall not retain a fallback copy of the concrete allowlists. Missing or invalid policy fails closed.
 
 ## Policy Schema
 
-The file shall use this version-1 JSON shape:
+Version 1:
 
 ```json
 {
@@ -49,171 +48,85 @@ The file shall use this version-1 JSON shape:
 
 Schema rules:
 
-- the top-level object contains exactly `version`, `root`, `repo`, and `product`;
-- `version` is exactly integer `1`;
+- top level contains exactly `version`, `root`, `repo`, and `product`;
+- `version` is integer `1`;
 - `root` contains exactly `files` and `directories`;
 - `repo` contains exactly `directories`;
 - `product` contains exactly `directories` and `required_when_present`;
-- every collection is a JSON array of unique non-empty strings;
-- entries are direct-child names only: no `/`, `\`, `.`, `..`, empty name, absolute path, or path traversal;
-- a root name shall not appear in both `root.files` and `root.directories`;
-- `product.required_when_present` shall be a subset of `product.directories`;
-- unknown keys fail closed;
-- malformed JSON fails closed.
+- every collection is an array of unique non-empty strings;
+- entries are direct-child names only: no `/`, `\`, `.`, `..`, empty name, absolute path, or traversal;
+- a root name may not appear in both root files and directories;
+- `product.required_when_present` is a subset of `product.directories`;
+- unknown keys and malformed JSON fail closed.
 
 No wildcard, glob, regex, recursive rule, negative rule, or ordered override semantics are introduced.
 
 ## Default Policy
 
-The accepted default policy shall be semantically identical to the current hardcoded behavior:
+The canonical default file in the supplier framework shall be:
 
 ```json
 {
   "version": 1,
   "root": {
-    "files": [
-      ".gitignore",
-      "AGENTS.md",
-      "LICENSE",
-      "README.md"
-    ],
-    "directories": [
-      ".github",
-      "product",
-      "repo",
-      "scripts",
-      "user"
-    ]
+    "files": [".gitignore", "AGENTS.md", "LICENSE", "README.md"],
+    "directories": [".github", "product", "repo", "scripts", "user"]
   },
   "repo": {
-    "directories": [
-      "design",
-      "planning",
-      "scripts",
-      "specs",
-      "src",
-      "validation"
-    ]
+    "directories": ["design", "planning", "scripts", "specs", "src", "validation"]
   },
   "product": {
-    "directories": [
-      "design",
-      "planning",
-      "scripts",
-      "specs",
-      "src",
-      "validation"
-    ],
-    "required_when_present": [
-      "design",
-      "scripts",
-      "specs",
-      "validation"
-    ]
+    "directories": ["design", "planning", "scripts", "specs", "src", "validation"],
+    "required_when_present": ["design", "scripts", "specs", "validation"]
   }
 }
 ```
 
-Array ordering is canonical lexicographic order in framework-generated policy files. Validation shall not rely on input ordering for meaning.
+Framework-generated arrays use canonical lexicographic order. Validation does not assign semantic meaning to array ordering.
 
 ## Structural Enforcement
 
-`validate_structural_paths()` shall consume validated policy data rather than embed concrete path sets.
+`validate_structural_paths()` consumes validated policy data rather than concrete hardcoded sets.
 
-For every tracked or untracked non-ignored maintained candidate path:
+- root files must be authorized by `root.files`;
+- root directories must be authorized by `root.directories`;
+- direct children of `repo/` must be authorized by `repo.directories` and be directories;
+- direct children of `product/` must be authorized by `product.directories` and be directories;
+- when maintained `product/` exists, all `product.required_when_present` roles must be present;
+- nested content below authorized roles remains extensible unless another requirement constrains it.
 
-- repository-root direct files are allowed only when named by `root.files`;
-- repository-root direct directories are allowed only when named by `root.directories`;
-- direct children of `repo/` are allowed only when named by `repo.directories` and shall be directories;
-- direct children of `product/` are allowed only when named by `product.directories` and shall be directories;
-- when maintained `product/` exists, every `product.required_when_present` role shall be present;
-- nested organization below authorized direct-child roles remains extensible unless another accepted requirement constrains it.
+Policy authorization names structural roles only. It does not assign semantic ownership or meaning.
 
-The policy authorizes structural roles only. It does not assign framework, product, runtime, user, or application semantic meaning to an entry merely by listing its name.
+## Installed Repository Adaptation
+
+The policy is installed repository configuration, not immutable supplier code.
+
+An installed repository may intentionally modify concrete authorized-entry values through its own lifecycle. Such a repository may authorize additional valid root or ownership-tree entries while all undeclared entries remain denied.
+
+A changed policy does not modify the reusable Validation implementation and does not by itself create the Design/Planning justification for the added role.
 
 ## Framework Source Relationship
 
-The reusable Validation implementation remains supplied by the selected framework revision.
+Repository-local policy values may differ from supplier defaults without making the reusable framework implementation a fork. Framework source identity continues to identify the supplying reusable framework revision rather than asserting byte identity for repository-owned configuration values.
 
-The structural-policy file is an installed repository configuration surface. Its concrete authorized-entry values may intentionally differ from the supplier repository's default policy after initialization without making the installed validator code an undocumented fork.
+## Product Boundary
 
-`repo/validation/framework-source.json` continues to identify the supplying framework revision. It does not claim that every repository-local configuration value must remain byte-identical to supplier defaults.
-
-## Initialization
-
-The repo-spec initializer shall:
-
-1. install the reusable framework;
-2. seed `repo/validation/structure-policy.json` using the accepted default policy from the supplying framework revision;
-3. construct the remaining generic initialized-repository state;
-4. run canonical repository Validation against the completed initialized repository; and
-5. promote only a valid candidate.
-
-The initializer shall not hardcode a second independent copy of the default policy in implementation logic. The supplier framework shall contain the canonical default policy file, and initialization copies/seeds that file as installed configuration.
-
-## Derived Repository Adaptation
-
-After initialization, a target repository may intentionally change its installed structural policy through that repository's own lifecycle.
-
-Such adaptation may authorize additional root files or directories required by that repository's accepted architecture while preserving default-deny behavior for all undeclared entries.
-
-A consumer such as ADR App Builder may therefore:
-
-1. invoke the exact accepted repo-spec initializer;
-2. receive a valid initialized repository;
-3. modify the initialized repository's structural policy to add only its accepted repository-specific roles;
-4. add the corresponding repository-owned material; and
-5. run canonical `scripts/validate` on the completed result.
-
-This adaptation changes repository configuration, not reusable framework Validation code.
-
-## Upgrade
-
-Upgrade shall distinguish:
-
-- supplier framework implementation and schema requirements;
-- supplier default policy; and
-- target repository's current concrete structural authorization.
-
-For version-1-to-version-1 upgrade where the schema remains compatible:
-
-- preserve target-authorized entries that remain schema-valid;
-- ensure all entries required by the prospective framework default/invariants are present;
-- add newly framework-required entries;
-- do not silently remove target-specific authorized entries merely because they are absent from supplier defaults.
-
-If a prospective framework changes the policy schema incompatibly, upgrade shall use the accepted upgrade semantics for that framework revision. If no accepted reconciliation rule exists, fail and surface the incompatibility rather than resetting or guessing.
-
-Upgrade shall validate the completed candidate with the prospective framework before promotion.
+How the repo-spec initializer seeds the supplier policy and how repository upgrade reconciles target-specific values are product behaviors. They are specified by product FS-004, not by this framework Functional Set.
 
 ## Validation Construction
 
-Extend existing framework Validation rather than creating a parallel task family.
-
-The existing `repository-structure` task remains the normative mechanical surface for structural closure. Its implementation gains strict policy loading and policy-driven path validation.
-
-Framework regression coverage shall exercise policy parsing directly and through initialized/upgrade repository flows.
+Extend the existing `repository-structure` and `framework-regression` tasks. Do not create a parallel structural Validation task family.
 
 ## Planning-to-Build Activation
 
-All FS-005 requirements classified `M` or `B` are initially inactive during Planning.
-
-Build shall activate each mechanically evaluated requirement only in the same candidate that:
-
-- implements the real predicate/mechanism;
-- removes that requirement's `State: Inactive`; and
-- adds the exact existing `repository-structure`, `framework-regression`, or product initializer/upgrade Validation task binding that genuinely evaluates it.
-
-No placeholder binding or vacuous task is permitted.
+All FS-005 `M`/`B` requirements are initially inactive. Build activates each only in the same candidate that implements its real predicate and adds its real framework Requirement Evaluation Manifest binding.
 
 ## Validation
 
-Before commit, Build shall run:
+Before commit:
 
-- focused structural-policy parser/enforcement regressions;
-- initializer regressions;
-- upgrade regressions;
-- canonical `scripts/validate`; and
+- focused policy parser/enforcement regressions;
+- canonical `scripts/validate`;
 - `git diff --check`.
 
-Semantic Review shall verify that moving concrete authorization into policy has not weakened the closed-boundary meaning or turned configuration into independent normative authority.
+Semantic Review verifies default-deny preservation and absence of policy-as-authority drift.
