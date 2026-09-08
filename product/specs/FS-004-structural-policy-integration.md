@@ -75,3 +75,11 @@ A policy-aware upgrade shall run prospective canonical repository Validation aga
 **State: Inactive**
 
 Product Validation shall mechanically cover exact supplier-policy initialization, candidate Validation, target-specific authorization preservation, prospective authorization addition, malformed/incompatible policy failure, and successful post-reconciliation Validation.
+
+### FS-004-NR-011 — Legacy Policy Introduction Migration
+
+**Classification: M**
+
+**State: Inactive**
+
+When upgrading a repository whose reconstructed prior framework revision and target repository both predate and therefore lack the canonical structural-policy file, upgrade shall seed the prospective valid FS-005-compatible default policy into the candidate; disagreement about legacy policy presence shall fail rather than be guessed.

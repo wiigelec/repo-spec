@@ -49,6 +49,24 @@ If policy versions differ or any policy cannot be validated/reconciled under acc
 
 Upgrade shall not silently reset target policy to prospective defaults.
 
+## Legacy Pre-Policy Migration
+
+The first upgrade from an installed framework revision that predates FS-005 requires an explicit introduction rule because neither the reconstructed prior snapshot nor the target repository contains `repo/validation/structure-policy.json`.
+
+When all of the following are true:
+
+- the reconstructed prior installed snapshot has no structural-policy file;
+- the target repository has no structural-policy file; and
+- the prospective framework contains a valid version-1 structural policy whose default authorization satisfies framework FS-005 default-policy compatibility;
+
+upgrade shall seed the prospective structural policy into the target candidate as the migration baseline.
+
+This migration does not infer or preserve target-specific structural authorization because pre-FS-005 canonical Validation did not permit target-specific additions at the closed boundaries without modifying framework enforcement. Existing authorized nested product/user state remains governed by the ordinary upgrade preservation rules.
+
+If the prior snapshot and target disagree about policy presence, or if a target policy appears when the reconstructed prior framework predates the policy contract, upgrade shall fail rather than infer whether that file is legitimate.
+
+After the policy has been introduced successfully, subsequent upgrades use the normal policy-aware reconciliation rules.
+
 ## Conflict Boundary
 
 Ordinary local modification conflict detection remains unchanged for reusable framework implementation. The structural policy is excluded from that byte-identity conflict path because its concrete values are intentionally repository-adaptable configuration.
