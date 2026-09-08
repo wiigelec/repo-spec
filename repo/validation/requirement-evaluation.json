@@ -341,6 +341,66 @@
         "validation-gate",
         "framework-regression"
       ]
+    },
+    {
+      "requirement": "FS-005-NR-001",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-002",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-003",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-004",
+      "tasks": [
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-005",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-006",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-007",
+      "tasks": [
+        "repository-structure",
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-010",
+      "tasks": [
+        "framework-regression"
+      ]
+    },
+    {
+      "requirement": "FS-005-NR-011",
+      "tasks": [
+        "framework-regression"
+      ]
     }
   ]
 }

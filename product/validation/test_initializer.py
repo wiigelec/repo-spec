@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "product" / "src"))
 from initializer.cli import build_parser  # noqa: E402
 from initializer.core import (  # noqa: E402
     FRAMEWORK_SOURCE_RECORD,
+    STRUCTURE_POLICY_PATH,
     PRODUCT_DESIGN_README,
     PRODUCT_SPECS_README,
     PRODUCT_VALIDATION_ENTRYPOINT,
@@ -81,6 +82,7 @@ class InitializerTests(unittest.TestCase):
     def assert_initialized(self, destination: Path, source_revision: str) -> None:
         self.assertTrue((destination / ".git").is_dir())
         self.assertTrue((destination / "repo/scripts/validate").is_file())
+        self.assertTrue((destination / STRUCTURE_POLICY_PATH).is_file())
         self.assertTrue((destination / "scripts/validate").is_file())
         self.assertFalse((destination / "repo/planning").exists())
         self.assertTrue((destination / PRODUCT_DESIGN_README).is_file())
@@ -172,8 +174,14 @@ class InitializerTests(unittest.TestCase):
             # source fixtures while preserving the source-cleanliness contract.
             for rel in (
                 Path("product/src/initializer/core.py"),
+                Path("product/validation/test_initializer.py"),
+                Path("product/validation/validate_product.py"),
+                Path("product/validation/requirement-evaluation.json"),
+                Path("product/specs/FS-004-structural-policy-integration.md"),
                 Path("repo/validation/validate_framework.py"),
                 Path("repo/validation/requirement-evaluation.json"),
+                Path("repo/validation/structure-policy.json"),
+                Path("repo/specs/FS-005-configurable-structural-policy.md"),
                 Path("scripts/validate"),
             ):
                 target = linked / rel
@@ -314,6 +322,8 @@ class InitializerTests(unittest.TestCase):
             Path("product/scripts/repo-spec"),
             Path("repo/validation/validate_framework.py"),
             Path("repo/validation/requirement-evaluation.json"),
+            Path("repo/validation/structure-policy.json"),
+            Path("repo/specs/FS-005-configurable-structural-policy.md"),
             Path("scripts/validate"),
         ):
             target = source / rel
@@ -352,6 +362,8 @@ class InitializerTests(unittest.TestCase):
             Path("product/scripts/repo-spec"),
             Path("repo/validation/validate_framework.py"),
             Path("repo/validation/requirement-evaluation.json"),
+            Path("repo/validation/structure-policy.json"),
+            Path("repo/specs/FS-005-configurable-structural-policy.md"),
             Path("scripts/validate"),
         ):
             target = source / rel
@@ -444,6 +456,8 @@ class InitializerTests(unittest.TestCase):
             Path("product/src/initializer/core.py"),
             Path("repo/validation/validate_framework.py"),
             Path("repo/validation/requirement-evaluation.json"),
+            Path("repo/validation/structure-policy.json"),
+            Path("repo/specs/FS-005-configurable-structural-policy.md"),
             Path("scripts/validate"),
         ):
             target = source / rel
@@ -578,6 +592,10 @@ class InitializerTests(unittest.TestCase):
             Path("product/src/initializer/cli.py"),
             Path("product/src/initializer/core.py"),
             Path("product/scripts/repo-spec"),
+            Path("repo/validation/validate_framework.py"),
+            Path("repo/validation/requirement-evaluation.json"),
+            Path("repo/validation/structure-policy.json"),
+            Path("repo/specs/FS-005-configurable-structural-policy.md"),
         ):
             dest = source / rel
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -847,6 +865,28 @@ class InitializerTests(unittest.TestCase):
         run_git(source, "config", "user.name", "repo-spec test")
         run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
 
+        for rel in (
+            Path("product/src/initializer/core.py"),
+            Path("product/validation/test_initializer.py"),
+            Path("product/validation/validate_product.py"),
+            Path("product/validation/requirement-evaluation.json"),
+            Path("product/specs/FS-004-structural-policy-integration.md"),
+            Path("repo/validation/validate_framework.py"),
+            Path("repo/validation/requirement-evaluation.json"),
+            Path("repo/validation/structure-policy.json"),
+            Path("repo/specs/FS-005-configurable-structural-policy.md"),
+        ):
+            candidate = ROOT / rel
+            destination = source / rel
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(candidate, destination)
+        run_git(source, "add", "-A")
+        staged = run_git(source, "diff", "--cached", "--quiet", check=False)
+        if staged.returncode == 1:
+            run_git(source, "commit", "-m", "Install candidate policy Build surfaces")
+        elif staged.returncode != 0:
+            raise AssertionError("could not evaluate pre-scaffold candidate source changes")
+
         target = self.temp / "pre-scaffold-upgrade-target"
         self._initialize_source_revision(source, pre_scaffold_revision, target)
 
@@ -1047,6 +1087,101 @@ class InitializerTests(unittest.TestCase):
         self.assertIn("repo-spec upgrade:", completed.stderr)
         self.assertIn("supplying maintained framework material is dirty", completed.stderr)
         self.assertNotIn("Traceback", completed.stderr)
+
+
+    def test_initialized_structural_policy_matches_supplier(self) -> None:
+        source = self._make_clean_candidate_source("policy-seeding-source")
+        destination = self.temp / "policy-seeding-result"
+        initialize_repository(source_root=source, destination=destination, require_accepted=False)
+        self.assertEqual(
+            (destination / STRUCTURE_POLICY_PATH).read_bytes(),
+            (source / STRUCTURE_POLICY_PATH).read_bytes(),
+        )
+
+    def _prepare_post_policy_upgrade(self, name: str):
+        source, target, _, introduced_revision = self._make_upgrade_fixture(name)
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        self.assertTrue((target / STRUCTURE_POLICY_PATH).is_file())
+
+        policy = json.loads((target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
+        policy["root"]["files"].append("application.json")
+        policy["root"]["files"] = sorted(set(policy["root"]["files"]))
+        (target / STRUCTURE_POLICY_PATH).write_text(json.dumps(policy, indent=2) + "\n", encoding="utf-8")
+        (target / "application.json").write_text("{}\n", encoding="utf-8")
+        run_git(target, "config", "user.name", "target test")
+        run_git(target, "config", "user.email", "target-test@local.invalid")
+        run_git(target, "add", "-A")
+        run_git(target, "commit", "-m", "Authorize target application state")
+
+        supplier_policy = json.loads((source / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
+        supplier_policy["root"]["files"].append("framework-note.json")
+        supplier_policy["root"]["files"] = sorted(set(supplier_policy["root"]["files"]))
+        (source / STRUCTURE_POLICY_PATH).write_text(json.dumps(supplier_policy, indent=2) + "\n", encoding="utf-8")
+        (source / "repo/src/policy-upgrade-marker.txt").write_text("later\n", encoding="utf-8")
+        run_git(source, "add", "-A")
+        run_git(source, "commit", "-m", "Create later policy-aware framework revision")
+        later_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
+        self.assertNotEqual(later_revision, introduced_revision)
+        return source, target, introduced_revision, later_revision
+
+    def test_upgrade_legacy_introduces_structural_policy(self) -> None:
+        source, target, _, new_revision = self._make_upgrade_fixture("legacy-policy-introduction")
+        self.assertFalse((target / STRUCTURE_POLICY_PATH).exists())
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        self.assertTrue((target / STRUCTURE_POLICY_PATH).is_file())
+        self.assertEqual(
+            json.loads((target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8"))["repo_spec_source_revision"],
+            new_revision,
+        )
+
+    def test_upgrade_rejects_legacy_policy_presence_mismatch(self) -> None:
+        source, target, _, _ = self._make_upgrade_fixture("legacy-policy-mismatch")
+        policy = target / STRUCTURE_POLICY_PATH
+        policy.parent.mkdir(parents=True, exist_ok=True)
+        policy.write_text(
+            json.dumps({
+                "version": 1,
+                "root": {"files": [], "directories": []},
+                "repo": {"directories": []},
+                "product": {"directories": [], "required_when_present": []},
+            }) + "\n",
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(UpgradeError, "legacy structural policy presence mismatch"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_preserves_and_merges_structural_policy(self) -> None:
+        source, target, _, later_revision = self._prepare_post_policy_upgrade("policy-merge")
+        upgrade_repository(source_root=source, target=target, require_accepted=False)
+        policy = json.loads((target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
+        self.assertIn("application.json", policy["root"]["files"])
+        self.assertIn("framework-note.json", policy["root"]["files"])
+        completed = subprocess.run(
+            [str(target / "scripts/validate")],
+            cwd=target,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(completed.returncode, 0, msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}")
+        self.assertEqual(
+            json.loads((target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8"))["repo_spec_source_revision"],
+            later_revision,
+        )
+
+    def test_upgrade_rejects_malformed_structural_policy(self) -> None:
+        source, target, _, _ = self._prepare_post_policy_upgrade("malformed-policy")
+        (target / STRUCTURE_POLICY_PATH).write_text("{bad json\n", encoding="utf-8")
+        with self.assertRaisesRegex(UpgradeError, "structural policy is invalid"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
+
+    def test_upgrade_rejects_incompatible_structural_policy(self) -> None:
+        source, target, _, _ = self._prepare_post_policy_upgrade("incompatible-policy")
+        policy = json.loads((target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
+        policy["version"] = 2
+        (target / STRUCTURE_POLICY_PATH).write_text(json.dumps(policy, indent=2) + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(UpgradeError, "structural policy is invalid"):
+            upgrade_repository(source_root=source, target=target, require_accepted=False)
 
 
 if __name__ == "__main__":
