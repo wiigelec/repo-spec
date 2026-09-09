@@ -17,6 +17,7 @@ PLANNING_ROOT = ROOT / "repo" / "planning"
 SPECS_ROOT = ROOT / "repo" / "specs"
 MANIFEST = ROOT / "repo" / "validation" / "requirement-evaluation.json"
 FRAMEWORK_SOURCE_RECORD = ROOT / "repo" / "validation" / "framework-source.json"
+STRUCTURE_POLICY = ROOT / "repo" / "validation" / "structure-policy.json"
 ENTRYPOINT = ROOT / "repo" / "scripts" / "validate"
 ROOT_ENTRYPOINT = ROOT / "scripts" / "validate"
 PRODUCT_ROOT = ROOT / "product"
@@ -469,11 +470,83 @@ def candidate_paths() -> list[str]:
     return [value.decode("utf-8") for value in cp.stdout.split(b"\0") if value]
 
 
-def validate_structural_paths(paths: list[str]) -> None:
-    root_files = {".gitignore", "AGENTS.md", "LICENSE", "README.md"}
-    root_dirs = {".github", "repo", "product", "scripts", "user"}
-    repo_children = {"design", "planning", "scripts", "specs", "src", "validation"}
-    product_children = {"design", "planning", "scripts", "specs", "src", "validation"}
+def validate_structure_policy_data(data: object) -> dict[str, object]:
+    if not isinstance(data, dict):
+        fail("structural policy must be a JSON object")
+    if set(data) != {"version", "root", "repo", "product"}:
+        fail("structural policy contains missing or unknown top-level keys")
+    if data.get("version") != 1 or isinstance(data.get("version"), bool):
+        fail("structural policy version must be integer 1")
+
+    root = data.get("root")
+    repo = data.get("repo")
+    product = data.get("product")
+    if not isinstance(root, dict) or set(root) != {"files", "directories"}:
+        fail("structural policy root section is invalid")
+    if not isinstance(repo, dict) or set(repo) != {"directories"}:
+        fail("structural policy repo section is invalid")
+    if not isinstance(product, dict) or set(product) != {"directories", "required_when_present"}:
+        fail("structural policy product section is invalid")
+
+    def names(value: object, label: str) -> list[str]:
+        if not isinstance(value, list):
+            fail(f"structural policy {label} must be an array")
+        if len(value) != len(set(value)):
+            fail(f"structural policy {label} contains duplicate entries")
+        for name in value:
+            if (
+                not isinstance(name, str)
+                or not name
+                or name in {".", ".."}
+                or "/" in name
+                or "\\" in name
+                or Path(name).is_absolute()
+            ):
+                fail(f"structural policy {label} contains invalid direct-child name: {name!r}")
+        return value
+
+    root_files = names(root["files"], "root.files")
+    root_dirs = names(root["directories"], "root.directories")
+    names(repo["directories"], "repo.directories")
+    product_dirs = names(product["directories"], "product.directories")
+    product_required = names(product["required_when_present"], "product.required_when_present")
+
+    overlap = sorted(set(root_files) & set(root_dirs))
+    if overlap:
+        fail(f"structural policy root file/directory overlap: {overlap}")
+    missing_required = sorted(set(product_required) - set(product_dirs))
+    if missing_required:
+        fail(
+            "structural policy product.required_when_present is not a subset "
+            f"of product.directories: {missing_required}"
+        )
+    return data
+
+
+def load_structure_policy(path: Path = STRUCTURE_POLICY) -> dict[str, object]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        fail(f"required structural policy missing: {path}")
+    except json.JSONDecodeError as exc:
+        fail(f"invalid structural policy JSON: {exc}")
+    return validate_structure_policy_data(data)
+
+
+def validate_structural_paths(
+    paths: list[str],
+    policy: dict[str, object] | None = None,
+) -> None:
+    if policy is None:
+        policy = load_structure_policy()
+    root = policy["root"]
+    repo = policy["repo"]
+    product = policy["product"]
+    root_files = set(root["files"])
+    root_dirs = set(root["directories"])
+    repo_children = set(repo["directories"])
+    product_children = set(product["directories"])
+
     for raw in paths:
         parts = Path(raw).parts
         if not parts:
@@ -504,14 +577,15 @@ def validate_structural_paths(paths: list[str]) -> None:
 
 def task_repository_structure() -> None:
     paths = candidate_paths()
-    validate_structural_paths(paths)
+    policy = load_structure_policy()
+    validate_structural_paths(paths, policy)
     product_paths = [
         Path(raw).parts for raw in paths
         if Path(raw).parts and Path(raw).parts[0] == "product"
     ]
     if product_paths:
         present = {parts[1] for parts in product_paths if len(parts) >= 2}
-        required = {"design", "specs", "scripts", "validation"}
+        required = set(policy["product"]["required_when_present"])
         missing = sorted(required - present)
         if missing:
             fail(f"product/ is missing required baseline roles: {missing}")
@@ -696,6 +770,149 @@ def task_framework_regression() -> None:
         stderr=subprocess.PIPE,
         check=True,
     ).stdout.strip()
+
+    policy = load_structure_policy()
+    expected_policy = {
+        "version": 1,
+        "root": {
+            "files": [".gitignore", "AGENTS.md", "LICENSE", "README.md"],
+            "directories": [".github", "product", "repo", "scripts", "user"],
+        },
+        "repo": {
+            "directories": ["design", "planning", "scripts", "specs", "src", "validation"],
+        },
+        "product": {
+            "directories": ["design", "planning", "scripts", "specs", "src", "validation"],
+            "required_when_present": ["design", "scripts", "specs", "validation"],
+        },
+    }
+    if not installed_framework() and policy != expected_policy:
+        fail("canonical supplier structural policy is not compatible with the pre-FS-005 default")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        custom_path = root / "structure-policy.json"
+        custom = json.loads(json.dumps(policy))
+        custom["root"]["files"] = sorted(set(custom["root"]["files"]) | {"application.json"})
+        custom["root"]["directories"] = sorted(set(custom["root"]["directories"]) | {"runtime"})
+        custom["repo"]["directories"] = sorted(
+            set(custom["repo"]["directories"]) | {"application"}
+        )
+        custom["product"]["directories"] = sorted(
+            set(custom["product"]["directories"]) | {"application"}
+        )
+        custom_path.write_text(json.dumps(custom, indent=2) + "\n", encoding="utf-8")
+        loaded = load_structure_policy(custom_path)
+
+        source_record = root / "framework-source.json"
+        source_record.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1",
+                    "repo_spec_source_revision": "a" * 40,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        source_record_before = source_record.read_bytes()
+        if not installed_framework(source_record):
+            fail("adapted-policy regression did not recognize installed framework identity")
+        if source_record.read_bytes() != source_record_before:
+            fail("adapted structural policy unexpectedly changed framework source identity")
+        if json.loads(source_record.read_text(encoding="utf-8"))[
+            "repo_spec_source_revision"
+        ] != "a" * 40:
+            fail("adapted structural policy obscured supplying framework revision")
+
+        validate_structural_paths(
+            [
+                "application.json",
+                "runtime/state.json",
+                "repo/validation/structure-policy.json",
+                "repo/application/state.json",
+                "product/design/README.md",
+                "product/application/state.json",
+                "scripts/validate",
+            ],
+            loaded,
+        )
+        expect_failure(
+            lambda: validate_structural_paths(["undeclared.json"], loaded),
+            "unauthorized maintained repository-root file",
+        )
+        expect_failure(
+            lambda: validate_structural_paths(["undeclared/value"], loaded),
+            "unauthorized maintained repository-root role",
+        )
+        expect_failure(
+            lambda: validate_structural_paths(
+                ["repo/undeclared/state.json"],
+                loaded,
+            ),
+            "unauthorized repo/ direct-child role",
+        )
+        expect_failure(
+            lambda: validate_structural_paths(
+                ["product/undeclared/state.json"],
+                loaded,
+            ),
+            "unauthorized product/ direct-child role",
+        )
+        expect_failure(
+            lambda: load_structure_policy(root / "missing.json"),
+            "required structural policy missing",
+        )
+        malformed = root / "malformed.json"
+        malformed.write_text("{bad json\n", encoding="utf-8")
+        expect_failure(
+            lambda: load_structure_policy(malformed),
+            "invalid structural policy JSON",
+        )
+        invalid_cases = [
+            {**custom, "unknown": True},
+            {**custom, "root": {"files": ["duplicate", "duplicate"], "directories": custom["root"]["directories"]}},
+            {**custom, "root": {"files": ["shared"], "directories": ["shared"]}},
+            {**custom, "repo": {"directories": ["bad/name"]}},
+            {**custom, "product": {"directories": ["design"], "required_when_present": ["validation"]}},
+        ]
+        for index, invalid in enumerate(invalid_cases):
+            fixture = root / f"invalid-{index}.json"
+            fixture.write_text(json.dumps(invalid) + "\n", encoding="utf-8")
+            expect_failure(
+                lambda fixture=fixture: load_structure_policy(fixture),
+                "structural policy",
+            )
+
+        required_policy = json.loads(json.dumps(policy))
+        required_policy["product"]["directories"] = sorted(
+            set(required_policy["product"]["directories"]) | {"application"}
+        )
+        required_policy["product"]["required_when_present"] = sorted(
+            set(required_policy["product"]["required_when_present"]) | {"application"}
+        )
+        required_paths = [
+            "product/design/README.md",
+            "product/scripts/validate",
+            "product/specs/README.md",
+            "product/src/app.py",
+            "product/validation/validate_product.py",
+        ]
+
+        original_candidate_paths = globals()["candidate_paths"]
+        original_load_structure_policy = globals()["load_structure_policy"]
+        try:
+            globals()["candidate_paths"] = lambda: list(required_paths)
+            globals()["load_structure_policy"] = lambda path=STRUCTURE_POLICY: required_policy
+            expect_failure(
+                task_repository_structure,
+                "product/ is missing required baseline roles: ['application']",
+            )
+        finally:
+            globals()["candidate_paths"] = original_candidate_paths
+            globals()["load_structure_policy"] = original_load_structure_policy
 
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)

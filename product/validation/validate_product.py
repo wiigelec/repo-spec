@@ -36,6 +36,7 @@ TASK_TESTS = {
     "initialized-state": [
         "test_initialized_repository_state",
         "test_initialized_repository_validates_after_source_checkout_removed",
+        "test_initialized_structural_policy_matches_supplier",
     ],
     "validation-boundary": [
         "test_validation_failure_does_not_promote_destination",
@@ -53,12 +54,17 @@ TASK_TESTS = {
         "test_upgrade_refuses_malformed_framework_source_record",
         "test_upgrade_refuses_non_object_framework_source_record",
         "test_upgrade_cli_contains_supplier_verification_failure",
+        "test_upgrade_legacy_introduces_structural_policy",
+        "test_upgrade_rejects_legacy_policy_presence_mismatch",
+        "test_upgrade_rejects_malformed_structural_policy",
+        "test_upgrade_rejects_incompatible_structural_policy",
     ],
     "upgrade-preservation": [
         "test_upgrade_preserves_independent_product_and_user_state",
         "test_upgrade_restores_missing_generic_product_validator",
         "test_upgrade_from_pre_scaffold_revision_adds_generic_product_scaffold",
         "test_upgrade_restores_missing_root_validation_entrypoint",
+        "test_upgrade_preserves_and_merges_structural_policy",
     ],
     "upgrade-validation-boundary": [
         "test_upgrade_validation_failure_leaves_target_unchanged",

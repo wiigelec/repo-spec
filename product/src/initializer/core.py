@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 import shutil
@@ -19,6 +20,7 @@ class UpgradeError(InitializationError):
 
 
 FRAMEWORK_SOURCE_RECORD = Path("repo/validation/framework-source.json")
+STRUCTURE_POLICY_PATH = Path("repo/validation/structure-policy.json")
 PRODUCT_DESIGN_README = Path("product/design/README.md")
 PRODUCT_SPECS_README = Path("product/specs/README.md")
 PRODUCT_VALIDATION_ENTRYPOINT = Path("product/scripts/validate")
@@ -436,6 +438,106 @@ def _read_framework_source(root: Path) -> str:
     return revision
 
 
+def _load_structure_policy_module(root: Path):
+    validator = root / "repo" / "validation" / "validate_framework.py"
+    if not validator.is_file():
+        raise UpgradeError("structural policy framework validator is missing")
+    module_name = f"_repo_spec_policy_{abs(hash(str(root.resolve())))}"
+    spec = importlib.util.spec_from_file_location(module_name, validator)
+    if spec is None or spec.loader is None:
+        raise UpgradeError("could not load structural policy framework validator")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_structure_policy(root: Path) -> dict[str, object]:
+    module = _load_structure_policy_module(root)
+    try:
+        return module.load_structure_policy(root / STRUCTURE_POLICY_PATH)
+    except Exception as exc:
+        raise UpgradeError(f"structural policy is invalid: {exc}") from exc
+
+
+def _validate_structure_policy(root: Path, data: dict[str, object]) -> None:
+    module = _load_structure_policy_module(root)
+    try:
+        module.validate_structure_policy_data(data)
+    except Exception as exc:
+        raise UpgradeError(f"reconciled structural policy is invalid: {exc}") from exc
+
+
+def _policy_sets(policy: dict[str, object]) -> dict[str, set[str]]:
+    return {
+        "root.files": set(policy["root"]["files"]),
+        "root.directories": set(policy["root"]["directories"]),
+        "repo.directories": set(policy["repo"]["directories"]),
+        "product.directories": set(policy["product"]["directories"]),
+        "product.required_when_present": set(policy["product"]["required_when_present"]),
+    }
+
+
+def _reconcile_structure_policy(stage: Path, target: Path, prior: Path, prospective: Path) -> None:
+    prior_path = prior / STRUCTURE_POLICY_PATH
+    target_path = target / STRUCTURE_POLICY_PATH
+    prospective_path = prospective / STRUCTURE_POLICY_PATH
+
+    if not prospective_path.is_file():
+        raise UpgradeError("prospective framework structural policy is missing")
+
+    prior_present = prior_path.is_file()
+    target_present = target_path.is_file()
+
+    if not prior_present and not target_present:
+        _load_structure_policy(prospective)
+        _apply_state(stage, STRUCTURE_POLICY_PATH, _path_state(prospective, STRUCTURE_POLICY_PATH))
+        return
+
+    if prior_present != target_present:
+        raise UpgradeError("legacy structural policy presence mismatch between prior framework and target")
+
+    prior_policy = _load_structure_policy(prior)
+    target_policy = _load_structure_policy(target)
+    prospective_policy = _load_structure_policy(prospective)
+
+    if any(policy.get("version") != 1 for policy in (prior_policy, target_policy, prospective_policy)):
+        raise UpgradeError("unsupported structural policy version reconciliation")
+
+    prior_sets = _policy_sets(prior_policy)
+    target_sets = _policy_sets(target_policy)
+    prospective_sets = _policy_sets(prospective_policy)
+
+    for key, required in prior_sets.items():
+        missing = sorted(required - target_sets[key])
+        if missing:
+            raise UpgradeError(
+                f"target structural policy removed prior framework authorization from {key}: {missing}"
+            )
+
+    target_specific_sets = {
+        key: target_sets[key] - prior_sets[key]
+        for key in target_sets
+    }
+    merged_sets = {
+        key: prospective_sets[key] | target_specific_sets[key]
+        for key in target_sets
+    }
+    merged = {
+        "version": 1,
+        "root": {
+            "files": sorted(merged_sets["root.files"]),
+            "directories": sorted(merged_sets["root.directories"]),
+        },
+        "repo": {"directories": sorted(merged_sets["repo.directories"])},
+        "product": {
+            "directories": sorted(merged_sets["product.directories"]),
+            "required_when_present": sorted(merged_sets["product.required_when_present"]),
+        },
+    }
+    _validate_structure_policy(prospective, merged)
+    (stage / STRUCTURE_POLICY_PATH).write_text(json.dumps(merged, indent=2) + "\n", encoding="utf-8")
+
+
 def _verify_upgrade_target(target: Path) -> tuple[Path, str]:
     selected = target.expanduser()
     if not selected.is_absolute():
@@ -635,6 +737,7 @@ def _reconcile_framework_owned(
         | _candidate_paths(target, prefix)
     )
     paths.discard(FRAMEWORK_SOURCE_RECORD)
+    paths.discard(STRUCTURE_POLICY_PATH)
 
     conflicts: list[str] = []
     for rel in sorted(paths):
@@ -845,6 +948,7 @@ def upgrade_repository(
 
         _reconcile_framework_owned(stage, target, prior, prospective)
         _reconcile_framework_source_record(target, prior)
+        _reconcile_structure_policy(stage, target, prior, prospective)
         _reconcile_root_compatibility(stage, target, prior, prospective)
         _reconcile_product_compatibility(
             stage,
