@@ -797,6 +797,30 @@ def task_framework_regression() -> None:
         custom["root"]["directories"] = sorted(set(custom["root"]["directories"]) | {"runtime"})
         custom_path.write_text(json.dumps(custom, indent=2) + "\n", encoding="utf-8")
         loaded = load_structure_policy(custom_path)
+
+        source_record = root / "framework-source.json"
+        source_record.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1",
+                    "repo_spec_source_revision": "a" * 40,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        source_record_before = source_record.read_bytes()
+        if not installed_framework(source_record):
+            fail("adapted-policy regression did not recognize installed framework identity")
+        if source_record.read_bytes() != source_record_before:
+            fail("adapted structural policy unexpectedly changed framework source identity")
+        if json.loads(source_record.read_text(encoding="utf-8"))[
+            "repo_spec_source_revision"
+        ] != "a" * 40:
+            fail("adapted structural policy obscured supplying framework revision")
+
         validate_structural_paths(
             [
                 "application.json",

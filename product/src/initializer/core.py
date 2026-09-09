@@ -514,7 +514,14 @@ def _reconcile_structure_policy(stage: Path, target: Path, prior: Path, prospect
                 f"target structural policy removed prior framework authorization from {key}: {missing}"
             )
 
-    merged_sets = {key: target_sets[key] | prospective_sets[key] for key in target_sets}
+    target_specific_sets = {
+        key: target_sets[key] - prior_sets[key]
+        for key in target_sets
+    }
+    merged_sets = {
+        key: prospective_sets[key] | target_specific_sets[key]
+        for key in target_sets
+    }
     merged = {
         "version": 1,
         "root": {

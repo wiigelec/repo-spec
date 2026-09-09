@@ -1099,43 +1099,133 @@ class InitializerTests(unittest.TestCase):
         )
 
     def _prepare_post_policy_upgrade(self, name: str):
-        source, target, _, introduced_revision = self._make_upgrade_fixture(name)
+        source, target, _, _ = self._make_upgrade_fixture(name)
+
+        prior_policy = json.loads(
+            (source / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8")
+        )
+        prior_policy["root"]["files"] = sorted(
+            set(prior_policy["root"]["files"]) | {"legacy-framework.json"}
+        )
+        (source / STRUCTURE_POLICY_PATH).write_text(
+            json.dumps(prior_policy, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        run_git(source, "add", STRUCTURE_POLICY_PATH.as_posix())
+        run_git(source, "commit", "-m", "Create policy-aware prior supplier revision")
+        introduced_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
+
         upgrade_repository(source_root=source, target=target, require_accepted=False)
         self.assertTrue((target / STRUCTURE_POLICY_PATH).is_file())
 
-        policy = json.loads((target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
-        policy["root"]["files"].append("application.json")
-        policy["root"]["files"] = sorted(set(policy["root"]["files"]))
-        (target / STRUCTURE_POLICY_PATH).write_text(json.dumps(policy, indent=2) + "\n", encoding="utf-8")
+        target_policy = json.loads(
+            (target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8")
+        )
+        target_policy["root"]["files"] = sorted(
+            set(target_policy["root"]["files"]) | {"application.json"}
+        )
+        target_policy["product"]["directories"] = sorted(
+            set(target_policy["product"]["directories"]) | {"application"}
+        )
+        target_policy["product"]["required_when_present"] = sorted(
+            set(target_policy["product"]["required_when_present"]) | {"application"}
+        )
+        (target / STRUCTURE_POLICY_PATH).write_text(
+            json.dumps(target_policy, indent=2) + "\n",
+            encoding="utf-8",
+        )
         (target / "application.json").write_text("{}\n", encoding="utf-8")
+        application_state = target / "product/application/state.txt"
+        application_state.parent.mkdir(parents=True, exist_ok=True)
+        application_state.write_text("target-specific\n", encoding="utf-8")
+        product_src = target / "product/src/app.py"
+        product_src.parent.mkdir(parents=True, exist_ok=True)
+        product_src.write_text("VALUE = 'target'\n", encoding="utf-8")
+
         run_git(target, "config", "user.name", "target test")
         run_git(target, "config", "user.email", "target-test@local.invalid")
         run_git(target, "add", "-A")
         run_git(target, "commit", "-m", "Authorize target application state")
 
-        supplier_policy = json.loads((source / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
-        supplier_policy["root"]["files"].append("framework-note.json")
-        supplier_policy["root"]["files"] = sorted(set(supplier_policy["root"]["files"]))
-        (source / STRUCTURE_POLICY_PATH).write_text(json.dumps(supplier_policy, indent=2) + "\n", encoding="utf-8")
-        (source / "repo/src/policy-upgrade-marker.txt").write_text("later\n", encoding="utf-8")
+        supplier_policy = json.loads(
+            (source / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8")
+        )
+        supplier_policy["root"]["files"] = sorted(
+            (set(supplier_policy["root"]["files"]) - {"legacy-framework.json"})
+            | {"framework-note.json"}
+        )
+        supplier_policy["product"]["required_when_present"] = sorted(
+            set(supplier_policy["product"]["required_when_present"]) | {"src"}
+        )
+        (source / STRUCTURE_POLICY_PATH).write_text(
+            json.dumps(supplier_policy, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (source / "repo/src/policy-upgrade-marker.txt").write_text(
+            "later\n",
+            encoding="utf-8",
+        )
         run_git(source, "add", "-A")
         run_git(source, "commit", "-m", "Create later policy-aware framework revision")
         later_revision = run_git(source, "rev-parse", "HEAD").stdout.strip()
         self.assertNotEqual(later_revision, introduced_revision)
         return source, target, introduced_revision, later_revision
 
+    def _make_legacy_policy_upgrade_fixture(self, name: str):
+        source = self.temp / f"{name}-source"
+        subprocess.run(
+            ["git", "clone", "--no-hardlinks", str(ROOT), str(source)],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        run_git(source, "config", "user.name", "repo-spec test")
+        run_git(source, "config", "user.email", "repo-spec-test@local.invalid")
+
+        for rel in (
+            Path("product/src/initializer/core.py"),
+            Path("product/validation/test_initializer.py"),
+            Path("repo/validation/validate_framework.py"),
+        ):
+            destination = source / rel
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, destination)
+
+        run_git(source, "add", "-A")
+        staged = run_git(source, "diff", "--cached", "--quiet", check=False)
+        if staged.returncode == 1:
+            run_git(source, "commit", "-m", "Install semantic-fix candidate surfaces")
+        elif staged.returncode != 0:
+            raise AssertionError("could not evaluate legacy prospective source changes")
+
+        target = self.temp / f"{name}-target"
+        self._initialize_source_revision(
+            source,
+            "1f5b3fdd63558b5d1f7c18ff678dd6ffd364b821",
+            target,
+        )
+        return source, target, run_git(source, "rev-parse", "HEAD").stdout.strip()
+
     def test_upgrade_legacy_introduces_structural_policy(self) -> None:
-        source, target, _, new_revision = self._make_upgrade_fixture("legacy-policy-introduction")
+        source, target, new_revision = self._make_legacy_policy_upgrade_fixture(
+            "legacy-policy-introduction"
+        )
         self.assertFalse((target / STRUCTURE_POLICY_PATH).exists())
         upgrade_repository(source_root=source, target=target, require_accepted=False)
         self.assertTrue((target / STRUCTURE_POLICY_PATH).is_file())
         self.assertEqual(
-            json.loads((target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8"))["repo_spec_source_revision"],
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
             new_revision,
         )
 
     def test_upgrade_rejects_legacy_policy_presence_mismatch(self) -> None:
-        source, target, _, _ = self._make_upgrade_fixture("legacy-policy-mismatch")
+        source, target, _ = self._make_legacy_policy_upgrade_fixture(
+            "legacy-policy-mismatch"
+        )
+        self.assertFalse((target / STRUCTURE_POLICY_PATH).exists())
         policy = target / STRUCTURE_POLICY_PATH
         policy.parent.mkdir(parents=True, exist_ok=True)
         policy.write_text(
@@ -1147,15 +1237,36 @@ class InitializerTests(unittest.TestCase):
             }) + "\n",
             encoding="utf-8",
         )
-        with self.assertRaisesRegex(UpgradeError, "legacy structural policy presence mismatch"):
-            upgrade_repository(source_root=source, target=target, require_accepted=False)
+        with self.assertRaisesRegex(
+            UpgradeError,
+            "legacy structural policy presence mismatch",
+        ):
+            upgrade_repository(
+                source_root=source,
+                target=target,
+                require_accepted=False,
+            )
 
     def test_upgrade_preserves_and_merges_structural_policy(self) -> None:
-        source, target, _, later_revision = self._prepare_post_policy_upgrade("policy-merge")
+        source, target, _, later_revision = self._prepare_post_policy_upgrade(
+            "policy-merge"
+        )
         upgrade_repository(source_root=source, target=target, require_accepted=False)
-        policy = json.loads((target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8"))
+        policy = json.loads(
+            (target / STRUCTURE_POLICY_PATH).read_text(encoding="utf-8")
+        )
+
         self.assertIn("application.json", policy["root"]["files"])
+        self.assertIn("application", policy["product"]["directories"])
+        self.assertIn("application", policy["product"]["required_when_present"])
         self.assertIn("framework-note.json", policy["root"]["files"])
+        self.assertIn("src", policy["product"]["required_when_present"])
+        self.assertNotIn("legacy-framework.json", policy["root"]["files"])
+        self.assertTrue(
+            set(policy["product"]["required_when_present"])
+            <= set(policy["product"]["directories"])
+        )
+
         completed = subprocess.run(
             [str(target / "scripts/validate")],
             cwd=target,
@@ -1163,9 +1274,15 @@ class InitializerTests(unittest.TestCase):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        self.assertEqual(completed.returncode, 0, msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}")
         self.assertEqual(
-            json.loads((target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8"))["repo_spec_source_revision"],
+            completed.returncode,
+            0,
+            msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
+        )
+        self.assertEqual(
+            json.loads(
+                (target / FRAMEWORK_SOURCE_RECORD).read_text(encoding="utf-8")
+            )["repo_spec_source_revision"],
             later_revision,
         )
 
