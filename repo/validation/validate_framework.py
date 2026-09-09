@@ -795,6 +795,12 @@ def task_framework_regression() -> None:
         custom = json.loads(json.dumps(policy))
         custom["root"]["files"] = sorted(set(custom["root"]["files"]) | {"application.json"})
         custom["root"]["directories"] = sorted(set(custom["root"]["directories"]) | {"runtime"})
+        custom["repo"]["directories"] = sorted(
+            set(custom["repo"]["directories"]) | {"application"}
+        )
+        custom["product"]["directories"] = sorted(
+            set(custom["product"]["directories"]) | {"application"}
+        )
         custom_path.write_text(json.dumps(custom, indent=2) + "\n", encoding="utf-8")
         loaded = load_structure_policy(custom_path)
 
@@ -826,7 +832,9 @@ def task_framework_regression() -> None:
                 "application.json",
                 "runtime/state.json",
                 "repo/validation/structure-policy.json",
+                "repo/application/state.json",
                 "product/design/README.md",
+                "product/application/state.json",
                 "scripts/validate",
             ],
             loaded,
@@ -838,6 +846,20 @@ def task_framework_regression() -> None:
         expect_failure(
             lambda: validate_structural_paths(["undeclared/value"], loaded),
             "unauthorized maintained repository-root role",
+        )
+        expect_failure(
+            lambda: validate_structural_paths(
+                ["repo/undeclared/state.json"],
+                loaded,
+            ),
+            "unauthorized repo/ direct-child role",
+        )
+        expect_failure(
+            lambda: validate_structural_paths(
+                ["product/undeclared/state.json"],
+                loaded,
+            ),
+            "unauthorized product/ direct-child role",
         )
         expect_failure(
             lambda: load_structure_policy(root / "missing.json"),
