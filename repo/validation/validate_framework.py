@@ -886,6 +886,34 @@ def task_framework_regression() -> None:
                 "structural policy",
             )
 
+        required_policy = json.loads(json.dumps(policy))
+        required_policy["product"]["directories"] = sorted(
+            set(required_policy["product"]["directories"]) | {"application"}
+        )
+        required_policy["product"]["required_when_present"] = sorted(
+            set(required_policy["product"]["required_when_present"]) | {"application"}
+        )
+        required_paths = [
+            "product/design/README.md",
+            "product/scripts/validate",
+            "product/specs/README.md",
+            "product/src/app.py",
+            "product/validation/validate_product.py",
+        ]
+
+        original_candidate_paths = globals()["candidate_paths"]
+        original_load_structure_policy = globals()["load_structure_policy"]
+        try:
+            globals()["candidate_paths"] = lambda: list(required_paths)
+            globals()["load_structure_policy"] = lambda path=STRUCTURE_POLICY: required_policy
+            expect_failure(
+                task_repository_structure,
+                "product/ is missing required baseline roles: ['application']",
+            )
+        finally:
+            globals()["candidate_paths"] = original_candidate_paths
+            globals()["load_structure_policy"] = original_load_structure_policy
+
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         planning = root / "planning"
